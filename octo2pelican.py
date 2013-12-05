@@ -76,7 +76,7 @@ def pelicanize(filepath):
 def pelicanize_filename(filename):
     """Gets rid of date portion in the octopress filenames"""
     name, ext = os.path.splitext(filename)
-    return '%s.md' % ('-'.join(name.split('-')[3:]),)
+    return '%s.md' %name
 
 
 def pelicanize_metadata(metadata, filepath):
