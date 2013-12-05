@@ -15,7 +15,8 @@ __doc__ = 'A quick script for converting octopress posts (markdown source files)
 blog_author = 'alswl'
 
 # a sorted order of metadata for consistency
-metadata_order = ['Title', 'Author', 'Date', 'Tags', 'Category', 'Summary']
+metadata_order = ['Title', 'Author', 'Date', 'Tags', 'Category', 'Summary',
+                  'Status']
 
 
 def is_md(f):
@@ -89,18 +90,24 @@ def pelicanize_metadata(metadata, filepath):
 
     """
     filename = os.path.split(filepath)[1]
-    not_required = ('layout', 'link', 'published', 'comments')
-    metadata = dict([(k, ', '.join(v) if type(v)==list else v)
+    not_required = ('layout', 'link', 'categories', 'comments', 'published')
+    new_metadata = dict([(k, ', '.join(v) if type(v)==list else v)
                      for k, v in metadata.iteritems()
                      if k not in not_required])
-    metadata['date'] = str(metadata.get('date') or
+    new_metadata['date'] = str(metadata.get('date') or
                            os.path.splitext(filename)[0][0:10] + ' 00:00:00')
-    metadata['Summary'] = ''
-    metadata['Author'] = blog_author
+    new_metadata['Summary'] = ''
+    new_metadata['Author'] = blog_author
     if 'categories' in metadata:
-        metadata['Category'] = metadata['categories']
-        del metadata['categories']
-    meta = dict(zip(map(str.capitalize, metadata.keys()), metadata.values()))
+        if isinstance(metadata['categories'], list):
+            new_metadata['Category'] = ', '.join(metadata['categories'])
+        else:
+            new_metadata['Category'] = metadata['categories']
+    if 'published' in metadata:
+        if metadata['published'] == False:
+            new_metadata['status'] = 'draft'
+    meta = dict(zip(map(str.capitalize, new_metadata.keys()),
+                    new_metadata.values()))
 
     return OrderedDict(sorted(meta.items(), 
                               cmp=lambda x, y: cmp(metadata_order.index(x[0]),
