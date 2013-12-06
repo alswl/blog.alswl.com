@@ -1,5 +1,6 @@
 Title: 男人袜1元体验活动
 Author: alswl
+Slug: nanrenwa-try
 Date: 2011-01-12 00:00:00
 Tags: 
 Category: 关注互联网

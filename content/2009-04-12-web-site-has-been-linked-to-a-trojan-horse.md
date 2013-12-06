@@ -1,5 +1,6 @@
 Title: 网站被挂木马了```
 Author: alswl
+Slug: web-site-has-been-linked-to-a-trojan-horse
 Date: 2009-04-12 00:00:00
 Tags: 
 Category: 建站心得

@@ -1,5 +1,6 @@
 Title: C#+VBA操作Excel总结
 Author: alswl
+Slug: csharp-vba-excel
 Date: 2010-12-14 00:00:00
 Tags: Excel, Office, VBA
 Category: Microsoft .Net, 综合技术

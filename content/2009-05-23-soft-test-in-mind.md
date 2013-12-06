@@ -1,5 +1,6 @@
 Title: 软考记
 Author: alswl
+Slug: soft-test-in-mind
 Date: 2009-05-23 00:00:00
 Tags: 
 Category: 日记

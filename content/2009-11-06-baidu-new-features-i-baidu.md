@@ -1,5 +1,6 @@
 Title: 百度新功能-我在百度
 Author: alswl
+Slug: baidu-new-features-i-baidu
 Date: 2009-11-06 00:00:00
 Tags: 百度
 Category: 关注互联网

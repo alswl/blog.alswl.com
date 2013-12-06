@@ -1,5 +1,6 @@
 Title: get json failed in IE
 Author: alswl
+Slug: get-json-failed-in-ie
 Date: 2011-08-14 00:00:00
 Tags: IE
 Category: Web前端

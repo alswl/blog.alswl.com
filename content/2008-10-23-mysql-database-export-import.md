@@ -1,5 +1,6 @@
 Title: mysql 数据库导出/导入
 Author: alswl
+Slug: mysql-database-export-import
 Date: 2008-10-23 00:00:00
 Tags: Database, MySQL
 Category: 综合技术

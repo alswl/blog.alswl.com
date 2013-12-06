@@ -1,5 +1,6 @@
 Title: Eclipse代码统计插件
 Author: alswl
+Slug: statistics-eclipse-plug-in-code-to
 Date: 2009-06-30 00:00:00
 Tags: Eclipse
 Category: 工欲善其事必先利其器

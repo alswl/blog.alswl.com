@@ -1,5 +1,6 @@
 Title: 不谈政治
 Author: alswl
+Slug: not-political
 Date: 2009-06-24 00:00:00
 Tags: 
 Category: 碎碎念

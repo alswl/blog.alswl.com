@@ -1,5 +1,6 @@
 Title: 美化postviews
 Author: alswl
+Slug: landscaping-postviews
 Date: 2009-05-21 00:00:00
 Tags: WordPress
 Category: 建站心得

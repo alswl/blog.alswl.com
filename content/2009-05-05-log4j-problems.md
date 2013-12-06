@@ -1,5 +1,6 @@
 Title: Log4j 遇到的问题
 Author: alswl
+Slug: log4j-problems
 Date: 2009-05-05 00:00:00
 Tags: log4j
 Category: 工欲善其事必先利其器

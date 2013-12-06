@@ -1,5 +1,6 @@
 Title: 软件开发中的角色扮演
 Author: alswl
+Slug: software-development-in-the-role-playing
 Date: 2010-01-09 00:00:00
 Tags: 
 Category: 软件开发和项目管理

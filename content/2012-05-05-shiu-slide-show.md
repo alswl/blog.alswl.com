@@ -1,5 +1,6 @@
 Title: 《HTML5 实战 WebApp 阅读应用 – Shiu》幻灯片
 Author: alswl
+Slug: shiu-slide-show
 Date: 2012-05-05 00:00:00
 Tags: ios, shiu, slideshow, webapp
 Category: Python编程, Web前端

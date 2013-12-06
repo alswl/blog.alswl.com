@@ -1,5 +1,6 @@
 Title: 《海绵宝宝》(SpongeBob SquarePants)
 Author: alswl
+Slug: spongebob-squarepants
 Date: 2009-06-06 00:00:00
 Tags: 动漫
 Category: 娱乐

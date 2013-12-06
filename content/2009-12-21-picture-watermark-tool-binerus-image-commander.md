@@ -1,5 +1,6 @@
 Title: 图片水印工具Binerus Image Commander
 Author: alswl
+Slug: picture-watermark-tool-binerus-image-commander
 Date: 2009-12-21 00:00:00
 Tags: 
 Category: 技术达人

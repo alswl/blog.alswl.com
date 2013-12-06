@@ -1,5 +1,6 @@
 Title: Eclipse 的 TODO (tasks)
 Author: alswl
+Slug: eclipse-of-the-todo-tasks
 Date: 2009-01-24 00:00:00
 Tags: Eclipse
 Category: 工欲善其事必先利其器

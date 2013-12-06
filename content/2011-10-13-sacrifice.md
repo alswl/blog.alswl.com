@@ -1,5 +1,6 @@
 Title: 牺牲
 Author: alswl
+Slug: sacrifice
 Date: 2011-10-13 00:00:00
 Tags: 
 Category: 感悟

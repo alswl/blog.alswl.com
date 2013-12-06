@@ -1,5 +1,6 @@
 Title: DAO的设计-使用泛型来避免重复DAO
 Author: alswl
+Slug: dao-design-the-use-of-generics-to-avoid-duplication-of-dao
 Date: 2009-07-10 00:00:00
 Tags: DAO, Database
 Category: Java编程和Java企业应用

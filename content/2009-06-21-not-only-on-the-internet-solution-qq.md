@@ -1,5 +1,6 @@
 Title: 不能上网只能上QQ的解决办法
 Author: alswl
+Slug: not-only-on-the-internet-solution-qq
 Date: 2009-06-21 00:00:00
 Tags: 
 Category: 技术达人

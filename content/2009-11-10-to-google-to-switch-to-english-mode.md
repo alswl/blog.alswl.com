@@ -1,5 +1,6 @@
 Title: 将Google切换到英文模式
 Author: alswl
+Slug: to-google-to-switch-to-english-mode
 Date: 2009-11-10 00:00:00
 Tags: Google
 Category: 技术达人

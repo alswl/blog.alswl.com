@@ -1,5 +1,6 @@
 Title: Struts2的编码问题
 Author: alswl
+Slug: struts2-encoding-problem
 Date: 2009-05-08 00:00:00
 Tags: Struts, 编码
 Category: Java编程和Java企业应用

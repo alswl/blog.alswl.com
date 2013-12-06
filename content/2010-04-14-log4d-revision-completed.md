@@ -1,5 +1,6 @@
 Title: Log4D改版完成
 Author: alswl
+Slug: log4d-revision-completed
 Date: 2010-04-14 00:00:00
 Tags: WordPress
 Category: 建站心得

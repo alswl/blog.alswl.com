@@ -1,8 +1,9 @@
 Title: 用OpenSSL生成证书
 Author: alswl
+Slug: using-openssl-to-generate-certificates
 Date: 2009-03-15 00:00:00
 Tags: OpenSSL, SSL
-Category: C/C++编程
+Category: C
 Summary: 
 
 这些命令虽然是linux下面的，但是在windows下面也能用

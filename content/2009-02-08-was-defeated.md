@@ -1,5 +1,6 @@
 Title: 被击败了
 Author: alswl
+Slug: was-defeated
 Date: 2009-02-08 00:00:00
 Tags: 
 Category: 日记

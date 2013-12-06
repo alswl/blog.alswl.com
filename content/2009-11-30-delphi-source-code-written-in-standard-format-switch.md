@@ -1,5 +1,6 @@
 Title: Delphi源程序格式书写规范【转】
 Author: alswl
+Slug: delphi-source-code-written-in-standard-format-switch
 Date: 2009-11-30 00:00:00
 Tags: 
 Category: Delphi编程

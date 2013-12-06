@@ -1,5 +1,6 @@
 Title: 校内小工具告一段落
 Author: alswl
+Slug: xiaonei-gadgets-come-to-an-end
 Date: 2009-06-12 00:00:00
 Tags: 人人
 Category: Java编程和Java企业应用

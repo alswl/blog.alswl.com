@@ -1,5 +1,6 @@
 Title: 没有银弹
 Author: alswl
+Slug: no-silver-bullet
 Date: 2011-02-25 00:00:00
 Tags: 
 Category: 程序人生

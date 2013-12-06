@@ -1,5 +1,6 @@
 Title: 软考过了
 Author: alswl
+Slug: ruan-kao-guo-liao
 Date: 2009-06-23 00:00:00
 Tags: 
 Category: 日记

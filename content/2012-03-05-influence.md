@@ -1,5 +1,6 @@
 Title: 影响力读书笔记
 Author: alswl
+Slug: influence
 Date: 2012-03-05 00:00:00
 Tags: 心理学, 读书笔记
 Category: 学海无涯

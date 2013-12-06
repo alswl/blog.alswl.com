@@ -1,5 +1,6 @@
 Title: 正式步入社会的40个提醒[转载]
 Author: alswl
+Slug: formally-entered-a-period-of-40-to-remind-the-community-reproduced
 Date: 2009-12-25 00:00:00
 Tags: 
 Category: 感悟

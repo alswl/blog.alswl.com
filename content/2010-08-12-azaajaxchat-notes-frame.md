@@ -1,5 +1,6 @@
 Title: AzaAjaxChat笔记-框架
 Author: alswl
+Slug: azaajaxchat-notes-frame
 Date: 2010-08-12 00:00:00
 Tags: AzaAjaxChat, CakePHP, ThinkPHP
 Category: PHP编程

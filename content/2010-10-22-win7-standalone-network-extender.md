@@ -1,5 +1,6 @@
 Title: 在Win7上面使用Standalone Network Extender
 Author: alswl
+Slug: win7-standalone-network-extender
 Date: 2010-10-22 00:00:00
 Tags: Win7
 Category: 技术达人

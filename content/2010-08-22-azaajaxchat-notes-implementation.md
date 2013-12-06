@@ -1,5 +1,6 @@
 Title: AzaAjaxChat笔记-实现
 Author: alswl
+Slug: azaajaxchat-notes-implementation
 Date: 2010-08-22 00:00:00
 Tags: AzaAjaxChat, Comet, Flex, FMS, JavaScript, RTMP
 Category: Flash编程, PHP编程

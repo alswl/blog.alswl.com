@@ -1,8 +1,9 @@
 Title: 使用 OpenSSL API 进行安全编程【转载】
 Author: alswl
+Slug: safe-use-of-openssl-api-programming
 Date: 2009-03-17 00:00:00
 Tags: OpenSSL, SSL
-Category: C/C++编程
+Category: C
 Summary: 
 
 使用 OpenSSL API 进行安全编程

@@ -1,5 +1,6 @@
 Title: SubVersion建立多个版本库
 Author: alswl
+Slug: subversion-multi-repository
 Date: 2010-03-08 00:00:00
 Tags: SVN
 Category: 工欲善其事必先利其器, 软件开发和项目管理

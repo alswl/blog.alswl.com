@@ -1,5 +1,6 @@
 Title: 再读《重构》
 Author: alswl
+Slug: refactory
 Date: 2012-02-05 00:00:00
 Tags: 读书笔记
 Category: 综合技术, 软件开发和项目管理

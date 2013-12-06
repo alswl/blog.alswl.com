@@ -1,5 +1,6 @@
 Title: Vim中缩进和空格的使用
 Author: alswl
+Slug: vim-indentation-and-space-config
 Date: 2010-03-09 00:00:00
 Tags: Vim
 Category: 工欲善其事必先利其器

@@ -1,5 +1,6 @@
 Title: WordPress页面静态化
 Author: alswl
+Slug: wordpress-static-pages-of
 Date: 2009-06-22 00:00:00
 Tags: WordPress
 Category: 建站心得

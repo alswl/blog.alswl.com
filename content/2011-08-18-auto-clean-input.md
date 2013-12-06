@@ -1,5 +1,6 @@
 Title: 简单输入提示框实现
 Author: alswl
+Slug: auto-clean-input
 Date: 2011-08-18 00:00:00
 Tags: 
 Category: Web前端

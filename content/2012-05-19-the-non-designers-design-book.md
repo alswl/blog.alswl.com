@@ -1,5 +1,6 @@
 Title: 《写给大家看的设计书》读后感
 Author: alswl
+Slug: the-non-designers-design-book
 Date: 2012-05-19 18:10
 Tags: 读书笔记
 Category: 视觉设计

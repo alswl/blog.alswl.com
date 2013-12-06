@@ -1,5 +1,6 @@
 Title: 推荐一个美食博客
 Author: alswl
+Slug: recommend-a-food-blog
 Date: 2009-07-06 00:00:00
 Tags: 美食
 Category: 美食|烹饪

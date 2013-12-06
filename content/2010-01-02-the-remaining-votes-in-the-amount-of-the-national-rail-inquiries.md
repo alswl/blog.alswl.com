@@ -1,5 +1,6 @@
 Title: 查询全国火车剩余票额
 Author: alswl
+Slug: the-remaining-votes-in-the-amount-of-the-national-rail-inquiries
 Date: 2010-01-02 00:00:00
 Tags: 
 Category: 关注互联网

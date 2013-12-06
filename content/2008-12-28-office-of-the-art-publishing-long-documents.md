@@ -1,5 +1,6 @@
 Title: Office长文档排版的艺术
 Author: alswl
+Slug: office-of-the-art-publishing-long-documents
 Date: 2008-12-28 00:00:00
 Tags: Office
 Category: 技术达人

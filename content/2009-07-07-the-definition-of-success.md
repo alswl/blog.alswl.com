@@ -1,5 +1,6 @@
 Title: 成功的定义
 Author: alswl
+Slug: the-definition-of-success
 Date: 2009-07-07 00:00:00
 Tags: 
 Category: 碎碎念

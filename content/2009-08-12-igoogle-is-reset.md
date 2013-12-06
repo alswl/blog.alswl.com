@@ -1,5 +1,6 @@
 Title: iGoogle被重置
 Author: alswl
+Slug: igoogle-is-reset
 Date: 2009-08-12 00:00:00
 Tags: Google
 Category: 关注互联网

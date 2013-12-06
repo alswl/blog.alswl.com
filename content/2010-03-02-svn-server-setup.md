@@ -1,5 +1,6 @@
 Title: 配置SVN服务端
 Author: alswl
+Slug: svn-server-setup
 Date: 2010-03-02 00:00:00
 Tags: SVN
 Category: 工欲善其事必先利其器, 软件开发和项目管理

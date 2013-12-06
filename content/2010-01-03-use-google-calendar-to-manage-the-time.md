@@ -1,5 +1,6 @@
 Title: 使用Google日历来管理时间
 Author: alswl
+Slug: use-google-calendar-to-manage-the-time
 Date: 2010-01-03 00:00:00
 Tags: Google, GTD
 Category: 学海无涯, 技术达人

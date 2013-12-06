@@ -1,5 +1,6 @@
 Title: Google门
 Author: alswl
+Slug: google-doors
 Date: 2009-06-25 00:00:00
 Tags: Google
 Category: 关注互联网

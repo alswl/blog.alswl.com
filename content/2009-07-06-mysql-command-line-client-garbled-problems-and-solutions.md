@@ -1,5 +1,6 @@
 Title: MySQL Command Line Client乱码问题及解决方案
 Author: alswl
+Slug: mysql-command-line-client-garbled-problems-and-solutions
 Date: 2009-07-06 00:00:00
 Tags: Database, MySQL, 编码
 Category: 综合技术

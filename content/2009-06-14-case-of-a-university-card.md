@@ -1,5 +1,6 @@
 Title: 某大网卡事件
 Author: alswl
+Slug: case-of-a-university-card
 Date: 2009-06-14 00:00:00
 Tags: 
 Category: 碎碎念

@@ -1,5 +1,6 @@
 Title: 关于博客最近无法访问的说明
 Author: alswl
+Slug: can-not-be-accessed-on-the-blog-description-of-the-recent
 Date: 2009-12-04 00:00:00
 Tags: 
 Category: 日记

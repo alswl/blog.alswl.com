@@ -1,5 +1,6 @@
 Title: Delphi学习笔记01
 Author: alswl
+Slug: delphi-study-notes-01
 Date: 2009-11-28 00:00:00
 Tags: Pascal
 Category: Delphi编程

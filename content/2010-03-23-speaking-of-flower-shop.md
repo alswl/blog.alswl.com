@@ -1,5 +1,6 @@
 Title: flower shop 汉化
 Author: alswl
+Slug: speaking-of-flower-shop
 Date: 2010-03-23 00:00:00
 Tags: CSS, Html
 Category: Web前端

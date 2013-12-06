@@ -1,5 +1,6 @@
 Title: 重新整理网站的结构
 Author: alswl
+Slug: to-rearrange-the-structure-of-the-site
 Date: 2009-07-24 00:00:00
 Tags: 
 Category: 建站心得

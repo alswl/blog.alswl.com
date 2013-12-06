@@ -1,5 +1,6 @@
 Title: 一周Python小记
 Author: alswl
+Slug: a-week-python
 Date: 2010-11-09 00:00:00
 Tags: pymssql, PyYAML, YAML
 Category: Python编程

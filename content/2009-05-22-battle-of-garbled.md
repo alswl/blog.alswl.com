@@ -1,5 +1,6 @@
 Title: 乱码之战
 Author: alswl
+Slug: battle-of-garbled
 Date: 2009-05-22 00:00:00
 Tags: Struts, 编码, 贴吧
 Category: Java编程和Java企业应用

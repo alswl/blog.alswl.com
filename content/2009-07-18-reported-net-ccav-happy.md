@@ -1,5 +1,6 @@
 Title: CCAV报道了开心网
 Author: alswl
+Slug: reported-net-ccav-happy
 Date: 2009-07-18 00:00:00
 Tags: 
 Category: 碎碎念

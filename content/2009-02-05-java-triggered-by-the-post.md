@@ -1,5 +1,6 @@
 Title: Java中的POST引发的...
 Author: alswl
+Slug: java-triggered-by-the-post
 Date: 2009-02-05 00:00:00
 Tags: 网络编程
 Category: Java编程和Java企业应用

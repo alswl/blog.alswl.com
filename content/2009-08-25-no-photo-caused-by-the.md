@@ -1,5 +1,6 @@
 Title: 由No photo引起
 Author: alswl
+Slug: no-photo-caused-by-the
 Date: 2009-08-25 00:00:00
 Tags: ASP.net
 Category: Microsoft .Net

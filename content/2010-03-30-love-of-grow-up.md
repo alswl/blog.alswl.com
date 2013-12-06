@@ -1,5 +1,6 @@
 Title: 不管我们有多么甜多么美多么疯多么热烈的曾经，我们还是奔向各自的幸福和遗憾中离开和老去了
 Author: alswl
+Slug: love-of-grow-up
 Date: 2010-03-30 00:00:00
 Tags: 
 Category: 青春的彩虹

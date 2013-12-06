@@ -1,5 +1,6 @@
 Title: IIS IE7 Opera Firefox 需要用户名和密码？【转载】
 Author: alswl
+Slug: iis-ie7-opera-firefox-requires-a-user-name-and-password
 Date: 2009-07-30 00:00:00
 Tags: FireFox, IE7, Opera
 Category: 综合技术

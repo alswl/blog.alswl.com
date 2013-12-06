@@ -1,5 +1,6 @@
 Title: ThisHouse房屋销售系统
 Author: alswl
+Slug: thishouse-housing-sales-system
 Date: 2009-11-05 00:00:00
 Tags: AjaxControlToolkit, ASP.net, MemberShip
 Category: Microsoft .Net

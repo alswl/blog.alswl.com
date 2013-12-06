@@ -1,5 +1,6 @@
 Title: 程序员责任很重
 Author: alswl
+Slug: programmer-a-heavy-responsibility
 Date: 2010-02-03 00:00:00
 Tags: 
 Category: 程序人生

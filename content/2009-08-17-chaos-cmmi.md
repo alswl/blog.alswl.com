@@ -1,5 +1,6 @@
 Title: CMMI混乱中```
 Author: alswl
+Slug: chaos-cmmi
 Date: 2009-08-17 00:00:00
 Tags: 
 Category: 日记

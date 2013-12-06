@@ -1,5 +1,6 @@
 Title: 某大H1N1中的某个小门
 Author: alswl
+Slug: a-large-h1n1-in-a-door
 Date: 2009-09-24 00:00:00
 Tags: 
 Category: 碎碎念

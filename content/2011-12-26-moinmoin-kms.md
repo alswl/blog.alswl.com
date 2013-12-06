@@ -1,5 +1,6 @@
 Title: 使用MoinMoin作为个人KMS
 Author: alswl
+Slug: moinmoin-kms
 Date: 2011-12-26 00:00:00
 Tags: image2attach, KMS, MoinMoin, nginx, uwsgi, wiz
 Category: Linuxer, Python编程, 工欲善其事必先利其器

@@ -1,5 +1,6 @@
 Title: Ubuntu8.04的教育网源
 Author: alswl
+Slug: the-education-network-ubuntu8-04-source
 Date: 2009-05-27 00:00:00
 Tags: Ubuntu
 Category: Linuxer

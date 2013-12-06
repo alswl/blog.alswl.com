@@ -1,5 +1,6 @@
 Title: 暗时间读书笔记
 Author: alswl
+Slug: an-shi-jian
 Date: 2012-01-15 00:00:00
 Tags: 读书笔记
 Category: 学海无涯

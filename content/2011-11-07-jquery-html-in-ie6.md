@@ -1,5 +1,6 @@
 Title: jQuery.html()在IE下面错误解决办法
 Author: alswl
+Slug: jquery-html-in-ie6
 Date: 2011-11-07 00:00:00
 Tags: IE, IE6, jQuery
 Category: Web前端

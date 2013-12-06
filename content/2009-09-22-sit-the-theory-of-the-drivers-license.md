@@ -1,5 +1,6 @@
 Title: 考完驾照理论了
 Author: alswl
+Slug: sit-the-theory-of-the-drivers-license
 Date: 2009-09-22 00:00:00
 Tags: cinderella
 Category: 日记

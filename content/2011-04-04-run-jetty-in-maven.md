@@ -1,5 +1,6 @@
 Title: Maven下Jetty启动
 Author: alswl
+Slug: run-jetty-in-maven
 Date: 2011-04-04 00:00:00
 Tags: Eclipse, Jetty
 Category: Java编程和Java企业应用, 工欲善其事必先利其器

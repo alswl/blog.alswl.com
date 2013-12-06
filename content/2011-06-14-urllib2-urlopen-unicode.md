@@ -1,5 +1,6 @@
 Title: urllib2.urlopen的中文URL问题
 Author: alswl
+Slug: urllib2-urlopen-unicode
 Date: 2011-06-14 00:00:00
 Tags: 
 Category: Python编程

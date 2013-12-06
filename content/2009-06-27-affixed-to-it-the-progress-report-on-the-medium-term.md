@@ -1,5 +1,6 @@
 Title: 贴吧中期进度汇报
 Author: alswl
+Slug: affixed-to-it-the-progress-report-on-the-medium-term
 Date: 2009-06-27 00:00:00
 Tags: 贴吧
 Category: Java编程和Java企业应用

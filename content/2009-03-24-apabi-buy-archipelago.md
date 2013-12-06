@@ -1,5 +1,6 @@
 Title: Apabi买书奇遇记
 Author: alswl
+Slug: apabi-buy-archipelago
 Date: 2009-03-24 00:00:00
 Tags: 
 Category: 关注互联网

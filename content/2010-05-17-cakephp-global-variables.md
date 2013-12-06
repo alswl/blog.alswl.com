@@ -1,5 +1,6 @@
 Title: CakePHP的全局变量
 Author: alswl
+Slug: cakephp-global-variables
 Date: 2010-05-17 00:00:00
 Tags: AzaAjaxChat, CakePHP
 Category: PHP编程

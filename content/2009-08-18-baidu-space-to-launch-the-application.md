@@ -1,5 +1,6 @@
 Title: 百度空间推出应用
 Author: alswl
+Slug: baidu-space-to-launch-the-application
 Date: 2009-08-18 00:00:00
 Tags: 百度
 Category: 关注互联网

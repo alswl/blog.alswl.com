@@ -1,5 +1,6 @@
 Title: 《龙珠·改》推出
 Author: alswl
+Slug: dragon-ball-gai-launched
 Date: 2009-06-14 00:00:00
 Tags: 动漫
 Category: 娱乐

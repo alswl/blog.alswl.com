@@ -1,5 +1,6 @@
 Title: 由学Python所想到的
 Author: alswl
+Slug: python-comes-to-mind-by-learning
 Date: 2009-09-25 00:00:00
 Tags: 
 Category: 程序人生

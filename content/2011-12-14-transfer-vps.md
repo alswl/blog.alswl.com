@@ -1,5 +1,6 @@
 Title: 更换VPS
 Author: alswl
+Slug: transfer-vps
 Date: 2011-12-14 00:00:00
 Tags: VPS
 Category: Linuxer

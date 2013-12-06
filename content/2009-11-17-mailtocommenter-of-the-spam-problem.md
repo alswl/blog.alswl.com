@@ -1,5 +1,6 @@
 Title: MailToCommenter的垃圾邮件问题
 Author: alswl
+Slug: mailtocommenter-of-the-spam-problem
 Date: 2009-11-17 00:00:00
 Tags: WordPress
 Category: 建站心得

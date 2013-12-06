@@ -1,5 +1,6 @@
 Title: 保险中介从业人员资格考试复习大纲
 Author: alswl
+Slug: employees-in-the-insurance-intermediary-qualifying-examinations-review-outline
 Date: 2009-07-09 00:00:00
 Tags: 保险
 Category: 学海无涯

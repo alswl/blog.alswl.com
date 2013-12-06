@@ -1,5 +1,6 @@
 Title: Arch Linux装机软件
 Author: alswl
+Slug: linux-application
 Date: 2011-12-11 00:00:00
 Tags: arch
 Category: Linuxer

@@ -1,5 +1,6 @@
 Title: SWFObject 一款JavaScript的Flash检测与插入模块
 Author: alswl
+Slug: swfobject
 Date: 2010-05-23 00:00:00
 Tags: AzaAjaxChat, JavaScript, SWFObject
 Category: Flash编程, Web前端

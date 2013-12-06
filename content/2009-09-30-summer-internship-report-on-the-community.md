@@ -1,5 +1,6 @@
 Title: 暑假社会实习报告
 Author: alswl
+Slug: summer-internship-report-on-the-community
 Date: 2009-09-30 00:00:00
 Tags: 
 Category: 感悟

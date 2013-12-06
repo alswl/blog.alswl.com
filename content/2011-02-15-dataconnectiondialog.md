@@ -1,5 +1,6 @@
 Title: 使用DataConnectionDialog来获取连接字符串
 Author: alswl
+Slug: dataconnectiondialog
 Date: 2011-02-15 00:00:00
 Tags: C#, VisualStudio
 Category: Microsoft .Net

@@ -1,8 +1,9 @@
 Title: OpenSSL初接触
 Author: alswl
+Slug: early-contact-with-openssl
 Date: 2009-03-05 00:00:00
 Tags: OpenSSL, SSL
-Category: C/C++编程
+Category: C
 Summary: 
 
 Boss昨个儿说，这两天把SSL上面的相关东西给他去看一下

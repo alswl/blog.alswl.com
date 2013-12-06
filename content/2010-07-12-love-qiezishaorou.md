@@ -1,5 +1,6 @@
 Title: 最爱茄子烧肉
 Author: alswl
+Slug: love-qiezishaorou
 Date: 2010-07-12 00:00:00
 Tags: 
 Category: 美食|烹饪

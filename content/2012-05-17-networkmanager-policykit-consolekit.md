@@ -1,5 +1,6 @@
 Title: 关于 NetworkManager / PolicyKit / ConsoleKit 的那些屌事
 Author: alswl
+Slug: networkmanager-policykit-consolekit
 Date: 2012-05-17 09:07
 Tags: NetworkManager, PolicyKit, ConsoleKit, GDM, Gnome
 Category: Linuxer

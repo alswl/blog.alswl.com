@@ -1,5 +1,6 @@
 Title: 使用pptpclient连接vpn网络[译文]
 Author: alswl
+Slug: pptpclient
 Date: 2011-09-04 00:00:00
 Tags: arch, pptp, VPN, 译文
 Category: Linuxer

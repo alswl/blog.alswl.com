@@ -1,5 +1,6 @@
 Title: 恶心的Yahoo Group
 Author: alswl
+Slug: yahoo-group
 Date: 2010-09-07 00:00:00
 Tags: Yahoo
 Category: 关注互联网

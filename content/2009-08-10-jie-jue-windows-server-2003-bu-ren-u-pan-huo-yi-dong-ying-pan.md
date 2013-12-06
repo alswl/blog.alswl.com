@@ -1,5 +1,6 @@
 Title: 解决windows server 2003不认U盘或移动硬盘
 Author: alswl
+Slug: jie-jue-windows-server-2003-bu-ren-u-pan-huo-yi-dong-ying-pan
 Date: 2009-08-10 00:00:00
 Tags: Windows
 Category: 技术达人

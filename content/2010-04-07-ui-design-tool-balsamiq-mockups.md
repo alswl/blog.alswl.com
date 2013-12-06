@@ -1,5 +1,6 @@
 Title: 界面设计利器-Balsamiq Mockups
 Author: alswl
+Slug: ui-design-tool-balsamiq-mockups
 Date: 2010-04-07 00:00:00
 Tags: Mockups, UI
 Category: Web前端, 工欲善其事必先利其器

@@ -1,5 +1,6 @@
 Title: 一个Windows小Bug
 Author: alswl
+Slug: a-windows-small-bug
 Date: 2009-07-26 00:00:00
 Tags: Windows
 Category: 技术达人

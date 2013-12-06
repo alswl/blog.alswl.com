@@ -1,5 +1,6 @@
 Title: WordPress 2.8发表文章空白解决办法
 Author: alswl
+Slug: wordpress-2-8-wrote-a-blank-solution
 Date: 2009-06-20 00:00:00
 Tags: WordPress
 Category: 建站心得

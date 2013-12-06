@@ -1,5 +1,6 @@
 Title: 网页渐进式载入图片
 Author: alswl
+Slug: interlace-progressive-image
 Date: 2011-09-23 00:00:00
 Tags: zhihu
 Category: Web前端

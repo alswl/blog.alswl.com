@@ -1,5 +1,6 @@
 Title: 建博一周年
 Author: alswl
+Slug: first-anniversary-of-blog
 Date: 2010-05-14 00:00:00
 Tags: 
 Category: 日记

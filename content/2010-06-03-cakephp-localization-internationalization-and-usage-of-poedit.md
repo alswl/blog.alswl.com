@@ -1,5 +1,6 @@
 Title: Cakephp的国际化和poEdit的使用
 Author: alswl
+Slug: cakephp-localization-internationalization-and-usage-of-poedit
 Date: 2010-06-03 00:00:00
 Tags: CakePHP, PoEdit
 Category: PHP编程

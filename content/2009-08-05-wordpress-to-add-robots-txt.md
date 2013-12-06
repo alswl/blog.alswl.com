@@ -1,5 +1,6 @@
 Title: 给WordPress加上robots.txt
 Author: alswl
+Slug: wordpress-to-add-robots-txt
 Date: 2009-08-05 00:00:00
 Tags: WordPress
 Category: 建站心得

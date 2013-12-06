@@ -1,5 +1,6 @@
 Title: 牛奶西米露
 Author: alswl
+Slug: xi-mi-lu-with-milk
 Date: 2010-07-15 00:00:00
 Tags: 
 Category: 美食|烹饪

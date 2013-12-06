@@ -1,5 +1,6 @@
 Title: 添加FireFox下的边框圆角
 Author: alswl
+Slug: add-a-border-fillet-under-firefox
 Date: 2009-12-31 00:00:00
 Tags: WordPress
 Category: 建站心得, 技术达人

@@ -1,5 +1,6 @@
 Title: Delphi学习笔记06
 Author: alswl
+Slug: delphi-study-notes-06
 Date: 2009-12-05 00:00:00
 Tags: 
 Category: Delphi编程

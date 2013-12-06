@@ -1,5 +1,6 @@
 Title: 使用SSH对WordPress目录进行打包
 Author: alswl
+Slug: use-ssh-to-the-wordpress-directory-package
 Date: 2009-12-30 00:00:00
 Tags: WordPress
 Category: 建站心得, Linuxer

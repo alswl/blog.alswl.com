@@ -1,5 +1,6 @@
 Title: 贴吧进度-09-05-07
 Author: alswl
+Slug: post-bar-progress-09-05-07
 Date: 2009-05-07 00:00:00
 Tags: Struts, 贴吧
 Category: Java编程和Java企业应用

@@ -1,5 +1,6 @@
 Title: 让我们学习双拼吧
 Author: alswl
+Slug: let-us-learn-semi-bar
 Date: 2010-01-18 00:00:00
 Tags: 
 Category: 关注互联网

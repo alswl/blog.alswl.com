@@ -1,5 +1,6 @@
 Title: WP速度小优化
 Author: alswl
+Slug: wp-small-speed-optimization
 Date: 2009-07-10 00:00:00
 Tags: WordPress
 Category: 建站心得

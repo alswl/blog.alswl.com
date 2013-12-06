@@ -1,5 +1,6 @@
 Title: 解决WordPress升级后出现Warning: Cannot modify header information - headers already sent by
 Author: alswl
+Slug: wordpress-upgrade-to-resolve-after-warning-cannot-modify-header-information-headers-already-sent-by
 Date: 2010-02-21 00:00:00
 Tags: WordPress, 编码
 Category: 建站心得

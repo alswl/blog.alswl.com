@@ -1,5 +1,6 @@
 Title: 在Python中调试代码
 Author: alswl
+Slug: python-debug
 Date: 2012-03-20 00:00:00
 Tags: ipdb, Paster, pdb, Pylons
 Category: Python编程

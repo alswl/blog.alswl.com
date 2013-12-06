@@ -1,5 +1,6 @@
 Title: Firefox 3.6下的Easy DragToGo 1.1.2.4a
 Author: alswl
+Slug: firefox-3-6-with-easy-dragtogo
 Date: 2010-02-28 00:00:00
 Tags: FireFox
 Category: 技术达人

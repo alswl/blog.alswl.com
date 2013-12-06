@@ -1,5 +1,6 @@
 Title: MYSQL数据类型长度常规的建库策略
 Author: alswl
+Slug: mysql-data-type-of-the-length-of-conventional-library-strategy
 Date: 2009-06-25 00:00:00
 Tags: Database, MySQL
 Category: 综合技术

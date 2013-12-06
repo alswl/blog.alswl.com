@@ -1,5 +1,6 @@
 Title: Working with Python subprocess[译文]
 Author: alswl
+Slug: working-with-python-subprocess
 Date: 2012-10-16 00:42
 Tags: subprocess, bash, shell, 译文
 Category: Python编程

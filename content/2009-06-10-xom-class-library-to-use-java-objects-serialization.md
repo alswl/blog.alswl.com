@@ -1,5 +1,6 @@
 Title: 使用XOM类库对Java对象进行序列化
 Author: alswl
+Slug: xom-class-library-to-use-java-objects-serialization
 Date: 2009-06-10 00:00:00
 Tags: JavaSE, Lib
 Category: Java编程和Java企业应用

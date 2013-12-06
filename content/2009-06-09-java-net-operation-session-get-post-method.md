@@ -1,5 +1,6 @@
 Title: java.net.*操作session/GET/POST方法
 Author: alswl
+Slug: java-net-operation-session-get-post-method
 Date: 2009-06-09 00:00:00
 Tags: JavaSE, Lib, 网络编程
 Category: Java编程和Java企业应用

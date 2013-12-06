@@ -1,5 +1,6 @@
 Title: 开始在沪江网学英语
 Author: alswl
+Slug: network-in-shanghai-to-learn-english
 Date: 2009-07-21 00:00:00
 Tags: 英语
 Category: 学海无涯

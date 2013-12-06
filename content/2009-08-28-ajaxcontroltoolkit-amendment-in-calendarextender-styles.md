@@ -1,5 +1,6 @@
 Title: AjaxControlToolkit中CalendarExtender样式修正
 Author: alswl
+Slug: ajaxcontroltoolkit-amendment-in-calendarextender-styles
 Date: 2009-08-28 00:00:00
 Tags: AjaxControlToolkit, CSS
 Category: Microsoft .Net, Web前端

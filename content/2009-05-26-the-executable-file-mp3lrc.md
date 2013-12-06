@@ -1,5 +1,6 @@
 Title: Mp3Lrc的可执行文件
 Author: alswl
+Slug: the-executable-file-mp3lrc
 Date: 2009-05-26 00:00:00
 Tags: 
 Category: Java编程和Java企业应用

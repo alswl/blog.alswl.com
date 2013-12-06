@@ -1,5 +1,6 @@
 Title: 在FireFox下使用搜狗全网加速
 Author: alswl
+Slug: in-firefox-to-use-search-dogs-to-accelerate-the-whole-network
 Date: 2009-11-08 00:00:00
 Tags: FireFox
 Category: 技术达人

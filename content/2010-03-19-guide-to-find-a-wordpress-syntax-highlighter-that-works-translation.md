@@ -1,5 +1,6 @@
 Title: WordPress代码高亮插件指南[译文]
 Author: alswl
+Slug: guide-to-find-a-wordpress-syntax-highlighter-that-works-translation
 Date: 2010-03-19 00:00:00
 Tags: WordPress, 译文
 Category: 建站心得

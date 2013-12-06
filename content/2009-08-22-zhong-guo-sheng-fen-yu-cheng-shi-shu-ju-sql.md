@@ -1,5 +1,6 @@
 Title: 中国省份与城市数据SQL
 Author: alswl
+Slug: zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql
 Date: 2009-08-22 00:00:00
 Tags: Database, SQL
 Category: 综合技术

@@ -1,5 +1,6 @@
 Title: 使用subclipse代理
 Author: alswl
+Slug: use-subclipse-with-proxy
 Date: 2010-03-03 00:00:00
 Tags: Eclipse, Subclipse, SVN
 Category: 工欲善其事必先利其器

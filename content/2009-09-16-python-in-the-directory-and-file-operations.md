@@ -1,5 +1,6 @@
 Title: python中目录与文件操作
 Author: alswl
+Slug: python-in-the-directory-and-file-operations
 Date: 2009-09-16 00:00:00
 Tags: 
 Category: Python编程

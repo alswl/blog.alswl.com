@@ -1,5 +1,6 @@
 Title: wordpress关键字自动链接匹配插件[转]
 Author: alswl
+Slug: wordpress-plug-match-keywords-automatically-link-to
 Date: 2009-08-11 00:00:00
 Tags: WordPress
 Category: 建站心得

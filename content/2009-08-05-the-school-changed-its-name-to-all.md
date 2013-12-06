@@ -1,5 +1,6 @@
 Title: 校内更名为人人
 Author: alswl
+Slug: the-school-changed-its-name-to-all
 Date: 2009-08-05 00:00:00
 Tags: 人人
 Category: 关注互联网

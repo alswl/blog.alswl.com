@@ -1,5 +1,6 @@
 Title: GAE+校内App初接触
 Author: alswl
+Slug: gae-initial-contact-with-the-school-app
 Date: 2009-09-28 00:00:00
 Tags: GAE, Google, 人人
 Category: Python编程

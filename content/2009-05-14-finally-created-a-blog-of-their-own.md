@@ -1,5 +1,6 @@
 Title: 终于创建了自己的博客了
 Author: alswl
+Slug: finally-created-a-blog-of-their-own
 Date: 2009-05-14 00:00:00
 Tags: WordPress
 Category: 建站心得

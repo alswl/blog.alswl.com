@@ -1,5 +1,6 @@
 Title: 面试小记
 Author: alswl
+Slug: interview
 Date: 2012-08-16 05:46
 Category: 程序人生
 Summary: 

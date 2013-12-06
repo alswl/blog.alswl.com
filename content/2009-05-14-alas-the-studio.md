@@ -1,5 +1,6 @@
 Title: 唉，工作室
 Author: alswl
+Slug: alas-the-studio
 Date: 2009-05-14 00:00:00
 Tags: 
 Category: 日记

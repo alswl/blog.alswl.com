@@ -1,5 +1,6 @@
 Title: 7条大型网站设计和维护的关键技巧[译文]
 Author: alswl
+Slug: 7-crucial-tips-for-designing-and-maintaining-a-large-site
 Date: 2010-07-17 00:00:00
 Tags: 译文
 Category: Web前端

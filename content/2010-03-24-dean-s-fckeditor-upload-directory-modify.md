@@ -1,5 +1,6 @@
 Title: Dean's FCKEditor上传目录修改
 Author: alswl
+Slug: dean-s-fckeditor-upload-directory-modify
 Date: 2010-03-24 00:00:00
 Tags: CKeditor, WordPress
 Category: 建站心得

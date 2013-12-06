@@ -1,5 +1,6 @@
 Title: 小阳光
 Author: alswl
+Slug: small-sunshine
 Date: 2008-04-25 00:00:00
 Tags: 
 Category: 感悟

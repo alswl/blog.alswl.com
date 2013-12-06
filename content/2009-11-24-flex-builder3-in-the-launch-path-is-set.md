@@ -1,5 +1,6 @@
 Title: Flex Builder3中的launch path设置
 Author: alswl
+Slug: flex-builder3-in-the-launch-path-is-set
 Date: 2009-11-24 00:00:00
 Tags: Flex, Flex Builder
 Category: Flash编程, 工欲善其事必先利其器

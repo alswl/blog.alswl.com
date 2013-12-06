@@ -1,5 +1,6 @@
 Title: PylexChat可行性分析
 Author: alswl
+Slug: pylexchat-feasibility-analysis
 Date: 2009-11-23 00:00:00
 Tags: AIR, Flex, GAE, PylexChat
 Category: Flash编程

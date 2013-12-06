@@ -1,5 +1,6 @@
 Title: 在 Python 中使用 epoll[译文]
 Author: alswl
+Slug: python-epoll
 Date: 2013-01-12 00:01
 Tags: 译文
 Category: Python编程

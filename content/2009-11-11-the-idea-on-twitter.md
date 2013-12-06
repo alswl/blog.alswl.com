@@ -1,5 +1,6 @@
 Title: 关于Twitter的idea
 Author: alswl
+Slug: the-idea-on-twitter
 Date: 2009-11-11 00:00:00
 Tags: Twitter
 Category: 关注互联网

@@ -1,5 +1,6 @@
 Title: SMS Backup 备份手机短信
 Author: alswl
+Slug: sms-backup-for-android
 Date: 2010-07-09 00:00:00
 Tags: Android, HTC G3
 Category: 移动手持

@@ -1,5 +1,6 @@
 Title: MemberShip使用心得
 Author: alswl
+Slug: membership-the-use-of-experience
 Date: 2009-11-05 00:00:00
 Tags: ASP.net, MemberShip
 Category: Microsoft .Net

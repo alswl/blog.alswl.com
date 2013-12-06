@@ -1,5 +1,6 @@
 Title: char nchar varchar nvarchar 区别
 Author: alswl
+Slug: difference-between-char-nchar-varchar-nvarchar
 Date: 2010-07-16 00:00:00
 Tags: 
 Category: 综合技术

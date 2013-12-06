@@ -1,5 +1,6 @@
 Title: 保持IT工作兴趣
 Author: alswl
+Slug: keep-it-work-interest
 Date: 2010-04-24 00:00:00
 Tags: 
 Category: 感悟, 程序人生

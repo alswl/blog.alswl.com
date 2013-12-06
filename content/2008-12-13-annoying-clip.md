@@ -1,5 +1,6 @@
 Title: 恼人的美工
 Author: alswl
+Slug: annoying-clip
 Date: 2008-12-13 00:00:00
 Tags: 
 Category: 日记

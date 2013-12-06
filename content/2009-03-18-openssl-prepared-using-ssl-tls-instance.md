@@ -1,8 +1,9 @@
 Title: 用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】
 Author: alswl
+Slug: openssl-prepared-using-ssl-tls-instance
 Date: 2009-03-18 00:00:00
 Tags: OpenSSL, SSL
-Category: C/C++编程
+Category: C
 Summary: 
 
 ◆ 用openssl编写ssl,tls程序

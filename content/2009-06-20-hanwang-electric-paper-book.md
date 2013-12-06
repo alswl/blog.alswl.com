@@ -1,5 +1,6 @@
 Title: 汉王电纸书？
 Author: alswl
+Slug: hanwang-electric-paper-book
 Date: 2009-06-20 00:00:00
 Tags: 
 Category: 关注互联网

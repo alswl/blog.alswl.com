@@ -1,5 +1,6 @@
 Title: 关于找工作的疑惑
 Author: alswl
+Slug: doubts-on-the-job
 Date: 2009-10-13 00:00:00
 Tags: 工作
 Category: 日记

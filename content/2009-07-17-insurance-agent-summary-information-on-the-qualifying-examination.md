@@ -1,5 +1,6 @@
 Title: 保险代理人资格考试资料汇总
 Author: alswl
+Slug: insurance-agent-summary-information-on-the-qualifying-examination
 Date: 2009-07-17 00:00:00
 Tags: 保险
 Category: 学海无涯

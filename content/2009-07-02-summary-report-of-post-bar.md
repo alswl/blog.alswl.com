@@ -1,5 +1,6 @@
 Title: 贴吧小结报告
 Author: alswl
+Slug: summary-report-of-post-bar
 Date: 2009-07-02 00:00:00
 Tags: 贴吧
 Category: Java编程和Java企业应用

@@ -1,5 +1,6 @@
 Title: 编码: ASCII(ANSI), GB-2312, UNICODE, UTF-8，UTF-16
 Author: alswl
+Slug: encoding-ascii-ansi-gb-2312-unicode-utf-8-utf-16
 Date: 2009-09-12 00:00:00
 Tags: 编码
 Category: 综合技术

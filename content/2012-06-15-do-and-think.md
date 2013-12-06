@@ -1,5 +1,6 @@
 Title: 想和做
 Author: alswl
+Slug: do-and-think
 Date: 2012-06-15 16:02
 Category: 程序人生
 Summary: 

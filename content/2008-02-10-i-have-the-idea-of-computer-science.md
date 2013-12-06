@@ -1,5 +1,6 @@
 Title: 我对计算机专业的想法
 Author: alswl
+Slug: i-have-the-idea-of-computer-science
 Date: 2008-02-10 00:00:00
 Tags: cinderella
 Category: 程序人生

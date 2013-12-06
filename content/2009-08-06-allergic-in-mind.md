@@ -1,5 +1,6 @@
 Title: 过敏记
 Author: alswl
+Slug: allergic-in-mind
 Date: 2009-08-06 00:00:00
 Tags: 健康
 Category: 日记

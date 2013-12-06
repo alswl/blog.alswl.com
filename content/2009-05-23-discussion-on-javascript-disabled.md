@@ -1,5 +1,6 @@
 Title: 关于禁用Javascript的讨论
 Author: alswl
+Slug: discussion-on-javascript-disabled
 Date: 2009-05-23 00:00:00
 Tags: JavaScript
 Category: Web前端

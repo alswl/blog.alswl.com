@@ -15,8 +15,8 @@ __doc__ = 'A quick script for converting octopress posts (markdown source files)
 blog_author = 'alswl'
 
 # a sorted order of metadata for consistency
-metadata_order = ['Title', 'Author', 'Date', 'Tags', 'Category', 'Summary',
-                  'Status']
+metadata_order = ['Title', 'Author', 'Slug', 'Date', 'Tags', 'Category',
+                  'Summary', 'Status']
 
 
 def is_md(f):
@@ -106,6 +106,7 @@ def pelicanize_metadata(metadata, filepath):
     if 'published' in metadata:
         if metadata['published'] == False:
             new_metadata['status'] = 'draft'
+    new_metadata['slug'] = os.path.splitext(filename)[0][11:]
     meta = dict(zip(map(str.capitalize, new_metadata.keys()),
                     new_metadata.values()))
 

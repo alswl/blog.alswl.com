@@ -1,5 +1,6 @@
 Title: iNove下的heading样式修改
 Author: alswl
+Slug: inove-changes-under-the-heading-style
 Date: 2009-09-08 00:00:00
 Tags: CSS, WordPress
 Category: 建站心得

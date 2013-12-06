@@ -1,5 +1,6 @@
 Title: 15 分钟学会 R 语言[译文]
 Author: alswl
+Slug: r-tutorial
 Date: 2013-10-29 22:32
 Tags: R, 译文
 Category: 综合技术

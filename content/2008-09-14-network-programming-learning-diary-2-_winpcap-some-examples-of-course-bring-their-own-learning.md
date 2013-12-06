@@ -1,8 +1,9 @@
 Title: 网络编程学习日记(2)_WinPcap自带教程的一些例子的学习
 Author: alswl
+Slug: network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning
 Date: 2008-09-14 00:00:00
 Tags: WinPcap, 网络编程
-Category: C/C++编程
+Category: C
 Summary: 
 
 1.编译时候会出现函数问题

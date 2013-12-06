@@ -1,5 +1,6 @@
 Title: 南京图书馆检索系统升级
 Author: alswl
+Slug: nanjing-library
 Date: 2011-03-19 00:00:00
 Tags: Nanjing
 Category: 关注互联网

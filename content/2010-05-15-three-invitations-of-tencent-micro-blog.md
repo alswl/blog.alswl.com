@@ -1,5 +1,6 @@
 Title: 腾讯微博邀请3枚
 Author: alswl
+Slug: three-invitations-of-tencent-micro-blog
 Date: 2010-05-15 00:00:00
 Tags: Tencent, Twitter
 Category: 关注互联网

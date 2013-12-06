@@ -1,5 +1,6 @@
 Title: Fusion汉化Mo/Po文件beta
 Author: alswl
+Slug: fusion-chinese-mo-po-document-beta
 Date: 2009-08-01 00:00:00
 Tags: PoEdit, WordPress
 Category: 建站心得

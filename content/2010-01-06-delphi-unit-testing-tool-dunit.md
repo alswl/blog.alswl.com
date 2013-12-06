@@ -1,5 +1,6 @@
 Title: Delphi 的单元测试工具DUnit
 Author: alswl
+Slug: delphi-unit-testing-tool-dunit
 Date: 2010-01-06 00:00:00
 Tags: Delphi, Lib, Testing
 Category: Delphi编程

@@ -1,5 +1,6 @@
 Title: 学车记
 Author: alswl
+Slug: learning-driving
 Date: 2012-07-26 22:21
 Category: 日记
 Summary: 

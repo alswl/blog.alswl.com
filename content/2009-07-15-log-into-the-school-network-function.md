@@ -1,5 +1,6 @@
 Title: 校内网日志导入功能
 Author: alswl
+Slug: log-into-the-school-network-function
 Date: 2009-07-15 00:00:00
 Tags: 人人
 Category: 关注互联网

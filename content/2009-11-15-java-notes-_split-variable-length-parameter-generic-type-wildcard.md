@@ -1,5 +1,6 @@
 Title: Java笔记 split/不定长度参数/泛型类型通配符
 Author: alswl
+Slug: java-notes-_split-variable-length-parameter-generic-type-wildcard
 Date: 2009-11-15 00:00:00
 Tags: JavaSE
 Category: Java编程和Java企业应用

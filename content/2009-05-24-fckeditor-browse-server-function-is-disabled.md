@@ -1,5 +1,6 @@
 Title: 禁用FCKeditor浏览服务器功能
 Author: alswl
+Slug: fckeditor-browse-server-function-is-disabled
 Date: 2009-05-24 00:00:00
 Tags: CKeditor
 Category: 工欲善其事必先利其器

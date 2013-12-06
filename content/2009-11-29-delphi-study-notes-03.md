@@ -1,5 +1,6 @@
 Title: Delphi学习笔记03
 Author: alswl
+Slug: delphi-study-notes-03
 Date: 2009-11-29 00:00:00
 Tags: 
 Category: Delphi编程

@@ -1,5 +1,6 @@
 Title: 铁血联盟EdtTxt转换器v0.9
 Author: alswl
+Slug: jagged-alliance-edt-txt-converter-v0-9
 Date: 2009-11-01 00:00:00
 Tags: 
 Category: Python编程

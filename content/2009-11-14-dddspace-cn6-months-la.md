@@ -1,5 +1,6 @@
 Title: DDDSpace.cn6个月拉
 Author: alswl
+Slug: dddspace-cn6-months-la
 Date: 2009-11-14 00:00:00
 Tags: WordPress
 Category: 日记

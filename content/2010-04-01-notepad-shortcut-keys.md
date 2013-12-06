@@ -1,5 +1,6 @@
 Title: 最常用的Notepad++的快捷键
 Author: alswl
+Slug: notepad-shortcut-keys
 Date: 2010-04-01 00:00:00
 Tags: Notepad++
 Category: 工欲善其事必先利其器

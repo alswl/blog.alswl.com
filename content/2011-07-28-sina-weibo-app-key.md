@@ -1,5 +1,6 @@
 Title: 新浪微博应用Key
 Author: alswl
+Slug: sina-weibo-app-key
 Date: 2011-07-28 00:00:00
 Tags: sina
 Category: 关注互联网, 技术达人

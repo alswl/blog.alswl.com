@@ -1,5 +1,6 @@
 Title: FireFox下WordPress上传频繁崩溃解决方法
 Author: alswl
+Slug: firefox-frequently-collapse-under-the-wordpress-upload-solution
 Date: 2009-06-06 00:00:00
 Tags: FireFox, WordPress
 Category: 建站心得

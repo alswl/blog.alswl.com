@@ -1,5 +1,6 @@
 Title: 生日快乐&Happy Xmas
 Author: alswl
+Slug: happy-birthday-and-happy-xmas
 Date: 2009-12-24 00:00:00
 Tags: 
 Category: 日记

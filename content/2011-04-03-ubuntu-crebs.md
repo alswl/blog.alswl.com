@@ -1,5 +1,6 @@
 Title: Ubuntu桌面自动换背景
 Author: alswl
+Slug: ubuntu-crebs
 Date: 2011-04-03 00:00:00
 Tags: Desktop, Ubuntu
 Category: Linuxer

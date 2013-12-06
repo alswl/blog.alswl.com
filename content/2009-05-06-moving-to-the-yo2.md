@@ -1,5 +1,6 @@
 Title: 搬家到Yo2了
 Author: alswl
+Slug: moving-to-the-yo2
 Date: 2009-05-06 00:00:00
 Tags: 
 Category: 日记

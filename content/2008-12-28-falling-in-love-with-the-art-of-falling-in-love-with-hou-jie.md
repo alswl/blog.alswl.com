@@ -1,5 +1,6 @@
 Title: 爱上艺术，爱上侯捷
 Author: alswl
+Slug: falling-in-love-with-the-art-of-falling-in-love-with-hou-jie
 Date: 2008-12-28 00:00:00
 Tags: 
 Category: 程序人生

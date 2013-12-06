@@ -1,5 +1,6 @@
 Title: 让 Octopress 支持 RSS2.0
 Author: alswl
+Slug: support-rss
 Date: 2012-05-22 16:18
 Tags: Octopress, Jekyll, Squlid, 人人网
 Category: Ruby 编程

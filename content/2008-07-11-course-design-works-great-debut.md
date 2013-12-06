@@ -1,5 +1,6 @@
 Title: 课程设计作品大登场
 Author: alswl
+Slug: course-design-works-great-debut
 Date: 2008-07-11 00:00:00
 Tags: C#, 网络编程
 Category: Microsoft .Net

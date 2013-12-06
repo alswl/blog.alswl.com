@@ -1,5 +1,6 @@
 Title: TypeError: sequence item 22: expected string or Unicode, long found
 Author: alswl
+Slug: mako-typeerror
 Date: 2011-08-25 00:00:00
 Tags: Mako
 Category: Python编程

@@ -1,5 +1,6 @@
 Title: 油面筋强力出击？！
 Author: alswl
+Slug: strong-gluten-out-of-oil
 Date: 2009-07-18 00:00:00
 Tags: 美食
 Category: 美食|烹饪

@@ -1,5 +1,6 @@
 Title: 同步工具-金山快盘
 Author: alswl
+Slug: synchronization-tools-jinshan-fast-disk
 Date: 2010-08-31 00:00:00
 Tags: 同步, 金山快盘
 Category: 关注互联网

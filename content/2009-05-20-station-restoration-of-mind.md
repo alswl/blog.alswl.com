@@ -1,5 +1,6 @@
 Title: 小站恢复记
 Author: alswl
+Slug: station-restoration-of-mind
 Date: 2009-05-20 00:00:00
 Tags: 
 Category: 建站心得

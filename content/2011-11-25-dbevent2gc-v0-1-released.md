@@ -1,5 +1,6 @@
 Title: dbevent2gc v0.1发布
 Author: alswl
+Slug: dbevent2gc-v0-1-released
 Date: 2011-11-25 00:00:00
 Tags: coffee-time-project, dbevent2gc, GAE, github, iCalendar, Mako, OpenSource, web.py
 Category: Python编程

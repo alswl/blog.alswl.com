@@ -1,5 +1,6 @@
 Title: 读《人件》
 Author: alswl
+Slug: peopleware
 Date: 2013-04-10 23:35
 Tags: 创业, 读书笔记
 Category: 软件开发和项目管理

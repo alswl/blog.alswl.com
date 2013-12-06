@@ -1,5 +1,6 @@
 Title: 我在看设计模式
 Author: alswl
+Slug: i-look-at-design-patterns
 Date: 2009-01-18 00:00:00
 Tags: 设计模式
 Category: 软件开发和项目管理

@@ -1,5 +1,6 @@
 Title: Python读写剪贴板
 Author: alswl
+Slug: python-clipboard
 Date: 2010-10-23 00:00:00
 Tags: PyWin
 Category: Python编程

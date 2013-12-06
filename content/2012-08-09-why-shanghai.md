@@ -1,5 +1,6 @@
 Title: 我为什么来上海
 Author: alswl
+Slug: why-shanghai
 Date: 2012-08-09 21:10
 Tags: 上海
 Category: 感悟

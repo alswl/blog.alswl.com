@@ -1,5 +1,6 @@
 Title: 最简陋的GAE代理
 Author: alswl
+Slug: a-simple-gae-proxy
 Date: 2011-01-11 00:00:00
 Tags: GAE
 Category: Python编程

@@ -1,5 +1,6 @@
 Title: Dlphi资料小汇总
 Author: alswl
+Slug: dlphi-a-small-summary-of-knowledge
 Date: 2009-12-05 00:00:00
 Tags: 
 Category: Delphi编程

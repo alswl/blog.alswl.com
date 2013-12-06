@@ -1,5 +1,6 @@
 Title: 那些时候，那些事-2008日志存档
 Author: alswl
+Slug: those-times-those-who-do-log-archiving-2008
 Date: 2009-09-10 00:00:00
 Tags: 
 Category: 日记

@@ -1,5 +1,6 @@
 Title: 乱码！又见乱码！
 Author: alswl
+Slug: garbled-see-also-garbled
 Date: 2009-05-09 00:00:00
 Tags: Hibernate, Struts, 编码, 贴吧
 Category: Java编程和Java企业应用

@@ -1,5 +1,6 @@
 Title: 给Share this加入人人、豆瓣新标签
 Author: alswl
+Slug: share-this-accession-to-everyonenew-label
 Date: 2009-11-08 00:00:00
 Tags: WordPress
 Category: 建站心得

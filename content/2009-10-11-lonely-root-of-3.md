@@ -1,5 +1,6 @@
 Title: 孤独的根号三
 Author: alswl
+Slug: lonely-root-of-3
 Date: 2009-10-11 00:00:00
 Tags: 电视剧, 视频
 Category: 五花八门

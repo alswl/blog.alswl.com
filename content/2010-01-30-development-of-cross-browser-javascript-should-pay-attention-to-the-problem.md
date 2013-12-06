@@ -1,5 +1,6 @@
 Title: 开发跨浏览器JavaScript时要注意的问题
 Author: alswl
+Slug: development-of-cross-browser-javascript-should-pay-attention-to-the-problem
 Date: 2010-01-30 00:00:00
 Tags: JavaScript
 Category: Web前端

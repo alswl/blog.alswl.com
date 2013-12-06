@@ -1,5 +1,6 @@
 Title: ERP叛逃者
 Author: alswl
+Slug: erp-defectors
 Date: 2011-04-25 00:00:00
 Tags: ERP
 Category: 程序人生, 综合技术

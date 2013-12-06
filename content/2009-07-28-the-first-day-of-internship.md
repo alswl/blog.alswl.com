@@ -1,5 +1,6 @@
 Title: 实习第一天
 Author: alswl
+Slug: the-first-day-of-internship
 Date: 2009-07-28 00:00:00
 Tags: 
 Category: 日记

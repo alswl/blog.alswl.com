@@ -1,5 +1,6 @@
 Title: No configuration found for the specified action
 Author: alswl
+Slug: no-configuration-found-for-the-specified-action
 Date: 2009-05-05 00:00:00
 Tags: Struts
 Category: Java编程和Java企业应用

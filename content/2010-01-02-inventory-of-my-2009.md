@@ -1,5 +1,6 @@
 Title: 盘点我的2009
 Author: alswl
+Slug: inventory-of-my-2009
 Date: 2010-01-02 00:00:00
 Tags: 
 Category: 日记

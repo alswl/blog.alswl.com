@@ -1,5 +1,6 @@
 Title: 方向
 Author: alswl
+Slug: direction
 Date: 2009-08-31 00:00:00
 Tags: 
 Category: 程序人生

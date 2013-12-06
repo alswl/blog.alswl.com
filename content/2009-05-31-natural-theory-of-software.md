@@ -1,5 +1,6 @@
 Title: 软件自然理论
 Author: alswl
+Slug: natural-theory-of-software
 Date: 2009-05-31 00:00:00
 Tags: 
 Category: 软件开发和项目管理

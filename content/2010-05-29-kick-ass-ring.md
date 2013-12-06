@@ -1,5 +1,6 @@
 Title: 海扁王铃声
 Author: alswl
+Slug: kick-ass-ring
 Date: 2010-05-29 00:00:00
 Tags: 视频, 铃声
 Category: 五花八门

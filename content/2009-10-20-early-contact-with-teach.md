@@ -1,5 +1,6 @@
 Title: 宣讲会初接触
 Author: alswl
+Slug: early-contact-with-teach
 Date: 2009-10-20 00:00:00
 Tags: 工作
 Category: 日记

@@ -1,5 +1,6 @@
 Title: 下一个网络聚集点-Google
 Author: alswl
+Slug: under-the-rallying-point-for-a-network-google
 Date: 2009-11-13 00:00:00
 Tags: Google
 Category: 关注互联网

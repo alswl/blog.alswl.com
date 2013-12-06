@@ -1,5 +1,6 @@
 Title: 实习第二天+健身房第一天
 Author: alswl
+Slug: practice-the-first-day-of-the-next-day-gym
 Date: 2009-07-30 00:00:00
 Tags: 
 Category: 日记

@@ -1,5 +1,6 @@
 Title: 小脚本mm->html
 Author: alswl
+Slug: script-mm2html
 Date: 2010-09-27 00:00:00
 Tags: BooguNote, FreeMind
 Category: Python编程

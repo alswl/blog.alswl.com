@@ -1,5 +1,6 @@
 Title: 理财开始
 Author: alswl
+Slug: began-of-financial-management
 Date: 2010-04-10 00:00:00
 Tags: 理财
 Category: 学海无涯, 技术达人

@@ -1,5 +1,6 @@
 Title: 《开源和自由》幻灯片
 Author: alswl
+Slug: opensource-and-freedom
 Date: 2012-05-27 19:35
 Tags: slideshow, OpenSource
 Category: 程序人生, Linuxer

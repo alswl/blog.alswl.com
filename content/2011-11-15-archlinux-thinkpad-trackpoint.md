@@ -1,5 +1,6 @@
 Title: Arch Linux下小红点中键
 Author: alswl
+Slug: archlinux-thinkpad-trackpoint
 Date: 2011-11-15 00:00:00
 Tags: arch, ThinkPad
 Category: Linuxer

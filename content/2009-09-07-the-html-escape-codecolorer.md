@@ -1,5 +1,6 @@
 Title: CodeColorer的Html转义
 Author: alswl
+Slug: the-html-escape-codecolorer
 Date: 2009-09-07 00:00:00
 Tags: 
 Category: 建站心得

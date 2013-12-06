@@ -1,5 +1,6 @@
 Title: go-pylons.py在Python2.7下错误解决
 Author: alswl
+Slug: go-pylons-py-in-python2-7
 Date: 2011-08-02 00:00:00
 Tags: Pylons
 Category: Python编程

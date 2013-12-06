@@ -1,5 +1,6 @@
 Title: DDDSpace.com浴火重生了
 Author: alswl
+Slug: dddspace-com-bathed-in-fire-and-gave-birth-to
 Date: 2009-12-24 00:00:00
 Tags: 
 Category: 建站心得

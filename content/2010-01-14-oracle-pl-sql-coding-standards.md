@@ -1,5 +1,6 @@
 Title: Oracle PL/SQL编程规范
 Author: alswl
+Slug: oracle-pl-sql-coding-standards
 Date: 2010-01-14 00:00:00
 Tags: Database, Oracle, PL/SQL
 Category: 综合技术

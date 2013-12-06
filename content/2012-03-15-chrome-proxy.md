@@ -1,5 +1,6 @@
 Title: Chrome 独立代理设置
 Author: alswl
+Slug: chrome-proxy
 Date: 2012-03-15 00:00:00
 Tags: Chrome, Privoxy, SwitchySharp
 Category: Linuxer, 技术达人

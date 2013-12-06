@@ -1,5 +1,6 @@
 Title: 数落一下校内
 Author: alswl
+Slug: natter-about-the-school
 Date: 2009-10-09 00:00:00
 Tags: 人人
 Category: 关注互联网

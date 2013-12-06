@@ -1,5 +1,6 @@
 Title: VS2005无法创建或打开"智能设备"项目的一个问题的解决方法
 Author: alswl
+Slug: a-solution-of-can-not-create-or-open-the-smart-device-project-in-vs2005
 Date: 2010-03-29 00:00:00
 Tags: VisualStudio, WinCE
 Category: Microsoft .Net, 移动编程和手机应用开发

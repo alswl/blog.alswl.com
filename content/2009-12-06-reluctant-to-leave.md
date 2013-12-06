@@ -1,5 +1,6 @@
 Title: 舍不得离开
 Author: alswl
+Slug: reluctant-to-leave
 Date: 2009-12-06 00:00:00
 Tags: 
 Category: 日记

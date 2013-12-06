@@ -1,5 +1,6 @@
 Title: Struts2中Ajax的使用
 Author: alswl
+Slug: struts2-in-the-use-of-ajax
 Date: 2009-05-23 00:00:00
 Tags: AJAX, Struts, 贴吧
 Category: Java编程和Java企业应用

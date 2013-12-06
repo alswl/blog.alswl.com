@@ -1,5 +1,6 @@
 Title: 敬畏生命
 Author: alswl
+Slug: reverence-for-life
 Date: 2010-04-13 00:00:00
 Tags: 
 Category: 感悟

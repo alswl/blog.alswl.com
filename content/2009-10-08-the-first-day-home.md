@@ -1,5 +1,6 @@
 Title: 回家第一天
 Author: alswl
+Slug: the-first-day-home
 Date: 2009-10-08 00:00:00
 Tags: 
 Category: 日记

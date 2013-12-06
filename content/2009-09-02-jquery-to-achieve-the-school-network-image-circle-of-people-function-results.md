@@ -1,5 +1,6 @@
 Title: jQuery图片圈人功能在ASP.NET下的改进
 Author: alswl
+Slug: jquery-to-achieve-the-school-network-image-circle-of-people-function-results
 Date: 2009-09-02 00:00:00
 Tags: JavaScript, jQuery, 人人
 Category: Microsoft .Net, Web前端

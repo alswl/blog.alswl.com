@@ -1,5 +1,6 @@
 Title: Vundle 和 Submodule
 Author: alswl
+Slug: vundle-submodule
 Date: 2012-06-11 22:07
 Tags: git, Vundle
 Category: 工欲善其事必先利其器

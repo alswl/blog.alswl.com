@@ -1,5 +1,6 @@
 Title: 最近在学的技术
 Author: alswl
+Slug: recent-study-technologys
 Date: 2010-04-18 00:00:00
 Tags: ESB, iBatis, Jaas, JavaSE, Mule, Testing, Tiles
 Category: Java编程和Java企业应用, 综合技术

@@ -1,5 +1,6 @@
 Title: 桌面记录神器-BooguNote
 Author: alswl
+Slug: desktop-recording-tool-boogunote
 Date: 2010-04-07 00:00:00
 Tags: BooguNote, GTD
 Category: 工欲善其事必先利其器, 技术达人

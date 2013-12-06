@@ -1,5 +1,6 @@
 Title: Eclipse中运行Pylons
 Author: alswl
+Slug: run-pylons-in-eclipse
 Date: 2011-05-16 00:00:00
 Tags: Eclipse, Pylons
 Category: Python编程, 工欲善其事必先利其器

@@ -1,5 +1,6 @@
 Title: MoinMoin plugin: image2attach
 Author: alswl
+Slug: moinmoin-plugin-image2attach
 Date: 2011-12-18 00:00:00
 Tags: image2attach, MoinMoin
 Category: Python编程

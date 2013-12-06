@@ -1,5 +1,6 @@
 Title: 新的一年开始了
 Author: alswl
+Slug: start-the-new-year
 Date: 2010-02-21 00:00:00
 Tags: 
 Category: 日记

@@ -1,5 +1,6 @@
 Title: Python输入16进制保存到文件
 Author: alswl
+Slug: python-enter-the-16-hex-save-to-file
 Date: 2009-10-07 00:00:00
 Tags: 
 Category: Python编程

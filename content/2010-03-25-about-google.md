@@ -1,5 +1,6 @@
 Title: 关于Google
 Author: alswl
+Slug: about-google
 Date: 2010-03-25 00:00:00
 Tags: Google
 Category: 关注互联网

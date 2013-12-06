@@ -1,5 +1,6 @@
 Title: WordPress的中文主题
 Author: alswl
+Slug: chinese-theme-wordpress
 Date: 2009-07-24 00:00:00
 Tags: WordPress
 Category: 建站心得

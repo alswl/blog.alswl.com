@@ -1,5 +1,6 @@
 Title: 换了7Color的主题
 Author: alswl
+Slug: the-theme-for-the-7color
 Date: 2009-08-10 00:00:00
 Tags: WordPress
 Category: 建站心得

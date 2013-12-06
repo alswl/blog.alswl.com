@@ -1,5 +1,6 @@
 Title: 在Eclipse中使用Maven
 Author: alswl
+Slug: maven-eclipse
 Date: 2011-03-18 00:00:00
 Tags: Eclipse, Maven
 Category: Java编程和Java企业应用, 工欲善其事必先利其器, 软件开发和项目管理

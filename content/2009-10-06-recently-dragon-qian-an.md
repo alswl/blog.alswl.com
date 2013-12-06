@@ -1,5 +1,6 @@
 Title: 最近龙体欠安
 Author: alswl
+Slug: recently-dragon-qian-an
 Date: 2009-10-06 00:00:00
 Tags: 健康
 Category: 日记

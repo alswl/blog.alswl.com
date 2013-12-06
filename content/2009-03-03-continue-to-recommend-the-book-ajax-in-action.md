@@ -1,5 +1,6 @@
 Title: 继续推荐书：Ajax实战
 Author: alswl
+Slug: continue-to-recommend-the-book-ajax-in-action
 Date: 2009-03-03 00:00:00
 Tags: AJAX, Book
 Category: Web前端

@@ -1,5 +1,6 @@
 Title: 历史记录-歌词复制器
 Author: alswl
+Slug: plrcmatch4d
 Date: 2011-03-29 00:00:00
 Tags: 
 Category: Delphi编程, 技术达人

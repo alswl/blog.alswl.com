@@ -1,5 +1,6 @@
 Title: baidu ting下载音乐脚本
 Author: alswl
+Slug: tingdownload
 Date: 2012-01-03 00:00:00
 Tags: tingdownload
 Category: Python编程

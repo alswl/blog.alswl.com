@@ -1,5 +1,6 @@
 Title: 管理WebLogic服务
 Author: alswl
+Slug: manage-weblogic-service
 Date: 2010-03-06 00:00:00
 Tags: Weblogic
 Category: Java编程和Java企业应用, 工欲善其事必先利其器

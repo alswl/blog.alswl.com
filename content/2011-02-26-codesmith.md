@@ -1,5 +1,6 @@
 Title: CodeSmith使用心得
 Author: alswl
+Slug: codesmith
 Date: 2011-02-26 00:00:00
 Tags: CodeSmith
 Category: 工欲善其事必先利其器

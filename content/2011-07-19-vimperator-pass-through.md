@@ -1,5 +1,6 @@
 Title: Vimperator的Pass through
 Author: alswl
+Slug: vimperator-pass-through
 Date: 2011-07-19 00:00:00
 Tags: FireFox, Vim, Vimperator
 Category: 技术达人

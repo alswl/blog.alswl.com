@@ -1,5 +1,6 @@
 Title: 获取每日Bing图片
 Author: alswl
+Slug: get-daily-bing-picture
 Date: 2010-07-19 00:00:00
 Tags: Bing
 Category: Microsoft .Net, Python编程

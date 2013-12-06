@@ -1,5 +1,6 @@
 Title: AjaxControlToolKit控件介绍[转载]
 Author: alswl
+Slug: ajaxcontroltoolkit-controls-introduced-reproduced
 Date: 2009-10-27 00:00:00
 Tags: AjaxControlToolkit
 Category: Microsoft .Net

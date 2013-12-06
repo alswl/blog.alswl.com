@@ -1,5 +1,6 @@
 Title: Python读写文件
 Author: alswl
+Slug: python-to-read-and-write-files
 Date: 2009-09-12 00:00:00
 Tags: 
 Category: Python编程

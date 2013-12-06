@@ -1,5 +1,6 @@
 Title: 最近在看的书
 Author: alswl
+Slug: recently-read-books
 Date: 2010-04-17 00:00:00
 Tags: Book
 Category: 学海无涯, 程序人生, 软件开发和项目管理

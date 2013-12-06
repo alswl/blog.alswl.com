@@ -1,5 +1,6 @@
 Title: 解决 Null value was assigned to a property
 Author: alswl
+Slug: solve-the-null-value-was-assigned-to-a-property
 Date: 2009-05-08 00:00:00
 Tags: Hibernate, 贴吧
 Category: Java编程和Java企业应用

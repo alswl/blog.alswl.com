@@ -1,5 +1,6 @@
 Title: CSDN大学生IT夏令营
 Author: alswl
+Slug: it-summer-camp-students-csdn
 Date: 2009-06-26 00:00:00
 Tags: 
 Category: 关注互联网

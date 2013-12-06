@@ -1,5 +1,6 @@
 Title: IBM publib 最强大资料中心
 Author: alswl
+Slug: the-most-powerful-ibm-publib-information-center
 Date: 2009-03-30 00:00:00
 Tags: IBM
 Category: 关注互联网

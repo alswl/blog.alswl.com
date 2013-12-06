@@ -1,5 +1,6 @@
 Title: 使用Delicious
 Author: alswl
+Slug: use-delicious
 Date: 2009-08-04 00:00:00
 Tags: 
 Category: 技术达人

@@ -1,5 +1,6 @@
 Title: 用户界面设计黄金原则
 Author: alswl
+Slug: gold-user-interface-design-principles
 Date: 2009-06-02 00:00:00
 Tags: 
 Category: 软件开发和项目管理

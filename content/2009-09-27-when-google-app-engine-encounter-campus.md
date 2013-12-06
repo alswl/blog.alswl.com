@@ -1,5 +1,6 @@
 Title: 当Google APP Engine遇上校内
 Author: alswl
+Slug: when-google-app-engine-encounter-campus
 Date: 2009-09-27 00:00:00
 Tags: GAE, 人人
 Category: Python编程

@@ -1,5 +1,6 @@
 Title: 《少有人走的路》读后感
 Author: alswl
+Slug: the-road-less-traveled
 Date: 2012-08-04 08:58
 Tags: 心理学, 读书笔记
 Category: 学海无涯

@@ -1,5 +1,6 @@
 Title: 程序员博客分类目录
 Author: alswl
+Slug: programmer-blog-categories
 Date: 2009-11-06 00:00:00
 Tags: 
 Category: 建站心得

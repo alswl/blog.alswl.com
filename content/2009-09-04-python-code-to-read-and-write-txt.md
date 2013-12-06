@@ -1,5 +1,6 @@
 Title: Python读写txt代码
 Author: alswl
+Slug: python-code-to-read-and-write-txt
 Date: 2009-09-04 00:00:00
 Tags: 
 Category: Python编程

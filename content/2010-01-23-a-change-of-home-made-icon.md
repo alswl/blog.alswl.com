@@ -1,5 +1,6 @@
 Title: 换了一个自制的ICON
 Author: alswl
+Slug: a-change-of-home-made-icon
 Date: 2010-01-23 00:00:00
 Tags: 
 Category: 建站心得

@@ -1,5 +1,6 @@
 Title: 一个Action提交的问题
 Author: alswl
+Slug: to-submit-the-issue-of-an-action
 Date: 2009-05-09 00:00:00
 Tags: Struts, 贴吧
 Category: Java编程和Java企业应用

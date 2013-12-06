@@ -1,5 +1,6 @@
 Title: Struts2的s:if标签的Bug和曲线使用
 Author: alswl
+Slug: struts2-tags-the-curve-of-the-bug-and-the-use-of
 Date: 2009-05-21 00:00:00
 Tags: Struts, 贴吧
 Category: Java编程和Java企业应用

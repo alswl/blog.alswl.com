@@ -1,5 +1,6 @@
 Title: TortoiseSVN中文版安装
 Author: alswl
+Slug: tortoisesvn-installation-chinese-pacakge
 Date: 2010-03-05 00:00:00
 Tags: SVN, TortoiseSVN
 Category: 工欲善其事必先利其器, 软件开发和项目管理

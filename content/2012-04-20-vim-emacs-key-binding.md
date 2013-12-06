@@ -1,5 +1,6 @@
 Title: Vim 下模拟 Emacs 键绑定
 Author: alswl
+Slug: vim-emacs-key-binding
 Date: 2012-04-20 00:00:00
 Tags: Emacs, Readline, Shell, Vim
 Category: Linuxer, 工欲善其事必先利其器

@@ -1,5 +1,6 @@
 Title: 紧急声明-关于回复通知是垃圾邮件
 Author: alswl
+Slug: emergency-declaration-on-the-reply-notification-is-spam
 Date: 2009-11-17 00:00:00
 Tags: 
 Category: 建站心得

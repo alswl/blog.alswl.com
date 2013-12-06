@@ -1,5 +1,6 @@
 Title: 正则表达式中的零宽断言
 Author: alswl
+Slug: regular-expressions-in-the-zero-width-assertion
 Date: 2010-01-26 00:00:00
 Tags: 正则表达式
 Category: Python编程, 综合技术

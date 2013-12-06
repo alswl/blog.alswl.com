@@ -1,5 +1,6 @@
 Title: VS2008格式化aspx代码
 Author: alswl
+Slug: aspx-code-vs2008-format
 Date: 2009-07-31 00:00:00
 Tags: VisualStudio
 Category: 工欲善其事必先利其器

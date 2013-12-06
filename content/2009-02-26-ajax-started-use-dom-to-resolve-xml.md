@@ -1,5 +1,6 @@
 Title: Ajax起步：使用DOM解析XML
 Author: alswl
+Slug: ajax-started-use-dom-to-resolve-xml
 Date: 2009-02-26 00:00:00
 Tags: AJAX
 Category: Web前端

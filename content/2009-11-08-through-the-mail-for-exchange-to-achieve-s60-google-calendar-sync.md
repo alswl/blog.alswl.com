@@ -1,5 +1,6 @@
 Title: 通过Mail For Exchange实现S60 Google Calendar同步
 Author: alswl
+Slug: through-the-mail-for-exchange-to-achieve-s60-google-calendar-sync
 Date: 2009-11-08 00:00:00
 Tags: Google, Symbian
 Category: 移动手持

@@ -1,5 +1,6 @@
 Title: 关于WordPress中TinyMCE空格
 Author: alswl
+Slug: about-wordpress-spaces-in-tinymce
 Date: 2009-09-09 00:00:00
 Tags: TinyMCE, WordPress
 Category: 建站心得

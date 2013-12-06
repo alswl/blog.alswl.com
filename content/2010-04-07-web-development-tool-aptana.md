@@ -1,5 +1,6 @@
 Title: Web开发利器-Aptana
 Author: alswl
+Slug: web-development-tool-aptana
 Date: 2010-04-07 00:00:00
 Tags: Aptana, Eclipse, IDE
 Category: 工欲善其事必先利其器

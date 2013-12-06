@@ -1,5 +1,6 @@
 Title: Java写的Mp3歌词复制器
 Author: alswl
+Slug: lyrics-written-in-java-replicator-mp3
 Date: 2009-05-25 00:00:00
 Tags: 
 Category: Java编程和Java企业应用

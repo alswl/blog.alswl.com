@@ -1,5 +1,6 @@
 Title: Eclipse中开发的Jave EE项目在Tomcat的部署
 Author: alswl
+Slug: eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat
 Date: 2009-05-20 00:00:00
 Tags: Tomcat, 编码
 Category: Java编程和Java企业应用

@@ -1,5 +1,6 @@
 Title: IE XML 缓存问题
 Author: alswl
+Slug: ie-xml-cache-problem
 Date: 2010-06-02 00:00:00
 Tags: AzaAjaxChat, IE, JavaScript
 Category: Web前端

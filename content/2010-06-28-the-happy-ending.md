@@ -1,5 +1,6 @@
 Title: The Happy Ending
 Author: alswl
+Slug: the-happy-ending
 Date: 2010-06-28 00:00:00
 Tags: cinderella
 Category: 青春的彩虹

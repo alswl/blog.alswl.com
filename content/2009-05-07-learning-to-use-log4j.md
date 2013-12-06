@@ -1,5 +1,6 @@
 Title: 学习使用log4j
 Author: alswl
+Slug: learning-to-use-log4j
 Date: 2009-05-07 00:00:00
 Tags: log4j
 Category: Java编程和Java企业应用

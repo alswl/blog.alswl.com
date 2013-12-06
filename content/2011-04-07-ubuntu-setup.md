@@ -1,5 +1,6 @@
 Title: Ubuntu安装之后设定操作
 Author: alswl
+Slug: ubuntu-setup
 Date: 2011-04-07 00:00:00
 Tags: Ubuntu
 Category: Linuxer

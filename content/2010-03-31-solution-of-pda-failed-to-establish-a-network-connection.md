@@ -1,5 +1,6 @@
 Title: PDA"未能建立与网络的连接"的解决办法
 Author: alswl
+Slug: solution-of-pda-failed-to-establish-a-network-connection
 Date: 2010-03-31 00:00:00
 Tags: PDA, VisualStudio, WinCE
 Category: Microsoft .Net, 移动编程和手机应用开发
