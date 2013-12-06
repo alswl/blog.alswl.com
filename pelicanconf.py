@@ -6,7 +6,7 @@ AUTHOR = u'alswl'
 SITENAME = u'Log4D'
 SITEURL = ''
 
-THEME = 'notmyidea'
+THEME = 'pelican-svbtle'
 
 TIMEZONE = 'Asia/Shanghai'
 
@@ -19,8 +19,9 @@ TRANSLATION_FEED_ATOM = None
 
 # Blogroll
 LINKS =  (
-    #('Jinja2', 'http://jinja.pocoo.org/'),
-    #('You can modify those links in your config file', '#'),
+    ('Weibo', 'http://weibo.com/alswlx'),
+    ('Github', 'https://github.com/alswl'),
+    ('Twitter', 'http://twitter.com/alswl'),
 )
 
 # Social widget
@@ -48,11 +49,10 @@ TAG_URL = 'tag/{slug}/'
 TAG_SAVE_AS = 'tag/{slug}/index.html'
 TAGS_URL = 'tags/'
 TAGS_SAVE_AS = 'tags/index.html'
-#AUTHOR_URL = 'author/{slug}/'
-#AUTHOR_SAVE_AS = 'author/{slug}/index.html'
-#ARCHIVES_SAVE_AS = 'archives/index.html'
+AUTHOR_URL = 'author/{slug}/'
+AUTHOR_SAVE_AS = 'author/{slug}/index.html'
+ARCHIVES_SAVE_AS = 'archives/index.html'
 
-#PAGINATION_PATTERNS = (
-#    (1, '{base_name}/', '{base_name}/index.html'),
-#    (2, '{base_name}/page/{number}/', '{base_name}/page/{number}/index.html'),
-#)
+AUTHOR_BIO = 'Computers can change your life for the better.'
+DISQUS_SITENAME = 'log4d'
+GOOGLE_ANALYTICS = 'UA-8822123-3'
