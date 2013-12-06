@@ -3,7 +3,7 @@ Author: alswl
 Slug: erp-defectors
 Date: 2011-04-25 00:00:00
 Tags: ERP
-Category: 程序人生, 综合技术
+Category: 程序人生
 Summary: 
 
 大四实习时候，跑去驻厂开发，当时主管跟我说"我们做的是企业信息化软件"。毕业之后找工作，进入一家国内还算有名的ERP公司，做ERPII产品（CRM/工作流/

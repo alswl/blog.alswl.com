@@ -3,7 +3,7 @@ Author: alswl
 Slug: vps-lnmp-setup-config
 Date: 2011-11-06 00:00:00
 Tags: CentOS, MySQL, nginx, php, VPS
-Category: Linuxer, 工欲善其事必先利其器
+Category: Linuxer
 Summary: 
 
 

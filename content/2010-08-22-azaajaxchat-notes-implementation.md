@@ -3,7 +3,7 @@ Author: alswl
 Slug: azaajaxchat-notes-implementation
 Date: 2010-08-22 00:00:00
 Tags: AzaAjaxChat, Comet, Flex, FMS, JavaScript, RTMP
-Category: Flash编程, PHP编程
+Category: PHP编程
 Summary: 
 
 唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~

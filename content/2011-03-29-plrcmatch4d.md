@@ -3,7 +3,7 @@ Author: alswl
 Slug: plrcmatch4d
 Date: 2011-03-29 00:00:00
 Tags: 
-Category: Delphi编程, 技术达人
+Category: Delphi编程
 Summary: 
 
 之前写过一个Java的小工具叫做Mp3Lrc歌词复制器，用来复制歌词到Mp3播放器中的对应目录下面。之前的文章参见[Mp3Lrc的可执行文件](http:/

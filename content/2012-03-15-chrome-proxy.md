@@ -3,7 +3,7 @@ Author: alswl
 Slug: chrome-proxy
 Date: 2012-03-15 00:00:00
 Tags: Chrome, Privoxy, SwitchySharp
-Category: Linuxer, 技术达人
+Category: 技术达人
 Summary: 
 
 Chrome 在2011年4月份时候，加入了两个新的实验性扩展分支，分别是 Web Navigation Extension API 以及 Proxy

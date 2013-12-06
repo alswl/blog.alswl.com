@@ -3,7 +3,7 @@ Author: alswl
 Slug: maven-eclipse
 Date: 2011-03-18 00:00:00
 Tags: Eclipse, Maven
-Category: Java编程和Java企业应用, 工欲善其事必先利其器, 软件开发和项目管理
+Category: Java编程和Java企业应用
 Summary: 
 
 一提到Eclipse中使用Maven，都会想到[m2eclipse](http://m2eclipse.codehaus.org/)这个插件。其实在Ecli

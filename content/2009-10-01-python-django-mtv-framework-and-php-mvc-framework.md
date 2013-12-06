@@ -3,7 +3,7 @@ Author: alswl
 Slug: python-django-mtv-framework-and-php-mvc-framework
 Date: 2009-10-01 00:00:00
 Tags: Django, MTV, MVC
-Category: PHP编程, Python编程, 软件开发和项目管理
+Category: 综合技术
 Summary: 
 
 首先，祝福祖国60华诞，我爱这个国家。

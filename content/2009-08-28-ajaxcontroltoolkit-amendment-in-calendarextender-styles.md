@@ -3,7 +3,7 @@ Author: alswl
 Slug: ajaxcontroltoolkit-amendment-in-calendarextender-styles
 Date: 2009-08-28 00:00:00
 Tags: AjaxControlToolkit, CSS
-Category: Microsoft .Net, Web前端
+Category: dotNet
 Summary: 
 
 在[The Official Microsoft ASP.NET Site](http://www.asp.net)上有一个很强大的控件[AJAX

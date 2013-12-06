@@ -3,7 +3,7 @@ Author: alswl
 Slug: desktop-recording-tool-boogunote
 Date: 2010-04-07 00:00:00
 Tags: BooguNote, GTD
-Category: 工欲善其事必先利其器, 技术达人
+Category: 工欲善其事必先利其器
 Summary: 
 
 之前做GTD一直基于Google Canledar，记录主要是Google NoteBook和Google Docs。尽管Google

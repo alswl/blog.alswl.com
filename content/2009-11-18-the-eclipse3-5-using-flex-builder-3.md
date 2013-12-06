@@ -3,7 +3,7 @@ Author: alswl
 Slug: the-eclipse3-5-using-flex-builder-3
 Date: 2009-11-18 00:00:00
 Tags: AIR, Eclipse, Flex, Flex Builder
-Category: Flash编程, 工欲善其事必先利其器
+Category: 工欲善其事必先利其器
 Summary: 
 
 这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。

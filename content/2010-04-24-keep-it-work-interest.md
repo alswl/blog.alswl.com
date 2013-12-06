@@ -3,7 +3,7 @@ Author: alswl
 Slug: keep-it-work-interest
 Date: 2010-04-24 00:00:00
 Tags: 
-Category: 感悟, 程序人生
+Category: 程序人生
 Summary: 
 
 ![](http://upload-log4d.qiniudn.com/2010/04/keyboard_help.jpg)

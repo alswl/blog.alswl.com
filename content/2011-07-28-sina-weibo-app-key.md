@@ -3,7 +3,7 @@ Author: alswl
 Slug: sina-weibo-app-key
 Date: 2011-07-28 00:00:00
 Tags: sina
-Category: 关注互联网, 技术达人
+Category: 关注互联网
 Summary: 
 
 前两天 [FaWave](https://chrome.google.com/webstore/detail/aicelmgbddfgmpieedjiggi

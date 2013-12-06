@@ -3,7 +3,7 @@ Author: alswl
 Slug: regular-expressions-in-the-zero-width-assertion
 Date: 2010-01-26 00:00:00
 Tags: 正则表达式
-Category: Python编程, 综合技术
+Category: 综合技术
 Summary: 
 
 这文是上个月开始写的，本来想深入的分析一下零宽断言，可惜工作一直忙，现在又要去转战**DWR**...OMG~~

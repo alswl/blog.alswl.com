@@ -3,7 +3,7 @@ Author: alswl
 Slug: moinmoin-kms
 Date: 2011-12-26 00:00:00
 Tags: image2attach, KMS, MoinMoin, nginx, uwsgi, wiz
-Category: Linuxer, Python编程, 工欲善其事必先利其器
+Category: 工欲善其事必先利其器
 Summary: 
 
 去年9月份时候，我写过一篇《[我所使用的知识管理系统](http://log4d.com/2010/09/my-kms)》

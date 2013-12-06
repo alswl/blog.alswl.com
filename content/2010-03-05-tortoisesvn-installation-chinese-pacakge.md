@@ -3,7 +3,7 @@ Author: alswl
 Slug: tortoisesvn-installation-chinese-pacakge
 Date: 2010-03-05 00:00:00
 Tags: SVN, TortoiseSVN
-Category: 工欲善其事必先利其器, 软件开发和项目管理
+Category: 工欲善其事必先利其器
 Summary: 
 
 虽然大部分情况下我都是用Subclipse连接SVN服务器，但是为了让整个团队在Delphi下使用上SVN，就需要使用SVN的客户端了，TortoiseSV

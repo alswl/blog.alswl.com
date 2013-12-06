@@ -3,7 +3,7 @@ Author: alswl
 Slug: run-jetty-in-maven
 Date: 2011-04-04 00:00:00
 Tags: Eclipse, Jetty
-Category: Java编程和Java企业应用, 工欲善其事必先利其器
+Category: Java编程和Java企业应用
 Summary: 
 
 部门最近开发的产品使用的开发服务器是Jetty（挂载在GWT中），启动方法是通过Eclipse的External

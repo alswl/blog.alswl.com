@@ -3,7 +3,7 @@ Author: alswl
 Slug: recent-study-technologys
 Date: 2010-04-18 00:00:00
 Tags: ESB, iBatis, Jaas, JavaSE, Mule, Testing, Tiles
-Category: Java编程和Java企业应用, 综合技术
+Category: Java编程和Java企业应用
 Summary: 
 
 根据这篇日志的题目，必然是一篇水文，我思量再三，还是把它放出来，这些技术的接触把我带入了另一个广阔的天堂。这是我学Java以来的第二个里程碑。

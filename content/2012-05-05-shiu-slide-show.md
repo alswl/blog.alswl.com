@@ -3,7 +3,7 @@ Author: alswl
 Slug: shiu-slide-show
 Date: 2012-05-05 00:00:00
 Tags: ios, shiu, slideshow, webapp
-Category: Python编程, Web前端
+Category: Web前端
 Summary: 
 
 今天去南京 HTML5 沙龙分享了一个幻灯片，讲 Shiu 的开发，同时也分享在这里。
