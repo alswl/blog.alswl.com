@@ -6,7 +6,7 @@ AUTHOR = u'alswl'
 SITENAME = u'Log4D'
 SITEURL = ''
 
-THEME = 'pelican-svbtle'
+THEME = 'pelican-bootstrap3'
 
 TIMEZONE = 'Asia/Shanghai'
 
@@ -52,6 +52,12 @@ TAGS_SAVE_AS = 'tags/index.html'
 AUTHOR_URL = 'author/{slug}/'
 AUTHOR_SAVE_AS = 'author/{slug}/index.html'
 ARCHIVES_SAVE_AS = 'archives/index.html'
+
+FEED_ATOM = 'atom.xml'
+FEED_RSS = 'rss.xml'
+FEED_MAX_ITEMS = 20
+
+DISPLAY_PAGES_ON_MENU = True
 
 AUTHOR_BIO = 'Computers can change your life for the better.'
 DISQUS_SITENAME = 'log4d'
