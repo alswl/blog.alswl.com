@@ -19,15 +19,13 @@ TRANSLATION_FEED_ATOM = None
 
 # Blogroll
 LINKS =  (
-    ('Weibo', 'http://weibo.com/alswlx'),
-    ('Github', 'https://github.com/alswl'),
-    ('Twitter', 'http://twitter.com/alswl'),
 )
 
 # Social widget
 SOCIAL = (
-    #('You can add links in your config file', '#'),
-    #('Another social link', '#'),
+    ('twitter', 'http://twitter.com/alswl'),
+    ('github', 'https://github.com/alswl'),
+    ('weibo', 'http://weibo.com/alswlx'),
 )
 
 DEFAULT_PAGINATION = 10
@@ -51,14 +49,18 @@ TAGS_URL = 'tags/'
 TAGS_SAVE_AS = 'tags/index.html'
 AUTHOR_URL = 'author/{slug}/'
 AUTHOR_SAVE_AS = 'author/{slug}/index.html'
+ARCHIVES_URL = 'archives/'
 ARCHIVES_SAVE_AS = 'archives/index.html'
 
 FEED_ATOM = 'atom.xml'
 FEED_RSS = 'rss.xml'
 FEED_MAX_ITEMS = 20
 
+DISPLAY_CATEGORIES_ON_MENU = False
 DISPLAY_PAGES_ON_MENU = True
+DISPLAY_CATEGORIES_ON_SIDEBAR = True
+DISPLAY_TAGS_ON_SIDEBAR = False
 
-AUTHOR_BIO = 'Computers can change your life for the better.'
+#AUTHOR_BIO = 'Computers can change your life for the better.'
 DISQUS_SITENAME = 'log4d'
 GOOGLE_ANALYTICS = 'UA-8822123-3'
