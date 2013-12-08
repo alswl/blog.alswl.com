@@ -32,6 +32,13 @@ SOCIAL = (
     ('weibo', 'http://weibo.com/alswlx'),
 )
 
+MENUITEMS = (
+    ('Tags', '/tags/'),
+    ('Links', '/links/'),
+    ('About', '/about/'),
+    #('Board', '/board/'),
+)
+
 DEFAULT_PAGINATION = 10
 PAGINATION_PATTERNS = (
     (1, '{base_name}/', '{base_name}/index.html'),
@@ -61,7 +68,7 @@ FEED_RSS = 'rss.xml'
 FEED_MAX_ITEMS = 20
 
 DISPLAY_CATEGORIES_ON_MENU = False
-DISPLAY_PAGES_ON_MENU = True
+DISPLAY_PAGES_ON_MENU = False
 DISPLAY_CATEGORIES_ON_SIDEBAR = True
 DISPLAY_TAGS_ON_SIDEBAR = False
 
