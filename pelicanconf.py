@@ -72,6 +72,8 @@ DISPLAY_PAGES_ON_MENU = False
 DISPLAY_CATEGORIES_ON_SIDEBAR = True
 DISPLAY_TAGS_ON_SIDEBAR = False
 
+STATIC_PATHS = ['image', 'CNAME']
+
 #AUTHOR_BIO = 'Computers can change your life for the better.'
 DISQUS_SITENAME = 'log4d'
 GOOGLE_ANALYTICS = 'UA-8822123-3'
