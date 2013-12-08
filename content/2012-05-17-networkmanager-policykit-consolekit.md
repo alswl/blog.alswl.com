@@ -21,7 +21,7 @@ Summary:
 通过 GDM 启动 xmonad / awesome，启动 xsession 是 `/usr/share/xsessions/awesome.desktop`，
 内容如下
 
-<!--more-->
+<!-- more -->
 
 ``` ini
 [Desktop Entry]

@@ -25,7 +25,7 @@ Summary:
 于是我踏上了「考古之旅」，先后试用了 MiniGal Nano / MG2 /
 CF Image Host Script / minishowcase 等等图床软件，评测记录如下。
 
-<!--more-->
+<!-- more -->
 
 ## 参赛选手 ##
 

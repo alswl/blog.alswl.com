@@ -25,7 +25,7 @@ Learn X in Y minuts 的源码托管在 [Github](https://github.com/adambard/lear
 R 是一门统计语言。它有很多数据分析和挖掘程序包。可以用来统计、分析和制图。
 你也可以在 LaTeX 文档中运行 `R` 命令。
 
-<!--more-->
+<!-- more -->
 
 ```python
 # 评论以 # 开始

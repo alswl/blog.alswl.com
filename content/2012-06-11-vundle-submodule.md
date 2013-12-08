@@ -28,7 +28,7 @@ git 版本是 `git version 1.7.10.2` 。
 submodule 比如 `.vim/bundle/The-NERD-Commenter (untracked content)`
 ，要么变成一个普通的文件夹 `.vim/bundle/vim-markdown`。
 
-<!--more-->
+<!-- more -->
 
 ## 使用 Submodule 管理 插件 ##
 

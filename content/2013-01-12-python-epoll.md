@@ -17,7 +17,7 @@ Summary:
 Python 从 2.6 开始支持 [epoll][]。现在我们用 Python3 来写基于这些 API
 的 epoll 范例。
 
-<!--more-->
+<!-- more -->
 
 ## 阻塞的 Socket 通信范例 ##
 
