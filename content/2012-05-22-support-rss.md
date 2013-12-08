@@ -13,7 +13,37 @@ Summary:
 
 在 `source/` 下创建新文件 `rss.xml` ，内容如下：
 
-{% gist 2767610 %}
+```
+---
+layout: nil
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+	<channel>
+		<description><![CDATA[{{ site.title }}]]></description>
+		<title><![CDATA[{{ site.title }}]]></title>
+		<link>{{ site.url }}/</link>
+		<pubDate>{{ site.time | date_to_xmlschema }}</pubDate>
+
+		{% for post in site.posts limit: 20 %}
+		<item>
+			<description>
+				<![CDATA[
+				{{ post.content | expand_urls: site.url | cdata_escape }}
+				{% include post/copyright.html %}
+				]]>
+			</description>
+			<title><![CDATA[{{ post.title | cdata_escape }}]]></title>
+			<link>{{ site.url }}{{ post.url }}</link>
+			<pubDate>{{ post.date | date_to_xmlschema }}</pubDate>
+			<guid isPermaLink="false">{{ site.url }}{{ post.id }}</guid>
+
+			<source url="{{ site.url }}/rss.xml"><![CDATA[{{ site.title }}]]></source>
+		</item>
+		{% endfor %}
+	</channel>
+</rss>
+```
 
 然后，访问 `http://site.url/rss.xml` 即可。
 我的 RSS2.0 地址是 [http://log4d.com/rss.xml](http://log4d.com/rss.xml)。
