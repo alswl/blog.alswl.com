@@ -4,7 +4,6 @@ Slug: dddspace-com-bathed-in-fire-and-gave-birth-to
 Date: 2009-12-24 00:00:00
 Tags: 
 Category: 建站心得
-Summary: 
 
 一大早过来，我就开始部署DDDSpace.com，上传文件和数据，修改数据库的域名，文章参考了["更换域名后应该做的事情 » Life
 Studio](http://wange.im/after-change-

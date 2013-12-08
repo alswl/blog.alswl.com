@@ -4,7 +4,6 @@ Slug: not-only-on-the-internet-solution-qq
 Date: 2009-06-21 00:00:00
 Tags: 
 Category: 技术达人
-Summary: 
 
 矿大的DNS服务器，每个星期都要来这么几下崩溃。典型症状是不能上网，只能上QQ，就是因为无法将域名解析为ip地址。
 

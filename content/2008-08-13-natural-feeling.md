@@ -4,7 +4,6 @@ Slug: natural-feeling
 Date: 2008-08-13 00:00:00
 Tags: 
 Category: 青春的彩虹
-Summary: 
 Status: draft
 
 今个儿在00的点名里，问及追求

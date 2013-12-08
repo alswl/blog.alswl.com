@@ -4,7 +4,6 @@ Slug: case-of-a-university-card
 Date: 2009-06-14 00:00:00
 Tags: 
 Category: 碎碎念
-Summary: 
 
 我最近不太去学校BBS，直到大校那边同学给我打电话，问我老校区还有网卡不，我才意识到问题的严重性。
 

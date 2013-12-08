@@ -4,7 +4,6 @@ Slug: python-data-format-conversion-using-struct
 Date: 2009-09-14 00:00:00
 Tags: 
 Category: Python编程
-Summary: 
 
 本文来源：[Python模块学习 ---- struct 数据格式转换 - JGood的专栏 -
 CSDN博客](http://blog.csdn.net/JGood/archive/2009/06/22/4290158.aspx)

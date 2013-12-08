@@ -4,7 +4,6 @@ Slug: no-silver-bullet
 Date: 2011-02-25 00:00:00
 Tags: 
 Category: 程序人生
-Summary: 
 
 最近为工作中和学习中遇到一些问题而发愁，夜不能寐，做梦都在寻求方法。
 

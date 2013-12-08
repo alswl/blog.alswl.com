@@ -4,7 +4,6 @@ Slug: back-to-school
 Date: 2009-07-25 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 Status: draft
 
 这篇日志是24号晚上9点写了，设定在25号早晨7点发布的，此时我已经坐上了去南京的汽车了~

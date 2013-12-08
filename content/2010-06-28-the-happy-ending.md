@@ -4,7 +4,6 @@ Slug: the-happy-ending
 Date: 2010-06-28 00:00:00
 Tags: cinderella
 Category: 青春的彩虹
-Summary: 
 
 前天上午从家里赶到南京，和母亲布置租的房子，中午去火车站赶回徐州，赶上学生离校高峰，队伍到了大厅外，排了1小时队伍，终于买到了一张站票。
 

@@ -4,7 +4,6 @@ Slug: transfer-vps
 Date: 2011-12-14 00:00:00
 Tags: VPS
 Category: Linuxer
-Summary: 
 
 Log4D挂了整整一天，原因是因为VPS扩容导致系统无法启动。
 

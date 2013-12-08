@@ -4,7 +4,6 @@ Slug: long-time-no-write-log
 Date: 2009-05-05 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 Status: draft
 
 好久没写东西了

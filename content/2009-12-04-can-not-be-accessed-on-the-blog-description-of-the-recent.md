@@ -4,7 +4,6 @@ Slug: can-not-be-accessed-on-the-blog-description-of-the-recent
 Date: 2009-12-04 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 呃，由于某些原因，服务器所在的江西机房停止了IDC服务，我今天晚上刚更换了服务器。我向在这段时间访问我博客却发现404错误的童鞋们报以10万分抱歉~
 

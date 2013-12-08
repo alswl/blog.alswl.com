@@ -4,7 +4,6 @@ Slug: those-times-those-who-do-log-archiving-2008
 Date: 2009-09-10 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 2008这年我大二升大三，是我大学生活情感最失败的一个年度，也是我最幸福的一个年度。
 

@@ -4,7 +4,6 @@ Slug: jquery-html-in-ie6
 Date: 2011-11-07 00:00:00
 Tags: IE, IE6, jQuery
 Category: Web前端
-Summary: 
 
 今天遇到一个jQuery的`.html()`设定错误问题，FF和Chrome下面都能够正常工作，而IE下面却失败。
 

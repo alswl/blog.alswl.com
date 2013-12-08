@@ -4,7 +4,6 @@ Slug: the-success-of-software-technical-personnel-to-the-personality-trait
 Date: 2009-07-04 00:00:00
 Tags: 
 Category: 程序人生
-Summary: 
 
 原文作者：施文祥
 

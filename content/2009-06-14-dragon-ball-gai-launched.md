@@ -4,7 +4,6 @@ Slug: dragon-ball-gai-launched
 Date: 2009-06-14 00:00:00
 Tags: 动漫
 Category: 娱乐
-Summary: 
 
 龙珠是我们这代人最喜欢的动漫之一，还记得初中时候就偷偷在上课看这部动漫。
 

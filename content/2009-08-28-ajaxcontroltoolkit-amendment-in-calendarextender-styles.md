@@ -4,7 +4,6 @@ Slug: ajaxcontroltoolkit-amendment-in-calendarextender-styles
 Date: 2009-08-28 00:00:00
 Tags: AjaxControlToolkit, CSS
 Category: dotNet
-Summary: 
 
 在[The Official Microsoft ASP.NET Site](http://www.asp.net)上有一个很强大的控件[AJAX
 Control Toolkit](http://ajaxcontroltoolkit.codeplex.com/Release/ProjectRelease

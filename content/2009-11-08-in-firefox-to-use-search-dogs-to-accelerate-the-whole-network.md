@@ -4,7 +4,6 @@ Slug: in-firefox-to-use-search-dogs-to-accelerate-the-whole-network
 Date: 2009-11-08 00:00:00
 Tags: FireFox
 Category: 技术达人
-Summary: 
 
 搜狗浏览器加速功能很讨喜，尤其对我们这种6毛电信，2毛钱跑教育网的用户来说。但是我更喜欢火狐环境，想在FireFox环境下使用搜狗代理服务器，于是就有了此文
 。

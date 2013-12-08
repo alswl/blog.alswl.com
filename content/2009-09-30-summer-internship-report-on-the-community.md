@@ -4,7 +4,6 @@ Slug: summer-internship-report-on-the-community
 Date: 2009-09-30 00:00:00
 Tags: 
 Category: 感悟
-Summary: 
 
 **注意：本文是我申请学校社会实践优秀奖学金的附文，阿懂？**
 

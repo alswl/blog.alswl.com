@@ -4,7 +4,6 @@ Slug: vimperator-pass-through
 Date: 2011-07-19 00:00:00
 Tags: FireFox, Vim, Vimperator
 Category: 技术达人
-Summary: 
 
 作为 vim 的拥护者，我同时也喜欢使用 Vimperator 这款 Firefox 下面的插件，这款插件可以帮助实现 Firefox 的纯键盘操作。
 

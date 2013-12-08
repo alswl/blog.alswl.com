@@ -4,7 +4,6 @@ Slug: ajaxcontroltoolkit-controls-introduced-reproduced
 Date: 2009-10-27 00:00:00
 Tags: AjaxControlToolkit
 Category: Microsoft .Net
-Summary: 
 
 来源：[ajax toolkit 控件介绍 - 欢迎来到哈哈的天堂 - 博客园](http://www.cnblogs.com/haha8/archive/
 2009/09/26/1574412.html)（只是来源，感觉不是这个博客原创，作者应该未知）

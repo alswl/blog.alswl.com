@@ -4,7 +4,6 @@ Slug: practice-the-first-day-of-the-next-day-gym
 Date: 2009-07-30 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 刚完成主管布置的Html设计，本来计划今天完成，结果提前到上午10点。看看主管不在，就偷偷写一篇日志吧。
 

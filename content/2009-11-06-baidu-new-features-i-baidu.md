@@ -4,7 +4,6 @@ Slug: baidu-new-features-i-baidu
 Date: 2009-11-06 00:00:00
 Tags: 百度
 Category: 关注互联网
-Summary: 
 
 今天上网，偶然发现百度主页右上角出现了「[我在百度](http://my.baidu.com/index.html?my=1&tn=baidu_myps_p
 g)」。

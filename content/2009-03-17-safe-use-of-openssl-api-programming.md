@@ -4,7 +4,6 @@ Slug: safe-use-of-openssl-api-programming
 Date: 2009-03-17 00:00:00
 Tags: OpenSSL, SSL
 Category: C
-Summary: 
 
 使用 OpenSSL API 进行安全编程
 

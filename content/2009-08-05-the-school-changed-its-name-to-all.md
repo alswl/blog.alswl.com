@@ -4,7 +4,6 @@ Slug: the-school-changed-its-name-to-all
 Date: 2009-08-05 00:00:00
 Tags: 人人
 Category: 关注互联网
-Summary: 
 
 曾经说过国内几大SNS网络，校内和开心做的最好，但校内的硬伤在于它的名字，我一学生走向社会，肯定不是校园用户了，那么开心网就是我最好的选择了。
 

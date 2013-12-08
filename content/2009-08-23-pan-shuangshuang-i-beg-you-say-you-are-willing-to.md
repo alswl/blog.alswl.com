@@ -4,7 +4,6 @@ Slug: pan-shuangshuang-i-beg-you-say-you-are-willing-to
 Date: 2009-08-23 00:00:00
 Tags: 
 Category: 五花八门
-Summary: 
 
 今天听歌时候听到一句歌词「潘霜霜，求求你，说你愿意」。
 

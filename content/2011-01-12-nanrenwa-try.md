@@ -4,7 +4,6 @@ Slug: nanrenwa-try
 Date: 2011-01-12 00:00:00
 Tags: 
 Category: 关注互联网
-Summary: 
 
 从Louis Han那里看到一篇文章介绍了一个适合宅男的网站，想想我自己宅属性日益增加，就抄文推广一下。
 

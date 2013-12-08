@@ -4,7 +4,6 @@ Slug: those-times-those-who-do-log-archiving-2005
 Date: 2009-07-13 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 ## 引子
 

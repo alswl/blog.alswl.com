@@ -4,7 +4,6 @@ Slug: recently-kazakhstan
 Date: 2008-11-05 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 Status: draft
 
 今个儿操作系统时候，坐在阿娇旁边，阿娇似乎感情也不顺利，两人互相开导了一会儿，倒发现她对感情挺有认识的。

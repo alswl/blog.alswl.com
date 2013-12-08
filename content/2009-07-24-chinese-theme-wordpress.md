@@ -4,7 +4,6 @@ Slug: chinese-theme-wordpress
 Date: 2009-07-24 00:00:00
 Tags: WordPress
 Category: 建站心得
-Summary: 
 
 不得不说，WordPress这东西换主题真难，就算不考虑自己对主题的边边角角做的一些修改，把自己看中的一个主题汉化都非常困难。
 

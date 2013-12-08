@@ -4,7 +4,6 @@ Slug: reluctant-to-leave
 Date: 2009-12-06 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 还没到离别的时候，我却要提前离开学校了。
 

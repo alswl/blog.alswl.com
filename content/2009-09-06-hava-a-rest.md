@@ -4,7 +4,6 @@ Slug: hava-a-rest
 Date: 2009-09-06 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 Status: draft
 
 呃，终于辞职了```

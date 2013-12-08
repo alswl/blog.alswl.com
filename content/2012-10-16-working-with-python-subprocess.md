@@ -4,7 +4,6 @@ Slug: working-with-python-subprocess
 Date: 2012-10-16 00:42
 Tags: subprocess, bash, shell, 译文
 Category: Python编程
-Summary: 
 
 
 8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。

@@ -4,7 +4,6 @@ Slug: learner-drivers-have-recorded-1-week
 Date: 2009-10-26 00:00:00
 Tags: cinderella
 Category: NobodyCanSee
-Summary: 
 Status: draft
 
 名字虽然是关于学车，可其实是关于cinderella

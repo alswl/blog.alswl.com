@@ -4,7 +4,6 @@ Slug: ah-ah-how-i-also-ignore
 Date: 2008-08-27 00:00:00
 Tags: cinderella
 Category: 青春的彩虹
-Summary: 
 Status: draft
 
 啊~~~~受不了了~~~~

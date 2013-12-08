@@ -4,7 +4,6 @@ Slug: struts2-encoding-problem
 Date: 2009-05-08 00:00:00
 Tags: Struts, 编码
 Category: Java编程和Java企业应用
-Summary: 
 
 继续昨天的编码问题 我一直全部采用UTF-8格式，而且在jUnit测试中并没有问题，说明是在Struts进行数据收集时候出错。
 

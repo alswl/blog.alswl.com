@@ -4,7 +4,6 @@ Slug: a-c-programmers-delphi-study-notes
 Date: 2009-11-29 00:00:00
 Tags: 
 Category: Delphi编程
-Summary: 
 
 &nbsp_place_holder;早晨起来就看到这篇好文章，转载过来。
 

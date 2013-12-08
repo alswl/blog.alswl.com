@@ -4,7 +4,6 @@ Slug: compromise
 Date: 2008-08-19 00:00:00
 Tags: cinderella
 Category: 青春的彩虹
-Summary: 
 Status: draft
 
 好奇怪的人呢，如果你给了我希望，我就会越来越贪婪，想去拥有你，而如果你不搭理我，对我冷冷的，我又退缩了，只守着自己小小的希冀。

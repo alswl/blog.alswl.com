@@ -4,7 +4,6 @@ Slug: baidu-space-to-launch-the-application
 Date: 2009-08-18 00:00:00
 Tags: 百度
 Category: 关注互联网
-Summary: 
 
 我是五月份从百度空间转过来的《[爷爷的一亩三分地](http://hi.baidu.com/alswl)》，之后那个空间就停止了维护，但是还有几个好友坚守在
 百度空间，我还是会经常去后台看看好友的新文章。

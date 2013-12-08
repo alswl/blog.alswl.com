@@ -4,7 +4,6 @@ Slug: sina-weibo-app-key
 Date: 2011-07-28 00:00:00
 Tags: sina
 Category: 关注互联网
-Summary: 
 
 前两天 [FaWave](https://chrome.google.com/webstore/detail/aicelmgbddfgmpieedjiggi
 fabdpcnln) 的新浪微博接口出现了问题， 一直无法发送和接受信息，今天查看了一下设定里面的信息，官方给出这样的解释：

@@ -4,7 +4,6 @@ Slug: eclipse-in-the-jsp-file-s-encoding-settings
 Date: 2009-02-24 00:00:00
 Tags: Eclipse
 Category: 工欲善其事必先利其器
-Summary: 
 
 在Eclipse中新建JSP页面时候，**contentType="text/html; charset=utf-8"**,
 **pageEncoding="utf-8"**, **content="text/html; charset=utf-8"**， 这样连中文字都无法保存

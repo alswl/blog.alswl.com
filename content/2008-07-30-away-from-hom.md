@@ -4,7 +4,6 @@ Slug: away-from-hom
 Date: 2008-07-30 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 Status: draft
 
 母亲说，世界上只有一种爱，是为了分离，那就是母爱。老妈说的时候，我坏坏的看着她，用眼神告诉她，这是她自吹自擂。

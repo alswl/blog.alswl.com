@@ -4,7 +4,6 @@ Slug: i-love-you-but-do-not-lose-self
 Date: 2011-12-03 00:00:00
 Tags: 
 Category: 青春的彩虹
-Summary: 
 Status: draft
 
 自从上大学以后，我越来越清晰的知道自己想要什么东西。

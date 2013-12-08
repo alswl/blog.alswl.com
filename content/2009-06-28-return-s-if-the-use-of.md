@@ -4,7 +4,6 @@ Slug: return-s-if-the-use-of
 Date: 2009-06-28 00:00:00
 Tags: Struts
 Category: Java编程和Java企业应用
-Summary: 
 
 上次遇到过<s:if>的问题，费了好久才弄好，这次又遇到，有了一点新的体验。
 

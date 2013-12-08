@@ -4,7 +4,6 @@ Slug: ajax-started-use-dom-to-resolve-xml
 Date: 2009-02-26 00:00:00
 Tags: AJAX
 Category: Web前端
-Summary: 
 
 只要代码没问题，基本上就没有问题，唯一值得注意的是虽然是html文档，但是如果想使用dom解析xml，还是必须使用服务器的，否则XMLHttpRequest
 返回的status就是0了。

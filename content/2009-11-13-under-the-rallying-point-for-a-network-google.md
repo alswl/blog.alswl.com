@@ -4,7 +4,6 @@ Slug: under-the-rallying-point-for-a-network-google
 Date: 2009-11-13 00:00:00
 Tags: Google
 Category: 关注互联网
-Summary: 
 
 ## 前面的话
 

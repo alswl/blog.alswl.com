@@ -4,7 +4,6 @@ Slug: course-design-works-great-debut
 Date: 2008-07-11 00:00:00
 Tags: C#, 网络编程
 Category: Microsoft .Net
-Summary: 
 
 本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉
 

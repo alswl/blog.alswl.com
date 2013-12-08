@@ -4,7 +4,6 @@ Slug: updated-about-me
 Date: 2009-11-09 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 ## 关于用户名
 

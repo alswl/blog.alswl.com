@@ -4,7 +4,6 @@ Slug: membership-moving-soft-issue-of-builder-under-the-userid
 Date: 2009-10-23 00:00:00
 Tags: CodeMatic, MemberShip
 Category: Microsoft .Net
-Summary: 
 
 ## 背景
 

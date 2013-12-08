@@ -4,7 +4,6 @@ Slug: wordpress-to-add-robots-txt
 Date: 2009-08-05 00:00:00
 Tags: WordPress
 Category: 建站心得
-Summary: 
 
 在Google搜索我的页面，能出来400+页面，但好多都是额外的页面，比如分页下的信息，比如说wap下的信息，最可怕的是甚至登录页面都暴露在Google搜索
 结果中，这让我有点害怕了。

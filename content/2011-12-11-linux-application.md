@@ -4,7 +4,6 @@ Slug: linux-application
 Date: 2011-12-11 00:00:00
 Tags: arch
 Category: Linuxer
-Summary: 
 
 重要通知：Log4D的域名由 [http://dddspace.com](http://dddspace.com/) 迁移到
 [http://log4d.com](../) 。

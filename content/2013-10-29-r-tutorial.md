@@ -4,7 +4,6 @@ Slug: r-tutorial
 Date: 2013-10-29 22:32
 Tags: R, 译文
 Category: 综合技术
-Summary: 
 
 
 仗着自己有几门语言的基础，我在学新语言时候，都会选择一些快速入门教程。

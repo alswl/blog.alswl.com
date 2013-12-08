@@ -4,7 +4,6 @@ Slug: a-change-of-home-made-icon
 Date: 2010-01-23 00:00:00
 Tags: 
 Category: 建站心得
-Summary: 
 
 今天终于把自己主题框架建起来了，不过感觉好丑的说～～alswl一点艺术细胞都没有～
 

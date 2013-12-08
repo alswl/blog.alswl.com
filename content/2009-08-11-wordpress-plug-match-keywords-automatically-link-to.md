@@ -4,7 +4,6 @@ Slug: wordpress-plug-match-keywords-automatically-link-to
 Date: 2009-08-11 00:00:00
 Tags: WordPress
 Category: 建站心得
-Summary: 
 
 原文链接：《[wordpress关键字自动链接匹配插件 | 长沙SEO特色高端咨询顾问服务](http://www.changshaseo.com/seo-
 tools/882.html)》[](http://www.changshaseo.com/seo-tools/882.html)

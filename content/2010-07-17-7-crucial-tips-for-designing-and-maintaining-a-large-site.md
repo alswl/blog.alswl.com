@@ -4,7 +4,6 @@ Slug: 7-crucial-tips-for-designing-and-maintaining-a-large-site
 Date: 2010-07-17 00:00:00
 Tags: 译文
 Category: Web前端
-Summary: 
 
 原文出处：[7 Crucial Tips for Designing and Maintaining a Large Site |
 Nettuts+](http://net.tutsplus.com/articles/general/7-crucial-tips-for-

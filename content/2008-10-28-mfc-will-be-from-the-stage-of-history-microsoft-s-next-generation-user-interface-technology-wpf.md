@@ -4,7 +4,6 @@ Slug: mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-int
 Date: 2008-10-28 00:00:00
 Tags: WPF
 Category: C
-Summary: 
 
 转来的，最近对MFC很关注...
 

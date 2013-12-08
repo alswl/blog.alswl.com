@@ -4,7 +4,6 @@ Slug: dbevent2gc-v0-1-released
 Date: 2011-11-25 00:00:00
 Tags: coffee-time-project, dbevent2gc, GAE, github, iCalendar, Mako, OpenSource, web.py
 Category: Python编程
-Summary: 
 
 重要通知：Log4D的域名由 [http://dddspace.com](http://dddspace.com) 迁移到
 [http://log4d.com](http://log4d.com) 。

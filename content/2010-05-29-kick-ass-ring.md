@@ -4,7 +4,6 @@ Slug: kick-ass-ring
 Date: 2010-05-29 00:00:00
 Tags: 视频, 铃声
 Category: 五花八门
-Summary: 
 
 好几天没更新博客了，最近在论文和代码中挣扎，粗略估计，这个月来用的语言有PHP, Flex, C#(Socket 编程), ASP.net,
 Java，蛋疼啊～

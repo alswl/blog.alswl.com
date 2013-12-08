@@ -4,7 +4,6 @@ Slug: moving-to-the-yo2
 Date: 2009-05-06 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 今天终于下定决心，把百度里面所有内容转移阵地到yo2了。
 

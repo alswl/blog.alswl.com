@@ -4,7 +4,6 @@ Slug: tested-in-google-reader-using-flash
 Date: 2009-08-31 00:00:00
 Tags: Html
 Category: 建站心得
-Summary: 
 
 发现我贴的Flash都不能在Google
 Reader中显示，而[煎蛋](http://jandan.net)的可以，我FireBug了一下，发现它的Flash代码和我的略有区别。

@@ -4,7 +4,6 @@ Slug: too-late-to-ask-a-question
 Date: 2009-01-20 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 今天看到一个高中同学的qq签名，人活着是为什么。
 

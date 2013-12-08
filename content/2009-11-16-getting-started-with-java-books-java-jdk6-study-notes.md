@@ -4,7 +4,6 @@ Slug: getting-started-with-java-books-java-jdk6-study-notes
 Date: 2009-11-16 00:00:00
 Tags: Book, JavaSE
 Category: Java编程和Java企业应用
-Summary: 
 
 [![Java JDK6学习笔记](http://t.douban.com/lpic/s2518833.jpg)](http://t.douban.com/
 lpic/s2518833.jpg)

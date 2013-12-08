@@ -4,7 +4,6 @@ Slug: the-education-network-ubuntu8-04-source
 Date: 2009-05-27 00:00:00
 Tags: Ubuntu
 Category: Linuxer
-Summary: 
 
 Google的话有很多源，北大的宣称5M，结果我都连不上，交大的宣称2M，我发现只有20kb/s，连更新语言包都超级慢。
 

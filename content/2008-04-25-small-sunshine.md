@@ -4,7 +4,6 @@ Slug: small-sunshine
 Date: 2008-04-25 00:00:00
 Tags: 
 Category: 感悟
-Summary: 
 
 本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉```
 

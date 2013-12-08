@@ -4,7 +4,6 @@ Slug: look-at-ext-js
 Date: 2009-03-02 00:00:00
 Tags: AJAX, ExtJS
 Category: Web前端
-Summary: 
 
 在China-pub首页上看到[深入浅出Ext JS](http://www.china-pub.com/195152)这本书，China-
 pub推荐为09年最值得期待的Ajax技术图书感觉这本书挺不错，就关注了一下Ext JS

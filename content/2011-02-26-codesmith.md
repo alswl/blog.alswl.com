@@ -4,7 +4,6 @@ Slug: codesmith
 Date: 2011-02-26 00:00:00
 Tags: CodeSmith
 Category: 工欲善其事必先利其器
-Summary: 
 
 CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst
 ）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。

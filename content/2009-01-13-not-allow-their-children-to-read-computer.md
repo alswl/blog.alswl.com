@@ -4,7 +4,6 @@ Slug: not-allow-their-children-to-read-computer
 Date: 2009-01-13 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 Status: draft
 
 记得自己刚读计算机时候，一位亲戚说道，他的某位计算机专业同学一直很忙，忙着学习，忙着充电，我当时不以为然

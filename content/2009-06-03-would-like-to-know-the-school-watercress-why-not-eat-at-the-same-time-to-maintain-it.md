@@ -4,7 +4,6 @@ Slug: would-like-to-know-the-school-watercress-why-not-eat-at-the-same-time-to-m
 Date: 2009-06-03 00:00:00
 Tags: 
 Category: 碎碎念
-Summary: 
 
 校内6-2号开始系统维护，原以为是技术问题，后来才知道豆瓣、饭否都维护，同时一大批国外网站不能登陆。
 

@@ -4,7 +4,6 @@ Slug: natter-about-the-school
 Date: 2009-10-09 00:00:00
 Tags: 人人
 Category: 关注互联网
-Summary: 
 
 觉得校内有一些地方不喜欢，罗列一下。呃，基本来说，我算是校内忠实用户，开心农场还是几小时就检查类型的，就是论事。
 

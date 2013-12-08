@@ -4,7 +4,6 @@ Slug: mako-typeerror
 Date: 2011-08-25 00:00:00
 Tags: Mako
 Category: Python编程
-Summary: 
 
 Mako 下面开发时候，遇到这个问题
 

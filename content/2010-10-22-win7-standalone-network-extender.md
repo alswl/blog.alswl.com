@@ -4,7 +4,6 @@ Slug: win7-standalone-network-extender
 Date: 2010-10-22 00:00:00
 Tags: Win7
 Category: 技术达人
-Summary: 
 
 用Win7大概1个月了，的确很不错，本来试用的心态变成了完全不想回到XP时代了。
 

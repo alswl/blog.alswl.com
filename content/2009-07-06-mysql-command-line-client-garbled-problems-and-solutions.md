@@ -4,7 +4,6 @@ Slug: mysql-command-line-client-garbled-problems-and-solutions
 Date: 2009-07-06 00:00:00
 Tags: Database, MySQL, 编码
 Category: 综合技术
-Summary: 
 
 以前用MySQL时候都是可视化界面，如MySQL Admin使用，现在学着使用MySQL Command Line client，初次接触，就遇到乱码问题。
 

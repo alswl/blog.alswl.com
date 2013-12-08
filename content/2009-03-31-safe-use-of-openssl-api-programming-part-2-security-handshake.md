@@ -4,7 +4,6 @@ Slug: safe-use-of-openssl-api-programming-part-2-security-handshake
 Date: 2009-03-31 00:00:00
 Tags: OpenSSL, SSL
 Category: C
-Summary: 
 
 原文链接：[http://www.ibm.com/developerworks/cn/linux/l-openssl2.html](http://www.i
 bm.com/developerworks/cn/linux/l-openssl2.html)

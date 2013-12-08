@@ -4,7 +4,6 @@ Slug: cakephp-localization-internationalization-and-usage-of-poedit
 Date: 2010-06-03 00:00:00
 Tags: CakePHP, PoEdit
 Category: PHP编程
-Summary: 
 
 原文出处：[在Cakephp中使用i18n本地化程序，并使用poedit编辑语言文件 |
 程序如此灵动！](http://newsn.net/20090525/472.html)

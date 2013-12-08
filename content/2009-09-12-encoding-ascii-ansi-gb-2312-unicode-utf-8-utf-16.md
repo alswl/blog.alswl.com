@@ -4,7 +4,6 @@ Slug: encoding-ascii-ansi-gb-2312-unicode-utf-8-utf-16
 Date: 2009-09-12 00:00:00
 Tags: 编码
 Category: 综合技术
-Summary: 
 
 ## ASCII字符集
 

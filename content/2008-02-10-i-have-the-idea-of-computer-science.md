@@ -4,7 +4,6 @@ Slug: i-have-the-idea-of-computer-science
 Date: 2008-02-10 00:00:00
 Tags: cinderella
 Category: 程序人生
-Summary: 
 
 本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉```
 

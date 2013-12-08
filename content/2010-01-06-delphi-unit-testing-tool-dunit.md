@@ -4,7 +4,6 @@ Slug: delphi-unit-testing-tool-dunit
 Date: 2010-01-06 00:00:00
 Tags: Delphi, Lib, Testing
 Category: Delphi编程
-Summary: 
 
 以前写Java时候经常使用一款单元测试工具JUnit，工作之后在用Delphi，自然也要换到Delphi下面的单元测试工具DUnit。
 

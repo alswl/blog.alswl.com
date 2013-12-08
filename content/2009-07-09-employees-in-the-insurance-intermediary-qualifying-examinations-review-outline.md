@@ -4,7 +4,6 @@ Slug: employees-in-the-insurance-intermediary-qualifying-examinations-review-out
 Date: 2009-07-09 00:00:00
 Tags: 保险
 Category: 学海无涯
-Summary: 
 
 由于一个不可阻挡的原因，我需要参见这次的[保险](http://log4d.com/tag/insurance)中介从业人员资格考试，我7月25号回学校，1
 8号考试，这段时间都不放过我，崩溃了。

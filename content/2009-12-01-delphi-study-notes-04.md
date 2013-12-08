@@ -4,7 +4,6 @@ Slug: delphi-study-notes-04
 Date: 2009-12-01 00:00:00
 Tags: 
 Category: Delphi编程
-Summary: 
 
 今天主要学习了Object Pascal的**面向对象**部分：类的定义、继承、多态这些基本操作。
 

@@ -4,7 +4,6 @@ Slug: network-in-shanghai-to-learn-english
 Date: 2009-07-21 00:00:00
 Tags: 英语
 Category: 学海无涯
-Summary: 
 
 北京之行由于甲型流感爆发取消，我计划完全被打乱，25的火车票已经买了，索性去学校吧。
 

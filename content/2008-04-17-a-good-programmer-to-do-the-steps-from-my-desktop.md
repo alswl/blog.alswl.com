@@ -4,7 +4,6 @@ Slug: a-good-programmer-to-do-the-steps-from-my-desktop
 Date: 2008-04-17 00:00:00
 Tags: 
 Category: 程序人生
-Summary: 
 Status: draft
 
 本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉```

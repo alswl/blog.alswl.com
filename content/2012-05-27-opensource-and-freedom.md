@@ -4,7 +4,6 @@ Slug: opensource-and-freedom
 Date: 2012-05-27 19:35
 Tags: slideshow, OpenSource
 Category: 程序人生
-Summary: 
 
 
 周末回学校一趟，和几个老同学、老师聚会，然后给学弟学妹们做了一个分享。

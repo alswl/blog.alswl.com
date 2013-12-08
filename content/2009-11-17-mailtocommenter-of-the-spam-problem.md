@@ -4,7 +4,6 @@ Slug: mailtocommenter-of-the-spam-problem
 Date: 2009-11-17 00:00:00
 Tags: WordPress
 Category: 建站心得
-Summary: 
 
 Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样
 ，别人都是完好的，直到[derek](http://www.derekblog.cn/)同学提出来。

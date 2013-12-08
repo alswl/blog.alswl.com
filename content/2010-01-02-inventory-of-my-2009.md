@@ -4,7 +4,6 @@ Slug: inventory-of-my-2009
 Date: 2010-01-02 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 每次总结的时候，我都会感慨一下时间，感慨一下经历的事情。这次就不搞那套了，直接上流水账了。
 

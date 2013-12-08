@@ -4,7 +4,6 @@ Slug: insurance-agent-summary-information-on-the-qualifying-examination
 Date: 2009-07-17 00:00:00
 Tags: 保险
 Category: 学海无涯
-Summary: 
 
 考试之前花了半天时间向老妈阐述我大学时多么成功，我记性的是多么失败，让她做好了我考不过资格证的准备，结果，交卷后，居然我71分，哇塞，上天眷顾啊！！！
 

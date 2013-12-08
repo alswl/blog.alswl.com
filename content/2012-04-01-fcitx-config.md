@@ -4,7 +4,6 @@ Slug: fcitx-config
 Date: 2012-04-01 00:00:00
 Tags: fcitx
 Category: Linuxer
-Summary: 
 
 ## Fcitx
 

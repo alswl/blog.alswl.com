@@ -4,7 +4,6 @@ Slug: oracle-pl-sql-coding-standards
 Date: 2010-01-14 00:00:00
 Tags: Database, Oracle, PL/SQL
 Category: 综合技术
-Summary: 
 
 学习PL/SQL不可避免遇到规范的问题，这里转载一篇比较精的文章。
 

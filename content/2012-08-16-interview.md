@@ -3,7 +3,6 @@ Author: alswl
 Slug: interview
 Date: 2012-08-16 05:46
 Category: 程序人生
-Summary: 
 
 
 最近在上海找工作面试，这两天就要出结果了。早晨5点多就醒过来，睡不着觉，

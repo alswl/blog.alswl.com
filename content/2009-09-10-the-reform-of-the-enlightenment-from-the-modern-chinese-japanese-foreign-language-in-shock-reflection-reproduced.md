@@ -4,7 +4,6 @@ Slug: the-reform-of-the-enlightenment-from-the-modern-chinese-japanese-foreign-l
 Date: 2009-09-10 00:00:00
 Tags: 日语
 Category: 学海无涯
-Summary: 
 
 最近在学日文，所以偶然看到这篇文章惊奇无比，原来汉语和日语也有这么一种的反哺关系-alswl
 

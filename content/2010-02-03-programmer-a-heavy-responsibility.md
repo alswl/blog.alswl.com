@@ -4,7 +4,6 @@ Slug: programmer-a-heavy-responsibility
 Date: 2010-02-03 00:00:00
 Tags: 
 Category: 程序人生
-Summary: 
 
 昨天项目第一天上线，早晨我7：30就到了会议室，和同事们奔赴生产线。
 

@@ -4,7 +4,6 @@ Slug: office-of-the-art-publishing-long-documents
 Date: 2008-12-28 00:00:00
 Tags: Office
 Category: 技术达人
-Summary: 
 
 虽然最近考试不断，我仍然花了很多时间在Office上
 

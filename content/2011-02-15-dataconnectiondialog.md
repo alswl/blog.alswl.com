@@ -4,7 +4,6 @@ Slug: dataconnectiondialog
 Date: 2011-02-15 00:00:00
 Tags: C#, VisualStudio
 Category: Microsoft .Net
-Summary: 
 
 在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方
 法来动态生成连接字符串，这种方法充满了Bad Smell。

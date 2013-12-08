@@ -4,7 +4,6 @@ Slug: prohibition-of-wordpress-automatically-to-replace-the-half-angle-punctuati
 Date: 2009-07-10 00:00:00
 Tags: WordPress
 Category: 建站心得
-Summary: 
 
 转载自「禁止WordPress自动替换半角标点符号 - 布语博客」<[点击这里打开](http://buyu.name/074.html)>
 

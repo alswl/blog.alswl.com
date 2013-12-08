@@ -4,7 +4,6 @@ Slug: damn-house
 Date: 2010-07-05 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 趁着离上班还有15分钟，赶紧来倒倒苦水。
 

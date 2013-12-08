@@ -4,7 +4,6 @@ Slug: tingdownload
 Date: 2012-01-03 00:00:00
 Tags: tingdownload
 Category: Python编程
-Summary: 
 
 度娘终于干了一件好事，[Baidu Ting](http://ting.baidu.com)上线了，
 正版音乐免费下载，类似于[谷歌音乐](http://www.google.cn/music)。 关于音乐版权和免费的问题， 有很多问题需要取讨论，

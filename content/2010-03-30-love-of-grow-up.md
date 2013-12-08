@@ -4,7 +4,6 @@ Slug: love-of-grow-up
 Date: 2010-03-30 00:00:00
 Tags: 
 Category: 青春的彩虹
-Summary: 
 
 关于成长，关于爱情，这些文字给出了分析，可惜，没有给出答案……
 

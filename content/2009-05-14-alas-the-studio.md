@@ -4,7 +4,6 @@ Slug: alas-the-studio
 Date: 2009-05-14 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 明天应该有会计考试，要清空主楼自习的教室，所以自习室里考研的同学都把书搬到工作室来了
 

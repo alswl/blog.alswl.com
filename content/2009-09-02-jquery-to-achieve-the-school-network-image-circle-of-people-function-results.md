@@ -4,7 +4,6 @@ Slug: jquery-to-achieve-the-school-network-image-circle-of-people-function-resul
 Date: 2009-09-02 00:00:00
 Tags: JavaScript, jQuery, 人人
 Category: dotNet
-Summary: 
 
 项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《[JS实现校内网"图片圈人
 "功能效果](http://www.cnblogs.com/czy1121/archive/2009/03/03/1402105.html)》（强烈推荐这篇

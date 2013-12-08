@@ -4,7 +4,6 @@ Slug: happy-birthday-and-happy-xmas
 Date: 2009-12-24 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 今天是平安夜，祝大家圣诞快乐，
 

@@ -4,7 +4,6 @@ Slug: annoying-clip
 Date: 2008-12-13 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 一边在考试中挣扎着，操作系统，系统安全，系统结构都一股脑的狠狠的向我砸来，一方面还得为那个ASP项目烦恼
 

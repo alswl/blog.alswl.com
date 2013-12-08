@@ -4,7 +4,6 @@ Slug: delphi-study-notes-01
 Date: 2009-11-28 00:00:00
 Tags: Pascal
 Category: Delphi编程
-Summary: 
 
 &nbsp_place_holder;由于工作中需要使用Dephi，而此之前我对Delphi仅限于听过而已，所以我要在极短的时间内学会一门新的语言。这对我来
 说是很有挑战性，也到了证明我以前反复强调"语法不是问题，语言才是跨度"的时候。我需要掌握的是Delphi基本使用和IDE工具使用。我认为，在熟悉C/Java

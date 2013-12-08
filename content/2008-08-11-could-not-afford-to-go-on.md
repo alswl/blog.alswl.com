@@ -4,7 +4,6 @@ Slug: could-not-afford-to-go-on
 Date: 2008-08-11 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 Status: draft
 
 开始在ACM混日子了。

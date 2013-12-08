@@ -4,7 +4,6 @@ Slug: auto-clean-input
 Date: 2011-08-18 00:00:00
 Tags: 
 Category: Web前端
-Summary: 
 
 早期的输入框提示是这样的（via [baidu](http://tieba.baidu.com/index.html)）
 

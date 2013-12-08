@@ -4,7 +4,6 @@ Slug: pylexchat-feasibility-analysis
 Date: 2009-11-23 00:00:00
 Tags: AIR, Flex, GAE, PylexChat
 Category: Flash编程
-Summary: 
 
 ## PylexChat介绍
 

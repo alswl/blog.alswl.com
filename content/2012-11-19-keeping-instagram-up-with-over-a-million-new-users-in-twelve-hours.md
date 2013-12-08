@@ -4,7 +4,6 @@ Slug: keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours
 Date: 2012-11-19 00:06
 Tags: Instagram, 译文, Django, Database
 Category: Python编程
-Summary: 
 
 
 原文链接：[Keeping Instagram up with over a million new users in twelve hours][]

@@ -4,7 +4,6 @@ Slug: about-google
 Date: 2010-03-25 00:00:00
 Tags: Google
 Category: 关注互联网
-Summary: 
 
 为Google喝彩，不解释。
 

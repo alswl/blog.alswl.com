@@ -4,7 +4,6 @@ Slug: the-non-designers-design-book
 Date: 2012-05-19 18:10
 Tags: 读书笔记
 Category: 视觉设计
-Summary: 
 
 
 我读过两本关于视觉设计的书，一本是[《写给程序员的Web设计书》](http://book.douban.com/subject/6783748/)，

@@ -4,7 +4,6 @@ Slug: to-rearrange-the-structure-of-the-site
 Date: 2009-07-24 00:00:00
 Tags: 
 Category: 建站心得
-Summary: 
 
 整理分为两个步骤：1.整理分类和标签。2.整理网页静态格式。
 

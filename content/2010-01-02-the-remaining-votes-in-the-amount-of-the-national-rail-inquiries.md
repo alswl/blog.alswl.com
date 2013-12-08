@@ -4,7 +4,6 @@ Slug: the-remaining-votes-in-the-amount-of-the-national-rail-inquiries
 Date: 2010-01-02 00:00:00
 Tags: 
 Category: 关注互联网
-Summary: 
 
 很久之前埋怨铁道部怎么不出一个接口可以查询全国剩余票额，现在终于有了这样一个网站。
 

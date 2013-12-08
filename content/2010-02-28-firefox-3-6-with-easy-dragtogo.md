@@ -4,7 +4,6 @@ Slug: firefox-3-6-with-easy-dragtogo
 Date: 2010-02-28 00:00:00
 Tags: FireFox
 Category: 技术达人
-Summary: 
 
 Easy DragToGo是一款很不错的FireFox插件，能够实现一些鼠标手势功能。你可以在[Easy DragToGo :: Firefox
 附加组件](https://addons.mozilla.org/zh-CN/firefox/addon/6639)下载这个插件。

@@ -4,7 +4,6 @@ Slug: youth-countdown
 Date: 2007-07-23 00:00:00
 Tags: 
 Category: 未分类
-Summary: 
 Status: draft
 
 大一就这么过去了，快的有点令我不可思议。记忆似乎仍然停留在军训时候，现在却已经一年了，蓦然发现，自己的大一，居然留不下一点值得回味的东西。回家前几天，宿舍一

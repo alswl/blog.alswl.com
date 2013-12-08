@@ -4,7 +4,6 @@ Slug: gae-initial-contact-with-the-school-app
 Date: 2009-09-28 00:00:00
 Tags: GAE, Google, 人人
 Category: Python编程
-Summary: 
 
 下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello
 World来介绍一个开发步骤。

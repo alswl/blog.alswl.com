@@ -4,7 +4,6 @@ Slug: the-first-day-of-internship
 Date: 2009-07-28 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 刚放下手头的《Web设计标准》，想想，还是来写点东西吧。
 

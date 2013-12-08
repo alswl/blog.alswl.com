@@ -4,7 +4,6 @@ Slug: java-notes-_split-variable-length-parameter-generic-type-wildcard
 Date: 2009-11-15 00:00:00
 Tags: JavaSE
 Category: Java编程和Java企业应用
-Summary: 
 
 今天看了一下午《[Java学习笔记](http://www.douban.com/subject/2057790/)》，作者林信良，花名良葛格。从书中所获颇
 多，正所谓温故而知新，我就把今天的"新"总结一下，加深记忆。良葛格也提倡"在网上写文章是我记录所学的一种方式"。

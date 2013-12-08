@@ -4,7 +4,6 @@ Slug: mysql-data-type-of-the-length-of-conventional-library-strategy
 Date: 2009-06-25 00:00:00
 Tags: Database, MySQL
 Category: 综合技术
-Summary: 
 
 无论是在小得可怜的免费数据库空间或是大型电子商务网站，合理的设计表结构、充分利用空间是十分必要的。这就要求我们对数据库系统的常用数据类型有充分的认识。下面我
 就将我的一点心得写出来跟大家分享。

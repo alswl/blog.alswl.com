@@ -4,7 +4,6 @@ Slug: web-site-has-been-linked-to-a-trojan-horse
 Date: 2009-04-12 00:00:00
 Tags: 
 Category: 建站心得
-Summary: 
 
 寒假就发现自己的那个网站能被万能asp密码攻破，还留了一句"网站有漏洞，请加强防护"
 

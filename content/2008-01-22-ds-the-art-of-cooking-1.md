@@ -4,7 +4,6 @@ Slug: ds-the-art-of-cooking-1
 Date: 2008-01-22 00:00:00
 Tags: 
 Category: 美食|烹饪
-Summary: 
 Status: draft
 
 本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉```

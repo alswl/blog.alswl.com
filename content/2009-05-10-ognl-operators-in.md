@@ -4,7 +4,6 @@ Slug: ognl-operators-in
 Date: 2009-05-10 00:00:00
 Tags: OGNL, Struts
 Category: Java编程和Java企业应用
-Summary: 
 
 <s:textfield name="loginName" value="%{#request.loginNames}"/>
 

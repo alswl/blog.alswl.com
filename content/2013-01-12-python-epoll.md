@@ -4,7 +4,6 @@ Slug: python-epoll
 Date: 2013-01-12 00:01
 Tags: 译文
 Category: Python编程
-Summary: 
 
 
 原文地址： [http://scotdoyle.com/python-epoll-howto.html][source] ，

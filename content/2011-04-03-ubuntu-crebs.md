@@ -4,7 +4,6 @@ Slug: ubuntu-crebs
 Date: 2011-04-03 00:00:00
 Tags: Desktop, Ubuntu
 Category: Linuxer
-Summary: 
 
 GNOME桌面系统可以使用一系列的图片作为背景，每过一段时间能够自动更换。这个功能核Win7下面自动换背景效果一致。不过很可惜，系统自带的可自动更换图片集只
 有几张，也找不到什么按钮可以直接设定。

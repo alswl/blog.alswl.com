@@ -4,7 +4,6 @@ Slug: design-of-user-rights
 Date: 2009-06-25 00:00:00
 Tags: 
 Category: 软件开发和项目管理
-Summary: 
 
 ### 问题
 

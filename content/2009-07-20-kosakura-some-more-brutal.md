@@ -4,7 +4,6 @@ Slug: kosakura-some-more-brutal
 Date: 2009-07-20 00:00:00
 Tags: 动漫
 Category: 娱乐
-Summary: 
 Status: draft
 
 最近在复习火影，删去了所有枝节任务，看主线动画。

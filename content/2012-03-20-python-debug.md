@@ -4,7 +4,6 @@ Slug: python-debug
 Date: 2012-03-20 00:00:00
 Tags: ipdb, Paster, pdb, Pylons
 Category: Python编程
-Summary: 
 
 撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons
 开发的调试技巧。

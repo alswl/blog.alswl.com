@@ -4,7 +4,6 @@ Slug: use-ssh-to-the-wordpress-directory-package
 Date: 2009-12-30 00:00:00
 Tags: WordPress, 建站心得
 Category: Linuxer
-Summary: 
 
 最近用上了小张的10号主机，cPanel界面，支持SSH连接，**DDD的一亩三分地**也换了log4d.com域名。我想趁着这个机会对整个系统进行改版，迎
 接2010年的到来。

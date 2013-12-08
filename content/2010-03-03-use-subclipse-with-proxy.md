@@ -4,7 +4,6 @@ Slug: use-subclipse-with-proxy
 Date: 2010-03-03 00:00:00
 Tags: Eclipse, Subclipse, SVN
 Category: 工欲善其事必先利其器
-Summary: 
 
 &nbsp_place_holder;公司网络必须使用代理，今天更新自己写的一个Utils到Google Project
 Host时候，出现无法打开SVN服务器的现象，我在浏览器测试了那几个目录，都没有问题，猜到是代理连接的问题。

@@ -4,7 +4,6 @@ Slug: use-google-calendar-to-manage-the-time
 Date: 2010-01-03 00:00:00
 Tags: Google, GTD
 Category: 学海无涯
-Summary: 
 
 ## Google 日历与GTD
 

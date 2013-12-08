@@ -4,7 +4,6 @@ Slug: vim-emacs-key-binding
 Date: 2012-04-20 00:00:00
 Tags: Emacs, Readline, Shell, Vim
 Category: 工欲善其事必先利其器
-Summary: 
 
 
 Vimer 需要 Emacs 键绑定？看上去很蛋疼的需求吧。其实不然，大部分的 Shell / Readline 默认绑定的是 Emacs 键位绑定（处于输入状态下，Emacs 的键位很好用）。Vim 的模式切换很牛逼，但是 Insert 模式下面，只有寥寥几个快捷键，我修改了配置文件，绑定需要的 Emcas 按键到 Vim 中来。

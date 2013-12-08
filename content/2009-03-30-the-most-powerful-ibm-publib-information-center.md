@@ -4,7 +4,6 @@ Slug: the-most-powerful-ibm-publib-information-center
 Date: 2009-03-30 00:00:00
 Tags: IBM
 Category: 关注互联网
-Summary: 
 
 今天做OpenSSL密码算法选择时候，用到了两个函数 SSL_get_cipher_list(SSL *ssl, int priority) 和
 SSL_CTX_set_cipher_list(SSL *ssl, const char *char)

@@ -4,7 +4,6 @@ Slug: delphi-study-notes-06
 Date: 2009-12-05 00:00:00
 Tags: 
 Category: Delphi编程
-Summary: 
 
 我的博客所在的江西服务器需要服务器搬迁，所以这两天博客无法访问，看到404错误的童鞋们对不起拉…
 

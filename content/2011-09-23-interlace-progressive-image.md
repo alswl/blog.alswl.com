@@ -4,7 +4,6 @@ Slug: interlace-progressive-image
 Date: 2011-09-23 00:00:00
 Tags: zhihu
 Category: Web前端
-Summary: 
 
 ## Question
 

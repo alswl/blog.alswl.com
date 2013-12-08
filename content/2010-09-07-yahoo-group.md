@@ -4,7 +4,6 @@ Slug: yahoo-group
 Date: 2010-09-07 00:00:00
 Tags: Yahoo
 Category: 关注互联网
-Summary: 
 
 ![](http://upload-log4d.qiniudn.com/2010/09/trash_mail.jpg)
 

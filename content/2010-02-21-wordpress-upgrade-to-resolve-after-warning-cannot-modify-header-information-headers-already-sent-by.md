@@ -4,7 +4,6 @@ Slug: wordpress-upgrade-to-resolve-after-warning-cannot-modify-header-informatio
 Date: 2010-02-21 00:00:00
 Tags: WordPress, 编码
 Category: 建站心得
-Summary: 
 
 WordPress 2.9.2升级之后出现一个问题，在一些操作，比如删除垃圾留言、发表新的文章时候会提醒一下的错误。
 

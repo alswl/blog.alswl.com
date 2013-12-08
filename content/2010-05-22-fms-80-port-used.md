@@ -4,7 +4,6 @@ Slug: fms-80-port-used
 Date: 2010-05-22 00:00:00
 Tags: FMS
 Category: Flash编程
-Summary: 
 
 AzaAjaxChat 的语音聊天需要使用的Flex的流媒体传输，我在评估的方案有两套：1.使用原声Socket在客户端进行连接，2.使用FMS
 流媒体服务器进行数据传输。

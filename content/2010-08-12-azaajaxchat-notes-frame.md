@@ -4,7 +4,6 @@ Slug: azaajaxchat-notes-frame
 Date: 2010-08-12 00:00:00
 Tags: AzaAjaxChat, CakePHP, ThinkPHP
 Category: PHP编程
-Summary: 
 
 1个月没有动PHP了，新装的系统甚至还没有配置PHP环境，今天看到BooguNote上有一个boo是专门记录AzaAjaxChat开发时候遇到的问题和解决办
 法。于是把一些东西整理记录一下。

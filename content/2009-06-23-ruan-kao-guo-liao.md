@@ -4,7 +4,6 @@ Slug: ruan-kao-guo-liao
 Date: 2009-06-23 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 中午在工作室睡觉，睡得好好的，被铃声弄醒了，最讨厌睡觉时候被弄醒。
 

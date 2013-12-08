@@ -4,7 +4,6 @@ Slug: ajax-drag-and-drop-fun-the-way-chrome-test-the-code-under-the-highlighted-
 Date: 2009-02-26 00:00:00
 Tags: AJAX
 Category: Web前端
-Summary: 
 
 _HTML语言_: [ajax 拖拽](http://www.fayaa.com/code/view//)
 

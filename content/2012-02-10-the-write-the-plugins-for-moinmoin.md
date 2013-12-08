@@ -4,7 +4,6 @@ Slug: the-write-the-plugins-for-moinmoin
 Date: 2012-02-10 00:00:00
 Tags: image2attach, MoinMoin
 Category: Python编程
-Summary: 
 
 ## 1. 使用 MoinMoin
 

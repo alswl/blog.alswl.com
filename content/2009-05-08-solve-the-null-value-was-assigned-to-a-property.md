@@ -4,7 +4,6 @@ Slug: solve-the-null-value-was-assigned-to-a-property
 Date: 2009-05-08 00:00:00
 Tags: Hibernate, 贴吧
 Category: Java编程和Java企业应用
-Summary: 
 
 晚上开始写贴吧分类，把class改成category，规避了关键字class，也显得更合理，百度的分类就是ct
 

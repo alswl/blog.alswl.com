@@ -4,7 +4,6 @@ Slug: cakephp-global-variables
 Date: 2010-05-17 00:00:00
 Tags: AzaAjaxChat, CakePHP
 Category: PHP编程
-Summary: 
 
 毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。
 

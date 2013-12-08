@@ -4,7 +4,6 @@ Slug: notepad-shortcut-keys
 Date: 2010-04-01 00:00:00
 Tags: Notepad++
 Category: 工欲善其事必先利其器
-Summary: 
 
 原文连接：[Hanyi on ET:
 最常用的Notepad++的快捷键](http://hanyionet.blogspot.com/2009/09/notepad.html)

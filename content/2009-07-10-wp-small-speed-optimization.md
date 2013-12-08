@@ -4,7 +4,6 @@ Slug: wp-small-speed-optimization
 Date: 2009-07-10 00:00:00
 Tags: WordPress
 Category: 建站心得
-Summary: 
 
 今天实在无法忍受WP的速度，打开速度在10s-15s左右，好几个朋友反映，我咨询了一下小张，发现同一台服务器的网站速度都不错，那就是我的设置问题了。
 

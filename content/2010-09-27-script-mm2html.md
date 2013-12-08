@@ -4,7 +4,6 @@ Slug: script-mm2html
 Date: 2010-09-27 00:00:00
 Tags: BooguNote, FreeMind
 Category: Python编程
-Summary: 
 
 我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见[桌面记录神器-
 BooguNote](http://log4d.com/2010/04/desktop-recording-tool-boogunote) &

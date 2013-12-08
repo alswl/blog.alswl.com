@@ -4,7 +4,6 @@ Slug: soft-test-in-mind
 Date: 2009-05-23 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 今天参加软件设计师的考试，早上7点就起床了，可怜的我昨天调Ajax到一点啊，困的不行了。
 

@@ -4,7 +4,6 @@ Slug: to-google-to-switch-to-english-mode
 Date: 2009-11-10 00:00:00
 Tags: Google
 Category: 技术达人
-Summary: 
 
 注：本文讨论的全部都是Google.com。
 

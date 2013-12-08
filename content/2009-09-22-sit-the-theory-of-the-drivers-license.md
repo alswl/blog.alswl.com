@@ -4,7 +4,6 @@ Slug: sit-the-theory-of-the-drivers-license
 Date: 2009-09-22 00:00:00
 Tags: cinderella
 Category: 日记
-Summary: 
 
 最近一直没有更新，主要是因为今天考的驾照理论考试。虽然老师说通过率99.9%，但是还是有点心慌，怕万一挤上那个0.1%怎么办。好在经过3小时排队之后，终于考
 出94分，嗯，满意了。

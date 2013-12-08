@@ -3,7 +3,6 @@ Author: alswl
 Slug: learning-driving
 Date: 2012-07-26 22:21
 Category: 日记
-Summary: 
 
 
 经过两个月的学习，今天下午终于把驾照拿到手了。期间各种苦逼各种悲催顿感消失，

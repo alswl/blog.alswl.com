@@ -4,7 +4,6 @@ Slug: get-daily-bing-picture
 Date: 2010-07-19 00:00:00
 Tags: Bing
 Category: Python编程
-Summary: 
 
 在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。
 

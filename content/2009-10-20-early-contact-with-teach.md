@@ -4,7 +4,6 @@ Slug: early-contact-with-teach
 Date: 2009-10-20 00:00:00
 Tags: 工作
 Category: 日记
-Summary: 
 
 [![hire_me](http://upload-log4d.qiniudn.com/2009/10/hire_me.jpg)](http
 ://upload-log4d.qiniudn.com/2009/10/hire_me.jpg)

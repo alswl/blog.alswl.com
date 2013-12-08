@@ -4,7 +4,6 @@ Slug: svn-server-setup
 Date: 2010-03-02 00:00:00
 Tags: SVN
 Category: 工欲善其事必先利其器
-Summary: 
 
 实在忍受不了VSS了，下决心自己在虚拟机配置一个SVN服务器，然后再在服务器上安装一个SVN服务器端。以前都是使用现成的SVN服务器，或者使用Google
 Code提供的Project Host，今天就自己动手，丰衣足食吧。

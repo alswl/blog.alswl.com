@@ -4,7 +4,6 @@ Slug: a-solution-of-can-not-create-or-open-the-smart-device-project-in-vs2005
 Date: 2010-03-29 00:00:00
 Tags: VisualStudio, WinCE
 Category: dotNet
-Summary: 
 
 ### 状况
 

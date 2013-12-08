@@ -4,7 +4,6 @@ Slug: i-finally-had-the-4
 Date: 2009-08-20 00:00:00
 Tags: 英语
 Category: 日记
-Summary: 
 
 上图，啥也不说了
 

@@ -4,7 +4,6 @@ Slug: google-app-engine-to-build-twitter-api-proxy-tutorial
 Date: 2009-10-14 00:00:00
 Tags: GAE, Twitter
 Category: 关注互联网
-Summary: 
 
 来源：[Google App Engine搭建Twitter API
 Proxy教程](http://www.williamlong.info/archives/1956.html)

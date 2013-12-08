@@ -4,7 +4,6 @@ Slug: dean-s-fckeditor-upload-directory-modify
 Date: 2010-03-24 00:00:00
 Tags: CKeditor, WordPress
 Category: 建站心得
-Summary: 
 
 一直喜欢WorePress默认的上传文件方法，通过`WP-content/uploads/年/月`分组。
 

@@ -4,7 +4,6 @@ Slug: formally-entered-a-period-of-40-to-remind-the-community-reproduced
 Date: 2009-12-25 00:00:00
 Tags: 
 Category: 感悟
-Summary: 
 
 此文为转载，出处不可考察，遂在文章正式标题上标识"[转载]"。
 

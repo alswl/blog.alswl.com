@@ -4,7 +4,6 @@ Slug: learning-network-programming-diary-1-_winpcap-and-vc-configuration
 Date: 2008-08-21 00:00:00
 Tags: WinPcap, 网络编程
 Category: C
-Summary: 
 
 下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这
 种书，叹一个。

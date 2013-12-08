@@ -4,7 +4,6 @@ Slug: socket-programming-on-the-select
 Date: 2009-03-24 00:00:00
 Tags: 网络编程
 Category: C
-Summary: 
 
 这篇文章讲的是Socket中的select，我觉得还不错就转来了
 

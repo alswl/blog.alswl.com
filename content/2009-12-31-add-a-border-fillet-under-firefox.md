@@ -4,7 +4,6 @@ Slug: add-a-border-fillet-under-firefox
 Date: 2009-12-31 00:00:00
 Tags: WordPress
 Category: 前端
-Summary: 
 
 起因是换了DDDSpace.com 这个域名，需要测试邮件回复情况，我发现在在iGoogle的GMail小窗口显示着实有些难看，就修改了一下样式，添加了圆角
 、增加了`padding`值，唔，这个**圆角不对IE系列有效果**。

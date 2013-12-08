@@ -4,7 +4,6 @@ Slug: delphi-source-code-written-in-standard-format-switch
 Date: 2009-11-30 00:00:00
 Tags: 
 Category: Delphi编程
-Summary: 
 
 话说我不喜欢转帖，可是看到实在好的东西又想留下来，真矛盾。为此，我凡是所有转的帖子都在标题上注明转帖，大家如果不感兴趣，可以直接略过。
 

@@ -4,7 +4,6 @@ Slug: first-anniversary-of-blog
 Date: 2010-05-14 00:00:00
 Tags: 
 Category: 日记
-Summary: 
 
 今天是独立博客Log4D (log4d.com)一周年纪念日。
 

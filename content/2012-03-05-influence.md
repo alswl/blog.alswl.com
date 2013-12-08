@@ -4,7 +4,6 @@ Slug: influence
 Date: 2012-03-05 00:00:00
 Tags: 心理学, 读书笔记
 Category: 学海无涯
-Summary: 
 
   * 本书研究 - 社会心理学 - 顺从心理学。
   * 日常生活中有大量心理捷径。

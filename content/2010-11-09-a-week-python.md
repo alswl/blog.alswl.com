@@ -4,7 +4,6 @@ Slug: a-week-python
 Date: 2010-11-09 00:00:00
 Tags: pymssql, PyYAML, YAML
 Category: Python编程
-Summary: 
 
 上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。
 

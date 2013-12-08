@@ -4,7 +4,6 @@ Slug: fusion-chinese-mo-po-document-beta
 Date: 2009-08-01 00:00:00
 Tags: PoEdit, WordPress
 Category: 建站心得
-Summary: 
 
 一直很喜欢Fusion这个主题，所以前段时间在对Fusion的文件做汉化。关于更多Top中文主题，《[WordPress的中文主题](http://log4
 d.com/2009/07/chinese-theme-wordpress)》

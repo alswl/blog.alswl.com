@@ -4,7 +4,6 @@ Slug: the-road-less-traveled
 Date: 2012-08-04 08:58
 Tags: 心理学, 读书笔记
 Category: 学海无涯
-Summary: 
 
 
 关注这本书是在[编程随想][pt]那里看到的[一篇书评][pt-review]，

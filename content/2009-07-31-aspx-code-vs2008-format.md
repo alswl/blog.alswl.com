@@ -4,7 +4,6 @@ Slug: aspx-code-vs2008-format
 Date: 2009-07-31 00:00:00
 Tags: VisualStudio
 Category: 工欲善其事必先利其器
-Summary: 
 
 在VS2008中编辑代码时候，可以使用「编辑-高级-设置文档的格式」来进行格式化代码，快捷键是Ctrl+K Ctrl+D。
 

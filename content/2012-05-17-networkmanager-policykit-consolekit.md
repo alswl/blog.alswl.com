@@ -4,7 +4,6 @@ Slug: networkmanager-policykit-consolekit
 Date: 2012-05-17 09:07
 Tags: NetworkManager, PolicyKit, ConsoleKit, GDM, Gnome
 Category: Linuxer
-Summary: 
 
 
 在使用 Awesome 的过程中，我又遇到了一个老问题「NetworkManager 在非 Gnome

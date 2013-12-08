@@ -4,7 +4,6 @@ Slug: sad-all-of-a-sudden-on-the-up
 Date: 2008-08-10 00:00:00
 Tags: 
 Category: 青春的彩虹
-Summary: 
 Status: draft
 
 今天做心理测试，有一道题目就是问情绪会不会波动。

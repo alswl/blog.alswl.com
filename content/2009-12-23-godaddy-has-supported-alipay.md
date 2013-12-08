@@ -4,7 +4,6 @@ Slug: godaddy-has-supported-alipay
 Date: 2009-12-23 00:00:00
 Tags: 
 Category: 建站心得
-Summary: 
 
 &nbsp_place_holder;
 

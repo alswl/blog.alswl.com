@@ -4,7 +4,6 @@ Slug: a-windows-small-bug
 Date: 2009-07-26 00:00:00
 Tags: Windows
 Category: 技术达人
-Summary: 
 
 很久之前就发现这个小Bug，不过一直没有做各种测试，今天花了几分钟总结了一下。
 
