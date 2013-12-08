@@ -11,11 +11,15 @@ THEME = 'pelican-bootstrap3'
 TIMEZONE = 'Asia/Shanghai'
 
 DEFAULT_LANG = u'en'
+DEFAULT_DATE_FORMAT = '%Y-%m-%d'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
+
+PLUGIN_PATH = '/Users/alswl/dev/project/python/pelican-plugins'
+PLUGINS = ['summary', ]
 
 # Blogroll
 LINKS =  (
@@ -64,3 +68,7 @@ DISPLAY_TAGS_ON_SIDEBAR = False
 #AUTHOR_BIO = 'Computers can change your life for the better.'
 DISQUS_SITENAME = 'log4d'
 GOOGLE_ANALYTICS = 'UA-8822123-3'
+
+# Plugins
+
+SUMMARY_END_MARKER = '<!-- more -->'

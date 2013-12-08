@@ -4,7 +4,6 @@ Slug: python-gdb
 Date: 2013-11-01 01:11
 Tags: GDB, 译文
 Category: Python编程
-Summary: 
 
 
 大约一年前，我接触了 Java 中的 [Btrace](http://kenai.com/projects/btrace)
@@ -25,7 +24,7 @@ PS:这篇文章理论上是可行的，但是在我机器（Ubuntu 12.04 / 系�
 
 原文可以移步 [https://wiki.python.org/moin/DebuggingWithGdb](https://wiki.python.org/moin/DebuggingWithGdb)。
 
-<!--more-->
+<!-- more -->
 
 ----
 

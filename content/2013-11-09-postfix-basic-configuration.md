@@ -4,7 +4,6 @@ Slug: postfix-basic-configuration
 Date: 2013-11-09 14:59
 Tags: Postfix
 Category: Linuxer
-Summary: 
 
 
 原文地址：[Postfix Basic Configuration ](http://www.postfix.org/BASIC_CONFIGURATION_README.html#syntax)。
@@ -21,7 +20,7 @@ Postfix 的配置文件 [main.cf][] 有数百个配置参数，
 特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在
 [标准配置说明][] 里面查看。
 
-<!--more-->
+<!-- more -->
 
 ## Postfix 配置语法 ##
 
