@@ -399,7 +399,7 @@ Date: 2012-05-14 21:21
 
 ## 2013-09 ##
 
-01. yutn 02.效率回归 03.STOMP 04.开会，愿景 05.hostname
+01.yutn 02.效率回归 03.STOMP 04.开会，愿景 05.hostname
 
 06.KTV 07.搬砖 08.Angular UI 09.切换 10.B 轮
 
