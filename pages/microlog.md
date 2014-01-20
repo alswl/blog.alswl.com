@@ -459,4 +459,10 @@ Date: 2012-05-14 21:21
 
 ## 2014-01 ##
 
-01.火锅 02.null 03.回家 04.打牌 05.沈清结婚 06.SaltStack
+01.火锅 02.null 03.回家 04.打牌 05.沈清结婚
+
+06.SaltStack 07.Just hug 08.null 09.null 10.DigitalOcean
+
+11.DigitalOcean 12.BaiduCache 13.安全问题 14.Nami Repeat 15.年度 Review
+
+16.上下架 17.年会 18.好好爱 19.SeaJS 20.母亲老唠叨

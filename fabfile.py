@@ -1,6 +1,13 @@
+# coding=utf-8
+
+import os
+import sys
+from datetime import datetime
+
 from fabric.api import *
 import fabric.contrib.project as project
-import os
+
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 # Local path configuration (can be absolute or relative to fabfile)
 env.deploy_path = 'output'
@@ -30,6 +37,16 @@ def rebuild():
 
 def regenerate():
     local('pelican -r -s pelicanconf.py')
+
+def new_post(name=''):
+    now = datetime.now()
+    md = open(os.path.join(
+        PROJECT_ROOT, 'content',
+        now.strftime('%Y-%m-%d') + '-' + name.strip().replace(' ', '-') + '.md'), 'w')
+    md.write(('Title: %s\n' + 'Author: alswl\n' + 'Slug: %s\n' + 'Date: %s\n' +
+             'Category: \n') % (name, now.strftime('%Y'),
+                                now.strftime('%Y-%m-%d %H:%M:%S')))
+    md.close()
 
 def serve():
     local('cd {deploy_path} && python -m SimpleHTTPServer'.format(**env))
