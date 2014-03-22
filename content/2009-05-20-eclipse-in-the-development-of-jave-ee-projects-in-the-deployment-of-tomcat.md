@@ -3,7 +3,7 @@ Author: alswl
 Slug: eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat
 Date: 2009-05-20 00:00:00
 Tags: Tomcat, 编码
-Category: Java编程和Java企业应用
+Category: Java
 
 贴吧最基本的功能写完了，正好可以应付数据库设计课的实验。于是我准备把贴吧的项目从Eclipse的开发环境中移植出来，在Tomcat中进行部署。
 

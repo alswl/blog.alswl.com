@@ -43,9 +43,12 @@ def new_post(name=''):
     md = open(os.path.join(
         PROJECT_ROOT, 'content',
         now.strftime('%Y-%m-%d') + '-' + name.strip().replace(' ', '-') + '.md'), 'w')
-    md.write(('Title: %s\n' + 'Author: alswl\n' + 'Slug: %s\n' + 'Date: %s\n' +
-             'Category: \n') % (name, now.strftime('%Y'),
-                                now.strftime('%Y-%m-%d %H:%M:%S')))
+    md.write((
+        'Title: %s\n' + 'Author: alswl\n' + 'Slug: %s\n' + 'Date: %s\n' +
+        'Tags: \nCategory: \n'
+    ) % (
+        name, now.strftime('%Y'),
+        now.strftime('%Y-%m-%d %H:%M:%S')))
     md.close()
 
 def serve():

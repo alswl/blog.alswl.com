@@ -3,7 +3,7 @@ Author: alswl
 Slug: come-to-an-end-java-based-learning
 Date: 2009-02-03 00:00:00
 Tags: 
-Category: Java编程和Java企业应用
+Category: Java
 Status: draft
 
 急行军的学了2周Java，学的有点浮躁，我自己也感觉到了。我个人还是觉得好的手感是写出来的，以后多写写语感会慢慢出来，基础会扎实的。

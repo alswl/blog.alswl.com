@@ -3,7 +3,7 @@ Author: alswl
 Slug: manage-weblogic-service
 Date: 2010-03-06 00:00:00
 Tags: Weblogic
-Category: Java编程和Java企业应用
+Category: Java
 
 ## 注册WebLogic成 windows服务
 

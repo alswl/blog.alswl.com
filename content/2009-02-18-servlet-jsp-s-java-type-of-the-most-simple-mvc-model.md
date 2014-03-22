@@ -3,7 +3,7 @@ Author: alswl
 Slug: servlet-jsp-s-java-type-of-the-most-simple-mvc-model
 Date: 2009-02-18 00:00:00
 Tags: MVC
-Category: Java编程和Java企业应用
+Category: Java
 
 来自Head First Servlet and JSP
 

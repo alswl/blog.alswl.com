@@ -3,7 +3,7 @@ Author: alswl
 Slug: dao-design-the-use-of-generics-to-avoid-duplication-of-dao
 Date: 2009-07-10 00:00:00
 Tags: DAO, Database
-Category: Java编程和Java企业应用
+Category: Java
 
 DAO的全称是Data Access Object数据访问接口。数据访问：顾名思义就是与数据库打交道。夹在业务逻辑与数据库资源中间。
 

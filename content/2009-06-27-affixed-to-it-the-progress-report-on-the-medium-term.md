@@ -3,7 +3,7 @@ Author: alswl
 Slug: affixed-to-it-the-progress-report-on-the-medium-term
 Date: 2009-06-27 00:00:00
 Tags: 贴吧
-Category: Java编程和Java企业应用
+Category: Java
 
 查看sql更新版本，我才发现这个项目已经做了将近2个月了。
 

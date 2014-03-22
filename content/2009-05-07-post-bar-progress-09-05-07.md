@@ -3,7 +3,7 @@ Author: alswl
 Slug: post-bar-progress-09-05-07
 Date: 2009-05-07 00:00:00
 Tags: Struts, 贴吧
-Category: Java编程和Java企业应用
+Category: Java
 
 今天写到创建帖子，在编码上遇到问题，jUnit下调用函数没有任何问题，那就表示问题出在Struts Filter捕获的文本上。
 

@@ -3,7 +3,7 @@ Author: alswl
 Slug: xiaonei-gadgets-come-to-an-end
 Date: 2009-06-12 00:00:00
 Tags: 人人
-Category: Java编程和Java企业应用
+Category: Java
 
 这段时间在写校内小工具，开心农场小外挂，刷刷人气的小外挂。
 

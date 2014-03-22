@@ -3,7 +3,7 @@ Author: alswl
 Slug: garbled-see-also-garbled
 Date: 2009-05-09 00:00:00
 Tags: Hibernate, Struts, 编码, 贴吧
-Category: Java编程和Java企业应用
+Category: Java
 
 今天解决了贴吧发帖的问题，可以正确的发送到正确的分类了。
 

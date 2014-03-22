@@ -3,7 +3,7 @@ Author: alswl
 Slug: learning-to-use-log4j
 Date: 2009-05-07 00:00:00
 Tags: log4j
-Category: Java编程和Java企业应用
+Category: Java
 
 今天用Log4j时候，感觉只显示message讯息太少了，直觉上这些流行的工具应该会提供更强大的定制功能，就去google了一下
 
