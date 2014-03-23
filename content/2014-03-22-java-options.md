@@ -4,7 +4,6 @@ Slug: java-options
 Date: 2014-03-22 18:31:55
 Tags:  JVM
 Category: Java
-Status: draft
 
 JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下：
 
