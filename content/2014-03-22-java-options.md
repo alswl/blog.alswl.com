@@ -1,6 +1,6 @@
 Title: Java 运行参数调整
 Author: alswl
-Slug: 2014
+Slug: java-options
 Date: 2014-03-22 18:31:55
 Tags:  JVM
 Category: Java
