@@ -19,6 +19,8 @@ JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮�
 [ Tuning JVM Garbage Collection for Production Deployments ](http://docs.oracle.com/cd/E13209_01/wlcp/wlss30/configwlss/jvmgc.html)
 [JVM -XX: 参数介绍](http://www.jvmer.com/jvm-xx-参数介绍/)
 
+<!-- more -->
+
 以下是一些经验调整：
 
 ```
