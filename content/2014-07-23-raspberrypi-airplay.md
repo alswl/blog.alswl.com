@@ -1,4 +1,4 @@
-Title: raspberrypi-airplay
+Title: 在 Raspberry Pi 上使用 AirPlay
 Author: alswl
 Slug: raspberrypi-airplay
 Date: 2014-07-23 23:19:50
