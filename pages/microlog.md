@@ -570,4 +570,4 @@ Date: 2012-05-14 21:21
 
 01.Jira 02.TODO done 03.ChinaJoy 04.null 05.null
 
-06.kich start 07.需求2 08.需求3 09.姐姐来上海
+06.kich start 07.需求2 08.需求3 09.姐姐来上海 10.Hackthon
