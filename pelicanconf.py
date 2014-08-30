@@ -2,11 +2,16 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
+import os
+
+#ROOT_DIR = os.path.abspath(os.path.dirname(__file__))  # user define
+
+
 AUTHOR = u'alswl'
 SITENAME = u'Log4D'
 SITEURL = ''
 
-THEME = 'pelican-bootstrap3'
+THEME = '/Users/alswl/dev/myproject/python/pelican-bootstrap3/'
 
 TIMEZONE = 'Asia/Shanghai'
 
@@ -19,7 +24,7 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
 PLUGIN_PATH = '/Users/alswl/dev/project/python/pelican-plugins'
-PLUGINS = ['summary', ]
+PLUGINS = ['summary', 'footer_insert']
 
 # Blogroll
 LINKS =  (
@@ -81,3 +86,15 @@ GOOGLE_ANALYTICS = 'UA-8822123-3'
 # Plugins
 
 SUMMARY_END_MARKER = '<!-- more -->'
+
+FOOTER_INSERT_HTML = u"""
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <p>
+       <small>原文链接: <a href="http://blog.log4d.com/%(url)s">http://blog.log4d.com/%(url)s</a><small><br>
+       <small>3a1ff193cee606bd1e2ea554a16353ee<small>
+   </p>
+</div>
+</div>
+"""
