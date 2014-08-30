@@ -91,10 +91,10 @@ FOOTER_INSERT_HTML = u"""
 <hr>
 <div class="panel">
 <div class="panel-body">
-   <p>
-       <small>原文链接: <a href="http://blog.log4d.com/%(url)s">http://blog.log4d.com/%(url)s</a><small><br>
-       <small>3a1ff193cee606bd1e2ea554a16353ee<small>
-   </p>
+   <small>原文链接: <a href="http://blog.log4d.com/%(url)s">http://blog.log4d.com/%(url)s</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small>
 </div>
 </div>
 """
+
+JIATHIS_PROFILE = '1604940'
