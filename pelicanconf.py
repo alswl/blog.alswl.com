@@ -32,9 +32,10 @@ LINKS =  (
 
 # Social widget
 SOCIAL = (
-    ('twitter', 'http://twitter.com/alswl'),
-    ('github', 'https://github.com/alswl'),
-    ('weibo', 'http://weibo.com/alswlx'),
+    ('RSS', 'http://blog.log4d.com/atom.xml'),
+    ('Twitter', 'http://twitter.com/alswl'),
+    ('Github', 'https://github.com/alswl'),
+    ('Weibo', 'http://weibo.com/alswlx'),
 )
 
 MENUITEMS = (
