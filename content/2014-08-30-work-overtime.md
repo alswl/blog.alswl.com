@@ -1,6 +1,6 @@
 Title: 加班那点事儿
 Author: alswl
-Slug: work overtime
+Slug: work-overtime
 Date: 2014-08-30 17:39:19
 Tags: 
 Category: 程序人生

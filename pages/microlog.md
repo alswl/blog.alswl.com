@@ -1313,4 +1313,4 @@ Date: 2012-05-14 21:21
 28. 4.0 almost done
 29. team segreation of duty, talk about team management with sm
 30. gtd review usage
-31. pelican
+31. pelican / work style
