@@ -1282,7 +1282,6 @@ Date: 2012-05-14 21:21
 
 ## 2014-08 ##
 
-
 01. Jira 
 02. TODO done 
 03. ChinaJoy 
@@ -1304,7 +1303,7 @@ Date: 2012-05-14 21:21
 19. mock 
 20. 4.0 one
 21. centos-dev 
-22. blog_meta
+22. blog\_meta
 23. blog extra
 24. movie import
 25. 百姓网 Fabric 虚拟化
@@ -1313,4 +1312,21 @@ Date: 2012-05-14 21:21
 28. 4.0 almost done
 29. team segreation of duty, talk about team management with sm
 30. gtd review usage
-31. pelican / work style
+31. pelican / work style / feed\_footer\_insert
+
+
+## 2014-09 ##
+
+01. Write down my time spend
+02. lei
+03. doctor
+04. 4.0 on p.s
+05. go to fudan midnight
+06. aunt
+07. null
+08. Mid Autumn / work at train
+09. null
+10. tb
+11. null
+12. Brotherhood of Blades
+13. cry two

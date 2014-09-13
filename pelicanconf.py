@@ -2,14 +2,11 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-import os
-
-#ROOT_DIR = os.path.abspath(os.path.dirname(__file__))  # user define
-
-
 AUTHOR = u'alswl'
 SITENAME = u'Log4D'
-SITEURL = ''
+SITEURL = 'http://blog.log4d.com'
+
+PATH = 'content'
 
 THEME = '/Users/alswl/dev/myproject/python/pelican-bootstrap3/'
 
@@ -23,7 +20,7 @@ FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
-PLUGIN_PATH = '/Users/alswl/dev/project/python/pelican-plugins'
+PLUGIN_PATHS = ['/Users/alswl/dev/project/python/pelican-plugins']
 PLUGINS = ['summary', 'footer_insert', 'feed_footer_insert']
 
 # Blogroll
