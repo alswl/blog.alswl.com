@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 
 AUTHOR = u'alswl'
 SITENAME = u'Log4D'
-SITEURL = 'http://blog.log4d.com'
 
 PATH = 'content'
 
@@ -49,7 +48,7 @@ PAGINATION_PATTERNS = (
 )
 
 # Uncomment following line if you want document-relative URLs when developing
-#RELATIVE_URLS = True
+RELATIVE_URLS = True
 
 ARTICLE_URL = '{date:%Y}/{date:%m}/{slug}/'
 ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{slug}/index.html'
