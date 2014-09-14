@@ -2,8 +2,8 @@ Title: SMS Backup 备份手机短信
 Author: alswl
 Slug: sms-backup-for-android
 Date: 2010-07-09 00:00:00
-Tags: Android, HTC G3
-Category: 移动手持
+Tags: 移动手持, Android, HTC G3
+Category: Efficiency
 
 alswl的一个癖好就是不喜欢删除信息，无论是QQ上面的还是手机短信，因此找一个信息备份工具就比较重要了。
 
