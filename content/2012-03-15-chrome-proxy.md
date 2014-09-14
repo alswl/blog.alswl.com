@@ -2,8 +2,8 @@ Title: Chrome 独立代理设置
 Author: alswl
 Slug: chrome-proxy
 Date: 2012-03-15 00:00:00
-Tags: Chrome, Privoxy, SwitchySharp
-Category: 技术达人
+Tags: 技术达人, Chrome, Privoxy, SwitchySharp
+Category: Efficiency
 
 Chrome 在2011年4月份时候，加入了两个新的实验性扩展分支，分别是 Web Navigation Extension API 以及 Proxy
 Extension API， 通过他们，可以让 Chrome 使用自己独立的代理。

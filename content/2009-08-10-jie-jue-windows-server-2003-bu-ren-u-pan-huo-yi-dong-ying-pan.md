@@ -2,8 +2,8 @@ Title: 解决windows server 2003不认U盘或移动硬盘
 Author: alswl
 Slug: jie-jue-windows-server-2003-bu-ren-u-pan-huo-yi-dong-ying-pan
 Date: 2009-08-10 00:00:00
-Tags: Windows
-Category: 技术达人
+Tags: 技术达人, Windows
+Category: Efficiency
 
 今天总监给我配了一台电脑，是HP的服务器，志强的X3210处理器。这样以后再也不用背着电脑翻墙了~
 

@@ -2,8 +2,8 @@ Title: 使用Delicious
 Author: alswl
 Slug: use-delicious
 Date: 2009-08-04 00:00:00
-Tags: 
-Category: 技术达人
+Tags: 技术达人, 
+Category: Efficiency
 
 很久之前就想找一个管理自己书签的地方，尝试了好几个中文网站，甚至当年尝试过百度的搜藏（百度的这个产品真是烂的一B）。但是都没有找到自己心仪的而作罢。
 

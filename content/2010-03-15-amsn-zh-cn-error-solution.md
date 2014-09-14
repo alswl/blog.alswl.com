@@ -2,8 +2,8 @@ Title: aMSN中文报错解决办法
 Author: alswl
 Slug: amsn-zh-cn-error-solution
 Date: 2010-03-15 00:00:00
-Tags: MSN
-Category: 技术达人
+Tags: 技术达人, MSN
+Category: Efficiency
 
 转载，不解释。
 

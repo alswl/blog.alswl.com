@@ -2,8 +2,8 @@ Title: 图片水印工具Binerus Image Commander
 Author: alswl
 Slug: picture-watermark-tool-binerus-image-commander
 Date: 2009-12-21 00:00:00
-Tags: 
-Category: 技术达人
+Tags: 技术达人, 
+Category: Efficiency
 
 最近实在是不方便上网，住处没有网络，偶尔有点若有若无的无线信号，还加了"12345678"这个终极密码。
 
