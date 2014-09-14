@@ -2,8 +2,8 @@ Title: 在 Raspberry Pi 上使用 AirPlay
 Author: alswl
 Slug: raspberrypi-airplay
 Date: 2014-07-23 23:19:50
-Tags: RaspberryPi
-Category: 硬件
+Tags: 硬件, RaspberryPi
+Category: Coding
 
 早在去年时候，我就发现有个叫做 [Raspberry Pi][] 的玩意，
 已经忘了是从那里得知这个东西。这个卡片大小的电路板是可以运行
