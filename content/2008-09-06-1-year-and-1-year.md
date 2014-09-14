@@ -2,7 +2,7 @@ Title: 1年又1年
 Author: alswl
 Slug: 1-year-and-1-year
 Date: 2008-09-06 00:00:00
-Tags: 青春的彩虹, 
+Tags: 青春的彩虹
 Category: Life
 Status: draft
 

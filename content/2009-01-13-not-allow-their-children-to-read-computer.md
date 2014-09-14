@@ -2,7 +2,7 @@ Title: 不让自己的孩子读计算机
 Author: alswl
 Slug: not-allow-their-children-to-read-computer
 Date: 2009-01-13 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 Status: draft
 

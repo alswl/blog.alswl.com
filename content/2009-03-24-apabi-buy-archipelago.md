@@ -2,7 +2,7 @@ Title: Apabi买书奇遇记
 Author: alswl
 Slug: apabi-buy-archipelago
 Date: 2009-03-24 00:00:00
-Tags: 关注互联网, 
+Tags: 关注互联网
 Category: Internet
 
 最近为OpenSSL焦头烂额，资料实在太少

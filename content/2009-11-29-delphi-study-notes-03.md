@@ -2,7 +2,7 @@ Title: Delphi学习笔记03
 Author: alswl
 Slug: delphi-study-notes-03
 Date: 2009-11-29 00:00:00
-Tags: Delphi, 
+Tags: Delphi
 Category: Coding
 
 学习Delphi第三天，早晨起来之后跑去图书馆找了一本书《[Delphi开发经验技巧宝典](http://www.china-

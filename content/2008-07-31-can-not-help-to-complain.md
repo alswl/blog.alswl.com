@@ -2,7 +2,7 @@ Title: 忍不住来发牢骚
 Author: alswl
 Slug: can-not-help-to-complain
 Date: 2008-07-31 00:00:00
-Tags: 青春的彩虹, 
+Tags: 青春的彩虹
 Category: Life
 Status: draft
 

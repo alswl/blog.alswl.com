@@ -2,7 +2,7 @@ Title: 实习第二天+健身房第一天
 Author: alswl
 Slug: practice-the-first-day-of-the-next-day-gym
 Date: 2009-07-30 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 
 刚完成主管布置的Html设计，本来计划今天完成，结果提前到上午10点。看看主管不在，就偷偷写一篇日志吧。

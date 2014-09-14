@@ -2,7 +2,7 @@ Title: 回家第一天
 Author: alswl
 Slug: the-first-day-home
 Date: 2009-10-08 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 
 由题目可知，本文必定是流水账。

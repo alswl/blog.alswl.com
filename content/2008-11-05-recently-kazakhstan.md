@@ -2,7 +2,7 @@ Title: 最近哈
 Author: alswl
 Slug: recently-kazakhstan
 Date: 2008-11-05 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 Status: draft
 

@@ -2,7 +2,7 @@ Title: 自然的感觉
 Author: alswl
 Slug: natural-feeling
 Date: 2008-08-13 00:00:00
-Tags: 青春的彩虹, 
+Tags: 青春的彩虹
 Category: Life
 Status: draft
 

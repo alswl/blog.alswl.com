@@ -2,7 +2,7 @@ Title: 不能再这样下去了
 Author: alswl
 Slug: could-not-afford-to-go-on
 Date: 2008-08-11 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 Status: draft
 

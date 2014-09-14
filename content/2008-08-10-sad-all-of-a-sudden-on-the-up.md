@@ -2,7 +2,7 @@ Title: 一下子就伤感起来
 Author: alswl
 Slug: sad-all-of-a-sudden-on-the-up
 Date: 2008-08-10 00:00:00
-Tags: 青春的彩虹, 
+Tags: 青春的彩虹
 Category: Life
 Status: draft
 

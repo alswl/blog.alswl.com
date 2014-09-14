@@ -2,7 +2,7 @@ Title: 很久没写日志
 Author: alswl
 Slug: long-time-no-write-log
 Date: 2009-05-05 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 Status: draft
 

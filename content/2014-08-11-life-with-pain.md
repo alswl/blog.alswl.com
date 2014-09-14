@@ -2,7 +2,7 @@ Title: 痛快活
 Author: alswl
 Slug: life-with-pain
 Date: 2014-08-11 21:07:29
-Tags: 感悟, 
+Tags: 感悟
 Category: Thinking
 
 上个月回家，在亲戚家里和侄子聊天，他刚从大学毕业，在家人的帮助下面找了算是对口的工作，对工作之后的状态有一些茫然，看不到前途和未来，我问了一个问题：

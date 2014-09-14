@@ -2,7 +2,7 @@ Title: 那些时候，那些事-2005日志存档
 Author: alswl
 Slug: those-times-those-who-do-log-archiving-2005
 Date: 2009-07-13 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 
 ## 引子

@@ -2,7 +2,7 @@ Title: 被击败了
 Author: alswl
 Slug: was-defeated
 Date: 2009-02-08 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 
 为了那个踩校内的工具，搞了半天，java失败，最基本的POST都写不出来，惭愧的```

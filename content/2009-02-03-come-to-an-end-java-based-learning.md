@@ -2,7 +2,7 @@ Title: Java基础学习告一段落
 Author: alswl
 Slug: come-to-an-end-java-based-learning
 Date: 2009-02-03 00:00:00
-Tags: Java, 
+Tags: Java
 Category: Coding
 Status: draft
 

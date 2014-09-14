@@ -2,7 +2,7 @@ Title: 不管我们有多么甜多么美多么疯多么热烈的曾经，我们�
 Author: alswl
 Slug: love-of-grow-up
 Date: 2010-03-30 00:00:00
-Tags: 青春的彩虹, 
+Tags: 青春的彩虹
 Category: Life
 
 关于成长，关于爱情，这些文字给出了分析，可惜，没有给出答案……

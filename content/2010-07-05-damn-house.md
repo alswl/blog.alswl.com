@@ -2,7 +2,7 @@ Title: 可恶的房子
 Author: alswl
 Slug: damn-house
 Date: 2010-07-05 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 
 趁着离上班还有15分钟，赶紧来倒倒苦水。

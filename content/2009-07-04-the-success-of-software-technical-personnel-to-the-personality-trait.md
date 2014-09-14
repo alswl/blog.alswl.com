@@ -2,7 +2,7 @@ Title: 成功软件技术人员的性格特质【转】
 Author: alswl
 Slug: the-success-of-software-technical-personnel-to-the-personality-trait
 Date: 2009-07-04 00:00:00
-Tags: 程序人生, 
+Tags: 程序人生
 Category: View
 
 原文作者：施文祥

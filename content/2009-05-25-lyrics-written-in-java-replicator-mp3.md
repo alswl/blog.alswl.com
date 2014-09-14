@@ -2,7 +2,7 @@ Title: Java写的Mp3歌词复制器
 Author: alswl
 Slug: lyrics-written-in-java-replicator-mp3
 Date: 2009-05-25 00:00:00
-Tags: Java, 
+Tags: Java
 Category: Coding
 
 大家可能会遇到这样的情况，Mp3里有很多歌，电脑上也有很多相同的歌，但是有歌词。把歌词同步到Mp3播放器非常麻烦，我以前用千千静听导入目录，然后逐个播放，或

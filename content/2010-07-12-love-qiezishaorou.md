@@ -2,7 +2,7 @@ Title: 最爱茄子烧肉
 Author: alswl
 Slug: love-qiezishaorou
 Date: 2010-07-12 00:00:00
-Tags: 美食|烹饪, 
+Tags: 美食|烹饪
 Category: Life
 
 大学里面有一条小吃一条街，其中有一个店面叫"思味特"，取义"Sweet"，其中有一道名为茄子烧肉的盖浇饭特别好吃，今天，我就来试试茄子烧肉。

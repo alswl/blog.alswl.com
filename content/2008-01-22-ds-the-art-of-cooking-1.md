@@ -2,7 +2,7 @@ Title: D氏-做饭的艺术-1
 Author: alswl
 Slug: ds-the-art-of-cooking-1
 Date: 2008-01-22 00:00:00
-Tags: 美食|烹饪, 
+Tags: 美食|烹饪
 Category: Life
 Status: draft
 

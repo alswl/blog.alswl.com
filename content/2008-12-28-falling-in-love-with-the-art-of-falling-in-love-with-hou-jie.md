@@ -2,7 +2,7 @@ Title: 爱上艺术，爱上侯捷
 Author: alswl
 Slug: falling-in-love-with-the-art-of-falling-in-love-with-hou-jie
 Date: 2008-12-28 00:00:00
-Tags: 程序人生, 
+Tags: 程序人生
 Category: View
 
 初识侯捷是因为那本在Windows编程环境下面的巨作《深入浅出MFC》，尽管是96年前后写的书，依然给我在思想和技术上带来了很大的震撼和飞跃。可惜最近忙于A

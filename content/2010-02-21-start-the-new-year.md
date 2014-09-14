@@ -2,7 +2,7 @@ Title: 新的一年开始了
 Author: alswl
 Slug: start-the-new-year
 Date: 2010-02-21 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 
 博客已经两周没有更新了，这段时间是在太忙，和同学聚会，和朋友唱歌，和哥们打牌，在原有的"搓鸡"（诈金花）和牛牛基础上，我又学会的新玩法"比鸡"和"摸豁档"，

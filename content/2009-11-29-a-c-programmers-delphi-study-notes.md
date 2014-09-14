@@ -2,7 +2,7 @@ Title: 一个C++程序员的Delphi学习笔记【转】
 Author: alswl
 Slug: a-c-programmers-delphi-study-notes
 Date: 2009-11-29 00:00:00
-Tags: Delphi, 
+Tags: Delphi
 Category: Coding
 
 &nbsp_place_holder;早晨起来就看到这篇好文章，转载过来。

@@ -2,7 +2,7 @@ Title: 休息咯
 Author: alswl
 Slug: hava-a-rest
 Date: 2009-09-06 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 Status: draft
 

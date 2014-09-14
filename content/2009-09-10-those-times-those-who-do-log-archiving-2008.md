@@ -2,7 +2,7 @@ Title: 那些时候，那些事-2008日志存档
 Author: alswl
 Slug: those-times-those-who-do-log-archiving-2008
 Date: 2009-09-10 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 
 2008这年我大二升大三，是我大学生活情感最失败的一个年度，也是我最幸福的一个年度。

@@ -2,7 +2,7 @@ Title: Mp3Lrc的可执行文件
 Author: alswl
 Slug: the-executable-file-mp3lrc
 Date: 2009-05-26 00:00:00
-Tags: Java, 
+Tags: Java
 Category: Coding
 
 早上把代码输出成了Runnable Jar，生成一个jar格式的文件，只要是有JavaSE的电脑都可以运行了。

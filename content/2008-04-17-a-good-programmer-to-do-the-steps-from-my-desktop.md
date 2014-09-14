@@ -2,7 +2,7 @@ Title: 做一个好的程序员的步骤-来自我的桌面
 Author: alswl
 Slug: a-good-programmer-to-do-the-steps-from-my-desktop
 Date: 2008-04-17 00:00:00
-Tags: 程序人生, 
+Tags: 程序人生
 Category: View
 Status: draft
 

@@ -2,7 +2,7 @@ Title: CMMI混乱中```
 Author: alswl
 Slug: chaos-cmmi
 Date: 2009-08-17 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 
 这两天没有写日志，白天挺忙，晚上也忙，打真三变态版~~

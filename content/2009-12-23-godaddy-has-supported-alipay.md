@@ -2,7 +2,7 @@ Title: Godaddy已经支持支付宝
 Author: alswl
 Slug: godaddy-has-supported-alipay
 Date: 2009-12-23 00:00:00
-Tags: 建站心得, 
+Tags: 建站心得
 Category: Coding
 
 &nbsp_place_holder;

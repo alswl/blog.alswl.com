@@ -2,7 +2,7 @@ Title: 唉，工作室
 Author: alswl
 Slug: alas-the-studio
 Date: 2009-05-14 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 
 明天应该有会计考试，要清空主楼自习的教室，所以自习室里考研的同学都把书搬到工作室来了

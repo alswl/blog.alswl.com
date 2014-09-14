@@ -2,7 +2,7 @@ Title: 刚做了一个巨搞笑的梦
 Author: alswl
 Slug: has-just-made-a-huge-funny-dream
 Date: 2008-06-01 00:00:00
-Tags: 程序人生, 
+Tags: 程序人生
 Category: View
 Status: draft
 

@@ -2,7 +2,7 @@ Title: 汉王电纸书？
 Author: alswl
 Slug: hanwang-electric-paper-book
 Date: 2009-06-20 00:00:00
-Tags: 关注互联网, 
+Tags: 关注互联网
 Category: Internet
 
 偶尔看到一个广告，汉王电纸书，好奇心驱使之下点到汉王主页查看该产品。

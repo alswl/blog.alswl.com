@@ -2,7 +2,7 @@ Title: Python输入16进制保存到文件
 Author: alswl
 Slug: python-enter-the-16-hex-save-to-file
 Date: 2009-10-07 00:00:00
-Tags: Python, 
+Tags: Python
 Category: Coding
 
 （题目有点勉强，不过问题真的很难描述，希望Google/Baidu到这里的童鞋不要失望） 前几天给[zwwooooo](http://zww.me/)写一个

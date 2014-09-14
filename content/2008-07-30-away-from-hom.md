@@ -2,7 +2,7 @@ Title: 离家
 Author: alswl
 Slug: away-from-hom
 Date: 2008-07-30 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 Status: draft
 

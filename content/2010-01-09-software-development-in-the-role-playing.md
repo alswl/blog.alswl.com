@@ -2,7 +2,7 @@ Title: 软件开发中的角色扮演
 Author: alswl
 Slug: software-development-in-the-role-playing
 Date: 2010-01-09 00:00:00
-Tags: 软件开发和项目管理, 
+Tags: 软件开发和项目管理
 Category: Managment
 
 说到软件开发的过程、环节等等，我印象里只剩下一大堆术语和一些流程的大概，但是因为缺乏正规开发的经验，所以并没有对软件开发中每个人的角色有深入理解，今天在周末

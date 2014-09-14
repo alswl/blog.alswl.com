@@ -2,7 +2,7 @@ Title: 那些时候，那些事-2007日志存档
 Author: alswl
 Slug: those-times-those-who-do-log-archiving-2007
 Date: 2009-07-21 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 
 2007年是我大二升到大三时候，正处于迷惘和挣扎时候，博客也从MSN Space换到Baidu Hi,

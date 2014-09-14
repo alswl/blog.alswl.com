@@ -2,7 +2,7 @@ Title: 我喜欢你，但是不会迷失自我
 Author: alswl
 Slug: i-love-you-but-do-not-lose-self
 Date: 2011-12-03 00:00:00
-Tags: 青春的彩虹, 
+Tags: 青春的彩虹
 Category: Life
 Status: draft
 

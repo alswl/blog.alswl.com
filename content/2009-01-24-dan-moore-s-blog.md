@@ -2,7 +2,7 @@ Title: Dan Moore的博客
 Author: alswl
 Slug: dan-moore-s-blog
 Date: 2009-01-24 00:00:00
-Tags: 关注互联网, 
+Tags: 关注互联网
 Category: Internet
 Status: draft
 

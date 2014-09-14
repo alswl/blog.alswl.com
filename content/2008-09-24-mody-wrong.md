@@ -2,7 +2,7 @@ Title: 做错了么
 Author: alswl
 Slug: mody-wrong
 Date: 2008-09-24 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 Status: draft
 

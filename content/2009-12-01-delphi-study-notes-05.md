@@ -2,7 +2,7 @@ Title: Delphi学习笔记05
 Author: alswl
 Slug: delphi-study-notes-05
 Date: 2009-12-01 00:00:00
-Tags: Delphi, 
+Tags: Delphi
 Category: Coding
 
 今天是第五天了，我对自己的学习速度很不满意，还是处在半懵懂状态。语法还要经过大脑才能想出来，一点不顺手。

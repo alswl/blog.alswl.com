@@ -2,7 +2,7 @@ Title: JSP书写要规范...
 Author: alswl
 Slug: jsp-written-to-standardize-the
 Date: 2008-10-23 00:00:00
-Tags: Java, 
+Tags: Java
 Category: Coding
 Status: draft
 

@@ -2,7 +2,7 @@ Title: Cinderella,听我说
 Author: alswl
 Slug: cinderella-listen-to-me
 Date: 2008-08-01 00:00:00
-Tags: 青春的彩虹, 
+Tags: 青春的彩虹
 Category: Life
 Status: draft
 

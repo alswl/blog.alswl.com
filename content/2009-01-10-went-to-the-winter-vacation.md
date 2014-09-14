@@ -2,7 +2,7 @@ Title: 又到寒假
 Author: alswl
 Slug: went-to-the-winter-vacation
 Date: 2009-01-10 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 Status: draft
 

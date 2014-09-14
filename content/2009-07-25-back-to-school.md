@@ -2,7 +2,7 @@ Title: 返校
 Author: alswl
 Slug: back-to-school
 Date: 2009-07-25 00:00:00
-Tags: 日记, 
+Tags: 日记
 Category: Life
 Status: draft
 
