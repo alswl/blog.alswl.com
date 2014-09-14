@@ -2,8 +2,8 @@ Title: 使用Firebug和FirePHP调试PHP[译文]
 Author: alswl
 Slug: use-firebug-and-firephp-debugging-php
 Date: 2010-03-15 00:00:00
-Tags: Firebug, FirePHP, 译文
-Category: PHP编程
+Tags: PHP, Firebug, FirePHP, 译文
+Category: Coding
 
 这是我第一篇译文，在写WordPress 主题时候偶尔看到的FirePHP插件，看都这篇文章，不知道为什么，动了翻译的念头。
 

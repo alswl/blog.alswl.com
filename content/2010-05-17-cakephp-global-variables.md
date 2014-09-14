@@ -2,8 +2,8 @@ Title: CakePHP的全局变量
 Author: alswl
 Slug: cakephp-global-variables
 Date: 2010-05-17 00:00:00
-Tags: AzaAjaxChat, CakePHP
-Category: PHP编程
+Tags: PHP, AzaAjaxChat, CakePHP
+Category: Coding
 
 毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。
 
@@ -73,5 +73,5 @@ ChinaUnix.net](http://bbs.chinaunix.net/viewthread.php?tid=79537)
 
 我再检查一个基于PHP的聊天系统，果然是通过数据库的 online_users来实现在线用户的保存。
 
-吃亏吃在用传统的Java思想做PHP编程，并且PHP接触时间太短，以后学习的时候必须多用用心了~
+吃亏吃在用传统的Java思想做PHP，并且PHP接触时间太短，以后学习的时候必须多用用心了~
 
