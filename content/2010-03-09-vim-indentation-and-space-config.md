@@ -2,8 +2,8 @@ Title: Vim中缩进和空格的使用
 Author: alswl
 Slug: vim-indentation-and-space-config
 Date: 2010-03-09 00:00:00
-Tags: Vim
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, Vim
+Category: Efficiency
 
 原文链接：[WindStorm的技术空间: vim中缩进与空格的设置介绍](http://windwithstorm.blogspot.com/)（Blog
 Spot）

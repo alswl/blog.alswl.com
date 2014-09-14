@@ -2,8 +2,8 @@ Title: 使用MoinMoin作为个人KMS
 Author: alswl
 Slug: moinmoin-kms
 Date: 2011-12-26 00:00:00
-Tags: image2attach, KMS, MoinMoin, nginx, uwsgi, wiz
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, image2attach, KMS, MoinMoin, nginx, uwsgi, wiz
+Category: Efficiency
 
 去年9月份时候，我写过一篇《[我所使用的知识管理系统](http://log4d.com/2010/09/my-kms)》
 来介绍我使用的KMS系统。当时经过我层层筛选之后，我选用了Wiz作为我的KMS。

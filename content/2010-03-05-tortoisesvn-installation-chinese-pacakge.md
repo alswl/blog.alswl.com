@@ -2,8 +2,8 @@ Title: TortoiseSVN中文版安装
 Author: alswl
 Slug: tortoisesvn-installation-chinese-pacakge
 Date: 2010-03-05 00:00:00
-Tags: SVN, TortoiseSVN
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, SVN, TortoiseSVN
+Category: Efficiency
 
 虽然大部分情况下我都是用Subclipse连接SVN服务器，但是为了让整个团队在Delphi下使用上SVN，就需要使用SVN的客户端了，TortoiseSV
 N是目前比较流行的SVN客户端，目前最新版是1.6.7。

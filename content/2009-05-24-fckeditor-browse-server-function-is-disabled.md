@@ -2,8 +2,8 @@ Title: 禁用FCKeditor浏览服务器功能
 Author: alswl
 Slug: fckeditor-browse-server-function-is-disabled
 Date: 2009-05-24 00:00:00
-Tags: CKeditor
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, CKeditor
+Category: Efficiency
 
 FCKeditor应该是功能最强大的网页编辑器了，提供js版本和java版本，而且功能特别丰富。
 

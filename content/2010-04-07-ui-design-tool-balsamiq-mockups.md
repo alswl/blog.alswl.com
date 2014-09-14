@@ -2,8 +2,8 @@ Title: 界面设计利器-Balsamiq Mockups
 Author: alswl
 Slug: ui-design-tool-balsamiq-mockups
 Date: 2010-04-07 00:00:00
-Tags: Mockups, UI
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, Mockups, UI
+Category: Efficiency
 
 在最近的一次项目进行过程中，我体会到UI前期Demo设计的重要性，为此付出了惨痛的代价，痛定思痛，我决定以后一定要通过一个完整的页面对界面进行描述，这里隆重
 介绍Mockups。

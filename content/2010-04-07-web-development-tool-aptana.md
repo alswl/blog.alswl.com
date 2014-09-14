@@ -2,8 +2,8 @@ Title: Web开发利器-Aptana
 Author: alswl
 Slug: web-development-tool-aptana
 Date: 2010-04-07 00:00:00
-Tags: Aptana, Eclipse, IDE
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, Aptana, Eclipse, IDE
+Category: Efficiency
 
 闲逛时候意外发现了一款开发利器Aptana，介绍说是JavaScript编辑利器，我冲着试一试的心理去官网溜达了一圈，发现那篇介绍问完完全全错了，Aptan
 a哪里只是JavaScript编辑器啊，完全是Web开发18般武艺样样精通啊。

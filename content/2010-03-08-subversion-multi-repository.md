@@ -2,8 +2,8 @@ Title: SubVersion建立多个版本库
 Author: alswl
 Slug: subversion-multi-repository
 Date: 2010-03-08 00:00:00
-Tags: SVN
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, SVN
+Category: Efficiency
 
 由于刚接触SVN时间不长，当时建立版本库时候图方便，只建立了一个版本库。现在由于项目需要，需要建立多个版本库，这让我很头疼。经过一番摸索，终于知晓了如何在已
 有单个版本库情况下面建立多个版本库。

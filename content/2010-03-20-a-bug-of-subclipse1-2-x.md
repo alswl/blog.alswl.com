@@ -2,8 +2,8 @@ Title: Subclipse1.2.x的一个Bug
 Author: alswl
 Slug: a-bug-of-subclipse1-2-x
 Date: 2010-03-20 00:00:00
-Tags: Subclipse, SVN
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, Subclipse, SVN
+Category: Efficiency
 
 ### 背景
 

@@ -2,8 +2,8 @@ Title: Eclipse的奇淫巧计【转】
 Author: alswl
 Slug: eclipse-of-the-odd
 Date: 2009-01-24 00:00:00
-Tags: Eclipse
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, Eclipse
+Category: Efficiency
 
 代码篇：
 

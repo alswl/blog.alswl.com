@@ -2,8 +2,8 @@ Title: SQL格式化工具-SQL Pretty Printer
 Author: alswl
 Slug: sql-format-tool-sql-pretty-printer
 Date: 2010-07-28 00:00:00
-Tags: SQL Pretty Printer
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, SQL Pretty Printer
+Category: Efficiency
 
 ### 背景
 

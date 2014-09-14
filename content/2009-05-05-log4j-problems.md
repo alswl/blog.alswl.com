@@ -2,8 +2,8 @@ Title: Log4j 遇到的问题
 Author: alswl
 Slug: log4j-problems
 Date: 2009-05-05 00:00:00
-Tags: log4j
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, log4j
+Category: Efficiency
 
 今天使用 Log4j 遇到问题是只能打印ERROR级别
 

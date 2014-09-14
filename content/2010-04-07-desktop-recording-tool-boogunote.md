@@ -2,8 +2,8 @@ Title: 桌面记录神器-BooguNote
 Author: alswl
 Slug: desktop-recording-tool-boogunote
 Date: 2010-04-07 00:00:00
-Tags: BooguNote, GTD
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, BooguNote, GTD
+Category: Efficiency
 
 之前做GTD一直基于Google Canledar，记录主要是Google NoteBook和Google Docs。尽管Google
 Docs支持Gears离线查看，但是并不支持离线创建文件（Docs的编辑能力还不如CKEditor）。

@@ -2,8 +2,8 @@ Title: 在Eclipse中使用VSS
 Author: alswl
 Slug: the-use-of-vss-in-eclipse
 Date: 2010-02-24 00:00:00
-Tags: Eclipse, VSS
-Category: 工欲善其事必先利其器
+Tags: 工欲善其事必先利其器, Eclipse, VSS
+Category: Efficiency
 
 原文链接：[Eclipse中安装配置VSS -
 51CTO.COM](http://developer.51cto.com/art/200906/127171.htm)
