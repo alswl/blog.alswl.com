@@ -2,8 +2,8 @@ Title: MemberShip在动软生成器下UserId的问题
 Author: alswl
 Slug: membership-moving-soft-issue-of-builder-under-the-userid
 Date: 2009-10-23 00:00:00
-Tags: CodeMatic, MemberShip
-Category: Microsoft .Net
+Tags: dotNet, CodeMatic, MemberShip
+Category: Coding
 
 ## 背景
 

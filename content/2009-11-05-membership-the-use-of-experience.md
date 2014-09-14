@@ -2,8 +2,8 @@ Title: MemberShip使用心得
 Author: alswl
 Slug: membership-the-use-of-experience
 Date: 2009-11-05 00:00:00
-Tags: ASP.net, MemberShip
-Category: Microsoft .Net
+Tags: dotNet, ASP.net, MemberShip
+Category: Coding
 
 花了很大一段时间在学习MemberShip，总是要留下一些纪念文章的。
 我之前的日志提到过一个简单的用户权限设计：User+Role+UserInRole([http://log4d.com/2009/06/design-of-
