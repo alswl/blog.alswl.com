@@ -2,8 +2,8 @@ Title: Delphi学习笔记06
 Author: alswl
 Slug: delphi-study-notes-06
 Date: 2009-12-05 00:00:00
-Tags: 
-Category: Delphi编程
+Tags: Delphi, 
+Category: Coding
 
 我的博客所在的江西服务器需要服务器搬迁，所以这两天博客无法访问，看到404错误的童鞋们对不起拉…
 

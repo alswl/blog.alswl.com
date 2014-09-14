@@ -2,8 +2,8 @@ Title: Dlphi资料小汇总
 Author: alswl
 Slug: dlphi-a-small-summary-of-knowledge
 Date: 2009-12-05 00:00:00
-Tags: 
-Category: Delphi编程
+Tags: Delphi, 
+Category: Coding
 
 学Delphi大概一周时间，我经历从当初的初生牛犊不怕虎，到现在感慨Delphi的强大和复杂。说实话，我以前觉得Delphi是一门过气的语言，现在我重新修正
 自己的观点，没有弱势的语言，只有菜鸟的程序员。

@@ -2,8 +2,8 @@ Title: Delphi学习笔记02
 Author: alswl
 Slug: delphi-study-notes-02
 Date: 2009-11-28 00:00:00
-Tags: Pascal
-Category: Delphi编程
+Tags: Delphi, Pascal
+Category: Coding
 
 今天算是学习Delphi的第二天，昨天熟悉了一下基本概念和开发环境，写了一个简单的Hello world!（传送门-[Hello
 world!](http://log4d.com/2009/11/delphi-study-notes-01)）。
