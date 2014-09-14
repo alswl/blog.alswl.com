@@ -2,8 +2,8 @@ Title: 成功的定义
 Author: alswl
 Slug: the-definition-of-success
 Date: 2009-07-07 00:00:00
-Tags: 
-Category: 碎碎念
+Tags: 碎碎念, 
+Category: View
 
 最近在看《我的青春谁做主》，其中有一集是老太太和青楚讲成功的定义，我听了挺有感触，摘录如下：
 

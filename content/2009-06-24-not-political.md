@@ -2,8 +2,8 @@ Title: 不谈政治
 Author: alswl
 Slug: not-political
 Date: 2009-06-24 00:00:00
-Tags: 
-Category: 碎碎念
+Tags: 碎碎念, 
+Category: View
 
 刚知道湖北那块发生的事情，就不在这儿说了，以免被河蟹，如果各位有兴趣可以去百度谷歌搜索。
 
