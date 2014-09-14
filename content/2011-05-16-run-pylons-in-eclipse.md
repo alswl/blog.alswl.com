@@ -2,7 +2,7 @@ Title: Eclipse中运行Pylons
 Author: alswl
 Slug: run-pylons-in-eclipse
 Date: 2011-05-16 00:00:00
-Tags: Python编程, Eclipse, Pylons
+Tags: Python, Eclipse, Pylons
 Category: Coding
 
 官方中pylons都是通过在shell中运行paster serve --reload

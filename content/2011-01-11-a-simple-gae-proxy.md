@@ -2,7 +2,7 @@ Title: 最简陋的GAE代理
 Author: alswl
 Slug: a-simple-gae-proxy
 Date: 2011-01-11 00:00:00
-Tags: Python编程, GAE
+Tags: Python, GAE
 Category: Coding
 
 年前换了一次服务器，之后发现[Lifestream](http://log4d.com/stream)的Errors飙升到1000+错误，检查一下，发现是获

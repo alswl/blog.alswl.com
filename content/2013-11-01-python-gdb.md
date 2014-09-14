@@ -2,7 +2,7 @@ Title: 在 Python 中使用 GDB 来调试[译文]
 Author: alswl
 Slug: python-gdb
 Date: 2013-11-01 01:11
-Tags: Python编程, GDB, 译文
+Tags: Python, GDB, 译文
 Category: Coding
 
 

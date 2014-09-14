@@ -2,7 +2,7 @@ Title: 当Google APP Engine遇上校内
 Author: alswl
 Slug: when-google-app-engine-encounter-campus
 Date: 2009-09-27 00:00:00
-Tags: Python编程, GAE, 人人
+Tags: Python, GAE, 人人
 Category: Coding
 
 昨天看《[程序员](http://www.csdn.net)》时候看到一篇讲开放接口的文章，是FaceBook的一个开发人员写的，讲了很多关于开放平台的东西

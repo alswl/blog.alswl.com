@@ -2,7 +2,7 @@ Title: Python读写文件
 Author: alswl
 Slug: python-to-read-and-write-files
 Date: 2009-09-12 00:00:00
-Tags: Python编程, 
+Tags: Python, 
 Category: Coding
 
 本文来源：[Python天天美味(17) - open读写文件 - CoderZh的技术博客 -

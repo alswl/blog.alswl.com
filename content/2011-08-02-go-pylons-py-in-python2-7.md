@@ -2,7 +2,7 @@ Title: go-pylons.py在Python2.7下错误解决
 Author: alswl
 Slug: go-pylons-py-in-python2-7
 Date: 2011-08-02 00:00:00
-Tags: Python编程, Pylons
+Tags: Python, Pylons
 Category: Coding
 
 当使用 Python2.7 +[ go-pylons.py](http://pylonshq.com/download/1.0/go-pylons.py)

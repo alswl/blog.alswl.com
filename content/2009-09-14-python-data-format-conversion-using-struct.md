@@ -2,7 +2,7 @@ Title: Python中使用Struct数据格式转换
 Author: alswl
 Slug: python-data-format-conversion-using-struct
 Date: 2009-09-14 00:00:00
-Tags: Python编程, 
+Tags: Python, 
 Category: Coding
 
 本文来源：[Python模块学习 ---- struct 数据格式转换 - JGood的专栏 -
