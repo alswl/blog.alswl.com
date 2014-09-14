@@ -46,7 +46,7 @@ python django GAE
 
 PHP
 
-#### Flash编程
+#### Flash
 
 Flex Flash ActionScript
 

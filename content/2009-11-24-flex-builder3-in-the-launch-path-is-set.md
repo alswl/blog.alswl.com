@@ -2,8 +2,8 @@ Title: Flex Builder3中的launch path设置
 Author: alswl
 Slug: flex-builder3-in-the-launch-path-is-set
 Date: 2009-11-24 00:00:00
-Tags: Flex, Flex Builder
-Category: Flash编程
+Tags: Flash, Flex, Flex Builder
+Category: Coding
 
 在Flex
 Builder3中，想运行或者调试一个Flex项目，有Run/Debug/Profile三种运行方式。当我点击这三种方式的按钮时，都会报出一下警告：
