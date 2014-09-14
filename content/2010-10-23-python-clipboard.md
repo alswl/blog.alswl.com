@@ -2,8 +2,8 @@ Title: Python读写剪贴板
 Author: alswl
 Slug: python-clipboard
 Date: 2010-10-23 00:00:00
-Tags: PyWin
-Category: Python编程
+Tags: Python编程, PyWin
+Category: Coding
 
 最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。
 

@@ -2,8 +2,8 @@ Title: urllib2.urlopen的中文URL问题
 Author: alswl
 Slug: urllib2-urlopen-unicode
 Date: 2011-06-14 00:00:00
-Tags: 
-Category: Python编程
+Tags: Python编程, 
+Category: Coding
 
 在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的，
 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。

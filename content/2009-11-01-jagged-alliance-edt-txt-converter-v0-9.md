@@ -2,8 +2,8 @@ Title: 铁血联盟EdtTxt转换器v0.9
 Author: alswl
 Slug: jagged-alliance-edt-txt-converter-v0-9
 Date: 2009-11-01 00:00:00
-Tags: 
-Category: Python编程
+Tags: Python编程, 
+Category: Coding
 
 上个月时候，[zwwooooo](http://zww.me/)同鞋联系我让帮写一个铁血联盟中需要用到的Edt<->Txt转换器，我前前后后大约三个星期完成
 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高

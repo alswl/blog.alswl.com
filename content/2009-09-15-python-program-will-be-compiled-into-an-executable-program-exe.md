@@ -2,8 +2,8 @@ Title: 将Python程序编译为exe可执行程序
 Author: alswl
 Slug: python-program-will-be-compiled-into-an-executable-program-exe
 Date: 2009-09-15 00:00:00
-Tags: Lib
-Category: Python编程
+Tags: Python编程, Lib
+Category: Coding
 
 Python很强大，这个py2exe程序能够把.py文件编译为.exe可执行文件，真是如虎添翼啊。
 

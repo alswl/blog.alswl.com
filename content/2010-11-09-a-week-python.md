@@ -2,8 +2,8 @@ Title: 一周Python小记
 Author: alswl
 Slug: a-week-python
 Date: 2010-11-09 00:00:00
-Tags: pymssql, PyYAML, YAML
-Category: Python编程
+Tags: Python编程, pymssql, PyYAML, YAML
+Category: Coding
 
 上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。
 

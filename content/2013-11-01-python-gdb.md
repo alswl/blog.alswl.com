@@ -2,8 +2,8 @@ Title: 在 Python 中使用 GDB 来调试[译文]
 Author: alswl
 Slug: python-gdb
 Date: 2013-11-01 01:11
-Tags: GDB, 译文
-Category: Python编程
+Tags: Python编程, GDB, 译文
+Category: Coding
 
 
 大约一年前，我接触了 Java 中的 [Btrace](http://kenai.com/projects/btrace)

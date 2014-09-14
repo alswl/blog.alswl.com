@@ -2,8 +2,8 @@ Title: python中目录与文件操作
 Author: alswl
 Slug: python-in-the-directory-and-file-operations
 Date: 2009-09-16 00:00:00
-Tags: 
-Category: Python编程
+Tags: Python编程, 
+Category: Coding
 
 本文来源：[python:目录与文件操作_浸在苏打水里的玩偶](http://hi.baidu.com/javalang/blog/item/6ce3293
 f866596ee55e72334.html)

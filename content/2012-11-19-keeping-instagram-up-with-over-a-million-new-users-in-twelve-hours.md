@@ -2,8 +2,8 @@ Title: 如何让 Instagram 在一百多万用户爆炸后稳定运行
 Author: alswl
 Slug: keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours
 Date: 2012-11-19 00:06
-Tags: Instagram, 译文, Django, Database
-Category: Python编程
+Tags: Python编程, Instagram, 译文, Django, Database
+Category: Coding
 
 
 原文链接：[Keeping Instagram up with over a million new users in twelve hours][]

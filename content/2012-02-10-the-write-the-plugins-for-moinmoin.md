@@ -2,8 +2,8 @@ Title: 给MoinMoin写插件
 Author: alswl
 Slug: the-write-the-plugins-for-moinmoin
 Date: 2012-02-10 00:00:00
-Tags: image2attach, MoinMoin
-Category: Python编程
+Tags: Python编程, image2attach, MoinMoin
+Category: Coding
 
 ## 1. 使用 MoinMoin
 
