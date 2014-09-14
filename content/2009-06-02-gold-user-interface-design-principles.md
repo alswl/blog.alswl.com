@@ -2,8 +2,8 @@ Title: 用户界面设计黄金原则
 Author: alswl
 Slug: gold-user-interface-design-principles
 Date: 2009-06-02 00:00:00
-Tags: 
-Category: 软件开发和项目管理
+Tags: 软件开发和项目管理, 
+Category: Managment
 
 在《用户界面设计要素》一书（1997）中，T.Mandel提出了3条「黄金」知道规则：
 

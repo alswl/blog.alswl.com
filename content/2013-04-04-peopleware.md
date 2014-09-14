@@ -2,8 +2,8 @@ Title: 读《人件》
 Author: alswl
 Slug: peopleware
 Date: 2013-04-10 23:35
-Tags: 创业, 读书笔记
-Category: 软件开发和项目管理
+Tags: 软件开发和项目管理, 创业, 读书笔记
+Category: Managment
 
 
 事情起源于动态语言和静态语言之争，最后争论焦点转移到：「相信人本身的能力重要，

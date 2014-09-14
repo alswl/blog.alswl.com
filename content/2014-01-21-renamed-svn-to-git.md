@@ -2,8 +2,8 @@ Title: 从 SVN 到 Git，找回丢失的历史
 Author: alswl
 Slug: renamed-svn-to-git
 Date: 2014-01-21 00:20:06
-Category: 软件开发和项目管理
-Tags: SVN, Git
+Category: Managment
+Tags: 软件开发和项目管理, SVN, Git
 
 前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题：
 有一个小伙伴使用 git-svn 做 `rename` 操作时候，将一个目录 `svn mv` 了，

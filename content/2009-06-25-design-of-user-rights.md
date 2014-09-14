@@ -2,8 +2,8 @@ Title: 用户权限设计的问题
 Author: alswl
 Slug: design-of-user-rights
 Date: 2009-06-25 00:00:00
-Tags: 
-Category: 软件开发和项目管理
+Tags: 软件开发和项目管理, 
+Category: Managment
 
 ### 问题
 

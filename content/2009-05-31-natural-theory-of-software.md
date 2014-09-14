@@ -2,8 +2,8 @@ Title: 软件自然理论
 Author: alswl
 Slug: natural-theory-of-software
 Date: 2009-05-31 00:00:00
-Tags: 
-Category: 软件开发和项目管理
+Tags: 软件开发和项目管理, 
+Category: Managment
 
 所谓软件自然理论，就是说：一个优秀的软件，他的功能模块设计，应该与用户在完全没有接触过这个系统时候所想要的功能设计一致，用户觉得他想要的功能在什么地方，应该
 怎样实现，那么这个功能就是应该在那里，就是应该这样实现。
