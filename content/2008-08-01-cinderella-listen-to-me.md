@@ -2,8 +2,8 @@ Title: Cinderella,听我说
 Author: alswl
 Slug: cinderella-listen-to-me
 Date: 2008-08-01 00:00:00
-Tags: 
-Category: 青春的彩虹
+Tags: 青春的彩虹, 
+Category: Life
 Status: draft
 
 以前一直觉得自己做了很多，今天和同学一聊，才发现自己这么不足，真的很容易情绪化。

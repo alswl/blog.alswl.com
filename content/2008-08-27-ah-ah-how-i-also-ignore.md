@@ -2,8 +2,8 @@ Title: 啊，怎么还不理我啊
 Author: alswl
 Slug: ah-ah-how-i-also-ignore
 Date: 2008-08-27 00:00:00
-Tags: cinderella
-Category: 青春的彩虹
+Tags: 青春的彩虹, cinderella
+Category: Life
 Status: draft
 
 啊~~~~受不了了~~~~
