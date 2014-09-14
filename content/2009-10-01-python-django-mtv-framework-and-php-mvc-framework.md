@@ -2,8 +2,8 @@ Title: python+django MTV框架 和php MVC框架
 Author: alswl
 Slug: python-django-mtv-framework-and-php-mvc-framework
 Date: 2009-10-01 00:00:00
-Tags: Django, MTV, MVC
-Category: 综合技术
+Tags: 综合技术, Django, MTV, MVC
+Category: Coding
 
 首先，祝福祖国60华诞，我爱这个国家。
 

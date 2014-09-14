@@ -2,8 +2,8 @@ Title: 读《大规模Web服务开发技术》
 Author: alswl
 Slug: web-technology
 Date: 2013-06-29 00:17
-Tags: 读书笔记
-Category: 综合技术
+Tags: 综合技术, 读书笔记
+Category: Coding
 
 
 年前看了这本书《大规模Web服务开发技术》，当时给的评价是：

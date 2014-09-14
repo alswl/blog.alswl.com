@@ -2,8 +2,8 @@ Title: char nchar varchar nvarchar 区别
 Author: alswl
 Slug: difference-between-char-nchar-varchar-nvarchar
 Date: 2010-07-16 00:00:00
-Tags: 
-Category: 综合技术
+Tags: 综合技术, 
+Category: Coding
 
 在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim(
 )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。

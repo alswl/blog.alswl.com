@@ -2,8 +2,8 @@ Title: 中国省份与城市数据SQL
 Author: alswl
 Slug: zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql
 Date: 2009-08-22 00:00:00
-Tags: Database, SQL
-Category: 综合技术
+Tags: 综合技术, Database, SQL
+Category: Coding
 
 本文来源：[中国省份与城市数据插入 - xlx -
 CSDN博客](http://blog.csdn.net/xielingxu/archive/2007/08/26/1759471.aspx)

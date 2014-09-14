@@ -2,8 +2,8 @@ Title: 《卓有成效的程序员》读后感
 Author: alswl
 Slug: the-productive-programmer
 Date: 2011-11-27 00:00:00
-Tags: Book
-Category: 综合技术
+Tags: 综合技术, Book
+Category: Coding
 
 ![卓有成效的程序员](http://img3.douban.com/mpic/s3668809.jpg)
 

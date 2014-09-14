@@ -2,8 +2,8 @@ Title: 再读《重构》
 Author: alswl
 Slug: refactory
 Date: 2012-02-05 00:00:00
-Tags: 读书笔记
-Category: 综合技术
+Tags: 综合技术, 读书笔记
+Category: Coding
 
 Martin Fowler 的《[重构-
 改善既有代码的设计](http://book.douban.com/subject/1229923/)》这本书，是我大学老师推荐给我的。
