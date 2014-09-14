@@ -2,8 +2,8 @@ Title: PDA"未能建立与网络的连接"的解决办法
 Author: alswl
 Slug: solution-of-pda-failed-to-establish-a-network-connection
 Date: 2010-03-31 00:00:00
-Tags: PDA, VisualStudio, WinCE
-Category: dotNet
+Tags: dotNet, PDA, VisualStudio, WinCE
+Category: Coding
 
 遇到这个问题大凡是因为模拟器或者真机无法连接网络，所以需要先测试网络是否畅通，在真机或者模拟器的IE中打开需要的WebService地址，看看是否能够正常获
 取。

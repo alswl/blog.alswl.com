@@ -2,8 +2,8 @@ Title: C#+VBA操作Excel总结
 Author: alswl
 Slug: csharp-vba-excel
 Date: 2010-12-14 00:00:00
-Tags: Excel, Office, VBA
-Category: dotNet
+Tags: dotNet, Excel, Office, VBA
+Category: Coding
 
 Excel在日常办公中应用非常广泛，这次我接到一个案子，需要往Excel中写入数据并能够打印出固定格式，前前后后大概花了将近2星期才搞定，现在做一些分享。
 
