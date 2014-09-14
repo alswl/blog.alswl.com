@@ -2,7 +2,7 @@ Title: 想和做
 Author: alswl
 Slug: do-and-think
 Date: 2012-06-15 16:02
-Category: 程序人生
+Category: View
 
 
 一年前，我在草稿箱里面写了这篇文章的开头，那时的我正在为工作而烦闷，却一筹莫展。

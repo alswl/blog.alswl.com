@@ -2,8 +2,8 @@ Title: 由学Python所想到的
 Author: alswl
 Slug: python-comes-to-mind-by-learning
 Date: 2009-09-25 00:00:00
-Tags: 
-Category: 程序人生
+Tags: 程序人生, 
+Category: View
 
 开始学Python大概有1个多月了，深深的被这门简单的语言所吸引着，简单却强大，是一门非常精彩的语言。特别是它的设计理念：「在允许性能牺牲的范围内，提高开发
 效率，简化开发方法」。（呃…这个原文我找不到了，我自己总结了一下）

@@ -2,8 +2,8 @@ Title: 保持IT工作兴趣
 Author: alswl
 Slug: keep-it-work-interest
 Date: 2010-04-24 00:00:00
-Tags: 
-Category: 程序人生
+Tags: 程序人生, 
+Category: View
 
 ![](http://upload-log4d.qiniudn.com/2010/04/keyboard_help.jpg)
 
