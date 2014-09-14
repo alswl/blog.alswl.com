@@ -2,8 +2,8 @@ Title: 推荐一个美食博客
 Author: alswl
 Slug: recommend-a-food-blog
 Date: 2009-07-06 00:00:00
-Tags: 美食
-Category: 美食|烹饪
+Tags: 美食|烹饪, 美食
+Category: Life
 
 还记得小当家的那句话：料理是给人带来幸福和满足感的（大意啦）
 

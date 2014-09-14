@@ -2,8 +2,8 @@ Title: 油面筋强力出击？！
 Author: alswl
 Slug: strong-gluten-out-of-oil
 Date: 2009-07-18 00:00:00
-Tags: 美食
-Category: 美食|烹饪
+Tags: 美食|烹饪, 美食
+Category: Life
 
 上次宿舍同学到我家，被家里的油面筋征服了，特别是来自山西的毛哥，回家了还要张罗着他妈做。呵呵，今天家里有客人，我给我妈打下手，洗洗菜啊，包包馄饨，做做油面筋
 。
