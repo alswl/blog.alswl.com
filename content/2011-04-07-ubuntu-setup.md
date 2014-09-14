@@ -2,8 +2,8 @@ Title: Ubuntu安装之后设定操作
 Author: alswl
 Slug: ubuntu-setup
 Date: 2011-04-07 00:00:00
-Tags: Ubuntu
-Category: Linuxer
+Tags: Linuxer, Ubuntu
+Category: Coding
 
 前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。
 

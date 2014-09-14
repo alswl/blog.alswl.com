@@ -2,8 +2,8 @@ Title: 乱码之战
 Author: alswl
 Slug: battle-of-garbled
 Date: 2009-05-22 00:00:00
-Tags: Struts, 编码, 贴吧
-Category: Java
+Tags: Java, Struts, 编码, 贴吧
+Category: Coding
 
 今天重新设计了贴吧的数据库，参考了WordPress的无外键，设置default的值，我取消了两个外键，仅保留一个对应CategoryId的外键。
 

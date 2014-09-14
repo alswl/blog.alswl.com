@@ -2,8 +2,8 @@ Title: 使用pptpclient连接vpn网络[译文]
 Author: alswl
 Slug: pptpclient
 Date: 2011-09-04 00:00:00
-Tags: arch, pptp, VPN, 译文
-Category: Linuxer
+Tags: Linuxer, arch, pptp, VPN, 译文
+Category: Coding
 
 最近在ddwrt配置vpn，参考了arch的pptpclient配置文档[Microsoft VPN client setup with pptpclien
 t](https://wiki.archlinux.org/index.php/Microsoft_VPN_client_setup_with_pptpcl

@@ -2,8 +2,8 @@ Title: Ubuntu8.10下MySQL的安装
 Author: alswl
 Slug: ubuntu8-10-under-the-mysql-installation
 Date: 2009-05-27 00:00:00
-Tags: MySQL, Ubuntu
-Category: Linuxer
+Tags: Linuxer, MySQL, Ubuntu
+Category: Coding
 
 Ubuntu下的MySQL安装本应该很简单，但是如果因为修改了软件源的话，反而变得麻烦起来。
 

@@ -2,8 +2,8 @@ Title: Maven下Jetty启动
 Author: alswl
 Slug: run-jetty-in-maven
 Date: 2011-04-04 00:00:00
-Tags: Eclipse, Jetty
-Category: Java
+Tags: Java, Eclipse, Jetty
+Category: Coding
 
 部门最近开发的产品使用的开发服务器是Jetty（挂载在GWT中），启动方法是通过Eclipse的External
 Tool执行。我对此表示很好奇，特意在自己电脑下面组建了一个Jetty开发环境，发现Maven和Jetty合作起来非常愉快，现在小记之。

@@ -2,8 +2,8 @@ Title: 乱码！又见乱码！
 Author: alswl
 Slug: garbled-see-also-garbled
 Date: 2009-05-09 00:00:00
-Tags: Hibernate, Struts, 编码, 贴吧
-Category: Java
+Tags: Java, Hibernate, Struts, 编码, 贴吧
+Category: Coding
 
 今天解决了贴吧发帖的问题，可以正确的发送到正确的分类了。
 

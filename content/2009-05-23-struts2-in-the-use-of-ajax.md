@@ -2,8 +2,8 @@ Title: Struts2中Ajax的使用
 Author: alswl
 Slug: struts2-in-the-use-of-ajax
 Date: 2009-05-23 00:00:00
-Tags: AJAX, Struts, 贴吧
-Category: Java
+Tags: Java, AJAX, Struts, 贴吧
+Category: Coding
 
 贴吧1.0差不多可以完成了，进入界面美化，我服务器验证写完之后，开始用jQuery写js。
 

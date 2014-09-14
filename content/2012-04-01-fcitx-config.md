@@ -2,8 +2,8 @@ Title: Fcitx 配置
 Author: alswl
 Slug: fcitx-config
 Date: 2012-04-01 00:00:00
-Tags: fcitx
-Category: Linuxer
+Tags: Linuxer, fcitx
+Category: Coding
 
 ## Fcitx
 

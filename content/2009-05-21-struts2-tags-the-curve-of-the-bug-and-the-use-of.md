@@ -2,8 +2,8 @@ Title: Struts2的s:if标签的Bug和曲线使用
 Author: alswl
 Slug: struts2-tags-the-curve-of-the-bug-and-the-use-of
 Date: 2009-05-21 00:00:00
-Tags: Struts, 贴吧
-Category: Java
+Tags: Java, Struts, 贴吧
+Category: Coding
 
 贴吧的用户状态显示，登录和未登录应该是不同的div显示，我决定用做标签。
 

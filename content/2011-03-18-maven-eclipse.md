@@ -2,8 +2,8 @@ Title: 在Eclipse中使用Maven
 Author: alswl
 Slug: maven-eclipse
 Date: 2011-03-18 00:00:00
-Tags: Eclipse, Maven
-Category: Java
+Tags: Java, Eclipse, Maven
+Category: Coding
 
 一提到Eclipse中使用Maven，都会想到[m2eclipse](http://m2eclipse.codehaus.org/)这个插件。其实在Ecli
 pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。

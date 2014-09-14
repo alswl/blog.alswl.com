@@ -2,8 +2,8 @@ Title: DWR2.0在JDK1.4下的配置
 Author: alswl
 Slug: dwr2-0-jdk1-4-configuration
 Date: 2010-03-01 00:00:00
-Tags: DWR, Weblogic
-Category: Java
+Tags: Java, DWR, Weblogic
+Category: Coding
 
 服务器的WebLogic版本是8.1，使用自带的JDK1.4
 

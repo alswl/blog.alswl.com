@@ -2,8 +2,8 @@ Title: Java中的POST引发的...
 Author: alswl
 Slug: java-triggered-by-the-post
 Date: 2009-02-05 00:00:00
-Tags: 网络编程
-Category: Java
+Tags: Java, 网络编程
+Category: Coding
 
 因为一直想写一个刷人气的工具，其中最基本的就是post方法了，然后再收集页面中的元素。今天我就开始着手写Java的POST方法。
 

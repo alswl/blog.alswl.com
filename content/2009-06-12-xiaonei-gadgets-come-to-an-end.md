@@ -2,8 +2,8 @@ Title: 校内小工具告一段落
 Author: alswl
 Slug: xiaonei-gadgets-come-to-an-end
 Date: 2009-06-12 00:00:00
-Tags: 人人
-Category: Java
+Tags: Java, 人人
+Category: Coding
 
 这段时间在写校内小工具，开心农场小外挂，刷刷人气的小外挂。
 

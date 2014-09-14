@@ -2,8 +2,8 @@ Title: Arch Linux下小红点中键
 Author: alswl
 Slug: archlinux-thinkpad-trackpoint
 Date: 2011-11-15 00:00:00
-Tags: arch, ThinkPad
-Category: Linuxer
+Tags: Linuxer, arch, ThinkPad
+Category: Coding
 
 重要通知：Log4D的域名由 [http://dddspace.com](http://dddspace.com) 迁移到
 [http://log4d.com](http://log4d.com) 。 订阅地址现在改为

@@ -2,8 +2,8 @@ Title: 128M内存VPS LNMP安装优化小记
 Author: alswl
 Slug: vps-lnmp-setup-config
 Date: 2011-11-06 00:00:00
-Tags: CentOS, MySQL, nginx, php, VPS
-Category: Linuxer
+Tags: Linuxer, CentOS, MySQL, nginx, php, VPS
+Category: Coding
 
 
 > 重要通知：Log4D 的域名由 [http://dddspace.com][d] 迁移到 [http://log4d.com][l] 。

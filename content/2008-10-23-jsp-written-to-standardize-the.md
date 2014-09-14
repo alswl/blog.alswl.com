@@ -2,8 +2,8 @@ Title: JSP书写要规范...
 Author: alswl
 Slug: jsp-written-to-standardize-the
 Date: 2008-10-23 00:00:00
-Tags: 
-Category: Java
+Tags: Java, 
+Category: Coding
 Status: draft
 
 注册和查询的界面是写完了，界面还马虎凑合，也学到不一样的B/S开发经验

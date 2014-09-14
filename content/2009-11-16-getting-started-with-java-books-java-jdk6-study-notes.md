@@ -2,8 +2,8 @@ Title: Java入门好书《Java JDK6学习笔记》
 Author: alswl
 Slug: getting-started-with-java-books-java-jdk6-study-notes
 Date: 2009-11-16 00:00:00
-Tags: Book, JavaSE
-Category: Java
+Tags: Java, Book, JavaSE
+Category: Coding
 
 [![Java JDK6学习笔记](http://t.douban.com/lpic/s2518833.jpg)](http://t.douban.com/
 lpic/s2518833.jpg)

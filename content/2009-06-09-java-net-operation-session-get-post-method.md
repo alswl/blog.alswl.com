@@ -2,8 +2,8 @@ Title: java.net.*操作session/GET/POST方法
 Author: alswl
 Slug: java-net-operation-session-get-post-method
 Date: 2009-06-09 00:00:00
-Tags: JavaSE, Lib, 网络编程
-Category: Java
+Tags: Java, JavaSE, Lib, 网络编程
+Category: Coding
 
 终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具-
 全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统

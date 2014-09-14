@@ -2,8 +2,8 @@ Title: 使用XOM类库对Java对象进行序列化
 Author: alswl
 Slug: xom-class-library-to-use-java-objects-serialization
 Date: 2009-06-10 00:00:00
-Tags: JavaSE, Lib
-Category: Java
+Tags: Java, JavaSE, Lib
+Category: Coding
 
 校内工具需要保存用户名和帐号，我就想把帐号信息作为一个XiaoneiUser类，然后对其进行对象持久化。
 Google下的方法有好几种方法进行持久化，JDOM， DOM4J,

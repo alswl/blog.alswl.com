@@ -2,8 +2,8 @@ Title: Java笔记 使用反射来改进BaseDao
 Author: alswl
 Slug: note-the-use-of-java-reflection-to-improve-the-basedao
 Date: 2009-11-17 00:00:00
-Tags: DAO, JavaSE, 贴吧, 重构
-Category: Java
+Tags: Java, DAO, JavaSE, 贴吧, 重构
+Category: Coding
 
 ## 关于反射
 

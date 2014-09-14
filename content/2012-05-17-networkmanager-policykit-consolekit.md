@@ -2,8 +2,8 @@ Title: 关于 NetworkManager / PolicyKit / ConsoleKit 的那些屌事
 Author: alswl
 Slug: networkmanager-policykit-consolekit
 Date: 2012-05-17 09:07
-Tags: NetworkManager, PolicyKit, ConsoleKit, GDM, Gnome
-Category: Linuxer
+Tags: Linuxer, NetworkManager, PolicyKit, ConsoleKit, GDM, Gnome
+Category: Coding
 
 
 在使用 Awesome 的过程中，我又遇到了一个老问题「NetworkManager 在非 Gnome

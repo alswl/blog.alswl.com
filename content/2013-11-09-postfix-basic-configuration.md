@@ -2,8 +2,8 @@ Title: Postfix 基本配置[译文]
 Author: alswl
 Slug: postfix-basic-configuration
 Date: 2013-11-09 14:59
-Tags: Postfix
-Category: Linuxer
+Tags: Linuxer, Postfix
+Category: Coding
 
 
 原文地址：[Postfix Basic Configuration ](http://www.postfix.org/BASIC_CONFIGURATION_README.html#syntax)。

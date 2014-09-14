@@ -2,8 +2,8 @@ Title: 校内踩踩小工具v0.1
 Author: alswl
 Slug: xiaoneicaicai-gadget-v0-1
 Date: 2009-06-14 00:00:00
-Tags: 人人, 网络编程
-Category: Java
+Tags: Java, 人人, 网络编程
+Category: Coding
 
 明天要考数据库应用了，今天仍然忍不住把校内踩踩小工具写完。
 

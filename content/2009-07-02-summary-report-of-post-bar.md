@@ -2,8 +2,8 @@ Title: 贴吧小结报告
 Author: alswl
 Slug: summary-report-of-post-bar
 Date: 2009-07-02 00:00:00
-Tags: 贴吧
-Category: Java
+Tags: Java, 贴吧
+Category: Coding
 
 终于完成了这个贴吧系统，虽然还有很多地方不完善，但是却包含了我很多心血和精力，也实践了我的很多想法。
 
