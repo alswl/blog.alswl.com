@@ -2,8 +2,8 @@ Title: 牺牲
 Author: alswl
 Slug: sacrifice
 Date: 2011-10-13 00:00:00
-Tags: 
-Category: 感悟
+Tags: 感悟, 
+Category: View
 
 十一回家，我和从小玩到大的死党们聚会，坐在晚风习习的广场上，聊着各自的种种，蓦然发现自己开始羡慕他们在家乡的生活。
 

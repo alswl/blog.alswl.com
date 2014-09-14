@@ -2,8 +2,8 @@ Title: 敬畏生命
 Author: alswl
 Slug: reverence-for-life
 Date: 2010-04-13 00:00:00
-Tags: 
-Category: 感悟
+Tags: 感悟, 
+Category: View
 
 早晨上班等公交时候，对面超市门口突然传来了歌声，腔调很沧桑。奇怪大清早难道还有商家做活动么，循着声音看过去，原来是一位男人在卖唱，再仔细一看，他的腿细得和我
 手臂那么粗。

@@ -2,8 +2,8 @@ Title: 我为什么来上海
 Author: alswl
 Slug: why-shanghai
 Date: 2012-08-09 21:10
-Tags: 上海
-Category: 感悟
+Tags: 感悟, 上海
+Category: View
 
 
 今天是我到上海的第二天，窗外的台风依然在肆虐，
