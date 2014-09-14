@@ -2,8 +2,8 @@ Title: OpenSSL中的BIO【转载】
 Author: alswl
 Slug: openssl-s-bio
 Date: 2009-03-19 00:00:00
-Tags: OpenSSL, SSL
-Category: C
+Tags: C, OpenSSL, SSL
+Category: Coding
 
 SSL类型的BIO
 

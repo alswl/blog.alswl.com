@@ -2,8 +2,8 @@ Title: MFC将退出历史舞台，微软的下一代用户界面技术WPF
 Author: alswl
 Slug: mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf
 Date: 2008-10-28 00:00:00
-Tags: WPF
-Category: C
+Tags: C, WPF
+Category: Coding
 
 转来的，最近对MFC很关注...
 

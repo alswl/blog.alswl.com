@@ -2,8 +2,8 @@ Title: OpenSSL 编程入门【转载-这篇很精】
 Author: alswl
 Slug: introduction-to-openssl-programming
 Date: 2009-03-19 00:00:00
-Tags: OpenSSL, SSL
-Category: C
+Tags: C, OpenSSL, SSL
+Category: Coding
 
 **OpenSSL ****编程入门**
 

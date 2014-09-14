@@ -2,8 +2,8 @@ Title: 用openssl进行SSL编程【转载-月光】
 Author: alswl
 Slug: programming-with-openssl-for-ssl
 Date: 2009-03-18 00:00:00
-Tags: OpenSSL, SSL
-Category: C
+Tags: C, OpenSSL, SSL
+Category: Coding
 
 主要介绍openssl进行SSL通信的一些函数以及过程，主要是初始化过程，至于数据的接收以及后续处理可以具体问题具体分析。
 

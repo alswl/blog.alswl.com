@@ -2,8 +2,8 @@ Title: 用OpenSSL创建证书时用到的命令【原创】
 Author: alswl
 Slug: using-openssl-to-create-certificates-using-the-command
 Date: 2009-03-17 00:00:00
-Tags: OpenSSL, SSL
-Category: C
+Tags: C, OpenSSL, SSL
+Category: Coding
 
 这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全-
 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。

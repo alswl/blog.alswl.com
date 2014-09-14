@@ -2,8 +2,8 @@ Title: 常见证书格式和转换【转载】
 Author: alswl
 Slug: common-certificate-format-and-conversion
 Date: 2009-03-15 00:00:00
-Tags: SSL
-Category: C
+Tags: C, SSL
+Category: Coding
 
 这些文字都是转来转去，都找不到原作者是谁，唉````
 
