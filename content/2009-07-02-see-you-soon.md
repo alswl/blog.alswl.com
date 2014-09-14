@@ -2,8 +2,8 @@ Title: 再见
 Author: alswl
 Slug: see-you-soon
 Date: 2009-07-02 00:00:00
-Tags: cinderella
-Category: 日记
+Tags: 日记, cinderella
+Category: Life
 Status: draft
 
 再见，再见面。

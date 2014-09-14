@@ -2,8 +2,8 @@ Title: 牛逼的我终于过了四级
 Author: alswl
 Slug: i-finally-had-the-4
 Date: 2009-08-20 00:00:00
-Tags: 英语
-Category: 日记
+Tags: 日记, 英语
+Category: Life
 
 上图，啥也不说了
 

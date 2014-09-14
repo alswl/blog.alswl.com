@@ -2,8 +2,8 @@ Title: 舍不得离开
 Author: alswl
 Slug: reluctant-to-leave
 Date: 2009-12-06 00:00:00
-Tags: 
-Category: 日记
+Tags: 日记, 
+Category: Life
 
 还没到离别的时候，我却要提前离开学校了。
 

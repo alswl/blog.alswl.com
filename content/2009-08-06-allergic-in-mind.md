@@ -2,8 +2,8 @@ Title: 过敏记
 Author: alswl
 Slug: allergic-in-mind
 Date: 2009-08-06 00:00:00
-Tags: 健康
-Category: 日记
+Tags: 日记, 健康
+Category: Life
 
 7月底回到学校，当时徐州整天阴天，查查天气预报，说是零星小雨，吓得我不敢晒被子，就盖着裹了一个月的被子褥子将就着睡。
 

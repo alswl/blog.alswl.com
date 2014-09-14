@@ -2,8 +2,8 @@ Title: 更新了关于我
 Author: alswl
 Slug: updated-about-me
 Date: 2009-11-09 00:00:00
-Tags: 
-Category: 日记
+Tags: 日记, 
+Category: Life
 
 ## 关于用户名
 

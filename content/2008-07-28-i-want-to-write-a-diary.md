@@ -2,8 +2,8 @@ Title: 我要写日记
 Author: alswl
 Slug: i-want-to-write-a-diary
 Date: 2008-07-28 00:00:00
-Tags: 
-Category: 日记
+Tags: 日记, 
+Category: Life
 Status: draft
 
 &nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;

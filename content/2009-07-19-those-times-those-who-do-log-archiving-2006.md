@@ -2,8 +2,8 @@ Title: 那些时候，那些事-2006日志存档
 Author: alswl
 Slug: those-times-those-who-do-log-archiving-2006
 Date: 2009-07-19 00:00:00
-Tags: 
-Category: 日记
+Tags: 日记, 
+Category: Life
 
 ## 二月
 

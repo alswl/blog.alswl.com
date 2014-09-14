@@ -2,8 +2,8 @@ Title: 关于找工作的疑惑
 Author: alswl
 Slug: doubts-on-the-job
 Date: 2009-10-13 00:00:00
-Tags: 工作
-Category: 日记
+Tags: 日记, 工作
+Category: Life
 
 招聘的时间似乎每年都在往前推，以往都是11月才开始宣讲会、人才招聘会，今年似乎特别早。淘宝招聘小队在十一之前就开始上路，9-25就完成技术类的校园招聘，还剩
 下10-19号的Web类校园招聘。（这些时间都是针对南京的，[淘宝招聘链接](http://www.join-alibaba.com/)）

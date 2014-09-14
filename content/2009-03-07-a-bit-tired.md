@@ -2,8 +2,8 @@ Title: 有点儿累
 Author: alswl
 Slug: a-bit-tired
 Date: 2009-03-07 00:00:00
-Tags: 
-Category: 日记
+Tags: 日记, 
+Category: Life
 Status: draft
 
 其实最近也没做什么事情，可是就是觉得好累

@@ -2,8 +2,8 @@ Title: 休息咯
 Author: alswl
 Slug: hava-a-rest
 Date: 2009-09-06 00:00:00
-Tags: 
-Category: 日记
+Tags: 日记, 
+Category: Life
 Status: draft
 
 呃，终于辞职了```

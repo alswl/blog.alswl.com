@@ -2,8 +2,8 @@ Title: 搬家到Yo2了
 Author: alswl
 Slug: moving-to-the-yo2
 Date: 2009-05-06 00:00:00
-Tags: 
-Category: 日记
+Tags: 日记, 
+Category: Life
 
 今天终于下定决心，把百度里面所有内容转移阵地到yo2了。
 

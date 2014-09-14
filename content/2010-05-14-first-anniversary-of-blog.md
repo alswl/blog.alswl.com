@@ -2,8 +2,8 @@ Title: 建博一周年
 Author: alswl
 Slug: first-anniversary-of-blog
 Date: 2010-05-14 00:00:00
-Tags: 
-Category: 日记
+Tags: 日记, 
+Category: Life
 
 今天是独立博客Log4D (log4d.com)一周年纪念日。
 
