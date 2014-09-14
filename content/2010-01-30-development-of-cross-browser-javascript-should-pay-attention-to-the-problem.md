@@ -2,8 +2,8 @@ Title: 开发跨浏览器JavaScript时要注意的问题
 Author: alswl
 Slug: development-of-cross-browser-javascript-should-pay-attention-to-the-problem
 Date: 2010-01-30 00:00:00
-Tags: JavaScript
-Category: Web前端
+Tags: WebFront, JavaScript
+Category: Coding
 
 最近在做系统的B/S部分，用DWR做Ajax处理，期间遇到一些浏览器兼容的问题，`table.insertRow()`和`row.insertCell()`
 在IE下没有问题，但在FireFox下无效。同事说不用考虑FireFox的兼容，客户使用的环境就是IE。我偏执的认为就算不在所有浏览器下通过，至少在我的Fi

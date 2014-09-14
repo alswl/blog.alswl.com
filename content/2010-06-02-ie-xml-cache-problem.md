@@ -2,8 +2,8 @@ Title: IE XML 缓存问题
 Author: alswl
 Slug: ie-xml-cache-problem
 Date: 2010-06-02 00:00:00
-Tags: AzaAjaxChat, IE, JavaScript
-Category: Web前端
+Tags: WebFront, AzaAjaxChat, IE, JavaScript
+Category: Coding
 
 明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。
 

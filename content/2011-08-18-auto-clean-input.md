@@ -2,8 +2,8 @@ Title: 简单输入提示框实现
 Author: alswl
 Slug: auto-clean-input
 Date: 2011-08-18 00:00:00
-Tags: 
-Category: Web前端
+Tags: WebFront, 
+Category: Coding
 
 早期的输入框提示是这样的（via [baidu](http://tieba.baidu.com/index.html)）
 

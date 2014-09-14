@@ -2,8 +2,8 @@ Title: get json failed in IE
 Author: alswl
 Slug: get-json-failed-in-ie
 Date: 2011-08-14 00:00:00
-Tags: IE
-Category: Web前端
+Tags: WebFront, IE
+Category: Coding
 
 半夜在开工打补丁，某个 bug 是 Firefox 下面能接受到 Ajax 回调请求，而 IE 不行。
 

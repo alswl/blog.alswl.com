@@ -2,8 +2,8 @@ Title: 继续推荐书：Ajax实战
 Author: alswl
 Slug: continue-to-recommend-the-book-ajax-in-action
 Date: 2009-03-03 00:00:00
-Tags: AJAX, Book
-Category: Web前端
+Tags: WebFront, AJAX, Book
+Category: Coding
 
 本来关于Ajax的学习可以告一段落，原因是看的一本国内的教材有点错误，耗了好多时间才改对，让我对Ajax的热情稍微降低
 

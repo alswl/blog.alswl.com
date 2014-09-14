@@ -2,8 +2,8 @@ Title: Ajax 好玩的拖拽（顺便测试chrome下文字编辑的代码高亮�
 Author: alswl
 Slug: ajax-drag-and-drop-fun-the-way-chrome-test-the-code-under-the-highlighted-text-editor-search
 Date: 2009-02-26 00:00:00
-Tags: AJAX
-Category: Web前端
+Tags: WebFront, AJAX
+Category: Coding
 
 _HTML语言_: [ajax 拖拽](http://www.fayaa.com/code/view//)
 

@@ -2,8 +2,8 @@ Title: flower shop 汉化
 Author: alswl
 Slug: speaking-of-flower-shop
 Date: 2010-03-23 00:00:00
-Tags: CSS, Html
-Category: Web前端
+Tags: WebFront, CSS, Html
+Category: Coding
 
 死党的女朋友的一门网页设计课需要作品，向我求援。我看了一下他们的课件，没有什么动态语言，静态的Html页面即可。
 

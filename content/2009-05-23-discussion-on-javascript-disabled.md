@@ -2,8 +2,8 @@ Title: 关于禁用Javascript的讨论
 Author: alswl
 Slug: discussion-on-javascript-disabled
 Date: 2009-05-23 00:00:00
-Tags: JavaScript
-Category: Web前端
+Tags: WebFront, JavaScript
+Category: Coding
 
 做用户验证时候，在为客户端和服务器端各自的验证发愁，这时候我想到一个问题，现在这么多网站依赖javascript来表现页面，那么如果禁用了会怎么样呢。
 
