@@ -2,8 +2,8 @@ Title: 腾讯微博邀请3枚
 Author: alswl
 Slug: three-invitations-of-tencent-micro-blog
 Date: 2010-05-15 00:00:00
-Tags: Tencent, Twitter
-Category: 关注互联网
+Tags: 关注互联网, Tencent, Twitter
+Category: Internet
 
 很久之前通过[laiwei_linjuly](http://baiduer.net/) 获取腾讯微博的资格，之后一直没怎么用。
 

@@ -2,8 +2,8 @@ Title: iGoogle被重置
 Author: alswl
 Slug: igoogle-is-reset
 Date: 2009-08-12 00:00:00
-Tags: Google
-Category: 关注互联网
+Tags: 关注互联网, Google
+Category: Internet
 
 iGoogle大家可能都知道，是Google提供的一个定制度很高的Google界面，我习惯于再上面直接使用GoogleReader和其他一些Google提供
 的Wiggett。

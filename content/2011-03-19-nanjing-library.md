@@ -2,8 +2,8 @@ Title: 南京图书馆检索系统升级
 Author: alswl
 Slug: nanjing-library
 Date: 2011-03-19 00:00:00
-Tags: Nanjing
-Category: 关注互联网
+Tags: 关注互联网, Nanjing
+Category: Internet
 
 我经常去南京图书馆借书，南图的书虽然馆藏很多，在架的却往往不多。我习惯在去南图之前将在豆瓣上标记为"想读"的书搜索一下，检查书是否在架，以前南图的检索系统挺
 难用。我甚至一度想写一个查询小脚本。

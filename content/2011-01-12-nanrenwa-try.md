@@ -2,8 +2,8 @@ Title: 男人袜1元体验活动
 Author: alswl
 Slug: nanrenwa-try
 Date: 2011-01-12 00:00:00
-Tags: 
-Category: 关注互联网
+Tags: 关注互联网, 
+Category: Internet
 
 从Louis Han那里看到一篇文章介绍了一个适合宅男的网站，想想我自己宅属性日益增加，就抄文推广一下。
 

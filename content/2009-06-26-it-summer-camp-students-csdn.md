@@ -2,8 +2,8 @@ Title: CSDN大学生IT夏令营
 Author: alswl
 Slug: it-summer-camp-students-csdn
 Date: 2009-06-26 00:00:00
-Tags: 
-Category: 关注互联网
+Tags: 关注互联网, 
+Category: Internet
 
 之前就收到CSDN的信息，一个人跑到北京显得太远。前几日刘老师说他去，并且想组个小团一起去，大妈已经报名了，说的我很动心，咨询老妈意见后，就报名参加了。
 

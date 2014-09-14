@@ -2,8 +2,8 @@ Title: Google门
 Author: alswl
 Slug: google-doors
 Date: 2009-06-25 00:00:00
-Tags: Google
-Category: 关注互联网
+Tags: 关注互联网, Google
+Category: Internet
 
 Google最近混的比较惨，谷歌中国连词汇联想都去掉了。
 

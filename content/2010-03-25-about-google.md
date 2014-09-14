@@ -2,8 +2,8 @@ Title: 关于Google
 Author: alswl
 Slug: about-google
 Date: 2010-03-25 00:00:00
-Tags: Google
-Category: 关注互联网
+Tags: 关注互联网, Google
+Category: Internet
 
 为Google喝彩，不解释。
 

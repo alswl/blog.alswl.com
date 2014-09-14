@@ -2,8 +2,8 @@ Title: 关于Twitter的idea
 Author: alswl
 Slug: the-idea-on-twitter
 Date: 2009-11-11 00:00:00
-Tags: Twitter
-Category: 关注互联网
+Tags: 关注互联网, Twitter
+Category: Internet
 
 ## 起因-同步是个麻烦事
 

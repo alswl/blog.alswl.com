@@ -2,8 +2,8 @@ Title: 同步工具-金山快盘
 Author: alswl
 Slug: synchronization-tools-jinshan-fast-disk
 Date: 2010-08-31 00:00:00
-Tags: 同步, 金山快盘
-Category: 关注互联网
+Tags: 关注互联网, 同步, 金山快盘
+Category: Internet
 
 在[同步控](http://www.tongbukong.com)初识了金山快盘，用了一周，感觉的确不错。很适合家庭+办公两边电脑需要文件同步的同学们。我现
 在已经把我BooguNote和Wiz里面所有文件进行同步，极其方便。

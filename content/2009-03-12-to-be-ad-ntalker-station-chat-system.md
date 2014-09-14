@@ -2,8 +2,8 @@ Title: 做个广告：Ntalker 站内聊天系统
 Author: alswl
 Slug: to-be-ad-ntalker-station-chat-system
 Date: 2009-03-12 00:00:00
-Tags: 
-Category: 关注互联网
+Tags: 关注互联网, 
+Category: Internet
 
 今天登录CSDN时候发现右下角有个聊天工具，试了试，用户UI做的还不错，最近在做Ajax，就连接到这个公司看看，产品名称叫做Ntalker
 

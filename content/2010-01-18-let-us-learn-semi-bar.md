@@ -2,8 +2,8 @@ Title: 让我们学习双拼吧
 Author: alswl
 Slug: let-us-learn-semi-bar
 Date: 2010-01-18 00:00:00
-Tags: 
-Category: 关注互联网
+Tags: 关注互联网, 
+Category: Internet
 
 前几天在cnBeta看到一篇文章"[大学新生几乎都使用拼音 五笔输入法正在被疏远？_cnBeta 视点观察_cnBeta.COM](http://www.c
 nbeta.com/articles/101446.htm)"，讨论的是五笔输入法和拼音输入法的优劣，其中有一条评论"五笔字型是人适应机器，拼音是机器适应人
