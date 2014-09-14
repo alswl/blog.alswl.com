@@ -2,8 +2,8 @@ Title: 读《如何高效学习》
 Author: alswl
 Slug: lean-more-study-less
 Date: 2014-04-13 11:42:47
-Tags: 读书笔记
-Category: 学海无涯
+Tags: 学海无涯, 读书笔记
+Category: Thinking
 
 [Learn More Study Less（如何高效学习）](http://book.douban.com/subject/25783654/)
 讲的是作者斯科特·扬如何快速学习的方法和技巧。

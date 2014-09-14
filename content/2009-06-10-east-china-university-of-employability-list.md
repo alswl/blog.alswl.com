@@ -2,8 +2,8 @@ Title: 华东地区大学就业能力排行榜
 Author: alswl
 Slug: east-china-university-of-employability-list
 Date: 2009-06-10 00:00:00
-Tags: 
-Category: 学海无涯
+Tags: 学海无涯, 
+Category: Thinking
 
 # 麦可思(MyCOS)-2009年度华东地区大学就业能力排行榜
 

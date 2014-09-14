@@ -2,8 +2,8 @@ Title: 理财开始
 Author: alswl
 Slug: began-of-financial-management
 Date: 2010-04-10 00:00:00
-Tags: 理财
-Category: 学海无涯
+Tags: 学海无涯, 理财
+Category: Thinking
 
 ![](http://www.newsobserver.com/content/media/2008/6/13/money.jpg)
 

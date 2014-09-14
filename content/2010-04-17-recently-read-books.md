@@ -2,8 +2,8 @@ Title: 最近在看的书
 Author: alswl
 Slug: recently-read-books
 Date: 2010-04-17 00:00:00
-Tags: Book
-Category: 学海无涯
+Tags: 学海无涯, Book
+Category: Thinking
 
 最近还没有清闲下来，虽然手头有一堆读书笔记，但是进度还不足以把那些琐碎的语句分享给大家。索性直接给大家推荐几本我现在在读的书。
 

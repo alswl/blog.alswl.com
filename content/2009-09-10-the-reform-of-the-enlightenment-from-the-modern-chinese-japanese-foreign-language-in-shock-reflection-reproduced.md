@@ -2,8 +2,8 @@ Title: 改革启蒙：从现代汉语中日本外来语的震撼中反思[转载
 Author: alswl
 Slug: the-reform-of-the-enlightenment-from-the-modern-chinese-japanese-foreign-language-in-shock-reflection-reproduced
 Date: 2009-09-10 00:00:00
-Tags: 日语
-Category: 学海无涯
+Tags: 学海无涯, 日语
+Category: Thinking
 
 最近在学日文，所以偶然看到这篇文章惊奇无比，原来汉语和日语也有这么一种的反哺关系-alswl
 

@@ -2,8 +2,8 @@ Title: 暗时间读书笔记
 Author: alswl
 Slug: an-shi-jian
 Date: 2012-01-15 00:00:00
-Tags: 读书笔记
-Category: 学海无涯
+Tags: 学海无涯, 读书笔记
+Category: Thinking
 
 [pongba](http://mindhacks.cn/)的大作《[暗时间](http://book.douban.com/subject/6709809
 )》，讲述效率、习惯、思维，还有一些数学史话和算法，推荐一看。

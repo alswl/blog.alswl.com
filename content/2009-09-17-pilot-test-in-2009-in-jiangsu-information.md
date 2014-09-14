@@ -2,8 +2,8 @@ Title: 2009年江苏驾驶员考试相关资料
 Author: alswl
 Slug: pilot-test-in-2009-in-jiangsu-information
 Date: 2009-09-17 00:00:00
-Tags: 
-Category: 学海无涯
+Tags: 学海无涯, 
+Category: Thinking
 
 我22号理论考试，没几天了，得赶紧开始准备了。推荐几个链接给需要的朋友。
 
