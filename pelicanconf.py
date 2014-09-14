@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 AUTHOR = u'alswl'
 SITENAME = u'Log4D'
 
+SITEURL = 'http://lo:8000'
+
 PATH = 'content'
 
 THEME = '/Users/alswl/dev/myproject/python/pelican-bootstrap3/'
@@ -48,7 +50,7 @@ PAGINATION_PATTERNS = (
 )
 
 # Uncomment following line if you want document-relative URLs when developing
-RELATIVE_URLS = True
+# RELATIVE_URLS = True
 
 ARTICLE_URL = '{date:%Y}/{date:%m}/{slug}/'
 ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{slug}/index.html'
@@ -74,7 +76,7 @@ DISPLAY_PAGES_ON_MENU = False
 DISPLAY_CATEGORIES_ON_SIDEBAR = True
 DISPLAY_TAGS_ON_SIDEBAR = False
 
-STATIC_PATHS = ['image', 'CNAME', '.gitignore']
+STATIC_PATHS = ['image', 'CNAME']
 
 #AUTHOR_BIO = 'Computers can change your life for the better.'
 DISQUS_SITENAME = 'log4d'
