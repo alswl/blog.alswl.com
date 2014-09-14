@@ -2,8 +2,8 @@ Title: 紧急声明-关于回复通知是垃圾邮件
 Author: alswl
 Slug: emergency-declaration-on-the-reply-notification-is-spam
 Date: 2009-11-17 00:00:00
-Tags: 
-Category: 建站心得
+Tags: 建站心得, 
+Category: Coding
 
 最近alswl发现，Google对本博客发出的回复通知邮件都判定为垃圾邮件。我正在找客服查此时，据我估计，可能同一IP上有其他域名发送大量垃圾邮件导致Goo
 gle服务器误判本博客。

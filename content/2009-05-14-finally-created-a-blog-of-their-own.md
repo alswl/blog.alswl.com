@@ -2,8 +2,8 @@ Title: 终于创建了自己的博客了
 Author: alswl
 Slug: finally-created-a-blog-of-their-own
 Date: 2009-05-14 00:00:00
-Tags: WordPress
-Category: 建站心得
+Tags: 建站心得, WordPress
+Category: Coding
 
 这个想法一直就有，不过没有付之于实践，这次Yo2服务器崩溃，终于促使我创建自己的DDDSpace.cn
 

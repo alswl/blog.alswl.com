@@ -2,8 +2,8 @@ Title: 解决WordPress升级后出现Warning: Cannot modify header information -
 Author: alswl
 Slug: wordpress-upgrade-to-resolve-after-warning-cannot-modify-header-information-headers-already-sent-by
 Date: 2010-02-21 00:00:00
-Tags: WordPress, 编码
-Category: 建站心得
+Tags: 建站心得, WordPress, 编码
+Category: Coding
 
 WordPress 2.9.2升级之后出现一个问题，在一些操作，比如删除垃圾留言、发表新的文章时候会提醒一下的错误。
 

@@ -2,8 +2,8 @@ Title: WordPress页面静态化
 Author: alswl
 Slug: wordpress-static-pages-of
 Date: 2009-06-22 00:00:00
-Tags: WordPress
-Category: 建站心得
+Tags: 建站心得, WordPress
+Category: Coding
 
 其实以前也使用了静态化，但是只是显示文章别名为数字的固定链接，这个对搜索引擎不太友好，也不是很容易识别。
 

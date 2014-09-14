@@ -2,8 +2,8 @@ Title: Log4D改版完成
 Author: alswl
 Slug: log4d-revision-completed
 Date: 2010-04-14 00:00:00
-Tags: WordPress
-Category: 建站心得
+Tags: 建站心得, WordPress
+Category: Coding
 
 ![](http://upload-log4d.qiniudn.com/2010/04/log4d_screenshot.png)新主题SimpleD也运行
 了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD

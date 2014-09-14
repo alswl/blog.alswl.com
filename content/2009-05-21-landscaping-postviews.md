@@ -2,8 +2,8 @@ Title: 美化postviews
 Author: alswl
 Slug: landscaping-postviews
 Date: 2009-05-21 00:00:00
-Tags: WordPress
-Category: 建站心得
+Tags: 建站心得, WordPress
+Category: Coding
 
 很多朋友用postviews这个插件，的确很适合国人的风格，但是如果单纯的添加到页面中，会显得很突兀，难看，我做了几个美化工作。
 

@@ -2,8 +2,8 @@ Title: 图片批量加入水印
 Author: alswl
 Slug: volume-by-adding-a-watermark-image
 Date: 2009-07-20 00:00:00
-Tags: PhotoShop
-Category: 建站心得
+Tags: 建站心得, PhotoShop
+Category: Coding
 
 在群里聊天，偶尔提及图片水印问题，呃，我居然一直忘了做这一块内容。
 

@@ -2,8 +2,8 @@ Title: 小站恢复记
 Author: alswl
 Slug: station-restoration-of-mind
 Date: 2009-05-20 00:00:00
-Tags: 
-Category: 建站心得
+Tags: 建站心得, 
+Category: Coding
 
 由于原来服务器被攻击，销售代表给我重新安排了一台主机，之前我做过一次数据备份，但是文件没有备份，左等右等，都不见服务器恢复，于是打定主意自己恢复自己的数据，
 重建博客。

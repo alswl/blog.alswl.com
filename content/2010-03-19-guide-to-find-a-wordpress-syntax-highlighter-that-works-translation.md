@@ -2,8 +2,8 @@ Title: WordPress代码高亮插件指南[译文]
 Author: alswl
 Slug: guide-to-find-a-wordpress-syntax-highlighter-that-works-translation
 Date: 2010-03-19 00:00:00
-Tags: WordPress, 译文
-Category: 建站心得
+Tags: 建站心得, WordPress, 译文
+Category: Coding
 
 这是我第二篇译文，第一篇见这里 [使用Firebug和 FirePHP调试PHP[译文]](http://log4d.com/2010/03/use-
 firebug-and-firephp-debugging-php)

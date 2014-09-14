@@ -2,8 +2,8 @@ Title: CodeColorer的Html转义
 Author: alswl
 Slug: the-html-escape-codecolorer
 Date: 2009-09-07 00:00:00
-Tags: 
-Category: 建站心得
+Tags: 建站心得, 
+Category: Coding
 
 刚开始写博客时候我用的CodeColorer进行WordPress的代码高亮。后来，我觉得这个插件在格式上有些不满意的地方，于是就停用了。之后写的文章都是直
 接包在WordPress的Code元素内。

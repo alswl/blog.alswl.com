@@ -2,8 +2,8 @@ Title: 关于WordPress中TinyMCE空格
 Author: alswl
 Slug: about-wordpress-spaces-in-tinymce
 Date: 2009-09-09 00:00:00
-Tags: TinyMCE, WordPress
-Category: 建站心得
+Tags: 建站心得, TinyMCE, WordPress
+Category: Coding
 
 在FireFox下，粘贴到WordPress编辑器中的内容会被自动去掉空格，这对于像Python这种靠缩进控制代码段的code就是毁灭性的打击。而同时作为一
 个FireFox用户，我又不愿意为了这个看上去很小的问题切换到IE下。

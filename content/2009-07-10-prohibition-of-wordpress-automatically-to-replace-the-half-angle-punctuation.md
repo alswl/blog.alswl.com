@@ -2,8 +2,8 @@ Title: 禁止WordPress自动替换半角标点符号【转】
 Author: alswl
 Slug: prohibition-of-wordpress-automatically-to-replace-the-half-angle-punctuation
 Date: 2009-07-10 00:00:00
-Tags: WordPress
-Category: 建站心得
+Tags: 建站心得, WordPress
+Category: Coding
 
 转载自「禁止WordPress自动替换半角标点符号 - 布语博客」<[点击这里打开](http://buyu.name/074.html)>
 

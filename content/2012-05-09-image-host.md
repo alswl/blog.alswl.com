@@ -2,8 +2,8 @@ Title: 使用独立图床子域名
 Author: alswl
 Slug: image-host
 Date: 2012-05-09 16:21
-Tags: minigal nano, CF Image Host Script
-Category: 建站
+Tags: 建站, minigal nano, CF Image Host Script
+Category: Coding
 
 
 最近在将 Wordpres 切换到 OctoPress，顺便将图片统一放到[Upload4D](http://upload-log4d.qiniudn.com)管理。

@@ -2,8 +2,8 @@ Title: 换了7Color的主题
 Author: alswl
 Slug: the-theme-for-the-7color
 Date: 2009-08-10 00:00:00
-Tags: WordPress
-Category: 建站心得
+Tags: 建站心得, WordPress
+Category: Coding
 
 买了空间后，就一直使用iNove主题，虽然iNove这个主题很优秀，但时间长了，难免有些审美疲劳。我一直想换一个主题，但苦于喜欢的主题要么没有汉化，要么在I
 E6下不兼容，要么就是色调、字体大小不符合我的要求。

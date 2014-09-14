@@ -2,8 +2,8 @@ Title: 程序员博客分类目录
 Author: alswl
 Slug: programmer-blog-categories
 Date: 2009-11-06 00:00:00
-Tags: 
-Category: 建站心得
+Tags: 建站心得, 
+Category: Coding
 
 文章渐渐多了，经常在给一篇文章设定目录和标签时候犹豫。不光是因为为了SEO，也需要找到一种合适的分类对自己所有技术性文章进行划分。为此，我重新设定了自己的分
 类目录，参考了[JavaEye问答频道](http://www.javaeye.com/ask)的「问答分类」。

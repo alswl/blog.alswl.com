@@ -2,8 +2,8 @@ Title: iNove下的heading样式修改
 Author: alswl
 Slug: inove-changes-under-the-heading-style
 Date: 2009-09-08 00:00:00
-Tags: CSS, WordPress
-Category: 建站心得
+Tags: 建站心得, CSS, WordPress
+Category: Coding
 
 前段时间主体选择了7color，但是后来发现还是iNove对各种插件的兼容性好，又转回了iNove。
 
