@@ -2,8 +2,8 @@ Title: 让 Octopress 支持 RSS2.0
 Author: alswl
 Slug: support-rss
 Date: 2012-05-22 16:18
-Tags: Octopress, Jekyll, Squlid, 人人网
-Category: Ruby 编程
+Tags: Ruby, Octopress, Jekyll, Squlid, 人人网
+Category: Coding
 
 
 土鳖人人网的 **日志导入** 功能仅支持 RSS2.0，而 Octopress 输出的订阅格式是 Atom1.0。
