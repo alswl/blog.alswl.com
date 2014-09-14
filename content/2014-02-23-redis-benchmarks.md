@@ -2,8 +2,8 @@ Title: Redis 到底有多快[译文]
 Author: alswl
 Slug: redis-benchmarks
 Date: 2014-02-23 22:38
-Tags: Redis, benchmark, 译文
-Category: 性能
+Tags: 性能, Redis, benchmark, 译文
+Category: Coding
 
 原文地址 [http://redis.io/topics/benchmarks](http://redis.io/topics/benchmarks)。
 
