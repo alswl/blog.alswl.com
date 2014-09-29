@@ -1329,4 +1329,19 @@ Date: 2012-05-14 21:21
 10. tb
 11. null
 12. Brotherhood of Blades
-13. cry two
+13. cry twice
+14. crash and better
+15. team duty / lang yong
+16. clear data
+17. 7 came
+18. swimming
+19. ergodock
+20. Reading @kafelaku
+21. A Day Life of Jeff
+22. reading
+23. team building
+24. null
+25. yetone resign
+26. talk with yetone last time
+27. caused by sumai
+28. bonus for tsu
