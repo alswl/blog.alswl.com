@@ -5,29 +5,23 @@ Date: 2012-05-14 21:21
 
 我是 alswl ，这个词是我在小学2、3年级左右，来源于我臆想出来的一部小说的主人公。
 
-目前在[堆糖网](http://www.duitang.com/)工作，DevOps。
+目前在[堆糖网](http://www.duitang.com/)工作。
 
-##标签##
+## 标签
 
 > ☑Code ☑Linux ☑Vim ☑Python ☑魔都 ☑1988 ☑log4d.com ☑野生放养男 ☑轻度宅 ☑无背景 ☑红烧肉/茄子/小笼包 ☑echo 'YWxzd2x4QGdtYWlsLmNvbQ==' | base64 -d
 
-##工作技术##
-
-* Python
-* Java
-* 运维
-
-##个人偏好##
+## 个人偏好
 
 * Mac > ArchLinux > Ubuntu
-* Python > Java
 * Vim / Vimperator
-* markdown
-* git
-* Firefox > Chrome
+* Markdown
+* Git
+* Firefox / Chrome
+* Filco Ninja
 * 双拼
 
-##兴趣##
+## 兴趣
 
 * 科技产品
 * 阅读（计算机 / 互联网 / 金融 / 历史 / 科普 /小说）
@@ -35,17 +29,20 @@ Date: 2012-05-14 21:21
 * 和朋友旅行
 * 烹饪 / 闻香
 
-##博客记录##
+## 博客记录
 
-* 2012年05月14日使用 Octopress
-* 2011年11月02日使用 VPS，更换域名 log4d.com
-* 2009年12月24日出国到 dddspace.com
-* 2009年05月14日创建 dddspace.cn
-* 使用 Yo2 博客空间
-* Baidu Hi 空间混迹多年
-* 2005年5月30日在 MSN Space 创建博客
+* 2014-01-24 使用 VPS [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
+* 2013-12-03 更换博客系统 Pelican
+* 2012-05-14 更换博客系统 Octopress
+* 2012-01-01 使用 VPS [Linode](https://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c)
+* 2011-11-02 更换域名 log4d.com
+* 2009-12-24 更换域名 dddspace.com
+* 2009-05-14 创建 dddspace.cn
+* 使用 Yo2
+* 使用 Baidu Hi
+* 2005-05-30 在 MSN Space 创建博客
 
-##找到我##
+## 找到我
 
 ``` bash
 #Email: echo 'YWxzd2x4QGdtYWlsLmNvbQo=' | base64 -d

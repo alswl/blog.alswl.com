@@ -1345,3 +1345,13 @@ Date: 2012-05-14 21:21
 26. talk with yetone last time
 27. caused by sumai
 28. bonus for tsu
+29. Oct. plan 6h
+30. japa paginate
+
+## 2014-10 ##
+
+01. quareel / elopement
+02. lunch at ant's home
+03. lunch at uncle's home
+04. lunch at home / 1200
+05. back to shanghai
