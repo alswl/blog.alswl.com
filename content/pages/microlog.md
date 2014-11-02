@@ -1355,3 +1355,7 @@ Date: 2012-05-14 21:21
 03. lunch at uncle's home
 04. lunch at home / 1200
 05. back to shanghai
+
+----
+
+stoped, move this file to personal space.
