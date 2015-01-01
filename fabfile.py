@@ -91,3 +91,4 @@ def publish():
         #extra_opts='-c',
     #)
     local('ghp-import output')
+    local('ghp-import -b gitcafe-pages output')
