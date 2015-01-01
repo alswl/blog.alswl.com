@@ -34,6 +34,7 @@ def build():
     local('pelican -s pelicanconf.py')
 
 def rebuild():
+    """clean and build"""
     clean()
     build()
 
@@ -54,6 +55,7 @@ def new_post(name=''):
     md.close()
 
 def serve():
+    """local server"""
     os.chdir(env.deploy_path)
 
     PORT = 8000
@@ -66,6 +68,7 @@ def serve():
     server.serve_forever()
 
 def reserve():
+    """build and server"""
     build()
     serve()
 
@@ -82,6 +85,7 @@ def cf_upload():
 
 #@hosts(production)
 def publish():
+    """build with product conf and generate gh pages"""
     local('pelican -s publishconf.py')
     #project.rsync_project(
         #remote_dir=dest_path,
