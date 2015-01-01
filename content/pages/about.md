@@ -5,32 +5,11 @@ Date: 2012-05-14 21:21
 
 我是 alswl ，这个词是我在小学2、3年级左右，来源于我臆想出来的一部小说的主人公。
 
-目前在[堆糖网](http://www.duitang.com/)工作。
-
-## 标签
-
-> ☑Code ☑Linux ☑Vim ☑Python ☑魔都 ☑1988 ☑log4d.com ☑野生放养男 ☑轻度宅 ☑无背景 ☑红烧肉/茄子/小笼包 ☑echo 'YWxzd2x4QGdtYWlsLmNvbQ==' | base64 -d
-
-## 个人偏好
-
-* Mac > ArchLinux > Ubuntu
-* Vim / Vimperator
-* Markdown
-* Git
-* Firefox / Chrome
-* Filco Ninja
-* 双拼
-
-## 兴趣
-
-* 科技产品
-* 阅读（计算机 / 互联网 / 金融 / 历史 / 科普 /小说）
-* 商业电影 / 流行乐 / 古典乐
-* 和朋友旅行
-* 烹饪 / 闻香
+目前在[堆糖网](http://www.duitang.com/)工作，开发工程师。
 
 ## 博客记录
 
+* 2014-12-23 使用 GitCafe 提供的 Pages 服务
 * 2014-01-24 使用 VPS [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
 * 2013-12-03 更换博客系统 Pelican
 * 2012-05-14 更换博客系统 Octopress
