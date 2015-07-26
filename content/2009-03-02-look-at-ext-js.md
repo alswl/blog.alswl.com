@@ -34,8 +34,7 @@ otype整合使用，作为低层库的角色出现，以提供处理各种核心
 
 Ext从2.x开始收费，这给他的应用前景带来一些问题。不过对国内开发人员的影响不大，毕竟是客户付款。
 
-> [![](http://images.china-
-pub.com/ebook195001-200000/195152/zcover.jpg)](http://www.china-
+> [![深入浅出 ExtJS](http://images.china-pub.com/ebook195001-200000/195152/zcover.jpg)](http://www.china-
 pub.com/195152)
 
 >
@@ -50,14 +49,10 @@ pub.com/195152)
 
 >   * 【PUB价】￥36.75
 
->   * [![](http://www.china-
-pub.com/static/template/template/buy.gif)](winpop(195152,)
-
 >   * 本书是国内Ext JS先驱者的智慧结晶。内容翔实、示例丰富，包含大量示例代码，可操作性极强。不仅全面地阐述了Ext
 JS的基础知识，而且深入浅出地讲解了Ext JS开发中的高级技巧，同时还给出了大量专家级的建议。通过学习本书，读者将感受到Ext
 JS的无穷魅力和Ajax技术带来的完美体验。
 
->   * &nbsp_place_holder;
 
 >   * 【新书预告】Dojo之父力作[《Mastering Dojo》](http://www.dojochina.com/index.php?q=no
 de/1287)中文版（Dojo中国翻译）即将由图灵公司出版，敬请关注！
