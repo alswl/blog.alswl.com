@@ -5,7 +5,7 @@ Date: 2010-09-07 00:00:00
 Tags: 关注互联网, Yahoo
 Category: Internet
 
-![](http://upload-log4d.qiniudn.com/2010/09/trash_mail.jpg)
+![image](http://upload-log4d.qiniudn.com/2010/09/trash_mail.jpg)
 
 这段时间一直受到来自YahooGroup的垃圾邮件，最早出现一封确认邮件，我当时粗粗看过，全英文，心想自己没有订阅过什么Yahoo
 Group的邮件组，应该只是一封纯粹的垃圾邮件。

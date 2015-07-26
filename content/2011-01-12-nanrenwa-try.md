@@ -22,18 +22,18 @@ Category: Internet
 [男人袜](http://nanrenwa.com/)是一个专业的男袜寄送服务，专门给那些不喜欢穿有洞的袜子，而又没时间去买新袜子的男人们准备。您下单后，将
 会定期收到寄送的新袜子，新袜子会根据您所在的季节和天气情况自动调整。
 
-![](http://api.photoshop.com/v1.0/accounts/2ef56cf9f72d4754b1f9e2fe822f3cd4/as
+![image](http://api.photoshop.com/v1.0/accounts/2ef56cf9f72d4754b1f9e2fe822f3cd4/as
 sets/0d9ebac746f24207ab6c07fd9af3b955)
 
 男人袜标准套装是[每 3 个月寄送一次](http://nanrenwa.com/plans)。如果您希望更灵活的寄送方式，可以选择我们的自选套装，来自由的
 选择寄送周期及每次寄送的数量。这个就是男人袜非常有意思的地方了，网上购物都是一次送达，而男人袜却是分批次寄送，是不是能给人惊喜呢？
 
-![](http://api.photoshop.com/v1.0/accounts/2ef56cf9f72d4754b1f9e2fe822f3cd4/as
+![image](http://api.photoshop.com/v1.0/accounts/2ef56cf9f72d4754b1f9e2fe822f3cd4/as
 sets/5443a9e9bdd3435cbd8cbc2eaceec099)
 
 看看男人袜采购的袜子品牌，还是很给力的：
 
-![](http://api.photoshop.com/v1.0/accounts/2ef56cf9f72d4754b1f9e2fe822f3cd4/as
+![image](http://api.photoshop.com/v1.0/accounts/2ef56cf9f72d4754b1f9e2fe822f3cd4/as
 sets/c14a4d8c8394408594c00af03c6203ab)
 
 网上看到男人袜推出了[1元体验](http://nanrenwa.com/try)活动：如果您有网站或博客（成立一年即可），愿意写一篇原创的文章来介绍男人袜

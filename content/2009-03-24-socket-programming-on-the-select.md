@@ -65,60 +65,60 @@ ct在timeout时间内阻塞，超时时间之内有事件到来就返回了，�
 
 例子：
 
-![](http://www.cnblogs.com/Images/OutliningIndicators/None.gif)main()
-![](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedBlockStart.gif){
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) int sock;
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) FILE *fp;
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) struct
-fd_set fds; ![](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubB
-lockStart.gif) struct timeval timeout={3,0}; //select等待3秒，3秒轮询，要非阻塞就置0 ![](htt
+![image](http://www.cnblogs.com/Images/OutliningIndicators/None.gif)main()
+![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedBlockStart.gif){
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) int sock;
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) FILE *fp;
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) struct
+fd_set fds; ![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubB
+lockStart.gif) struct timeval timeout={3,0}; //select等待3秒，3秒轮询，要非阻塞就置0 ![image](htt
 p://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif) char
 buffer[256]={0}; //256字节的接收缓冲区
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) ![](http://
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) ![image](http://
 www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif) /*
 假定已经建立UDP连接，具体过程不写，简单，当然TCP也同理，主机ip和port都已经给定，要写的文件已经打开
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-sock=socket(![](http://www.cnblogs.com/Images/dot.gif));
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-bind(![](http://www.cnblogs.com/Images/dot.gif));
-![](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
-fp=fopen(![](http://www.cnblogs.com/Images/dot.gif)); */
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) while(1) ![
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+sock=socket(![image](http://www.cnblogs.com/Images/dot.gif));
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+bind(![image](http://www.cnblogs.com/Images/dot.gif));
+![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
+fp=fopen(![image](http://www.cnblogs.com/Images/dot.gif)); */
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) while(1) ![
 ](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif)
-{ ![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+{ ![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
 FD_ZERO(&fds); //每次循环都要清空集合，否则不能检测描述符变化
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
 FD_SET(sock,&fds); //添加描述符
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
 FD_SET(fp,&fds); //同上
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
 maxfdp=sock>fp?sock+1:fp+1; //描述符最大值加1
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-switch(select(maxfdp,&fds,&fds,NULL,&timeout)) //select使用 ![](http://www.cnblo
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+switch(select(maxfdp,&fds,&fds,NULL,&timeout)) //select使用 ![image](http://www.cnblo
 gs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif) {
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) case -1:
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) case -1:
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
 exit(-1);break; //select错误，退出程序
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) case 0:
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) break;
-//再次轮询 ![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-default: ![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-if(FD_ISSET(sock,&fds)) //测试sock是否可读，即是否网络上有数据 ![](http://www.cnblogs.com/Imag
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) case 0:
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) break;
+//再次轮询 ![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+default: ![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+if(FD_ISSET(sock,&fds)) //测试sock是否可读，即是否网络上有数据 ![image](http://www.cnblogs.com/Imag
 es/OutliningIndicators/ExpandedSubBlockStart.gif) {
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) recvfrom(so
-ck,buffer,256,![](http://www.cnblogs.com/Images/dot.gif)..);//接受网络数据
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) recvfrom(so
+ck,buffer,256,![image](http://www.cnblogs.com/Images/dot.gif)..);//接受网络数据
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
 if(FD_ISSET(fp,&fds)) //测试文件是否可写
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-fwrite(fp,buffer![](http://www.cnblogs.com/Images/dot.gif));//写入文件
-![](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) buffer清空;
-![](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+fwrite(fp,buffer![image](http://www.cnblogs.com/Images/dot.gif));//写入文件
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) buffer清空;
+![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
 }// end if break;
-![](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
+![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
 }// end switch
-![](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
-}//end while ![](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedBlo
+![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
+}//end while ![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedBlo
 ckEnd.gif)}//end main
-![](http://www.cnblogs.com/Images/OutliningIndicators/None.gif)
+![image](http://www.cnblogs.com/Images/OutliningIndicators/None.gif)
 

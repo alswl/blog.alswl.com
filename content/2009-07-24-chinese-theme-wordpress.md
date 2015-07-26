@@ -14,17 +14,17 @@ Category: Coding
 
 1.[LightWord](http://wordpress.org/extend/themes/lightword)
 
-[![](http://wp-themes.com/wp-content/themes/lightword/screenshot.png)](http
+[![image](http://wp-themes.com/wp-content/themes/lightword/screenshot.png)](http
 ://wp-themes.com/wp-content/themes/lightword/screenshot.png)
 
 2.[dfBlog](http://wordpress.org/extend/themes/dfblog)
 
-[![](http://wp-themes.com/wp-content/themes/dfblog/screenshot.png)](http://wp-
+[![image](http://wp-themes.com/wp-content/themes/dfblog/screenshot.png)](http://wp-
 themes.com/wp-content/themes/dfblog/screenshot.png)
 
 3.[iNove](http://wordpress.org/extend/themes/inove)(小张的主机应该起手都是用的iNove吧……呵呵……)
 
-[![](http://wp-themes.com/wp-content/themes/inove/screenshot.png)](http://wp-
+[![image](http://wp-themes.com/wp-content/themes/inove/screenshot.png)](http://wp-
 themes.com/wp-content/themes/inove/screenshot.png)
 
 其他的主题有些虽然内置了mo/po文件，但没有中文对应的mo/po，需要自己修改，可以使用[poEdit](http://www.xdowns.com/so

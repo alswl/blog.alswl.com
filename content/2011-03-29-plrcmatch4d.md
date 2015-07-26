@@ -21,5 +21,5 @@ log4d.qiniudn.com/2011/03/PLrcMatch4D.zip)
 
 界面比较实在，大致是这样：
 
-![](http://upload-log4d.qiniudn.com/2011/03/plrcmatch4d.jpg)
+![image](http://upload-log4d.qiniudn.com/2011/03/plrcmatch4d.jpg)
 

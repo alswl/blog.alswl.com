@@ -7,7 +7,7 @@ Category: Efficiency
 
 FCKeditor应该是功能最强大的网页编辑器了，提供js版本和java版本，而且功能特别丰富。
 
-![](http://www.fckeditor.net/themes/fckeditor_site/../../images/logotop.gif)
+![image](http://www.fckeditor.net/themes/fckeditor_site/../../images/logotop.gif)
 
 [猛击这里打开](http://www.fckeditor.net/)FCKeditor的主页
 

@@ -139,13 +139,13 @@ class为`org.mortbay.xml.XmlConfiguration`，在Arguments - Program arguments中
 roject_loc}/jetty.xml`，其中`${project_loc}`是动态参数，指向当前项目目录，jetty.xml为我们随后要创建的jett
 y配置文件。
 
-[![](http://upload-log4d.qiniudn.com/2011/04/run_configurations .png)](http
+[![image](http://upload-log4d.qiniudn.com/2011/04/run_configurations .png)](http
 ://upload-log4d.qiniudn.com/2011/04/run_configurations .png)
 
 如果想将这个应用保存成文件，可以修改Common - Sava
 as到当前目录，就可以保存为jetty.launch文件了。（没错，就是launch文件，Eclipse的运行配置文件）
 
-[![](http://upload-log4d.qiniudn.com/2011/04/eclipse_common.png)](http
+[![image](http://upload-log4d.qiniudn.com/2011/04/eclipse_common.png)](http
 ://upload-log4d.qiniudn.com/2011/04/eclipse_common.png)
 
 2、准备jetty.xml文件

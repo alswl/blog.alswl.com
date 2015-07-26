@@ -5,7 +5,7 @@ Date: 2009-08-25 00:00:00
 Tags: dotNet, ASP.net
 Category: Coding
 
-[![](http://www.chinaqiugou.com/images/detail_no_pic.gif)](http://www.chinaqiu
+[![image](http://www.chinaqiugou.com/images/detail_no_pic.gif)](http://www.chinaqiu
 gou.com/images/detail_no_pic.gif)
 
 某个系统，检查用户照片，如果发现用户并没有设定照片就返回一张No Photo的图片。

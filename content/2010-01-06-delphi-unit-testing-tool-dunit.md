@@ -148,7 +148,7 @@ end.
 
 从上面的代码可以看出，XUnit系列风格都比较类似，很容易操作。
 
-&nbsp_place_holder;[![](http://upload-
+&nbsp_place_holder;[![image](http://upload-
 log4d.qiniudn.com/2010/01/dunit.jpg)](http://upload-
 log4d.qiniudn.com/2010/01/dunit.jpg)
 

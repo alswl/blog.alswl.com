@@ -18,8 +18,8 @@ Category: Coding
 # Ajax实战:实例详解 [全场购物满58元免配送费！](http://www.china-
 pub.com/STATIC07/0902/zh_spfv09_090202.asp)
 
-[![](http://images.china-pub.com/images/icon_dzs.gif)](http://www.china-
-pub.com/ureader/product.asp?bookid=209252)　![](http://images.china-
+[![image](http://images.china-pub.com/images/icon_dzs.gif)](http://www.china-
+pub.com/ureader/product.asp?bookid=209252)　![image](http://images.china-
 pub.com/computers/common/images/free.gif)[进入免费试读](http://www.china-
 pub.com/computers/common/mianfeisd.asp?id=209252)
 
@@ -32,10 +32,10 @@ pub.com/computers/common/mianfeisd.asp?id=209252)
   * amazom &nbsp_place_holder;&nbsp_place_holder; 评论： [来自Ajax中国的读者的书评： 本书是Ajax实战系列中的一本，正如前言所说，《Ajax in Practice》是"第二代"的Ajax图书，相比上一代如《A..](http://www.china-pub.com/member/bookpinglun/viewpinglun.asp?id=209252&gid=1)
   * uf &nbsp_place_holder;&nbsp_place_holder; 评论： [知识点的讲述简明扼要，论述清楚 ，没有浪费太多篇幅，但是问题描述的很清楚。适合具备一定基础的人学习 ，能巩固和更新知识结构，有大..](http://www.china-pub.com/member/bookpinglun/viewpinglun.asp?id=209252&gid=1)
 
-[![](http://images.china-pub.com/ebook205001-210000/209252/zcover.jpg)](%E5%AE
+[![image](http://images.china-pub.com/ebook205001-210000/209252/zcover.jpg)](%E5%AE
 %9E%E4%BE%8B%E8%AF%A6%E8%A7%A3",9))
 
-[![](http://images.china-pub.com/computers/common/images/zoom.gif)点击看大图](%E5%A
+[![image](http://images.china-pub.com/computers/common/images/zoom.gif)点击看大图](%E5%A
 E%9E%E4%BE%8B%E8%AF%A6%E8%A7%A3",9))
 
 市场价 ： ￥59.00
@@ -72,11 +72,11 @@ pub.com/STATIC07/0706/zh_jiaocai_070614.asp)
 
 基本信息
 
-【评　　价】 ![](http://images.china-pub.com/computers/common/image/art1.gif)
-![](http://images.china-pub.com/computers/common/image/art1.gif)
-![](http://images.china-pub.com/computers/common/image/art1.gif)
-![](http://images.china-pub.com/computers/common/image/art1.gif)
-![](http://images.china-pub.com/computers/common/image/art1.gif) (共
+【评　　价】 ![image](http://images.china-pub.com/computers/common/image/art1.gif)
+![image](http://images.china-pub.com/computers/common/image/art1.gif)
+![image](http://images.china-pub.com/computers/common/image/art1.gif)
+![image](http://images.china-pub.com/computers/common/image/art1.gif)
+![image](http://images.china-pub.com/computers/common/image/art1.gif) (共
 [11](http://www.china-pub.com/member/bookpinglun/viewpinglun.asp?id=209252) 条)
 [参与评论](cp();)
 

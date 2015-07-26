@@ -90,7 +90,7 @@ end.
 
 上个小图
 
-[![](http://upload-log4d.qiniudn.com/2009/12/delphi_editor.jpg)](http
+[![image](http://upload-log4d.qiniudn.com/2009/12/delphi_editor.jpg)](http
 ://upload-log4d.qiniudn.com/2009/12/delphi_editor.jpg)
 
     

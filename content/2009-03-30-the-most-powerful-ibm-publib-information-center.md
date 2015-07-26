@@ -18,5 +18,5 @@ google以后，在OpenSSL的官方doc找不到太详细的解释，呵呵，也�
 连接地址：http://publib.boulder.ibm.com/infocenter/tpfhelp/current/index.jsp?topic=
 /com.ibm.ztpf-ztpfdf.doc_put.cur/gtpc2/cpp_ssl_ctx_set_cipher_list.html
 
-![](http://tbn3.google.cn/images?q=tbn:1XCDIW0n3-blkM:)
+![image](http://tbn3.google.cn/images?q=tbn:1XCDIW0n3-blkM:)
 

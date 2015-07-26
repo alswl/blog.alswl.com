@@ -11,7 +11,7 @@ Category: Coding
 quality-free-xhtml-css-div-templates.html)看到很多款极佳的网页设计，反复删选后，决定选用一款Flower
 Shop的作品。
 
-[![](http://upload-log4d.qiniudn.com/2010/03/Flower Shop.jpg)](http://upload-
+[![image](http://upload-log4d.qiniudn.com/2010/03/Flower Shop.jpg)](http://upload-
 log4d.qiniudn.com/2010/03/Flower Shop.jpg)
 
 原始预览： [http://csscreme.com/freetemplates/flower_shop/](http://csscreme.com/fre
@@ -22,7 +22,7 @@ m/tpsaveas.php?tp=flower_shop.zip)
 
 花了1个小时汉化了页面，想了想，还是把这个汉化发布吧。
 
-[ ![](http://upload-log4d.qiniudn.com/2010/03/Feng's Flower Shop.jpg) ](http
+[ ![image](http://upload-log4d.qiniudn.com/2010/03/Feng's Flower Shop.jpg) ](http
 ://upload-log4d.qiniudn.com/2010/03/Feng's Flower Shop.jpg)
 
 页面预览： [http://alswl.github.com/fenflowershop/](http://alswl.github.com/fenflow

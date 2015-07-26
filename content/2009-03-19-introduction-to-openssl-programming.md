@@ -28,7 +28,7 @@ OpenSSL的API多而复杂, 因此我们在此并不会作出一个完整的讲�
 examples/](http://www.rtfm.com/openssl-examples/)上下载.
 
 **程序**  
-我们的客户端是一个简单的HTTPS(见 RFC 281![](/DOCUME~1/%E7%8B%84%E6%95%AC%E8%B6%85/LOCALS~1/
+我们的客户端是一个简单的HTTPS(见 RFC 281![image](/DOCUME~1/%E7%8B%84%E6%95%AC%E8%B6%85/LOCALS~1/
 Temp/msohtml1/01/clip_image001.gif)客户端,它在初始化了一个到达服务器的SSL连接之后便通过这个连接将HTTP请求传送给H
 TTP服务器. 然后等待服务器端的响应,并将响应信息打印在屏幕上.这是对通常那些"获取并且打印信息"的程序功能更简化的一个例子.
 

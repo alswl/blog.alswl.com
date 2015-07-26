@@ -8,7 +8,7 @@ Category: Efficiency
 闲逛时候意外发现了一款开发利器Aptana，介绍说是JavaScript编辑利器，我冲着试一试的心理去官网溜达了一圈，发现那篇介绍问完完全全错了，Aptan
 a哪里只是JavaScript编辑器啊，完全是Web开发18般武艺样样精通啊。
 
-![](http://www.aptana.org/images/top.jpg)
+![image](http://www.aptana.org/images/top.jpg)
 
 废话不多说，来自open-open的介绍（alswl懒得翻译官方文字了 ^_^）
 
@@ -63,7 +63,7 @@ studio-10-utf-8.html)可以搞定（发布后发现这个链接是BlogSpot的，
 
 ×××××××××以下转载×××××××××
 
-![](http://upload-log4d.qiniudn.com/2010/04/aptana_set_utf8.png)
+![image](http://upload-log4d.qiniudn.com/2010/04/aptana_set_utf8.png)
 
 1)&nbsp_place_holder; 點選指令選單上 Window > Preferences...
 

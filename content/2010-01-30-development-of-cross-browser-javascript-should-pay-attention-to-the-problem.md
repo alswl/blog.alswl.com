@@ -16,7 +16,7 @@ reFox下需要正常运行。
 在[随网之舞](http://dancewithnet.com)的[《JavaScript语言精粹》 @
 随网之舞](http://dancewithnet.com/2009/04/02/javascript-the-good-parts/)有更详细的介绍。
 
-![](http://t.douban.com/lpic/s3651235.jpg)
+![image](http://t.douban.com/lpic/s3651235.jpg)
 
 传送门：
 

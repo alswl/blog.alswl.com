@@ -151,7 +151,7 @@ na倒还好,真是恨MSN的速度,恨铁不成钢啊.
 
 上午把PS2的天诛终于过了一关,游戏神经太差了.
 
-![](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnT2RFheAhyvCbmwwzPC
+![image](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnT2RFheAhyvCbmwwzPC
 woV_FOKBabn57wzaidHMpUiBmEYWq1dcNbUdZ7iBSDJ4JggYY6-Pok8RJXY4TJsWPzwkhP4Jbll-
 12d6kkKKJ_Dj4RS5gY7mhrjc)
 
@@ -178,7 +178,7 @@ woV_FOKBabn57wzaidHMpUiBmEYWq1dcNbUdZ7iBSDJ4JggYY6-Pok8RJXY4TJsWPzwkhP4Jbll-
 
 Look,劳动成果
 
-![](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnSM5oHSgLwSOttbWBKJ
+![image](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnSM5oHSgLwSOttbWBKJ
 K7g3HvF_JgzWquU_o6MUTJHi9RjoqTF6wTVeSbR4828UZD5eCdbgd5gEvhhuihCO_FIJqbtCfJluGo
 etLVeCAp09ayrS8qYVfr3Q)
 
@@ -190,15 +190,15 @@ etLVeCAp09ayrS8qYVfr3Q)
 
 每页都有贴图,这张是魔兽世界的亡灵族术士,红色标记是后来阅读时的批注
 
-![](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnREMVJeMGraLFaT_9b6
+![image](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnREMVJeMGraLFaT_9b6
 RcvTphyc3TK2T0js4OKMcP6B858TR0l9xNWmyJydZAAdEcGo8hZoiA-
 LEUi2lPQc9tMirxFvtF2R67p0XeDYcok4OtuI7abKL3is)
 
-![](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnVuDkImqT6GmMInndYm
+![image](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnVuDkImqT6GmMInndYm
 9xk3lBDJemEbvoCIGZmMefgOWt0eDxAxxuqZhfURrMlugId6CWCe5D2detLXYVxtXsvVELGuKvoj92
 FqFAKr5noAAC3jprtEthF0)
 
-![](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnb2PArklQ4-25GPEMNr
+![image](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnb2PArklQ4-25GPEMNr
 AjpawUSO_XSXk0tqYJKf66iidyQtJjRai8X6_9ygVytXKpTFa6_cgxgpfwtFHrxqTPLjOjjXp7Mk03
 bruh5hdBlOVosNaQavmwpc)
 
@@ -214,7 +214,7 @@ bruh5hdBlOVosNaQavmwpc)
 
 我妈玩游戏时,我就废物利用,同时下载电影,搞了黑客帝国3合1,以前没看过,爽啊,特别时Neo变成救世主,和神一样,那酷的,贼!
 
-![](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnZBQ_3LvJWOocb6hYBJ
+![image](http://tk.files.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnZBQ_3LvJWOocb6hYBJ
 YDv8uJJkz6mxcukOFLGQiDmSet6v5HW2vssPHSI093Azv8qLV__MZqZRuwjJ5wIa0N9HHdShEtpHj-
 JnvJL55o1SX) 那个,很感谢堕堕留言,仔细看一下,好像就这么一个人在留言,(脸红一下),你们的Space那么漂亮,还有那个羽化.没关系,继续努力.
 
@@ -234,7 +234,7 @@ www.uuu9.com
 
 手机 记2
 
-为了最大限度榨干奸商每一分利润,不让他骗取我一分钱,我特地做了一份买手机策划书.如下. ![](http://tkfiles.storage.msn.com
+为了最大限度榨干奸商每一分利润,不让他骗取我一分钱,我特地做了一份买手机策划书.如下. ![image](http://tkfiles.storage.msn.com
 /x1pUr2osLO3XWgOPrtg08dwnYjGBdoTAaMW0VjyR8Rp0gyApwO5ITsl0KJty4hpCDZ1xKCZRFynfm
 NApNyARXBQkPKzC2QeCbr2UAIq74FIeVP0wuqK_Vhb6AtatdM5stKKVssvRh0xoaU)最后,坚决不让卖手机的那
 个PPMM色诱.
@@ -283,11 +283,11 @@ Explorer Enterprise,离线浏览软件挺实在的软件,难能可贵还是中�
 其实小时候很讨厌写日记,一直被母亲逼着.美其名曰:锻炼我的写作能力.然后,我就写,经常是:今天去外婆家玩,然后怎么怎么~~~.实在没事情可以写,就写读后感,
 说是读后感,其实就是把原文压缩一下,好在我看的书都是少儿用的,原文也只有50-100字数左右.
 
-这本日记第一篇日记是1997-2-21,最后一篇是1999-6-22. ![](http://tkfiles.storage.msn.com
+这本日记第一篇日记是1997-2-21,最后一篇是1999-6-22. ![image](http://tkfiles.storage.msn.com
 /x1p4JHjVbcjTC-ewUafvAHFbEJuBX7Eu85QPe3cvLmL4Sw25YJ0XDsR45PFn0_bXu2YYWeT20b5Q6
 GE93CH_ECG15ZwDE4p0D6X4UZVpRY3CJZF2hdWNf_IUTodw6rbA9uf1l61aE45SJdjaho2tCWm4A)
 
-![](http://tkfiles.storage.msn.com/x1p4JHjVbcjTC-
+![image](http://tkfiles.storage.msn.com/x1p4JHjVbcjTC-
 ewUafvAHFbEJuBX7Eu85QPe3cvLmL4Sz5z8EV45WocJ7v8qDPkRhk_oih-UrH-
 hyycKj6OadNXG3eJtjSZ1nOZofoJdwQnJS6ljlrFm6KRBzQcgwCzkgzs_6XnrQThvU7PFidyzFGkg)
 
@@ -395,7 +395,7 @@ PS:谢谢石榴綠茶指出错误.
 
 最后,看看我的----------------------------------------中国移动-VIP超级用户
 
-![](http://tkfiles.storage.msn.com
+![image](http://tkfiles.storage.msn.com
 /x1pUr2osLO3XWgOPrtg08dwnVhNViIiAypZNHZ9qd4QOsr91su4lTnjKIK-XjiF0cP3tiWK-
 LN59rrPrjKloIlslazucodmTrWpE6OaKqz1eOVGJtocsKbArAPpF175F9EW_sRuDuokEHo)
 
@@ -495,7 +495,7 @@ MMC,而且没有赠送usb连接线.只能用读卡器,我就想,一直拆来拆�
 
 我的蓝牙适配器.
 
-![](http://tkfiles.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnfd5FRo6Z9yUPoCBurJB
+![image](http://tkfiles.storage.msn.com/x1pUr2osLO3XWgOPrtg08dwnfd5FRo6Z9yUPoCBurJB
 S0vKTE0rXjGJfpZQylXGHfJCMaG7bDg3vg8SYatRUReUih4FgvRNyvQwU0yUd8Pba_dt8UAAFOyc03
 UgISZkWJJ_TIFyLGQfYws)
 

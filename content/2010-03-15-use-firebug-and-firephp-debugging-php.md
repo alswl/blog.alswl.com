@@ -15,7 +15,7 @@ FirePHP](http://www.sitepoint.com/blogs/2010/02/09/debug-php-firebug-firephp/)
 
 ×××××以下译文××××××
 
-![](http://www.sitepoint.com/blogs/wp-content/uploads/2010/02/firephp.png)
+![image](http://www.sitepoint.com/blogs/wp-content/uploads/2010/02/firephp.png)
 
 如果你和我一样，你会在开发网页项目时候完全无法离开[FireBug](http://getfirebug.com/)。这个小巧的"臭虫"是一个神奇而有用的H
 TML/CSS/JavaScript/Ajax调试器。但是你也许不知道这个还可以用来调试PHP，没错，它可以，感谢一款名为FirePHP的FireFox插件

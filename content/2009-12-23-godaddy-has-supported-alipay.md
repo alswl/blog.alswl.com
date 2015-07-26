@@ -15,7 +15,7 @@ Category: Coding
 
 有图有真像
 
-![](http://upload-log4d.qiniudn.com/2009/12/godaddy_alipay.jpg)
+![image](http://upload-log4d.qiniudn.com/2009/12/godaddy_alipay.jpg)
 
 我犀利了，应该是今天下午开始支持的。
 

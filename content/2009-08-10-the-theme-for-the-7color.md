@@ -15,7 +15,7 @@ E6下不兼容，要么就是色调、字体大小不符合我的要求。
 Ni Shuang](http://nishuang.de/),
 色调什么都挺好看，界面是自适应宽度。唯一遗憾的是文章没有加上标签，瑕不掩瑜，这还是一个很优秀的主题。
 
-![](http://wp-themes.com/wp-content/themes/7color/screenshot.png)
+![image](http://wp-themes.com/wp-content/themes/7color/screenshot.png)
 
 调一下footer后，加入cnzz的分析，唔，可以enjoy it啦~
 

@@ -13,7 +13,7 @@ Category: Coding
 
 低调而华丽的放上我下午刚新鲜出炉的制作，同学们只要Ctrl+F5就可以刷新缓存看到啦。
 
-![](http://upload-log4d.qiniudn.com/2010/01/D.png)
+![image](http://upload-log4d.qiniudn.com/2010/01/D.png)
 
 下面，砸鸡蛋和番茄吧～～～
 

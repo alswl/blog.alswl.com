@@ -14,13 +14,13 @@ Category: Internet
 
 感觉这个创意很是不错，推广的才如此之快，而且在一个网站的亲和力和聚合力上的确起到了很大的作用
 
-![](http://www.ntalker.com/images/img_211_.jpg)
+![image](http://www.ntalker.com/images/img_211_.jpg)
 
-![](http://www.ntalker.com/images/img_212.jpg)
+![image](http://www.ntalker.com/images/img_212.jpg)
 
-![](http://www.ntalker.com/images/img_213.jpg)
+![image](http://www.ntalker.com/images/img_213.jpg)
 
-![](http://www.ntalker.com/images/img_4.jpg)
+![image](http://www.ntalker.com/images/img_4.jpg)
 
-![](http://www.ntalker.com/images/p_10.jpg)
+![image](http://www.ntalker.com/images/p_10.jpg)
 

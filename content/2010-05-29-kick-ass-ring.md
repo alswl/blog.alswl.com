@@ -10,7 +10,7 @@ Java，蛋疼啊～
 
 好了回正题，关于海扁王。
 
-[![](http://img2.douban.com/mpic/s4145084.jpg)](http://img2.douban.com/lpic/s4
+[![image](http://img2.douban.com/mpic/s4145084.jpg)](http://img2.douban.com/lpic/s4
 145084.jpg)
 
 海扁王是一部很不错的电影，特别是片中对于普通人梦想的描述，让人很感动。其次，影片中那个小萝莉真是。。。太High了，暴力和美学的结合啊～
