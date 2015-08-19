@@ -17,7 +17,7 @@ Category: Life
 
 这是最好的成果，大西米的爽滑口感不如小西米，而且比小西米难煮，我至少重复闷了4次，牛奶的口感也不如椰汁。
 
-[![image](http://upload-log4d.qiniudn.com/2010/07/ximilu.jpg)](http://upload-
+[![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/07/ximilu.jpg)](http://upload-
 log4d.qiniudn.com/2010/07/ximilu.jpg)
 
 下次继续努力咯～

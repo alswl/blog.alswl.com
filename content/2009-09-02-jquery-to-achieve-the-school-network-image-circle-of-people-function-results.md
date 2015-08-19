@@ -434,7 +434,7 @@ ag类,基于jQuery](http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.ht
 
 ### 相关下载
 
-[DragResize.js](http://upload-log4d.qiniudn.com/2009/09/DragResize.js)
-[template.js](http://upload-log4d.qiniudn.com/2009/09/template.js)
-[css.css](http://upload-log4d.qiniudn.com/2009/09/css.css)
+[DragResize.js](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/DragResize.js)
+[template.js](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/template.js)
+[css.css](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/css.css)
 

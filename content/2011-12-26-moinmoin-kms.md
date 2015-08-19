@@ -235,7 +235,7 @@ released](http://log4d.com/2011/12/moinmoin-plugin-image2attach)
   * 默认是文本模式编辑器，切换到图形编辑模式（默认编辑器可以在个人设置里面修改）
   * 从某个网页粘帖内容到图形编辑模式（这个图形编辑器是CKEditor的精简版）。
   * 查看图形编辑器原始码，再返回"所见即所得"状态（这个步骤可以去除一些空格）
-  * 返回文本模式编辑器，MoinMoin会自动转换html->wiki（目前我遇到3个bug，中文开头空格/BR换行/fieldset，前两个我已经修 复，diff文件在[http://upload-log4d.qiniudn.com/2011/12/moinmoin.diff](http://upload-log4d.qiniudn.com/2011/12/moinmoin.diff)）
+  * 返回文本模式编辑器，MoinMoin会自动转换html->wiki（目前我遇到3个bug，中文开头空格/BR换行/fieldset，前两个我已经修 复，diff文件在[http://77g0h6.com1.z0.glb.clouddn.com/2011/12/moinmoin.diff](http://77g0h6.com1.z0.glb.clouddn.com/2011/12/moinmoin.diff)）
   * 人工审核一下wiki，也顺便仔细看看文章内容
   * 加入Category，预览，保存
 
@@ -245,7 +245,7 @@ released](http://log4d.com/2011/12/moinmoin-plugin-image2attach)
 
 我修改了 `/usr/lib/python2.7/site-
 packages/MoinMoin/converter/text_html_text_moin_wiki.py` 这个文件。点击 [diff文件](http
-://upload-log4d.qiniudn.com/2011/12/moinmoin.diff)下载。
+://77g0h6.com1.z0.glb.clouddn.com/2011/12/moinmoin.diff)下载。
 
 ## 6. wiz转MoinMoin经验
 

@@ -63,7 +63,7 @@ studio-10-utf-8.html)可以搞定（发布后发现这个链接是BlogSpot的，
 
 ×××××××××以下转载×××××××××
 
-![image](http://upload-log4d.qiniudn.com/2010/04/aptana_set_utf8.png)
+![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/04/aptana_set_utf8.png)
 
 1)&nbsp_place_holder; 點選指令選單上 Window > Preferences...
 

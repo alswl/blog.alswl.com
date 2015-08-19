@@ -55,7 +55,7 @@ log4d.qiniudn.com/2009/11/douban_share.jpg)
 ## 相关下载
 
 懒人来下载这个吧，都是经过修改的，不过第一个jQuery没汉化...我懒了...如果英语不好就下载第二个吧 [share-this_jquery](http
-://upload-log4d.qiniudn.com/2009/11/share-this_jquery.zip)（Share this
+://77g0h6.com1.z0.glb.clouddn.com/2009/11/share-this_jquery.zip)（Share this
 jQuery版本，Jason Ti本地化+未汉化+已经汉化） [share-this_prototype](http://upload-
 log4d.qiniudn.com/2009/11/share-this_prototype.zip)（Share this
 prototype版本，sofish本地化+汉化） 哦，最后，如果觉得本文不错，你也可以分享哦，谢谢咯。

@@ -36,7 +36,7 @@ TryExec=/usr/bin/awesome
 启动之后的情况是 NetworkManager 无线 编辑/删除 按钮变灰无法点击，或者可以点击，
 但是会发生 **insufficient privileges** 错误。
 
-![insufficient privileges](http://upload-log4d.qiniudn.com/2012/05/insufficient-privileges.png)
+![insufficient privileges](http://77g0h6.com1.z0.glb.clouddn.com/2012/05/insufficient-privileges.png)
 
 
 ## 问题原因 ##
@@ -82,7 +82,7 @@ exec ck-launch-session dbus-launch wm
 随后我把怀疑的目光放到 `/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1`
 这个程序给系统提供 PolicyKit 权限认证，请求时候会让用户输入密码，如下图：
 
-![PolicyKit Agent](http://upload-log4d.qiniudn.com/2012/05/policykit-agent.png)
+![PolicyKit Agent](http://77g0h6.com1.z0.glb.clouddn.com/2012/05/policykit-agent.png)
 
 可惜还是不行。
 

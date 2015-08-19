@@ -44,7 +44,7 @@ Easy DragToGo是一款很不错的FireFox插件，能够实现一些鼠标手势
 
 Easy DragToGo图图
 
-![image](http://upload-log4d.qiniudn.com/2010/02/easy_dragtogo.jpg)
+![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/02/easy_dragtogo.jpg)
 
 但是似乎作者最近很忙，自从2009 年06月13日以来都没有进行插件更新。导致的结果就是在FireFox升级到3.6之后，Easy DragToGo悲惨的标
 记上了"**这是一个针对旧版本Firefox的附加组件**"字样。我苦苦等了近两个月，依然没有等到作者放出新版本，终于忍不住找第三方修改版。
@@ -55,7 +55,7 @@ Easy DragToGo图图
 
 有图为证
 
-![image](http://upload-log4d.qiniudn.com/2010/02/easy_dragtogo_ff.jpg)
+![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/02/easy_dragtogo_ff.jpg)
 
 最后，下载地址（xpi格式的文件，直接拖拽到FireFox就可以了）
 

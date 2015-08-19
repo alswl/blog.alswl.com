@@ -11,7 +11,7 @@ Category: Life
 
 最后一次疯狂～
 
-![image](http://upload-log4d.qiniudn.com/2010/06/cinderella.JPG)
+![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/cinderella.JPG)
 
 The Happy Ending
 

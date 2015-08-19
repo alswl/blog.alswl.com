@@ -8,7 +8,7 @@ Category: Coding
 呃，这是我在一个星期内搞鼓的一个Asp.NET课程设计，没有什么太多的内容，把它发布到了Csdn了，开了5分，嗯，对得起我一个星期拼命码代码。（哦，我很无耻
 的使用了[MG12](http://www.neoease.com/)的iNove主题……）
 
-![thisHouse](http://upload-log4d.qiniudn.com/2009/11/thisHouse.jpg)
+![thisHouse](http://77g0h6.com1.z0.glb.clouddn.com/2009/11/thisHouse.jpg)
 
 ## readme.txt内容：
 

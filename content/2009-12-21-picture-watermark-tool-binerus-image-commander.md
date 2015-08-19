@@ -16,8 +16,8 @@ Commander**"，这是一款非常优秀的水印工具。我在xdowns搜索水�
 
 主界面截图
 
-[![image](http://upload-log4d.qiniudn.com/2009/12/binerus_image_commander.jpg)
-](http://upload-log4d.qiniudn.com/2009/12/binerus_image_commander.jpg)
+[![image](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/binerus_image_commander.jpg)
+](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/binerus_image_commander.jpg)
 
 支持**批量加入水印**，水印的自定义样式也比较多，生成文件时候可以选择生成文件名方式，并且可以修改生成之后的图片质量。
 

@@ -33,7 +33,7 @@ Category: Coding
 
 MoinMoin的UML图：
 
-![MoinMoin](http://upload-log4d.qiniudn.com/2012/02/MoinMoinArchitecture.png)
+![MoinMoin](http://77g0h6.com1.z0.glb.clouddn.com/2012/02/MoinMoinArchitecture.png)
 
 ## 3. MoinMoin 常用对象
 

@@ -7,17 +7,17 @@ Category: Coding
 
 早期的输入框提示是这样的（via [baidu](http://tieba.baidu.com/index.html)）
 
-![tieba](http://upload-log4d.qiniudn.com/2011/08/login1.png)
+![tieba](http://77g0h6.com1.z0.glb.clouddn.com/2011/08/login1.png)
 
 左边一个 label ，右边一个输入框。
 
 比较现代的方式是（via [Discuz!](http://www.discuz.net/)）
 
-![discuz!](http://upload-log4d.qiniudn.com/2011/08/login2.png)
+![discuz!](http://77g0h6.com1.z0.glb.clouddn.com/2011/08/login2.png)
 
 更漂亮的方式是（via [点点](http://www.diandian.com/login)）
 
-![diandian](http://upload-log4d.qiniudn.com/2011/08/login_diandian.png)
+![diandian](http://77g0h6.com1.z0.glb.clouddn.com/2011/08/login_diandian.png)
 
 登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。
 

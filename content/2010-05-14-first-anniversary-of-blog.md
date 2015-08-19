@@ -9,7 +9,7 @@ Category: Life
 
 按照惯例，上图纪念：
 
-![image](http://upload-log4d.qiniudn.com/2010/05/analysis.jpg)
+![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/05/analysis.jpg)
 
 数据没有其他牛人那么犀利，只是见证我的成长而已～唔～还好我是一个喜欢记录的人～
 

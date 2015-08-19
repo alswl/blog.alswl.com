@@ -90,8 +90,8 @@ end.
 
 上个小图
 
-[![image](http://upload-log4d.qiniudn.com/2009/12/delphi_editor.jpg)](http
-://upload-log4d.qiniudn.com/2009/12/delphi_editor.jpg)
+[![image](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/delphi_editor.jpg)](http
+://77g0h6.com1.z0.glb.clouddn.com/2009/12/delphi_editor.jpg)
 
     
     procedure TForm1.O1Click(Sender: TObject);

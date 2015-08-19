@@ -16,7 +16,7 @@ Category: Coding
 
 请订阅我博客的朋友更新一下订阅地址。
 
-![dbevent2gc](http://upload-log4d.qiniudn.com/2011/11/dbevent2gc.png)
+![dbevent2gc](http://77g0h6.com1.z0.glb.clouddn.com/2011/11/dbevent2gc.png)
 
 ## 关于dbevent2gc
 

@@ -15,7 +15,7 @@ d.com/2009/07/chinese-theme-wordpress)》
 
 ### 汉化文件：
 
-[Fusion汉化文件](http://upload-log4d.qiniudn.com/2009/08/lang.rar)
+[Fusion汉化文件](http://77g0h6.com1.z0.glb.clouddn.com/2009/08/lang.rar)
 
 ### 使用方法：
 
