@@ -2,16 +2,17 @@ Title: ss with haproxy
 Author: alswl
 Slug: ss with haproxy
 Date: 2015-11-27 20:23:24
-Tags: 
-Category: 
+Tags: SS, HAProxy
+Category: Efficiency
 
 
 以前用自己的 SS，Linode 美国，后来 Linode 日本，但是始终拼不过上海电信的国际带宽。
 经常不稳定，丢一半的包。
 
-于是买了 [SS](https://portal.shadowsocks.com/aff.php?aff=4215) 服务，9 台服务器，自己挑觉得速度慢的。
+于是买了 [SS](https://portal.shadowsocks.com/aff.php?aff=4215) 服务，
+9 台服务器，自己挑觉得速度快的服务器。
 
-可惜某台服务器比如 sg02 虽然快，但偶尔也出问题，导致邮件出不来，网页打不开。
+但一直固定某台服务器也会偶尔出问题，导致邮件出不来，网页打不开。
 需要手动切换一下服务器。
 于是用 HA 做了一个本地代理，调整了一些参数，让 SS 总是有快速的服务器供选择。
 
