@@ -78,10 +78,12 @@ listen ss
 
     option tcp-check
 
-	server s1 host1:port maxconn 20 check inter 2s rise 5 fall 2
-	server s2 host2:port maxconn 20 check inter 2s rise 5 fall 2
-	server s3 host2:port maxconn 20 check inter 2s rise 5 fall 2
+	server s1 host1:port maxconn 20 check inter 2s rise 30 fall 6 backup
+	server s2 host2:port maxconn 20 check inter 2s rise 30 fall 6
+	server s3 host2:port maxconn 20 check inter 2s rise 30 fall 6
 ```
 
 
 挺稳定，很快速。
+
+update: 2015-12-15，添加 `backup` 项，选一台最稳定的做 backup，避免所有连接都超时。
