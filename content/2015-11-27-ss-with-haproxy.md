@@ -43,13 +43,13 @@ Category: Efficiency
 
 ```
 global
-	ulimit-n  4096
+    ulimit-n  4096
 
 
 defaults
-	log global
-	mode    tcp
-	timeout connect 1s
+    log global
+    mode    tcp
+    timeout connect 1s
     timeout client 1s
     timeout server 1s
 
@@ -71,16 +71,18 @@ listen ss
     log global
     maxconn 1024
 
-	timeout connect 200ms
+    timeout connect 200ms
     timeout client 600s
     timeout server 600s
-    timeout check 150ms
-
+    timeout check 80ms  # for office / home
+    # timeout check 400ms  # for starbucks
+    retries 1
+    option redispatch
     option tcp-check
 
-	server s1 host1:port maxconn 20 check inter 2s rise 30 fall 6 backup
-	server s2 host2:port maxconn 20 check inter 2s rise 30 fall 6
-	server s3 host2:port maxconn 20 check inter 2s rise 30 fall 6
+    server s1 host1:port maxconn 20 check inter 2s rise 30 fall 6 backup
+    server s2 host2:port maxconn 20 check inter 2s rise 30 fall 6
+    server s3 host2:port maxconn 20 check inter 1s rise 60 fall 6
 ```
 
 
