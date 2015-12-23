@@ -5,6 +5,7 @@ Date: 2015-11-27 20:23:24
 Tags: SS, HAProxy
 Category: Efficiency
 
+![shadowsocks.png](http://upload-log4d.qiniudn.com/upload_dropbox/201512/shadowsocks.png)
 
 以前用自己的 SS，Linode 美国，后来 Linode 日本，但是始终拼不过上海电信的国际带宽。
 经常不稳定，丢一半的包。
