@@ -1,6 +1,6 @@
-Title: ss with haproxy
+Title: SS with Haproxy
 Author: alswl
-Slug: ss with haproxy
+Slug: ss-with-haproxy
 Date: 2015-11-27 20:23:24
 Tags: SS, HAProxy
 Category: Efficiency
