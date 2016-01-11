@@ -3,9 +3,9 @@ Slug: about
 Author: alswl
 Date: 2012-05-14 21:21
 
-我是 alswl ，这个词是我在小学2、3年级左右，来源于我臆想出来的一部小说的主人公。
+我是 alswl ，这个词是我小时候写的一部小说的主人公。
 
-目前在[堆糖网](http://www.duitang.com/)工作，开发工程师。
+目前在[堆糖网](http://www.duitang.com/)工作，工程师，打杂。
 
 ## 博客记录
 
@@ -27,6 +27,7 @@ Date: 2012-05-14 21:21
 #Email: echo 'YWxzd2x4QGdtYWlsLmNvbQo=' | base64 -d
 ```
 
+* [堆糖](http://www.duitang.com/people/?user_id=1723564092)
 * [新浪微博](http://weibo.com/alswlx)
 * [知乎](http://www.zhihu.com/people/alswl)
 * [豆瓣](http://www.douban.com/people/alswl/)
