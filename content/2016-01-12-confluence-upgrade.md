@@ -5,9 +5,10 @@ Date: 2016-01-12 22:53:55
 Tags: confluence
 Category: Efficiency
 
-公司使用 [Confluence][_confluence] 管理自己的知识库，
+公司使用 [Confluence][https://www.atlassian.com/software/confluence]
+管理自己的知识库，
 现在使用的版本还是 3.0.1，而最新的 Confluence 版本已经是 5.4+。
-新版本加入的一些现代化 Web 系统的新特性很吸引人，
+新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑），
 在群众的强烈呼声下，我着手开始升级。
 
 ![201601/confluence_river.jpg](http://upload-log4d.qiniudn.com/upload_dropbox/201601/confluence_river.jpg)
