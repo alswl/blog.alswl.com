@@ -5,7 +5,7 @@ Date: 2016-01-12 22:53:55
 Tags: confluence
 Category: Efficiency
 
-公司使用 [Confluence][https://www.atlassian.com/software/confluence]
+公司使用 [Confluence](https://www.atlassian.com/software/confluence)
 管理自己的知识库，
 现在使用的版本还是 3.0.1，而最新的 Confluence 版本已经是 5.4+。
 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑），
@@ -31,7 +31,7 @@ Category: Efficiency
 
 ## From embedded to MySQL
 
-更新内之苦到外部库的操作流程：
+更新内置库到外部库的操作流程：
 
 *   导出当前的数据备份，包括附件，我导出后 1G+
 *   使用当前同版本（3.0.1）安装一个全新的 wiki，注意下载 JDBC-connector
