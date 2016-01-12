@@ -10,7 +10,7 @@ Category: Efficiency
 新版本加入的一些现代化 Web 系统的新特性很吸引人，
 在群众的强烈呼声下，我着手开始升级。
 
-![201601/confluence.jpg](http://upload-log4d.qiniudn.com/upload_dropbox/201601/confluence.jpg)
+![201601/confluence_river.jpg](http://upload-log4d.qiniudn.com/upload_dropbox/201601/confluence_river.jpg)
 
 <!-- more -->
 
