@@ -1,6 +1,6 @@
-Title: Windows management for hacker - 桌面管理工具
+Title: Windows management for hacker
 Author: alswl
-Slug: mac-for-geek-window-management
+Slug: windows-management-for-hacker
 Date: 2016-03-05 16:36:16
 Tags: Mac
 Category:  Efficiency
@@ -12,10 +12,16 @@ Category:  Efficiency
 
 在介绍我使用的工具之前，我要先介绍一下我选择的原因和历史。
 
+![201604/ergodox_infinity.jpg](http://upload-log4d.qiniudn.com/upload_dropbox/201604/ergodox_infinity.jpg)
+
+ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的时候，请留步思考 5s）。
+
 
 ## Alt+Tab = 苦难的历史
 
 当我还年轻的时候，曾经对 Alt+Tab 这个快捷键愤慨无比，觉得这种设计虽然简单但是很蠢。
+
+<!-- more -->
 
 *   **命中率低**。要在茫茫图标中查找自己需要的窗口，如果开了 20 个应用，切换到一个非常用窗口至多可能需要 20-1 次按键。
     不要跟我说有 Alt+Shift+Tab 的反向循环操作，估计大部分用户都不知道。而且 正向/反向 切换伤脑子。
@@ -71,9 +77,7 @@ Category:  Efficiency
 
 回到要介绍的主角身上，[Phoenix](https://github.com/kasper/phoenix)：
 
-```
-A lightweight OS X window and app manager scriptable with JavaScript
-```
+>   A lightweight OS X window and app manager scriptable with JavaScript
 
 基本特性是：
 
