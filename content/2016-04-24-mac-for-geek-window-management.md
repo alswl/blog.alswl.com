@@ -1,7 +1,7 @@
 Title: Windows management for hacker
 Author: alswl
 Slug: windows-management-for-hacker
-Date: 2016-03-05 16:36:16
+Date: 2016-04-24 16:36:16
 Tags: Mac
 Category:  Efficiency
 

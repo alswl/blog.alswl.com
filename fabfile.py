@@ -16,8 +16,8 @@ env.deploy_path = 'output'
 DEPLOY_PATH = env.deploy_path
 
 # Remote server configuration
-production = 'root@localhost:22'
-dest_path = '/var/www'
+production = 'static@bulma.log4d.com:22'
+dest_path = '/home/static/blog'
 
 # Rackspace Cloud Files configuration settings
 env.cloudfiles_username = 'my_rackspace_username'
@@ -83,16 +83,17 @@ def cf_upload():
           '-K {cloudfiles_api_key} '
           'upload -c {cloudfiles_container} .'.format(**env))
 
-#@hosts(production)
+@hosts(production)
 def publish():
     """build with product conf and generate gh pages"""
     local('pelican -s publishconf.py')
-    #project.rsync_project(
-        #remote_dir=dest_path,
-        #exclude=".DS_Store",
-        #local_dir=DEPLOY_PATH.rstrip('/') + '/',
-        #delete=True,
-        #extra_opts='-c',
-    #)
-    local('ghp-import output')
-    local('ghp-import -b gitcafe-pages output')
+    project.rsync_project(
+        remote_dir=dest_path,
+        exclude=".DS_Store",
+        local_dir=DEPLOY_PATH.rstrip('/') + '/',
+        delete=True,
+        extra_opts='-c',
+    )
+    #local('ghp-import output')
+    #local('ghp-import -b gitcafe-pages output')
+    #local('ghp-import -b gh-pages output')
