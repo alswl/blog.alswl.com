@@ -30,8 +30,8 @@ LINKS =  (
 
 # Social widget
 SOCIAL = (
-    ('RSS', 'http://blog.log4d.com/atom.xml'),
-    ('Twitter', 'http://twitter.com/alswl'),
+    ('RSS', 'https://blog.log4d.com/atom.xml'),
+    ('Twitter', 'https://twitter.com/alswl'),
     ('Github', 'https://github.com/alswl'),
     ('Weibo', 'http://weibo.com/alswlx'),
 )
@@ -90,7 +90,7 @@ FOOTER_INSERT_HTML = u"""
 <hr>
 <div class="panel">
 <div class="panel-body">
-   <small>原文链接: <a href="http://blog.log4d.com/%(url)s">http://blog.log4d.com/%(url)s</a></small><br>
+   <small>原文链接: <a href="https://blog.log4d.com/%(url)s">https://blog.log4d.com/%(url)s</a></small><br>
    <small>3a1ff193cee606bd1e2ea554a16353ee</small>
 </div>
 </div>
@@ -100,7 +100,7 @@ FEED_FOOTER_INSERT_HTML = u"""
 <hr>
 <div class="panel">
 <div class="panel-body">
-   <small>原文链接: <a href="http://blog.log4d.com/%(url)s">http://blog.log4d.com/%(url)s</a></small><br>
+   <small>原文链接: <a href="https://blog.log4d.com/%(url)s">https://blog.log4d.com/%(url)s</a></small><br>
    <small>3a1ff193cee606bd1e2ea554a16353ee</small>
 </div>
 </div>
