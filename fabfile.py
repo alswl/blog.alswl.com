@@ -16,7 +16,7 @@ env.deploy_path = 'output'
 DEPLOY_PATH = env.deploy_path
 
 # Remote server configuration
-production = 'static@bulma.log4d.com:22'
+production = 'static@blog.log4d.com:22'
 dest_path = '/home/static/blog'
 
 # Rackspace Cloud Files configuration settings
