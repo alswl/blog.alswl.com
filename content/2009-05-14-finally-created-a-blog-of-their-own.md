@@ -62,6 +62,5 @@ this.categorys = categorys;
 
 } }
 
-测试一下图片那个插件 [![image](http://img9.2u.com.cn/desk_pic/big_247/246953.jpg)](http://img
-9.2u.com.cn/desk_pic/big_247/246953.jpg)
+测试一下图片那个插件 [![image](http://img9.2u.com.cn/desk_pic/big_247/246953.jpg)](http://img9.2u.com.cn/desk_pic/big_247/246953.jpg)
 
