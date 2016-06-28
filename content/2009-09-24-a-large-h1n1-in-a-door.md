@@ -14,20 +14,13 @@ Category: View
 
 下面上几张图片。
 
-[![20090924(002)](http://upload-
-log4d.qiniudn.com/2009/09/20090924002.jpg)](http://upload-
-log4d.qiniudn.com/2009/09/20090924002.jpg)
+[![20090924(002)](http://upload-log4d.qiniudn.com/2009/09/20090924002.jpg)](http://upload-log4d.qiniudn.com/2009/09/20090924002.jpg)
 隐约能看到外面很多移动饭店，现在卖饭的只能派专员在门口蹲点服务。机灵的已经把「菜单」挂到小门上了。
 
-[![20090924](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/20090924.jpg)](http
-://77g0h6.com1.z0.glb.clouddn.com/2009/09/20090924.jpg)
+[![20090924](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/20090924.jpg)](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/20090924.jpg)
 现在刚下课，还不是最高峰，很多人看了一眼，感觉人太多就犹豫了。
 
-[![20090924(001)](http://upload-
-log4d.qiniudn.com/2009/09/20090924001.jpg)](http://upload-
-log4d.qiniudn.com/2009/09/20090924001.jpg) 横幅是：台湾小吃：XX肉扣夹膜
+[![20090924(001)](http://upload-log4d.qiniudn.com/2009/09/20090924001.jpg)](http://upload-log4d.qiniudn.com/2009/09/20090924001.jpg) 横幅是：台湾小吃：XX肉扣夹膜
 
-[![20090924(003)](http://upload-
-log4d.qiniudn.com/2009/09/20090924003.jpg)](http://upload-
-log4d.qiniudn.com/2009/09/20090924003.jpg) 门口的告示，门卫在预防同学翻墙。
+[![20090924(003)](http://upload-log4d.qiniudn.com/2009/09/20090924003.jpg)](http://upload-log4d.qiniudn.com/2009/09/20090924003.jpg) 门口的告示，门卫在预防同学翻墙。
 

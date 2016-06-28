@@ -18,24 +18,16 @@ Category: Coding
 ## 症状
 
 [caption id="attachment_12631" align="alignnone" width="345"
-caption="开启CodeColorer+可视化界面编辑结果"][![Snap2](http://upload-
-log4d.qiniudn.com/2009/09/Snap2.jpg)](http://upload-
-log4d.qiniudn.com/2009/09/Snap2.jpg)[/caption]
+caption="开启CodeColorer+可视化界面编辑结果"][![Snap2](http://upload-log4d.qiniudn.com/2009/09/Snap2.jpg)](http://upload-log4d.qiniudn.com/2009/09/Snap2.jpg)[/caption]
 
 [caption id="attachment_12632" align="alignnone" width="304"
-caption="关闭CodeColorer+HTML编辑结果在首页显示"][![关闭CodeColorer+HTML编辑结果](http
-://77g0h6.com1.z0.glb.clouddn.com/2009/09/Snap3.jpg)](http://upload-
-log4d.qiniudn.com/2009/09/Snap3.jpg)[/caption]
+caption="关闭CodeColorer+HTML编辑结果在首页显示"][![关闭CodeColorer+HTML编辑结果](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/Snap3.jpg)](http://upload-log4d.qiniudn.com/2009/09/Snap3.jpg)[/caption]
 
 [caption id="attachment_12633" align="alignnone" width="312"
-caption="关闭CodeColorer+HTML编辑结果在内容页"][![关闭CodeColorer+HTML编辑结果在内容页](http
-://77g0h6.com1.z0.glb.clouddn.com/2009/09/Snap4.jpg)](http://upload-
-log4d.qiniudn.com/2009/09/Snap4.jpg)[/caption]
+caption="关闭CodeColorer+HTML编辑结果在内容页"][![关闭CodeColorer+HTML编辑结果在内容页](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/Snap4.jpg)](http://upload-log4d.qiniudn.com/2009/09/Snap4.jpg)[/caption]
 
 [caption id="attachment_12634" align="alignnone" width="365"
-caption="正确显示"][![正确显示](http://upload-
-log4d.qiniudn.com/2009/09/Snap5.jpg)](http://upload-
-log4d.qiniudn.com/2009/09/Snap5.jpg)[/caption]
+caption="正确显示"][![正确显示](http://upload-log4d.qiniudn.com/2009/09/Snap5.jpg)](http://upload-log4d.qiniudn.com/2009/09/Snap5.jpg)[/caption]
 
 ## 解决方法
 

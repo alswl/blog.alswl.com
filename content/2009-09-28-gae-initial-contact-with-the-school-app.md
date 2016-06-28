@@ -32,8 +32,7 @@ Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配�
 相关链接：[app.yaml的具体设置](http://code.google.com/intl/zh-
 CN/appengine/docs/python/config/appconfig.html)
 
-![xnapp_gae_launcher](http://upload-
-log4d.qiniudn.com/2009/09/xnapp_gae_launcher2.jpg)
+![xnapp_gae_launcher](http://upload-log4d.qiniudn.com/2009/09/xnapp_gae_launcher2.jpg)
 我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。
 
 在一切没有问题之后，我们就可以惦记Deploy部署这个项目了，这时候要输入帐号和密码，然后出现console控制台等待信息。出现下面提示时候，就说明上传成功
@@ -55,22 +54,18 @@ o?id=237768885)。
 
 第二步是创建一个新的应用，按部就班的填上相关资料。
 
-[![image](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/image5.png)](http://upload-
-log4d.qiniudn.com/2009/09/image51.png)
+[![image](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/image5.png)](http://upload-log4d.qiniudn.com/2009/09/image51.png)
 
 校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）
 
-[![xnapp_main](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/xnapp_main.jpg)](http
-://77g0h6.com1.z0.glb.clouddn.com/2009/09/xnapp_main2.jpg)
+[![xnapp_main](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/xnapp_main.jpg)](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/xnapp_main2.jpg)
 
 我的应用程序，在这里可以编辑应用的属性
 
 创建之后，就可以填上Canvas的基本选项中的「应用展示地址」和「Canvas Callback
 URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com这种形式的网址。
 
-[![xnapp_config](http://upload-
-log4d.qiniudn.com/2009/09/xnapp_config.jpg)](http://upload-
-log4d.qiniudn.com/2009/09/xnapp_config2.jpg)
+[![xnapp_config](http://upload-log4d.qiniudn.com/2009/09/xnapp_config.jpg)](http://upload-log4d.qiniudn.com/2009/09/xnapp_config2.jpg)
 
 最后测试自己的应用，也就是刚才「应用展示地址」，形式类似于apps.renren.com/xxx/，就可以看到我们的应用了，这时候基本框架就差不多了。
 
@@ -82,9 +77,7 @@ log4d.qiniudn.com/2009/09/xnapp_config2.jpg)
 
 在appspot上测试这个应用是没有任何问题的
 
-[![xnapp_show_ori](http://upload-
-log4d.qiniudn.com/2009/09/xnapp_show_ori.jpg)](http://upload-
-log4d.qiniudn.com/2009/09/xnapp_show_ori1.jpg)
+[![xnapp_show_ori](http://upload-log4d.qiniudn.com/2009/09/xnapp_show_ori.jpg)](http://upload-log4d.qiniudn.com/2009/09/xnapp_show_ori1.jpg)
 
 显示的源码，其中的xnml校内服务器自己可以解析出来的，这段代码在校内测试工具也能通过
 
@@ -200,14 +193,11 @@ main() not_found.py：自定义的404页面，其实就是简单的在MainHandle
 
 把这个GAE App部署，然后就可以在校内的apps.renren.com/xxx/使用这个应用了。
 
-[![xnapp_show](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/xnapp_show.jpg)](http
-://77g0h6.com1.z0.glb.clouddn.com/2009/09/xnapp_show1.jpg)
+[![xnapp_show](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/xnapp_show.jpg)](http://77g0h6.com1.z0.glb.clouddn.com/2009/09/xnapp_show1.jpg)
 
 我的头像，按理应该有三个，我怀疑是校内的一个服务器出问题了，只刷出来两张。
 
-[![xnapp_sidebar](http://upload-
-log4d.qiniudn.com/2009/09/xnapp_sidebar.jpg)](http://upload-
-log4d.qiniudn.com/2009/09/xnapp_sidebar1.jpg)
+[![xnapp_sidebar](http://upload-log4d.qiniudn.com/2009/09/xnapp_sidebar.jpg)](http://upload-log4d.qiniudn.com/2009/09/xnapp_sidebar1.jpg)
 
 可以收藏这个应用，看到侧边栏的海绵宝宝了么？呵呵
 

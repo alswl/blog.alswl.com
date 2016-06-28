@@ -78,8 +78,7 @@ http://www.adobe.com/devnet/flashplayer/articles/rtmfp_stratus_app.html)，文�
 RTMFP（比RTMP更高阶的流媒体传输协议，支持P2P）和Stratus的相关核心代码。我本想把这篇文章翻译，完成10%之后，意外发现已经有人翻译了，地址
 在此[通过Stratus 服务器在Flash Player中使用RTMFP 开发 点对点应用(一) -- Windows Live](http://snow
 yrock.spaces.live.com/Blog/cns!B8CBEB7169880B1D!1279.entry?wa=wsignin1.0&sa=18
-3740112)，[通过Stratus 服务器在Flash Player中使用RTMFP 开发 点对点应用（二） -- Windows Live](http
-://snowyrock.spaces.live.com/blog/cns!B8CBEB7169880B1D!1278.entry?_c=BlogPart)
+3740112)，[通过Stratus 服务器在Flash Player中使用RTMFP 开发 点对点应用（二） -- Windows Live](http://snowyrock.spaces.live.com/blog/cns!B8CBEB7169880B1D!1278.entry?_c=BlogPart)
 。
 
 同时可以参考其他例子[FMS3系列(五)：通过FMS实现时时视频聊天（Flash|Flex） - Bēniaǒ成长笔记 -

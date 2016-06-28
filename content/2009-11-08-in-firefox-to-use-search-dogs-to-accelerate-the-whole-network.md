@@ -14,9 +14,7 @@ Category: Efficiency
 
 上图：
 
-[![firefoxinsogou](http://upload-
-log4d.qiniudn.com/2009/11/firefoxinsogou.jpg)](http://upload-
-log4d.qiniudn.com/2009/11/firefoxinsogou.jpg)
+[![firefoxinsogou](http://upload-log4d.qiniudn.com/2009/11/firefoxinsogou.jpg)](http://upload-log4d.qiniudn.com/2009/11/firefoxinsogou.jpg)
 
 *********************************正文终于开始拉**********************************
 
@@ -36,9 +34,7 @@ Explorer 可以看到 这个子进程的命令行：
 
 最末尾的是和机器相关的识别码，可能每个人都不一样，如果你运行这个程序后，就自动在本地有了一个代理了。使用其他浏览器，就可以轻松使用这个代理突破教育网了。
 
-代理地址是 127.0.0.1:8081 类型 http
-
-将下面文本保存为 REG 文件，双击导入即可开机自动启动Sogou代理
+代理地址是 127.0.0.1:8081 类型 http将下面文本保存为 REG 文件，双击导入即可开机自动启动Sogou代理
 
     
     Windows Registry Editor Version 5.00

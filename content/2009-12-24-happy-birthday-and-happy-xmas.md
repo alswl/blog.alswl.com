@@ -16,8 +16,7 @@ Category: Life
 下午时候，快递给我电话，通知我包裹到了（接个电话漫游唉``` T_T），哇咔咔，是"**杜拉拉纪念版**"和"**重构-
 改善既有代码的设计**"到了。虽然今年没人送给我礼物，不过算是自己给自己的礼物吧，上图，Come on!
 
-[![image](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/books_refactory_dulala.jpg)](http
-://77g0h6.com1.z0.glb.clouddn.com/2009/12/books_refactory_dulala.jpg)
+[![image](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/books_refactory_dulala.jpg)](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/books_refactory_dulala.jpg)
 
 等我把书读完再写读后感和大家分享。
 

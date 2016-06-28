@@ -18,8 +18,7 @@ Studio是不自带代码格式化功能的，这让我用起来很郁闷，PL/SQ
 我在那个在线网站看到了Desktop Version的菜单，进去一看，哦，原来这个网站本身就在做一款SQL格式化工具的产品，叫做 SQL Pretty
 Printer。
 
-[![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/07/spp_app.jpg)](http://upload-
-log4d.qiniudn.com/2010/07/spp_app.jpg)
+[![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/07/spp_app.jpg)](http://upload-log4d.qiniudn.com/2010/07/spp_app.jpg)
 
 SQL Pretty Printer 的桌面版本
 
@@ -32,8 +31,7 @@ SQL Pretty Printer 的桌面版本
 SQL Pretty Printer目前提供4种使用方式，桌面版本，SSMS(SQL Server Management
 Studio)插件，VS插件，和提供API接口。
 
-[![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/07/spp_ssms.jpg)](http://upload-
-log4d.qiniudn.com/2010/07/spp_ssms.jpg)
+[![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/07/spp_ssms.jpg)](http://upload-log4d.qiniudn.com/2010/07/spp_ssms.jpg)
 
 SSMS(SQL Server Management Studio)插件版本
 

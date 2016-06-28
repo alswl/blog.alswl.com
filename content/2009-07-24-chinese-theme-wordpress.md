@@ -14,8 +14,7 @@ Category: Coding
 
 1.[LightWord](http://wordpress.org/extend/themes/lightword)
 
-[![image](http://wp-themes.com/wp-content/themes/lightword/screenshot.png)](http
-://wp-themes.com/wp-content/themes/lightword/screenshot.png)
+[![image](http://wp-themes.com/wp-content/themes/lightword/screenshot.png)](http://wp-themes.com/wp-content/themes/lightword/screenshot.png)
 
 2.[dfBlog](http://wordpress.org/extend/themes/dfblog)
 

@@ -84,6 +84,5 @@ E-mail ![emailgmail](http://77g0h6.com1.z0.glb.clouddn.com/2009/05/emailgmail.gi
 
 曾用E-mail ![email163](http://77g0h6.com1.z0.glb.clouddn.com/2009/05/email163.gif)
 
-MSN（几乎不用，只是展示一下我有MSN……^_^） ![msn](http://upload-
-log4d.qiniudn.com/2009/05/msn.png)
+MSN（几乎不用，只是展示一下我有MSN……^_^） ![msn](http://upload-log4d.qiniudn.com/2009/05/msn.png)
 

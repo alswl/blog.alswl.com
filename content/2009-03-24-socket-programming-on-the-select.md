@@ -74,8 +74,7 @@ fd_set fds; ![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedS
 lockStart.gif) struct timeval timeout={3,0}; //select等待3秒，3秒轮询，要非阻塞就置0 ![image](htt
 p://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif) char
 buffer[256]={0}; //256字节的接收缓冲区
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) ![image](http://
-www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif) /*
+![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) ![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif) /*
 假定已经建立UDP连接，具体过程不写，简单，当然TCP也同理，主机ip和port都已经给定，要写的文件已经打开
 ![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
 sock=socket(![image](http://www.cnblogs.com/Images/dot.gif));

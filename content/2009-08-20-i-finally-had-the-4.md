@@ -8,9 +8,7 @@ Category: Life
 上图，啥也不说了
 
 [caption id="attachment_12659" align="alignnone" width="391"
-caption="cet_4"][![cet_4](http://upload-
-log4d.qiniudn.com/2009/08/Snap1.jpg)](http://upload-
-log4d.qiniudn.com/2009/08/Snap1.jpg)[/caption]
+caption="cet_4"][![cet_4](http://upload-log4d.qiniudn.com/2009/08/Snap1.jpg)](http://upload-log4d.qiniudn.com/2009/08/Snap1.jpg)[/caption]
 
 泪奔啊，考了四级，这次大爆发，把四级绝杀了~~~
 

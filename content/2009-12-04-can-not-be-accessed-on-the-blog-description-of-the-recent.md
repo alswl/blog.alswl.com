@@ -52,6 +52,5 @@ ps:感慨到，搬家果然难啊~
 
 Update:测试上传图片的权限
 
-[![image](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/xiaobai_wifi.jpg)](http://upload-
-log4d.qiniudn.com/2009/12/xiaobai_wifi.jpg)
+[![image](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/xiaobai_wifi.jpg)](http://upload-log4d.qiniudn.com/2009/12/xiaobai_wifi.jpg)
 

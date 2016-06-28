@@ -12,9 +12,7 @@ Status: draft
 
 无图无真相，上图：
 
-[![naruto_xiaoyin_cubao](http://upload-
-log4d.qiniudn.com/2009/07/snapshot20090720180858.jpg)](http://upload-
-log4d.qiniudn.com/2009/07/snapshot20090720180858.jpg)
+[![naruto_xiaoyin_cubao](http://upload-log4d.qiniudn.com/2009/07/snapshot20090720180858.jpg)](http://upload-log4d.qiniudn.com/2009/07/snapshot20090720180858.jpg)
 
 好，我承认，我邪恶了……
 

@@ -26,9 +26,7 @@ Flash Player downloads`"的下载链接。我下载安装后依然无法解决�
 点击菜单栏的`Run->Run Configurations`，在打开的对话框中找到`Main`中的`URL or Path to
 launch`，里面默认是`Use defaults`，现在我们把Debug/Profile/Run手工改成项目文件夹下对应的swf文件即可。
 
-[![flex_launch_path](http://upload-
-log4d.qiniudn.com/2009/11/flex_launch_path.jpg)](http://upload-
-log4d.qiniudn.com/2009/11/flex_launch_path.jpg)
+[![flex_launch_path](http://upload-log4d.qiniudn.com/2009/11/flex_launch_path.jpg)](http://upload-log4d.qiniudn.com/2009/11/flex_launch_path.jpg)
 
 这样修改之后，无论是运行还是调试，都能在一个Flash Player中进行，比在Firefox中方便的多了。
 

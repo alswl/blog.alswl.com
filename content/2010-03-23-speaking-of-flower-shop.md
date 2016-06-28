@@ -22,8 +22,7 @@ m/tpsaveas.php?tp=flower_shop.zip)
 
 花了1个小时汉化了页面，想了想，还是把这个汉化发布吧。
 
-[ ![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/03/Feng's Flower Shop.jpg) ](http
-://77g0h6.com1.z0.glb.clouddn.com/2010/03/Feng's Flower Shop.jpg)
+[ ![image](http://77g0h6.com1.z0.glb.clouddn.com/2010/03/Feng's Flower Shop.jpg) ](http://77g0h6.com1.z0.glb.clouddn.com/2010/03/Feng's Flower Shop.jpg)
 
 页面预览： [http://alswl.github.com/fenflowershop/](http://alswl.github.com/fenflow
 ershop/)
