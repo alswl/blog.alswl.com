@@ -9,6 +9,7 @@ Date: 2012-05-14 21:21
 
 ## 博客记录
 
+* 2016-04-26 使用 AWS，开启 HTTPS
 * 2014-12-23 使用 GitCafe 提供的 Pages 服务
 * 2014-01-24 使用 VPS [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
 * 2013-12-03 更换博客系统 Pelican
