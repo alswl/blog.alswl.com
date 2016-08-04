@@ -79,7 +79,7 @@ DISPLAY_TAGS_ON_SIDEBAR = False
 STATIC_PATHS = ['image', 'CNAME', 'favicon.ico']
 
 #AUTHOR_BIO = 'Computers can change your life for the better.'
-DISQUS_SITENAME = 'log4d'
+DISQUS_SITENAME = ''
 GOOGLE_ANALYTICS = 'UA-8822123-3'
 
 # Plugins
