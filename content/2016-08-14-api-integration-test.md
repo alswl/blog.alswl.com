@@ -5,6 +5,7 @@ Date: 2016-08-14 19:08:20
 Tags: [Test, API]
 Category:  Coding
 
+![201608/abao.png](http://upload-log4d.qiniudn.com/upload_dropbox/201608/abao.png)
 
 为了提高测试，工程师需要对自己提交的产物进行测试，一般是单元测试、集成测试。
 之后提交物流转到 QA 团队，QA 团队根据需求描述对提交物进行测试，
@@ -163,7 +164,6 @@ robotframework：
 在和 CI 的配合方面，我们在 Jinkins 搭建了 abao / abao-master 项目，
 前者响应每次 Push 请求，都会自动构建一遍，后者每天凌晨会将 master 运行一遍。
 
-http://upload-log4d.qiniudn.com/upload_dropbox/201608/abao.png
 
 感谢项目贡献者：
 
