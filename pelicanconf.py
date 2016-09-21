@@ -30,7 +30,7 @@ LINKS =  (
 
 # Social widget
 SOCIAL = (
-    ('RSS', 'https://blog.log4d.com/atom.xml'),
+    ('RSS', 'https://blog.alswl.com/atom.xml'),
     ('Twitter', 'https://twitter.com/alswl'),
     ('Github', 'https://github.com/alswl'),
     ('Weibo', 'http://weibo.com/alswlx'),
@@ -90,7 +90,7 @@ FOOTER_INSERT_HTML = u"""
 <hr>
 <div class="panel">
 <div class="panel-body">
-   <small>原文链接: <a href="https://blog.log4d.com/%(url)s">https://blog.log4d.com/%(url)s</a></small><br>
+   <small>原文链接: <a href="https://blog.alswl.com/%(url)s">https://blog.alswl.com/%(url)s</a></small><br>
    <small>欢迎关注我的微信号：窥豹</small><br>
    <small><img src="http://upload-log4d.qiniudn.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small><br>
    <small>3a1ff193cee606bd1e2ea554a16353ee</small>
@@ -102,7 +102,7 @@ FEED_FOOTER_INSERT_HTML = u"""
 <hr>
 <div class="panel">
 <div class="panel-body">
-   <small>原文链接: <a href="https://blog.log4d.com/%(url)s">https://blog.log4d.com/%(url)s</a></small><br>
+   <small>原文链接: <a href="https://blog.alswl.com/%(url)s">https://blog.alswl.com/%(url)s</a></small><br>
    <small>欢迎关注我的微信号：窥豹</small><br>
    <small><img src="http://upload-log4d.qiniudn.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small><br>
    <small>3a1ff193cee606bd1e2ea554a16353ee</small>
