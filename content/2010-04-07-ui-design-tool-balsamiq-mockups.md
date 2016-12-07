@@ -40,7 +40,7 @@ Flow, 地图，WYSWYG的格式工具栏等，有了这些不用从头画起，�
 
 >   5. 可以将设计导出成PNG格式的图片；
 
-![balsamiq markup exported to png](http://farm4.static.flickr.com/3451/3179518230_5ec1947cb9_m.jpg)
+![balsamiq markup exported to png](https://ohsolnxaa.qnssl.com/upload_dropbox/201004/3179518230_5ec1947cb9_m.jpg)
 
 >   6. 可以用命令行进行导出操作，这样就能让我写个脚本，从svn里checkout某个目录下的所有设计文件后，导出图片，打包后用邮件发到项目经
 理，工程师甚至客户那；
