@@ -199,5 +199,5 @@ BingImg.GetBingImg();`设置一下背景图片就万事OK了。现在，一个�
 
 附上今天的Bing图片
 
-[![image](http://cn.bing.com/fd/hpk2/Finca_ZH-CN2784763289.jpg)](http://cn.bing.com/fd/hpk2/Finca_ZH-CN2784763289.jpg)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)](http://cn.bing.com/fd/hpk2/Finca_ZH-CN2784763289.jpg)
 

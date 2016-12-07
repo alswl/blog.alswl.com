@@ -13,7 +13,7 @@ Category: Efficiency
 
 ## 介绍
 
-![image](http://www.balsamiq.com/images/mockupsair.jpg)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)
 
 > Balsamiq Mockups 提供了 9 大类共 50 多个控件，涵盖了几乎所有常用的 UI 控件。不管是桌面软件、手机软件还是 Web
 站点，都能搞定。且软件极易上手，如上图的豆瓣新主页，是我首次使用 Balsamiq Mockups 时随手画的，仅用 15
@@ -40,8 +40,7 @@ Flow, 地图，WYSWYG的格式工具栏等，有了这些不用从头画起，�
 
 >   5. 可以将设计导出成PNG格式的图片；
 
-![balsamiq markup exported to
-png](http://farm4.static.flickr.com/3451/3179518230_5ec1947cb9_m.jpg)
+![balsamiq markup exported to png](http://farm4.static.flickr.com/3451/3179518230_5ec1947cb9_m.jpg)
 
 >   6. 可以用命令行进行导出操作，这样就能让我写个脚本，从svn里checkout某个目录下的所有设计文件后，导出图片，打包后用邮件发到项目经
 理，工程师甚至客户那；

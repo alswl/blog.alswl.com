@@ -37,14 +37,13 @@ pe，这个js比较大，网上有[jQuery版本的第三方修改版](http://www
 
 )`
 
-2.加入网站图片，你可以保存![image](http://log4d.com/wp-content/plugins/share-this/renren.gif)
-和![image](http://log4d.com/wp-content/plugins/share-this/douban.gif) 并上传到share-
+2.加入网站图片，你可以保存![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)
+和![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif) 并上传到share-
 this.php同一文件夹下。 3.刷新页面，你会发现新的按钮出来了。
 
 ## 加入更多按钮
 
-其实加入按钮的关键在于相应url，这个url怎么获取呢。其实我们可以从对应网站[人人网分享](http://share.renren.com/)、[豆瓣网分
-享](http://www.douban.com/service/bookmarklet)加入自己的浏览器。然后随便通过这些按钮收藏一个网页，如百度。那么就
+其实加入按钮的关键在于相应url，这个url怎么获取呢。其实我们可以从对应网站[人人网分享](http://share.renren.com/)、[豆瓣网分享](http://www.douban.com/service/bookmarklet)加入自己的浏览器。然后随便通过这些按钮收藏一个网页，如百度。那么就
 会弹出一个收藏页面。 [![douban_share](https://ohsolnxaa.qnssl.com/2009/11/douban_share.jpg)](https://ohsolnxaa.qnssl.com/2009/11/douban_share.jpg)
 这时候获取图中的网页地址，然后修改其中真实的url和title，替换为{url},{title}，这两个标记供share-this插件识别
 。再将相应代码加入share-this.php，就大功告成了。

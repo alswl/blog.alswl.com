@@ -12,8 +12,7 @@ lpic/s2518833.jpg)
 [ChinaPub](http://www.china-pub.com/34512&ref=ps))是我最近在看的一本书。虽然名为Java学习笔记，其实**
 深入浅出**的讲解了Java这门语言。书中的语言颇有**白文风格**，适合没有语言基础的同学学习，也适合对一些概念不清楚的开发人员。
 
-我很快的翻阅了半本书，作者的范例代码简单精要(["Java笔记
-split/不定长度参数/泛型类型通配符"](http://log4d.com/2009/11/java-notes-_split-variable-
+我很快的翻阅了半本书，作者的范例代码简单精要(["Java笔记split/不定长度参数/泛型类型通配符"](http://log4d.com/2009/11/java-notes-_split-variable-
 length-parameter-generic-type-
 wildcard)中示例代码就是改编自本书)。我现在正在阅读线程、反射和Annotation这三块内容，看得我酣畅淋漓啊。
 

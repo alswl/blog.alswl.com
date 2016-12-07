@@ -12,15 +12,13 @@ Category: Efficiency
 
 最后，Metrics可以以图形化的形式显示包的依赖关系，很好玩，大家可以试试。
 
-转载自：三亩地<[猛击这里打开](http://www.alexadaman.cn/program/eclipse-dai-ma-tong-ji-cha-
-jian.html/comment-page-1#comment-292569)>，谢谢作者
+转载自：三亩地<[猛击这里打开](http://www.alexadaman.cn/program/eclipse-dai-ma-tong-ji-cha-jian.html/comment-page-1#comment-292569)>，谢谢作者
 
 ***********************以下为原文*************************
 
 Metrics插件可以从多个角度对Eclipse中的代码进行统计：
 
-[![metrics](http://image-001.yo2cdn.com/wp-content/uploads/0/38/2008/08/metrics-thumb.png)](http://image-001.yo2cdn.com/wp-
-content/uploads/0/38/2008/08/metrics.png)
+[![metrics](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)](http://image-001.yo2cdn.com/wp-content/uploads/0/38/2008/08/metrics.png)
 
 **官方网站**：[http://metrics.sourceforge.net/](http://metrics.sourceforge.net/)
 

@@ -10,7 +10,7 @@ Category: Efficiency
 
 友情提示：今天愚人节哦～愚人节快乐～
 
-![image](http://www.salon.com/special/aprilone/2000/linux/cover.jpg)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)
 
 * * *
 

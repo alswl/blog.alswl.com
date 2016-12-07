@@ -43,7 +43,7 @@ XDash 拿到的快盘公测版客户端的版本号是 1.7.0.380。客户端压�
 双击 setup 文件开始安装。如果此前系统中已经装有快盘，会提示卸载之前版本，直接点卸载即可。安装过程速度很快，一路点下一步。唯一的缺憾在于，目前快盘依然
 **无法让用户自定义安装的目录**，只能安装到默认路径（系统盘符）下。对于有系统洁癖的用户而言，这样的设计略嫌不足。
 
-[![image](http://www.tongbukong.com/wp-content/uploads/2010/08/2010-08-10_111527.png)](http://www.tongbukong.com/wp-content/uploads/2010/08/2010-08-10_111527.png)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)](http://www.tongbukong.com/wp-content/uploads/2010/08/2010-08-10_111527.png)
 
 （上图：快盘安装界面，傻瓜式的操作，一路点击默认按钮就完成，速度很快。）
 
@@ -51,7 +51,7 @@ XDash 拿到的快盘公测版客户端的版本号是 1.7.0.380。客户端压�
 
 首次运行快盘，会自动弹出初始设置窗口。
 
-[![image](http://www.tongbukong.com/wp-content/uploads/2010/08/2010-08-10_112859.png)](http://www.tongbukong.com/wp-content/uploads/2010/08/2010-08-10_112859.png)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)](http://www.tongbukong.com/wp-content/uploads/2010/08/2010-08-10_112859.png)
 
 在"账号绑定向导"窗口的"登录并绑定"界面，填写之前申请注册到的用户账号邮箱及密码。该账号密码将同时可用于登陆 [WPS
 办公空间](http://xlive.wps.cn/fileviewer/)（Web

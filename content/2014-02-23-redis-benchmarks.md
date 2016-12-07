@@ -209,7 +209,7 @@ ping 来检查服务端到客户端的延迟。根据带宽，可以计算出最
 将多条命令包装成 pipelining 可以大大提高效率。事实上，处理 10 bytes，100 bytes，
 1000 bytes 的请求时候，吞吐量是差不多的，详细可以见下图。
 
-![Data size impact](https://github.com/dspezia/redis-doc/raw/client_command/topics/Data_size.png)
+![Data size impact](https://raw.githubusercontent.com/dspezia/redis-doc/client_command/topics/Data_size.png)
 
 + 在多核 CPU 服务器上面，Redis 的性能还依赖 NUMA 配置和 处理器绑定位置。
 最明显的影响是 redis-benchmark 会随机使用 CPU 内核。为了获得精准的结果，
@@ -219,14 +219,14 @@ ping 来检查服务端到客户端的延迟。根据带宽，可以计算出最
 Intel Nehalem EX， 和 Intel Westmere）使用不同的配置。请注意，
 这不是针对 CPU 的测试。
 
-![NUMA chart](https://github.com/dspezia/redis-doc/raw/6374a07f93e867353e5e946c1e39a573dfc83f6c/topics/NUMA_chart.gif)
+![NUMA chart](https://raw.githubusercontent.com/dspezia/redis-doc/6374a07f93e867353e5e946c1e39a573dfc83f6c/topics/NUMA_chart.gif)
 
 + 在高配置下面，客户端的连接数也是一个重要的因素。得益于 epoll/kqueue，
 Redis 的事件循环具有相当可扩展性。Redis 已经在超过 60000 连接下面基准测试过，
 仍然可以维持 50000 q/s。一条经验法则是，30000 的连接数只有 100 连接的一半吞吐量。
 下面有一个关于连接数和吞吐量的测试。
 
-![connections chart](https://github.com/dspezia/redis-doc/raw/system_info/topics/Connections_chart.png)
+![connections chart](https://raw.githubusercontent.com/dspezia/redis-doc/system_info/topics/Connections_chart.png)
 
 + 在高配置下面，可以通过调优 NIC 来获得更高性能。最高性能在绑定 Rx/Tx 队列和
 CPU 内核下面才能达到，还需要开启 RPS（网卡中断负载均衡）。更多信息可以在
