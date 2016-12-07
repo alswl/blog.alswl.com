@@ -14,19 +14,14 @@ Pv和IP比较低迷，大部分来源来自搜索引擎，还有一部分是这�
 这个博客完整记录了我大学最后一年的生活，并且会将继续陪伴我走下去。（咦？为什么日志存档从2008年开始？哈哈，那是因为我把Baidu
 Hi的一部分内容导入了！）
 
-为了庆祝周庆，我重新部署了博客的插件，[CodeColorer的Html编码问题](http://log4d.com/2009/09/the-html-
-escape-codecolorer)已经被我彻底搞清楚。我现在已经切换到wp-
-syntax了。最大的麻烦："[WordPress编辑器空格在FireFox下面无法缩进](http://log4d.com/2009/09/about-
-wordpress-spaces-in-tinymce)"也被我用新的插件"[Dean's FCKEditor With pwwang's Code
-Plugin For Wordpress](http://pwwang.com/technology/wp-wp-plugins/deans-
-fckeditor-with-pwwangs-code-plugin-for-wordpress)"完美解决。
+为了庆祝周庆，我重新部署了博客的插件，[CodeColorer的Html编码问题](http://log4d.com/2009/09/the-html-escape-codecolorer)已经被我彻底搞清楚。我现在已经切换到wp-syntax了。最大的麻烦："[WordPress编辑器空格在FireFox下面无法缩进](http://log4d.com/2009/09/about-wordpress-spaces-in-tinymce)"也被我用新的插件"[Dean's FCKEditor With pwwang's Code
+Plugin For Wordpress](http://pwwang.com/technology/wp-wp-plugins/deans-fckeditor-with-pwwangs-code-plugin-for-wordpress)"完美解决。
 
 我现在就位于FCKEditor(CKEditor)下面进行编辑，世界第一的FCKEditor就是比世界第二的TinyMCE阉割版强。
 
 上几张华丽的让我蛋疼的粘代码截图
 
-[![插入代码](https://ohsolnxaa.qnssl.comm/2009/11/codein_fck_insert.jpg)](http
-://77g0h6.com1.z0.glb.clouddn.com/2009/11/codein_fck_insert.jpg)
+[![插入代码](https://ohsolnxaa.qnssl.comm/2009/11/codein_fck_insert.jpg)](https://ohsolnxaa.qnssl.com/2009/11/codein_fck_insert.jpg)
 
 [![显示为Code](https://ohsolnxaa.qnssl.comm/2009/11/code_in_fck.jpg)](https://ohsolnxaa.qnssl.comm/2009/11/code_in_fck.jpg)
 

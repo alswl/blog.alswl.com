@@ -150,13 +150,13 @@ System.out.println(o);
 
 想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length
 Required错误，这个比较头疼，我感觉是我session传递的问题（其实不是，后来发现是Post的格式问题），于是网上找来一个Session操作类。
-[猛击这里下载cookiemanager](https://ohsolnxaa.qnssl.com/2009/06/cookiemanager.java) 同时你可以参考这个类作者的文章[猛击这里打开HOW-TO:
-Handling cookies using the java.net.* API](http://www.hccp.org/java-net-
-cookie-how-to.html)，谢谢这位外国朋友的帮助。 可惜尽管有这个外国朋友帮助，我写了第二个版本，仍然遇到了相同问题，Length
+
+[猛击这里下载cookiemanager](https://ohsolnxaa.qnssl.com/2009/06/cookiemanager.java) 同时你可以参考这个类作者的文章
+[猛击这里打开HOW-TO: Handling cookies using the java.net.* API](http://www.hccp.org/java-net-cookie-how-to.html)，谢谢这位外国朋友的帮助。 可惜尽管有这个外国朋友帮助，我写了第二个版本，仍然遇到了相同问题，Length
 Required... 崩溃了，开始查找网络编程书，同时参考WireShark的抓包，我惊讶的发现，我把数据域写到了Headers里面去了。
 这个致命性的错误导致服务器不能找到正确的数据，并且没有提供数据域的大小Content-Length，所以导致服务器报错。
-最后再借花献佛，送上一个完整操作Http GET/POST的类[猛击这里下载httprequestproxy](http://upload-log4d.qi
-niudn.com/2009/06/httprequestproxy.java)依然感谢原作者，[猛击这里打开原文链接](http://benlsoft.j
-avaeye.com/blog/97059)友情提示一下，这个类是07年写的，里面有一些注释说明在1.4和1.5下几个参数不一样，我没有亲测，建议使用1.5
+最后再借花献佛，送上一个完整操作Http GET/POST的类[猛击这里下载httprequestproxy](https://ohsolnxaa.qnssl.com/2009/06/httprequestproxy.java)依然感谢原作者，
+
+[猛击这里打开原文链接](http://benlsoft.javaeye.com/blog/97059)友情提示一下，这个类是07年写的，里面有一些注释说明在1.4和1.5下几个参数不一样，我没有亲测，建议使用1.5
 的设置 嗯，有这两个类，明天工作应该会轻松一些，继续fighting!
 

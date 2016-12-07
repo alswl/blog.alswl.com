@@ -11,8 +11,7 @@ Tool执行。我对此表示很好奇，特意在自己电脑下面组建了一�
 ## 一、准备Maven配置文件
 
 我使用Maven推荐的标准webapp结构，结构如下，官方文档可以参考[Maven - Introduction to the Standard
-Directory Layout](http://maven.apache.org/guides/introduction/introduction-to-
-the-standard-directory-layout.html)
+Directory Layout](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html)
 
 src/main/java
 
@@ -68,8 +67,7 @@ Project's readme
 
 使用的pom.xml主要添加了build-
 plugins的Jetty插件，另外修改了outputDirectory，从而实现自动编译到`targert/projectName/WEB-
-INF/classes`目录，实现[Eclipse Hot
-Code](http://wiki.eclipse.org/FAQ_What_is_hot_code_replace%3F)。
+INF/classes`目录，实现[Eclipse Hot Code](http://wiki.eclipse.org/FAQ_What_is_hot_code_replace%3F)。
 
     
     <build>
@@ -127,8 +125,7 @@ Code](http://wiki.eclipse.org/FAQ_What_is_hot_code_replace%3F)。
 准备几个测试用的Servlet，外加web.xml。运行`mvn
 install`即可在target/war下面生成war包，同时在target/projectName/下会生成项目文件。
 
-如果有m2eclipse，那这个动作很容易就可以完成，如果没有，也可以参照我之前的[在Eclipse中使用Maven](http://log4d.com/2
-011/03/maven-eclipse)。
+如果有m2eclipse，那这个动作很容易就可以完成，如果没有，也可以参照我之前的[在Eclipse中使用Maven](http://log4d.com/2011/03/maven-eclipse)。
 
 ## 二、撰写Eclipse External Tool
 
@@ -139,14 +136,12 @@ class为`org.mortbay.xml.XmlConfiguration`，在Arguments - Program arguments中
 roject_loc}/jetty.xml`，其中`${project_loc}`是动态参数，指向当前项目目录，jetty.xml为我们随后要创建的jett
 y配置文件。
 
-[![image](https://ohsolnxaa.qnssl.comm/2011/04/run_configurations .png)](http
-://77g0h6.com1.z0.glb.clouddn.com/2011/04/run_configurations .png)
+[![image](https://ohsolnxaa.qnssl.comm/2011/04/run_configurations .png)](https://ohsolnxaa.qnssl.com/2011/04/run_configurations .png)
 
 如果想将这个应用保存成文件，可以修改Common - Sava
 as到当前目录，就可以保存为jetty.launch文件了。（没错，就是launch文件，Eclipse的运行配置文件）
 
-[![image](https://ohsolnxaa.qnssl.comm/2011/04/eclipse_common.png)](http
-://77g0h6.com1.z0.glb.clouddn.com/2011/04/eclipse_common.png)
+[![image](https://ohsolnxaa.qnssl.comm/2011/04/eclipse_common.png)](https://ohsolnxaa.qnssl.com/2011/04/eclipse_common.png)
 
 2、准备jetty.xml文件
 
@@ -169,13 +164,9 @@ Enjoy it!
 
 ## 参考文章
 
-[Eclipse中运行Jetty
+[Eclipse中运行Jetty](http://www.daniel-journey.com/archives/214)
 
-](http://www.daniel-journey.com/archives/214)
+[天生一对"Maven2+Jetty" -- Maven2创建并管理WebApp，并使用Maven Jetty Plugin在Eclipse中调试](http://www.blogjava.net/alwayscy/archive/2007/05/19/118584.html)
 
-[天生一对"Maven2+Jetty" -- Maven2创建并管理WebApp，并使用Maven Jetty Plugin在Eclipse中调试](htt
-p://www.blogjava.net/alwayscy/archive/2007/05/19/118584.html)
-
-[目前发现的最好最快的直接在ECLIPSE中JETTY调试方式](http://www.blogjava.net/alwayscy/archive/2007
-/09/13/144969.html)
+[目前发现的最好最快的直接在ECLIPSE中JETTY调试方式](http://www.blogjava.net/alwayscy/archive/2007/09/13/144969.html)
 
