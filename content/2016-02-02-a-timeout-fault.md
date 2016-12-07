@@ -5,7 +5,7 @@ Date: 2016-02-02 23:34:44
 Tags: Qiniu, TCP
 Category: Coding
 
-![i_love_timeouts_digital_design_mugs.jpg](http://upload-log4d.qiniudn.com/upload_dropbox/201602/i_love_timeouts_digital_design_mugs.jpg)
+![i_love_timeouts_digital_design_mugs.jpg](https://ohsolnxaa.qnssl.com/upload_dropbox/201602/i_love_timeouts_digital_design_mugs.jpg)
 
 早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。
 
@@ -40,11 +40,11 @@ WARN  [2015-12-09 11:01:02,731] org.eclipse.jetty.io.SelectorManager: Could not 
 
 正常的实例：
 
-![image2015-12-9_1.png](http://upload-log4d.qiniudn.com/upload_dropbox/201602/image2015-12-9_1.png)
+![image2015-12-9_1.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201602/image2015-12-9_1.png)
 
 异常的实例：
 
-![image2015-12-9_2.png](http://upload-log4d.qiniudn.com/upload_dropbox/201602/image2015-12-9_2.png)
+![image2015-12-9_2.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201602/image2015-12-9_2.png)
 
 确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？
 

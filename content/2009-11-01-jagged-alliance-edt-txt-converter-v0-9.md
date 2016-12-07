@@ -542,7 +542,7 @@ print 'Error: Input error!!n'
 
 raw_input('Press Enter to continue')
 
-点击这里[下载源代码](http://77g0h6.com1.z0.glb.clouddn.com/2009/11/edtTxtConvert_0_9.zip)（edt
+点击这里[下载源代码](https://ohsolnxaa.qnssl.comm/2009/11/edtTxtConvert_0_9.zip)（edt
 TxtConvert.py+config.cfg+reade me.txt，需要Python2.6以上），如果需要exe版本的程序，可以向我索取，也可以[使
 用py2exe自行编译](http://log4d.com/2009/09/python-program-will-be-compiled-into-an-
 executable-program-exe)。

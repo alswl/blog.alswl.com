@@ -86,41 +86,41 @@ et/)&nbsp_place_holder;
 
 ### 3.1 头一次使用需要选择界面语言
 
-![poedit_01](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-01.png)
+![poedit_01](https://ohsolnxaa.qnssl.comm/2010/06/poedit-01.png)
 
-![poedit_02](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-02.png)
+![poedit_02](https://ohsolnxaa.qnssl.comm/2010/06/poedit-02.png)
 
-![poedit_03](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-03.png)
+![poedit_03](https://ohsolnxaa.qnssl.comm/2010/06/poedit-03.png)
 
 ### 3.2 新建一个配置文件，就是我们的目的文件po文件了
 
-![poedit_04](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-04.png)
+![poedit_04](https://ohsolnxaa.qnssl.comm/2010/06/poedit-04.png)
 
-![poedit_05](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-05.png)
+![poedit_05](https://ohsolnxaa.qnssl.comm/2010/06/poedit-05.png)
 
 工程信息这里当然要选择好utf8格式了
 
-![poedit_06](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-06.png)
+![poedit_06](https://ohsolnxaa.qnssl.comm/2010/06/poedit-06.png)
 
 路径这里的基本路径填写cakephp的目录，当然这里居然没有浏览功能，真是崩溃。
 
 注意这里要通过下面的新建按钮新建一个名为"."的路径，这样的话，以后就可以搜索基本路径下面的子目录了。
 
-![poedit_07](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-07.png)
+![poedit_07](https://ohsolnxaa.qnssl.comm/2010/06/poedit-07.png)
 
 关键字选项卡里面要填上cakephp的标志性本地化函数"__"。
 
-![poedit_08](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-08.png)
+![poedit_08](https://ohsolnxaa.qnssl.comm/2010/06/poedit-08.png)
 
 当然上面那些选项卡设置好之后，还可以通过菜单类目=》设置调出来，从新设置。
 
 ### 3.3 点击那个小地球图标或者类目=》自源更新，开始自动扫描该翻译的文字了
 
-![poedit_09](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-09.png)
+![poedit_09](https://ohsolnxaa.qnssl.comm/2010/06/poedit-09.png)
 
-![poedit_10](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-10.png)
+![poedit_10](https://ohsolnxaa.qnssl.comm/2010/06/poedit-10.png)
 
-![poedit_11](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-11.png)
+![poedit_11](https://ohsolnxaa.qnssl.comm/2010/06/poedit-11.png)
 
 ### 3.4 但是这个时候，你可能会发现扫描出来的字段远远少于你需要的东东，原来这个软件不认识ctp文件。这个步骤的设置是让他能识别ctp文件设置。文件=
 》首选=》解析器。
@@ -130,16 +130,16 @@ et/)&nbsp_place_holder;
 [http://www.luizz.it/119/cakephp/poedit-e-i-file-
 ctp](http://www.luizz.it/119/cakephp/poedit-e-i-file-ctp)
 
-![poedit_12](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-12.png)
+![poedit_12](https://ohsolnxaa.qnssl.comm/2010/06/poedit-12.png)
 
-![poedit_13](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-13.png)
+![poedit_13](https://ohsolnxaa.qnssl.comm/2010/06/poedit-13.png)
 
 选中php，选择编辑，然后在第2行内输入ctp文件后缀，如下图，但是注意下图的设置是错误的!虽然上面的提示，是用逗号分隔，但是实践证明，用分号才是正确的选择
 。这个很令人崩溃，大概是poedit的一个小bug吧。会出现错误提示。
 
-![poedit_14](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-14.png)
+![poedit_14](https://ohsolnxaa.qnssl.comm/2010/06/poedit-14.png)
 
-![poedit_14.5](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-145.png)
+![poedit_14.5](https://ohsolnxaa.qnssl.comm/2010/06/poedit-145.png)
 
 但是如果用分号分隔的话，仍然会看到如下错误提示。
 
@@ -147,15 +147,15 @@ ctp](http://www.luizz.it/119/cakephp/poedit-e-i-file-ctp)
 log4d.qiniudn.com/2010/06/poedit-15.png)&nbsp_place_holder; 需要在下面的解析器命令下面增加个选项
 -language=php，注意这里是两个中划线啊。所以这个步骤的要点就是下图所示了。
 
-![poedit_16](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-16.png)
+![poedit_16](https://ohsolnxaa.qnssl.comm/2010/06/poedit-16.png)
 
 ### 3.5 这里通过那个地球图标就可以找出所有需要翻译的字段了，当然这个操作的前提是你已经用__函数把所有的字段都标示好了。如果你按这个图标之前进行了部
 分翻译，这个操作如果发现了新字句，这个软件会根据以前的翻译自己翻译字句的，并用棕色突出显示它自动翻译的词语。当然，一般都是不准确的。所以还是需要进行修改保存
 操作的说。
 
-![poedit_17](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-17.png)
+![poedit_17](https://ohsolnxaa.qnssl.comm/2010/06/poedit-17.png)
 
 ### 3.6 如果这个时候你查看生成的po文件的时候，比自己手写的文件确实多些设置。
 
-![poedit_18](http://77g0h6.com1.z0.glb.clouddn.com/2010/06/poedit-18.png)
+![poedit_18](https://ohsolnxaa.qnssl.comm/2010/06/poedit-18.png)
 

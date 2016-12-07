@@ -12,7 +12,7 @@ Category: Fun
 
 
 [caption id="attachment_12331" align="alignnone" width="566"
-caption="海绵宝宝"]![海绵宝宝](http://upload-log4d.qiniudn.com/2009/06/1357182_1.jpg)[/caption]
+caption="海绵宝宝"]![海绵宝宝](https://ohsolnxaa.qnssl.com/2009/06/1357182_1.jpg)[/caption]
 
 《海绵宝宝》虽然是低龄动画，但由于剧情幽默而充满想象力，也很适合成年人观看，回忆一下童真，而且有些内容的确好笑，看完之后也会感叹一下里面的精神。
 

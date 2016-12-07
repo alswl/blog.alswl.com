@@ -14,7 +14,7 @@ Category: Thinking
 
 [caption id="attachment_12580" align="alignnone" width="587"
 caption="沪江英语我的账号"][![沪江英语我的账号](http://upload-
-log4d.qiniudn.com/2009/07/hjenglish_alswl.jpg)](http://upload-log4d.qiniudn.com/2009/07/hjenglish_alswl.jpg)[/caption]
+log4d.qiniudn.com/2009/07/hjenglish_alswl.jpg)](https://ohsolnxaa.qnssl.com/2009/07/hjenglish_alswl.jpg)[/caption]
 
 发现现在沪江英语做的真不错，互动性很强，人气很旺，学习资料非常多，从口语到听力，从阅读到听写，什么等级的都有。
 

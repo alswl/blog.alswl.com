@@ -15,7 +15,7 @@ Category: Coding
 
 有图有真像
 
-![image](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/godaddy_alipay.jpg)
+![image](https://ohsolnxaa.qnssl.comm/2009/12/godaddy_alipay.jpg)
 
 我犀利了，应该是今天下午开始支持的。
 

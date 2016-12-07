@@ -5,7 +5,7 @@ Date: 2015-11-27 20:23:24
 Tags: SS, HAProxy
 Category: Efficiency
 
-![shadowsocks.png](http://upload-log4d.qiniudn.com/upload_dropbox/201512/shadowsocks.png)
+![shadowsocks.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201512/shadowsocks.png)
 
 以前用自己的 SS，Linode 美国，后来 Linode 日本，但是始终拼不过上海电信的国际带宽。
 经常不稳定，丢一半的包。
@@ -93,11 +93,11 @@ update: 2015-12-15，添加 `backup` 项，选一台最稳定的做 backup，避
 update: 2015-12-13，添加 `redispatch`  / `retries` 项，换机器重试，
 大幅提高可用性，注意，可能在非幂等状态下面产生未知错误。
 
-![haproxy.png](http://upload-log4d.qiniudn.com/upload_dropbox/201512/haproxy.png)
+![haproxy.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201512/haproxy.png)
 
 在跑的 node，有些延迟高，被干掉了。
 
-![youtube.png](http://upload-log4d.qiniudn.com/upload_dropbox/201512/youtube.png)
+![youtube.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201512/youtube.png)
 
 看 1080P 也挺顺畅。
 

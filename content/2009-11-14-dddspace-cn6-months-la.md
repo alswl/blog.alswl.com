@@ -25,10 +25,10 @@ fckeditor-with-pwwangs-code-plugin-for-wordpress)"完美解决。
 
 上几张华丽的让我蛋疼的粘代码截图
 
-[![插入代码](http://77g0h6.com1.z0.glb.clouddn.com/2009/11/codein_fck_insert.jpg)](http
+[![插入代码](https://ohsolnxaa.qnssl.comm/2009/11/codein_fck_insert.jpg)](http
 ://77g0h6.com1.z0.glb.clouddn.com/2009/11/codein_fck_insert.jpg)
 
-[![显示为Code](http://77g0h6.com1.z0.glb.clouddn.com/2009/11/code_in_fck.jpg)](http://77g0h6.com1.z0.glb.clouddn.com/2009/11/code_in_fck.jpg)
+[![显示为Code](https://ohsolnxaa.qnssl.comm/2009/11/code_in_fck.jpg)](https://ohsolnxaa.qnssl.comm/2009/11/code_in_fck.jpg)
 
 下面的一段Python代码就是我测试缩进用的，代码大意是…呃…哦，是输出一段XNML
 

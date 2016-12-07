@@ -90,7 +90,7 @@ end.
 
 上个小图
 
-[![image](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/delphi_editor.jpg)](http://77g0h6.com1.z0.glb.clouddn.com/2009/12/delphi_editor.jpg)
+[![image](https://ohsolnxaa.qnssl.comm/2009/12/delphi_editor.jpg)](https://ohsolnxaa.qnssl.comm/2009/12/delphi_editor.jpg)
 
     
     procedure TForm1.O1Click(Sender: TObject);
@@ -223,7 +223,7 @@ end.
 
 &nbsp_place_holder;我把这个小程序打包，如果对源码有兴趣，可以看一下。
 
-点击这里下载[delphi_editor](http://upload-log4d.qiniudn.com/2009/12/delphi_editor.zip)
+点击这里下载[delphi_editor](https://ohsolnxaa.qnssl.com/2009/12/delphi_editor.zip)
 
 学校暖气坏了，我得跑出去洗澡，今天就先到这里吧。
 

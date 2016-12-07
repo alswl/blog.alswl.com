@@ -150,7 +150,7 @@ System.out.println(o);
 
 想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length
 Required错误，这个比较头疼，我感觉是我session传递的问题（其实不是，后来发现是Post的格式问题），于是网上找来一个Session操作类。
-[猛击这里下载cookiemanager](http://upload-log4d.qiniudn.com/2009/06/cookiemanager.java) 同时你可以参考这个类作者的文章[猛击这里打开HOW-TO:
+[猛击这里下载cookiemanager](https://ohsolnxaa.qnssl.com/2009/06/cookiemanager.java) 同时你可以参考这个类作者的文章[猛击这里打开HOW-TO:
 Handling cookies using the java.net.* API](http://www.hccp.org/java-net-
 cookie-how-to.html)，谢谢这位外国朋友的帮助。 可惜尽管有这个外国朋友帮助，我写了第二个版本，仍然遇到了相同问题，Length
 Required... 崩溃了，开始查找网络编程书，同时参考WireShark的抓包，我惊讶的发现，我把数据域写到了Headers里面去了。
