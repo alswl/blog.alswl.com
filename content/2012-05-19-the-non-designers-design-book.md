@@ -9,7 +9,7 @@ Category: UI
 我读过两本关于视觉设计的书，一本是[《写给程序员的Web设计书》](http://book.douban.com/subject/6783748/)，
 这是第二本[《写给大家看的设计书》](http://book.douban.com/subject/3323633/)。
 
-![写给大家看的设计书](http://img3.douban.com/lpic/s6485795.jpg)
+![写给大家看的设计书](https://ohsolnxaa.qnssl.com/upload_dropbox/201205/s6485795.jpg)
 
 我对前者的评价是「作者花了大约25%的篇幅来讲述设计理念和方法，这也是我真正想看的部分。
 本来想从书中获取更多布局、色彩、字体的内容，发现还是太少了。图灵系的书翻译不错。」

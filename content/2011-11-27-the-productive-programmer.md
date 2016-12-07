@@ -5,7 +5,7 @@ Date: 2011-11-27 00:00:00
 Tags: 综合技术, Book
 Category: Coding
 
-![卓有成效的程序员](http://img3.douban.com/mpic/s3668809.jpg)
+![卓有成效的程序员](https://ohsolnxaa.qnssl.com/upload_dropbox/201111/s3668809.jpg)
 
 《卓有成效的程序员》，上次在京东半价买了这本书，一直没来得及看， 前几周在地铁上把这本书看完了。
 

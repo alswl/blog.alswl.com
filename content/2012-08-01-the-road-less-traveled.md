@@ -26,7 +26,7 @@ Category: Thinking
 
 于是我翻开这本书，寻找答案。
 
-![少有人走的路](http://img1.douban.com/lpic/s2144391.jpg)
+![少有人走的路](https://ohsolnxaa.qnssl.com/upload_dropbox/201208/s2144391.jpg)
 
 ## 心智成熟的标志-自律 ##
 

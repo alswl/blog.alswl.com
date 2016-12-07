@@ -8,7 +8,7 @@ Category: Thinking
 [pongba](http://mindhacks.cn/)的大作《[暗时间](http://book.douban.com/subject/6709809
 )》，讲述效率、习惯、思维，还有一些数学史话和算法，推荐一看。
 
-![an-shi-jian](http://img3.douban.com/lpic/s6586365.jpg)
+![an-shi-jian](https://ohsolnxaa.qnssl.com/upload_dropbox/201201/s6586365.jpg)
 
 ps：我的读书笔记比较水，也许成为摘抄更合适。我习惯这种大纲式的笔记，方便我回想。这里有[一篇很赞的评论](http://book.douban.com/r
 eview/5012104/)，介绍了三头牛，其中有笑来老师和刘未鹏。

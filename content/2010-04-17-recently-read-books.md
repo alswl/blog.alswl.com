@@ -17,7 +17,7 @@ Category: Thinking
 ### &nbsp_place_holder;走出软件作坊
 [@douban](http://book.douban.com/subject/3319935/)
 
-![image](http://img2.douban.com/mpic/s4026944.jpg)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201004/s4026944.jpg)
 
 这本书是一本很适合国情的项目管理类书籍。所谓国情，就是开发不正规，作坊式工作，项目管理一塌糊涂，代码质量差，不适合持续性开发。
 

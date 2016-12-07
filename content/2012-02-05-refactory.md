@@ -10,7 +10,7 @@ Martin Fowler 的《[重构-
 当时我在撰写代码过程中，发现当代码量到某个数量级时候（1000+行）， 就会逐渐失去对代码的控制能力。昆哥推荐了两本书《[UML和模式应用](http://
 book.douban.com/subject/1792387/)》和《重构》这本书。
 
-![refactory](http://img1.douban.com/mpic/s1669771.jpg)
+![refactory](https://ohsolnxaa.qnssl.com/upload_dropbox/201202/s1669771.jpg)
 
 这本书是2年前购买的，可惜以我当时的代码感知和撰写能力，看起来颇为吃力。 半途就看得云里雾里而中断了。最近我又重新拾起这本书，
 将书中所写的境况与我这两年多来遇到的问题相互印证，才感受到这本经典的力量。
