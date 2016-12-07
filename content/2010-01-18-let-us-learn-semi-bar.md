@@ -45,9 +45,7 @@ Google输入法的双拼方案选择
 
 ![image](https://ohsolnxaa.qnssl.comm/2010/01/ms_shuang_pin.jpg)
 
-[![image](http://bbs.lehu.shu.edu.cn/Uploads/UserDirs/1/16/6299/200852492150750CE76
-DDC98CB3BF902D6E44B184FFA639.jpg)](http://bbs.lehu.shu.edu.cn/Uploads/UserDirs
-/1/16/6299/200852492150750CE76DDC98CB3BF902D6E44B184FFA639.jpg)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201001/200852492150750ce76ddc98cb3bf902d6e44b184ffa639.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/201001/200852492150750ce76ddc98cb3bf902d6e44b184ffa639.jpg)
 
 ### 微软双拼的声韵母分配助记词
 

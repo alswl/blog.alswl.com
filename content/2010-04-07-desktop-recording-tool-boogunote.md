@@ -38,8 +38,7 @@ Docs支持Gears离线查看，但是并不支持离线创建文件（Docs的编�
 
 >
 
-> [![BooguNote - 新概念笔记软件](http://lightory.net/wp-
-content/uploads/2010/03/BooguNote.png)](http://lightory.net/boogunote/479/)
+> [![BooguNote - 新概念笔记软件](https://ohsolnxaa.qnssl.com/upload_dropbox/201004/boogunote.png)](http://lightory.net/boogunote/479/)
 
 >
 

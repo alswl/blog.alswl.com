@@ -50,15 +50,9 @@ SyntaxHighlighter Evolved 的一个功能是它有一个漂亮的工具栏在代
 到剪贴板和打印代码。出于某些原因Syntaxhighter Evolved喜欢去掉我的代码里缩进（空格）（译者按：这可能是WordPress自带TinyMC
 E在FireFox下的Bug）。如果我尝试在HTML模式保存，我会收到PHP警告同时我的代码在我的文章中消失。总之，这个插件不是我想要的。
 
-[![p06-syntax-highlighter-evolved](http://www.travislin.com/wp-
-content/uploads/2009/05/p06-syntax-highlighter-evolved-
-300x269.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-syntax-
-highlighter-evolved.gif)
+[![p06-syntax-highlighter-evolved](http://www.travislin.com/wp-content/uploads/2009/05/p06-syntax-highlighter-evolved-300x269.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-syntax-highlighter-evolved.gif)
 
-[![p06-syntax-highlighter-evolved-02](http://www.travislin.com/wp-
-content/uploads/2009/05/p06-syntax-highlighter-
-evolved-02-300x157.gif)](http://www.travislin.com/wp-
-content/uploads/2009/05/p06-syntax-highlighter-evolved-02.gif)
+[![p06-syntax-highlighter-evolved-02](http://www.travislin.com/wp-content/uploads/2009/05/p06-syntax-highlighter-evolved-02-300x157.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-syntax-highlighter-evolved-02.gif)
 
 ### [Syntax Highlighter Plus](http://wordpress.org/extend/plugins
 /syntaxhighlighter-plus/)
@@ -70,10 +64,7 @@ content/uploads/2009/05/p06-syntax-highlighter-evolved-02.gif)
 就像_Syntax Highlighter_家庭的其他插件，这款插件也有一个工具条，并且和Syntax Highlighter
 Evolved一样，它也因为在我尝试保存到HTML模式时候丢失了我代码的缩进而失败。
 
-[![p06-syntax-highlighter-plus](http://www.travislin.com/wp-
-content/uploads/2009/05/p06-syntax-highlighter-plus-
-287x300.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-syntax-
-highlighter-plus.gif)
+[![p06-syntax-highlighter-plus](http://www.travislin.com/wp-content/uploads/2009/05/p06-syntax-highlighter-plus-287x300.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-syntax-highlighter-plus.gif)
 
 ### [Google Syntax Highlighter for
 WordPress](http://wordpress.org/extend/plugins/google-syntax-highlighter/)
@@ -86,15 +77,9 @@ WordPress](http://wordpress.org/extend/plugins/google-syntax-highlighter/)
 Syntax Highlighter 有一个文本化的工具栏，没有Syntax Highlighter家族那么花俏但是却功能一样。这个插件在代码行比较长时候会
 遇到样式的问题，不过没什么大关系。直到我在切换可视模式和HTML模式时候失败了，又是一位让人失望的候选者。
 
-[![p06-google-syntax-lighlighter](http://www.travislin.com/wp-
-content/uploads/2009/05/p06-google-syntax-lighlighter-
-275x300.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-google-
-syntax-lighlighter.gif)
+[![p06-google-syntax-lighlighter](http://www.travislin.com/wp-content/uploads/2009/05/p06-google-syntax-lighlighter-275x300.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-google-syntax-lighlighter.gif)
 
-[![p06-google-syntax-lighlighter-02](http://www.travislin.com/wp-
-content/uploads/2009/05/p06-google-syntax-
-lighlighter-02-300x162.gif)](http://www.travislin.com/wp-
-content/uploads/2009/05/p06-google-syntax-lighlighter-02.gif)
+[![p06-google-syntax-lighlighter-02](http://www.travislin.com/wp-content/uploads/2009/05/p06-google-syntax-lighlighter-02-300x162.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-google-syntax-lighlighter-02.gif)
 
 ### [WP-Chili](http://wordpress.org/extend/plugins/wp-chili/)
 
@@ -110,9 +95,7 @@ script](http://www.elliotswan.com/postable/)
 (推荐)来完成这个工作。它的样式有些简单，可能需要一些调整（比如说修正长换行、附加背景和边框颜色以便从正常的段落中区分出来）。WP-
 Chili可以可视模式和HTML模式切换下工作，遗憾的是代码缩进在数次保存之后丢失了……难道没有一个插件接受我的空格缩进？！
 
-[![p06-wp-chili](http://www.travislin.com/wp-content/uploads/2009/05/p06-wp-
-chili-300x247.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06
--wp-chili.gif)
+[![p06-wp-chili](http://www.travislin.com/wp-content/uploads/2009/05/p06-wp-chili-300x247.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-wp-chili.gif)
 
 ### [Code Colorer](http://wordpress.org/extend/plugins/codecolorer/)
 
@@ -123,8 +106,7 @@ chili-300x247.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06
 我在插件目录找到了一个新的插件。由于某些原因，我不能正确获取代码，尽管使用Firebug能查看到HTML代码。（译者按：我之前有使用过Code
 Colorer，在切换也存在问题，但能正常显示）
 
-[![p06-code-colorer](http://www.travislin.com/wp-content/uploads/2009/05/p06
--code-colorer-300x270.gif)](http://www.travislin.com/wp-
+[![p06-code-colorer](http://www.travislin.com/wp-content/uploads/2009/05/p06-code-colorer-300x270.gif)](http://www.travislin.com/wp-
 content/uploads/2009/05/p06-code-colorer.gif)
 
 ### [Dojox Wordpress Syntax Highlighter](http://wordpress.org/extend/plugins
@@ -137,9 +119,7 @@ content/uploads/2009/05/p06-code-colorer.gif)
 Dojox 是第一个通过测试的插件：代码在数次不同模式切换下仍然保存。Dojox使用双重标记并且需要手动编码转义。虽然背景颜色也许需要修改一下来适应博客的主
 题，但除此之外，最终这是一个可以工作的插件。
 
-[![p06-dojox](http://www.travislin.com/wp-content/uploads/2009/05/p06-dojox-
-256x300.gif)](http://www.travislin.com/wp-
-content/uploads/2009/05/p06-dojox.gif)
+[![p06-dojox](http://www.travislin.com/wp-content/uploads/2009/05/p06-dojox-256x300.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-dojox.gif)
 
 ### [Syntax Highlighter and Code Colorizer for
 Wordpress](http://wordpress.org/extend/plugins/syntax-highlighter-and-code-
@@ -152,9 +132,7 @@ prettifier/)
 很显然这款插件也称作代码美化插件。代码美化默认自动执行，同时作为Syntax Highlighter家族的成员它也会会有一个工具栏在右上角。不同于这个家族其
 他成员，它的确能够正常使用！无论在切换可视化或者HTML模式时候都没有问题。当然，你得自己手动转义你的代码。
 
-[![p06-code-colorizer](http://www.travislin.com/wp-content/uploads/2009/05/p06
--code-colorizer-274x300.gif)](http://www.travislin.com/wp-
-content/uploads/2009/05/p06-code-colorizer.gif)
+[![p06-code-colorizer](http://www.travislin.com/wp-content/uploads/2009/05/p06-code-colorizer-274x300.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-code-colorizer.gif)
 
 ### [WP-SynHighlight](http://wordpress.org/extend/plugins/wp-synhighlight/)
 
@@ -165,10 +143,7 @@ content/uploads/2009/05/p06-code-colorizer.gif)
 这是我能找到的唯一一个使用可视化标记并且在不同模式之间切换还能工作的插件。一旦你在可视化模式粘贴代码，不需要加上转义字符，这是在可视化编辑模式下的优势。但是
 当我使用它自带的例子时，不管我怎么做，我都没有办法通过WP-SynHightlight为代码着色。
 
-[![p06-wp-synhighlight](http://www.travislin.com/wp-
-content/uploads/2009/05/p06-wp-synhighlight-
-265x300.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-wp-
-synhighlight.gif)
+[![p06-wp-synhighlight](http://www.travislin.com/wp-content/uploads/2009/05/p06-wp-synhighlight-265x300.gif)](http://www.travislin.com/wp-content/uploads/2009/05/p06-wp-synhighlight.gif)
 
 ### 结论
 

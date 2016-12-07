@@ -19,8 +19,7 @@ jian.html/comment-page-1#comment-292569)>，谢谢作者
 
 Metrics插件可以从多个角度对Eclipse中的代码进行统计：
 
-[![metrics](http://image-001.yo2cdn.com/wp-content/uploads/0/38/2008/08
-/metrics-thumb.png)](http://image-001.yo2cdn.com/wp-
+[![metrics](http://image-001.yo2cdn.com/wp-content/uploads/0/38/2008/08/metrics-thumb.png)](http://image-001.yo2cdn.com/wp-
 content/uploads/0/38/2008/08/metrics.png)
 
 **官方网站**：[http://metrics.sourceforge.net/](http://metrics.sourceforge.net/)

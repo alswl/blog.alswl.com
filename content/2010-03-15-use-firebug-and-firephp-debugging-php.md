@@ -28,8 +28,7 @@ bug的控制台获得PHP脚本警告和错误，就感觉像直接调试JavaScri
 。这个插件需要你已经安装FireBug。装好FirePHP之后，重新打开Firebug面板时候，你会看到新加了一个蓝色的臭虫图标。点击这个图标会出现一个开启
 或者关闭FirePHP的菜单。
 
-![FirePHP Menu](http://www.sitepoint.com/blogs/wp-content/uploads/2010/02
-/Screen-shot-2010-02-09-at-1.59.56-PM.png)
+![FirePHP Menu](http://www.sitepoint.com/blogs/wp-content/uploads/2010/02/Screen-shot-2010-02-09-at-1.59.56-PM.png)
 
 &nbsp_place_holder;
 
@@ -71,8 +70,7 @@ ce_holder;FirePHP::ERROR);&nbsp_place_holder;
 
 这些代码将在Firebug控制台输出如下所示
 
-![FirePHP Console Output](http://www.sitepoint.com/blogs/wp-
-content/uploads/2010/02/Screen-shot-2010-02-09-at-2.39.22-PM.png)
+![FirePHP Console Output](http://www.sitepoint.com/blogs/wp-content/uploads/2010/02/Screen-shot-2010-02-09-at-2.39.22-PM.png)
 
 你也可以使用FirePHP来跟踪你程序的执行情况：通过使用`FirePHP::TRACE常量，你可以在` `fb被调用的地方查看``行数、类名和方法名`
 

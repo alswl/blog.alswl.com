@@ -55,8 +55,7 @@ sms.googlecode.com/files/SmsBackup-1.1.0.apk)」下載到手機裡安裝
 因為SMS Backup軟體需透過IMAP的方式存取你的Gmail帳戶來執行備份工作，所以請先開啟你的Gmail信箱頁面，按一下右上角的「設
 定」，在「轉寄和 POP/IMAP」中勾選「啟用IMAP」 再按「儲存變更」按鈕，即可完成設定。
 
-![01-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12
-DB8/01AndroidSMSBackup.png)
+![01-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12DB8/01AndroidSMSBackup.png)
 
 ### 二、安裝SMS Backup軟體並設定帳號密碼
 
@@ -66,43 +65,35 @@ Backup」這軟體再按「安裝」按 鈕即可。
 
 裝好軟體並開啟程式之後，請分別按一下「Username」跟「Password」 兩個項目，並依序輸入你的Gmail帳號、密碼。
 
-![02-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12
-DB8/02AndroidSMSBackup.png)
+![02-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12DB8/02AndroidSMSBackup.png)
 
-![03-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12
-DB8/03AndroidSMSBackup.png)
+![03-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12DB8/03AndroidSMSBackup.png)
 
 第2步&nbsp_place_holder;
 設定好Gmail帳號、密碼之後，第一次啟用時會問你是否要馬上執行簡訊備份工作，請按「確定」按鈕，然後再按「Backup」
 按鈕，開始簡訊備份工作。&nbsp_place_holder;
 
-![04-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12
-DB8/04AndroidSMSBackup.png)
+![04-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12DB8/04AndroidSMSBackup.png)
 
-![05-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12
-DB8/05AndroidSMSBackup.png)
+![05-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12DB8/05AndroidSMSBackup.png)
 
 &nbsp_place_holder;第3步&nbsp_place_holder;
 此時，視窗上方會顯示目前的簡訊備份進度，原本儲存在你手機裡面的簡訊都會被備份到Gmail信箱中。
 
-![06-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12
-DB8/06AndroidSMSBackup.png)
+![06-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12DB8/06AndroidSMSBackup.png)
 
 第4步&nbsp_place_holder; 另外，我們也可以在頁面最下方的「Advanced settings」按一下，我們可以分別設定簡訊備份到
 Gmail後所使用的郵件「標籤」（用來分類郵件用），或者可以在這邊設定簡訊備份工作的每次處理數量，一般來說都不用特別做調整，除非你有特別的使用需
 求的話。&nbsp_place_holder;
 
-[![07-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_1
-2DB8/07AndroidSMSBackup.png)](http://briian.com/?p=6636)
+[![07-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12DB8/07AndroidSMSBackup.png)](http://briian.com/?p=6636)
 
-![08-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12
-DB8/08AndroidSMSBackup.png)
+![08-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12DB8/08AndroidSMSBackup.png)
 
 &nbsp_place_holder;第5步&nbsp_place_holder;
 備份完成後，我們可以在Gmail信箱中看到多出一個「SMS」的標籤，按進去看裡面有一堆依照不同電話來源的手機簡 訊存檔。
 
-![09-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12
-DB8/09AndroidSMSBackup.png)
+![09-Android-SMS-Backup](http://orzhd.com/briian/2009/AndroidSMSBackupGmail_12DB8/09AndroidSMSBackup.png)
 
 要說缺點的話，它的備份記錄都是直接以電話號碼為寄件人，如果你記不住那麼一大堆數字的話，可能得再另外查一下通訊錄才知道是誰傳給你的。
 

@@ -11,8 +11,7 @@ Category: Fun
 
 一个好消息是，富士TV为了庆祝龙珠播映20周年，推出《龙珠·改》，大大的满足了我们这群龙珠迷。
 
-[![龙珠·改](http://upload-
-log4d.qiniudn.com/2009/06/2009050421141455-300x270.jpg)](https://ohsolnxaa.qnssl.com/2009/06/2009050421141455.jpg)
+[![龙珠·改](http://upload-log4d.qiniudn.com/2009/06/2009050421141455-300x270.jpg)](https://ohsolnxaa.qnssl.com/2009/06/2009050421141455.jpg)
 
 龙珠改从贝吉塔他们入侵地球开始描述，大概104集左右（不确定）
 
@@ -30,6 +29,5 @@ log4d.qiniudn.com/2009/06/2009050421141455-300x270.jpg)](https://ohsolnxaa.qnssl
 
 声音方面配音重新进行。画面方面只会重做OP和ED的画面。原作的291话浓缩到100话。
 
-迅雷里并没有全集下载，最新的应该是第九集，土豆里有播出[猛击这里打开](http://so.tudou.com/isearch/%E9%BE%99%E7%8
-F%A0%20%E6%94%B9/)。
+迅雷里并没有全集下载，最新的应该是第九集，土豆里有播出[猛击这里打开](http://so.tudou.com/isearch/%E9%BE%99%E7%8F%A0%20%E6%94%B9/)。
 
