@@ -14,6 +14,6 @@ Status: draft
 
 这一个月来，学到很多东西，非常感谢翟主管给的机会，过几天我会写一篇详细的总结。
 
-[![image](http://www.popart.cn/uploads/userup/0806/0FU32V614.jpg)](http://www.popar
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/0fu32v614.jpg)](http://www.popar
 t.cn/uploads/userup/0806/0FU32V614.jpg)
 

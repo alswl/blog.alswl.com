@@ -12,5 +12,5 @@ Status: draft
 
 我想你保证，以后一定一颗红星向太阳，好好的对你。
 
-![j_0037](http://img.baidu.com/hi/jd/j_0037.gif)
+![j_0037](https://ohsolnxaa.qnssl.com/upload_dropbox/200808/j_0037.gif)
 

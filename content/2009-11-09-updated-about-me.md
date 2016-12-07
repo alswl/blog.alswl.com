@@ -12,7 +12,7 @@ E-mail用户名：**alswlwangzi**（alswl只有5位，当年注册需要6位以�
 
 英文名：**Jason Ti**
 
-**![image](http://www.gravatar.com/avatar/9015f3770c11541a4636daf1ed2b48ed?s=32&d=http%3A%2F%2Fwww.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D32&r=G) **
+**![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/9015f3770c11541a4636daf1ed2b48ed?s=32&d=http%3a%2f%2fwww.gravatar.com%2favatar%2fad516503a11cd5ca435acc9bb6523536%3fs%3d32&r=g) **
 
 有时也叫**DDD**,而不是alswl,是考虑到alswl不容易记住，而同学喊我DDD（弟弟弟）或者DDD（嘚嘚嘚）已经习惯了```
 
@@ -21,7 +21,7 @@ DDD的由来，则是本人姓氏为**狄**当初大学未上之时，混迹于�
 
 ## 关于我
 
-**![image](http://en.gravatar.com/userimage/8042893/42e31e4e7c138101706613d3be4bf8cf.jpg)** ![image](http://en.gravatar.com/userimage/8042893/4bedac27063f418dfb9233463363054f.jpg) ![image](http://en.gravatar.com/userimage/8042893/c8209a5244353c1f16f9ba4ce3cc6830.jpg) ![image](http://en.gravatar.com/userimage/8042893/5fe25a44b4020c596555fd79bb28e005.jpg)
+**![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/42e31e4e7c138101706613d3be4bf8cf.jpg)** ![image](http://en.gravatar.com/userimage/8042893/4bedac27063f418dfb9233463363054f.jpg) ![image](http://en.gravatar.com/userimage/8042893/c8209a5244353c1f16f9ba4ce3cc6830.jpg) ![image](http://en.gravatar.com/userimage/8042893/5fe25a44b4020c596555fd79bb28e005.jpg)
 
 大四，一个伪宅男，运动白痴，喜欢小笼包子，喜欢红烧肉
 

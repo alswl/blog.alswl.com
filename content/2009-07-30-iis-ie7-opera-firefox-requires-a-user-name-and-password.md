@@ -18,9 +18,9 @@ Windows XP Professional IIS 5.1
 原因：由于安全性能优越IE7.0的internet默认采用的「用户被询问是否允许带参数加载或编码控件」选项，也就是总是要验证用户是否有参数
 加载，而IIS默认采用的匿名登录不进行任何验证，而前后的internet和IIS的设置矛盾，ie7的权限优先于iis所以冲突导致总是要密码验证。
 
-![image](http://www.i170.com/Attach/5DE1DA55-8E8E-4A0A-8768-DB93CD5E0E6A)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200907/5de1da55-8e8e-4a0a-8768-db93cd5e0e6a)
 
-![image](http://www.i170.com/Attach/2681B4F4-D11A-47ED-8FB9-E7B0BE76FC5A)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200907/2681b4f4-d11a-47ed-8fb9-e7b0be76fc5a)
 
 **Firefox**
 

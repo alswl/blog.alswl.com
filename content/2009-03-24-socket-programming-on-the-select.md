@@ -65,59 +65,59 @@ ct在timeout时间内阻塞，超时时间之内有事件到来就返回了，�
 
 例子：
 
-![image](http://www.cnblogs.com/Images/OutliningIndicators/None.gif)main()
-![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedBlockStart.gif){
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) int sock;
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) FILE *fp;
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) struct
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/none.gif)main()
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/expandedblockstart.gif){
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif) int sock;
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif) FILE *fp;
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif) struct
 fd_set fds; ![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubB
 lockStart.gif) struct timeval timeout={3,0}; //select等待3秒，3秒轮询，要非阻塞就置0 ![image](htt
 p://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif) char
 buffer[256]={0}; //256字节的接收缓冲区
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) ![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif) /*
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif) ![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif) /*
 假定已经建立UDP连接，具体过程不写，简单，当然TCP也同理，主机ip和port都已经给定，要写的文件已经打开
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-sock=socket(![image](http://www.cnblogs.com/Images/dot.gif));
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-bind(![image](http://www.cnblogs.com/Images/dot.gif));
-![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
-fp=fopen(![image](http://www.cnblogs.com/Images/dot.gif)); */
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) while(1) ![
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
+sock=socket(![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/dot.gif));
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
+bind(![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/dot.gif));
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/expandedsubblockend.gif)
+fp=fopen(![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/dot.gif)); */
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif) while(1) ![
 ](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif)
-{ ![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+{ ![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
 FD_ZERO(&fds); //每次循环都要清空集合，否则不能检测描述符变化
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
 FD_SET(sock,&fds); //添加描述符
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
 FD_SET(fp,&fds); //同上
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
 maxfdp=sock>fp?sock+1:fp+1; //描述符最大值加1
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
 switch(select(maxfdp,&fds,&fds,NULL,&timeout)) //select使用 ![image](http://www.cnblo
 gs.com/Images/OutliningIndicators/ExpandedSubBlockStart.gif) {
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) case -1:
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif) case -1:
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
 exit(-1);break; //select错误，退出程序
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) case 0:
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) break;
-//再次轮询 ![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-default: ![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif) case 0:
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif) break;
+//再次轮询 ![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
+default: ![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
 if(FD_ISSET(sock,&fds)) //测试sock是否可读，即是否网络上有数据 ![image](http://www.cnblogs.com/Imag
 es/OutliningIndicators/ExpandedSubBlockStart.gif) {
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) recvfrom(so
-ck,buffer,256,![image](http://www.cnblogs.com/Images/dot.gif)..);//接受网络数据
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif) recvfrom(so
+ck,buffer,256,![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/dot.gif)..);//接受网络数据
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
 if(FD_ISSET(fp,&fds)) //测试文件是否可写
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif)
-fwrite(fp,buffer![image](http://www.cnblogs.com/Images/dot.gif));//写入文件
-![image](http://www.cnblogs.com/Images/OutliningIndicators/InBlock.gif) buffer清空;
-![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif)
+fwrite(fp,buffer![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/dot.gif));//写入文件
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/inblock.gif) buffer清空;
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/expandedsubblockend.gif)
 }// end if break;
-![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/expandedsubblockend.gif)
 }// end switch
-![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedSubBlockEnd.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/expandedsubblockend.gif)
 }//end while ![image](http://www.cnblogs.com/Images/OutliningIndicators/ExpandedBlo
 ckEnd.gif)}//end main
-![image](http://www.cnblogs.com/Images/OutliningIndicators/None.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200903/none.gif)
 

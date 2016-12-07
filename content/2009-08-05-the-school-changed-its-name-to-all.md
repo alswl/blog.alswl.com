@@ -11,7 +11,7 @@ Category: Internet
 
 ### 新品牌的含义
 
-![image](http://s.xnimg.cn/100800/marksfine/images/renren_logo.png)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200908/renren_logo.png)
 
 新品牌标志由两个抽象的人字变形，人字成圈形寓意每个人的人际圈，同时两个人字中间发生交集，寓意人与人的沟通和交流，中间的红色象征着人与人之间的情感。文字部分拼
 音renren，同时也是网址renren.com。由图形和域名共同组合成的新标志，象征着renren.com是一个人与人的沟通分享平台，分享真实、沟通快乐。
