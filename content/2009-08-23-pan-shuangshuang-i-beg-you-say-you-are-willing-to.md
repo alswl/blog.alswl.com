@@ -46,7 +46,7 @@ topgirl-shuangshuang198736/)
 
 ### 潘霜霜
 
-[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)](http://pic.xgm8.com/16/090430/a4t6adg1.jpg)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)](http://pic.xgm8.com/16/090430/a4t6adg1.jpg)
 
 潘霜霜，台州人，美女模特，被称为「台州小舒淇」。潘霜霜，一位最新的依K网络爆红的美女!在当今互联网无限发展的今天，逐渐成为炙手可热的明星，性感的面孔，火爆张
 扬的身材，可以随时放电的双眸，向你展示着新新一代的魅力，BMW330i，一部城府很深的性能车，如果不是宽大的轮胎，可以敞篷的身姿，你可能会忽略的实力，当然，

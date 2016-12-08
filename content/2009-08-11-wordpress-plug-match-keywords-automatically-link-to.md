@@ -57,7 +57,7 @@ like to edit the list of keywords in a spreadsheet.  ** **
   * Optional: Ignore case when matching [Rome,ROME,ROMe]
 **Screenshot**
 
-![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)
 
 **Installation **
 

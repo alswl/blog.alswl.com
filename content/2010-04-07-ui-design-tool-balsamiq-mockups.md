@@ -13,7 +13,7 @@ Category: Efficiency
 
 ## 介绍
 
-![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)
 
 > Balsamiq Mockups 提供了 9 大类共 50 多个控件，涵盖了几乎所有常用的 UI 控件。不管是桌面软件、手机软件还是 Web
 站点，都能搞定。且软件极易上手，如上图的豆瓣新主页，是我首次使用 Balsamiq Mockups 时随手画的，仅用 15

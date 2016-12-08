@@ -37,8 +37,8 @@ pe，这个js比较大，网上有[jQuery版本的第三方修改版](http://www
 
 )`
 
-2.加入网站图片，你可以保存![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif)
-和![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.gif) 并上传到share-
+2.加入网站图片，你可以保存![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)
+和![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png) 并上传到share-
 this.php同一文件夹下。 3.刷新页面，你会发现新的按钮出来了。
 
 ## 加入更多按钮
