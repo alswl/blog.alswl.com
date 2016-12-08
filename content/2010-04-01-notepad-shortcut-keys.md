@@ -16,8 +16,7 @@ Category: Efficiency
 
 如果Notepad++是程序员的一个生产工具，那么快捷键的使用就可以提高生产效率，记住一些快捷键是挺有用的:-)。
 
-[http://notepad-plus.sourceforge.net/uk/shortcuts.php](http://notepad-plus.sou
-rceforge.net/uk/shortcuts.php)这上面有完整的快捷键表格，但是很多都记不住，因为很少用。除了Ctrl-C，Ctrl-X，Ctrl
+[http://notepad-plus.sourceforge.net/uk/shortcuts.php](http://notepad-plus.sourceforge.net/uk/shortcuts.php)这上面有完整的快捷键表格，但是很多都记不住，因为很少用。除了Ctrl-C，Ctrl-X，Ctrl
 -V，Ctrl-Y，Ctrl-A，Ctrl-F，Ctrl-S，Ctrl-O，Ctrl-N，Ctrl-W，Ctrl-Tab，Ctrl-P，Alt-
 F4这些基本的，也许有些简单的比较有用的快捷键，你可能有兴趣知道。
 
