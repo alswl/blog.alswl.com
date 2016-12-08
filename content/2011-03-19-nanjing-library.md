@@ -33,12 +33,12 @@ OPAC（联机公共查询目录）中引入了社区的理念，通过新增的�
 
 简洁模视图直接在结果画面就显示了馆藏情况和索书号，不用像以前那样一个一个翻阅了。
 
-[![image](https://ohsolnxaa.qnssl.comm/2011/03/mode_1.jpg)](http://upload-
+[![image](https://ohsolnxaa.qnssl.com/2011/03/mode_1.jpg)](http://upload-
 log4d.qiniudn.com/2011/03/mode_1.jpg)
 
 封面视图会显示每本书的封面，在查找书籍时候能带来莫大方便
 
-[![image](https://ohsolnxaa.qnssl.comm/2011/03/mode_2.jpg)](https://ohsolnxaa.qnssl.com/2011/03/mode_2.jpg)
+[![image](https://ohsolnxaa.qnssl.com/2011/03/mode_2.jpg)](https://ohsolnxaa.qnssl.com/2011/03/mode_2.jpg)
 
 ## 2、书籍页面加入Web2.0元素
 
@@ -50,11 +50,11 @@ log4d.qiniudn.com/2011/03/mode_1.jpg)
 令人惊讶的是，该系统还加入了一些较为新颖的Web2.0元素，Google图书和豆瓣里面的评论！无图无真相，请看下图，点击"Google图书"能够转向到Goo
 gle图书的该书介绍页面。
 
-[![image](https://ohsolnxaa.qnssl.comm/2011/03/detail_1.jpg)](https://ohsolnxaa.qnssl.com/2011/03/detail_1.jpg)
+[![image](https://ohsolnxaa.qnssl.com/2011/03/detail_1.jpg)](https://ohsolnxaa.qnssl.com/2011/03/detail_1.jpg)
 
 书目的地下有来自豆瓣的评论，同时也可以用南图的帐号登录进行评论。根据画面，看上去网络评论来自Baidu图书、当当网、豆瓣和卓越网。
 
-[![image](https://ohsolnxaa.qnssl.comm/2011/03/detail_2.jpg)](https://ohsolnxaa.qnssl.com/2011/03/detail_2.jpg)
+[![image](https://ohsolnxaa.qnssl.com/2011/03/detail_2.jpg)](https://ohsolnxaa.qnssl.com/2011/03/detail_2.jpg)
 
 ## 3、更多细节
 

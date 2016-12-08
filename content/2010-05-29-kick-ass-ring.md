@@ -32,5 +32,5 @@ Music)可以下载。
 
 我把这段音乐做成了30s的手机铃声，哇咔咔～
 
-点击[这里](https://ohsolnxaa.qnssl.comm/2010/05/banana_splits.7z)下载铃声
+点击[这里](https://ohsolnxaa.qnssl.com/2010/05/banana_splits.7z)下载铃声
 

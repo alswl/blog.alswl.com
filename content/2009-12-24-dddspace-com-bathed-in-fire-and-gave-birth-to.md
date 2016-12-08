@@ -20,7 +20,7 @@ allocate](http://wordpress.org/support/topic/194370?replies=16)",解决办法是
 
 同学们，赶紧修改你们的Feed地址啊！！！！
 
-![image](https://ohsolnxaa.qnssl.comm/2009/12/phoenix.jpg)
+![image](https://ohsolnxaa.qnssl.com/2009/12/phoenix.jpg)
 
 感谢小张的支持，10号主机挺棒哦。
 

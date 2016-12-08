@@ -20,5 +20,5 @@ replicator-mp3)。
 
 界面比较实在，大致是这样：
 
-![image](https://ohsolnxaa.qnssl.comm/2011/03/plrcmatch4d.jpg)
+![image](https://ohsolnxaa.qnssl.com/2011/03/plrcmatch4d.jpg)
 

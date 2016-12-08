@@ -15,7 +15,7 @@ Engine](https://www.google.com/accounts/ah/ah20x20.gif) [App
 Engine](http://code.google.com/appengine/) ，激活这个服务，就可以[创建新的应用](https://appengi
 ne.google.com/)。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。
 
-![image](https://ohsolnxaa.qnssl.comm/2009/09/image3.png) 一个简单的App控制台
+![image](https://ohsolnxaa.qnssl.com/2009/09/image3.png) 一个简单的App控制台
 
 ## 2.部署GAE App
 
@@ -54,11 +54,11 @@ o?id=237768885)。
 
 第二步是创建一个新的应用，按部就班的填上相关资料。
 
-[![image](https://ohsolnxaa.qnssl.comm/2009/09/image5.png)](https://ohsolnxaa.qnssl.com/2009/09/image51.png)
+[![image](https://ohsolnxaa.qnssl.com/2009/09/image5.png)](https://ohsolnxaa.qnssl.com/2009/09/image51.png)
 
 校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）
 
-[![xnapp_main](https://ohsolnxaa.qnssl.comm/2009/09/xnapp_main.jpg)](https://ohsolnxaa.qnssl.comm/2009/09/xnapp_main2.jpg)
+[![xnapp_main](https://ohsolnxaa.qnssl.com/2009/09/xnapp_main.jpg)](https://ohsolnxaa.qnssl.com/2009/09/xnapp_main2.jpg)
 
 我的应用程序，在这里可以编辑应用的属性
 
@@ -193,7 +193,7 @@ main() not_found.py：自定义的404页面，其实就是简单的在MainHandle
 
 把这个GAE App部署，然后就可以在校内的apps.renren.com/xxx/使用这个应用了。
 
-[![xnapp_show](https://ohsolnxaa.qnssl.comm/2009/09/xnapp_show.jpg)](https://ohsolnxaa.qnssl.comm/2009/09/xnapp_show1.jpg)
+[![xnapp_show](https://ohsolnxaa.qnssl.com/2009/09/xnapp_show.jpg)](https://ohsolnxaa.qnssl.com/2009/09/xnapp_show1.jpg)
 
 我的头像，按理应该有三个，我怀疑是校内的一个服务器出问题了，只刷出来两张。
 

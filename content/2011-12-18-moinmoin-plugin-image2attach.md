@@ -6,7 +6,7 @@ Tags: Python, image2attach, MoinMoin
 Category: Coding
 
 
-![MoinMoin](https://ohsolnxaa.qnssl.comm/2011/12/moinmoin.png)
+![MoinMoin](https://ohsolnxaa.qnssl.com/2011/12/moinmoin.png)
 
 ## What's this ##
 

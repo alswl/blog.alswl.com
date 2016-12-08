@@ -11,7 +11,7 @@ Category: Life
 
 最后一次疯狂～
 
-![image](https://ohsolnxaa.qnssl.comm/2010/06/cinderella.JPG)
+![image](https://ohsolnxaa.qnssl.com/2010/06/cinderella.JPG)
 
 The Happy Ending
 

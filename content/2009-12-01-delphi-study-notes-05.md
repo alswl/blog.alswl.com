@@ -90,7 +90,7 @@ end.
 
 上个小图
 
-[![image](https://ohsolnxaa.qnssl.comm/2009/12/delphi_editor.jpg)](https://ohsolnxaa.qnssl.comm/2009/12/delphi_editor.jpg)
+[![image](https://ohsolnxaa.qnssl.com/2009/12/delphi_editor.jpg)](https://ohsolnxaa.qnssl.com/2009/12/delphi_editor.jpg)
 
     
     procedure TForm1.O1Click(Sender: TObject);

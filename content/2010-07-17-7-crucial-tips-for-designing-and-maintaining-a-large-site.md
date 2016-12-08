@@ -21,7 +21,7 @@ designing-and-maintaining-a-large-site/)
 
 ### 1. 可维护的设计和代码
 
-![image](https://ohsolnxaa.qnssl.comm/2010/07/button.jpg)
+![image](https://ohsolnxaa.qnssl.com/2010/07/button.jpg)
 
 我给的第一条也是最条一条秘诀是设计站点保证可以轻松维护。很多时候，当你设计一个站点，你可能为了美学牺牲一些东西。例如，你可能使用一个图片而文字或者样式就可以
 应付。或者你可能故意使用一个没有空间缩放的菜单结构。当网站变大时，这将将成为一个非常糟糕的设计。
@@ -38,7 +38,7 @@ designing-and-maintaining-a-large-site/)
 
 ### 2. 找出你的用户群和任务
 
-![image](https://ohsolnxaa.qnssl.comm/2010/07/users.jpg)
+![image](https://ohsolnxaa.qnssl.com/2010/07/users.jpg)
 
 大型网站网站和小型站点的最大一个区别就是使用网站的不同用户类型的数量。例如在FlashDen上，有买家、作家、访客、管理员和会员。每个用户组都有他们各自不同
 的目标和任务。有时候他们的任务重叠，但是他们有很大的不同。
@@ -70,7 +70,7 @@ designing-and-maintaining-a-large-site/)
 
 ### 3. 了解网站目标
 
-![image](https://ohsolnxaa.qnssl.comm/2010/07/discuss.jpg)
+![image](https://ohsolnxaa.qnssl.com/2010/07/discuss.jpg)
 
 虽然每个用户组会很自然地认为他们是最重要的，但是你应该根据他们的优先度来判别站点要实现的目标。比如在FlashDen上，我们给候补人员列出下面几条结论：
 
@@ -89,7 +89,7 @@ designing-and-maintaining-a-large-site/)
 
 ### 4. 设计，精炼，精炼，精炼 …
 
-[![image](https://ohsolnxaa.qnssl.comm/2010/07/step4_nm.jpg)](http://upload-
+[![image](https://ohsolnxaa.qnssl.com/2010/07/step4_nm.jpg)](http://upload-
 log4d.qiniudn.com/2010/07/step4_nm.jpg)
 
 在你找到你的用户组别，任务，网站目标，优先级别等等之后，到了设计的时间了！这是至关重要的步骤，因为在实际操作中，这一步可以大幅降低一些将必要的返工设计工作量
@@ -121,7 +121,7 @@ log4d.qiniudn.com/2010/07/step4_nm.jpg)
 
 ### 6. 为将来做组织
 
-![image](https://ohsolnxaa.qnssl.comm/2010/07/subversion.jpg)
+![image](https://ohsolnxaa.qnssl.com/2010/07/subversion.jpg)
 
 当您为一个大网站编码设计时，它是真正重要的是反复思考未来的变化。如何管理您的文件和文件夹将极大地影响之后的工作。例如最近我们决定建立一个着重音乐的Flash
 Den的姊妹网站，即AudioJungle。为了简化，这个网站是将使用相同的HTML，只是改变样式来使它看起来像一个不同的网站。这里有一些事情要记住：
@@ -149,7 +149,7 @@ Hack和其他解决方法。在你建立一个庞大的站点时候，在页面�
 
 ### 7. 确保可以简单的扩展你的样式表
 
-![image](https://ohsolnxaa.qnssl.comm/2010/07/future.jpg)
+![image](https://ohsolnxaa.qnssl.com/2010/07/future.jpg)
 
 网站越大，设计师就越有可能看到或修改每一个单独页面。如果你是一个大型网站上唯一设计师 - 比如我 -
 你可能不想在每个页面上重定义。因此，多花精力在样式表上，可以通过默认的属性让页面看起来不错。

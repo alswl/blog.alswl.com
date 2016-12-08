@@ -48,7 +48,7 @@ Category: Thinking
 
 同事王大人推荐了一款理财软件-家财通，可以精细的对家庭理财进行管理。试用之后，赞不绝口，平时甚少喜欢单机程序的我也用的很喜欢。
 
-[![image](https://ohsolnxaa.qnssl.comm/2010/04/m3homepage.jpg)](https://ohsolnxaa.qnssl.com/2010/04/m3homepage.jpg)
+[![image](https://ohsolnxaa.qnssl.com/2010/04/m3homepage.jpg)](https://ohsolnxaa.qnssl.com/2010/04/m3homepage.jpg)
 
 以上大部分理财理念内容来自软件附带的一个《理财宝典》，里面还有很多更详细的内容，大家可以试用一下。
 
