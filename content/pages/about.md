@@ -3,9 +3,9 @@ Slug: about
 Author: alswl
 Date: 2012-05-14 21:21
 
-我是 alswl ，这个词是我小时候写的一部小说的主人公。
+我是 alswl ，这个词来源于我小时候写的一部小说的主人公。
 
-目前在[堆糖网](http://www.duitang.com/)工作，工程师，打杂。
+目前在[堆糖网](https://www.duitang.com/)工作，首席打杂工程师。
 
 ## 博客记录
 
@@ -28,12 +28,13 @@ Date: 2012-05-14 21:21
 #Email: echo 'YWxzd2x4QGdtYWlsLmNvbQo=' | base64 -d
 ```
 
-* [堆糖](http://www.duitang.com/people/?user_id=1723564092)
-* [新浪微博](http://weibo.com/alswlx)
-* [知乎](http://www.zhihu.com/people/alswl)
-* [豆瓣](http://www.douban.com/people/alswl/)
-* [Twitter](http://twitter.com/alswl/)
-* [Google+](https://plus.google.com/113699049322300593030/posts?hl=zh_cn)
-* [LastFM](http://cn.last.fm/user/alswl)
-* [Diigo](http://www.diigo.com/user/alswlx)
-* <del>[Wakoopa](http://social.wakoopa.com/alswl)</del>
+*   [堆糖](https://www.duitang.com/people/?user_id=1723564092)
+*   [Facebook](https://www.facebook.com/alswl)
+*   [新浪微博](http://weibo.com/alswlx)
+*   [知乎](https://www.zhihu.com/people/alswl/activities)
+*   [豆瓣](http://www.douban.com/people/alswl/)
+*   [Twitter](https://twitter.com/alswl/)
+*   [Google+](https://plus.google.com/+JasonTi?hl=zh_cn)
+*   [LastFM](http://cn.last.fm/user/alswl)
+*   [Diigo](https://www.diigo.com/profile/alswlx)
+*   <del>[Wakoopa](http://social.wakoopa.com/alswl)</del>
