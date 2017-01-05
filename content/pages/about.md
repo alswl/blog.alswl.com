@@ -9,20 +9,25 @@ Date: 2012-05-14 21:21
 
 ## 博客记录
 
-* 2016-09-21 更换域名 blog.alswl.com
-* 2016-04-26 开启 HTTPS
-* 2016-04-25 使用 AWS
-* 2014-12-23 使用 GitCafe 提供的 Pages 服务
-* 2014-01-24 使用 VPS [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
-* 2013-12-03 更换博客系统 Pelican
-* 2012-05-14 更换博客系统 Octopress
-* 2012-01-01 使用 VPS [Linode](https://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c)
-* 2011-11-02 更换域名 log4d.com
-* 2009-12-24 更换域名 dddspace.com
-* 2009-05-14 创建 dddspace.cn
-* 使用 Yo2
-* 使用 Baidu Hi
-* 2005-05-30 在 MSN Space 创建博客
+*   2016-09-21 更换域名 blog.alswl.com
+*   2016-04-26 开启 HTTPS
+*   2016-04-25 使用 AWS
+*   2014-12-23 使用 GitCafe 提供的 Pages 服务
+*   2014-01-24 使用 VPS [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
+*   2013-12-03 更换博客系统 Pelican
+*   2012-05-14 更换博客系统 Octopress
+*   2012-01-01 使用 VPS [Linode](https://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c)
+*   2011-11-02 更换域名 log4d.com
+*   2009-12-24 更换域名 dddspace.com
+*   2009-05-14 创建 dddspace.cn
+*   使用 Yo2
+*   使用 Baidu Hi
+*   2005-05-30 在 MSN Space 创建博客
+
+欢迎关注我的微信公众号：窥豹
+
+![Wechat](https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg)
+
 
 ## 找到我
 
@@ -32,11 +37,12 @@ Date: 2012-05-14 21:21
 
 *   [堆糖](https://www.duitang.com/people/?user_id=1723564092)
 *   [Facebook](https://www.facebook.com/alswl)
+*   [Twitter](https://twitter.com/alswl/)
 *   [新浪微博](http://weibo.com/alswlx)
 *   [知乎](https://www.zhihu.com/people/alswl/activities)
 *   [豆瓣](http://www.douban.com/people/alswl/)
-*   [Twitter](https://twitter.com/alswl/)
 *   [Google+](https://plus.google.com/+JasonTi?hl=zh_cn)
+*   [LinkedIn](https://www.linkedin.com/in/jason-ti-b4883928?trk=nav_responsive_tab_profile)
 *   [LastFM](http://cn.last.fm/user/alswl)
 *   [Diigo](https://www.diigo.com/profile/alswlx)
 *   <del>[Wakoopa](http://social.wakoopa.com/alswl)</del>
