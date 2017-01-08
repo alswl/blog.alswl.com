@@ -93,6 +93,6 @@ __**所以在大扫除期间，我们还要补一补平时的文档，将一些�
 啰嗦了这么多，相信大家对大扫除要做些什么已经有所印象了，祝大家过个好年，流量涨涨涨，还能平平安安的。
 
 
-[^1]: [The USE Method] http://www.brendangregg.com/usemethod.html
-[^2]: [USE Method: Linux Performance Checklist] http://www.brendangregg.com/USEmethod/use-linux.html
+[^1]: [The USE Method] [http://www.brendangregg.com/usemethod.html](http://www.brendangregg.com/usemethod.html)
+[^2]: [USE Method: Linux Performance Checklist] [http://www.brendangregg.com/USEmethod/use-linux.html](http://www.brendangregg.com/USEmethod/use-linux.html)
 
