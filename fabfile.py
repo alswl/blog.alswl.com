@@ -50,7 +50,7 @@ def new_post(name=''):
         'Title: %s\n' + 'Author: alswl\n' + 'Slug: %s\n' + 'Date: %s\n' +
         'Tags: \nCategory: \n'
     ) % (
-        name, name,
+        name, name.replace(' ', '-'),
         now.strftime('%Y-%m-%d %H:%M:%S')))
     md.close()
 
