@@ -7,6 +7,12 @@ Date: 2012-05-14 21:21
 
 目前在[堆糖网](https://www.duitang.com/)工作，首席打杂工程师。
 
+
+## Tag
+
+☑Code ☑ SRE ☑Linux ☑IDEA/Vim ☑Python ☑SH ☑1988 ☑alswl.com ☑正版软件使用者 ☑无背景 ☑明骚 ☑冬笋/小笼包/油爆草虾
+
+
 ## 博客记录
 
 *   2016-09-21 更换域名 blog.alswl.com
@@ -23,10 +29,6 @@ Date: 2012-05-14 21:21
 *   使用 Yo2
 *   使用 Baidu Hi
 *   2005-05-30 在 MSN Space 创建博客
-
-欢迎关注我的微信公众号：窥豹
-
-![Wechat](https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg)
 
 
 ## 找到我
@@ -47,3 +49,8 @@ Date: 2012-05-14 21:21
 *   [LastFM](http://cn.last.fm/user/alswl)
 *   [Diigo](https://www.diigo.com/profile/alswlx)
 *   <del>[Wakoopa](http://social.wakoopa.com/alswl)</del>
+
+欢迎关注我的微信公众号：窥豹
+
+![Wechat](https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg)
+
