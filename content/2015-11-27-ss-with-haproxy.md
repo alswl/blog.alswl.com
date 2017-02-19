@@ -10,7 +10,7 @@ Category: Efficiency
 以前用自己的 SS，Linode 美国，后来 Linode 日本，但是始终拼不过上海电信的国际带宽。
 经常不稳定，丢一半的包。
 
-于是买了 [SS](https://portal.shadowsocks.com/aff.php?aff=4215) 服务，
+于是买了 [SS](https://portal.shadowsocks.com.hk/aff.php?aff=4215) 服务，
 9 台服务器，自己挑觉得速度快的服务器。
 
 但一直固定某台服务器也会偶尔出问题，导致邮件出不来，网页打不开。
