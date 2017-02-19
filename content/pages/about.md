@@ -31,6 +31,19 @@ Date: 2012-05-14 21:21
 *   2005-05-30 在 MSN Space 创建博客
 
 
+## 我常使用的线上服务（推介链接）
+
+*   [Toodledo](http://www.toodledo.com/index.php?ref=td4d1aebdd0f59e) 用了超过 7 年的 GTD 软件，每天第一个打开的就是它
+*   [Linode](http://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c) 老牌 VPS
+*   [Dropbox](http://db.tt/vQqCGcl) 用了超过 5 年的网盘服务
+*   [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f) 性价比最高的 VPS
+*   [RescueTime](https://www.rescuetime.com/ref/1328871) 帮助记录时间耗用，从而提高效率的记录工具
+*   [Shadowsocks](https://portal.shadowsocks.com.hk/aff.php?aff=4215) 还不错的 XX 工具
+*   [v2ex](http://www.v2ex.com/?r=alswl) 小鲜肉开发们聚集地
+*   [Sentry](https://getsentry.com/signup/r_D1W_/) 还不错的 Python Log 收集管理工具
+*   [Qiniu](https://portal.qiniu.com/signup?code=3lktq7rq4uhxs) 超好用的良心云存储 + CDN 供应商
+
+
 ## 找到我
 
 ``` bash
