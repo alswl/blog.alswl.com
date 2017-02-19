@@ -10,7 +10,7 @@ Date: 2012-05-14 21:21
 
 ## Tag
 
-☑Code ☑ SRE ☑Linux ☑IDEA/Vim ☑Python ☑SH ☑1988 ☑alswl.com ☑正版软件使用者 ☑无背景 ☑明骚 ☑冬笋/小笼包/油爆草虾
+☑Coding ☑ SRE ☑Mac/Linux ☑IDEA/Vim ☑Java/Python ☑ErgoDox ☑alswl.com ☑使用正版软件 ☑明骚 ☑冬笋/小笼包/油爆小草虾
 
 
 ## 博客记录
