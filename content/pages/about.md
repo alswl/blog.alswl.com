@@ -58,7 +58,7 @@ Date: 2012-05-14 21:21
 *   [知乎](https://www.zhihu.com/people/alswl/activities)
 *   [豆瓣](http://www.douban.com/people/alswl/)
 *   [Google+](https://plus.google.com/+JasonTi?hl=zh_cn)
-*   [LinkedIn](https://www.linkedin.com/in/jason-ti-b4883928?trk=nav_responsive_tab_profile)
+*   [LinkedIn](https://www.linkedin.com/in/jason-di-b4883928/)
 *   [LastFM](http://cn.last.fm/user/alswl)
 *   [Diigo](https://www.diigo.com/profile/alswlx)
 *   <del>[Wakoopa](http://social.wakoopa.com/alswl)</del>
