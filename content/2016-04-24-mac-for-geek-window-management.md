@@ -138,5 +138,5 @@ ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的
 
 ----
 
-我曾经写过一篇 [Linux 程序员的 Mac 安装记录](http://blog.log4d.com/2013/12/mac/)，
+我曾经写过一篇 [Linux 程序员的 Mac 安装记录](http://blog.alswl.com/2013/12/mac/)，
 告诉大家我在 Mac 上面常用的工具、包管理器。
