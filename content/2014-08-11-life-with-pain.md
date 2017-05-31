@@ -1,4 +1,4 @@
-Title: 痛快活
+Title: 痛、快、活
 Author: alswl
 Slug: life-with-pain
 Date: 2014-08-11 21:07:29
