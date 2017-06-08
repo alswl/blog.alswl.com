@@ -3,7 +3,7 @@ Author: alswl
 Slug: reported-net-ccav-happy
 Date: 2009-07-18 00:00:00
 Tags: 碎碎念
-Category: View
+Category: Viewpoint
 
 今天家里做饭时候突然听到身后电视机里隐约传来「开心网」这几个词，心里纳闷，我一般电视机只放在新闻频道，回头一看，果然是在放关于开心网的新闻。
 

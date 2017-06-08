@@ -3,7 +3,7 @@ Author: alswl
 Slug: opensource-and-freedom
 Date: 2012-05-27 19:35
 Tags: 程序人生, slideshow, OpenSource
-Category: View
+Category: Viewpoint
 
 
 周末回学校一趟，和几个老同学、老师聚会，然后给学弟学妹们做了一个分享。

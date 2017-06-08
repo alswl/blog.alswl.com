@@ -3,7 +3,7 @@ Author: alswl
 Slug: the-success-of-software-technical-personnel-to-the-personality-trait
 Date: 2009-07-04 00:00:00
 Tags: 程序人生
-Category: View
+Category: Viewpoint
 
 原文作者：施文祥
 

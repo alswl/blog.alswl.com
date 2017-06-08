@@ -3,7 +3,7 @@ Author: alswl
 Slug: direction
 Date: 2009-08-31 00:00:00
 Tags: 程序人生
-Category: View
+Category: Viewpoint
 
 系主任在QQ上面的一句话：「没有方向的船，速度再快也抵达不了目的地」。我现在就是这么一条没有方向的船。
 

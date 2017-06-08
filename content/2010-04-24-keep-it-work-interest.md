@@ -3,7 +3,7 @@ Author: alswl
 Slug: keep-it-work-interest
 Date: 2010-04-24 00:00:00
 Tags: 程序人生
-Category: View
+Category: Viewpoint
 
 ![image](https://ohsolnxaa.qnssl.com/2010/04/keyboard_help.jpg)
 
