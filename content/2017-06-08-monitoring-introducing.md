@@ -168,4 +168,9 @@ USE 分别是三个单词的首字母缩写：
 
 ## 完 🏁
 
+如果你对我上面描述的还意犹未尽，建议你可以看 [Effective Monitoring and Alerting](https://book.douban.com/subject/19992841/)。
+虽然本书没有中文版，但是关于监控、报警的原理解析很到位，值得一看。
+另外还有一本 [SRE: Google运维解密](https://book.douban.com/subject/26875239/)，
+里面有不少篇幅在讲「SLA」，也是和监控、报警息息相关的。
+
 这次讲了一些概念性的内容，期望对大家有帮助，下一次我再分享一篇文章，聊聊 Metrics。
