@@ -97,7 +97,7 @@ Category: Coding
     *   durability
 
 基于 SLI 建立的数字关键指标，称之为
-[Service level objective](https://en.wikipedia.org/wiki/Service_level_objective)。
+[Service Level Objective](https://en.wikipedia.org/wiki/Service_level_objective)。
 SLO 往往是一组数字范围，比如 CPU 负载的 SLO 可以设置为 0.0-6.0（针对 8 核 CPU）。
 不同的资源、不同的业务场景，会有不一样的 SLO 设计。
 
