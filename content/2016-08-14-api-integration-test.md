@@ -2,7 +2,7 @@ Title: API 集成测试实践
 Author: alswl
 Slug: api-integration-test
 Date: 2016-08-14 19:08:20
-Tags: [Test, API]
+Tags: Test, API
 Category:  Coding
 
 ![abao.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201608/abao_thumbnail.png)

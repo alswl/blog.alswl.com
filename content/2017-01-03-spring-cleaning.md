@@ -2,7 +2,7 @@ Title: 👷如何做年前大扫除
 Author: alswl
 Slug: spring-cleaning
 Date: 2017-01-03 23:20:50
-Tags: [Infrastructure, DevOps]
+Tags: Infrastructure, DevOps
 Category: Coding
 
 今年过年特别早，离春节只剩下二十多天了。
