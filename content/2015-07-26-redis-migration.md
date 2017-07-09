@@ -129,6 +129,7 @@ Redis 只能查看整个实例内存尺寸。不能查看单个 db。
 17:38:36,422 - __main__ - INFO - v, dumps keys 1392/7711834/..., time: 3076.41647506
 ```
 
+附上 Migration Script：[https://blog.alswl.com/2015/07/redis-migration/ Redis Cluster Migration](https://gist.github.com/alswl/e96a5308ebac4f69f809f9ba56dfe168)
 
 
 [REDIS_MGR]: https://github.com/idning/redis-mgr
