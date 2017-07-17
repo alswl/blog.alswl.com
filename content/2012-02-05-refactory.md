@@ -5,12 +5,12 @@ Date: 2012-02-05 00:00:00
 Tags: 综合技术, 读书笔记
 Category: Coding
 
-Martin Fowler 的《[重构-改善既有代码的设计](http://book.douban.com/subject/1229923/)》这本书，是我大学老师推荐给我的。
+Martin Fowler 的「[重构-改善既有代码的设计](http://book.douban.com/subject/1229923/)」这本书，是我大学老师推荐给我的。
 当时我在撰写代码过程中，发现当代码量到某个数量级时候（1000+行），
 就会逐渐失去对代码的控制能力。
-昆哥推荐了两本书《[UML和模式应用](http://book.douban.com/subject/1792387/)》和《重构》这本书。
+昆哥推荐了两本书「[UML 和模式应用](http://book.douban.com/subject/1792387/)」和「重构」这本书。
 
-![refactory](https://ohsolnxaa.qnssl.com/upload_dropbox/201202/s1669771_l.jpg)
+![Refactory](https://ohsolnxaa.qnssl.com/upload_dropbox/201202/s1669771_l.jpg)
 
 这本书是2年前购买的，可惜以我当时的代码感知和撰写能力，看起来颇为吃力。 半途就看得云里雾里而中断了。最近我又重新拾起这本书，
 将书中所写的境况与我这两年多来遇到的问题相互印证，才感受到这本经典的力量。
@@ -18,8 +18,8 @@ Martin Fowler 的《[重构-改善既有代码的设计](http://book.douban.com/
 Martin 其人：
 
     
->   ThoughtWorks的首席科学家，当今世界软件开发领域最具影响力的五位大师之一。
->   他在UML推广普及、领域建模、企业应用开发和敏捷方法等方面建树卓著，被称为软件开发的教父。
+>   ThoughtWorks 的首席科学家，当今世界软件开发领域最具影响力的五位大师之一。
+>   他在 UML 推广普及、领域建模、企业应用开发和敏捷方法等方面建树卓著，被称为软件开发的教父。
 
 大学时候有段时间我对 Martin 的敏捷非常痴迷。现在对技术的选择没以前那么冲动了， 但是毫不妨碍我对 Martin 的敬仰之情。
 
@@ -38,7 +38,7 @@ Martin 其人：
 
 *   优秀设计的根本是：消除重复部分！（DRY = Don't repeat yourself）
 *   重构让代码更清晰，更容易理解
-*   清晰的代码可以更方便的找到bug，重构可以写出更强健的代码
+*   清晰的代码可以更方便的找到 bug ，重构可以写出更强健的代码
 *   良好的设计可以在长远时间上提高开发速度
 
 ### 1.3. 重构的时间
@@ -47,7 +47,7 @@ Martin 其人：
 *    事不过三，代码重复不要超过三次（否则就要"抽"出来）
 *    添加功能时候并一一重构（个人理解是，添加新功能之前，分析并重构，从而更方便添加新功能）
 *    修补错误时
-*    code review 时
+*    Code Review 时
 
 ### 1.4. 重构和开发进度
 
@@ -59,7 +59,7 @@ Martin 其人：
 *    修改接口
 *    那些难以通过重构改变的设计改动
 *    代码不能运行
-*    项目期限压力 dead line
+*    项目期限压力 Deadline
 
 ### 1.6. 重构与设计
 
@@ -81,15 +81,15 @@ Martin 其人：
 *    散弹式修改（其实就是没有封装变化处，由于一个需求，多处需要被修改）
 *    依赖情节（一个类对其他类过多的依赖）
 *    数据泥团（如果数据有意义，就将结构数据变成对象）
-*    type code，使用Class替代
-*    switch，少用，考虑多态
+*    Type code，使用 Class 替代
+*    `switch`，少用，考虑多态
 *    过多平行的类，使用类继承并联起来
 *    冗余类，去除它
-*    夸夸其谈的未来性（Matin的文字，侯俊杰的翻译真是…出彩…）
+*    夸夸其谈的未来性（Matin 的文字，侯俊杰的翻译真是…出彩…）
 *    临时值域，封装它
 *    过度耦合的消息链，使用真正需要的函数和对象，而不要依赖于消息链
-*    过度的deleate
-*    过度使用其他类private值域
+*    过度的 Deleate
+*    过度使用其他类 `private` 值域
 *    重复作用的类
 *    不完美的类库，（类库老了，使用者也没办法阿）
 *    纯数据类（类需要行为）
@@ -142,7 +142,7 @@ Inline Temp（将临时变量内联化）
 
 Replace Temp with Query（以查询取代临时变量）
 
->   将临时变量提取到一个独立函数，并将原来变量引用替换为函数调用。 （我还是担心性能的问题，另外将临时变量限定在一个段落p中，可以避免额外的引用）
+>   将临时变量提取到一个独立函数，并将原来变量引用替换为函数调用。 （我还是担心性能的问题，另外将临时变量限定在一个段落中，可以避免额外的引用）
 
 Introduce Explainning Variable（引入解释性变量）
 
@@ -198,13 +198,13 @@ Introduce Foreign Method（引入外加函数）
 
 Introduce Local Extenstion（引入本地扩展）
 
->   使用子类继承/wrapper类来实现额外的函数。
+>   使用子类继承/Wrapper 类来实现额外的函数。
 
 ### 2.3. 重新组织数据
 
 Self Encapsulate Field（自封装值域）
 
->   使用getter/setter。 （个人觉得这样很繁琐，.net中的属性方式处理的不错）
+>   使用getter/setter。 （个人觉得这样很繁琐，.net 中的属性方式处理的不错）
 
 Replace Date Value with Object （以对象取代数据值）
 
@@ -217,13 +217,14 @@ Change Value to Reference（将实值对象改为引用对象）
 Change Reference to Value（将引用对象改为实值对象）
 
 >   和楼上相反的情况，引用会带来复杂的内存分配，在分布式系统中，实值对象特别有用。
+
 Replace Array with Object（以对象取代数组）
 
 >   不应该将不同的元素存放到数组中，应该使用值域。
 
 Duplicate Observed Data（复制被监视数据）
 
->   通过观察者模式，将业务数据和GUI数据进行同步控制
+>   通过观察者模式，将业务数据和 GUI 数据进行同步控制
 
 Change Unidirectional Association to Bidirectional（将单向关联改为双向）
 
@@ -235,7 +236,7 @@ Change Bidirectional Assicuation to Unidirectional（将双向关联改为单向
 
 Replace Magic Number with Symbolic Constant（以符号常量/字面常量取代魔法数）
 
->   使用有意义的名称，比如pi,gravity。
+>   使用有意义的名称，比如pi, gravity。
 
 Encapsulate Field（封装值域）
 
@@ -255,7 +256,7 @@ Replace Type Code with Class（以类别取代型别码）
 
 Replace Type Code with Subclass（以子类取代型别码）
 
->   使用多态来替换型别码，发挥面向对象编程的优势。 （小心处理ORM映射）
+>   使用多态来替换型别码，发挥面向对象编程的优势。 （小心处理 ORM 映射）
 
 Replace Type Code with State/Strategy（以State/Strategy取代型别码）
 
@@ -267,7 +268,7 @@ Replace Subclass with Fields（以值域取代子类）
 
 ### 2.4. 简化条件表达式
 
-简化的核心思想，是将过程式的if/else替换为面向对象的多态。
+简化的核心思想，是将过程式的 `if` / `else` 替换为面向对象的多态。
 
 Decompose Conditional（分解条件式）
 
@@ -287,19 +288,20 @@ Remove Control Flag（移除控制标志）
 
 Replace Nested Conditional with Guard Clauses（以卫语句取代嵌套条件式）
 
->   保留正常情况下面下的顺序执行，提前对非正常情况进行单独检查并返回。 （我更倾向于使用Exception）
+>   保留正常情况下面下的顺序执行，提前对非正常情况进行单独检查并返回。 （我更倾向于使用 Exception）
 
 Replace Conditional with Polymorphism（以多态取代条件式）
 
->   将条件式的每个分支放入一个subclass内覆写函数中，然后将原始函数生命为抽象函数。 （这个方法之前的5种重构手段是代码小手段，引入多态才能充分发挥OOP优势）
+>   将条件式的每个分支放入一个Subclass 内覆写函数中，然后将原始函数生命为抽象函数。
+（这个方法之前的 5 种重构手段是代码小手段，引入多态才能充分发挥 OOP 优势）
 
-Introduce Null Object（引入Null对象）
+Introduce Null Object（引入 Null 对象）
 
->   将无效值替换为null object，从而可以让程序正常运行。 （这好象是一种hack方法，我倾向使用Exception，作者的用以可能是通过Null来减少判断代码）
+>   将无效值替换为Null Object，从而可以让程序正常运行。 （这好象是一种 Hack 方法，我倾向使用 Exception，作者的用以可能是通过 Null 来减少判断代码）
 
 Introduce Assertion（引入断言）
 
->   通过断言来发现程序错误，实际使用中，可以配合 debug mode 使用。
+>   通过断言来发现程序错误，实际使用中，可以配合 Debug Mode 使用。
 
 ### 2.5. 简化函数调用
 
@@ -341,7 +343,7 @@ Introduce Parameter Object(引入参数对象)
 
 Remove Setting Method（移除设值函数）
 
->   如果类的某个值域初始化后不再改变，就去掉它的setting方法。 （我理解为原则："减少疑惑，保持唯一"）
+>   如果类的某个值域初始化后不再改变，就去掉它的 setting 方法。 （我理解为原则："减少疑惑，保持唯一"）
 
 Hide Method（隐藏某个函数）
 
@@ -424,4 +426,4 @@ Replace Delegation with Inheritance（以继承取代委托）
 *   Separate Domain from Presentation（将领域和表述/显示分离）
 *   Extract hierarchy（提炼继承体系）
 
-少年，coding时候重构你的代码吧！
+少年，Coding 时候重构你的代码吧！
