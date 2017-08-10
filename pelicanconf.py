@@ -23,9 +23,8 @@ TRANSLATION_FEED_ATOM = None
 
 PLUGIN_PATHS = ['/Users/alswl/dev/project/python/pelican-plugins']
 PLUGINS = ['pelican-toc', 'summary', 'footer_insert', 'feed_footer_insert']
-#MD_EXTENSIONS = (['toc'])
 TOC = {
-    'TOC_HEADERS': '^h[1-3]',
+    'TOC_HEADERS': '^h[2-4]',
     'TOC_RUN': 'true',
 }
 
