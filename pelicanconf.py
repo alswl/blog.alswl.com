@@ -9,7 +9,7 @@ SITEURL = 'http://lo:8000'
 
 PATH = 'content'
 
-THEME = '/Users/alswl/dev/myproject/python/pelican-bootstrap3/'
+THEME = 'pelican-bootstrap3'
 
 TIMEZONE = 'Asia/Shanghai'
 
@@ -22,7 +22,12 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
 PLUGIN_PATHS = ['/Users/alswl/dev/project/python/pelican-plugins']
-PLUGINS = ['summary', 'footer_insert', 'feed_footer_insert']
+PLUGINS = ['pelican-toc', 'summary', 'footer_insert', 'feed_footer_insert']
+#MD_EXTENSIONS = (['toc'])
+TOC = {
+    'TOC_HEADERS': '^h[1-3]',
+    'TOC_RUN': 'true',
+}
 
 # Blogroll
 LINKS =  (
