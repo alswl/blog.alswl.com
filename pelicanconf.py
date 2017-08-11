@@ -26,6 +26,7 @@ PLUGINS = ['pelican-toc', 'summary', 'footer_insert', 'feed_footer_insert']
 TOC = {
     'TOC_HEADERS': '^h[2-4]',
     'TOC_RUN': 'true',
+    'TOC_INCLUDE_TITLE': 'false',
 }
 
 # Blogroll
