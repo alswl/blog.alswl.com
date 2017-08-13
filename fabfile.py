@@ -97,3 +97,10 @@ def publish():
     #local('ghp-import output')
     #local('ghp-import -b gitcafe-pages output')
     #local('ghp-import -b gh-pages output')
+
+@hosts(production)
+def publish_coding():
+    local('pelican -s publishconf.py')
+    local('ghp-import output')
+    local('ghp-import -b coding-pages output')
+    local('git push coding coding-pages')
