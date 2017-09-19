@@ -5,7 +5,7 @@ Date: 2012-05-14 21:21
 
 我是 alswl ，这个词来源于我小时候写的一部小说的主人公。
 
-目前在[堆糖网](https://www.duitang.com/)工作，首席打杂工程师。
+目前在 [沪江](https://www.hujiang.com/) 平台架构部从事研发工作。
 
 
 ## Tag
@@ -28,7 +28,7 @@ Date: 2012-05-14 21:21
 *   2009-12-24 更换域名 dddspace.com
 *   2009-05-14 创建 dddspace.cn
 *   2008 使用 Yo2
-*   2006 使用 Baidu Hi
+*   2007 使用 Baidu Hi
 *   2005-05-30 在 MSN Space 创建博客
 
 
@@ -51,13 +51,13 @@ Date: 2012-05-14 21:21
 #Email: echo 'YWxzd2x4QGdtYWlsLmNvbQo=' | base64 -d
 ```
 
-*   [堆糖](https://www.duitang.com/people/?user_id=1723564092)
 *   [Facebook](https://www.facebook.com/alswl)
 *   [Twitter](https://twitter.com/alswl/)
 *   [Github](https://github.com/alswl/)
 *   [新浪微博](http://weibo.com/alswlx)
 *   [知乎](https://www.zhihu.com/people/alswl/activities)
 *   [豆瓣](http://www.douban.com/people/alswl/)
+*   [堆糖](https://www.duitang.com/people/?user_id=1723564092)
 *   [Google+](https://plus.google.com/+JasonTi?hl=zh_cn)
 *   [LinkedIn](https://www.linkedin.com/in/jason-di-b4883928/)
 *   [LastFM](http://cn.last.fm/user/alswl)
