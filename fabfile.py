@@ -31,6 +31,7 @@ def clean():
         local('mkdir {deploy_path}'.format(**env))
 
 def build():
+    local('find content/ -name "*.generated.html" -exec rm {} \\;')
     local('pelican -s pelicanconf.py')
 
 def rebuild():
@@ -39,6 +40,7 @@ def rebuild():
     build()
 
 def regenerate():
+    local('find content/ -name "*.generated.html" -exec rm {} \\;')
     local('pelican -r -s pelicanconf.py')
 
 def new_post(name=''):
@@ -100,6 +102,7 @@ def publish():
 
 @hosts(production)
 def publish_coding():
+    local('find content/ -name "*.generated.html" -exec rm {} \\;')
     local('pelican -s publishconf.py')
     local('ghp-import output')
     local('ghp-import -b coding-pages output')
