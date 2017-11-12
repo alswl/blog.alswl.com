@@ -2,7 +2,7 @@ Title: 服务性能监控：USE方法（The USE Method）
 Author: 小莞
 Slug: use-method
 Date: 2017-11-12 15:30:12
-Tags: Metrics, Brendan Gregg
+Tags: Metrics, Brendan Gregg, 翻译
 Category:  Coding
 
 本文首发在沪江技术学院公众号，小莞翻译，我做了校对。
@@ -11,7 +11,7 @@ Category:  Coding
 
 ----
 
-![201711/performance.jpg](https://ohsolnxaa.qnssl.com/upload_dropbox/201711/performance.jpg)
+![201711/performance.jpg](https://ohsolnxaa.qnssl.com/upload_dropbox/201711/performance_900.jpg)
 
 USE 方法是一种能分析任何系统性能的方法论。
 我们可以根据能帮助系统分析的结构化清单，来迅速的定位资源的瓶颈和错误所在。
