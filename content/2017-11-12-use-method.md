@@ -2,7 +2,7 @@ Title: 服务性能监控：USE方法（The USE Method）
 Author: 小莞
 Slug: use-method
 Date: 2017-11-12 15:30:12
-Tags: Metrics, Brendan Gregg, 翻译
+Tags: Metrics, Brendan Gregg, 译文
 Category:  Coding
 
 本文首发在沪江技术学院公众号，小莞翻译，我做了校对。
