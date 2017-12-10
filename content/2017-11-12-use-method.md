@@ -1,4 +1,4 @@
-Title: 服务性能监控：USE方法（The USE Method）
+Title: 服务性能监控：USE 方法（The USE Method）
 Author: 小莞
 Slug: use-method
 Date: 2017-11-12 15:30:12
@@ -8,6 +8,8 @@ Category:  Coding
 本文首发在沪江技术学院公众号，小莞翻译，我做了校对。
 由于微信公众号的封闭性，我担心未来文章不容易被发现。
 为了避免沧海遗珠，特意转到这里。
+
+英文原文：[The USE Method](http://www.brendangregg.com/usemethod.html)。
 
 ----
 
@@ -336,7 +338,7 @@ USE 方法是一个简单的，能执行完整的系统健康检查的策略，�
 ## Acknowledgments
 
 -   感谢 Cary Millsap and Jeff Holt (2003)
-    在"优化Oracle性能"一文中提到的 Method R 方法 (以及其他方法),
+    在"优化 Oracle 性能"一文中提到的 Method R 方法 (以及其他方法),
     使我有了灵感，我应该要把这个方法论写出来。
 -   感谢 Sun Microsystems 的组织，包括 PAE 和 ISV，
     他们将 USE 方法（那时还没命名）应用于他们的存储设备系列，绘制了标注指标和总线速度的 ASCII 功能块图表 -
