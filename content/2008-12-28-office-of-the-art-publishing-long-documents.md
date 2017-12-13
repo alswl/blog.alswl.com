@@ -17,22 +17,18 @@ DDU》PDF格式的书籍，讲的很好，一上来就要从大纲视图来安�
 
 功夫不负有心人，终于找到一篇来自微软客户帮助和支持中心的官方长文档排版说明，网址是
 
-[http://support.microsoft.com/kb/890700/zh-
-cn](http://support.microsoft.com/kb/890700/zh-cn/)
-
-[http://support.microsoft.com/kb/890701/zh-
-cn](http://support.microsoft.com/kb/890701/zh-cn)
+*   [Word 2003 长篇文档排版技巧（一）](https://support.microsoft.com/zh-cn/help/890700)
+*   [Word 2003 长篇文档排版技巧（二）](https://support.microsoft.com/zh-cn/help/890701)
 
 如果闲微软网速不行，可以到
+[Word2003长篇文档排版技巧 - 绿色软件联盟](http://www.xdowns.com/soft/188/215/2006/Soft_27802.html)
 
-[http://www.xdowns.com/soft/188/215/2006/Soft_27802.html](http://www.xdowns.co
-m/soft/188/215/2006/Soft_27802.html)
+这个网址是绿软的，里面有以上两篇文章的mht格式网页。
+讲的非常好，我甚至花了2块5毛钱打印下来，细细的阅读，感觉果然是受益匪浅。
 
-这个网址是绿软的，里面有以上两篇文章的mht格式网页
+其实说白了，就是几个字眼 **格式** / **样式** / **节** / **大纲** 。
 
-讲的非常好，我甚至花了2块5毛钱打印下来，细细的阅读，感觉果然是受益匪浅
+如果有人在为毕业论文或者课程设计的排版发愁的话，花10分钟阅读一下这些文字，
+相信对Word排版会非常有感觉的
 
-其实说白了，就是几个字眼 格式 样式 节 大纲
-
-如果有人在为毕业论文或者课程设计的排版发愁的话，花10分钟阅读一下这些文字，相信对Word排版会非常有感觉的
-
+最后，对 Word 排版感兴趣的同学，强烈推荐看「[Word排版艺术](https://book.douban.com/subject/1193565/)」。
