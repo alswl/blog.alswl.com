@@ -5,8 +5,7 @@ Date: 2009-08-22 00:00:00
 Tags: 综合技术, Database, SQL
 Category: Coding
 
-本文来源：[中国省份与城市数据插入 - xlx -
-CSDN博客](http://blog.csdn.net/xielingxu/archive/2007/08/26/1759471.aspx)
+本文来源：[中国省份与城市数据插入 - xlx - CSDN博客](http://blog.csdn.net/xielingxu/archive/2007/08/26/1759471.aspx)
 
 在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。
 

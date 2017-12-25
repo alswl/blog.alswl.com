@@ -7,28 +7,28 @@ Category: Coding
 
 在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。
 
-放狗搜索，发现一篇文章 [抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客](http://blog.csdn.net/huangc
-t/archive/2009/10/27/4734844.aspx)，文中提供了抓取程式的Python代码，我摘录如下。
+放狗搜索，发现一篇文章 [抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客](http://blog.csdn.net/huangct/archive/2009/10/27/4734844.aspx)，文中提供了抓取程式的Python代码，我摘录如下。
 
-    
-    import urllib
-    import time
-    def main():
-        url = 'http://www.bing.com'
-        f = urllib.urlopen(url)
-        html = f.read()
-        f.close()
-        a = html[html.index('/fd/hpk2'):]
-        data = a[:a.index('',id:')]
-        url = data.replace('\', '')
-        url = 'http://www.bing.com'+url
-        name=time.strftime("%Y%m%d", time.localtime())
-        name=name+".jpg"
-        urllib.urlretrieve(url,name)
+```python
+import urllib
+import time
+
+def main():
+    url = 'http://www.bing.com'
+    f = urllib.urlopen(url)
+    html = f.read()
+    f.close()
+    a = html[html.index('/fd/hpk2'):]
+    data = a[:a.index('',id:')]
+    url = data.replace('\', '')
+    url = 'http://www.bing.com'+url
+    name=time.strftime("%Y%m%d", time.localtime())
+    name=name+".jpg"
+    urllib.urlretrieve(url,name)
 
 if __name__ == "__main__":
-
-main()
+    main()
+```
 
 关键的步骤是MS修改了jpg的url方式，用g_img={url:'/fd/hpk2/BambooBoat_ZH-
 CN1057817945.jpg'这样的字符串躲避机器人的抓取。简单的替换即可完成。

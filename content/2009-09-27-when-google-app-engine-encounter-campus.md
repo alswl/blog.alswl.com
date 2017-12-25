@@ -30,27 +30,17 @@ Engine就派上了大用场，把应用的文件和数据存储在GAE里，那�
 
 ## 相关链接：
 
-校内开发者（校内开发人员必须安装的应用）：[http://app.renren.com/developers/home.do](http://app.ren
-ren.com/developers/home.do)
+校内开发者（校内开发人员必须安装的应用）：[http://app.renren.com/developers/home.do](http://app.renren.com/developers/home.do)
 
-校内开放平台文档：[http://wiki.dev.renren.com/wiki/%E9%A6%96%E9%A1%B5](http://wiki.dev.
-renren.com/wiki/%E9%A6%96%E9%A1%B5)
+校内开放平台文档：[http://wiki.dev.renren.com/wiki/%E9%A6%96%E9%A1%B5](http://wiki.dev.renren.com/wiki/%E9%A6%96%E9%A1%B5)
 
-Google App Engine相关下载：[http://code.google.com/appengine/downloads.html](http:/
-/code.google.com/appengine/downloads.html)
+Google App Engine相关下载：[http://code.google.com/appengine/downloads.html](http://code.google.com/appengine/downloads.html)
 
-Google App Engine SDK for Python-Win：[GoogleAppEngine_1.2.5.msi](http://google
-appengine.googlecode.com/files/GoogleAppEngine_1.2.5.msi)
+Google App Engine SDK for Python-Win：[GoogleAppEngine_1.2.5.msi](http://googleappengine.googlecode.com/files/GoogleAppEngine_1.2.5.msi)
 
-Google App Engine SDK for Java：[appengine-java-
-sdk-1.2.5.zip](http://googleappengine.googlecode.com/files/appengine-java-
-sdk-1.2.5.zip)
+Google App Engine SDK for Java：[appengine-java- sdk-1.2.5.zip](http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.5.zip)
 
-Google App Engine Documentation：[google-appengine-
-docs-20090921.zip](http://googleappengine.googlecode.com/files/google-
-appengine-docs-20090921.zip)
+Google App Engine Documentation：[google-appengine-docs-20090921.zip](http://googleappengine.googlecode.com/files/google-appengine-docs-20090921.zip)
 
-最后一个小图标：![Powered by Google App
-Engine](http://code.google.com/appengine/images/appengine-silver-
-120x30.gif)，呵呵，Google的图标都那么帅
+最后一个小图标：![Powered by Google App Engine](http://code.google.com/appengine/images/appengine-silver-120x30.gif)，呵呵，Google的图标都那么帅
 

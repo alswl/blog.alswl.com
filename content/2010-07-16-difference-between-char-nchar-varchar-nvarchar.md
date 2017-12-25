@@ -10,8 +10,7 @@ Category: Coding
 
 私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。
 
-原文出处：[char nchar varchar nvarchar 区别 - Rainbow -
-博客园](http://www.cnblogs.com/yoyozhou/archive/2008/11/21/1338452.html)
+原文出处：[char nchar varchar nvarchar 区别 - Rainbow - 博客园](http://www.cnblogs.com/yoyozhou/archive/2008/11/21/1338452.html)
 
 联机帮助上的：
 

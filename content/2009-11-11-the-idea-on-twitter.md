@@ -10,8 +10,7 @@ Category: Internet
 这几天写了几篇博文，想自动同步博文url到各类SNS以及微博，但是发现一下子同步是很麻烦的事情。就我手头维护的话，需要更新Twitter、人人、新浪微博，如
 果能同步一个内容就发布到所有网站，这该多好啊。
 
-对了，关于同步，帮[xDash](http://www.fanbing.net/)打一个小广告：他建了一个站点，[同步控](http://www.synco
-o.com/)，还是挺不错的。
+对了，关于同步，帮[xDash](http://www.fanbing.net/)打一个小广告：他建了一个站点，[同步控](http://www.syncoo.com/)，还是挺不错的。
 
 ## 现状-已有先行者
 

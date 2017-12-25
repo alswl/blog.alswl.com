@@ -5,11 +5,9 @@ Date: 2009-08-11 00:00:00
 Tags: 建站心得, WordPress
 Category: Coding
 
-原文链接：《[wordpress关键字自动链接匹配插件 | 长沙SEO特色高端咨询顾问服务](http://www.changshaseo.com/seo-
-tools/882.html)》[](http://www.changshaseo.com/seo-tools/882.html)
+原文链接：《[wordpress关键字自动链接匹配插件 | 长沙SEO特色高端咨询顾问服务](http://www.changshaseo.com/seo-tools/882.html)》[](http://www.changshaseo.com/seo-tools/882.html)
 
-相关链接：《[wordpress插件 中文关键词自动连接 |
-Muboard](http://muboard.com/591)》（这位博主曾为该插件0.3x版本做过中文优化）
+相关链接：《[wordpress插件 中文关键词自动连接 | Muboard](http://muboard.com/591)》（这位博主曾为该插件0.3x版本做过中文优化）
 
 中文版下载地址：[猛击这里下载](href="http://www.changshaseo.com/blog-mechanics-keyword-link-
 plugin-v01.zip)

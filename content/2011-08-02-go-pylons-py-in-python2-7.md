@@ -27,8 +27,7 @@ Category: Coding
     ERROR: It thinks sys.prefix is '/home/alswl/work/xingtong' (should be '/home/alswl/work/xingtong/myb_env')
     ERROR: virtualenv is not compatible with this system or executable
 
-STFW 之后，找到了引发错误的根源&nbsp_place_holder;[virtualenv
-](https://github.com/pypa/virtualenv)，这个 bug
+STFW 之后，找到了引发错误的根源&nbsp_place_holder;[virtualenv](https://github.com/pypa/virtualenv)，这个 bug
 在[这里](https://github.com/pypa/virtualenv/issues/76)已经修复了。
 
     
@@ -51,6 +50,5 @@ REQUIRED_MODULES.extend(['sets', '__future__'])
 
 if is_pypy:
 
-懒人可以点击&nbsp_place_holder;[go-pylons.py](http://upload-
-log4d.qiniudn.com/2011/08/go-pylons.py)&nbsp_place_holder;下载。
+懒人可以点击&nbsp_place_holder;[go-pylons.py](http://upload-log4d.qiniudn.com/2011/08/go-pylons.py)&nbsp_place_holder;下载。
 

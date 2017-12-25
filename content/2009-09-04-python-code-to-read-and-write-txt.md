@@ -12,8 +12,7 @@ Category: Coding
 关于Python和Perl，我并没有什么谁优谁劣的看法，只是感觉Python可能资料会多一点，而且Google App
 Enginee支持Python,所以选择了Python。
 
-OK，这几天写的两段小代码，来自《[Python核心编程（第二版）](http://www.china-
-pub.com/39969&ref=xiangguan)》（原书中写这段有错误，我这儿也算勘误了）
+OK，这几天写的两段小代码，来自《[Python核心编程（第二版）](http://www.china-pub.com/39969&ref=xiangguan)》（原书中写这段有错误，我这儿也算勘误了）
 
 makeTextFile.py
 

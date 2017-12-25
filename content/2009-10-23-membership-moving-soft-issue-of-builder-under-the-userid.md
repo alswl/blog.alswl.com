@@ -67,13 +67,9 @@ xt)的类型不兼容。」。
 
 ## 相关链接
 
-GUID_百度百科：[http://baike.baidu.com/view/185358.htm](http://baike.baidu.com/view
-/185358.htm)
+GUID_百度百科：[http://baike.baidu.com/view/185358.htm](http://baike.baidu.com/view/185358.htm)
 
-SQL中的uniqueidentifier类型在c#中用什么类型表示：[http://topic.csdn.net/t/20060918/17/503034
-1.html](http://topic.csdn.net/t/20060918/17/5030341.html)
+SQL中的uniqueidentifier类型在c#中用什么类型表示：[http://topic.csdn.net/t/20060918/17/5030341.html](http://topic.csdn.net/t/20060918/17/5030341.html)
 
-关于ASP.NET中C#处理uniqueidentifier数据类型的问题：[http://topic.csdn.net/u/20070517/17/974
-4a192-a062-4c51-bdf7-273b1480c1d6.html](http://topic.csdn.net/u/20070517/17/97
-44a192-a062-4c51-bdf7-273b1480c1d6.html)
+关于ASP.NET中C#处理uniqueidentifier数据类型的问题：[http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html](http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html)
 

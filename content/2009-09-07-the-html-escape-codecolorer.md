@@ -17,17 +17,13 @@ Category: Coding
 
 ## 症状
 
-[caption id="attachment_12631" align="alignnone" width="345"
-caption="开启CodeColorer+可视化界面编辑结果"][![Snap2](https://ohsolnxaa.qnssl.com/2009/09/Snap2.jpg)](https://ohsolnxaa.qnssl.com/2009/09/Snap2.jpg)[/caption]
+[caption id="attachment_12631" align="alignnone" width="345" caption="开启CodeColorer+可视化界面编辑结果"][![Snap2](https://ohsolnxaa.qnssl.com/2009/09/Snap2.jpg)](https://ohsolnxaa.qnssl.com/2009/09/Snap2.jpg)[/caption]
 
-[caption id="attachment_12632" align="alignnone" width="304"
-caption="关闭CodeColorer+HTML编辑结果在首页显示"][![关闭CodeColorer+HTML编辑结果](https://ohsolnxaa.qnssl.com/2009/09/Snap3.jpg)](https://ohsolnxaa.qnssl.com/2009/09/Snap3.jpg)[/caption]
+[caption id="attachment_12632" align="alignnone" width="304" caption="关闭CodeColorer+HTML编辑结果在首页显示"][![关闭CodeColorer+HTML编辑结果](https://ohsolnxaa.qnssl.com/2009/09/Snap3.jpg)](https://ohsolnxaa.qnssl.com/2009/09/Snap3.jpg)[/caption]
 
-[caption id="attachment_12633" align="alignnone" width="312"
-caption="关闭CodeColorer+HTML编辑结果在内容页"][![关闭CodeColorer+HTML编辑结果在内容页](https://ohsolnxaa.qnssl.com/2009/09/Snap4.jpg)](https://ohsolnxaa.qnssl.com/2009/09/Snap4.jpg)[/caption]
+[caption id="attachment_12633" align="alignnone" width="312" caption="关闭CodeColorer+HTML编辑结果在内容页"][![关闭CodeColorer+HTML编辑结果在内容页](https://ohsolnxaa.qnssl.com/2009/09/Snap4.jpg)](https://ohsolnxaa.qnssl.com/2009/09/Snap4.jpg)[/caption]
 
-[caption id="attachment_12634" align="alignnone" width="365"
-caption="正确显示"][![正确显示](https://ohsolnxaa.qnssl.com/2009/09/Snap5.jpg)](https://ohsolnxaa.qnssl.com/2009/09/Snap5.jpg)[/caption]
+[caption id="attachment_12634" align="alignnone" width="365" caption="正确显示"][![正确显示](https://ohsolnxaa.qnssl.com/2009/09/Snap5.jpg)](https://ohsolnxaa.qnssl.com/2009/09/Snap5.jpg)[/caption]
 
 ## 解决方法
 
@@ -44,8 +40,7 @@ $text = html_entity_decode($text);
 
 （其实我觉得把if给注释了，直接用转义，可以更好的使用，省的每段代码加入escaped="true"）
 
-果然，我在官方的[Frequently Asked Questions](http://kpumuk.info/projects/wordpress-
-plugins/codecolorer/#faq)中找到这么一段话：
+果然，我在官方的[Frequently Asked Questions](http://kpumuk.info/projects/wordpress-plugins/codecolorer/#faq)中找到这么一段话：
 
 Q. I see &lt; instead of < (or other HTML entities like >, &, ") in my code.
 

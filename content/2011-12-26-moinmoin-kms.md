@@ -65,10 +65,8 @@ PS：如果你将MoinMoin安装的优盘，甚至可以做成移动知识库哦~
 `wikiserver.py` 虽然可以运行，但是作为开发者，我当然要使用效率更高的方式。 运行Python Web应用需要
 `Appach / ngnix + CGI / FastCGI / uWSGI` 环境。 我这里使用nginx + uWSGI进行环境配置。
 
-Google了N多资料之后，这篇 [ArchLinux 下使用 Nginx + uWSGI 部署
-MoinMoin](http://typedef.me/2011/08/30/archlinux-nginx-uwsgi-moinmoin-setup)
-最是详细，另外还可以参考 [运行在 nginx 与 uwsgi 之上的 moinmoin](http://garfileo.is-
-programmer.com/2011/4/24/run-moinmoin-on-uwsgi-and-nginx.26347.html)。
+Google了N多资料之后，这篇 [ArchLinux 下使用 Nginx + uWSGI 部署 MoinMoin](http://typedef.me/2011/08/30/archlinux-nginx-uwsgi-moinmoin-setup)
+最是详细，另外还可以参考 [运行在 nginx 与 uwsgi 之上的 moinmoin](http://garfileo.is-programmer.com/2011/4/24/run-moinmoin-on-uwsgi-and-nginx.26347.html)。
 
 我将主要步骤和我的一些修改列出来。
 
@@ -179,8 +177,7 @@ Wiz使用的方案是使用mht格式将图片保存在问题，而大部分 Wiki
 
 我尝试在 MoinMoin 插件库里面找将远程图片本地化的插件未果，于是就花了一个星期左右 时间写了一个实现这样功能的插件 Image2Attach。
 
-更多使用可以参考这篇文章 [MoinMoin plugin: image2attach v0.0.2
-released](http://log4d.com/2011/12/moinmoin-plugin-image2attach)
+更多使用可以参考这篇文章 [MoinMoin plugin: image2attach v0.0.2 released](http://log4d.com/2011/12/moinmoin-plugin-image2attach)
 
 所以说，当程序员就是好，功能没有就自己实现呗。
 

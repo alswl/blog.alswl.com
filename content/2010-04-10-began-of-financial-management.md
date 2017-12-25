@@ -58,11 +58,7 @@ Category: Thinking
 
 [家财通首页](http://www.mymoneymaster.com/)
 
-[家财通(M3)普及版
+[家财通(M3)普及版](http://www.mymoneymaster.com/download/counter.asp?fileName=software/m3v3/m3v3publicsetup.exe)
 
-](http://www.mymoneymaster.com/download/counter.asp?fileName=software/m3v3/m3v
-3publicsetup.exe)
-
-[家财通(M3)专业版 ](http://www.mymoneymaster.com/download/counter.asp?fileName=softw
-are/m3v3/m3v3setup.exe)
+[家财通(M3)专业版 ](http://www.mymoneymaster.com/download/counter.asp?fileName=software/m3v3/m3v3setup.exe)
 

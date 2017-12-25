@@ -44,8 +44,7 @@ Configure类是CakePHP用来进行配置文件的地方，通过write() 和read(
     Configure::read('Aac.currentMessageId');
     
 
-其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your
-app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global-
+其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global-
 variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。
 
     
@@ -67,8 +66,7 @@ debug($config->myVariable);
 什么是Application 对象？Application 对象用于存储和访问来自任何页面的变量，类似于 session
 对象。不同之处在于，所有的用户分享一个 Application 对象，而 session 对象和用户的关系是一一对应的。
 
-在翻阅PHP资料之后，我终于在ChinaUNIX找到一些蛛丝马迹 [全局变量，在多个页面的可以使用吗？ - Php -
-ChinaUnix.net](http://bbs.chinaunix.net/viewthread.php?tid=79537)
+在翻阅PHP资料之后，我终于在ChinaUNIX找到一些蛛丝马迹 [全局变量，在多个页面的可以使用吗？ - Php - ChinaUnix.net](http://bbs.chinaunix.net/viewthread.php?tid=79537)
 。文中一位读者给了很肯定的回答"php中没有基于整个网站的全局变量，一般用数据库什么的替代方案。"。
 
 我再检查一个基于PHP的聊天系统，果然是通过数据库的 online_users来实现在线用户的保存。

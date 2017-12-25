@@ -54,8 +54,7 @@ Out**三种提醒方式（我没用过Popout这个功能，不太明白什么意
 ## Google日历同步
 
 Google日历提供了一个平台，可以和许多工具进行同步，我习惯于用手机进行同步，以前写过一篇日志"[通过Mail For Exchange实现S60
-Google Calendar同步](http://log4d.com/2009/11/through-the-mail-for-exchange-to-
-achieve-s60-google-calendar-sync)"，里面有详细的设置过程，这里就不累赘了。
+Google Calendar同步](http://log4d.com/2009/11/through-the-mail-for-exchange-to-achieve-s60-google-calendar-sync)"，里面有详细的设置过程，这里就不累赘了。
 
 自己GC帐户可以在**设置**中附加其他**各种日历**，如**节气**、**假期**、**其他帐户的日历**，甚至是 Doit.im
 的日历，这个功能还是挺实用的。

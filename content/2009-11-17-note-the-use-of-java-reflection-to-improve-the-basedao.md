@@ -7,8 +7,7 @@ Category: Coding
 
 ## 关于反射
 
-反射的定义（via [Wiki](http://zh.wikipedia.org/zh-cn/%E5%8F%8D%E5%B0%84_%28%E8%AE%A1
-%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%29)）：在计算机科学中，反射是**指一种特定类型的计算机程序能够在运行时以一种依
+反射的定义（via [Wiki](http://zh.wikipedia.org/zh-cn/%E5%8F%8D%E5%B0%84_%28%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%29)）：在计算机科学中，反射是**指一种特定类型的计算机程序能够在运行时以一种依
 赖于它的代码的抽象特性和它的运行时行为的方式被更改**的特性。用比喻来说，那种程式能够"**观察**"并且修改自己的行为。
 
 Java中的反射示例如下：
@@ -182,6 +181,5 @@ c进行设置为Topic.class，这样就比原来的拼字符串好的多。耦�
 
 &nbsp_place_holder;这样完成之后，就完成了一次简单的重构，实现了**变化点分离**，而且不那么dirty。
 
-本文的代码来源自PostBar项目。这里有[Google
-Code链接](http://code.google.com/p/postbar/)，v1.0.1的代码并没有上文的实现，本文中的修改还在trunk中。
+本文的代码来源自PostBar项目。这里有[Google Code链接](http://code.google.com/p/postbar/)，v1.0.1的代码并没有上文的实现，本文中的修改还在trunk中。
 

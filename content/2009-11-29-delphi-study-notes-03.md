@@ -5,15 +5,12 @@ Date: 2009-11-29 00:00:00
 Tags: Delphi
 Category: Coding
 
-学习Delphi第三天，早晨起来之后跑去图书馆找了一本书《[Delphi开发经验技巧宝典](http://www.china-
-pub.com/36610)》，翻开这本书发现更适合作为手册查阅，而不是学习教材。最后借了一本《[Delphi面向对象程序设计](http://www
+学习Delphi第三天，早晨起来之后跑去图书馆找了一本书《[Delphi开发经验技巧宝典](http://www.china-pub.com/36610)》，翻开这本书发现更适合作为手册查阅，而不是学习教材。最后借了一本《[Delphi面向对象程序设计](http://www
 .china-pub.com/734474)》的教材，属于"21世纪高等学校应用型教材"系列。
 
 今天主要完成了Pascal到Delphi的过度，学习使用**集合set**、**记录record**、**指针Pointer**和**简单的可视化编程**。
 
-在百度[Delphi吧](http://tieba.baidu.com/f?kw=delphi)逛时候发现[索引越界](http://passport.ba
-idu.com/?business&un=%CB%F7%D2%FD%D4%BD%BD%E7#0)居然是Delphi吧主，里面有一篇文章关于[Delphi的编
-码风格](http://tieba.baidu.com/f?kz=84767888)，我一会转过来。
+在百度[Delphi吧](http://tieba.baidu.com/f?kw=delphi)逛时候发现[索引越界](http://passport.baidu.com/?business&un=%CB%F7%D2%FD%D4%BD%BD%E7#0)居然是Delphi吧主，里面有一篇文章关于[Delphi的编码风格](http://tieba.baidu.com/f?kz=84767888)，我一会转过来。
 
 Ps:啊，你不知道索引越界？！那百度贴吧伴侣总应该听过吧，偷偷告诉你，这个软件就是索引越界用Delphi开发的。
 

@@ -9,9 +9,7 @@ Category: Coding
 
 情况是这样，在后台点上传图片，出现上传面板的Loding界面，结果FireFox就崩溃了，查看崩溃信息，并没有什么特殊的显示。在IE下则完全没有这个问题。
 
-Google后几篇文章说是FireFox中Firebug的问题，[猛击这里打开该文章](http://www.tvwz.com.cn/html
-/computer-repaire/firebug-leads-to-firefox-to-
-collapse.html)，我也算是个网页开发者，FireBug是必装的，禁止FireBug后重新尝试，依然失败。证明该文章问题和我并不一样。
+Google后几篇文章说是FireFox中Firebug的问题，[猛击这里打开该文章](http://www.tvwz.com.cn/html/computer-repaire/firebug-leads-to-firefox-to-collapse.html)，我也算是个网页开发者，FireBug是必装的，禁止FireBug后重新尝试，依然失败。证明该文章问题和我并不一样。
 
 我一次尝试关闭Web Developer, FlashGot, Adblock Plus，都没有效果，直到最后关闭Google
 Gears，才发现崩溃终于停止了。

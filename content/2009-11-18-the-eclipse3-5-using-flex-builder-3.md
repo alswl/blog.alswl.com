@@ -11,8 +11,7 @@ Category: Efficiency
 ndows+Linux+Web+手机**）客户端登录。开发IDE为**Eclipse**+**Flex Builder3**插件，我的**Eclipse
 Gelileo**(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。
 
-安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new
-Eclipse Version](http://greylurk.com/index.php/2009/06/getting-flex-builder-3
+安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new Eclipse Version](http://greylurk.com/index.php/2009/06/getting-flex-builder-3
 -plugin-to-survive-a-new-eclipse-version/)找到了相应解决方案。
 
 在`Eclipselinks`目录下面建立`com.adobe.flexbuilder.feature.core.link`文件，编辑内容为`d:/Stud
@@ -22,8 +21,7 @@ y/Flex Builder 3 Plug-in`（记得修改目录），这样就可以正常加载�
 problem markers...".`这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将
 项目删除重新建立，没有其他的办法彻底解决这个问题。
 
-这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](http://forums.adobe.
-com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 + Flex Builder
+这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](http://forums.adobe.  com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 + Flex Builder
 3下面。
 
 看来得等Flex Builder3之后的版本发布才能修复这个Bug，否则的话，还是得换回Eclpse 3.4……

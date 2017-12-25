@@ -10,9 +10,7 @@ Category: Life
 网上搜索相关新闻，原来很多机房有非法信息和未备案网站，被叫停了，我所在的江西景德镇服务器属于重灾区。幸好那天早晨备份了数据库和文件，基本没有造成什么损失。花
 了1个多小时搬家，除了一个Share-This插件工作不正常，貌似没有发现其他问题。
 
-Share-This的这个插件在[http://log4d.com/wp-content/plugins/share-this/share-
-this.php?akst_action=css](http://log4d.com/wp-content/plugins/share-this
-/share-this.php?akst_action=css)路径上会返回500内部服务器错误，搜索结果为文件权限问题，我之后设定为755/777都没有效
+Share-This的这个插件在[http://log4d.com/wp-content/plugins/share-this/share-this.php?akst_action=css](http://log4d.com/wp-content/plugins/share-this/share-this.php?akst_action=css)路径上会返回500内部服务器错误，搜索结果为文件权限问题，我之后设定为755/777都没有效
 果。没办法，暂时停用这个插件了。
 
 Update:09_12_04-23:29：这个问题我已经解决，问题出在wp-content/wp-include文件夹的权限当初被我错误的设定为777，正

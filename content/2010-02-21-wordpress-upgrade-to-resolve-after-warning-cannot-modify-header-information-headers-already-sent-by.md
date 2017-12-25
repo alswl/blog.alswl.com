@@ -25,6 +25,5 @@ started at /home/alswl/public_html/wp-settings.php:1) in
 
 这样问题就可以解决了，为了以防万一，建议在操作之前记得备份。
 
-参考文章：[解決Wordpress安裝時出現Warning: Cannot modify header information - headers
-already sent by - 新後園 - 德語學習部落格 - Poshi的網誌](http://poshi.org/post/401.html)
+参考文章：[解決Wordpress安裝時出現Warning: Cannot modify header information - headers already sent by - 新後園 - 德語學習部落格 - Poshi的網誌](http://poshi.org/post/401.html)
 

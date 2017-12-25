@@ -6,8 +6,7 @@ Tags: dotNet, ASP.net, MemberShip
 Category: Coding
 
 花了很大一段时间在学习MemberShip，总是要留下一些纪念文章的。
-我之前的日志提到过一个简单的用户权限设计：User+Role+UserInRole([http://log4d.com/2009/06/design-of-
-user-rights](http://log4d.com/2009/06/design-of-user-
+我之前的日志提到过一个简单的用户权限设计：User+Role+UserInRole([http://log4d.com/2009/06/design-of-user-rights](http://log4d.com/2009/06/design-of-user-
 rights))，但是这样还是不够灵活，最好需要能够对每一个功能模块进行权限控制，而且需要符合开闭原则。 MemberShip呢，是微软推出的一套很强大的用
 户权限管理系统。就我使用的两大部分，主要包括MemberShip和roleManager这两个模块，分别是对用户和角色进行管理。
 

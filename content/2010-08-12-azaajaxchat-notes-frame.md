@@ -55,19 +55,13 @@ Active Record释义
 
 ### 4. 相关连接
 
-  * [Plod: [翻译]十款PHP开发框架横向比较  
-](http://plod.popoever.com/archives/001110.html)
+  * [Plod: [翻译]十款PHP开发框架横向比较  ](http://plod.popoever.com/archives/001110.html)
 
-  * [ChinaUnix一位网友写的CakePHP入门（我觉得比官方教材好上手）  
-](http://blog.chinaunix.net/tag.php?q=CakePHP)
+  * [ChinaUnix一位网友写的CakePHP入门（我觉得比官方教材好上手）  ](http://blog.chinaunix.net/tag.php?q=CakePHP)
 
-  * [cakephp jquery ajax json_天知道_百度空间（CakePHP的Ajax操作方法）  
-](http://hi.baidu.com/zsj1029/blog/item/8fa55e19502e6e4e42a9ad8c.html)
+  * [cakephp jquery ajax json_天知道_百度空间（CakePHP的Ajax操作方法）  ](http://hi.baidu.com/zsj1029/blog/item/8fa55e19502e6e4e42a9ad8c.html)
 
-  * [老王的技术手册_博客_cakephp / zendframework_百度空间（挺多CakePHP相关资料）  
-](http://hi.baidu.com/thinkinginlamp/blog/category/cakephp%20%26%2347%3B%20zen
-dframework/index/0)
+  * [老王的技术手册_博客_cakephp / zendframework_百度空间（挺多CakePHP相关资料）  ](http://hi.baidu.com/thinkinginlamp/blog/category/cakephp%20%26%2347%3B%20zendframework/index/0)
 
-  * [IBM developerWorks 中国 : 使用 CakePHP 快速打造 Web 站点（IBM的CakePHP教程）  
-](http://www.ibm.com/developerworks/cn/opensource/os-php-cake/)
+  * [IBM developerWorks 中国 : 使用 CakePHP 快速打造 Web 站点（IBM的CakePHP教程）  ](http://www.ibm.com/developerworks/cn/opensource/os-php-cake/)
 

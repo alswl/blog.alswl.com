@@ -184,8 +184,7 @@ Eclipse所设定的完全一样，包括字型、缩排、关键词颜色。我�
 
 1.Jigloo SWT/Swing GUI Builder ：
 
-[http://cloudgarden.com/jigloo/index.html](http://cloudgarden.com/jigloo/index
-.html)
+[http://cloudgarden.com/jigloo/index.html](http://cloudgarden.com/jigloo/index.html)
 
 下载此版本：Jigloo plugin for Eclipse (using Java 1.4 or 1.5)
 
@@ -224,8 +223,7 @@ Eclipse build I20040324:
 
 外挂名称：lomboz(下载页面)
 
-[http://forge.objectweb.org/project/showfiles.php?group_id=97](http://forge.ob
-jectweb.org/project/showfiles.php?group_id=97)
+[http://forge.objectweb.org/project/showfiles.php?group_id=97](http://forge.objectweb.org/project/showfiles.php?group_id=97)
 
 请选择适合自己版本的lomboz下载，lomboz.212.p1.zip表示2.1.2版，lomboz.3m7.zip表示M7版本....以此类推。lomb
 oz安装以及设置教学：
@@ -244,8 +242,7 @@ Java转exe篇：
 
 JSmooth下载页面：
 
-[http://jsmooth.sourceforge.net/index.php](http://jsmooth.sourceforge.net/inde
-x.php)
+[http://jsmooth.sourceforge.net/index.php](http://jsmooth.sourceforge.net/index.php)
 
 3.制作完成的exe文件，可在有装置JRE的Windows上执行。
 

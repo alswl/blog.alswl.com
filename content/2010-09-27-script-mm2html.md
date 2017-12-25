@@ -5,9 +5,7 @@ Date: 2010-09-27 00:00:00
 Tags: Python, BooguNote, FreeMind
 Category: Coding
 
-我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见[桌面记录神器-
-BooguNote](http://log4d.com/2010/04/desktop-recording-tool-boogunote) &
-[我所使用的知识管理系统](http://log4d.com/2010/09/my-kms)。
+我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见[桌面记录神器- BooguNote](http://log4d.com/2010/04/desktop-recording-tool-boogunote) & [我所使用的知识管理系统](http://log4d.com/2010/09/my-kms)。
 
 我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然
 不能直接放入KMS。

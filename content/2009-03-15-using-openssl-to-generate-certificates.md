@@ -15,8 +15,7 @@ such file or directory 然后找到这篇文章，只要用生成相应的目录
 
 我将原来index.txt里面的内容剪切出，然后重新签证，再把剪切出的内容粘贴到后来生成文件之前，就解决了那个问题。
 
-下面是网上的资料：OpenSSL相关命令[hi.baidu.com/kobetec/blog/item/706fc0440ff3b44a510ffe0b.h
-tml](http://hi.baidu.com/kobetec/blog/item/706fc0440ff3b44a510ffe0b.html)
+下面是网上的资料：OpenSSL相关命令[hi.baidu.com/kobetec/blog/item/706fc0440ff3b44a510ffe0b.html](http://hi.baidu.com/kobetec/blog/item/706fc0440ff3b44a510ffe0b.html)
 
 这个是一个不错的资料参考，就转载过来，谢谢原作者
 

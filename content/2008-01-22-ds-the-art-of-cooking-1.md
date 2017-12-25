@@ -17,8 +17,7 @@ Status: draft
 今天看cctv2的美食美客，挺不错的节目。介绍的菜都挺好的，呵呵，然后特意去cctv的网站找了相关的电子杂志，其中有完全的视频以及菜谱和注意事项，大家可以下
 载看看哦。
 
-网址： [http://idm.cctv.com/mag/type_list/mag_list_7_1.html](http://idm.cctv.com/
-mag/type_list/mag_list_7_1.html)
+网址： [http://idm.cctv.com/mag/type_list/mag_list_7_1.html](http://idm.cctv.com/mag/type_list/mag_list_7_1.html)
 
 今天看了点资料，呵呵，看了点做饭的技巧，介绍一下
 

@@ -13,8 +13,7 @@ Category: Coding
 ### 使用本地网卡
 
 在模拟器的文件-配置中的网卡中，选择本地网卡，可能会需要提示安装Virtual PC
-2007，我不愿意装这么一个大家伙，也就没有尝试这种方法，需要的朋友可以在[Download details: Virtual PC 2007](http:
-//www.microsoft.com/downloads/details.aspx?FamilyID=04d26402-3199-48a3-afa2-2d
+2007，我不愿意装这么一个大家伙，也就没有尝试这种方法，需要的朋友可以在[Download details: Virtual PC 2007](http://www.microsoft.com/downloads/details.aspx?FamilyID=04d26402-3199-48a3-afa2-2d
 c0b40a73b6&DisplayLang=en)来下载Virtual PC 2007进而连接互联网。
 
 ### 使用ActiveSync
@@ -30,13 +29,7 @@ ActiveSync是一个连接Win系列手持到电脑的同步软件，通过它可�
 
 ### 参考连接
 
-[PDA智能程序访问WebService，报告"未能建立与网络的连接"?
+[PDA智能程序访问WebService，报告"未能建立与网络的连接"? ](http://www.chinaret.com/user/topic_view.aspx?u=jianfangkk&id=0b10f862-db59-4a52-9ceb-9ef1023acd9a)
 
-](http://www.chinaret.com/user/topic_view.aspx?u=jianfangkk&id=0b10f862-db59-4
-a52-9ceb-9ef1023acd9a)
-
-[请问PDA智能程序访问WebService，报告"未能建立与网络的连接"?
-
-](http://topic.csdn.net/u/20080610/18/da506852-57da-
-4df0-beb4-6952eece2f4e.html)
+[请问PDA智能程序访问WebService，报告"未能建立与网络的连接"?  ](http://topic.csdn.net/u/20080610/18/da506852-57da-4df0-beb4-6952eece2f4e.html)
 

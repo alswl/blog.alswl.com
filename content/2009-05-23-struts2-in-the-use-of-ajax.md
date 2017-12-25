@@ -32,8 +32,7 @@ plugin
 
 怎么可能？！我怒了，翻开Struts2的文档，文档用的是DWR，已经使用taglib封装了，再查看json-plugin的文档，仍然未果！！
 
-最后逼急了，使用这篇文章 《在Struts 2中使用JSON Ajax支持》[猛击这里打开](http://webservices.ctocio.com.c
-n/tips/424/7670924.shtml)，重新写了一个Action和一个简单的jsp页面，使用最淳朴的<submit>提交。终于可以成功了，数据交
+最后逼急了，使用这篇文章 《在Struts 2中使用JSON Ajax支持》[猛击这里打开](http://webservices.ctocio.com.cn/tips/424/7670924.shtml)，重新写了一个Action和一个简单的jsp页面，使用最淳朴的<submit>提交。终于可以成功了，数据交
 换能够明显的在FireBug下看到。
 
 这种情况的话，据我猜测，应该是我原来使用的<s:form>标签的问题，如果使用简单的<form>就应该可以避免了。
