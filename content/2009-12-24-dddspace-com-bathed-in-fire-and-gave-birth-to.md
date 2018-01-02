@@ -5,8 +5,7 @@ Date: 2009-12-24 00:00:00
 Tags: 建站心得
 Category: Coding
 
-一大早过来，我就开始部署DDDSpace.com，上传文件和数据，修改数据库的域名，文章参考了["更换域名后应该做的事情 » Life
-Studio](http://wange.im/after-change-
+一大早过来，我就开始部署DDDSpace.com，上传文件和数据，修改数据库的域名，文章参考了["更换域名后应该做的事情 » Life Studio](http://wange.im/after-change-
 domain.html)"。我原来的DDDSpace.cn所在的重庆主机还在停止80端口状态，域名管理器我也无法登录，所以不能做301修改了。
 
 之后我索性更新到WordPress 2.9，出现了"wordpress Fatal error: Allowed memory size of
@@ -20,7 +19,7 @@ allocate](http://wordpress.org/support/topic/194370?replies=16)",解决办法是
 
 同学们，赶紧修改你们的Feed地址啊！！！！
 
-![image](https://ohsolnxaa.qnssl.com/2009/12/phoenix.jpg)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200912/phoenix.jpg)
 
 感谢小张的支持，10号主机挺棒哦。
 

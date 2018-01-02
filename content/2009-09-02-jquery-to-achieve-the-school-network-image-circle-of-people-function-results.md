@@ -5,14 +5,12 @@ Date: 2009-09-02 00:00:00
 Tags: dotNet, JavaScript, jQuery, 人人
 Category: Coding
 
-项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《[JS实现校内网"图片圈人
-"功能效果](http://www.cnblogs.com/czy1121/archive/2009/03/03/1402105.html)》（强烈推荐这篇
+项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《[JS实现校内网"图片圈人 "功能效果](http://www.cnblogs.com/czy1121/archive/2009/03/03/1402105.html)》（强烈推荐这篇
 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。
 
 ## 原始Code:
 
-运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《[Javascript Resize和Dr
-ag类,基于jQuery](http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.html)》
+运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《[Javascript Resize和Drag类,基于jQuery](http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.html)》
 ）
 
 ### 样式：
@@ -434,7 +432,7 @@ ag类,基于jQuery](http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.ht
 
 ### 相关下载
 
-[DragResize.js](https://ohsolnxaa.qnssl.com/2009/09/DragResize.js)
-[template.js](https://ohsolnxaa.qnssl.com/2009/09/template.js)
-[css.css](https://ohsolnxaa.qnssl.com/2009/09/css.css)
+[DragResize.js](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/DragResize.js)
+[template.js](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/template.js)
+[css.css](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/css.css)
 

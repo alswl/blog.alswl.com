@@ -24,5 +24,5 @@ DAO的全称是Data Access Object数据访问接口。数据访问：顾名思�
 
 我的贴吧里面DAO最后的UML类图设计如下：
 
-[![DAO_UML](https://ohsolnxaa.qnssl.com/2009/07/DAO_UML-254x300.jpg)](https://ohsolnxaa.qnssl.com/2009/07/DAO_UML.JPG)
+[![DAO_UML](https://ohsolnxaa.qnssl.com/upload_dropbox/200907/DAO_UML-254x300.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200907/DAO_UML.JPG)
 

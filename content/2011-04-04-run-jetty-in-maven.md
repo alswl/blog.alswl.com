@@ -10,8 +10,7 @@ Tool执行。我对此表示很好奇，特意在自己电脑下面组建了一�
 
 ## 一、准备Maven配置文件
 
-我使用Maven推荐的标准webapp结构，结构如下，官方文档可以参考[Maven - Introduction to the Standard
-Directory Layout](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html)
+我使用Maven推荐的标准webapp结构，结构如下，官方文档可以参考[Maven - Introduction to the Standard Directory Layout](http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html)
 
 src/main/java
 
@@ -66,8 +65,7 @@ README.txt
 Project's readme
 
 使用的pom.xml主要添加了build-
-plugins的Jetty插件，另外修改了outputDirectory，从而实现自动编译到`targert/projectName/WEB-
-INF/classes`目录，实现[Eclipse Hot Code](http://wiki.eclipse.org/FAQ_What_is_hot_code_replace%3F)。
+plugins的Jetty插件，另外修改了outputDirectory，从而实现自动编译到`targert/projectName/WEB- INF/classes`目录，实现[Eclipse Hot Code](http://wiki.eclipse.org/FAQ_What_is_hot_code_replace%3F)。
 
     
     <build>
@@ -136,12 +134,12 @@ class为`org.mortbay.xml.XmlConfiguration`，在Arguments - Program arguments中
 roject_loc}/jetty.xml`，其中`${project_loc}`是动态参数，指向当前项目目录，jetty.xml为我们随后要创建的jett
 y配置文件。
 
-[![image](https://ohsolnxaa.qnssl.com/2011/04/run_configurations .png)](https://ohsolnxaa.qnssl.com/2011/04/run_configurations .png)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201104/run_configurations .png)](https://ohsolnxaa.qnssl.com/upload_dropbox/201104/run_configurations .png)
 
 如果想将这个应用保存成文件，可以修改Common - Sava
 as到当前目录，就可以保存为jetty.launch文件了。（没错，就是launch文件，Eclipse的运行配置文件）
 
-[![image](https://ohsolnxaa.qnssl.com/2011/04/eclipse_common.png)](https://ohsolnxaa.qnssl.com/2011/04/eclipse_common.png)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201104/eclipse_common.png)](https://ohsolnxaa.qnssl.com/upload_dropbox/201104/eclipse_common.png)
 
 2、准备jetty.xml文件
 
@@ -150,7 +148,7 @@ Jetty是一款轻量形的Web服务器，轻到甚至仅仅靠Maven插件即可�
 
 官方说从$JETTY_HOME/webapps/test/WEB-INF/jetty-web.xml可以取到jetty-xml的范例，我这里就提供下载好了。
 
-点击下载[jetty.xml ](https://ohsolnxaa.qnssl.com/2011/04/jetty.xml)，这里面写了hard
+点击下载[jetty.xml ](https://ohsolnxaa.qnssl.com/upload_dropbox/201104/jetty.xml)，这里面写了hard
 code&nbsp_place_holder;`<Set
 name="resourceBase">./target/study_web-1.0-SNAPSHOT</Set>`，请记得替换。
 

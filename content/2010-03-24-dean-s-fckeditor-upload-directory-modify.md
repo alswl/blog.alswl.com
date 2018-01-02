@@ -7,11 +7,8 @@ Category: Coding
 
 一直喜欢WorePress默认的上传文件方法，通过`WP-content/uploads/年/月`分组。
 
-网站改版时候果断的把[Dean's FCKEditor With pwwang's Code Plugin For
-Wordpress](http://wordpress.org/extend/plugins/deans-fckeditor-with-pwwangs-
-code-plugin-for-wordpress/)换成了[Dean's FCKEditor For
-Wordpress](http://wordpress.org/extend/plugins/deans-fckeditor-for-wordpress-
-plugin/)，Dean's FCKEditor With pwwang's Code Plugin For
+网站改版时候果断的把[Dean's FCKEditor With pwwang's Code Plugin For Wordpress](http://wordpress.org/extend/plugins/deans-fckeditor-with-pwwangs-
+code-plugin-for-wordpress/)换成了[Dean's FCKEditor For Wordpress](http://wordpress.org/extend/plugins/deans-fckeditor-for-wordpress- plugin/)，Dean's FCKEditor With pwwang's Code Plugin For
 Wordpress是带一个代码编辑器的CKEditor插件，和WP-Syntax配合很好用，而Dean's FCKEditor For
 Wordpress是常规的CKEditor。
 
@@ -40,7 +37,7 @@ pluginfilemanagerconnectorsphpconfig.php`如下。其实就是声明一个变量
 
 呃，懒孩子们我就直接提供下载了。
 
-config.php文件下载：[fckeditor-for-wordpress-plugin_config.zip](https://ohsolnxaa.qnssl.com/2010/03/fckeditor-for-wordpress-plugin_config.zip)
+config.php文件下载：[fckeditor-for-wordpress-plugin_config.zip](https://ohsolnxaa.qnssl.com/upload_dropbox/201003/fckeditor-for-wordpress-plugin_config.zip)
 
 看不懂的就算了～
 

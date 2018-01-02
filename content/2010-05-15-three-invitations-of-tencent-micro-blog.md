@@ -7,7 +7,7 @@ Category: Internet
 
 很久之前通过[laiwei_linjuly](http://baiduer.net/) 获取腾讯微博的资格，之后一直没怎么用。
 
-![image](https://ohsolnxaa.qnssl.com/2010/05/t_qq_logo.jpg)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201005/t_qq_logo.jpg)
 
 "alswl"这个用户名也没能抢到，倒霉孩子要我6个字母的用户名，只能alswlx顶上（恶感啊，被逼着换掉常用用户名）
 

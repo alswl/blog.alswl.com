@@ -50,5 +50,5 @@ ps:感慨到，搬家果然难啊~
 
 Update:测试上传图片的权限
 
-[![image](https://ohsolnxaa.qnssl.com/2009/12/xiaobai_wifi.jpg)](https://ohsolnxaa.qnssl.com/2009/12/xiaobai_wifi.jpg)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200912/xiaobai_wifi.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200912/xiaobai_wifi.jpg)
 

@@ -44,8 +44,7 @@ Category: Coding
 
 在v0.9中，我已经可以在程序中对参数进行配置，对系统的blockSize和标识符进行修改。一个已知缺陷是在Edt->Txt的处理行数时候可能出现问题。
 
-程序是[用Python写的](http://log4d.com/2009/10/python-django-mtv-framework-and-php-
-mvc-framework)，不要觉得很难，我也是在用Python完成Hello
+程序是[用Python写的](http://log4d.com/2009/10/python-django-mtv-framework-and-php-mvc-framework)，不要觉得很难，我也是在用Python完成Hello
 World之后第三天开始写这个程序，只要有C/Java/C#这些语言一些基础，就可以理解这些程序了。
 
     
@@ -542,8 +541,5 @@ print 'Error: Input error!!n'
 
 raw_input('Press Enter to continue')
 
-点击这里[下载源代码](https://ohsolnxaa.qnssl.com/2009/11/edtTxtConvert_0_9.zip)（edt
-TxtConvert.py+config.cfg+reade me.txt，需要Python2.6以上），如果需要exe版本的程序，可以向我索取，也可以[使
-用py2exe自行编译](http://log4d.com/2009/09/python-program-will-be-compiled-into-an-
-executable-program-exe)。
+点击这里[下载源代码](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/edtTxtConvert_0_9.zip)（edtTxtConvert.py+config.cfg+reade me.txt，需要Python2.6以上），如果需要exe版本的程序，可以向我索取，也可以[使用py2exe自行编译](http://log4d.com/2009/09/python-program-will-be-compiled-into-an-executable-program-exe)。
 

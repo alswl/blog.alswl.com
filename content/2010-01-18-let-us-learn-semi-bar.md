@@ -17,7 +17,7 @@ Category: Internet
 
 其实双拼只是一套拼音输入的方案，并不是特指某种输入法，事实上，很多输入法的双拼输入方案都各有特色。
 
-![image](https://ohsolnxaa.qnssl.com/2010/01/google_pinyin.jpg)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201001/google_pinyin.jpg)
 
 Google输入法的双拼方案选择
 
@@ -42,7 +42,7 @@ Google输入法的双拼方案选择
 
 下面提供几张微软双拼键盘对应图
 
-![image](https://ohsolnxaa.qnssl.com/2010/01/ms_shuang_pin.jpg)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201001/ms_shuang_pin.jpg)
 
 [![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201001/200852492150750ce76ddc98cb3bf902d6e44b184ffa639.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/201001/200852492150750ce76ddc98cb3bf902d6e44b184ffa639.jpg)
 

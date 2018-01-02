@@ -83,9 +83,9 @@ archiving-2008)
 
 个人博客：[DDD的一亩三分地](http://log4d.com)（你已经在这儿拉！）
 
-E-mail ![emailgmail](https://ohsolnxaa.qnssl.com/2009/05/emailgmail.gif)
+E-mail ![emailgmail](https://ohsolnxaa.qnssl.com/upload_dropbox/200905/emailgmail.gif)
 
-曾用E-mail ![email163](https://ohsolnxaa.qnssl.com/2009/05/email163.gif)
+曾用E-mail ![email163](https://ohsolnxaa.qnssl.com/upload_dropbox/200905/email163.gif)
 
-MSN（几乎不用，只是展示一下我有MSN……^_^） ![msn](https://ohsolnxaa.qnssl.com/2009/05/msn.png)
+MSN（几乎不用，只是展示一下我有MSN……^_^） ![msn](https://ohsolnxaa.qnssl.com/upload_dropbox/200905/msn.png)
 

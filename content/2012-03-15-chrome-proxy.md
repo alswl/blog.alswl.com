@@ -58,7 +58,7 @@ oefdjegm?hl=zh_CN)
 
 配置主界面如下：
 
-[ ![SwitchySharp config](https://ohsolnxaa.qnssl.com/2012/03/switchysharp_1.png) ](https://ohsolnxaa.qnssl.com/2012/03/switchysharp_1.png)
+[ ![SwitchySharp config](https://ohsolnxaa.qnssl.com/upload_dropbox/201203/switchysharp_1.png) ](https://ohsolnxaa.qnssl.com/upload_dropbox/201203/switchysharp_1.png)
 
 其中的 HTTP 代理和端口，根据自己的需要填写。
 
@@ -93,7 +93,7 @@ socks5-%E8%BD%AC-http-3/) * [Privoxy - Home Page](http://www.privoxy.org/)
 
 这事不能说太细，看图说话。
 
-[ ![SwitchySharp config](https://ohsolnxaa.qnssl.com/2012/03/switchysharp_2.png) ](https://ohsolnxaa.qnssl.com/2012/03/switchysharp_2.png)
+[ ![SwitchySharp config](https://ohsolnxaa.qnssl.com/upload_dropbox/201203/switchysharp_2.png) ](https://ohsolnxaa.qnssl.com/upload_dropbox/201203/switchysharp_2.png)
 
 注意将某 list 加入切换规则，否则会无法获取 appspot 中的内容。
 

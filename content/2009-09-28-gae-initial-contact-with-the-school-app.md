@@ -10,29 +10,24 @@ World来介绍一个开发步骤。
 
 ## 1.创建GAE应用
 
-建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 ![App
-Engine](https://www.google.com/accounts/ah/ah20x20.gif) [App
-Engine](http://code.google.com/appengine/) ，激活这个服务，就可以[创建新的应用](https://appengi
-ne.google.com/)。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。
+建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 ![App Engine](https://www.google.com/accounts/ah/ah20x20.gif) [App Engine](http://code.google.com/appengine/) ，激活这个服务，就可以[创建新的应用](https://appengine.google.com/)。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。
 
-![image](https://ohsolnxaa.qnssl.com/2009/09/image3.png) 一个简单的App控制台
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/image3.png) 一个简单的App控制台
 
 ## 2.部署GAE App
 
 刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置
 ，所以Nothing,检查http状态会发现返回的是404状态）。
 
-这时候我们就要开始部署这个GAE App了：1.下载一个[Google App Engine SDK for Python-Win](http://goog
-leappengine.googlecode.com/files/GoogleAppEngine_1.2.5.msi)，这样就可以在本地测试项目，然后发布到
+这时候我们就要开始部署这个GAE App了：1.下载一个[Google App Engine SDK for Python-Win](http://googleappengine.googlecode.com/files/GoogleAppEngine_1.2.5.msi)，这样就可以在本地测试项目，然后发布到
 GAE。
 
 用这个GAE Launcher在本地创建了一个Application，注意标识符和你网上申请的要一致。然后会自动生成一个包含"」Hello
 Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。
 
-相关链接：[app.yaml的具体设置](http://code.google.com/intl/zh-
-CN/appengine/docs/python/config/appconfig.html)
+相关链接：[app.yaml的具体设置](http://code.google.com/intl/zh-CN/appengine/docs/python/config/appconfig.html)
 
-![xnapp_gae_launcher](https://ohsolnxaa.qnssl.com/2009/09/xnapp_gae_launcher2.jpg)
+![xnapp_gae_launcher](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_gae_launcher2.jpg)
 我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。
 
 在一切没有问题之后，我们就可以惦记Deploy部署这个项目了，这时候要输入帐号和密码，然后出现console控制台等待信息。出现下面提示时候，就说明上传成功
@@ -48,24 +43,22 @@ CN/appengine/docs/python/config/appconfig.html)
 ## 3.校内应用
 
 拥有校内帐号，就可以创建校内应用。第一步是需要安装一个名为「[开发者](http://app.renren.com/developers/home.do)」
-的应用。通过这个应用，可以链接到其他一些有帮助的内容：[开放平台文档](http://wiki.dev.renren.com/wiki/)、[测试工具](h
-ttp://dev.renren.com/center/tools.do)、[讨论区](http://group.renren.com/GetTribe.d
-o?id=237768885)。
+的应用。通过这个应用，可以链接到其他一些有帮助的内容：[开放平台文档](http://wiki.dev.renren.com/wiki/)、[测试工具](http://dev.renren.com/center/tools.do)、[讨论区](http://group.renren.com/GetTribe.do?id=237768885)。
 
 第二步是创建一个新的应用，按部就班的填上相关资料。
 
-[![image](https://ohsolnxaa.qnssl.com/2009/09/image5.png)](https://ohsolnxaa.qnssl.com/2009/09/image51.png)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/image5.png)](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/image51.png)
 
 校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）
 
-[![xnapp_main](https://ohsolnxaa.qnssl.com/2009/09/xnapp_main.jpg)](https://ohsolnxaa.qnssl.com/2009/09/xnapp_main2.jpg)
+[![xnapp_main](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_main.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_main2.jpg)
 
 我的应用程序，在这里可以编辑应用的属性
 
 创建之后，就可以填上Canvas的基本选项中的「应用展示地址」和「Canvas Callback
 URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com这种形式的网址。
 
-[![xnapp_config](https://ohsolnxaa.qnssl.com/2009/09/xnapp_config.jpg)](https://ohsolnxaa.qnssl.com/2009/09/xnapp_config2.jpg)
+[![xnapp_config](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_config.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_config2.jpg)
 
 最后测试自己的应用，也就是刚才「应用展示地址」，形式类似于apps.renren.com/xxx/，就可以看到我们的应用了，这时候基本框架就差不多了。
 
@@ -77,7 +70,7 @@ URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com�
 
 在appspot上测试这个应用是没有任何问题的
 
-[![xnapp_show_ori](https://ohsolnxaa.qnssl.com/2009/09/xnapp_show_ori.jpg)](https://ohsolnxaa.qnssl.com/2009/09/xnapp_show_ori1.jpg)
+[![xnapp_show_ori](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_show_ori.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_show_ori1.jpg)
 
 显示的源码，其中的xnml校内服务器自己可以解析出来的，这段代码在校内测试工具也能通过
 
@@ -193,11 +186,11 @@ main() not_found.py：自定义的404页面，其实就是简单的在MainHandle
 
 把这个GAE App部署，然后就可以在校内的apps.renren.com/xxx/使用这个应用了。
 
-[![xnapp_show](https://ohsolnxaa.qnssl.com/2009/09/xnapp_show.jpg)](https://ohsolnxaa.qnssl.com/2009/09/xnapp_show1.jpg)
+[![xnapp_show](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_show.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_show1.jpg)
 
 我的头像，按理应该有三个，我怀疑是校内的一个服务器出问题了，只刷出来两张。
 
-[![xnapp_sidebar](https://ohsolnxaa.qnssl.com/2009/09/xnapp_sidebar.jpg)](https://ohsolnxaa.qnssl.com/2009/09/xnapp_sidebar1.jpg)
+[![xnapp_sidebar](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_sidebar.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200909/xnapp_sidebar1.jpg)
 
 可以收藏这个应用，看到侧边栏的海绵宝宝了么？呵呵
 

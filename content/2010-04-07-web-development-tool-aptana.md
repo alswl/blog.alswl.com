@@ -43,18 +43,14 @@ a哪里只是JavaScript编辑器啊，完全是Web开发18般武艺样样精通�
 
 其实我个人觉得Aptana装上去就可以用的很溜了，只要你用过Eclipse JavaEE模块或者DreamWeaver之类的IDE。
 
-唯一一个问题可能是编码，参考[qop's blog: Aptana Studio 1.0 設定 UTF-8
-編碼](http://qops.blogspot.com/2007/11/aptana-
+唯一一个问题可能是编码，参考[qop's blog: Aptana Studio 1.0 設定 UTF-8 編碼](http://qops.blogspot.com/2007/11/aptana-
 studio-10-utf-8.html)可以搞定（发布后发现这个链接是BlogSpot的，为了照顾墙内看客，我把原文转载过来）
 
-[不可多得的Javascript(AJAX)开发工具 － Aptana - BLACK JACK -
-博客园](http://www.cnblogs.com/jackielin/archive/2006/11/05/550422.html)
+[不可多得的Javascript(AJAX)开发工具 － Aptana - BLACK JACK - 博客园](http://www.cnblogs.com/jackielin/archive/2006/11/05/550422.html)
 
-[Aptana使用入门一：Code Assist - BLACK JACK -
-博客园](http://http://www.cnblogs.com/jackielin/archive/2006/11/07/Aptana1.html)
+[Aptana使用入门一：Code Assist - BLACK JACK - 博客园](http://http://www.cnblogs.com/jackielin/archive/2006/11/07/Aptana1.html)
 
-[在Eclipse安装Aptana插件-开发工具-
-编程环境](http://www.kuqin.com/developtool/20090318/40850.html)
+[在Eclipse安装Aptana插件-开发工具- 编程环境](http://www.kuqin.com/developtool/20090318/40850.html)
 
 ### Aptana Studio 1.0 设定 UTF-8编码
 
@@ -63,7 +59,7 @@ studio-10-utf-8.html)可以搞定（发布后发现这个链接是BlogSpot的，
 
 ×××××××××以下转载×××××××××
 
-![image](https://ohsolnxaa.qnssl.com/2010/04/aptana_set_utf8.png)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201004/aptana_set_utf8.png)
 
 1)&nbsp_place_holder; 點選指令選單上 Window > Preferences...
 

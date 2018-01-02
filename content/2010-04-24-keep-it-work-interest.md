@@ -5,7 +5,7 @@ Date: 2010-04-24 00:00:00
 Tags: 程序人生
 Category: Viewpoint
 
-![image](https://ohsolnxaa.qnssl.com/2010/04/keyboard_help.jpg)
+![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201004/keyboard_help.jpg)
 
 参加工作4个月以来，我完成了由学校人到社会人的转变，成为了一名光荣的码农。但是在长时间的工作和加班中，带来一些烦躁的情绪，特别是在项目比较紧张、客户又催的急
 ，很容易对电脑产生"反胃"的感觉，完全没了在学校那时候一个晚上通宵编程都依然兴奋的感觉。
