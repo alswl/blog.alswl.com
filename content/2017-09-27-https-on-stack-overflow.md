@@ -8,7 +8,7 @@ Category:  Coding
 ![Stack Overflow](https://ohsolnxaa.qnssl.com/upload_dropbox/201709/stack-overflow.jpg)
 
 *   原文作者：Nick Craver
-*   翻译作者：[罗晟 @luosheng](https://twitter.com/luosheng) & [狄敬超 @alswl](https://twitter.com/alswl)
+*   翻译作者：[罗晟 @luosheng](https://twitter.com/luosheng) & [@alswl](https://twitter.com/alswl)
 *   原文地址：[Nick Craver - HTTPS on Stack Overflow: The End of a Long Road](https://nickcraver.com/blog/2017/05/22/https-on-stack-overflow/)
 *   本文为原创翻译文章，已经获得原作者授权，转载请注明作者及出处。
 *   本文首发在「沪江技术学院」公众号
