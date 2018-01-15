@@ -3,9 +3,10 @@ Slug: about
 Author: alswl
 Date: 2012-05-14 21:21
 
-我是 alswl ，这个词来源于我小时候写的一部小说的主人公。
+我是狄敬超，网名 alswl ，大家一般喊我 3D。
+alswl 这个词来源于我小时候写的一部小说的主人公。
 
-目前在 [沪江](https://www.hujiang.com/) 平台架构部从事研发工作。
+目前我在 [沪江](https://www.hujiang.com/) 工作，在平台架构部担任架构师职位。
 
 
 ## Tag
@@ -17,7 +18,7 @@ Date: 2012-05-14 21:21
 
 *   2017-08-13 使用 Coding 提供的 Pages 服务
 *   2016-09-21 更换域名 blog.alswl.com
-*   2016-04-26 开启 HTTPS
+*   2016-04-26 使用 HTTPS
 *   2016-04-25 使用 AWS
 *   2014-12-23 使用 GitCafe 提供的 Pages 服务
 *   2014-01-24 使用 VPS [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
@@ -48,14 +49,14 @@ Date: 2012-05-14 21:21
 ## 找到我
 
 ``` bash
-#Email: echo 'YWxzd2x4QGdtYWlsLmNvbQo=' | base64 -d
+echo 'YWxzd2x4QGdtYWlsLmNvbQo=' | base64 -d
 ```
 
 *   [Facebook](https://www.facebook.com/alswl)
 *   [Twitter](https://twitter.com/alswl/)
 *   [Github](https://github.com/alswl/)
 *   [新浪微博](http://weibo.com/alswlx)
-*   [知乎](https://www.zhihu.com/people/alswl/activities)
+*   [知乎](https://www.zhihu.com/people/alswl)
 *   [豆瓣](http://www.douban.com/people/alswl/)
 *   [堆糖](https://www.duitang.com/people/?user_id=1723564092)
 *   [Google+](https://plus.google.com/+JasonTi?hl=zh_cn)
