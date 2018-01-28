@@ -96,10 +96,10 @@ FOOTER_INSERT_HTML = u"""
 <div class="panel">
 <div class="panel-body">
    <small>原文链接: <a href="https://blog.alswl.com/%(url)s">https://blog.alswl.com/%(url)s</a></small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small><br>
-   <small><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/meta/wechat-pay-s.jpg"/></small><br>
    <small>3a1ff193cee606bd1e2ea554a16353ee</small>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/meta/wechat-pay-s-crop.jpg"/></small><br>
 </div>
 </div>
 """
@@ -109,10 +109,10 @@ FEED_FOOTER_INSERT_HTML = u"""
 <div class="panel">
 <div class="panel-body">
    <small>原文链接: <a href="https://blog.alswl.com/%(url)s">https://blog.alswl.com/%(url)s</a></small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small><br>
-   <small><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/meta/wechat-pay-s.jpg"/></small><br>
    <small>3a1ff193cee606bd1e2ea554a16353ee</small>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://ohsolnxaa.qnssl.com/upload_dropbox/meta/wechat-pay-s-crop.jpg"/></small><br>
 </div>
 </div>
 """
