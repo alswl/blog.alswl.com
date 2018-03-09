@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
+
 from __future__ import unicode_literals
+
+import os
 
 AUTHOR = u'alswl'
 SITENAME = u'Log4D'
 
-SITEURL = 'http://lo:8000'
+SITEURL = 'http://127.0.0.1:8000'
 
 PATH = 'content'
 
@@ -21,7 +24,8 @@ FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
-PLUGIN_PATHS = ['/Users/alswl/dev/project/python/pelican-plugins']
+PLUGIN_PATHS = [os.path.join(os.environ.get('HOME'),
+                             'dev/project/python/pelican-plugins')]
 PLUGINS = ['pelican-toc', 'summary', 'footer_insert', 'feed_footer_insert']
 TOC = {
     'TOC_HEADERS': '^h[2-4]',
