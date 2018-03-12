@@ -15,7 +15,7 @@ Slug: links
 
 ## 线下 NJLUG ##
 
-*   NJLUG前辈 [李凡希](http://www.freemindworld.com/blog)
+*   NJLUG 前辈 [李凡希](http://www.freemindworld.com/blog)
 *   一名系统管理员 [Jasey Wang](http://jaseywang.me/)
 *   ArchCN 管理员 [小凤凰](https://www.google.com/reader/view/#)
 *   JSMinNPP / Tetris5 作者 [Sun Junwen](http://sunblog.72pines.com/)
