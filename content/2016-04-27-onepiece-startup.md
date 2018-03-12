@@ -2,7 +2,7 @@ Title: 海贼王和创业团队
 Author: alswl
 Slug: onepiece-startup
 Date: 2016-04-27 00:36:10
-Tags: 
+Tags: Startup, Comics, OnePiece
 Category: Managment
 
 一个同事在知乎提了一个问题 [如果把草帽海贼团比作一个创业团队,这个Team的组织架构是怎样的?有哪些优势,又有哪些不足?](https://www.zhihu.com/question/35037806)

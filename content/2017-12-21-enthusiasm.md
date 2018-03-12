@@ -2,7 +2,7 @@ Title: 工作和热情
 Author: alswl
 Slug: enthusiasm
 Date: 2017-12-21 23:46:59
-Tags: 
+Tags: Enthusiasm, Passion
 Category:  Thinking
 
 ![201712/work.jpg](https://ohsolnxaa.qnssl.com/upload_dropbox/201712/work.jpg)

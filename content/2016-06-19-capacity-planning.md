@@ -2,7 +2,7 @@ Title: 搞定暴涨的流量
 Author: alswl
 Slug: capacity-planning
 Date: 2016-06-19 23:57:39
-Tags: 
+Tags: Capacity, SRE, Architect
 Category:  Coding
 
 2013 年左右，我司业务发展迅速，每天晚上都会面临服务器濒临崩溃情况。
