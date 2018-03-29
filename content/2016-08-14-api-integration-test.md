@@ -132,7 +132,7 @@ supertest：
 
 - 功能太简单了，简单到几乎可以自己写掉，不算一个 test framework
 
-pyresettest：
+pyresttest：
 
 - 哈哈哈，YAML based，dreamed feature
 - 支持 YAML / extractor / validator
