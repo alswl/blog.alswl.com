@@ -88,7 +88,7 @@ ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的
 
 
 *   快速启动
-    *   使用 `Option` + ` / 1 / 2 / 3 / 4 / 8 / 9 / e / a / s / z /, / . / / 启动
+    *   使用 `Option` + \` / 1 / 2 / 3 / 4 / 8 / 9 / e / a / s / z /, / . / / 启动
     *   iTerm / Chrome / Safari / QQ / Bearychat / Wechat / Neteasy Music / MacVim / IntelliJ IDEA / Macdown / Mail / Evernote / Finder
 *   窗口操作
     *   Option + - / =
@@ -116,7 +116,7 @@ ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的
         *   将当前窗口移动到 Park Space
     *   Work / Park Space 就是用来帮助我集中精力的
 
-我的配置文件在 [https://github.com/alswl/.oOo./blob/master/.phoenix.js](https://github.com/alswl/.oOo./blob/master/.phoenix.js)
+我的配置文件在 [.oOo./.phoenix.js at master · alswl/.oOo.](https://github.com/alswl/.oOo./blob/master/mac/.phoenix.js)
 我的配置文件可以开箱即用，但这是我自己的工作模式，想要获得自己最舒适的效果，需要自己进行一些研究和定制。
 
 
