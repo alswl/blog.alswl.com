@@ -44,6 +44,7 @@ alswl 这个词来源于我小时候写的一部小说的主人公。
 *   [v2ex](http://www.v2ex.com/?r=alswl) 小鲜肉开发们聚集地
 *   [Sentry](https://getsentry.com/signup/r_D1W_/) 还不错的 Python Log 收集管理工具
 *   [Qiniu](https://portal.qiniu.com/signup?code=3lktq7rq4uhxs) 超好用的良心云存储 + CDN 供应商
+*   [美团云](https://www.mtyun.com/r/96cede1251) 美团云的对象存储和 S3 的 API 兼容度是我测试下来比较高的
 
 
 ## 找到我
