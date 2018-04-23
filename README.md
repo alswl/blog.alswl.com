@@ -17,6 +17,8 @@ This is my blog.
 
 ## Tips
 
+Article footer:
+
 ```markdown
 --------------------------------------------------------------------------
 
@@ -27,4 +29,10 @@ This is my blog.
 ![窥豹](https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg)
 
 3a1ff193cee606bd1e2ea554a16353ee
+```
+
+Markdown to GFM:
+
+```bash
+cat content/some-md.md | pandoc -f markdown_mmd -t gfm --wrap=none | pbcopy
 ```
