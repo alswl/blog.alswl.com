@@ -260,7 +260,7 @@ USE 方法定位到的问题，可能是系统瓶颈。
 USE 方法提供了一个简单的流程来尝试第一步是寻找一个资源列表，或者更理想的话，找到一个功能模块图表。我在
 【Lunar Module - LM10 Through LM14 Familiarization Manual】中发现了以下内容：
 
-![](http://image.voidcn.com/proxy?url=https://mmbiz.qpic.cn/mmbiz_png/pibXop4Ees9ogIVrptf2J3flJzBVxonqzaGUONHPH5Ko6Fw8MianuSriaibppiaD7FeJNx3oZzzpyBYKCWuvcRUg8nA/0)
+![201711/apollo_LM_guidance.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201711/apollo_LM_guidance.png)
 
 这些组件中的一部分可能未表现出利用率或饱和度特性。在迭代后，
 就可以重新绘制只包含相关组件的图表（还可以包括："可擦除存储"部分的内存，"核心区域"和 "vac区域 "寄存器）。
@@ -353,7 +353,6 @@ USE 方法是一个简单的，能执行完整的系统健康检查的策略，�
 -   感谢 Deirdré Straughan 编辑和提供反馈，这提高了我的认知。
 -   文章顶部的图片，是来自于波音 707 手册，1969 出版。它不是完整的，点击查看完整的版本（译注：为方便阅读，就是下面这张：）
 
-![201711/apollo_LM_guidance.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201711/apollo_LM_guidance.png)
 
 ## Updates
 
