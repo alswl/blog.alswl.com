@@ -1,4 +1,4 @@
-Title: 一个关于 nolock 的故事
+Title: 一个关于 nolock 的故事：深入理解数据库隔离级别
 Author: alswl
 Slug: sql-server-nolock
 Date: 2017-09-19 16:43:45
