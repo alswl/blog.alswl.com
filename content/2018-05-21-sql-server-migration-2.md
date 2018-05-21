@@ -18,8 +18,8 @@ Category: Coding
 比如用户中心的服务，以它的数据量来使用全量方案，会导致迁移过程中停机若干个小时。
 而一旦用户中心停止服务，几乎所有依赖于这个中央服务的系统都会停摆。
 
-能不能做到无缝的在线迁移呢？系统不需要停机或者极短暂时间的停机？
-作为有追求的技术人，我们一定要想方设法解决上面的问题。
+能不能做到无缝的在线迁移呢？系统不需要或者只需要极短暂的停机？
+作为有追求的技术人，我们一定要想办法解决上面的问题。
 
 <!-- more -->
 
@@ -45,8 +45,8 @@ Category: Coding
 
 Oracle 物化视图（Materialized View）是 Oracle 提供的一个机制。
 一个物化视图就是主库在某一个时间点上的复制，可以理解为是这个时间点上的 Snapshot。
-当主库的数据持续更新时，物化视图的更新则是要通过独立的批量更新完成，称之为 `refreshes`。
-一批 `refreshes` 之间的变化，就可以对应到数据库的内容变化情况。
+当主库的数据持续更新时，物化视图的更新可以通过独立的批量更新完成，称之为 `refreshes`。
+一批 `refreshes` 之间的变化，就对应到数据库的内容变化情况。
 物化视图经常用来将主库的数据复制到从库，也常常在数据仓库用来缓存复杂查询。
 
 物化视图有多种配置方式，这里比较关心刷新方式和刷新时间。
@@ -56,7 +56,7 @@ Oracle 物化视图（Materialized View）是 Oracle 提供的一个机制。
 *   Fast Refresh：增量刷新
 *   Force Refresh：根据条件判断使用 Complete Refresh 和 Fast Refres
 
-刷新机制有两种模式： Refresh-on-commit 和 Refresh-On-Demand，
+刷新机制有两种模式： Refresh-on-commit 和 Refresh-On-Demand。
 
 Oracle 基于物化视图，就可以完成增量数据的获取，从而满足阿里的数据在线迁移。
 将这个技术问题泛化一下，想做到在线增量迁移需要有哪些特性？
@@ -76,8 +76,8 @@ Oracle 基于物化视图，就可以完成增量数据的获取，从而满足�
 什么是 CDC？
 CDC 全称 Change Data Capture，设计目的就是用来解决增量数据的。
 它是 SQL Server 2008 新增的特性，
-在这之前可以使用 SQl Server 2005 中的 `after insert` / `after delete`
-/ `after update` Triiger 功能来获得数据变化。
+在这之前只能使用 SQl Server 2005 中的 `after insert` / `after delete`
+/ `after update` Trigger 功能来获得数据变化。
 
 CDC 的工作原理如下：
 
@@ -85,7 +85,7 @@ CDC 的工作原理如下：
 
 当数据库表发生变化时候，Capture process 会从 transaction log 里面获取数据变化，
 然后将这些数据记录到 Change Table 里面。
-有了这些数据，用户可以通过特定的 cdc 存储查询函数将这些变化数据查出来。
+有了这些数据，用户可以通过特定的 CDC 查询函数将这些变化数据查出来。
 
 
 ## CDC 的数据结构和基本使用
@@ -126,7 +126,7 @@ id              null     YES       int           4       NO
 name            null     YES       varchar(255)  255     NO
 ```
 
-这张表的 `__` 开头的字段是 CDC 所记录的元数据，`id` 和 `name` 是 fruits 表的原始字段。
+这张表中以 `__` 开头的字段是 CDC 所记录的元数据，`id` 和 `name` 是 fruits 表的原始字段。
 这意味着 CDC 的表结构和原始表结构是一一对应的。
 
 接下来我们做一些业务操作，让数据库的数据发生一些变化，然后查看 CDC 的 Change Table：
@@ -167,17 +167,17 @@ __$start_lsn          __$end_lsn  __$seqval             __$operation  __$update_
 可以看到 Change Table 已经如实的记录了我们操作内容，注意 `__$operation`
 代表了数据库操作：
 
-*   1  删除
-*   2  插入
-*   3  更新前数据
-*   4  更新后数据
+*   1  => 删除
+*   2  => 插入
+*   3  => 更新前数据
+*   4  => 更新后数据
 
 根据查出来的数据，我们可以重现这段时间数据库的操作：
 
-*   新增了 id 为 1 / 2 的两条数据
-*   更新了 id 为 2 的数据
-*   插入了 id 为 3 的数据
-*   删除了 id 为 3 的数据
+*   新增了 `id` 为 1 / 2 的两条数据
+*   更新了 `id` 为 2 的数据
+*   插入了 `id` 为 3 的数据
+*   删除了 `id` 为 3 的数据
 
 
 ## CDC 调优
@@ -192,16 +192,17 @@ __$start_lsn          __$end_lsn  __$seqval             __$operation  __$update_
 
 上图是 CDC Job 的工作流程：
 
-*   蓝色区域是一次 Log 扫描执行的最大扫描次数：maxscans number（maxscans）
-*   蓝色区域同时被最大扫描 transcation 数量控制：maxtrans
-*   浅蓝色区域是扫描间隔时间，单位是秒：pollinginterval
+*   蓝色区域是一次 Log 扫描执行的最大扫描次数：maxscans number（`maxscans`）
+*   蓝色区域同时被最大扫描 transcation 数量控制：`maxtrans`
+*   浅蓝色区域是扫描间隔时间，单位是秒：`pollinginterval`
 
 这三个参数平衡着 CDC 的服务器资源消耗、吞吐量和延迟，
 根据具体场景，比如大字段，宽表，BLOB 表，可以调整从而达到满足业务需要。
+他们的默认值如下：
 
-*   maxscan 默认值 10
-*   maxtrans 默认值 500
-*   pollinginterval 默认值 5 秒
+*   `maxscan` 默认值 10
+*   `maxtrans` 默认值 500
+*   `pollinginterval` 默认值 5 秒
 
 
 ## CDC 压测
@@ -294,7 +295,7 @@ Canal Server 中的 binlog 只能做一次性消费，
 ## 最佳实践
 
 数据库的迁移在去 Windows 中，是最不容得出错的环节。
-应用是无状态的，出现问题可以通过回切较快地解决。
+应用是无状态的，出现问题可以通过回切较快地回滚。
 但数据库的迁移就需要考虑周到，做好资源准备，发布流程，
 故障预案处理。
 
