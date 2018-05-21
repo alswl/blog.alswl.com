@@ -2,7 +2,7 @@ Title: 从 SQL Server 到 MySQL（一）：异构数据库迁移
 Author: alswl
 Slug: sql-server-migration-1
 Date: 2018-03-12 21:08:56
-Tags: SQLServer, MySQL, Migration
+Tags: SQLServer, MySQL, DB-Migration
 Category: Coding
 
 ![201803/migration-bird.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201803/migration-bird.png)

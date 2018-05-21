@@ -2,7 +2,7 @@ Title: 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机
 Author: alswl
 Slug: sql-server-migration-2
 Date: 2018-05-21 11:24:36
-Tags: SQLServer, MySQL, Migration
+Tags: SQLServer, MySQL, DB-Migration
 Category: Coding
 
 ![flying-tanker](https://ohsolnxaa.qnssl.com/upload_dropbox/201805/flying-tanker.png)
