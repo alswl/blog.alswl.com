@@ -28,6 +28,9 @@ Article footer:
 
 ![窥豹](https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg)
 
+![如果对你有帮助，给作者 ￥2 买张彩票吧。](https://ohsolnxaa.qnssl.com/upload_dropbox/meta/wechat-pay-s-crop.png)
+
+
 3a1ff193cee606bd1e2ea554a16353ee
 ```
 
