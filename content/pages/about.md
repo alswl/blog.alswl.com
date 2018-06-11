@@ -37,14 +37,14 @@ alswl 这个词来源于我小时候写的一部小说的主人公。
 
 *   [Toodledo](http://www.toodledo.com/index.php?ref=td4d1aebdd0f59e) 用了超过 7 年的 GTD 软件，每天第一个打开的就是它
 *   [Linode](http://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c) 老牌 VPS
-*   [Dropbox](http://db.tt/vQqCGcl) 用了超过 5 年的网盘服务
-*   [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f) 性价比最高的 VPS
+*   [Dropbox](http://db.tt/vQqCGcl) 用了超过 5 年的小文件云存储服务
+*   [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f) 可能是性价比最高的 VPS
 *   [RescueTime](https://www.rescuetime.com/ref/1328871) 帮助记录时间耗用，从而提高效率的记录工具
 *   [Shadowsocks](https://portal.shadowsocks.to/aff.php?aff=4215) 还不错的 XX 工具
-*   [v2ex](http://www.v2ex.com/?r=alswl) 小鲜肉开发们聚集地
+*   [v2ex](http://www.v2ex.com/?r=alswl) 创意工作者聚集地
 *   [Sentry](https://getsentry.com/signup/r_D1W_/) 还不错的 Python Log 收集管理工具
 *   [Qiniu](https://portal.qiniu.com/signup?code=3lktq7rq4uhxs) 超好用的良心云存储 + CDN 供应商
-*   [美团云](https://www.mtyun.com/r/96cede1251) 美团云的对象存储和 S3 的 API 兼容度是我测试下来比较高的
+*   [美团云](https://www.mtyun.com/r/96cede1251) 我目前使用的全量备份存储云，美团云的对象存储和 S3 的 API 兼容度是我测试下来最高的
 
 
 ## 找到我
