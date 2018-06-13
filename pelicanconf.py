@@ -32,6 +32,7 @@ PLUGINS = [
     'footer_insert',
     'feed_footer_insert',
     'minify',
+    'yuicompressor'
 ]
 TOC = {
     'TOC_HEADERS': '^h[2-4]',
