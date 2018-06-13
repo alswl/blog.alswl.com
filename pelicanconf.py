@@ -26,7 +26,13 @@ TRANSLATION_FEED_ATOM = None
 
 PLUGIN_PATHS = [os.path.join(os.environ.get('HOME'),
                              'dev/project/python/pelican-plugins')]
-PLUGINS = ['pelican-toc', 'summary', 'footer_insert', 'feed_footer_insert']
+PLUGINS = [
+    'pelican-toc',
+    'summary',
+    'footer_insert',
+    'feed_footer_insert',
+    'minify',
+]
 TOC = {
     'TOC_HEADERS': '^h[2-4]',
     'TOC_RUN': 'true',
