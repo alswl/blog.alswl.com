@@ -99,7 +99,7 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 比较特殊是 `AllRecordRecordApplier` 提供了全套自动化操作。
 
 
-## Others
+### Others
 
 除了 ETL 三个要素，yugong 还有一些重要类：控制类和工具类。
 
