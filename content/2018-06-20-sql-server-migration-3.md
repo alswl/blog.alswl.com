@@ -1,4 +1,4 @@
-Title: 从 SQL Server 到 MySQL （三）：愚公移山 - 开源力量
+Title: 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量
 Author: alswl
 Slug: sql-server-migration-3
 Date: 2018-06-20 20:18:52
