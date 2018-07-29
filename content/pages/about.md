@@ -35,16 +35,24 @@ alswl 这个词来源于我小时候写的一部小说的主人公。
 
 ## 我常使用的线上服务（推介链接）
 
-*   [Toodledo](http://www.toodledo.com/index.php?ref=td4d1aebdd0f59e) 用了超过 7 年的 GTD 软件，每天第一个打开的就是它
-*   [Linode](http://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c) 老牌 VPS
-*   [Dropbox](http://db.tt/vQqCGcl) 用了超过 5 年的小文件云存储服务
-*   [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f) 可能是性价比最高的 VPS
-*   [RescueTime](https://www.rescuetime.com/ref/1328871) 帮助记录时间耗用，从而提高效率的记录工具
-*   [Shadowsocks](https://portal.shadowsocks.to/aff.php?aff=4215) 还不错的 XX 工具
-*   [v2ex](http://www.v2ex.com/?r=alswl) 创意工作者聚集地
+*   [Toodledo](http://www.toodledo.com/index.php?ref=td4d1aebdd0f59e)
+    2010 年使用至今的 GTD 软件，2015 成为付费用户。纯正 GTD 实现，Matrix 自定义搜索，Open API 全功能可用
+*   [Dropbox](http://db.tt/vQqCGcl)
+    自 2009 年使用至今，小文件云存储服务
+*   [RescueTime](https://www.rescuetime.com/ref/1328871)
+    自 2016 使用至今，帮助记录时间耗用，从而提高效率的记录工具
+*   [Shadowsocks](https://portal.shadowsocks.to/aff.php?aff=4215)
+    自 2015 使用至今，还不错的 XX 工具
 *   [Sentry](https://getsentry.com/signup/r_D1W_/) 还不错的 Python Log 收集管理工具
-*   [Qiniu](https://portal.qiniu.com/signup?code=3lktq7rq4uhxs) 超好用的良心云存储 + CDN 供应商
-*   [美团云](https://www.mtyun.com/r/96cede1251) 我目前使用的全量备份存储云，美团云的对象存储和 S3 的 API 兼容度是我测试下来最高的
+*   [Qiniu](https://portal.qiniu.com/signup?code=3lktq7rq4uhxs)
+    自 2012 使用至今的云存储，本博客图片由七牛云存储并加速
+*   [Linode](http://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c)
+    老牌 VPS，使用超过 3 年
+*   [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
+    曾使用 2 年，可能是性价比最高的 VPS
+*   [美团云](https://www.mtyun.com/r/96cede1251)
+    自 2017 年使用至今的云服务，全量备份数据。美团云的对象存储和 S3 的 API 兼容度是我测试下来最高的
+*   [V2EX](http://www.v2ex.com/?r=alswl) 创意工作者聚集地
 
 
 ## 找到我
