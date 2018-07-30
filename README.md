@@ -39,3 +39,14 @@ Markdown to GFM:
 ```bash
 cat content/some-md.md | pandoc -f markdown_mmd -t gfm --wrap=none | pbcopy
 ```
+
+Wechat mp link process:
+
+
+```
+MD=content/some-md.md
+BODY=cat $MD  | sed -E 's/[^!]\[(.+)\]\((.+)\)/(\1)<sup>(via)<\/sup>/g' | sed -E 's/^\[(.+)\]\((.+)\)/(\1)<sup>(via)<\/sup>/g'
+FOOTER=cat $MD | grep '\[.*\]\(.*\)' -oE | grep -v png | grep -v jpg | sed 's/\[//g;s/\]//g;s/(/: /g;s/)//g' | awk '{print "*   "$0}'
+
+echo $BODY $FOOTER | pbcopy
+```
