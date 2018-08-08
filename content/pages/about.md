@@ -6,7 +6,11 @@ Date: 2012-05-14 21:21
 我是狄敬超，网名 alswl ，大家一般喊我 3D。
 alswl 这个词来源于我小时候写的一部小说的主人公。
 
-目前我在 A 家混口饭吃。
+目前我在阿里巴巴混口饭吃，需要内推扫描下面二维码，里面有联系方式，入职成功有惊喜。
+
+![Sourcing QR](https://ohsolnxaa.qnssl.com/upload_dropbox/meta/sourcing-qr.png)
+
+如果对上述职位不感兴趣，还可以看 [其他职位列表](https://job.alibaba.com/zhaopin/index.htm)  。
 
 
 ## Tag
