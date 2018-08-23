@@ -16,7 +16,7 @@ line 239 in staticpage
 
 >
 
-> &nbsp_place_holder;return render('/pages/%s.html' % name)
+> return render('/pages/%s.html' % name)
 
 >
 
@@ -25,7 +25,7 @@ packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py', line 274 in render_mako
 
 >
 
-> &nbsp_place_holder;cache_type=cache_type, cache_expire=cache_expire)
+> cache_type=cache_type, cache_expire=cache_expire)
 
 >
 
@@ -35,7 +35,7 @@ cached_template
 
 >
 
-> &nbsp_place_holder;return render_func()
+> return render_func()
 
 >
 
@@ -45,7 +45,7 @@ render_template
 
 >
 
-> &nbsp_place_holder;return literal(template.render_unicode(**globs))
+> return literal(template.render_unicode(**globs))
 
 >
 
@@ -57,7 +57,7 @@ packages/Mako-0.2.4-py2.5.egg/mako/runtime.py', line 348 in _render
 
 >
 
-> &nbsp_place_holder;return context._pop_buffer().getvalue()
+> return context._pop_buffer().getvalue()
 
 >
 
@@ -66,7 +66,7 @@ packages/Mako-0.2.4-py2.5.egg/mako/util.py', line 74 in getvalue
 
 >
 
-> &nbsp_place_holder;return self.delim.join(self.data)
+> return self.delim.join(self.data)
 
 >
 

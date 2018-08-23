@@ -75,12 +75,12 @@ method.invoke(foo, "use reflection");
 
 }
 
-## &nbsp_place_holder;原始BaseDao设计
+## 原始BaseDao设计
 
 我先阐述一下BaseDao的设计想法：BaseDao是一个**抽象类**，提供一系列Dao方法"**get()/getAll()/add()/update(
 )/delete()/getCount()**"，通过**泛型匹配**的获取类，我取出一个方法来做示例。
 
-&nbsp_place_holder;
+
 
     
     public int getCount()
@@ -109,7 +109,7 @@ method.invoke(foo, "use reflection");
     	return count;
     }
 
-&nbsp_place_holder;其中有一段**dirty work**，就是TStr的获取，这段TStr是想从实现Dao类获取实体类的类型名称，也就是
+其中有一段**dirty work**，就是TStr的获取，这段TStr是想从实现Dao类获取实体类的类型名称，也就是
 从"TopicDao"获取"Topic"这个类型名称。整个BaseDao的泛型设计不错，但是在这一段上面存在一段dirty work，始终让我不爽。
 
 ## 重构BaseDao和TopicDao
@@ -179,7 +179,7 @@ c进行设置为Topic.class，这样就比原来的拼字符串好的多。耦�
     	//doSomething
     }
 
-&nbsp_place_holder;这样完成之后，就完成了一次简单的重构，实现了**变化点分离**，而且不那么dirty。
+这样完成之后，就完成了一次简单的重构，实现了**变化点分离**，而且不那么dirty。
 
 本文的代码来源自PostBar项目。这里有[Google Code链接](http://code.google.com/p/postbar/)，v1.0.1的代码并没有上文的实现，本文中的修改还在trunk中。
 

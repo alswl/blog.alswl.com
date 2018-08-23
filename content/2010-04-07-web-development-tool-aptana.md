@@ -61,9 +61,9 @@ studio-10-utf-8.html)可以搞定（发布后发现这个链接是BlogSpot的，
 
 ![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201004/aptana_set_utf8.png)
 
-1)&nbsp_place_holder; 點選指令選單上 Window > Preferences...
+1) 點選指令選單上 Window > Preferences...
 
-2)&nbsp_place_holder; 在面板左側點選 General > Workspace
+2) 在面板左側點選 General > Workspace
 
 3) 在右下方的 Text file encoding 點選 other, 設定為「UTF-8」即可。
 

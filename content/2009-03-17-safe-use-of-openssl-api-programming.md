@@ -163,7 +163,7 @@ if(bio == NULL)
 
 {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Handle the
+ /* Handle the
 failure */
 
 }
@@ -172,7 +172,7 @@ if(BIO_do_connect(bio) <= 0)
 
 {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Handle failed
+ /* Handle failed
 connection */
 
 }
@@ -201,7 +201,7 @@ if(x == 0)
 
 {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Handle closed
+ /* Handle closed
 connection */
 
 }
@@ -210,17 +210,17 @@ else if(x < 0)
 
 {
 
-&nbsp_place_holder;&nbsp_place_holder; if(! BIO_should_retry(bio))
+ if(! BIO_should_retry(bio))
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; {
+ {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Handle failed read
+&n
+bsp_place_holder; /* Handle failed read
 here */
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; }
+ }
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Do something to
+ /* Do something to
 handle the retry */
 
 }
@@ -236,18 +236,18 @@ if(BIO_write(bio, buf, len) <= 0)
 
 {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; if(!
+ if(!
 BIO_should_retry(bio))
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; {
+ {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Handle failed write
+&n
+bsp_place_holder; /* Handle failed write
 here */
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; }
+ }
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Do something to
+ /* Do something to
 handle the retry */
 
 }
@@ -328,7 +328,7 @@ if(! SSL_CTX_load_verify_locations(ctx, "/path/to/TrustStore.pem", NULL))
 
 {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Handle failed
+ /* Handle failed
 load here */
 
 }
@@ -350,7 +350,7 @@ if(! SSL_CTX_load_verify_locations(ctx, NULL, "/path/to/certfolder"))
 
 {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Handle error here
+ /* Handle error here
 */
 
 }
@@ -392,7 +392,7 @@ if(BIO_do_connect(bio) <= 0)
 
 {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Handle failed
+ /* Handle failed
 connection */
 
 }
@@ -415,7 +415,7 @@ if(SSL_get_verify_result(ssl) != X509_V_OK)
 
 {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; /* Handle the failed
+ /* Handle the failed
 verification */
 
 }

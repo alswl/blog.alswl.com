@@ -51,7 +51,7 @@ variables，添加M2_REPO这个变量，指向C:/Documents and Settings/userName
 通过配置String
 Subsitution我们就可以使用Eclipse的lanuch来启动Maven，而不是Eclipse插件启动。首先我们要告诉Eclipse
 Maven在哪里。配置Eclipse->preferences->Run/Debug->String Subsitution，加入mvn
-=&nbsp_place_holder;D:/dotj_dev/tools/apache-maven-2.2.1/bin/mvn.bat。
+=D:/dotj_dev/tools/apache-maven-2.2.1/bin/mvn.bat。
 
 ### 建立Launch文件
 

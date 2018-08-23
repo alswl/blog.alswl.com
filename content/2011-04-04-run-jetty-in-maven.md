@@ -149,7 +149,7 @@ Jetty是一款轻量形的Web服务器，轻到甚至仅仅靠Maven插件即可�
 官方说从$JETTY_HOME/webapps/test/WEB-INF/jetty-web.xml可以取到jetty-xml的范例，我这里就提供下载好了。
 
 点击下载[jetty.xml ](https://ohsolnxaa.qnssl.com/upload_dropbox/201104/jetty.xml)，这里面写了hard
-code&nbsp_place_holder;`<Set
+code`<Set
 name="resourceBase">./target/study_web-1.0-SNAPSHOT</Set>`，请记得替换。
 
 配置好Jetty之后，就可以运行Jetty了，在Run - Run

@@ -74,7 +74,7 @@ Readln;
 
 end.
 
-&nbsp_place_holder;注意里面的几个`Math`方法，这些函数的熟悉和累计不是一朝一夕能够完成的，我现在正在总结一个"Dlphi资料小汇总"
+注意里面的几个`Math`方法，这些函数的熟悉和累计不是一朝一夕能够完成的，我现在正在总结一个"Dlphi资料小汇总"
 ，总结好了之后再发布。
 
 ## 2.仿Window记事本的编辑器
@@ -221,7 +221,7 @@ end;
 
 end.
 
-&nbsp_place_holder;我把这个小程序打包，如果对源码有兴趣，可以看一下。
+我把这个小程序打包，如果对源码有兴趣，可以看一下。
 
 点击这里下载[delphi_editor](https://ohsolnxaa.qnssl.com/upload_dropbox/200912/delphi_editor.zip)
 

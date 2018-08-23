@@ -24,117 +24,117 @@ public static void main(String[] args)
 
 {
 
-&nbsp_place_holder;&nbsp_place_holder; try
+ try
 
-&nbsp_place_holder;&nbsp_place_holder; {
+ {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; URL url = new URL("[
+ URL url = new URL("[
 http://localhost/xhpx_web/gradequery.asp](http://localhost/xhpx_web/gradequery
 .asp)");
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; try
+ try
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; {
+ {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
+
 HttpURLConnection.setFollowRedirects(false);
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 conn.setInstanceFollowRedirects(false);
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 conn.setRequestMethod("POST");
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 conn.setDoOutput(true);
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 conn.setDoInput(true);
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 conn.setRequestProperty("User-Agent",
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder; "Mozilla/5.0 (compatible; MSIE 6.0;
+&n
+bsp_place_holder; "Mozilla/5.0 (compatible; MSIE 6.0;
 Windows NT)");
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 conn.setRequestProperty("Content-Type",
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder; "application/x-www-form-urlencoded");
+&n
+bsp_place_holder; "application/x-www-form-urlencoded");
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
+
 OutputStreamWriter out = new
 OutputStreamWriter(conn.getOutputStream(),"ASCII");
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 String request = "exam_id=123&submit=%CC%E1%BD%BB";
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 out.write(request);
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 out.flush();
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 out.close();
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
+
 BufferedReader in = new BufferedReader(new
 InputStreamReader(conn.getInputStream()));
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 String line;
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 StringBuffer content = new StringBuffer();
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 while ((line = in.readLine()) != null)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; {
+ {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
+&n
 bsp_place_holder; content.append(line + "n");
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; }
+ }
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 System.out.print(content);
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; } catch (IOException
+ } catch (IOException
 e)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; {
+ {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 e.printStackTrace();
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; }
+ }
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
 
-&nbsp_place_holder;&nbsp_place_holder; } catch (MalformedURLException e)
 
-&nbsp_place_holder;&nbsp_place_holder; {
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; e.printStackTrace();
+ } catch (MalformedURLException e)
 
-&nbsp_place_holder;&nbsp_place_holder; }
+ {
 
-&nbsp_place_holder;&nbsp_place_holder;
+ e.printStackTrace();
+
+ }
+
+
 
 }
 

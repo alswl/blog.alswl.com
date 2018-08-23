@@ -65,11 +65,11 @@ Balsamiq](http://www.balsamiq.com/products/mockups/desktop)
 
 ## 获取免费的版本
 
-> 不过让国内用户不习惯的是，这款软件定价为 $79 ，偏高。当然&nbsp_place_holder;Balsamiq&nbsp_place_holder
-;Studios&nbsp_place_holder;也为用户提供了 5 种免费获得&nbsp_place_holder;license key
+> 不过让国内用户不习惯的是，这款软件定价为 $79 ，偏高。当然Balsamiq&nbsp_place_holder
+;Studios也为用户提供了 5 种免费获得license key
 的机会，其中之一就是针对科技/软件 Blogger 或媒体从业者，鼓励这类用户通过写 Blog
-口碑传播的方式帮助&nbsp_place_holder;Balsamiq Mockups
-营销。写完本文，我也会尝试向作者申请一个&nbsp_place_holder;license key。
+口碑传播的方式帮助Balsamiq Mockups
+营销。写完本文，我也会尝试向作者申请一个license key。
 
 >
 

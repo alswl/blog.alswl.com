@@ -20,7 +20,7 @@ Category: Life
 
 我的三部手机的保修卡和光盘。从3230、1100再到现在的6120c，妄想购买G3中。
 
-&nbsp_place_holder;[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200912/phone.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200912/phone.jpg)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200912/phone.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200912/phone.jpg)
 
 高中陪我走来的笔，最右边那一支是我高考的功臣
 

@@ -14,7 +14,7 @@ Category: Coding
 
 联机帮助上的：
 
-char(n)&nbsp_place_holder;
+char(n)
 
 定长
 
@@ -36,7 +36,7 @@ text(n)
 
 非Unicode数据
 
-&nbsp_place_holder;
+
 
 nchar(n)
 
@@ -54,13 +54,13 @@ nvarchar(n)
 
 n 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零
 
-ntext(n)&nbsp_place_holder;
+ntext(n)
 
 变长
 
 处理unicode数据类型(所有的字符使用两个字节表示)
 
-&nbsp_place_holder;
+
 
 ## 1、CHAR。
 

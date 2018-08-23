@@ -17,8 +17,8 @@ This House房屋销售系统 本人大四一个课程设计，大概花费1周�
 程序写的不好不坏，是DAL+BLL+Model+Web三层架构，使用的动软生成器生成的简单三层框架。压缩包包括源码，数据库，一个star
 uml简单设计图，数据库文档，需求分析和论文。
 
-系统关键词是： **Asp.NET**;&nbsp_place_holder; **MemberShip**;&nbsp_place_holder;
-**iBatisNet**;&nbsp_place_holder; **AjaxControlToolkit**; **房屋销售系统 **
+系统关键词是： **Asp.NET**; **MemberShip**;
+**iBatisNet**; **AjaxControlToolkit**; **房屋销售系统 **
 数据库使用的是一个完整的MemberShip 权限管理系统，而不是我自己写的简单User in Role，所以建议对这个MemberShip有一定了解。
 
 整个系统关注的是框架的使用，对于业务逻辑关注很少，实在是我时间有限，没有更多的精力搞.NET。（我学Asp.Net 3个月了，之前是搞Java的）

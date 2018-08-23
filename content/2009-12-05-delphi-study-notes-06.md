@@ -137,6 +137,6 @@ Readln;
 
 end.
 
-&nbsp_place_holder;前天在把[Mp3Lrc](http://log4d.com/2009/05/the-executable-file-
+前天在把[Mp3Lrc](http://log4d.com/2009/05/the-executable-file-
 mp3lrc)这个小工具写成Delphi的GUI版本，由于昨天课程设计提前答辩，所以没能完成，争取今天晚上弄好。
 

@@ -14,21 +14,21 @@ Group的邮件组，应该只是一封纯粹的垃圾邮件。
 
 晚上回来Google了一下"YahooGroup 垃圾"关键词，果然有朋友遇到一样的症状，alswl在这里附上解决办法。
 
-> &nbsp_place_holder;先連到 [My Communication Preferences
-](http://groups.yahoo.com/myprefs)查看自己的 email&nbsp_place_holder; address
+> 先連到 [My Communication Preferences
+](http://groups.yahoo.com/myprefs)查看自己的 email address
 
 >
 
-> &nbsp_place_holder;在 Option 下點選 Edit
+> 在 Option 下點選 Edit
 
 >
 
 > 取消勾選這兩個項目
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; * Allow group
+ * Allow group
 moderators to directly add me to their groups
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; * Allow group
+ * Allow group
 moderators to invite me to their groups.
 
 另外可以通过下面的方法退订已有的垃圾邮件群组订阅。

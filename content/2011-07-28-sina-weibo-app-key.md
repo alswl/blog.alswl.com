@@ -13,7 +13,7 @@ Wave兼容新浪微博。望谅解。
 
 >
 
-> &nbsp_place_holder;
+> 
 
 看样子又需要自己申请一个新浪微博的App了，我去 [新浪微博开放平台](http://open.weibo.com) 注册了一个APP，叫做
 _滴滴滴的小喇叭_ 。

@@ -57,7 +57,7 @@ keys/client1.pfx
 
 四 PEM格式的ca.key转换为Microsoft可以识别的pvk格式。
 
-&nbsp_place_holder;&nbsp_place_holder; pvk -in ca.key -out ca.pvk -nocrypt
+ pvk -in ca.key -out ca.pvk -nocrypt
 -topvk
 
 五 PKCS#12 到 PEM 的转换

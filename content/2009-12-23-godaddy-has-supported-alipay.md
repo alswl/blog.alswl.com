@@ -5,7 +5,7 @@ Date: 2009-12-23 00:00:00
 Tags: 建站心得
 Category: Coding
 
-&nbsp_place_holder;
+
 
 昨天在小张那里买了美国10号主机，今天下午开始买com域名。
 

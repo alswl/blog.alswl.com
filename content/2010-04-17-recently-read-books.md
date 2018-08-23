@@ -14,7 +14,7 @@ Category: Thinking
 说来惭愧，这本书我从09年12月份开始看，至今才看了2/3。本书是典型的美国式励志书籍风格，鼓舞人心的话语夹杂着一些成功人士的实例。虽然这本书在知名度上可能
 不如卡耐基系列，可是书中的话语娓娓道来，平淡却耐听。当心情低落时候，默读几句，心中就会生出一股被鼓舞的勇气。
 
-### &nbsp_place_holder;走出软件作坊
+### 走出软件作坊
 [@douban](http://book.douban.com/subject/3319935/)
 
 ![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201004/s4026944.jpg)

@@ -88,18 +88,18 @@ secrets。我们将在这个文件里面存储你的密码，记得修改权限�
 {{Note|根据你的环境配置，你可能需要每次都重复添加路由信息}}
 
 你可以阅读[PPTP Routing Howto](http://pptpclient.sourceforge.net/routing.phtml)来获得更
-多如何添加路由的信息，里面还有很多范例。 &nbsp_place_holder;
+多如何添加路由的信息，里面还有很多范例。 
 
 ## 选择路由
 
 对我来说，只有传输到VPN网络的数据包才应该走VPN连接，所以我添加如下路由条目： # route add -net 192.168.10.0
 netmask 255.255.255.0 dev ppp0 这将路由所有目的地址为191.168.10.xxx的数据到VPN连接。
-&nbsp_place_holder;
+
 
 ## 配置为默认路由
 
 如果你想要所有数据从VPN连接走，下面这条命令包你爽： # route add default dev ppp0
-{{Note|所有数据从VPN连接走的话会比正常连接慢一些}} &nbsp_place_holder;
+{{Note|所有数据从VPN连接走的话会比正常连接慢一些}} 
 
 ### 断开连接
 
@@ -192,5 +192,5 @@ esac
 
 你可以在[pptpclient website](http://pptpclient.sourceforge.net/)查到更多关于pptpclient的配
 置信息。Ubuntu的帮助手册也有一些帮助你配置的信息。这些范例能够很轻松的稍加变换从而添加到daemons中去，从而帮助你自动化运行。
-&nbsp_place_holder;
+
 

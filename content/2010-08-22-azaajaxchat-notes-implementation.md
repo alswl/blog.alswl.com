@@ -152,7 +152,7 @@ Connection.connect()支持FMS流媒体和本地文件，官方解释如下。
 
 服务器中播放视频和 MP3 文件。有关支持的编解码器和文件格式的信息，请参阅 [http://www.adobe.com/go/hardware_scali ng_cn](http://www.adobe.com/go/hardware_scaling_cn)。
 
-#### 4.4&nbsp_place_holder; flash.net.NetConnection 上找不到属性 onBWDone
+#### 4.4 flash.net.NetConnection 上找不到属性 onBWDone
 
 这个问题参考[在 flash.net.NetConnection 上找不到属性 onBWDone，且没有默认值。解决办法。 - Xiang - CSDN博客](http://blog.csdn.net/xiang08/archive/2009/07/13/4343551.aspx)，解决如下。
 

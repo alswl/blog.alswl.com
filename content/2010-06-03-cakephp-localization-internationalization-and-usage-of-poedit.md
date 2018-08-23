@@ -76,7 +76,7 @@ msgstr "中国话"
 
 ## 三、使用poedit
 
-使用poedit不是必须的，但是可以使工作变得简单的多。官方网站是：[http://www.poedit.net/](http://www.poedit.n et/)&nbsp_place_holder;
+使用poedit不是必须的，但是可以使工作变得简单的多。官方网站是：[http://www.poedit.net/](http://www.poedit.n et/)
 
 他的主要功用就是使得编辑语言配置文件更加方便和快捷。下面是使用poedit的一些简单的截图和说明。
 
@@ -139,7 +139,7 @@ ctp](http://www.luizz.it/119/cakephp/poedit-e-i-file-ctp)
 
 但是如果用分号分隔的话，仍然会看到如下错误提示。
 
-![poedit_15](https://ohsolnxaa.qnssl.com/upload_dropbox/201006/poedit-15.png)&nbsp_place_holder; 需要在下面的解析器命令下面增加个选项-language=php，注意这里是两个中划线啊。所以这个步骤的要点就是下图所示了。
+![poedit_15](https://ohsolnxaa.qnssl.com/upload_dropbox/201006/poedit-15.png) 需要在下面的解析器命令下面增加个选项-language=php，注意这里是两个中划线啊。所以这个步骤的要点就是下图所示了。
 
 ![poedit_16](https://ohsolnxaa.qnssl.com/upload_dropbox/201006/poedit-16.png)
 

@@ -12,7 +12,7 @@ Code提供的Project Host，今天就自己动手，丰衣足食吧。
 
 ## 什么是SVN服务器
 
-&nbsp_place_holder;**Subversion**，简称**SVN**，是一个开放源代码的版本控制系统（SCM），相对于的RCS、CVS，采
+**Subversion**，简称**SVN**，是一个开放源代码的版本控制系统（SCM），相对于的RCS、CVS，采
 用了分支管理系统，它的设计目标就是取代CVS。互联网上越来越多的控制服务从CVS转移到Subversion。（via
 [wiki](http://zh.wikipedia.org/zh-cn/Subversion)）
 
@@ -41,7 +41,7 @@ Subversion-1.6.6.msi](http://subversion.tigris.org/files/documents/15/46906
 
 svn，版本 1.6.6 (r40053)
 
-&nbsp_place_holder;&nbsp_place_holder; 编译于 Oct 26 2009，20:14:36
+ 编译于 Oct 26 2009，20:14:36
 
   
 版权所有 (C) 2000-2009 CollabNet。
@@ -55,20 +55,20 @@ Subversion 是开放源代码软件，请参阅 http://subversion.tigris.org/ �
 
   
 * ra_neon : 通过 WebDAV 协议使用 neon 访问版本库的模块。  
-&nbsp_place_holder; - 处理"http"方案
+ - 处理"http"方案
 
-&nbsp_place_holder; - 处理"https"方案
+ - 处理"https"方案
 
-* ra_svn : 使用 svn 网络协议访问版本库的模块。&nbsp_place_holder; - 使用 Cyrus SASL 认证  
-&nbsp_place_holder; - 处理"svn"方案
+* ra_svn : 使用 svn 网络协议访问版本库的模块。 - 使用 Cyrus SASL 认证  
+ - 处理"svn"方案
 
 * ra_local : 访问本地磁盘的版本库模块。  
-&nbsp_place_holder; - 处理"file"方案
+ - 处理"file"方案
 
 * ra_serf : 通过 WebDAV 协议使用 serf 访问版本库的模块。  
-&nbsp_place_holder; - 处理"http"方案
+ - 处理"http"方案
 
-&nbsp_place_holder; - 处理"https"方案
+ - 处理"https"方案
 
 ## SVN服务端的配置
 

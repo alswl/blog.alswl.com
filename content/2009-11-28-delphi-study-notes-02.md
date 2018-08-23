@@ -119,9 +119,9 @@ Readln;
 
 end.
 
-**&nbsp_place_holder;学习if/case/while/repeat/for语句**
+**学习if/case/while/repeat/for语句**
 
-&nbsp_place_holder;
+
 
     
     **program P2;
@@ -366,5 +366,5 @@ Readln;
 
 end.
 
-&nbsp_place_holder;今天基础部分到这儿，明天理一理集合、记录，再练习一些小程序，就可以由Pascal转入Delphi了~
+今天基础部分到这儿，明天理一理集合、记录，再练习一些小程序，就可以由Pascal转入Delphi了~
 

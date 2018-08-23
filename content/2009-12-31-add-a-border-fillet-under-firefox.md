@@ -32,7 +32,7 @@ Category: Coding
     </div>
     
 
-&nbsp_place_holder;效果演示如下
+效果演示如下
 
 Hi！**%user%**，你在 **%post_title%** 上的评论有了新回复
 
@@ -48,7 +48,7 @@ Hi！**%user%**，你在 **%post_title%** 上的评论有了新回复
 
 ---- From [**%blog_name%**](%blog_link%/)
 
-&nbsp_place_holder;
+
 
 一下是转载自胡戈戈的"[ CSS3圆角属性在Firefox,Chrome,Safari的实现 |
 胡戈戈](http://hugege.com/2008/11/09/css3-firefox-chrome-safari/)"，关于圆角的使用很详细。

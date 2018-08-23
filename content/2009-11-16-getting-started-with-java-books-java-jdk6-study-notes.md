@@ -69,7 +69,7 @@ SE6的新功能，对Java lang等套件的功能加强，以及JDBC4.0、Apache 
 
 > 再多说一句吧，有一本《JAVA实例技术手册》是我买过最失败的一本书，缺点在于：1、内容不深入；2实例没有想象中的实用，或者有的根本就没有实用价值。
 
-&nbsp_place_holder;如果你还没有学过Java却想学，我强烈推荐此书。￥59.9绝对物有所值，呃，电子书嘛，给个[Google搜索链接](h
+如果你还没有学过Java却想学，我强烈推荐此书。￥59.9绝对物有所值，呃，电子书嘛，给个[Google搜索链接](h
 ttp://www.google.cn/search?hl=zh-CN&newwindow=1&q=Java+JDK6%E5%AD%A6%E4%B9%A0%
 E7%AC%94%E8%AE%B0+%E7%94%B5%E5%AD%90%E4%B9%A6&btnG=Google+%E6%90%9C%E7%B4%A2&a
 q=f&oq=)吧。

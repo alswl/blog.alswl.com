@@ -7,7 +7,7 @@ Category: Thinking
 
 ## Google 日历与GTD
 
-&nbsp_place_holder;用Google
+用Google
 Calendar也已经快两个月了，正直这段时间是临近毕业最忙的时候。每天都有很多事情要处理，GC就成了我的好帮手（GC?garbage
 collector?Java看多了……）。
 

@@ -14,7 +14,7 @@ gle服务器误判本博客。
 
 Update 09_11_17
 
-我按照"[修改 mail to commenter,让邮件通知更加友好 |&nbsp_place_holder; Simple
+我按照"[修改 mail to commenter,让邮件通知更加友好 | Simple
 happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-
 user-friendly-e-mail-notification.html)"修改了Mail To Comment插件。请大家帮忙在这个页面测试回复
 ^_^

@@ -27,13 +27,13 @@ Category: Coding
 每段话提取并转换后按 000.txt 一样显示，方便修改
 
 4. 对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）：
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 
 1）就是刚才说的"00 00"，它是每个对话的结束标志。
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 
 2）"20 00"：UTF-16编码'空格'的编码，这个是保持不变的，不用 -1 处理。
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 
 3）"B3 00" 和 "B4 00"：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3
 00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如"㈡" "㈢"。

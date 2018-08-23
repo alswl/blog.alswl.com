@@ -13,7 +13,7 @@ Category: Coding
 遂想用GAE做个代理服务器，反正获取RSS也只要Get一下，代码没几句。把这项任务放入Toodledo之后，就一直没去弄，今天发现GAE
 Laucher升级了，就部署到自己GAE上了。
 
-地址格式如&nbsp_place_holder;[http://jasontiproxy.appspot.com/proxy?url=www.douban. com/feed/people/alswl/interests](http://jasontiproxy.appspot.com/proxy?url=www.douban.com/feed/people/alswl/interests)，url参数名后面跟着具体的url。
+地址格式如[http://jasontiproxy.appspot.com/proxy?url=www.douban. com/feed/people/alswl/interests](http://jasontiproxy.appspot.com/proxy?url=www.douban.com/feed/people/alswl/interests)，url参数名后面跟着具体的url。
 
 代码其实就是用urllib2获取一下html，核心如下。
 

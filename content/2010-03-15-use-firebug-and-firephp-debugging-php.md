@@ -30,7 +30,7 @@ bug的控制台获得PHP脚本警告和错误，就感觉像直接调试JavaScri
 
 ![FirePHP Menu](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)
 
-&nbsp_place_holder;
+
 
 当然，这时候我们还无法做任何事，你还需要安装FirePHP的服务端，点击[这里](http://www.firephp.org/HQ/Install.htm
 )下载。这是一个独立的版本，你可以手动下载或者使用PEAR。装后之后，你可是轻松的将这个库加入你的代码。它被设计了很多版本来整合入多个框架或者管理系统，比如
@@ -50,20 +50,20 @@ start`来实现。
 当这些步骤完成后，你可以开始使用FirePHP了。你需要做的只是调用`fb`函数在任何你想要记录的地方。同时你也可以使用一个可选的标签和常量去定义预定义信息
 ，一个错误，一个警告，或者一条信息。
 
-$var&nbsp_place_holder;=&nbsp_place_holder;array('a'=>'pizza',&nbsp_place_hold
-er;'b'=>'cookies',&nbsp_place_holder;'c'=>'celery');&nbsp_place_holder;
+$var=array('a'=>'pizza',&nbsp_place_hold
+er;'b'=>'cookies','c'=>'celery');
 
-fb($var);&nbsp_place_holder;
+fb($var);
 
-fb($var,&nbsp_place_holder;"An&nbsp_place_holder;array");&nbsp_place_holder;
+fb($var,"Anarray");
 
-fb($var,&nbsp_place_holder;FirePHP::WARN);&nbsp_place_holder;
+fb($var,FirePHP::WARN);
 
-fb($var,&nbsp_place_holder;FirePHP::INFO);&nbsp_place_holder;
+fb($var,FirePHP::INFO);
 
-fb($var,&nbsp_place_holder;'An&nbsp_place_holder;array&nbsp_place_holder;with&
-nbsp_place_holder;an&nbsp_place_holder;Error&nbsp_place_holder;type',&nbsp_pla
-ce_holder;FirePHP::ERROR);&nbsp_place_holder;
+fb($var,'Anarraywith&
+nbsp_place_holder;anErrortype',&nbsp_pla
+ce_holder;FirePHP::ERROR);
 
     
     $var = array('a'=>'pizza', 'b'=>'cookies', 'c'=>'celery');fb($var);fb($var, "An array");fb($var, FirePHP::WARN);fb($var, FirePHP::INFO);fb($var, 'An array with an Error type', FirePHP::ERROR);
@@ -76,32 +76,32 @@ ce_holder;FirePHP::ERROR);&nbsp_place_holder;
 
 1
 
-function&nbsp_place_holder;hello()&nbsp_place_holder;{&nbsp_place_holder;
+functionhello(){
 
 2
 
-&nbsp_place_holder;&nbsp_place_holder;fb('Hello&nbsp_place_holder;World!',&nbs
-p_place_holder;FirePHP::TRACE);&nbsp_place_holder;
+fb('HelloWorld!',&nbs
+p_place_holder;FirePHP::TRACE);
 
 3
 
-}&nbsp_place_holder;
+}
 
 4
 
-function&nbsp_place_holder;greet()&nbsp_place_holder;{&nbsp_place_holder;
+functiongreet(){
 
 5
 
-&nbsp_place_holder;&nbsp_place_holder;hello();&nbsp_place_holder;
+hello();
 
 6
 
-}&nbsp_place_holder;
+}
 
 7
 
-greet();&nbsp_place_holder;
+greet();
 
     
     function hello() { fb('Hello World!', FirePHP::TRACE);}function greet() { hello();}greet();

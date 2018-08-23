@@ -39,7 +39,7 @@ Generating RSA private key, 1024 bit long modulus ............++++++
 .....................++++++ e is 65537 (0x10001) Enter pass phrase for
 privatekey.key: Verifying - Enter pass phrase for privatekey.key:
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 
 在生成带加密口令的密钥时需要自己去输入密码。对于为密钥加密现在提供了一下几种算法：
 
@@ -56,7 +56,7 @@ privatekey.key: Verifying - Enter pass phrase for privatekey.key:
 
 privatekey.key Enter pass phrase for privatekey.key: writing RSA key
 
-&nbsp_place_holder;&nbsp_place_holder;
+
 
 通过生成的私钥去生成证书：
 

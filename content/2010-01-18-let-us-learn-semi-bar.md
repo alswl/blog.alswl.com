@@ -50,19 +50,19 @@ Google输入法的双拼方案选择
 
 #### 1、声、韵母在同一个键上，且可构成音节!
 
-M-ian(棉)&nbsp_place_holder; Q-iu&nbsp_place_holder; (球)&nbsp_place_holder;&nbs
-p_place_holder;&nbsp_place_holder;&nbsp_place_holder; X-ie (鞋)
+M-ian(棉) Q-iu (球)&nbs
+p_place_holder; X-ie (鞋)
 
-G-eng(更） S-ong (松)&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nb
+G-eng(更） S-ong (松)&nb
 sp_place_holder; R-uan(软)
 
-ch-I (吃)&nbsp_place_holder; H-ang (航)&nbsp_place_holder;&nbsp_place_holder;&nb
-sp_place_holder;&nbsp_place_holder; sh-U (树)
+ch-I (吃) H-ang (航)&nb
+sp_place_holder; sh-U (树)
 
-F-en (分)&nbsp_place_holder; K-ao&nbsp_place_holder; (考)&nbsp_place_holder;&nbs
-p_place_holder;&nbsp_place_holder;&nbsp_place_holder; L-ai (来)
+F-en (分) K-ao (考)&nbs
+p_place_holder; L-ai (来)
 
-N-in (您)&nbsp_place_holder; zh-ui[V](追)&nbsp_place_holder;&nbsp_place_holder;
+N-in (您) zh-ui[V](追)
 Z-ei (贼)
 
 #### 2、声、韵母在同一个键上，不能构成音节
@@ -83,77 +83,77 @@ Z-ei (贼)
 
 #### 3. 对应
 
-a（阿）&nbsp_place_holder;&nbsp_place_holder;
-A&nbsp_place_holder;&nbsp_place_holder;
+a（阿）
+A
 
-ou（欧）&nbsp_place_holder;&nbsp_place_holder;
-B&nbsp_place_holder;&nbsp_place_holder;
+ou（欧）
+B
 
-iao（遥）&nbsp_place_holder;&nbsp_place_holder;
-C&nbsp_place_holder;&nbsp_place_holder;
+iao（遥）
+C
 
-uang（汪） iang（洋）&nbsp_place_holder; D&nbsp_place_holder;&nbsp_place_holder;
+uang（汪） iang（洋） D
 
-e（额）&nbsp_place_holder;&nbsp_place_holder;
-E&nbsp_place_holder;&nbsp_place_holder;
+e（额）
+E
 
-en(嗯)&nbsp_place_holder;&nbsp_place_holder;
-F&nbsp_place_holder;&nbsp_place_holder;
+en(嗯)
+F
 
-eng（恩）&nbsp_place_holder;&nbsp_place_holder;
-G&nbsp_place_holder;&nbsp_place_holder;
+eng（恩）
+G
 
-ang（盎)&nbsp_place_holder;&nbsp_place_holder;
-H&nbsp_place_holder;&nbsp_place_holder;
+ang（盎)
+H
 
-ch(吃)&nbsp_place_holder;&nbsp_place_holder;
-I&nbsp_place_holder;&nbsp_place_holder;
+ch(吃)
+I
 
-an（安）&nbsp_place_holder;&nbsp_place_holder;
-J&nbsp_place_holder;&nbsp_place_holder;
+an（安）
+J
 
-ao（熬）&nbsp_place_holder;&nbsp_place_holder;
-K&nbsp_place_holder;&nbsp_place_holder;
+ao（熬）
+K
 
-ai（哀）&nbsp_place_holder;&nbsp_place_holder;
-L&nbsp_place_holder;&nbsp_place_holder;
+ai（哀）
+L
 
-ian（眼）&nbsp_place_holder;&nbsp_place_holder;
-M&nbsp_place_holder;&nbsp_place_holder;
+ian（眼）
+M
 
-in（音）&nbsp_place_holder;&nbsp_place_holder;
-N&nbsp_place_holder;&nbsp_place_holder;
+in（音）
+N
 
-uo（窝）&nbsp_place_holder;&nbsp_place_holder;
-O&nbsp_place_holder;&nbsp_place_holder;
+uo（窝）
+O
 
-un(蚊晕）&nbsp_place_holder;&nbsp_place_holder;
-P&nbsp_place_holder;&nbsp_place_holder;
+un(蚊晕）
+P
 
-iu（优）&nbsp_place_holder;&nbsp_place_holder;
-Q&nbsp_place_holder;&nbsp_place_holder;
+iu（优）
+Q
 
-er（二） uan（员）&nbsp_place_holder; R&nbsp_place_holder;&nbsp_place_holder;
+er（二） uan（员） R
 
-ong（轰） iong（拥）&nbsp_place_holder; S&nbsp_place_holder;&nbsp_place_holder;
+ong（轰） iong（拥） S
 
-ue(约)&nbsp_place_holder;&nbsp_place_holder;
-T&nbsp_place_holder;&nbsp_place_holder;
+ue(约)
+T
 
-sh（诗）&nbsp_place_holder;&nbsp_place_holder;
-U&nbsp_place_holder;&nbsp_place_holder;
+sh（诗）
+U
 
-ue（约） zh（只） ui（威） V&nbsp_place_holder;&nbsp_place_holder;
+ue（约） zh（只） ui（威） V
 
-ua（哇） ia（呀）&nbsp_place_holder; W&nbsp_place_holder;&nbsp_place_holder;
+ua（哇） ia（呀） W
 
-ie（耶）&nbsp_place_holder;&nbsp_place_holder;
-X&nbsp_place_holder;&nbsp_place_holder;
+ie（耶）
+X
 
-u（鱼） uai（歪）&nbsp_place_holder; Y&nbsp_place_holder;&nbsp_place_holder;
+u（鱼） uai（歪） Y
 
-ei（哎）&nbsp_place_holder;&nbsp_place_holder;
-Z&nbsp_place_holder;&nbsp_place_holder;
+ei（哎）
+Z
 
 ing（英）
 

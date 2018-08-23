@@ -38,7 +38,7 @@ reFox下需要正常运行。
 
 <table id="myTable">
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
+&n
 bsp_place_holder; <tbody id="myTableBody"></tbody>
 
 </table>
@@ -104,28 +104,28 @@ formElement.setAttribute("onclick","doFoo();");
 
 If(document.uniqueID){
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
+&n
 bsp_place_holder; //Internet Explorer
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
+&n
 bsp_place_holder; Var radioButton=document.createElement("<input type='radio'
 name='radioButton' value='checked'>");
 
 }else{
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
+&n
 bsp_place_holder; //Standards Compliant
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
+&n
 bsp_place_holder; Var radioButton=document.createElement("input");
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
+&n
 bsp_place_holder; radioButton.setAttribute("type","radio");
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
+&n
 bsp_place_holder; radioButton.setAttribute("name","radioButton");
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
+&n
 bsp_place_holder; radioButton.setAttribute("value","checked");
 
 }

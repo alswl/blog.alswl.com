@@ -173,7 +173,7 @@ Readln;
 
 end.
 
-&nbsp_place_holder;下面是一个学生分数登记系统，用了`TEdit/TRadioGroup/TListBox`等简单控件。整个项目一共三个文
+下面是一个学生分数登记系统，用了`TEdit/TRadioGroup/TListBox`等简单控件。整个项目一共三个文
 件"`P3.dpr`"、"`UScore.dfm`"、"`UScore.pas`"，分别是项目文件、窗体文件、模块文件。下面是对应的代码（我发现Delphi
 7想在代码状态编辑.dpr/.dfm这种文件特别麻烦）。
 

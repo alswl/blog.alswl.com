@@ -11,7 +11,7 @@ Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题�
 于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查`Mail To
 Commenter的`mailtocommenter_send_email`函数，终于修改如下代码。`
 
-`代码部分分别参考`[修改 mail to commenter,让邮件通知更加友好 |&nbsp_place_holder; Simple
+`代码部分分别参考`[修改 mail to commenter,让邮件通知更加友好 | Simple
 happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-
 user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 »
 如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of-
@@ -44,7 +44,7 @@ return @wp_mail($to, $subject, $message, $headers);
 
 }
 
-&nbsp_place_holder;修改Mail To Commenter的邮件代码，我的如下
+修改Mail To Commenter的邮件代码，我的如下
 
     
     
@@ -61,7 +61,7 @@ return @wp_mail($to, $subject, $message, $headers);
     </div>
     
 
-&nbsp_place_holder;收到邮件的效果如下
+收到邮件的效果如下
 
 > Hi！**alswlx**，你在 **紧急声明-关于回复通知是垃圾邮件** 上的评论有了新回复
 

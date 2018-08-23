@@ -215,7 +215,7 @@ CN/appengine/kb/libraries.html)找到。被禁用的模块属于以下类别：
 
 > 请记住，使用以上任意一种功能的第三方包（如 mysql、postgresql 等）都将无法在 Google App Engine 上运行。
 
-&nbsp_place_holder;根据Google App Engine的文档描述，在云计算提供的服务器集群中，无法提供套接字和多线程的使用，这也是可以
+根据Google App Engine的文档描述，在云计算提供的服务器集群中，无法提供套接字和多线程的使用，这也是可以
 遇见的，毕竟这么多服务器集群如果要实现套接字和多线程的同步，几乎是不可能完成的任务。
 
 ### 使用Web Service/XML通信

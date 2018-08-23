@@ -59,7 +59,7 @@ demo 在[这里](http://lab.log4d.com/javascript/autoclean.html)。
     <br/> 
     <textarea class="auto_clean">请在这里输入</textarea> 
 
-update&nbsp_place_holder;2011/08/25： 感谢 [@行者](http://www.k68.org/) 提醒，使用 html5
+update2011/08/25： 感谢 [@行者](http://www.k68.org/) 提醒，使用 html5
 的 placeholder 会更干净优美一些，参考见 [Web Forms - Dive Into
 HTML5](http://diveintohtml5.org/forms.html)
 

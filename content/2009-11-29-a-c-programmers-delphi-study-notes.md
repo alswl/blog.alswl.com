@@ -5,7 +5,7 @@ Date: 2009-11-29 00:00:00
 Tags: Delphi
 Category: Coding
 
-&nbsp_place_holder;早晨起来就看到这篇好文章，转载过来。
+早晨起来就看到这篇好文章，转载过来。
 
 作者：[Dream_soft](http://hi.csdn.net/Dream_soft)(via CSDN)
 
@@ -26,16 +26,16 @@ CSDN博客](http://blog.csdn.net/Dream_soft/archive/2001/09/19/12980.aspx)
 说心里话，站在一个C++程序员的立场，是有那么一点看不上用Delphi的开发者的。就几周前，我还撰文维护过C++的尊严。种种原因，今天我却须学习Delphi
 、熟悉Delphi，不由兴起人生无常的感慨。
 
-&nbsp_place_holder;&nbsp_place_holder; 我给了自己十五天的时间，不知够否掌握一门语言？我选择了Marco
+ 我给了自己十五天的时间，不知够否掌握一门语言？我选择了Marco
 cantu的《Delphi从入门到精通》及《Delphi高级开发指南》作为学习用书。第一本书名叫《从入门到精通》，但如果你不熟悉一门OOP语言，
 那这本书不合适你。对我，则正合适。二书总厚度共一千五百页，嗯，一天一百页就差不多了，希望自己能做到吧。
 
-&nbsp_place_holder;&nbsp_place_holder;
+
 我决定如实记下自己的思考与困惑，做为自己进军新领域的记念，也希望能为后行的同路者提供一点帮助。
 
 ## 一 环境
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; "工欲善其事，必先利其器"，对开发环境的
+ "工欲善其事，必先利其器"，对开发环境的
 熟悉是非常重要的。不同于VC的MDI界面，Delphi采用了多个独立窗体设计。这是否预示Borland更提倡组件间进行对等的交互？我暗暗猜测着。
 
 1.Desktop设置是可以与Project分离的，而且Desktop设置优先于Project设置。
@@ -49,7 +49,7 @@ Completion，可以在声明和实现间双向自动补完。
 
 ## 二 语言
 
-&nbsp_place_holder; &nbsp_place_holder;&nbsp_place_holder;
+ 
 Delphi的核心是VCL库，其基础是Object
 Pascal。《从入门到精通》用两章的篇幅细说"Object",却只字没有提到"Pascal"。嗯，还好，我隐隐记得。
 
@@ -101,12 +101,12 @@ Pascal。《从入门到精通》用两章的篇幅细说"Object",却只字没�
 20.Interface，丑死了！！我甚至怀疑这是否Hejlsberg的设计。完全像是为Com支持临时拼凑的语言成份，与整体毫不协调，像个
 外来户。接口本身是强大的东西，但糟糕的设计会让它的使用成为一种痛苦。除了COM和多重继承没有选择外，我想是没人愿意用它的。
 
-&nbsp_place_holder;&nbsp_place_holder; 整个来说，Object
+ 整个来说，Object
 pascal给我很深的映象。接下来就该学习VCL了，且看Borland是如何将这种种语言的成份，组装成为开发的利器。(续待）
 
 ## 三 VCL
 
-&nbsp_place_holder;&nbsp_place_holder; 《从入门到精通》，作者的安排可真大胆。不先讲如何在Form上摆控件，倒自VCL
+ 《从入门到精通》，作者的安排可真大胆。不先讲如何在Form上摆控件，倒自VCL
 讲起。我佩服作者的气魄，直直的深入到问题的核心，剔筋去肉，先将脉络端到你的面前。要知道，这有着失去很多读者的危险。
 
 1.TObject，万类之源。RTTI信息就放在这里了，这算是单根单继承实现上的便利吧。
@@ -134,12 +134,12 @@ pascal给我很深的映象。接下来就该学习VCL了，且看Borland是如�
 11.Delphi提供的容器类，与C++的STL相比，从弹性到效率可就差远了，还容易出现类型安全问题。还好Delphi的RTTI机制强大，可以略补不足。这该
 是没有模板机制的副作用：整个的泛型思想都用不上。
 
-&nbsp_place_holder;&nbsp_place_holder;
+
 其实作者还是很为初学者着想的：并没有深入VCL。虽有点意犹未尽，但作为初学的我，也该是知足了。
 
 ## 四：标准组件
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 其实很多Delphi的使用者，都是看中众多的VCL组件支持。有朋友对我前文所说"其实属性和事件并非面向对象的必要元素"表示不敢苟同，我相信他是混
 淆面向对象和面向组件了。在我的记忆中，面向组件是面对对象的扩展，其本质虽仍是面向对象，但为之添加了众多的辅助特性，其中就包括属性（不是C++的"
 属性"）和事件。
@@ -162,6 +162,6 @@ draw实在是对封装的一种破坏。定制控件画出自身，却又未免�
 
 7.TreeView，树状视图。XML不正是擅长树的表达吗？干嘛不给他们结合结合？
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 唉，操作性的东西，能想的能写的实在不多，对吧？希望接下来的几章，能激荡起脑力才是。
 

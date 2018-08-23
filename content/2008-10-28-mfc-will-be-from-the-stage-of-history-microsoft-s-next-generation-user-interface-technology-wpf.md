@@ -62,18 +62,18 @@ ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alph
 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
 
   
-　&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&
-nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nb
-sp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp
-_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_p
-lace_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_pla
-ce_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place
-_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_h
-older;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_hol
-der;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holde
-r;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+　&
+nbsp_place_holder;&nb
+sp_place_holder;&nbsp
+_place_holder;&nbsp_p
+lace_holder;&nbsp_pla
+ce_holder;&nbsp_place
+_holder;&nbsp_place_h
+older;&nbsp_place_hol
+der;&nbsp_place_holde
+r;
+&n
+bsp_place_holder;
 WPF前景分析
 
   
@@ -127,17 +127,17 @@ WPF前景分析
 显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）
 
   
-　&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&
-nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nb
-sp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp
-_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_p
-lace_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_pla
-ce_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place
-_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_h
-older;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_hol
-der;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holde
-r;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
-&nbsp_place_holder;&nbsp_place_holder; 　MFC，winform，wpf
+　&
+nbsp_place_holder;&nb
+sp_place_holder;&nbsp
+_place_holder;&nbsp_p
+lace_holder;&nbsp_pla
+ce_holder;&nbsp_place
+_holder;&nbsp_place_h
+older;&nbsp_place_hol
+der;&nbsp_place_holde
+r;
+ 　MFC，winform，wpf
 
   
 　　开发效率上，MFC<WPF<winform

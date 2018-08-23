@@ -21,8 +21,8 @@ MyEclipse自带Tomcat使用MyEclipse6.6自带的JDK5
 - - Servlet Engine: WebLogic XMLX Module 8.1 SP1 Fri Jun 20 23:06:40 PDT 2003 27  
 1009 with
 
-- - Java Version:&nbsp_place_holder;&nbsp_place_holder; 1.4.1_03  
-- - Java Vendor:&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; Sun Microsystems Inc.  
+- - Java Version: 1.4.1_03  
+- - Java Vendor: Sun Microsystems Inc.  
 - Line=19 The content of element type "dwr" must match "(init?,allow?,signatures  
 ?)".
 
@@ -36,42 +36,42 @@ Library=C:beaJDK141~1jrebinclientjvm.dll
   
 Current Java thread:
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; at
+&n
+bsp_place_holder; at
 java.lang.Class.getName(Native Method)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; at
+&n
+bsp_place_holder; at
 org.apache.commons.logging.impl.LogFactoryImpl.getInstance(LogFactory
 
 Impl.java:246)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; at
+&n
+bsp_place_holder; at
 org.apache.commons.logging.LogFactory.getLog(LogFactory.java:395)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; at
+&n
+bsp_place_holder; at
 org.directwebremoting.util.CommonsLoggingOutput.<init>(CommonsLogging
 
 Output.java:35)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; at
+&n
+bsp_place_holder; at
 org.directwebremoting.util.Logger.<init>(Logger.java:62)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; at
+&n
+bsp_place_holder; at
 org.directwebremoting.util.Logger.getLogger(Logger.java:33)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; at
+&n
+bsp_place_holder; at
 org.directwebremoting.annotations.AnnotationsConfigurator.<clinit>(An
 
 notationsConfigurator.java:335)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&n
-bsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; at
+&n
+bsp_place_holder; at
 sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
 
 可以发现，错误是运行到DWR这里发生了报错，好，那么我们从这里下手。
@@ -100,7 +100,7 @@ dwr.jar中删除掉org.directwebremoting.annotations.AnnotationsConfigurator这�
 > 另外值得说明的是，以上2个问题并不是每次都会出现的。它们就如同幽灵一样有时出现有时不出
 现，因此我们并不需要总是删除这个类和jar包，只是在发生错误时才删除。
 
-&nbsp_place_holder;按照上述所说操作，在加载DWR时候，服务器会提示**AnnotationsConfigurator is
+按照上述所说操作，在加载DWR时候，服务器会提示**AnnotationsConfigurator is
 missing. Are you running from within an IDE?**但是已经可以正常运行了。
 
 为什么第一个无效，因为这个错误引起的原因是JDK5中才能使用的annotations的功能，就算在web.xml配置了java.lang.Object的cl

@@ -106,11 +106,11 @@ SSL_set_bio(ssl,sbio,sbio);
 
 if(SSL_connect(ssl)<=0)
 
-&nbsp_place_holder;&nbsp_place_holder; berr_exit("SSL connect error");
+ berr_exit("SSL connect error");
 
 if(require_server_auth)
 
-&nbsp_place_holder;&nbsp_place_holder; check_cert(ssl,host);
+ check_cert(ssl,host);
 
   
 当我们初始化到达服务器的SSL连接时，我们需要先校验服务器的证书链。OpenSSL为我们做一些这样的校验，但是不幸的是，其他的校验工作总是与具体的应用相关(
@@ -228,22 +228,22 @@ SSL使用的BIO对象的API来一次一行的读取客户端的请求，同样�
 
 **CODE:**
 
-&nbsp_place_holder;&nbsp_place_holder; &nbsp_place_holder;&nbsp_place_holder;
-&nbsp_place_holder;&nbsp_place_holder; &nbsp_place_holder;&nbsp_place_holder;
-&nbsp_place_holder;&nbsp_place_holder; &nbsp_place_holder;&nbsp_place_holder;
-&nbsp_place_holder;&nbsp_place_holder; &nbsp_place_holder;&nbsp_place_holder;
-&nbsp_place_holder;&nbsp_place_holder; &nbsp_place_holder;&nbsp_place_holder;
+ 
+ 
+ 
+ 
+ 
 io=BIO_new(BIO_f_buffer());
 
-&nbsp_place_holder;&nbsp_place_holder;
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
+
 ssl_bio=BIO_new(BIO_f_ssl());
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
 BIO_set_ssl(ssl_bio,ssl,BIO_CLOSE);
 
-&nbsp_place_holder;&nbsp_place_holder;
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+
+
 BIO_push(io,ssl_bio);
 
   
@@ -274,31 +274,31 @@ OpenSSL_BIO_gets()调用表现的类似于标准输入输出调用fgets(),它使
 
 if((r=BIO_puts
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; (io,"HTTP/1.0 200
+ (io,"HTTP/1.0 200
 OK\r\n"))<0)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; err_exit("Write
+ err_exit("Write
 error");
 
 if((r=BIO_puts
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; (io,"Server:
+ (io,"Server:
 EKRServer\r\n\r\n"))<0)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; err_exit("Write
+ err_exit("Write
 error");
 
 if((r=BIO_puts
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; (io,"Server test
+ (io,"Server test
 page\r\n"))<0)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; err_exit("Write
+ err_exit("Write
 error");
 
 if((r=BIO_flush(io))<0)
 
-&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder; err_exit("Error
+ err_exit("Error
 flushing BIO");
 
   

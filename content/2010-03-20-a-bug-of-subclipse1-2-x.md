@@ -28,7 +28,7 @@ users&m=121478169326627&w=2)上面，有人提到Subclipse无法执行，但是T
 
 卸载老版本的Subclipse，使用新版的Subclipse
 
-卸载方法：Help - Install New Soft -&nbsp_place_holder; What is already installed ->
+卸载方法：Help - Install New Soft - What is already installed ->
 Uninstall
 
 安装新版本Subclipse，传送门->[Subclipse1.6.10](http://subclipse.tigris.org/files/docume

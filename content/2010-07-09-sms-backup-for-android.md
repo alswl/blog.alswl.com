@@ -29,7 +29,7 @@ SMS Backup軟體是透過IMAP協定連線到Gmail信箱並執行訊息備份工�
 此外，如果你的簡訊數量太龐大，也可以先在SMS Backup軟體中設定每次執行備份時的訊息數量，避免一次處理太多訊息而卡住。
 
 > ▇ 軟體小檔案
-▇&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;&nbsp_place_holder;
+▇
 [(錯誤、版本更新回報)](http://briian.com/?page_id=6177#report)
 
 > 軟體名稱：SMS Backup
@@ -59,7 +59,7 @@ sms.googlecode.com/files/SmsBackup-1.1.0.apk)」下載到手機裡安裝
 
 ### 二、安裝SMS Backup軟體並設定帳號密碼
 
-第1步&nbsp_place_holder; 在Android手機安裝SMS
+第1步 在Android手機安裝SMS
 Backup軟體的方法很簡單，請按「所有程式」清單再開啟「Market」，在Andorid Market選單裡面按搜尋，找到「SMS
 Backup」這軟體再按「安裝」按 鈕即可。
 
@@ -69,28 +69,28 @@ Backup」這軟體再按「安裝」按 鈕即可。
 
 ![03-Android-SMS-Backup](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)
 
-第2步&nbsp_place_holder;
+第2步
 設定好Gmail帳號、密碼之後，第一次啟用時會問你是否要馬上執行簡訊備份工作，請按「確定」按鈕，然後再按「Backup」
-按鈕，開始簡訊備份工作。&nbsp_place_holder;
+按鈕，開始簡訊備份工作。
 
 ![04-Android-SMS-Backup](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)
 
 ![05-Android-SMS-Backup](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)
 
-&nbsp_place_holder;第3步&nbsp_place_holder;
+第3步
 此時，視窗上方會顯示目前的簡訊備份進度，原本儲存在你手機裡面的簡訊都會被備份到Gmail信箱中。
 
 ![06-Android-SMS-Backup](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)
 
-第4步&nbsp_place_holder; 另外，我們也可以在頁面最下方的「Advanced settings」按一下，我們可以分別設定簡訊備份到
+第4步 另外，我們也可以在頁面最下方的「Advanced settings」按一下，我們可以分別設定簡訊備份到
 Gmail後所使用的郵件「標籤」（用來分類郵件用），或者可以在這邊設定簡訊備份工作的每次處理數量，一般來說都不用特別做調整，除非你有特別的使用需
-求的話。&nbsp_place_holder;
+求的話。
 
 [![07-Android-SMS-Backup](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)](http://briian.com/?p=6636)
 
 ![08-Android-SMS-Backup](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)
 
-&nbsp_place_holder;第5步&nbsp_place_holder;
+第5步
 備份完成後，我們可以在Gmail信箱中看到多出一個「SMS」的標籤，按進去看裡面有一堆依照不同電話來源的手機簡 訊存檔。
 
 ![09-Android-SMS-Backup](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)

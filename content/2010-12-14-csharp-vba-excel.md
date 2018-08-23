@@ -33,7 +33,7 @@ ug。
 这方法的优缺点正好与上文相反，由于只是写入数据，即通过ADO.net的连接方式INSERT一堆数据到Excel文件的隐藏Sheet里面去（别跟我说你不知道E
 xcel可以隐藏某个Sheet），所以速度后台速度极快。前台Excel文件虽然需要VBA编程支持，但是在理解Excel模型之后也不是很难的事情。
 
-### 1.3&nbsp_place_holder;
+### 1.3
 
 选择哪种方式，取决于你的需求，如果你在Java平台下面并且输出文件页面格式不复杂，我推荐第一种，如果是.net平台又或者要处理复杂的页面样式，就选用第二种吧
 （我前期使用第一种，后来因为效率问题和无法关闭Excel的问题，重写逻辑，选用第二种）。
@@ -77,13 +77,13 @@ p_place_holder;
 > 进入你的visual studio的sdk下的bin目录，找到TlbImp.exe文件，如果没有，请用光盘安装此文件，详细说明请参照MSDN。&nbsp
 _place_holder;
 
-&nbsp_place_holder;命令行(cmd)进入bin目录，运行TlbImp /out:Interop.Excel.dll
+命令行(cmd)进入bin目录，运行TlbImp /out:Interop.Excel.dll
 Office安装目录+Excel.exe
 
-此时很可能会报错：TlbImp &nbsp_place_holder; error: &nbsp_place_holder; Unable
-&nbsp_place_holder; to &nbsp_place_holder; locate &nbsp_place_holder; input
-&nbsp_place_holder; type &nbsp_place_holder; library: &nbsp_place_holder;
-'c:program filesmcrosoft officeofficeEXCEL.EXE'&nbsp_place_holder;
+此时很可能会报错：TlbImp  error:  Unable
+ to  locate  input
+ type  library: 
+'c:program filesmcrosoft officeofficeEXCEL.EXE'
 
 >
 
@@ -93,7 +93,7 @@ Interop.Excel.dll路径"
 
 >
 
-> &nbsp_place_holder;在bin目录下找到Interop.Excel.dll文件。在你的visual studio里将其引用即可。
+> 在bin目录下找到Interop.Excel.dll文件。在你的visual studio里将其引用即可。
 
 ### 3.2 封装的一个C#操作Excel类库
 
