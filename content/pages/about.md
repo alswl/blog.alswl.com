@@ -6,11 +6,26 @@ Date: 2012-05-14 21:21
 我是狄敬超，网名 alswl ，大家一般喊我 3D。
 alswl 这个词来源于我小时候写的一部小说的主人公。
 
-目前我在阿里巴巴混口饭吃，需要内推扫描下面二维码，里面有联系方式，入职成功有惊喜。
+目前我在阿里巴巴混口饭吃，需要内推扫描下面二维码，里面有我微信。
 
 ![Sourcing QR](https://ohsolnxaa.qnssl.com/upload_dropbox/meta/sourcing-qr.png)
 
-如果对上述职位不感兴趣，还可以看 [其他职位列表](https://job.alibaba.com/zhaopin/index.htm)  。
+你也可以直接在 BOSS 直聘发起应聘：
+
+*   [【蚂蚁金服-监控开发工程师/专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/07f6a42c5bdf619e1XF42dS8FlY~.html?ka=new_search_list_3)
+*   [【高级开发工程师/解决方案架构师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/fd739d05dee155051XF42dW0Els~.html?ka=new_search_list_4)
+*   [【蚂蚁金服-保障开发工程师专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/b68477717e54f6f31XF42dS8FFY~.html?ka=new_search_list_5)
+*   [【蚂蚁金服-监控解决方案工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/7209bf9b349726901XF42dS9GVI~.html?ka=new_search_list_6)
+*   [【蚂蚁金服-高级技术保障专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/103890fa2d5085011XF42dS9Els~.html?ka=new_search_list_7)
+*   [【蚂蚁金服-资深保障开发工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/265f9efb4eb42e9f1XF42dW0FVM~.html?ka=new_search_list_8)
+*   [【蚂蚁金服-技术保障工程师专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/9527d3320a32f3391XF42dW1GVQ~.html?ka=new_search_list_9)
+*   [【蚂蚁金服-行业保障解决方案工程师/专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/7182c05e105427c41XF42dW1ElE~.html?ka=new_search_list_10)
+*   [【蚂蚁金服-监控开发工程师/专家-支付宝招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/29cdec2de82ed09c1XF609-0Elo~.html?ka=new_search_list_12)
+*   [【蚂蚁金服-Java开发工程师（DevOps方向）招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/b2484e7dc415c9701XF42dW7EVI~.html?ka=new_search_list_15)
+
+
+如果对上述职位都不感兴趣，还可以看 [其他职位列表](https://job.alibaba.com/zhaopin/index.htm) ，
+有看中的加我微信（上图二维码中有），备注「博客招聘」，入职成功有惊喜，欢迎同行。
 
 
 ## Tag
