@@ -56,6 +56,8 @@ alswl 这个词来源于我小时候写的一部小说的主人公。
 
 *   [Toodledo](http://www.toodledo.com/index.php?ref=td4d1aebdd0f59e)
     2010 年使用至今的 GTD 软件，2015 成为付费用户。纯正 GTD 实现，Matrix 自定义搜索，Open API 全功能可用
+*   [Evernote](https://www.evernote.com/referral/Registration.action?sig=9035c924a08140f7f5de825e5d69770fdcbe64ec51230f3d7df091c72628a2d7&uid=3580216)
+    2010 年使用至今的笔记软件，Note 软件届的 Big Father。
 *   [Dropbox](http://db.tt/vQqCGcl)
     自 2009 年使用至今，小文件云存储服务
 *   [RescueTime](https://www.rescuetime.com/ref/1328871)
