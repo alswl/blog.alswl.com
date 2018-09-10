@@ -208,7 +208,7 @@ DevOps：
         *   常见中间件 Operate（启动、关闭、重启、扩容）
 *   Dev
     *   语言
-        *   Pytho
+        *   Python
         *   Go（可选）
         *   Java（了解部署）
     *   流程和理论
