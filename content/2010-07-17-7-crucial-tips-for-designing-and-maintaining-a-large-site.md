@@ -86,7 +86,7 @@ designing-and-maintaining-a-large-site/)
 
 ### 4. 设计，精炼，精炼，精炼 …
 
-[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201007/step4_nm.jpg)](http://upload-log4d.qiniudn.com/2010/07/step4_nm.jpg)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201007/step4_nm.jpg)](https://ohsolnxaa.qnssl.com/2010/07/step4_nm.jpg)
 
 在你找到你的用户组别，任务，网站目标，优先级别等等之后，到了设计的时间了！这是至关重要的步骤，因为在实际操作中，这一步可以大幅降低一些将必要的返工设计工作量
 。每当我刚开始设计并没有真正分析第一大网站，我已不可避免地要大量的返工，甚至整个屏幕交互界面。

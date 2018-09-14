@@ -33,7 +33,7 @@ OPAC（联机公共查询目录）中引入了社区的理念，通过新增的�
 
 简洁模视图直接在结果画面就显示了馆藏情况和索书号，不用像以前那样一个一个翻阅了。
 
-[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201103/mode_1.jpg)](http://upload-log4d.qiniudn.com/2011/03/mode_1.jpg)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201103/mode_1.jpg)](https://ohsolnxaa.qnssl.com/2011/03/mode_1.jpg)
 
 封面视图会显示每本书的封面，在查找书籍时候能带来莫大方便
 

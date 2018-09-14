@@ -11,7 +11,7 @@ Category: Fun
 
 一个好消息是，富士TV为了庆祝龙珠播映20周年，推出《龙珠·改》，大大的满足了我们这群龙珠迷。
 
-[![龙珠·改](http://upload-log4d.qiniudn.com/2009/06/2009050421141455-300x270.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200906/2009050421141455.jpg)
+[![龙珠·改](https://ohsolnxaa.qnssl.com/2009/06/2009050421141455-300x270.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200906/2009050421141455.jpg)
 
 龙珠改从贝吉塔他们入侵地球开始描述，大概104集左右（不确定）
 

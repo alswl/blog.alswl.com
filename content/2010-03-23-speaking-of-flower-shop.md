@@ -11,7 +11,7 @@ Category: Coding
 quality-free-xhtml-css-div-templates.html)看到很多款极佳的网页设计，反复删选后，决定选用一款Flower
 Shop的作品。
 
-[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201003/Flower Shop.jpg)](http://upload-log4d.qiniudn.com/2010/03/Flower Shop.jpg)
+[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201003/Flower Shop.jpg)](https://ohsolnxaa.qnssl.com/2010/03/Flower Shop.jpg)
 
 原始预览： [http://csscreme.com/freetemplates/flower_shop/](http://csscreme.com/freetemplates/flower_shop/)
 
