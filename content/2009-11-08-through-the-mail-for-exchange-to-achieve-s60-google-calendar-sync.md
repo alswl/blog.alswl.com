@@ -24,11 +24,11 @@ lite.html)，好在可以通过[Mail For Exchange](http://www.google.com/mobile/
 c.html#p=nokia_smart)来实现Email，Contacts和Calendar的同步。之前没有使用Mail For
 Exchange主要是因为使用Mail For Exchange之后，你不能使用其他方式来实现同步。
 
-具体设置可以看下图： ![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/tlu16djx.jpg)
-![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/fwjcuuge.jpg)
+具体设置可以看下图： ![image](http://upload.log4d.com/upload_dropbox/200911/tlu16djx.jpg)
+![image](http://upload.log4d.com/upload_dropbox/200911/fwjcuuge.jpg)
 
-![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/siait7ew.jpg)
-![image](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/g3qei8kl.jpg)
+![image](http://upload.log4d.com/upload_dropbox/200911/siait7ew.jpg)
+![image](http://upload.log4d.com/upload_dropbox/200911/g3qei8kl.jpg)
 
 安装时会提示：**在设备上安装并使用 Mail for Exchange 之后，您不应使用任何其他方法 (例如诺基亚 PC 套件)
 来同步联系人、日历项或任务。 同时使用其他方法同步将会导致数据丢失、重复或损坏。**

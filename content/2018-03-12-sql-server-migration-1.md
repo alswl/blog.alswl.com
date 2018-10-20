@@ -5,7 +5,7 @@ Date: 2018-03-12 21:08:56
 Tags: SQLServer, MySQL, DB-Migration
 Category: Coding
 
-![201803/migration-bird.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201803/migration-bird.png)
+![201803/migration-bird.png](http://upload.log4d.com/upload_dropbox/201803/migration-bird.png)
 
 ## 背景
 
@@ -47,7 +47,7 @@ Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
 
 数据库停机迁移的流程：
 
-![201803/migration-db-offline-readonly.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201803/migration-db-offline-readonly.png)
+![201803/migration-db-offline-readonly.png](http://upload.log4d.com/upload_dropbox/201803/migration-db-offline-readonly.png)
 
 停机迁移逻辑比较简单，使用 ETL（Extract Translate Load）
 工具从 Source 写入 Target，然后进行一致性校验，最后确认应用运行 OK，
@@ -55,7 +55,7 @@ Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
 
 在线迁移的流程：
 
-![201803/migration-db-online.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201803/migration-db-online.png)
+![201803/migration-db-online.png](http://upload.log4d.com/upload_dropbox/201803/migration-db-online.png)
 
 在线迁移的方案稍微复杂一些，流程上有准备全量数据，然后实时同步增量数据，
 在数据同步跟上（延迟秒级别）之后，进行短暂停机（Hang 住，确保没有流量），
@@ -280,9 +280,9 @@ SQL Server 有 `physloc`。这种方案可以解决无主键进行比对的问�
 我们对 MySQL / SQL Server 添加了细致的 Metrics 监控。
 在测试和迁移过程中，可以便利地看到数据库的响应情况。
 
-![201803/sql-server-metrics.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201803/sql-server-metrics.png)
+![201803/sql-server-metrics.png](http://upload.log4d.com/upload_dropbox/201803/sql-server-metrics.png)
 
-![201803/mysql-metrics.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201803/mysql-metrics.png)
+![201803/mysql-metrics.png](http://upload.log4d.com/upload_dropbox/201803/mysql-metrics.png)
 
 为了方便 DBA 快速 Review SQL。
 我们提供了一些工具，直接将代码库中的 SQL 拎出来，

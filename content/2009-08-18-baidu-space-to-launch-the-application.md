@@ -11,10 +11,10 @@ Category: Internet
 刚去百度空间的管理空间看好友动态，无意中发现百度居然有了[几个应用](http://apps.hi.baidu.com/apps)
 荣光医院、开心宝贝、德克萨斯扑克、小游戏、狗狗、测试、礼物 这些典型的SNS小应用。
 
-[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)](http://apps.hi.baidu.com/ow/app/cover//24/10023.gif)
-[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)](http://apps.hi.baidu.com/ow/app/cover//28/10027.jpg)
-[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)](http://apps.hi.baidu.com/ow/app/cover//27/10026.jpg)
-[![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201612/404.png)](http://apps.hi.baidu.com/ow/app/cover//6/10005.jpg)
+[![image](http://upload.log4d.com/upload_dropbox/201612/404.png)](http://apps.hi.baidu.com/ow/app/cover//24/10023.gif)
+[![image](http://upload.log4d.com/upload_dropbox/201612/404.png)](http://apps.hi.baidu.com/ow/app/cover//28/10027.jpg)
+[![image](http://upload.log4d.com/upload_dropbox/201612/404.png)](http://apps.hi.baidu.com/ow/app/cover//27/10026.jpg)
+[![image](http://upload.log4d.com/upload_dropbox/201612/404.png)](http://apps.hi.baidu.com/ow/app/cover//6/10005.jpg)
 
 之前的百度Hi空间只有一个简单的宠物应用，现在推出了这么多应用，加上以前推出对好友的日志回复功能，百度空间明显有转向SNS形式的趋势。
 

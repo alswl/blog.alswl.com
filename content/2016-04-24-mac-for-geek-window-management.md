@@ -12,7 +12,7 @@ Category:  Efficiency
 
 在介绍我使用的工具之前，我要先介绍一下我选择的原因和历史。
 
-![201604/ergodox_infinity.jpg](https://ohsolnxaa.qnssl.com/upload_dropbox/201604/ergodox_infinity.jpg)
+![201604/ergodox_infinity.jpg](http://upload.log4d.com/upload_dropbox/201604/ergodox_infinity.jpg)
 
 ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的时候，请留步思考 5s）。
 
@@ -34,7 +34,7 @@ ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的
     我的答案是肯定的。Alt+Tab 是几乎除鼠标之外的唯一一种窗口操作方式。如果它不能跟上时代的步伐，
     对大显示器、多显示器做优化，那就是不作为，不努力，不上进。跟不上变化是要被淘汰的！
 
-![201604/alt_tab_windows.jpeg](https://ohsolnxaa.qnssl.com/upload_dropbox/201604/alt_tab_windows.jpeg)
+![201604/alt_tab_windows.jpeg](http://upload.log4d.com/upload_dropbox/201604/alt_tab_windows.jpeg)
 
 
 ## 平铺式窗口管理器
@@ -50,9 +50,9 @@ ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的
 
 什么是平铺式窗口管理器？来一个直观的认识：
 
-![201604/awesome_1.jpeg](https://ohsolnxaa.qnssl.com/upload_dropbox/201604/awesome_1.jpeg)
+![201604/awesome_1.jpeg](http://upload.log4d.com/upload_dropbox/201604/awesome_1.jpeg)
 
-![201604/awesome_2.jpeg](https://ohsolnxaa.qnssl.com/upload_dropbox/201604/awesome_2.jpeg)
+![201604/awesome_2.jpeg](http://upload.log4d.com/upload_dropbox/201604/awesome_2.jpeg)
 
 官方的解释是……呵呵，自己点进去看解释吧。平铺式桌面管理器（包括同时支持平铺式和堆叠式的混合式桌面管理器）给我带来了新的认知，
 原来桌面系统是可以进行接口编程的，我不那么 care 到底是哪种风格，我 care 的是，

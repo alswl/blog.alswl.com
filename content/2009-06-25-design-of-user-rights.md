@@ -23,7 +23,7 @@ Roll的对应关系表。来标明这个User具有哪个Roll。
 
 这种独立出Roll角色类的方法被称为基于角色的用户权限设计方法。
 
-[caption id="attachment_12439" align="alignnone" width="300" caption="User Roll UML类图"][![User Roll UML类图](https://ohsolnxaa.qnssl.com/upload_dropbox/200906/Snap2-300x148.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200906/Snap2.jpg)[/caption]
+[caption id="attachment_12439" align="alignnone" width="300" caption="User Roll UML类图"][![User Roll UML类图](http://upload.log4d.com/upload_dropbox/200906/Snap2-300x148.jpg)](http://upload.log4d.com/upload_dropbox/200906/Snap2.jpg)[/caption]
 
 我给出的这个其实还不完善，完整的解决方案应该还包含ACL列表，可以定制Roll对应ACL列表的对应，来修改某一个角色的权限。因为我的系统角色固定，而且系统规
 模比较小，我所说的三种发难已经能够满足我的要求了。

@@ -12,7 +12,7 @@ Status: draft
 
 很多人不知道什么是芥菜，我今天翻了好久才找到普通话的芥菜是怎么回事。我家乡话是读(ga cai)。
 
-![芥菜](https://ohsolnxaa.qnssl.com/upload_dropbox/200801/e4bd1e9a6e4211e380a4e0db5512b209.jpg)
+![芥菜](http://upload.log4d.com/upload_dropbox/200801/e4bd1e9a6e4211e380a4e0db5512b209.jpg)
 
 今天看cctv2的美食美客，挺不错的节目。介绍的菜都挺好的，呵呵，然后特意去cctv的网站找了相关的电子杂志，其中有完全的视频以及菜谱和注意事项，大家可以下
 载看看哦。

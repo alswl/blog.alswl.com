@@ -27,7 +27,7 @@ def process_line(row):
             f.write(resp.content)
     with open(file, 'r+') as f:
         origin = f.read()
-        new = origin.replace(url, 'https://ohsolnxaa.qnssl.com/upload_dropbox/%s%s/%s' % (year, month, file_name))
+        new = origin.replace(url, 'http://upload.log4d.com/upload_dropbox/%s%s/%s' % (year, month, file_name))
         f.seek(0)
         f.truncate(0)
         f.write(new)

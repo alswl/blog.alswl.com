@@ -14,7 +14,7 @@ Category: Efficiency
 
 上图：
 
-[![firefoxinsogou](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/firefoxinsogou.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/firefoxinsogou.jpg)
+[![firefoxinsogou](http://upload.log4d.com/upload_dropbox/200911/firefoxinsogou.jpg)](http://upload.log4d.com/upload_dropbox/200911/firefoxinsogou.jpg)
 
 *********************************正文终于开始拉**********************************
 

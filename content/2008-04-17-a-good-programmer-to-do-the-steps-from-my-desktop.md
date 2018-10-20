@@ -10,7 +10,7 @@ Status: draft
 
 我的桌面的截图，里面的内容是一个CSDN牛人说的
 
-[![A121794592689FEN](https://ohsolnxaa.qnssl.com/upload_dropbox/200910/A121794592689FEN.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200910/A121794592689FEN.jpg)
+[![A121794592689FEN](http://upload.log4d.com/upload_dropbox/200910/A121794592689FEN.jpg)](http://upload.log4d.com/upload_dropbox/200910/A121794592689FEN.jpg)
 
 我觉得很有道理，这么多选项，如果一个一个分开很不切实际。
 

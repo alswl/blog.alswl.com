@@ -5,7 +5,7 @@ Date: 2018-06-20 20:18:52
 Tags: SQLServer, MySQL, DB-Migration
 Category: Coding
 
-![201806/refactor.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201806/refactor.png)
+![201806/refactor.png](http://upload.log4d.com/upload_dropbox/201806/refactor.png)
 
 我们用了两章文章
 [从 SQL Server 到 MySQL（一）：异构数据库迁移](https://blog.alswl.com/2018/03/sql-server-migration-1/)
@@ -39,14 +39,14 @@ Otter 配备了相对 yugong 更健壮管理工具、分布式协调工具，
 Yugong 数据流是标准 ETL 流程，分别有 Extractor / Translator / Applier
 这三个大类来实现 ETL 过程:
 
-![ETL & Java Class](https://ohsolnxaa.qnssl.com/upload_dropbox/201806/etl.png)
+![ETL & Java Class](http://upload.log4d.com/upload_dropbox/201806/etl.png)
 
 我们依次来看看这三大类具体设计。
 
 ### Extractor
 
 
-![Extractor Class](https://ohsolnxaa.qnssl.com/upload_dropbox/201806/extractor.png)
+![Extractor Class](http://upload.log4d.com/upload_dropbox/201806/extractor.png)
 
 *   `YuGongLifeCycle`：Yugong 组件生命周期声明
 *   `AbstractYuGongLifeCycle`：Yugong 组件生命周期一些实现
@@ -66,7 +66,7 @@ Yugong 官方提供 Extractor 抽象出 `AbstractRecordExtractor` 类，
 
 ### Translator
 
-![Translator Class](https://ohsolnxaa.qnssl.com/upload_dropbox/201806/translator.png)
+![Translator Class](http://upload.log4d.com/upload_dropbox/201806/translator.png)
 
 *   `DataTranslator`：Translator 基类，为 Row 级别数据处理
 *   `TableTranslator`：Translator 基类，为 Table 级别提供处理（官方代码中没有使用）
@@ -84,7 +84,7 @@ Translator 读取内存中 RowData 然后变换，
 
 ### Applier
 
-![Applier Class](https://ohsolnxaa.qnssl.com/upload_dropbox/201806/applier.png)
+![Applier Class](http://upload.log4d.com/upload_dropbox/201806/applier.png)
 
 *   `RecordApplier`：基础 Applier Interface
 *   `AbstractRecordApplier`：基础 Applier 虚拟类，做了一部分实现
@@ -135,7 +135,7 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 
 ### Extractor
 
-![Extractor New Class](https://ohsolnxaa.qnssl.com/upload_dropbox/201806/extractor-new.png)
+![Extractor New Class](http://upload.log4d.com/upload_dropbox/201806/extractor-new.png)
 
 *   `AbstractSqlServerExtractor`：新增抽象 SqlServer Extractor
 *   `AbstractMysqlExtractor`：新增抽象 MySQL Extractor
@@ -152,7 +152,7 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 ### Translator
 
 
-![Translator New Class](https://ohsolnxaa.qnssl.com/upload_dropbox/201806/translator-new.png)
+![Translator New Class](http://upload.log4d.com/upload_dropbox/201806/translator-new.png)
 
 
 *   `Sha1ShardingTranslator`：根据 Sha1 Sharding Translator
@@ -172,7 +172,7 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 
 ### Applier
 
-![Applier New Class](https://ohsolnxaa.qnssl.com/upload_dropbox/201806/applier-new.png)
+![Applier New Class](http://upload.log4d.com/upload_dropbox/201806/applier-new.png)
 
 *   `SqlServerIncreamentRecordApplier`：新增 SQL Server 增量消费 Applier
 

@@ -8,13 +8,13 @@ Category: Internet
 今天上网，偶然发现百度主页右上角出现了「[我在百度](http://my.baidu.com/index.html?my=1&tn=baidu_myps_p
 g)」。
 
-[![baidu](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/baidu.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/baidu.jpg)
+[![baidu](http://upload.log4d.com/upload_dropbox/200911/baidu.jpg)](http://upload.log4d.com/upload_dropbox/200911/baidu.jpg)
 
-[![myBaidu](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/myBaidu.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/myBaidu.jpg)
+[![myBaidu](http://upload.log4d.com/upload_dropbox/200911/myBaidu.jpg)](http://upload.log4d.com/upload_dropbox/200911/myBaidu.jpg)
 
 这个应该是模仿Google的iGoogle。我测试了一下，非登录用户是没有这个功能的。而iGoogle在未登录情况下也能使用。
 
-[![iGoogle](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/iGoogle.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200911/iGoogle.jpg)
+[![iGoogle](http://upload.log4d.com/upload_dropbox/200911/iGoogle.jpg)](http://upload.log4d.com/upload_dropbox/200911/iGoogle.jpg)
 
 「我在百度」登录之后是有「我的空间」、「我的知道」、「我的百度帐号」、「我的贴吧」、「我的百科」这几个模块。通过顶部的「添加模块」可以继续增加几个功能：「百
 度地图」、「百度财经」「我的登录」等几个小功能，还可以添加RSS源（不得不想起Google Reader）。

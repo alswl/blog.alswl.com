@@ -8,7 +8,7 @@ alswl 这个词来源于我小时候写的一部小说的主人公。
 
 目前我在阿里巴巴混口饭吃，需要内推扫描下面二维码，里面有我微信。
 
-![Sourcing QR](https://ohsolnxaa.qnssl.com/upload_dropbox/meta/sourcing-qr.png)
+![Sourcing QR](http://upload.log4d.com/upload_dropbox/meta/sourcing-qr.png)
 
 你也可以直接在 BOSS 直聘发起应聘：
 
@@ -97,12 +97,12 @@ echo 'YWxzd2x4QGdtYWlsLmNvbQo=' | base64 -d
 
 欢迎关注我的微信公众号：窥豹
 
-![Wechat](https://ohsolnxaa.qnssl.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg)
+![Wechat](http://upload.log4d.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg)
 
 
 ## 文章版权声明
 
-[![Creative Commons License](https://ohsolnxaa.qnssl.com/upload_dropbox/temp/cc-by-nc-nd.png)](http://creativecommons.org/licenses/by-nc-nd/4.0/)
+[![Creative Commons License](http://upload.log4d.com/upload_dropbox/temp/cc-by-nc-nd.png)](http://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 This work is licensed under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/).
 

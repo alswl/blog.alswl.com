@@ -16,7 +16,7 @@ Category: Coding
 留下这个[问题](http://www.evlos.org/2010/01/05/use-regex-to-clear-the-mix-of-tag-
 img/#comment-5968)
 
-![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201001/alswl_ask.jpg)
+![image](http://upload.log4d.com/upload_dropbox/201001/alswl_ask.jpg)
 
 小邪很热心的撰写了一篇文章给出回答：[ 一个杯具和一个洗具与最近学习手记 :
 邪罗刹的菠萝阁](http://www.evlos.org/2010/01/07/a-cuptool-and-a-washtool)。

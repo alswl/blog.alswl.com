@@ -32,7 +32,7 @@ htm)。其实，4000员工还不算完，文章中提到："但随着员工数�
 > 五毛们可能会反驳：百度的总部在中国，所以自然中国的员工多了！什么？那你们是要我把百度和谷歌的全球收入都算在一起比比？你们还是想让我拿百度在美国的
 市场收入和谷歌在中国的市场收入比比？要么把百度在中国的市场收入和谷歌在美国的收入对比一下？
 
-![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201003/logo.gif)
+![image](http://upload.log4d.com/upload_dropbox/201003/logo.gif)
 
 We are here, we are waiting!
 

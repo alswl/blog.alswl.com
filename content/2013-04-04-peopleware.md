@@ -18,7 +18,7 @@ Category: Managment
 > 后来痛苦与代码质量，阅读了《重构》，开始坚信代码质量决定产品质量
 > 现在痛苦于人和语言的冲突，动态和静态的冲突，我想读《人件》了
 
-![人件](https://ohsolnxaa.qnssl.com/upload_dropbox/201304/s1299961.jpg)
+![人件](http://upload.log4d.com/upload_dropbox/201304/s1299961.jpg)
 
 人件已经绝版，只能在找线上版，我花了两个星期把它读完。
 书中给了我一部分答案，另外还有一些意外的收获。

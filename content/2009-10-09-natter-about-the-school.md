@@ -11,7 +11,7 @@ Category: Internet
 
 刚登录校内（也许称呼为人人更合适），然后就看到一条信息：
 
-[caption id="attachment_12721" align="alignnone" width="572" caption="校内警告"][![校内警告](https://ohsolnxaa.qnssl.com/upload_dropbox/200910/xiaonei_alert.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200910/xiaonei_alert.jpg)[/caption]
+[caption id="attachment_12721" align="alignnone" width="572" caption="校内警告"][![校内警告](http://upload.log4d.com/upload_dropbox/200910/xiaonei_alert.jpg)](http://upload.log4d.com/upload_dropbox/200910/xiaonei_alert.jpg)[/caption]
 
 上面居然用了「所有」「都会」这种字眼，明显就是吓唬人。其实就是怕影响这些游戏运作，很多游戏自身的防外挂功能又不完善，很容易制作外挂。
 
@@ -26,7 +26,7 @@ Category: Internet
 
 最近我又发现，在这个校内的播放页面无法通过点击链接到原始内容页面。
 
-[caption id="attachment_12722" align="alignnone" width="504" caption="优酷in校内"][![优酷in校内](https://ohsolnxaa.qnssl.com/upload_dropbox/200910/xiaonei_youku.jpg)](https://ohsolnxaa.qnssl.com/upload_dropbox/200910/xiaonei_youku.jpg)[/caption]
+[caption id="attachment_12722" align="alignnone" width="504" caption="优酷in校内"][![优酷in校内](http://upload.log4d.com/upload_dropbox/200910/xiaonei_youku.jpg)](http://upload.log4d.com/upload_dropbox/200910/xiaonei_youku.jpg)[/caption]
 
 如图上红色框内的区域，应该可以链接到原始链接，而在校内这个页面点击，却没有反应。
 

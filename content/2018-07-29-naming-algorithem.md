@@ -5,7 +5,7 @@ Date: 2018-07-29 19:19:36
 Tags: Family
 Category: Life
 
-![201807/bagua.png](https://ohsolnxaa.qnssl.com/upload_dropbox/201807/bagua.png)
+![201807/bagua.png](http://upload.log4d.com/upload_dropbox/201807/bagua.png)
 <small>image from Wikipedia [八卦](https://zh.wikipedia.org/wiki/%E5%85%AB%E5%8D%A6)</small>
 
 随着孩子预产期临近，我还有一个重要的任务没有完成：给孩子起一个名字。

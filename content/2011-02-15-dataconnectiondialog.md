@@ -10,7 +10,7 @@ Category: Coding
 
 昨天用CodeSmith时候，看到它的数据连接配置界面，如此的眼熟，如下图。
 
-![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201102/DataConnectionDialog.jpg)
+![image](http://upload.log4d.com/upload_dropbox/201102/DataConnectionDialog.jpg)
 
 Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命名空间为Microsoft.VisualStudio.Data。
 

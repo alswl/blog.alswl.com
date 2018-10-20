@@ -5,7 +5,7 @@ Date: 2010-04-14 00:00:00
 Tags: 建站心得, WordPress
 Category: Coding
 
-![image](https://ohsolnxaa.qnssl.com/upload_dropbox/201004/log4d_screenshot.png)新主题SimpleD也运行
+![image](http://upload.log4d.com/upload_dropbox/201004/log4d_screenshot.png)新主题SimpleD也运行
 了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD
 1.0版。现在缝缝补补到1.3了。
 

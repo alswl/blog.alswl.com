@@ -5,7 +5,7 @@ Date: 2018-04-09 23:13:03
 Tags: management, team
 Category:  Thinking
 
-![201804/death-sea.jpg](https://ohsolnxaa.qnssl.com/upload_dropbox/201804/death-sea.jpg)
+![201804/death-sea.jpg](http://upload.log4d.com/upload_dropbox/201804/death-sea.jpg)
 
 （图片来自 [The Dead Sea, Israel | One of the lowest, saltiest and unusu… | Flickr](https://www.flickr.com/photos/tsaiproject/8298557641)）
 

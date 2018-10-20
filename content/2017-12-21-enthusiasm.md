@@ -5,7 +5,7 @@ Date: 2017-12-21 23:46:59
 Tags: Enthusiasm, Passion
 Category:  Thinking
 
-![201712/work.jpg](https://ohsolnxaa.qnssl.com/upload_dropbox/201712/work.jpg)
+![201712/work.jpg](http://upload.log4d.com/upload_dropbox/201712/work.jpg)
 
 最近和一位老朋友吃饭，他说他最近比较苦恼：
 「开始有职业危机了，担心自己失去对工作的热情，似乎离油腻的中年人又进了一步」。

@@ -66,7 +66,7 @@ Range是我们打交道最多的，可以理解成一个区域快，也就是常
 需要使用的命名空间为using Excel = Microsoft.Office.Interop.Excel;（使用别名简化一下）
 
 另外需要项目引用Office的类库，如果不是项目形式而是网站形式，则需要手动编译对应Interop.Excel.dll到网站bin目录下面，我使用Excel
-2007编译出这个链接库，版本为1.6.0.0，需要的可以点击[Interop.Excel.dll](https://ohsolnxaa.qnssl.com/2010/12/Interop_Excel.zip)下载。
+2007编译出这个链接库，版本为1.6.0.0，需要的可以点击[Interop.Excel.dll](http://upload.log4d.com/2010/12/Interop_Excel.zip)下载。
 
 ### 3.1 编译Interop.Excel.dll
 
