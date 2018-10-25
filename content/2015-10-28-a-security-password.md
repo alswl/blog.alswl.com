@@ -5,7 +5,7 @@ Date: 2015-10-28 00:17:44
 Tags: Security
 Category: Internet
 
-![password.jpg](http://upload.log4d.com/upload_dropbox/201512/password.jpg)
+![password.jpg](https://4ocf5n.dijingchao.com/upload_dropbox/201512/password.jpg)
 
 给团队非开发同学写的邮件，对其他人也有些意义，遂贴出来。
 

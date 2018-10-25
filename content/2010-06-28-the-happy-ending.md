@@ -11,7 +11,7 @@ Category: Life
 
 最后一次疯狂～
 
-![image](http://upload.log4d.com/upload_dropbox/201006/cinderella.JPG)
+![image](https://4ocf5n.dijingchao.com/upload_dropbox/201006/cinderella.JPG)
 
 The Happy Ending
 

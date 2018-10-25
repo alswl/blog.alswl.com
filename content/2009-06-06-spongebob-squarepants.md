@@ -11,7 +11,7 @@ Category: Fun
 特征：穿着方形裤子，黄颜色的海绵，露出两颗大牙齿。天真乐观，充满善意，但是尽管他出于好意，仍免不了陷入麻烦之中，闹不少笑话。
 
 
-[caption id="attachment_12331" align="alignnone" width="566" caption="海绵宝宝"]![海绵宝宝](http://upload.log4d.com/upload_dropbox/200906/1357182_1.jpg)[/caption]
+[caption id="attachment_12331" align="alignnone" width="566" caption="海绵宝宝"]![海绵宝宝](https://4ocf5n.dijingchao.com/upload_dropbox/200906/1357182_1.jpg)[/caption]
 
 《海绵宝宝》虽然是低龄动画，但由于剧情幽默而充满想象力，也很适合成年人观看，回忆一下童真，而且有些内容的确好笑，看完之后也会感叹一下里面的精神。
 

@@ -432,7 +432,7 @@ Category: Coding
 
 ### 相关下载
 
-[DragResize.js](http://upload.log4d.com/upload_dropbox/200909/DragResize.js)
-[template.js](http://upload.log4d.com/upload_dropbox/200909/template.js)
-[css.css](http://upload.log4d.com/upload_dropbox/200909/css.css)
+[DragResize.js](https://4ocf5n.dijingchao.com/upload_dropbox/200909/DragResize.js)
+[template.js](https://4ocf5n.dijingchao.com/upload_dropbox/200909/template.js)
+[css.css](https://4ocf5n.dijingchao.com/upload_dropbox/200909/css.css)
 

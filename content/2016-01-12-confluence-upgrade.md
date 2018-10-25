@@ -11,7 +11,7 @@ Category: Efficiency
 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑），
 在群众的强烈呼声下，我着手开始升级。
 
-![201601/confluence_river.jpg](http://upload.log4d.com/upload_dropbox/201601/confluence_river.jpg)
+![201601/confluence_river.jpg](https://4ocf5n.dijingchao.com/upload_dropbox/201601/confluence_river.jpg)
 
 <!-- more -->
 

@@ -18,7 +18,7 @@ Category: Efficiency
 
 Metrics插件可以从多个角度对Eclipse中的代码进行统计：
 
-[![metrics](http://upload.log4d.com/upload_dropbox/201612/404.png)](http://image-001.yo2cdn.com/wp-content/uploads/0/38/2008/08/metrics.png)
+[![metrics](https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png)](http://image-001.yo2cdn.com/wp-content/uploads/0/38/2008/08/metrics.png)
 
 **官方网站**：[http://metrics.sourceforge.net/](http://metrics.sourceforge.net/)
 

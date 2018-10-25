@@ -541,5 +541,5 @@ print 'Error: Input error!!n'
 
 raw_input('Press Enter to continue')
 
-点击这里[下载源代码](http://upload.log4d.com/upload_dropbox/200911/edtTxtConvert_0_9.zip)（edtTxtConvert.py+config.cfg+reade me.txt，需要Python2.6以上），如果需要exe版本的程序，可以向我索取，也可以[使用py2exe自行编译](http://log4d.com/2009/09/python-program-will-be-compiled-into-an-executable-program-exe)。
+点击这里[下载源代码](https://4ocf5n.dijingchao.com/upload_dropbox/200911/edtTxtConvert_0_9.zip)（edtTxtConvert.py+config.cfg+reade me.txt，需要Python2.6以上），如果需要exe版本的程序，可以向我索取，也可以[使用py2exe自行编译](http://log4d.com/2009/09/python-program-will-be-compiled-into-an-executable-program-exe)。
 

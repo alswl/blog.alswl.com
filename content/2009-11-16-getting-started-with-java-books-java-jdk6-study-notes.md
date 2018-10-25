@@ -5,7 +5,7 @@ Date: 2009-11-16 00:00:00
 Tags: Java, Book, JavaSE
 Category: Coding
 
-[![Java JDK6学习笔记](http://upload.log4d.com/upload_dropbox/200911/s2518833.jpg)](http://img3.doubanio.com/
+[![Java JDK6学习笔记](https://4ocf5n.dijingchao.com/upload_dropbox/200911/s2518833.jpg)](http://img3.doubanio.com/
 lpic/s2518833.jpg)
 
 《Java JDK6学习笔记》(via [豆瓣](http://www.douban.com/subject/2057790/)，via

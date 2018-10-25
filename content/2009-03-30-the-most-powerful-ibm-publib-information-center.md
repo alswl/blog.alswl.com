@@ -17,5 +17,5 @@ google以后，在OpenSSL的官方doc找不到太详细的解释，呵呵，也�
 
 连接地址：[via](http://publib.boulder.ibm.com/infocenter/tpfhelp/current/index.jsp?topic=/com.ibm.ztpf-ztpfdf.doc_put.cur/gtpc2/cpp_ssl_ctx_set_cipher_list.html)
 
-![image](http://upload.log4d.com/upload_dropbox/200903/ibm.png)
+![image](https://4ocf5n.dijingchao.com/upload_dropbox/200903/ibm.png)
 

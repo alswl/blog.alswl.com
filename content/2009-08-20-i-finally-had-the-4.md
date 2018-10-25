@@ -7,7 +7,7 @@ Category: Life
 
 上图，啥也不说了
 
-[caption id="attachment_12659" align="alignnone" width="391" caption="cet_4"][![cet_4](http://upload.log4d.com/upload_dropbox/200908/Snap1.jpg)](http://upload.log4d.com/upload_dropbox/200908/Snap1.jpg)[/caption]
+[caption id="attachment_12659" align="alignnone" width="391" caption="cet_4"][![cet_4](https://4ocf5n.dijingchao.com/upload_dropbox/200908/Snap1.jpg)](https://4ocf5n.dijingchao.com/upload_dropbox/200908/Snap1.jpg)[/caption]
 
 泪奔啊，考了四级，这次大爆发，把四级绝杀了~~~
 

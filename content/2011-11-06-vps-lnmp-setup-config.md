@@ -299,15 +299,15 @@ pm.max_spare_servers = 2 #默认是35
 
 原来的虚拟主机 dddspace.com 的响应情况：
 
-![dddspace](http://upload.log4d.com/upload_dropbox/201111/dddspace.png)
+![dddspace](https://4ocf5n.dijingchao.com/upload_dropbox/201111/dddspace.png)
 
 现在 log4d.com VPS 的响应情况：
 
-![log4d](http://upload.log4d.com/upload_dropbox/201111/log4d.png)
+![log4d](https://4ocf5n.dijingchao.com/upload_dropbox/201111/log4d.png)
 
 内存使用情况：
 
-![free](http://upload.log4d.com/upload_dropbox/201111/free.png)
+![free](https://4ocf5n.dijingchao.com/upload_dropbox/201111/free.png)
 
 `siege -c 100 -t 100 log4d.com` 的测试结果：
 

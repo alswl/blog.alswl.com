@@ -15,7 +15,7 @@ Category:  Coding
 在这里有最常用的两个手段，一个是优化性能，一个是做好容量规划和扩展。
 这里我着重讨论后者「容量规划」。
 
-![看我的一堆报警消息](http://upload.log4d.com/upload_dropbox/201606/message.png)
+![看我的一堆报警消息](https://4ocf5n.dijingchao.com/upload_dropbox/201606/message.png)
 
 ^ 看我的一堆报警消息
 

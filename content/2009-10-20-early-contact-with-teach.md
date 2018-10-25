@@ -5,7 +5,7 @@ Date: 2009-10-20 00:00:00
 Tags: 日记, 工作
 Category: Life
 
-[![hire_me](http://upload.log4d.com/upload_dropbox/200910/hire_me.jpg)](http://upload.log4d.com/upload_dropbox/200910/hire_me.jpg)
+[![hire_me](https://4ocf5n.dijingchao.com/upload_dropbox/200910/hire_me.jpg)](https://4ocf5n.dijingchao.com/upload_dropbox/200910/hire_me.jpg)
 
 今天江苏电信到我们学校进行宣讲会，我一开始还以为电信看在cumt校庆面上过来招聘，眼巴巴跑过去才知道只是宣讲会。
 

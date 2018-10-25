@@ -873,9 +873,9 @@ Arg: *.txt
 [last-post]: http://jimmyg.org/blog/2009/python-command-line-interface-%28cli%29-with-sub-commands.html
 [unix-shell]: http://en.wikipedia.org/wiki/Unix_shell
 [processes]: http://pangea.stanford.edu/computerinfo/unix/shell/processes/processes.html
-[Stdstreams-notitle.svg]: http://upload.log4d.com/upload_dropbox/201209/Stdstreams-notitle.svg.png
+[Stdstreams-notitle.svg]: https://4ocf5n.dijingchao.com/upload_dropbox/201209/Stdstreams-notitle.svg.png
 [Wiki:Stdstreams-notitle.svg]: http://en.wikipedia.org/wiki/File:Stdstreams-notitle.svg
-[Pipeline.svg]: http://upload.log4d.com/upload_dropbox/201209/Pipeline.svg.png
+[Pipeline.svg]: https://4ocf5n.dijingchao.com/upload_dropbox/201209/Pipeline.svg.png
 [Wiki:Pipeline.svg]: http://en.wikipedia.org/wiki/File:Pipeline.svg
 [subprocess-doc]: http://docs.python.org/library/subprocess.html#replacing-older-functions-with-the-subprocess-module
 [using-the-subprocess-module]: http://docs.python.org/library/subprocess.html#using-the-subprocess-module

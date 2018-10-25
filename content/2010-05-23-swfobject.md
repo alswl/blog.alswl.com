@@ -10,7 +10,7 @@ Category: Coding
 Flash在各个浏览器中的实现始终是个麻烦的事情，什么Object Embed~，似乎没有什么标准的格式，一般都要做一些浏览器Hack，我对这些深痛恶绝，在
 泡了一下午前端相关的论坛后，偶然发现一款JavaScript交互的神器。
 
-![image](http://upload.log4d.com/upload_dropbox/201005/swfobject_logo.gif)
+![image](https://4ocf5n.dijingchao.com/upload_dropbox/201005/swfobject_logo.gif)
 
 ## SWFObject: 基于Javascript的Flash媒体版本检测与嵌入模块
 

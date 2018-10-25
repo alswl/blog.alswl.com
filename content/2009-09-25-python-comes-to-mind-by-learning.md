@@ -8,7 +8,7 @@ Category: Viewpoint
 开始学Python大概有1个多月了，深深的被这门简单的语言所吸引着，简单却强大，是一门非常精彩的语言。特别是它的设计理念：「在允许性能牺牲的范围内，提高开发
 效率，简化开发方法」。（呃…这个原文我找不到了，我自己总结了一下）
 
-[![image](http://upload.log4d.com/upload_dropbox/200909/python-logo.gif)](http://upload.log4d.com/upload_dropbox/200909/python-logo.gif)
+[![image](https://4ocf5n.dijingchao.com/upload_dropbox/200909/python-logo.gif)](https://4ocf5n.dijingchao.com/upload_dropbox/200909/python-logo.gif)
 
 细细数来，我现在掌握的语言应该有C++, Java, C#, Asp, Asp.Net,
 Python，我所说的掌握并不是具体到多细节，而是自己大概知道怎么去用，如果给我一本Manual，也能大概也一个小型的软件。

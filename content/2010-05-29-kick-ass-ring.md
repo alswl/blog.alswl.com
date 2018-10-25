@@ -10,7 +10,7 @@ Java，蛋疼啊～
 
 好了回正题，关于海扁王。
 
-[![image](http://upload.log4d.com/upload_dropbox/201005/s4145084.jpg)](http://img3.doubanio.com/lpic/s4
+[![image](https://4ocf5n.dijingchao.com/upload_dropbox/201005/s4145084.jpg)](http://img3.doubanio.com/lpic/s4
 145084.jpg)
 
 海扁王是一部很不错的电影，特别是片中对于普通人梦想的描述，让人很感动。其次，影片中那个小萝莉真是。。。太High了，暴力和美学的结合啊～
@@ -32,5 +32,5 @@ Music)可以下载。
 
 我把这段音乐做成了30s的手机铃声，哇咔咔～
 
-点击[这里](http://upload.log4d.com/upload_dropbox/201005/banana_splits.7z)下载铃声
+点击[这里](https://4ocf5n.dijingchao.com/upload_dropbox/201005/banana_splits.7z)下载铃声
 

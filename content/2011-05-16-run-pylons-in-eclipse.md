@@ -12,11 +12,11 @@ development.ini来运行应用实例。而整天在任务栏跑着一个黑乎�
 
 Main页签中Main Module指向paster-script.py，可以使用绝对路径。
 
-![image](http://upload.log4d.com/upload_dropbox/201105/eclipse-main.png)
+![image](https://4ocf5n.dijingchao.com/upload_dropbox/201105/eclipse-main.png)
 
 配置Arguments页签的参数，添加serve --reload development.ini，后面的ini配置文件可以使用绝对路径。
 
-![image](http://upload.log4d.com/upload_dropbox/201105/eclipse-arguments.png)
+![image](https://4ocf5n.dijingchao.com/upload_dropbox/201105/eclipse-arguments.png)
 
 勾选Common下的Allocate Console来进行paster调试信息输出。
 
