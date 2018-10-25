@@ -6,7 +6,7 @@ Tags: 建站, minigal nano, CF Image Host Script
 Category: Coding
 
 
-最近在将 Wordpres 切换到 OctoPress，顺便将图片统一放到[Upload4D](https://4ocf5n.dijingchao.com)管理。
+最近在将 Wordpres 切换到 OctoPress，顺便将图片统一放到[Upload4D](https://upload.log4d.com)管理。
 
 我挑选图床管理程序有下面几个需求，需求由强到弱排列：
 
