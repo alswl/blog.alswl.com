@@ -6,26 +6,17 @@ Date: 2012-05-14 21:21
 我是狄敬超，网名 alswl ，大家一般喊我 3D（三谛）。
 alswl 这个词来源于我小时候写的一部小说的主人公。
 
-目前我在阿里巴巴混口饭吃，需要内推扫描下面二维码，里面有我微信。
+目前我在蚂蚁金服工作，如果你对蚂蚁感兴趣，你可以直接在 BOSS 直聘发起应聘：
 
-![Sourcing QR](https://4ocf5n.dijingchao.com/upload_dropbox/meta/sourcing-qr.png)
-
-你也可以直接在 BOSS 直聘发起应聘：
-
-*   [【蚂蚁金服-监控开发工程师/专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/07f6a42c5bdf619e1XF42dS8FlY~.html?ka=new_search_list_3)
-*   [【高级开发工程师/解决方案架构师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/fd739d05dee155051XF42dW0Els~.html?ka=new_search_list_4)
-*   [【蚂蚁金服-保障开发工程师专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/b68477717e54f6f31XF42dS8FFY~.html?ka=new_search_list_5)
-*   [【蚂蚁金服-监控解决方案工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/7209bf9b349726901XF42dS9GVI~.html?ka=new_search_list_6)
-*   [【蚂蚁金服-高级技术保障专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/103890fa2d5085011XF42dS9Els~.html?ka=new_search_list_7)
-*   [【蚂蚁金服-资深保障开发工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/265f9efb4eb42e9f1XF42dW0FVM~.html?ka=new_search_list_8)
-*   [【蚂蚁金服-技术保障工程师专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/9527d3320a32f3391XF42dW1GVQ~.html?ka=new_search_list_9)
-*   [【蚂蚁金服-行业保障解决方案工程师/专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/7182c05e105427c41XF42dW1ElE~.html?ka=new_search_list_10)
-*   [【蚂蚁金服-监控开发工程师/专家-支付宝招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/29cdec2de82ed09c1XF609-0Elo~.html?ka=new_search_list_12)
-*   [【蚂蚁金服-Java开发工程师（DevOps方向）招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/b2484e7dc415c9701XF42dW7EVI~.html?ka=new_search_list_15)
+*   [【高级 Java 开发工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/83472999a97c4f061HR_2Ny-Fls~.html)
+*   [【高级 Java 开发工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/33a712ef5b779d361HR_2Ny-EFQ~.html)
+*   [【DevOps 高级运维开发工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/99115cff2794b4f11HR_2Ny8GFs~.html)
+*   [【Java 技术专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/a49d22de3563c48b1HR_2d65EFE~.html)
+*   [【Java 技术专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/e1734cf7f992dece1HR_2d6-EVo~.html)
 
 
 如果对上述职位都不感兴趣，还可以看 [其他职位列表](https://job.alibaba.com/zhaopin/index.htm) ，
-有看中的加我微信（上图二维码中有），备注「博客招聘」，入职成功有惊喜，欢迎同行。
+有看中的加我邮件（alswlx(at)gmail(dot)com），备注「博客招聘」，入职成功有惊喜，欢迎同行。
 
 
 ## Tag
