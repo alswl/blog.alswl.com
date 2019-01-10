@@ -10,15 +10,15 @@ Slug: links
 
 ## 线下朋友 ##
 *   亲爱的雪酱 [小雪](http://sizheng.org/)
-*   汉语言专业的产品经理 [面总](http://www.albertgao.com/)
-*   传说中的放电影的 [Elvasu](http://qingge.me/)
+*   <del>汉语言专业的产品经理 [面总](http://www.albertgao.com/)</del>
+*   <del>传说中的放电影的 [Elvasu](http://qingge.me/)</del>
 
 ## 线下 NJLUG ##
 
 *   NJLUG 前辈 [李凡希](http://www.freemindworld.com/blog)
 *   一名系统管理员 [Jasey Wang](http://jaseywang.me/)
-*   ArchCN 管理员 [小凤凰](https://www.google.com/reader/view/#)
-*   JSMinNPP / Tetris5 作者 [Sun Junwen](http://sunblog.72pines.com/)
+*   <del>ArchCN 管理员 [小凤凰](https://www.google.com/reader/view/#)</del>
+*   <del>JSMinNPP / Tetris5 作者 [Sun Junwen](http://sunblog.72pines.com/)</del>
 
 ## 技术网友们 ##
 
@@ -32,5 +32,5 @@ Slug: links
 *   有共同的兴趣爱好，比如 Linux / Python，并且订阅我博客一段时间
 *   面过基
 *   我欣赏您
-*   美女
+*   漂亮小姑娘
 
