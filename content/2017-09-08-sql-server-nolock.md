@@ -263,7 +263,7 @@ SELECT * FROM foos WHERE id = 4;
 ### MVCC
 
 并发控制的手段有这些：封锁、时间戳、乐观并发控制、悲观并发控制。
-SQL Server 在 2015 后，引入了 MVCC（多版本控制）。
+SQL Server 在 2005 后，引入了 MVCC（多版本控制）。
 如果最终数据是一致，会允许数据写入，否则其他事务会被阻止写入。
 那么 MVCC 引入是否可以解决 Insert 数据的锁问题？
 同样，我做了以下测试：
@@ -299,7 +299,7 @@ ALTER DATABASE HJ_Test3D SET ALLOW_SNAPSHOT_ISOLATION ON;
 我们是否愿意放弃数据一致性而为了提高一丝丝性能？
 以及我们有多少场景，会频繁使用 `SELECT ALL` 操作而没有查询条件？
 
-微软官方在 2015 的特性列表里面，明确地指出 `nolock` 特性未来会在某个版本被废除：
+微软官方在 2008 的特性列表里面，明确地指出 `nolock` 特性未来会在某个版本被废除：
 
 >   Specifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.
 
