@@ -31,4 +31,4 @@ inoremap <C-d> <Esc><Right>s
 inoremap <M-d> <C-o>de
 ```
 
-需要的朋友请取用，我的 Vim 配置文件和插件在 [https://github.com/alswl/dotfiles](https://github.com/alswl/dotfiles) 。
+需要的朋友请取用，我的 Vim 配置文件和插件在 [https://github.com/alswl/.oOo.](https://github.com/alswl/.oOo.) 。

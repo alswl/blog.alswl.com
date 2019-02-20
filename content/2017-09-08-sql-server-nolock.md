@@ -299,13 +299,13 @@ ALTER DATABASE HJ_Test3D SET ALLOW_SNAPSHOT_ISOLATION ON;
 我们是否愿意放弃数据一致性而为了提高一丝丝性能？
 以及我们有多少场景，会频繁使用 `SELECT ALL` 操作而没有查询条件？
 
-微软官方在 2008 的特性列表里面，明确地指出 `nolock` 特性未来会在某个版本被废除：
+<del>微软官方在 2008 的特性列表里面，明确地指出 `nolock` 特性未来会在某个版本被废除：</del>
 
->   Specifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.
+>   <del>Specifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.</del>
 
-而改为推荐：
+<del>而改为推荐：</del>
 
->   Remove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.
+>   <del>Remove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.</del>
 
 事实上，我听过不少团队会禁止在生产环境使用不带 WHERE 条件的 SQL。
 那在这种模式下，产生相关的问题的几率也就更小了。
