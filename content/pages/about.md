@@ -6,7 +6,7 @@ Date: 2012-05-14 21:21
 我是狄敬超，网名 alswl ，大家一般喊我 3D（三谛）。
 alswl 这个词来源于我小时候写的一部小说的主人公。
 
-目前我在蚂蚁金服工作，如果你对蚂蚁感兴趣，你可以直接在 BOSS 直聘发起应聘：
+目前我在蚂蚁金服工作，如果你对蚂蚁感兴趣，你可以直接在 BOSS 直聘发起应聘或者给我发邮件，邮件必回：
 
 *   [【高级 Java 开发工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/83472999a97c4f061HR_2Ny-Fls~.html)
 *   [【高级 Java 开发工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/33a712ef5b779d361HR_2Ny-EFQ~.html)
