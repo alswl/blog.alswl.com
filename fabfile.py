@@ -3,8 +3,8 @@
 import os
 import sys
 from datetime import datetime
-import SimpleHTTPServer
-import SocketServer
+import http.server
+import socketserver
 
 from fabric.api import *
 import fabric.contrib.project as project
@@ -61,10 +61,10 @@ def serve():
     os.chdir(env.deploy_path)
 
     PORT = 8000
-    class AddressReuseTCPServer(SocketServer.TCPServer):
+    class AddressReuseTCPServer(socketserver.TCPServer):
         allow_reuse_address = True
 
-    server = AddressReuseTCPServer(('127.0.0.1', PORT), SimpleHTTPServer.SimpleHTTPRequestHandler)
+    server = AddressReuseTCPServer(('127.0.0.1', PORT), http.server.SimpleHTTPRequestHandler)
 
     sys.stderr.write('Serving on port {0} ...\n'.format(PORT))
     server.serve_forever()
