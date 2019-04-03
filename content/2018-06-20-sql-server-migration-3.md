@@ -5,6 +5,12 @@ Date: 2018-06-20 20:18:52
 Tags: SQLServer, MySQL, DB-Migration
 Category: Coding
 
+该系列三篇文章已经全部完成：
+
+*   [从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D](https://blog.alswl.com/2018/03/sql-server-migration-1/)
+*   [从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D](https://blog.alswl.com/2018/05/sql-server-migration-2/)
+*   [从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D](https://blog.alswl.com/2018/06/sql-server-migration-3/)
+
 ![201806/refactor.png](https://4ocf5n.dijingchao.com/upload_dropbox/201806/refactor.png)
 
 我们用了两章文章
