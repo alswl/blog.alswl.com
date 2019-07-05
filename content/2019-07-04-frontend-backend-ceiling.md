@@ -8,7 +8,7 @@ Category: Thinking
 > 在阿里，我们不得不承认一个事实：前端的确有价值，但放在全局来看，前端产生的价值并非核心价值。 在阿里，虽然前端的工作已
 > 经不可或缺，但对大公司而言，不可或缺的岗位多了去呢，不可或缺不代表有核心价值，我就不说了。
 >
-> \- 玉伯 [阿里前端的困局与突围](https://github.com/lifesinger/blog/issues/141)
+> \- 玉伯 2013 年 [阿里前端的困局与突围](https://github.com/lifesinger/blog/issues/141)
 
 
 <!--![ceilling.png](./2019-07-04-frontend-backend-ceiling.md.assets/ceilling.png)-->
