@@ -1,4 +1,4 @@
-Title: 从前端后端天花板论技术壁垒
+Title: 漫谈前后端天花板
 Author: alswl
 Slug: frontend-backend-ceiling
 Date: 2019-07-04 19:58:28
@@ -15,6 +15,8 @@ Category: Thinking
 ![ceilling](https://4ocf5n.dijingchao.com/upload_dropbox/201907/ceilling.jpg)
 
 <small>image from [Abbey Arches Architecture - Free photo on Pixabay](https://pixabay.com/photos/abbey-arches-architecture-building-1851493/)</small>
+
+<!-- more -->
 
 
 ## 和 G 总论道
