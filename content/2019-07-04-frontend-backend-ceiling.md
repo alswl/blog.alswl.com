@@ -11,7 +11,6 @@ Category: Thinking
 > \- 玉伯 2013 年 [阿里前端的困局与突围](https://github.com/lifesinger/blog/issues/141)
 
 
-<!--![ceilling.png](./2019-07-04-frontend-backend-ceiling.md.assets/ceilling.png)-->
 ![ceilling](https://4ocf5n.dijingchao.com/upload_dropbox/201907/ceilling.jpg)
 
 <small>image from [Abbey Arches Architecture - Free photo on Pixabay](https://pixabay.com/photos/abbey-arches-architecture-building-1851493/)</small>
@@ -25,9 +24,9 @@ Category: Thinking
 我表达了自己观点：后端职业天花板更高，这是由职能细分决定。
 
 后端（服务端）概念比较宽泛，常见分类可以有应用开发工程师、中间件工程师、甚至可以包含运维、数据工程师、算法工程师。
-这里我只将后端工程师限定在应用开发工程师以及衍生的框架、库开发工程师。
+本文我只将后端工程师限定在应用开发工程师以及衍生的框架、库开发工程师。
 前端这边由于引入大前端概念，概念也比较广，包含：Web 前端、移动端（iOS + Android 客户端）、桌面端（PC 端）。
-这里我们也限定在这几个方向的应用开发。
+我们也限定在这几个方向的应用开发。
 
 有些同学可能不服气，现在基于 Node.js 也能写后端应用，并且已经有越来越多成熟产品。
 单页应用推动了 React / React Native / Vue 等技术发展，这类前端框架也需要基于 MVC / MVVM 设计模式管理复杂数据流。
@@ -45,7 +44,7 @@ Category: Thinking
 
 ## 技术复杂度
 
-为了避免争执，我们先来看看如何评估一项技术复杂度，这里拎出三个衡量技术复杂度维度：
+为了避免争执，我们先来看看如何评估一项技术复杂度，拎出三个衡量技术复杂度维度：
 
 -   业务复杂度（业务结构复杂度、业务类型复杂度、逻辑复杂度、流程复杂度、颗粒度 x 关联业务复杂度、外部系统合作复杂度）
     -   量化指标：模型数量、模型属性数量、业务流程长度、业务条件分支数量、外部合作系统数量
@@ -54,7 +53,7 @@ Category: Thinking
 -   服务时效性（对外提供服务 SLA）
     -   量化指标：状态数量、面向个体服务时间、面向群体服务时间、在线要求可用率
 
-由于服务时效性是一个动态概念，这里先基于业务复杂度和数据量复杂度画个简图：
+由于服务时效性是一个动态概念，先基于业务复杂度和数据量复杂度画个简图：
 
 ```
     ^
@@ -125,8 +124,9 @@ Category: Thinking
 -   服务上下游：形成前端中台，比如无痕数据打点系统，飞冰、AntDesign（包括集团内部 BigFish / Basement）
 -   服务前端：从服务业务变为服务其他前端工程师，提供前端框架、Hybrid 框架、工具链、CICD 系统服务
 
-PS：前端还有一类发力方向 - 复杂 UI 产品，比如 Web Editor，Google Doc、Office Online，
-但是这类应用数量较少，开发技能点和常见应用开发差异较大，有志之士可以去挑战。
+PS：前端还有一类发力方向 - 复杂 UI 产品，比如 Web Editor，Google Doc、Office Online。
+随着大前端发展，这方面的空间已经大大扩充，Web / App 前端已经可以基于 Flutter / Electronic 等技术做 PC 端应用。
+但这类应用数量较少，开发技能点和常见应用开发差异较大，不作为常规路线讨论。
 
 我给前端同学的建议：
 
