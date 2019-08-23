@@ -11,6 +11,7 @@ SITENAME = u'Log4D'
 SITEURL = 'http://127.0.0.1:8000'
 
 PATH = 'content'
+CACHE_CONTENT = True
 
 THEME = 'pelican-bootstrap3'
 
@@ -25,7 +26,7 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
 PLUGIN_PATHS = [os.path.join(os.environ.get('HOME'),
-                             'dev/project/python/pelican-plugins')]
+                             'dev/project/pelican-plugins')]
 PLUGINS = [
     'pelican-toc',
     'summary',
@@ -34,6 +35,7 @@ PLUGINS = [
     'minify',
     'yuicompressor',
     'table_with_div',
+    'render_math',
 ]
 TOC = {
     'TOC_HEADERS': '^h[2-4]',
