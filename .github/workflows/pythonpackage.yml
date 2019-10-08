@@ -37,6 +37,14 @@ jobs:
     - name: Config yui-compressor
       run: |
         echo -e "\nYUICOMPRESSOR_EXECUTABLE = 'yui-compressor'\n" >> pelicanconf.py
-    - name: fab build
+    - name: build
       run: |
-        fab build
+        fab preview
+    - name: Build and Deploy
+        uses: JamesIves/github-pages-deploy-action@master
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BASE_BRANCH: master # The branch the action should deploy from.
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: output # The folder the action should deploy.
+
