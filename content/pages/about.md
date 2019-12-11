@@ -21,7 +21,7 @@ alswl 这个词来源于我小时候写的一部小说的主人公。
 
 ## Tag
 
-☑Coding ☑ SRE ☑Mac/Linux ☑IDEA/Vim ☑Java/Python ☑ErgoDox ☑alswl.com ☑使用正版软件 ☑明骚 ☑冬笋/小笼包/油爆小草虾
+☑Coding Monkey ☑ SRE ☑macOS/Arch Linux ☑IDEA/Vim ☑Java/Python ☑ErgoDox ☑alswl.com ☑使用正版软件 ☑明骚 ☑冬笋/小笼包/油爆小草虾
 
 
 ## 博客记录
