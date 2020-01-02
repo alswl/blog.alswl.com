@@ -45,26 +45,27 @@ alswl 这个词来源于我小时候写的一部小说的主人公。
 
 ## 我常使用的线上服务（推介链接）
 
-*   [Toodledo](http://www.toodledo.com/index.php?ref=td4d1aebdd0f59e)
-    2010 年使用至今的 GTD 软件，2015 成为付费用户。纯正 GTD 实现，Matrix 自定义搜索，Open API 全功能可用
-*   [Evernote](https://www.evernote.com/referral/Registration.action?sig=9035c924a08140f7f5de825e5d69770fdcbe64ec51230f3d7df091c72628a2d7&uid=3580216)
-    2010 年使用至今的笔记软件，Note 软件届的 Big Father。
-*   [Dropbox](http://db.tt/vQqCGcl)
-    自 2009 年使用至今，小文件云存储服务
-*   [RescueTime](https://www.rescuetime.com/ref/1328871)
-    自 2016 使用至今，帮助记录时间耗用，从而提高效率的记录工具
-*   [Shadowsocks](https://portal.shadowsocks.nl/aff.php?aff=4215)
-    自 2015 使用至今，还不错的 XX 工具
-*   [Sentry](https://getsentry.com/signup/r_D1W_/) 还不错的 Python Log 收集管理工具
-*   [Qiniu](https://portal.qiniu.com/signup?code=3lktq7rq4uhxs)
-    自 2012 使用至今的云存储，本博客图片由七牛云存储并加速
-*   [Linode](http://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c)
-    老牌 VPS，使用超过 3 年
-*   [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
-    曾使用 2 年，可能是性价比最高的 VPS
-*   [美团云](https://www.mtyun.com/r/96cede1251)
-    自 2017 年使用至今的云服务，全量备份数据。美团云的对象存储和 S3 的 API 兼容度是我测试下来最高的
-*   [V2EX](http://www.v2ex.com/?r=alswl) 创意工作者聚集地
+- [Toodledo](http://www.toodledo.com/index.php?ref=td4d1aebdd0f59e)
+  2010 年使用至今的 GTD 软件，2015 成为付费用户。纯正 GTD 实现，Matrix 自定义搜索，Open API 全功能可用
+- [Evernote](https://www.evernote.com/referral/Registration.action?sig=9035c924a08140f7f5de825e5d69770fdcbe64ec51230f3d7df091c72628a2d7&uid=3580216)
+  2010 年使用至今的笔记软件，Note 软件届的 Big Father。
+- [Dropbox](http://db.tt/vQqCGcl)
+  自 2009 年使用至今，小文件云存储服务
+- [RescueTime](https://www.rescuetime.com/ref/1328871)
+  自 2016 使用至今，帮助记录时间耗用，从而提高效率的记录工具
+- [Shadowsocks](https://portal.shadowsocks.nl/aff.php?aff=4215)
+  自 2015 使用至今，还不错的 XX 工具
+- [Sentry](https://getsentry.com/signup/r_D1W_/) 还不错的 Python Log 收集管理工具
+- [Qiniu](https://portal.qiniu.com/signup?code=3lktq7rq4uhxs)
+  自 2012 使用至今的云存储，本博客图片由七牛云存储并加速
+- [Linode](http://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c)
+  老牌 VPS，使用超过 3 年
+- [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
+  曾使用 2 年，可能是性价比最高的 VPS
+- [美团云](https://www.mtyun.com/r/96cede1251)
+  自 2017 年使用至今的云服务，全量备份数据。美团云的对象存储和 S3 的 API 兼容度是我测试下来最高的
+- [V2EX](http://www.v2ex.com/?r=alswl) 创意工作者聚集地
+- [Name.com](https://www.name.com/referral/2149a6) 我使用的域名注册、抢注服务
 
 
 ## 找到我
