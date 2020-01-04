@@ -28,6 +28,8 @@ DROPBOX_DIR=~/Dropbox/Public/
 GITHUB_PAGES_BRANCH=gh-pages
 CODING_PAGES_BRANCH=coding-pages
 
+THEME=/Users/alswl/dev/myproject/pelican-bootstrap3
+
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)
 	PELICANOPTS += -D
@@ -57,6 +59,7 @@ help:
 	@echo '   make s3_upload                      upload the web site via S3         '
 	@echo '   make cf_upload                      upload the web site via Cloud Files'
 	@echo '   make github                         upload the web site via gh-pages   '
+	@echo '   make pyenv                          make python env   '
 	@echo '                                                                          '
 	@echo 'Set the DEBUG variable to 1 to enable debugging, e.g. make DEBUG=1 html   '
 	@echo 'Set the RELATIVE variable to 1 to enable relative urls                    '
@@ -126,4 +129,13 @@ coding: publish
 	ghp-import -m "Generate Pelican site" -b $(CODING_PAGES_BRANCH) $(OUTPUTDIR)
 	git push -f coding $(CODING_PAGES_BRANCH)
 
-.PHONY: html help clean regenerate serve serve-global devserver stopserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github coding
+pyenv:
+	env_name=$$(basename $$(pwd))
+	virtualenv -p /usr/local/bin/python3 $${HOME}/.virtualenvs/$(env_name)
+	source $${HOME}/.virtualenvs/$(env_name)/bin/activate
+	pip install -r requirements.txt
+
+theme:
+	pelican-themes -U $(THEME)
+
+.PHONY: html help clean regenerate serve serve-global devserver stopserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github coding pyenv
