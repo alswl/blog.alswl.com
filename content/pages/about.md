@@ -6,22 +6,9 @@ Date: 2012-05-14 21:21
 我是狄敬超，网名 alswl ，大家一般喊我 3D（三谛）。
 alswl 这个词来源于我小时候写的一部小说的主人公。
 
-目前我在蚂蚁金服工作，如果你对蚂蚁感兴趣，你可以直接在 BOSS 直聘发起应聘或者给我发邮件，邮件必回：
-
-- [【高级 Java 开发工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/83472999a97c4f061HR_2Ny-Fls~.html)
-- [【高级 Java 开发工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/33a712ef5b779d361HR_2Ny-EFQ~.html)
-- [【DevOps 高级运维开发工程师招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/99115cff2794b4f11HR_2Ny8GFs~.html)
-- [【Java 技术专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/a49d22de3563c48b1HR_2d65EFE~.html)
-- [【Java 技术专家招聘】_蚂蚁金服招聘-BOSS直聘](https://www.zhipin.com/job_detail/e1734cf7f992dece1HR_2d6-EVo~.html)
-
-
-如果对上述职位都不感兴趣，还可以看 [其他职位列表](https://job.alibaba.com/zhaopin/index.htm) ，
-有看中的加我邮件（alswlx(at)gmail(dot)com），备注「博客招聘」，入职成功有惊喜，欢迎同行。
-
-
 ## Tag
 
-☑Coding Monkey ☑ SRE ☑macOS/Arch Linux ☑IDEA/Vim ☑Java/Python ☑ErgoDox ☑alswl.com ☑使用正版软件 ☑明骚 ☑冬笋/小笼包/油爆小草虾
+☑Coding Monkey ☑macOS/Arch Linux ☑IDEA/Vim ☑Java/Python ☑ErgoDox ☑alswl.com ☑使用正版软件 ☑明骚 ☑冬笋/小笼包/油爆小草虾
 
 
 ## 博客记录
