@@ -49,8 +49,6 @@ alswl 这个词来源于我小时候写的一部小说的主人公。
   老牌 VPS，使用超过 3 年
 - [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
   曾使用 2 年，可能是性价比最高的 VPS
-- [美团云](https://www.mtyun.com/r/96cede1251)
-  自 2017 年使用至今的云服务，全量备份数据。美团云的对象存储和 S3 的 API 兼容度是我测试下来最高的
 - [V2EX](http://www.v2ex.com/?r=alswl) 创意工作者聚集地
 - [Name.com](https://www.name.com/referral/2149a6) 我使用的域名注册、抢注服务
 
