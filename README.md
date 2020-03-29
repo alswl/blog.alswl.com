@@ -9,10 +9,32 @@ This is my blog.
 
 ## Command
 
-*   `fab new_post:'new post name'`  # new post
-*   `fab build`  # build for local
-*   `fab server`  # run in localhost
-*   `fab publish`  # deploy to remote
+Init:
+
+```
+mkvirtualenv -p /usr/local/bin/python3 blog.alswl.com
+pip install -r requirements.txt
+pelican-themes -U $HOME/dev/myproject/pelican-bootstrap3
+```
+
+
+- `fab new_post:'new post name'`  # new post
+- `fab build`  # build for local
+- `fab server`  # run in localhost
+- `fab publish`  # deploy to remote
+
+
+```
+make regenerate
+make devserver
+open http://127.0.0.1:8000/
+
+make coding
+```
+
+## TODO
+
+- Fix indent of pelican must use four space.
 
 
 ## Tips

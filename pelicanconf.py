@@ -32,8 +32,8 @@ PLUGINS = [
     'summary',
     'footer_insert',
     'feed_footer_insert',
-    'minify',
-    'yuicompressor',
+    #  'minify',
+    #  'yuicompressor',  # disable for dev
     'table_with_div',
     'render_math',
 ]
@@ -102,6 +102,14 @@ DISQUS_SITENAME = ''
 GOOGLE_ANALYTICS = 'UA-8822123-3'
 
 # Plugins
+
+PANDOC_ARGS = [
+  '--mathjax',
+  '--smart',
+  '--toc',
+  '--toc-depth=2',
+  '--number-sections',
+]
 
 SUMMARY_END_MARKER = '<!-- more -->'
 

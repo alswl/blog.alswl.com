@@ -18,6 +18,17 @@ RELATIVE_URLS = False
 
 DELETE_OUTPUT_DIRECTORY = True
 
+PLUGINS = [
+    'pelican-toc',
+    'summary',
+    'footer_insert',
+    'feed_footer_insert',
+    'minify',
+    'yuicompressor',
+    'table_with_div',
+    'render_math',
+]
+
 # Following items are often useful when publishing
 
 DISQUS_SITENAME = "log4d"
