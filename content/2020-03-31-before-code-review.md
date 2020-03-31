@@ -1,6 +1,6 @@
 Title: 浅谈 Code Review 之事前准备
 Author: alswl
-Slug: before code review
+Slug: before-code-review
 Date: 2020-03-31 12:13
 Tags: Code-Review
 Category: Coding
