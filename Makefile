@@ -143,6 +143,6 @@ theme:
 new_post: name=""
 new_post: name_canonical=$(shell env echo $(name) | sed 's/ /-/g')
 new_post:
-	echo "Title: \nAuthor: \nSlug: $(name)\nDate: $(DATE_TIME_TODAY)\nTags: \nCategory: \n" >> content/$(DATE_TODAY)-$(name_canonical).md
+	echo "Title: $(name)\nAuthor: \nSlug: $(name_canonical)\nDate: $(DATE_TIME_TODAY)\nTags: \nCategory: \n" >> content/$(DATE_TODAY)-$(name_canonical).md
 
 .PHONY: html help clean regenerate serve serve-global devserver stopserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github coding pyenv new_post
