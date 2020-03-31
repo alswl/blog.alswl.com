@@ -5,7 +5,7 @@ Date: 2020-03-31 12:13
 Tags: Code-Review
 Category: Coding
 
-![computer(image from pixabay)](https://4ocf5n.dijingchao.com/upload_dropbox/202003/computer.jpg)
+![image from pixabay](https://4ocf5n.dijingchao.com/upload_dropbox/202003/computer.jpg)
 
 随着业务规模扩大、团队组成变复杂，如何降低项目实施风险，降低软件复杂度变得尤为关键。
 我从 Martin Flower、Joel Spolsky（[软件随想录](https://book.douban.com/subject/4163938/) 作者）
@@ -25,7 +25,7 @@ Category: Coding
 
 ## 评估团队成熟度
 
-![team(image from pixabay)](https://4ocf5n.dijingchao.com/upload_dropbox/202003/team.jpg)
+![image from pixabay](https://4ocf5n.dijingchao.com/upload_dropbox/202003/team.jpg)
 
 不管是在一个遗留系统上推广 Code Review，还是在一个新团队推广 Code Review，
 起手式不是立马挽起袖子猛干，而是应当观察一下当前所处情况是否允许自己推动这个「艰巨」任务。
@@ -54,7 +54,7 @@ Category: Coding
 
 ## 构建「好代码」共识
 
-![book(image from pixabay)](https://4ocf5n.dijingchao.com/upload_dropbox/202003/book.jpg)
+![image from pixabay](https://4ocf5n.dijingchao.com/upload_dropbox/202003/book.jpg)
 
 Code Review 核心产出物是代码，如何界定代码是好是坏就至关重要。
 根据 Bjarne（「C++ Programming Language」作者）、Grady Booch（「面向对象分析与设计」作者）等人定义，
@@ -123,7 +123,7 @@ Code Review 核心产出物是代码，如何界定代码是好是坏就至关�
 
 ## Code Review 沟通协作机制
 
-![teamwork(image from pixabay)](https://4ocf5n.dijingchao.com/upload_dropbox/202003/teamwork.jpg)
+![image from pixabay](https://4ocf5n.dijingchao.com/upload_dropbox/202003/teamwork.jpg)
 
 除了工程规约，还有一件事情往往会被忽略，如何解决冲突？
 这个冲突不是指代码 Conflict，而是面对技术方案决策时候交流讨论。

@@ -238,18 +238,17 @@ etc/syslog.conf:
 注意，这项参数配置完之后需要重启。
 
 
- [main.cf]: http://www.postfix.org/postconf.5.html
- [master.cf]: http://www.postfix.org/master.5.html
- [安装方法]: http://www.postfix.org/INSTALL.html
- [标准配置说明]: http://www.postfix.org/STANDARD_CONFIGURATION_README.html
- [DATABASE 介绍]: http://www.postfix.org/DATABASE_README.html
- [myorigin]: http://www.postfix.org/postconf.5.html#myorigin
- [mydestination]: http://www.postfix.org/postconf.5.html#mydestination
- [mynetworks]: http://www.postfix.org/postconf.5.html#mynetworks
- [mydestination]: http://www.postfix.org/postconf.5.html#mynetworks
- [relay host]: http://www.postfix.org/postconf.5.html#relayhost
- [aliases]: http://www.postfix.org/aliases.5.html
- [proxy_interfaces]: http://www.postfix.org/postconf.5.html#proxy_interfaces
- [myhostname]: http://www.postfix.org/postconf.5.html#myhostname
- [mydomain]: http://www.postfix.org/postconf.5.html#mydomain
- [inet_interfaces]: http://www.postfix.org/postconf.5.html#inet_interfaces
+[main.cf]: http://www.postfix.org/postconf.5.html
+[master.cf]: http://www.postfix.org/master.5.html
+[安装方法]: http://www.postfix.org/INSTALL.html
+[标准配置说明]: http://www.postfix.org/STANDARD_CONFIGURATION_README.html
+[DATABASE 介绍]: http://www.postfix.org/DATABASE_README.html
+[myorigin]: http://www.postfix.org/postconf.5.html#myorigin
+[mynetworks]: http://www.postfix.org/postconf.5.html#mynetworks
+[mydestination]: http://www.postfix.org/postconf.5.html#mynetworks
+[relay host]: http://www.postfix.org/postconf.5.html#relayhost
+[aliases]: http://www.postfix.org/aliases.5.html
+[proxy_interfaces]: http://www.postfix.org/postconf.5.html#proxy_interfaces
+[myhostname]: http://www.postfix.org/postconf.5.html#myhostname
+[mydomain]: http://www.postfix.org/postconf.5.html#mydomain
+[inet_interfaces]: http://www.postfix.org/postconf.5.html#inet_interfaces
