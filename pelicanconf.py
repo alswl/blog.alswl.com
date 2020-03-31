@@ -36,6 +36,7 @@ PLUGINS = [
     #  'yuicompressor',  # disable for dev
     'table_with_div',
     'render_math',
+    'pandoc_reader',
 ]
 TOC = {
     'TOC_HEADERS': '^h[2-4]',
@@ -105,10 +106,7 @@ GOOGLE_ANALYTICS = 'UA-8822123-3'
 
 PANDOC_ARGS = [
   '--mathjax',
-  '--smart',
   '--toc',
-  '--toc-depth=2',
-  '--number-sections',
 ]
 
 SUMMARY_END_MARKER = '<!-- more -->'

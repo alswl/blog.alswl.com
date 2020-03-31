@@ -27,6 +27,7 @@ PLUGINS = [
     'yuicompressor',
     'table_with_div',
     'render_math',
+    'pandoc_reader',
 ]
 
 # Following items are often useful when publishing

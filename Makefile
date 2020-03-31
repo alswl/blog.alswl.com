@@ -28,7 +28,7 @@ DROPBOX_DIR=~/Dropbox/Public/
 GITHUB_PAGES_BRANCH=gh-pages
 CODING_PAGES_BRANCH=coding-pages
 
-THEME=/Users/alswl/dev/myproject/pelican-bootstrap3
+THEME=$(HOME)/dev/myproject/pelican-bootstrap3
 
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)
@@ -39,6 +39,9 @@ RELATIVE ?= 0
 ifeq ($(RELATIVE), 1)
 	PELICANOPTS += --relative-urls
 endif
+
+DATE_TIME_TODAY = $(shell date "+%Y-%m-%d %H:%M")
+DATE_TODAY = $(shell date +%Y-%m-%d)
 
 help:
 	@echo 'Makefile for a pelican Web site                                           '
@@ -132,10 +135,14 @@ coding: publish
 pyenv:
 	env_name=$$(basename $$(pwd))
 	virtualenv -p /usr/local/bin/python3 $${HOME}/.virtualenvs/$(env_name)
-	source $${HOME}/.virtualenvs/$(env_name)/bin/activate
-	pip install -r requirements.txt
+	(source $${HOME}/.virtualenvs/$(env_name)/bin/activate; pip install -r requirements.txt)
 
 theme:
 	pelican-themes -U $(THEME)
 
-.PHONY: html help clean regenerate serve serve-global devserver stopserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github coding pyenv
+new_post: name=""
+new_post: name_canonical=$(shell env echo $(name) | sed 's/ /-/g')
+new_post:
+	echo "Title: \nAuthor: \nSlug: $(name)\nDate: $(DATE_TIME_TODAY)\nTags: \nCategory: \n" >> content/$(DATE_TODAY)-$(name_canonical).md
+
+.PHONY: html help clean regenerate serve serve-global devserver stopserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github coding pyenv new_post

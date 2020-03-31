@@ -25,6 +25,8 @@ pelican-themes -U $HOME/dev/myproject/pelican-bootstrap3
 
 
 ```
+make name="your post name" new_post
+
 make regenerate
 make devserver
 open http://127.0.0.1:8000/
@@ -38,6 +40,8 @@ make coding
 
 
 ## Tips
+
+Asset prefix: `https://4ocf5n.dijingchao.com/upload_dropbox/`
 
 Article footer:
 
