@@ -40,7 +40,7 @@ alswl 这个词来源于我小时候写的一部小说的主人公。
   自 2009 年使用至今，小文件云存储服务
 - [RescueTime](https://www.rescuetime.com/ref/1328871)
   自 2016 使用至今，帮助记录时间耗用，从而提高效率的记录工具
-- [Shadowsocks](https://portal.shadowsocks.nl/aff.php?aff=4215)
+- [Shadowsocks](https://portal.shadowsocks.nz/aff.php?aff=4215)
   自 2015 使用至今，还不错的 XX 工具
 - [Sentry](https://getsentry.com/signup/r_D1W_/) 还不错的 Python Log 收集管理工具
 - [Qiniu](https://portal.qiniu.com/signup?code=3lktq7rq4uhxs)
