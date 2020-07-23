@@ -3,7 +3,7 @@ Slug: about
 Author: alswl
 Date: 2012-05-14 21:21
 
-我是狄敬超，网名 alswl ，大家一般喊我 3D（三谛）。
+我是狄敬超，网名 alswl ，大家一般喊我 3D。
 alswl 这个词来源于我小时候写的一部小说的主人公。
 
 ## Tag
