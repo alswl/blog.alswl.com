@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Ajax 好玩的拖拽（顺便测试chrome下文字编辑的代码高亮） - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/02/ajax-drag-and-drop-fun-the-way-chrome-test-the-code-under-the-highlighted-text-editor-search/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="WebFront,AJAX" />
+        <meta name="description" content="HTML语言: ajax 拖拽 New Document body { margin:10px; } #dragHelper { position:absolute;/*重要*/ border:2px dashed #000000; background-color:#FFFFFF; filter: alpha(opacity=30); } .normal { position:absolute;/*重要*/ width:300px; #height:10px; border:1px solid #666666; background-color:#FFFFFF; } .over { position:absolute;/*重要*/ width:300px; #height:10px; border:1px solid #666666; background-color:#f3f3f3 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/02/ajax-drag-and-drop-fun-the-way-chrome-test-the-code-under-the-highlighted-text-editor-search/"
+                       rel="bookmark"
+                       title="Permalink to Ajax 好玩的拖拽（顺便测试chrome下文字编辑的代码高亮）">
+                        Ajax 好玩的拖拽（顺便测试chrome下文字编辑的代码高亮）
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-02-26T00:00:00+08:00"> 2009-02-26</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/webfront/">WebFront</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/ajax/">AJAX</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p><em>HTML语言</em>: <a href="http://www.fayaa.com/code/view//">ajax 拖拽</a></p>
+<html>
+<head>
+<title>
+New Document
+</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<style type="text/css">
+
+body
+
+{
+
+margin:10px;
+
+}
+
+  
+  
+#dragHelper
+
+{
+
+position:absolute;/*重要*/
+
+border:2px dashed #000000;
+
+background-color:#FFFFFF;
+
+filter: alpha(opacity=30);
+
+}
+
+  
+  
+.normal
+
+{
+
+position:absolute;/*重要*/
+
+width:300px;
+
+#height:10px;
+
+border:1px solid #666666;
+
+background-color:#FFFFFF;
+
+}
+
+  
+  
+.over
+
+{
+
+position:absolute;/*重要*/
+
+width:300px;
+
+#height:10px;
+
+border:1px solid #666666;
+
+background-color:#f3f3f3;
+
+filter: alpha(opacity=50);
+
+}
+
+  
+  
+.dragArea {
+
+CURSOR: move;
+
+}
+
+  
+  
+</style>
+</head>
+<body oncontextmenu="window.event.returnValue=false">
+<p><input id="evt" name="eventValue" size="40" type="text"/></p>
+<div id="dragHelper" style="display:none">
+</div>
+<div class="normal" data-dragclass="normal" data-overclass="over">
+<div style="overflow-x: auto;"><table width="100%">
+<tbody>
+<tr bar="yes" bgcolor="#CCCCCC">
+<td>
+<a href="#">Cobao</a>
+</td>
+<td class="dragArea" dragarea="yes">
+……..
+</td>
+<td>
+&lt;a href=“#” color: rgb(170,85,0)&gt;“openClose(this)”&gt;-</td></tr></tbody></table></div></div></body></html> x
+
+
+<tr>
+<td colspan="3">
+地址:http://www.svnhost.cn
+</td>
+</tr>
+<tr>
+<td colspan="3">
+关键字:<a href="http://www.svnhost.cn">SVN托管</a>
+</td>
+</tr>
+<tr>
+<td colspan="3">
+说明:
+</td>
+</tr>
+<div class="normal" data-dragclass="normal" data-overclass="over">
+<div style="overflow-x: auto;"><table width="100%">
+<tbody>
+<tr bar="yes" bgcolor="#CCCCCC">
+<td>
+新浪
+</td>
+<td class="dragArea" dragarea="yes">
+……..
+</td>
+<td>
+&lt;a href=“#” color: rgb(170,85,0)&gt;“openClose(this)”&gt;-</td></tr></tbody></table></div></div> x
+
+
+<tr>
+<td colspan="3">
+地址:http://www.sina.com.cn
+</td>
+</tr>
+<tr>
+<td colspan="3">
+关键字:<a href="http://www.svnhost.cn">SVN托管</a>
+</td>
+</tr>
+<tr>
+<td colspan="3">
+说明:
+</td>
+</tr>
+<div class="normal" data-dragclass="normal" data-overclass="over">
+<div style="overflow-x: auto;"><table width="100%">
+<tbody>
+<tr bar="yes" bgcolor="#CCCCCC">
+<td>
+网易
+</td>
+<td class="dragArea" dragarea="yes">
+……..
+</td>
+<td>
+&lt;a href=“#” color: rgb(170,85,0)&gt;“openClose(this)”&gt;-</td></tr></tbody></table></div></div> x
+
+
+<tr>
+<td colspan="3">
+地址:http://www.163.com
+</td>
+</tr>
+<tr>
+<td colspan="3">
+关键字:<a href="http://www.svnhost.cn">SVN托管</a>
+</td>
+</tr>
+<tr>
+<td colspan="3">
+说明:
+</td>
+</tr>
+<script language="JavaScript">
+
+<!--
+
+var dragObjs = []; //可以拖拽的元素数组
+
+var dragObjTops = [];
+
+  
+  
+var dragHelper = document.getElementById("dragHelper"); //拖拽时位置框
+
+var dragObj = null; //拖拽对象元素
+
+var dragObjPos = 0;
+
+  
+  
+var dragObjOffset = {left:0,top:0}; //拖拽对象原始位置
+
+var mouseInDragObjOffset = {x:0,y:0}; //鼠标在拖拽对象中的相对位置
+
+  
+  
+var initHeight = 40;
+
+  
+  
+Number.prototype.NaN0=function(){return isNaN(this)?0:this;}
+
+  
+  
+function getPosition(e){ //获取元素相对文档的绝对位置
+
+var left = 0;
+
+var top = 0;
+
+while (e.offsetParent){
+
+left += e.offsetLeft;
+
+top += e.offsetTop;
+
+e = e.offsetParent;
+
+}
+
+  
+  
+left += e.offsetLeft;
+
+top += e.offsetTop;
+
+  
+  
+return {x:left, y:top};
+
+  
+  
+}
+
+  
+  
+function mouseCoords(ev){ //获取鼠标相对文档的绝对位置
+
+if(ev.pageX || ev.pageY){
+
+return {x:ev.pageX, y:ev.pageY};
+
+}
+
+return {
+
+x:ev.clientX + document.body.scrollLeft - document.body.clientLeft,
+
+y:ev.clientY + document.body.scrollTop - document.body.clientTop
+
+};
+
+}
+
+  
+  
+function getMouseOffset(target, ev){ // 获取鼠标相对元素的相对位置
+
+ev = ev || window.event;
+
+  
+  
+var elementPos = getPosition(target);
+
+var mousePos = mouseCoords(ev);
+
+return {x:mousePos.x - elementPos.x, y:mousePos.y - elementPos.y};
+
+}
+
+  
+  
+function mouseDown(ev){
+
+ev = ev || window.event;
+
+target = ev.srcElement || ev.target;
+
+  
+  
+if(dragObj){
+
+return;
+
+}
+
+  
+  
+  
+var dragArea = false;
+
+if(target.getAttribute("dragArea")){
+
+dragArea = true;
+
+}
+
+  
+  
+while(!target.getAttribute("isDragObj")){
+
+if(target.tagName=="HTML")
+
+break;
+
+target = target.parentNode;
+
+}
+
+  
+  
+if(dragArea && target.getAttribute("isDragObj")){
+
+dragObj = target;
+
+//重写的目的是让当前对象在最上层
+
+document.body.removeChild(dragObj);
+
+document.body.appendChild(dragObj);
+
+  
+  
+//记录下拖拽对象原始位置
+
+dragObjOffset.left = dragObj.style.left;
+
+dragObjOffset.top = dragObj.style.top;
+
+  
+  
+dragObj.className = dragObj.getAttribute("overClass");
+
+//鼠标在拖拽对象中的相对位置
+
+mouseInDragObjOffset = getMouseOffset(dragObj, ev);
+
+  
+  
+dragHelper.style.left = dragObj.style.left;
+
+dragHelper.style.top = dragObj.style.top;
+
+dragHelper.style.width = dragObj.offsetWidth;
+
+dragHelper.style.height = dragObj.offsetHeight;
+
+dragHelper.style.display = "";
+
+  
+  
+//alert(dragObj.offsetWidth+":"+dragObj.clientWidth);
+
+}
+
+}
+
+  
+  
+function mouseUp(ev){
+
+ev = ev || window.event;
+
+target = ev.srcElement || ev.target;
+
+  
+  
+if(dragObj){
+
+dragObj.style.left = dragHelper.style.left;
+
+dragObj.style.top = dragHelper.style.top;
+
+  
+  
+dragHelper.style.display = "none";
+
+dragObj.className = dragObj.getAttribute("dragClass");
+
+dragObj = null;
+
+}
+
+  
+  
+}
+
+  
+  
+function mouseMove(ev){
+
+ev = ev || window.event;
+
+  
+  
+if(dragObj) {
+
+var mousePos = mouseCoords(ev);
+
+  
+/*dragHelper.style.left = dragObjOffset.left;
+
+dragHelper.style.top = dragObjOffset.top;
+
+dragHelper.style.width = dragObj.offsetWidth;
+
+dragHelper.style.height = dragObj.offsetHeight;
+
+dragHelper.style.display = "";*/
+
+  
+  
+var windowWidth = document.body.offsetWidth; //窗口宽度
+
+var windowHeight = document.body.offsetHeight; //窗口高度
+
+  
+  
+//拖拽对象应该所在当前位置
+
+var dragObjLeft = mousePos.x - mouseInDragObjOffset.x;
+
+var dragObjTop = mousePos.y - mouseInDragObjOffset.y;
+
+  
+  
+//增加判断，不然拖拽对象拖出浏览器窗口
+
+if(dragObjLeft >= 0 && dragObjLeft <= windowWidth - dragObj.offsetWidth - 20)
+
+dragObj.style.left = dragObjLeft;
+
+  
+  
+if(dragObjTop >=0)
+
+dragObj.style.top = dragObjTop;
+
+  
+  
+repaint();
+
+}
+
+}
+
+  
+  
+//克隆对象
+
+function cloneObject(srcObj, destObj){
+
+destObj = srcObj.cloneNode(true);
+
+}
+
+  
+  
+function makeDraggable(element){
+
+element.setAttribute("isDragObj", "y");
+
+}
+
+  
+  
+function repaint(){
+
+for(i=0; i<dragObjs.length; i++){
+
+if(dragObjs[i] == dragObj){
+
+dragObjPos = i;
+
+dragObjs[i] = dragHelper;
+
+break;
+
+}
+
+}
+
+  
+  
+if(dragObjPos>0 &&
+parseInt(dragObj.style.top)<parseInt(dragObjs[dragObjPos-1].style.top)){
+
+dragObjs[dragObjPos] = dragObjs[dragObjPos-1];
+
+dragObjs[dragObjPos-1] = dragHelper;
+
+dragObjPos = dragObjPos - 1;
+
+}
+
+  
+  
+if(dragObjPos<dragObjs.length-1 &&
+parseInt(dragObj.style.top)>parseInt(dragObjs[dragObjPos+1].style.top)){
+
+dragObjs[dragObjPos] = dragObjs[dragObjPos+1];
+
+dragObjs[dragObjPos+1] = dragHelper;
+
+dragObjPos = dragObjPos + 1;
+
+}
+
+paintDragObjs();
+
+dragObjs[dragObjPos] = dragObj;
+
+  
+  
+}
+
+  
+  
+function paintDragObjs(){
+
+var h = 40;
+
+for(i=0; i<dragObjs.length; i++){
+
+dragObjs[i].style.left = 20;
+
+dragObjs[i].style.top = h;
+
+h += dragObjs[i].offsetHeight + 10;
+
+}
+
+}
+
+  
+  
+function openClose(obj){
+
+obj.innerHTML = obj.innerHTML=="-"?"+":"-";
+
+while(obj.tagName != "TBODY"){
+
+obj = obj.parentNode;
+
+}
+
+  
+  
+for(i=0; i<obj.childNodes.length; i++){
+
+if(obj.childNodes[i].nodeName == "#text"
+
+|| obj.childNodes[i].getAttribute("bar")){ continue; }
+
+obj.childNodes[i].style.display=obj.childNodes[i].style.display==""?"none":"";
+
+}
+
+  
+  
+paintDragObjs();
+
+}
+
+  
+  
+document.onmousedown = mouseDown;
+
+document.onmouseup = mouseUp;
+
+document.onmousemove = mouseMove;
+
+  
+  
+window.onload = function(){
+
+var objs = document.getElementsByTagName("Div");
+
+for(i=0; i<objs.length; i++){
+
+var item = objs.item(i);
+
+//if(i==1)item.style.height=150;
+
+if(item.getAttribute("overClass")){
+
+makeDraggable(item);
+
+dragObjs.push(item);
+
+item.style.left = 20;
+
+item.style.top = initHeight;
+
+dragObjTops.push(initHeight);
+
+initHeight += item.offsetHeight + 10;
+
+}
+
+}
+
+  
+  
+// dragHelper = document.createElement('DIV');
+
+// dragHelper.style.cssText = 'position:absolute;display:none;';
+
+// document.body.appendChild(dragHelper);
+
+}
+
+//-->
+
+</script>
+<p>用http://www.fayaa.com/网站提供的在线编辑器做的，找了类似的工具很久，甚至去了FCKEditer网站，不过效果都不怎么理想，这个网站提供 的非常不错，强烈推荐收藏</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/02/ajax-drag-and-drop-fun-the-way-chrome-test-the-code-under-the-highlighted-text-editor-search/">https://blog.alswl.com/2009/02/ajax-drag-and-drop-fun-the-way-chrome-test-the-code-under-the-highlighted-text-editor-search/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

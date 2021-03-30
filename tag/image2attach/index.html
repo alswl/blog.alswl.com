@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>image2attach - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+
+    <meta name="author" content="alswl" />
+    <meta name="keywords" content="image2attach" />
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="Log4D" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Log4D"/>
+        <meta property="og:url" content="http://127.0.0.1:8000"/>
+        <meta property="og:description" content="Log4D"/>
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2012/02/the-write-the-plugins-for-moinmoin/">给MoinMoin写插件</a></h2>
+                <div class="summary"><h2 id="使用-moinmoin">1. 使用 MoinMoin</h2>
+<p>前些日子，我写了一篇<a href="../2011/12/moinmoin-kms">使用MoinMoin作为个人KMS</a> 大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源， 我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。</p>
+<ul>
+<li><a href="http://moinmo.in/MoinDev">MoinMoin开发者wiki地址</a></li>
+<li><a href="http://docs.moinmo.in/">MoinMoin开发API文档（这个官方wiki居然很少提及）</a></li>
+<li><a href="http://moinmo.in/MoinDev/Translation">MoinMoin的多国语翻译组wiki地址</a></li>
+</ul>
+<p>我在使用MoinMoin过程中，有一个急迫需要的功能：</p>
+<blockquote>
+<p>保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。</p>
+</blockquote>
+<p>这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供， 我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。</p>
+<ul>
+<li><a href="http://moinmo.in/MoinMoinExtensions">MoinMoin插件库</a></li>
+<li><a href="http://moinmo.in/ActionMarket/Image2Attach">image2attach在MoinMoin官方Wiki的地址</a></li>
+</ul>
+<p>现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。</p>
+<p>以下内容需要Python编程基础～</p>
+<h2 id="moinmoin-系统结构">2. MoinMoin 系统结构</h2>
+<p>MoinMoin的UML图：</p>
+<figure>
+<img alt="MoinMoin" src="https://4ocf5n.dijingchao.com/upload_dropbox/201202/MoinMoinArchitecture.png"/><figcaption>MoinMoin</figcaption>
+</figure>
+<h2 id="moinmoin-常用对象">3. MoinMoin 常用对象</h2>
+<h3 id="request">3.1. request</h3>
+<p>这个request和普通jsp/asp中request很类似（实际上这个request就是继承 <a href="http://werkzeug.pocoo.org/">werkzeug</a>的Request）。</p>
+<p>除了正常的web request功能 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2012/02/the-write-the-plugins-for-moinmoin/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2011/12/moinmoin-kms/">使用MoinMoin作为个人KMS</a></h2>
+                <div class="summary"><p>去年9月份时候，我写过一篇《<a href="http://log4d.com/2010/09/my-kms">我所使用的知识管理系统</a>》 来介绍我使用的KMS系统。当时经过我层层筛选之后，我选用了Wiz作为我的KMS。</p>
+<p>一年多过去了，Wiz在Windows下面工作的非常不错，Wiz团队里陆续推出了iOS / Android / <a href="http://service.wiz.cn/web/">Web</a>版本。我的Wiz收藏的内容也增加到近1000篇。</p>
+<p>此时我遇到了KMS再选型的问题，原因很简单：我全线转换到Linux平台， Wiz不符合我的要求了。</p>
+<p>我重新整理一下我要求KMS的特性：</p>
+<ul>
+<li>跨平台：Linux / Web / iOS / Android / Windows</li>
+<li>数据保存格式：移植方便，将图片保存到本地</li>
+<li>数据采集方式：支持网络直接拷贝复制</li>
+<li>数据索引：支持分类 + tag</li>
+<li>协同工作：方便的分享机制</li>
+<li>免费</li>
+</ul>
+<p>经过我历时N月的搜寻筛选，MoinMoin Wiki中标了！</p>
+<h2 id="关于moinmoin">1. 关于MoinMoin</h2>
+<p>MoinMoin是使用Python编写的Wiki实现，MoinMoin当前版本1.9。</p>
+<p>MoinMoin的优点是：</p>
+<ul>
+<li>安装简单;</li>
+<li>支持中文全文检索；</li>
+<li>汉化较好；</li>
+<li>不依赖外界的数据库, 使用纯文本保存, 备份非常容易 …</li></ul>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2011/12/moinmoin-kms/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2011/12/moinmoin-plugin-image2attach/">MoinMoin plugin: image2attach</a></h2>
+                <div class="summary"><figure>
+<img alt="MoinMoin" src="https://4ocf5n.dijingchao.com/upload_dropbox/201112/moinmoin.png"/><figcaption>MoinMoin</figcaption>
+</figure>
+<h2 id="whats-this">What&rsquo;s this</h2>
+<p>Image2Attach is a extension for <a href="http://moinmo.in">MoinMoin</a>. It can create a page action to save images from web to page&rsquo;s attachments.</p>
+<h2 id="requirment">Requirment</h2>
+<ul>
+<li>MoinMoin 1.9 (I only test in this version.)</li>
+</ul>
+<h2 id="install">Install</h2>
+<ul>
+<li>copy action/Image2Attach.py to data/plugin/action/</li>
+<li>restart python server</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<p>Go into …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2011/12/moinmoin-plugin-image2attach/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2012 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

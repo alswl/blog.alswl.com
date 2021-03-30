@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>开发跨浏览器JavaScript时要注意的问题 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2010/01/development-of-cross-browser-javascript-should-pay-attention-to-the-problem/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="WebFront,JavaScript" />
+        <meta name="description" content="最近在做系统的B/S部分，用DWR做Ajax处理，期间遇到一些浏览器兼容的问题，table.insertRow()和row.insertCell() 在IE下没有问题，但在FireFox下无效。同事说不用考虑FireFox的兼容，客户使用的环境就是IE。我偏执的认为就算不在所有浏览器下通过，至少在我的Fi reFox下需要正常运行。 晚上花了一点时间稍微研究了一下跨浏览器开发JavaScript时要注意的问题，的确好多学问。我对JavaScript的认识还太浅，得花时间做一些功课了。 顺便推荐一本JavaScript书《JavaScript语言精粹 》，是大名鼎鼎的“O’Reilly”系列，我只看了试读的第一章节，斗胆推荐 在随网之舞的《JavaScript语言精粹》 @ 随网之舞有更详细的介绍。 image 传送门： 购买《JavaScript语言精粹 》via China-Pub 评论 《JavaScript语言精粹》via 豆瓣 样章阅读：第一章. 精华 第十章. 优美的特性 以下文章没有URL出处 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2010/01/development-of-cross-browser-javascript-should-pay-attention-to-the-problem/"
+                       rel="bookmark"
+                       title="Permalink to 开发跨浏览器JavaScript时要注意的问题">
+                        开发跨浏览器JavaScript时要注意的问题
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#向表中追加行" title="1、向表中追加行">1、向表中追加行</a></li><li><a class="toc-href" href="#设置元素的样式" title="2、设置元素的样式">2、设置元素的样式</a></li><li><a class="toc-href" href="#设置元素的class属性" title="3、设置元素的class属性">3、设置元素的class属性</a></li><li><a class="toc-href" href="#创建输入元素" title="4、创建输入元素">4、创建输入元素</a></li><li><a class="toc-href" href="#向输入元素增加事件处理程序" title="5、向输入元素增加事件处理程序">5、向输入元素增加事件处理程序</a></li><li><a class="toc-href" href="#创建单选钮" title="6、创建单选钮">6、创建单选钮</a></li><li><a class="toc-href" href="#insertrowinsertcelldeleterow" title="7、insertRow,insertCell,deleteRow">7、insertRow,insertCell,deleteRow</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2010-01-30T00:00:00+08:00"> 2010-01-30</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/webfront/">WebFront</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/javascript/">JavaScript</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>最近在做系统的B/S部分，用DWR做Ajax处理，期间遇到一些浏览器兼容的问题，<code>table.insertRow()</code>和<code>row.insertCell()</code> 在IE下没有问题，但在FireFox下无效。同事说不用考虑FireFox的兼容，客户使用的环境就是IE。我偏执的认为就算不在所有浏览器下通过，至少在我的Fi reFox下需要正常运行。</p>
+<p>晚上花了一点时间稍微研究了一下跨浏览器开发JavaScript时要注意的问题，的确好多学问。我对JavaScript的认识还太浅，得花时间做一些功课了。</p>
+<p>顺便推荐一本JavaScript书《<strong>JavaScript语言精粹</strong> 》，是大名鼎鼎的“O’Reilly”系列，我只看了试读的第一章节，斗胆推荐</p>
+<p>在<a href="http://dancewithnet.com">随网之舞</a>的<a href="http://dancewithnet.com/2009/04/02/javascript-the-good-parts/">《JavaScript语言精粹》 @ 随网之舞</a>有更详细的介绍。</p>
+<figure>
+<img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/201001/s3651235.jpg"/><figcaption>image</figcaption>
+</figure>
+<p>传送门：</p>
+<p><a href="http://www.china-pub.com/195292">购买</a>《JavaScript语言精粹 》via China-Pub</p>
+<p><a href="http://www.douban.com/subject/3590768/">评论</a> 《JavaScript语言精粹》via 豆瓣</p>
+<p><strong>样章阅读</strong>：<a href="http://images.china-pub.com/ebook195001-200000/195292/ch01.pdf">第一章. 精华</a> <a href="http://images.china-pub.com/ebook195001-200000/195292/ch10.pdf">第十章. 优美的特性</a></p>
+<p>以下文章没有URL出处，作者 liqun，来源：<strike>www.comecode.com</strike>（连接已失效）</p>
+<p>××××××××××想回家的分割线××××××××××</p>
+<h2 id="向表中追加行">1、向表中追加行</h2>
+<p>定义table时使用tbody元素，以保证包括IE在内的所有浏览器可用</p>
+<p>例：定义如下一个空表</p>
+<div style="overflow-x: auto;"><table id="myTable">
+&amp;n bsp_place_holder;
+<tbody id="myTableBody">
+</tbody>
+</table></div>
+<p>向这个表中增加行的正确做法是，把行增加到表体，而不是增加到表。</p>
+<p>Var cell = document.createElement(“td”).appendChild(document.createTextNode(“foo”));</p>
+<p>Var row = document.createElement(“tr”).appendChild(cell);</p>
+<p>Document.getElementById(“myTableBody”).appendChild(row);</p>
+<p>*IE中需要先创建行，再创建列，再创建内容</p>
+<h2 id="设置元素的样式">2、设置元素的样式</h2>
+<p>Var spanElement = document.getElementById(“mySpan”);</p>
+<p>//下面写法保证出IE外，所有浏览器可用</p>
+<p>spanElement.setAttribute(“style”,“font-weight:bold;color:red;”);</p>
+<p>//下面的写法保证IE可用</p>
+<p>spanElement.style.cssText=“font-weight:bold;color:red;”;</p>
+<h2 id="设置元素的class属性">3、设置元素的class属性</h2>
+<p>Var element = document.getElementById(“myElement”);</p>
+<p>//下面的写法保证除IE外，所有浏览器可用</p>
+<p>Element.setAttribute(“class”,“styleClass”);</p>
+<p>//下面写法保证IE可用</p>
+<p>Element.setAttribute(“className”,“styleClass”);</p>
+<h2 id="创建输入元素">4、创建输入元素</h2>
+<p>Var button = document.createElement(“input”);</p>
+<p>//单行文本框、复选框、单选框、单选钮、按钮需要此属性区别</p>
+<p>Button.setAttribute(“type”,“button”);</p>
+<p>Document.getElementById(“formElement”).appendChild(button);</p>
+<h2 id="向输入元素增加事件处理程序">5、向输入元素增加事件处理程序</h2>
+<p>Var formElement=document.getElementById(“formElement”);</p>
+<p>//所有浏览器可用</p>
+<p>formElement.onclick=function(){doFoo();};</p>
+<p>//除IE外，所有浏览器可用</p>
+<p>formElement.setAttribute(“onclick”,“doFoo();”);</p>
+<h2 id="创建单选钮">6、创建单选钮</h2>
+<p>If(document.uniqueID){</p>
+<p>&amp;n bsp_place_holder; //Internet Explorer</p>
+<p>&amp;n bsp_place_holder; Var radioButton=document.createElement(“<input name="radioButton" type="radio" value="checked"/>”);</p>
+<p>}else{</p>
+<p>&amp;n bsp_place_holder; //Standards Compliant</p>
+<p>&amp;n bsp_place_holder; Var radioButton=document.createElement(“input”);</p>
+<p>&amp;n bsp_place_holder; radioButton.setAttribute(“type”,“radio”);</p>
+<p>&amp;n bsp_place_holder; radioButton.setAttribute(“name”,“radioButton”);</p>
+<p>&amp;n bsp_place_holder; radioButton.setAttribute(“value”,“checked”);</p>
+<p>}</p>
+<h2 id="insertrowinsertcelldeleterow">7、insertRow,insertCell,deleteRow</h2>
+<p>在IE中，table.insertRow()如果没有指定参数，则在表格后面添加行，默认参数位-1；如果在Firefox中，则一定要加参数，如：insertR ow(-1)。</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2010/01/development-of-cross-browser-javascript-should-pay-attention-to-the-problem/">https://blog.alswl.com/2010/01/development-of-cross-browser-javascript-should-pay-attention-to-the-problem/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

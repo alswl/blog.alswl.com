@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Log4D改版完成 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2010/04/log4d-revision-completed/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="建站心得,WordPress" />
+        <meta name="description" content="新主题SimpleD也运行 了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD 1.0版。现在缝缝补补到1.3了。 根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在 插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。 一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和 WordPress Basis Theme。 1.Sandbox 下载地址：sandbox-theme - Project Hosting on Google Code sandbox主题中文语言(汉化)包：sandbox主题中文语言(汉化)包 - Kily’s Blog …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2010/04/log4d-revision-completed/"
+                       rel="bookmark"
+                       title="Permalink to Log4D改版完成">
+                        Log4D改版完成
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#一使用框架" title="一、使用框架">一、使用框架</a><ul><li><a class="toc-href" href="#sandbox" title="1.Sandbox">1.Sandbox</a></li><li><a class="toc-href" href="#wordpress-basis-theme" title="2.WordPress Basis Theme">2.WordPress Basis Theme</a></li></ul></li><li><a class="toc-href" href="#二难对付的插件_1" title="二、难对付的插件">二、难对付的插件</a><ul><li><a class="toc-href" href="#首先要保证的插件是邮件回复" title="1.首先要保证的插件是邮件回复">1.首先要保证的插件是邮件回复</a></li><li><a class="toc-href" href="#代码高亮插件" title="2.代码高亮插件">2.代码高亮插件</a></li><li><a class="toc-href" href="#内容编辑器" title="3.内容编辑器">3.内容编辑器</a></li><li><a class="toc-href" href="#移动手持插件" title="4.移动手持插件">4.移动手持插件</a><ul><li><a class="toc-href" href="#wordpress-pda-iphone" title="Wordpress PDA &amp; iPhone。">Wordpress PDA &amp; iPhone。</a></li><li><a class="toc-href" href="#wphone" title="WPhone">WPhone</a></li><li><a class="toc-href" href="#mobile-pack最后出现的显然是胜利者了" title="Mobile Pack（最后出现的显然是胜利者了）">Mobile Pack（最后出现的显然是胜利者了）</a></li></ul></li></ul></li><li><a class="toc-href" href="#last_2" title="Last、">Last、</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2010-04-14T00:00:00+08:00"> 2010-04-14</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/jian-zhan-xin-de/">建站心得</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/wordpress/">WordPress</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p><img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/201004/log4d_screenshot.png"/>新主题SimpleD也运行 了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD 1.0版。现在缝缝补补到1.3了。</p>
+<p>根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在 插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。</p>
+<h2 id="一使用框架">一、使用框架</h2>
+<p>第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和 WordPress Basis Theme。</p>
+<h3 id="sandbox">1.Sandbox</h3>
+<p>下载地址：<a href="http://code.google.com/p%20/sandbox-theme">sandbox-theme - Project Hosting on Google Code</a></p>
+<p>sandbox主题中文语言(汉化)包：<a href="http://www.keelii.com%20/sandbox-zh-cn-package/">sandbox主题中文语言(汉化)包 - Kily&rsquo;s Blog</a></p>
+<p>我使用的就是SandBox主题，模块分割比较清晰，默认是英文，可以找到第三方的中文语言包。</p>
+<h3 id="wordpress-basis-theme">2.WordPress Basis Theme</h3>
+<p>不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃 ～～～</p>
+<p>基本上，如果只是想尝鲜，wpbasis也挺适合，小巧，而且默认的css看上去也不错。</p>
+<p>下载地址：<a href="http://code.google.com/p/wp-basis-theme/">wp-basis-theme - Project Hosting on Google Code</a></p>
+<p>除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程<a href="http://fairyfish.net/series/wordpress-theme-tutorials/">WordPress 主题教程</a></p>
+<h2 id="二难对付的插件_1">二、难对付的插件</h2>
+<h3 id="首先要保证的插件是邮件回复">1.首先要保证的插件是邮件回复</h3>
+<p>我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。 关于是否需要使用嵌套的讨论，详见mg12大大的 <a href="http://www.neoease.com/wordpress-%20thread-comments/">WordPress 嵌套回复</a>。</p>
+<p>经过测试SandBox 和Wordpress Thread Comment 配合没有问题。</p>
+<p>在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。</p>
+<h3 id="代码高亮插件">2.代码高亮插件</h3>
+<p>这个是我需要换主题的根本原因，之前的使用了几个插件都和主题有些不适应，现在索性一步到位。</p>
+<p>切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean&rsquo;s FCKEditor 和 deans fckeditor with pwwangs code plugin for wordpress，都存在和代码高亮的不兼容情况（在使用html转义时候尤其会出现问题）。</p>
+<p>我花了一个晚上对一些插件进行评估，要求如下&ldquo;可以自由模式切换、兼容pre、插件不在仍然可以运行、自己控制转义符而不是自动转换，否则切换回带来问题、兼容CKE ditor插件使用&rdquo;，我还制作了一个xls文档。最后，我发现了一位老外的文章 <a href="http://www.travislin.com/2009/05/guide-to-find-a-wordpress-syntax-%20highlighter-that-works/">Travaganza Blog &raquo; Archive &raquo; Guide to find a WordPress syntax highlighter that works</a></p>
+<p>，解决了我长久以来一直的问题，我曾把这篇文章做了翻译 <a href="http://log4d.com/2010/03%20/guide-to-find-a-wordpress-syntax-highlighter-that-works-translation">WordPress代码高亮插件指南[译文]</a></p>
+<p>最后我选用了Syntax Highlighter and Code Colorizer for Wordpress，详情看我那篇翻译的文章。</p>
+<h3 id="内容编辑器">3.内容编辑器</h3>
+<p>其实TinyMCE功能很强，可以媲美CKEditor，可以参看我自己在服务器上建立的完整的TinyMCE <a href="http://e.log4d.com/tinymce.html">http://e.log4d.com/tinym ce.html</a>，可惜WP和的TinyMCE被阉割的一塌糊涂，还会产生多余的照片缩略图。我 不得不投奔最强的文本编辑器CKEditor（FCKEditor）。</p>
+<p>原先使用 Dean&rsquo;s FCKEditor With pwwang&rsquo;s Code Plugin For Wordpress ，是为了解决代码格式问题</p>
+<p>现在代码问题解决了，使用 Dean&rsquo;s FCKEditor For Wordpress</p>
+<p>如果需要使用原始WP的文件上传路径，需要修改一下Dean&rsquo;s FCKEditor For Wordpress 的js配置代码。</p>
+<h3 id="移动手持插件">4.移动手持插件</h3>
+<p>最早时候用T-Wap这款国人制作的插件，支持域名重定向，但是会在根目录下生成一个多余的目录，生成的wap页面也不是很漂亮，后台界面很简陋。</p>
+<h4 id="wordpress-pda-iphone">Wordpress PDA &amp; iPhone。</h4>
+<p>使用时候需要加入User-Agent:Android才能识别G3，功能比较强大，甚至能使用Add- this插件。</p>
+<p>会和Cool-tags冲突，导致Cool-tag无法加载，可惜这款插件不是通过域名判断，而是通过User- Agent来判断的，其实也不支持其他域名，恩，它不是我的菜。</p>
+<p>下载地址：<a href="http://wordpress.org/extend/plugins/wp-pda/">WordPress &rsaquo; Wordpress PDA &amp; iPhone &laquo; WordPress Plugins</a></p>
+<h4 id="wphone">WPhone</h4>
+<p>只适合后台管理，很鸡肋</p>
+<p>实话实说，后台功能做得的确比较强。</p>
+<p>插件地址：<a href="http://wordpress.org/extend/plugins/wphone/">WordPress &rsaquo; WPhone &laquo; WordPress Plugins</a></p>
+<h4 id="mobile-pack最后出现的显然是胜利者了">Mobile Pack（最后出现的显然是胜利者了）</h4>
+<p>完美达到我的要求，支持检测User-Agent或者绑定域名的双重显示方法。不过绑定域名时候遇到一些问题，插件没给太多的提示。如果选择 m.log4d.com的域名，cPanel创建子域默认是public/m，这是需要修改为public/才能使用Mobile Pack，如果定位到public/m，插件无效。顾名思义，Mobile Pack其实是一种插件包的形式：Mobile Pack= Mobile Theme + Mobile Widgets + Mobile Switcher + mpexo。插件可以切换主题，自定义Wigget显示。</p>
+<p>下载地址：<a href="http://wordpress.org/extend/plugins/wordpress-mobile-pack/">WordPress &rsaquo; WordPress Mobile Pack &laquo; WordPress Plugins</a></p>
+<h2 id="last_2">Last、</h2>
+<p>虽然版本增加到v1.3，但是很多东西都没有做到自定义，所以我暂时也不想把这个主题发布了。</p>
+<p>需要参考的朋友可以到svn获取一下，地址在：<a href="https://workspace4alswl.googlecode.com/svn/trunk/PHP/SimpleD">https://workspace4alswl.googlecode.com/svn/trunk/PHP/Si mpleD</a></p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2010/04/log4d-revision-completed/">https://blog.alswl.com/2010/04/log4d-revision-completed/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>baidu ting下载音乐脚本 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2012/01/tingdownload/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Python,tingdownload" />
+        <meta name="description" content="度娘终于干了一件好事，Baidu Ting上线了， 正版音乐免费下载，类似于谷歌音乐。 关于音乐版权和免费的问题， 有很多问题需要取讨论， 比如说这种商业模式是否对传统唱片业产生冲击又或是有积极影响？ 作为普通消费者，暂时不用考虑这些问题，先享受这些服务好了。 Baidu Ting的音乐质量是128KBps，音质算好，里面的idv3信息也勉强可以，有: 歌名 歌手 部分专辑名（偶尔也出现“201-8月新歌快递”这种比较山寨的字） 部分唱片封面图片 虽然比不上谷歌音乐连歌曲风格都准备好了，但是比杂乱无章的那些音乐mp3要好太多了。 自动下载脚本tingdownload 早上下了几首音乐，就顺手写了一个脚本，用来批量从Badu Ting下载音乐。 代码在github-tingdownload 需要 Python 2 (仅在Python2.7下测试) BeautifulSoup(已包含在目录下) simplejson（已包含在目录下) 一点点Python基础 Linux/Windows（我在Linux没问题，Windows应该也可以） 使用方法 在Shell …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2012/01/tingdownload/"
+                       rel="bookmark"
+                       title="Permalink to baidu ting下载音乐脚本">
+                        baidu ting下载音乐脚本
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#自动下载脚本tingdownload" title="自动下载脚本tingdownload">自动下载脚本tingdownload</a></li><li><a class="toc-href" href="#需要" title="需要">需要</a></li><li><a class="toc-href" href="#使用方法" title="使用方法">使用方法</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2012-01-03T00:00:00+08:00"> 2012-01-03</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/python/">Python</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/tingdownload/">tingdownload</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>度娘终于干了一件好事，<a href="http://ting.baidu.com">Baidu Ting</a>上线了， 正版音乐免费下载，类似于<a href="http://www.google.cn/music">谷歌音乐</a>。 关于音乐版权和免费的问题， 有很多问题需要取讨论， 比如说这种商业模式是否对传统唱片业产生冲击又或是有积极影响？ 作为普通消费者，暂时不用考虑这些问题，先享受这些服务好了。</p>
+<p>Baidu Ting的音乐质量是128KBps，音质算好，里面的idv3信息也勉强可以，有:</p>
+<ul>
+<li>歌名</li>
+<li>歌手</li>
+<li>部分专辑名（偶尔也出现&ldquo;201-8月新歌快递&rdquo;这种比较山寨的字）</li>
+<li>部分唱片封面图片</li>
+</ul>
+<p>虽然比不上谷歌音乐连歌曲风格都准备好了，但是比杂乱无章的那些音乐mp3要好太多了。</p>
+<h2 id="自动下载脚本tingdownload">自动下载脚本tingdownload</h2>
+<p>早上下了几首音乐，就顺手写了一个脚本，用来批量从Badu Ting下载音乐。</p>
+<p>代码在<a href="https://github.com/alswl/tingdownload">github-tingdownload</a></p>
+<h2 id="需要">需要</h2>
+<ul>
+<li>Python 2 (仅在Python2.7下测试)</li>
+<li>BeautifulSoup(已包含在目录下)</li>
+<li>simplejson（已包含在目录下)</li>
+<li>一点点Python基础</li>
+<li>Linux/Windows（我在Linux没问题，Windows应该也可以）</li>
+</ul>
+<h2 id="使用方法">使用方法</h2>
+<p>在Shell(命令行)里输入下面随便一个命令，就会在当前目录下面出现 <code>musics</code> 文件夹， 里面就有下载好的音乐。</p>
+<pre><code># 使用说明
+usage: tingdownload.py [-h] [--input INPUT] [Keyword [Keyword ...]]</code></pre>
+<p>A script to download music from ting.baidu.com.</p>
+<p>positional arguments:</p>
+<p>Keyword</p>
+<p>optional arguments:</p>
+<p>-h, &ndash;help show this help message and exit<br/>
+&ndash;input INPUT, -i INPUT<br/>
+a list file to input musics</p>
+<pre><code># 示例
+python tingdownload.py 老男孩 #单个文件下载
+./tingdownload.py 老男孩 #单个文件下载（给python文件加上可执行权限）
+python tingdownload.py 老男孩 Raise\n Me\n Up # 多文件名，如果有空格，请记得加上空格反转'\n'</code></pre>
+<p>批量下载的话，可以准备一个列表文件，每个歌曲名用回车隔开，如下：</p>
+<pre><code>还过得去
+不敢太幸福
+小情歌
+爱情靠不住
+我爱我
+你可以不用给我答案     金莎
+没有这首歌         后弦
+        回不去了吗         萧亚轩
+        有些事现在不做 一辈子都不会做了  五月天
+        第一夫人    张杰</code></pre>
+<p>将这个list文件作为输入传入执行脚本：</p>
+<pre><code>python2.7 tingdownload.py --input ~/music.txt</code></pre>
+<p>运行结果如下，列出四种情况：</p>
+<ul>
+<li>下载成功，如果文件已经存在，会跳过</li>
+<li>下载失败，由于网络原因</li>
+<li>下载失败，由于关键词不准确而出现太多结果</li>
+<li><p>下载失败，没有关键词匹配的结果</p>
+<p>█▓▒░alswl@x201█▓▒░ ~/dev/project/python/tingdownload/ ./tingdownload.py 黄昏&nbsp;周传雄 考试什么 &ndash;input ~/a.txt &gt; Start download 黄昏 周传雄&hellip; # Info: File &ldquo;/home/alswl/dev/project/python/tingdownload/musics/周传雄-黄昏.mp3&rdquo; exists. &gt; Start download 考试什么&hellip; # Info: File &ldquo;/home/alswl/dev/project/python/tingdownload/musics/徐良-考试什么的去死吧.mp3&rdquo; exists. &gt; Start download 还过得去&hellip;</p></li>
+</ul>
+<blockquote>
+<p>Start download 不敢太幸福&hellip;</p>
+</blockquote>
+<blockquote>
+<p>Start download 小情歌&hellip;</p>
+</blockquote>
+<h1 id="failed-too-more-result-found-for-keyword-小情歌.">Failed: Too more result found for keyword 小情歌.</h1>
+<blockquote>
+<p>Start download 爱情靠不住&hellip;</p>
+</blockquote>
+<p>== Download success (4) ==</p>
+<p>黄昏 周传雄</p>
+<p>考试什么</p>
+<p>还过得去</p>
+<p>不敢太幸福</p>
+<p>== Download failed for too many result (1) ==</p>
+<p>小情歌</p>
+<p>Enjoy it.</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2012/01/tingdownload/">https://blog.alswl.com/2012/01/tingdownload/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

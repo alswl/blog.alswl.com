@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Google App Engine搭建Twitter API Proxy教程 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/10/google-app-engine-to-build-twitter-api-proxy-tutorial/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="关注互联网,GAE,Twitter" />
+        <meta name="description" content="来源：Google App Engine搭建Twitter API Proxy教程 alswl:今天我本来想使用GAppProxy搭建自己的服务器，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。 本文将介绍如何通过Google App Engine搭建基于Python 2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。 环境准备：Google App Engine 先要注册Google App Engine，注册地址 http://appengine.google.com/ ，然后建立一个applicatio n，目前第一次使用需要验证用户手机，输入手机号码就收验证码即可，之后，就可以用yourid.appspot.com来访问你的app应用。 此外，还需要下载安装Google …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/10/google-app-engine-to-build-twitter-api-proxy-tutorial/"
+                       rel="bookmark"
+                       title="Permalink to Google App Engine搭建Twitter API Proxy教程">
+                        Google App Engine搭建Twitter API Proxy教程
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#环境准备google-app-engine" title="环境准备：Google App Engine">环境准备：Google App Engine</a></li><li><a class="toc-href" href="#环境准备birdnest" title="环境准备：BirdNest">环境准备：BirdNest</a></li><li><a class="toc-href" href="#发布应用到gae" title="发布应用到GAE">发布应用到GAE</a></li><li><a class="toc-href" href="#使用birdnest" title="使用BirdNest">使用BirdNest</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-10-14T00:00:00+08:00"> 2009-10-14</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/guan-zhu-hu-lian-wang/">关注互联网</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/gae/">GAE</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/twitter/">Twitter</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>来源：<a href="http://www.williamlong.info/archives/1956.html">Google App Engine搭建Twitter API Proxy教程</a></p>
+<p>alswl:今天我本来想使用<a href="http://gappproxy.googlecode.com/">GAppProxy</a>搭建自己的<a href="http://j%20asontiproxy.appspot.com/fetch">服务器</a>，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了<a href="http://jasontitwitter.appspot.com/api/">自己的Twitter birdnest服务器</a>，并转载之。</p>
+<p>本文将介绍如何通过Google App Engine搭建基于Python 2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。</p>
+<h3 id="环境准备google-app-engine">环境准备：Google App Engine</h3>
+<p>先要<a href="http://www.williamlong.info/archives/1357.html">注册Google App Engine</a>，注册地址 <a href="http://appengine.google.com/">http://appengine.google.com/</a> ，然后建立一个applicatio n，目前第一次使用需要验证用户手机，输入手机号码就收验证码即可，之后，就可以用yourid.appspot.com来访问你的app应用。</p>
+<p>此外，还需要下载安装Google APP Engine的开发环境，注意Python的版本，需要是2.5系列的，不能使用2.6或更高的版本，否则运行会出错。</p>
+<p>Google App Engine SDK 下载地址 <a href="http://code.google.com/intl/zh-%20CN/appengine/downloads.html">http://code.google.com/intl/zh- CN/appengine/downloads.html</a></p>
+<p>Python 2.5.4 下载地址 <a href="http://www.%20python.org/download/releases/2.5.4/">http://www.python.org/download/releases/2.5.4/</a></p>
+<p>关于Google App Engine的详细使用说明请参见<a href="http://www.williamlong.info/archives/1880.%20html">这个地址</a>，这里我就不再累赘。</p>
+<h3 id="环境准备birdnest">环境准备：BirdNest</h3>
+<p>下载birdnest要注意是下载<a href="http://birdnest.googlecode.com/svn/branches/g%20ae">分支branches/gae</a>，别下载主干trunk，否则更新到GAE上也不能用，会报错。可以使用一个SVN工具下载。例如<a href="http://www.will%20iamlong.info/archives/1878.html">TortoiseSVN</a>等。将其放到一个目录中，进入目录，编辑app.yaml文件，将第一行的application 里的参数修改为自己的应用名。（alswl:我使用Eclipse获取了SVN的内容）</p>
+<h3 id="发布应用到gae">发布应用到GAE</h3>
+<p>准备好了上面的一切后，就可以发布这个应用到自己的Appspot上了，执行 appcfg.py update 目录名，中间会要求输入Gmail的用户名和密码，之后就可以使用了。你创建的API地址应该是yourid.appspot.com/api/ 。</p>
+<h3 id="使用birdnest">使用BirdNest</h3>
+<p>在twhirl里的使用方法是，打开账号管理Accounts manager，选择laconi.ca账户类型，输入：[你的twitter帐号名]<span class="citation" data-cites="yourid">@yourid</span> .appspot.com，密码为Twitter密码，即可使用。（alswl:我使用的是twhirl，需要安装Adobe AIR环境）</p>
+<p>在twitterfox里的使用方法是，打开 C:Documents and SettingsAdministratorApplication DataMozillaFirefoxProfiles 随机信息 .defaultextensionstwitternotifier@naan.netcomponents目录，编辑 nsTwitterFox.js文件，找不到的话直接在Documents and Settings中搜索nsTwitterFox.js文件，编辑该文件的38行，将其修改为 var TWITTER_API_URL = http://yourid.appspot.com/api/ 即可。</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/10/google-app-engine-to-build-twitter-api-proxy-tutorial/">https://blog.alswl.com/2009/10/google-app-engine-to-build-twitter-api-proxy-tutorial/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

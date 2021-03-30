@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>MoinMoin Wiki 转换 Text 脚本 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2012/07/moin2txt/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Python,MoinMoin" />
+        <meta name="description" content="我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考 [使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 data 目录链接到 Dropbox 同步目录下面，从而可以备份并查看我的知识库。 我想同步阅读 KMS 数据 想在移动设备阅读 KMS 数据时，我遇到一个麻烦，MoinMoin 使用文件来保存 wiki 数据， 比如「28个Unix.Linux的命令行神器」这篇 wiki 目录在 data/28(e4b8aa)Unix(2e)Linux(e79a84e591bde4bba4e8a18ce7a59ee599a8) 中， 结构如下：" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2012/07/moin2txt/"
+                       rel="bookmark"
+                       title="Permalink to MoinMoin Wiki 转换 Text 脚本">
+                        MoinMoin Wiki 转换 Text 脚本
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#我想同步阅读-kms-数据" title="我想同步阅读 KMS 数据">我想同步阅读 KMS 数据</a></li><li><a class="toc-href" href="#一个脚本" title="一个脚本">一个脚本</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2012-07-27T09:02:00+08:00"> 2012-07-27</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/python/">Python</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/moinmoin/">MoinMoin</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考 [使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 <code>data</code> 目录链接到 Dropbox 同步目录下面，从而可以备份并查看我的知识库。</p>
+<h2 id="我想同步阅读-kms-数据">我想同步阅读 KMS 数据</h2>
+<p>想在移动设备阅读 KMS 数据时，我遇到一个麻烦，MoinMoin 使用文件来保存 wiki 数据， 比如「28个Unix.Linux的命令行神器」这篇 wiki 目录在 <code>data/28(e4b8aa)Unix(2e)Linux(e79a84e591bde4bba4e8a18ce7a59ee599a8)</code> 中， 结构如下：</p>
+<!-- more -->
+<pre><code>|---revisions
+|        |---00000002
+|        |---00000001
+|---edit-log
+|---current
+|---attachments
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_xargs_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_sl.jpg
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_mtr_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_lftp_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_htop_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_calcurse_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_multitail_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_ack_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_tpp_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_powertop_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_newsbeuter_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_socat_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_siege_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_duplicity_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_ipbt_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_iftop_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_curl_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_iptraf-tcpudp.gif
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_vim_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_earthquake.jpg
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_tmux3.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_cowsay_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_TaskWarrior2.0.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_vifm_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_taskwarrior_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_linuxlogo.jpg
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_ranger.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_nethack_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_rtorrent_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_dtach+dvtm.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_gnu_screen_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_ledger_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_rsync_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_byobu-tmux.jpg
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_ttytter_screenshot.png
+|---cache
+|    |---text_html
+|    |---pagelinks
+</code></pre>
+<p>可以看到，中文名称的 wiki 在存储时候，MoinMoin 会将中文保存为 utf-8 码， 不能直接阅读。并且我需要将目录下面有多级目录，阅读麻烦。</p>
+<h2 id="一个脚本">一个脚本</h2>
+<p>为了解决这个问题，我写了如下小脚本，帮我解决这个问题：</p>
+<pre><code>#!/usr/bin/env python2
+# coding=utf-8
+
+# convert MoinMoin wiki to text
+# for moinmoin 1.9.x
+# author: alswl
+# update at: 2012-07-22
+
+import sys
+import os
+import argparse
+import binascii
+import re
+import shutil
+
+IS_DECODE_PATH = False
+
+def convert(root, dir, target):
+    name = name_decode(dir)
+    if not name:
+        return
+    dst = os.path.join(target, name.replace('/', '-') + '.txt')
+    try:
+        version = open(os.path.join(root, dir, 'current'),
+                       'r').readline().strip()
+        src = os.path.join(root, dir, 'revisions', version)
+        shutil.copyfile(src, dst)
+    except IOError, e:
+        if IS_DECODE_PATH:
+            dir = dir.replace('(', r'\(').replace(')', r'\)')
+        sys.stderr.write('File %s, Name: %s, Message: %s\n'
+                         %(dir, name, str(e)))
+
+def name_decode(name):
+    raw = ''
+    lastpos = 0
+    ENCODE_RE = re.compile(r'\(([\w\d]+)\)')
+    match =ENCODE_RE.search(name)
+    while(match):
+        raw += name[lastpos : lastpos + match.start()]
+        raw += binascii.unhexlify(match.groups()[0])
+        lastpos += match.end()
+        match = ENCODE_RE.search(name[lastpos:])
+    return raw
+
+def walk(path, target):
+    for dir in os.listdir(path):
+        convert(path, dir, target)
+
+def main():
+    parser = argparse.ArgumentParser(
+        description='Convert moin wiki to text archieves'
+        )
+    parser.add_argument('--input', '-i',
+                        help='the path of moinmoin/data/pages',
+                        type=str,
+                        required=True)
+    parser.add_argument('--output', '-o',
+                        help='the path os target',
+                        type=str,
+                        required=True)
+    args = parser.parse_args()
+
+    walk(args.input, args.output)
+
+if __name__ == '__main__':
+    main()</code></pre>
+<p>使用帮助：</p>
+<pre><code>usage: moin2txt.py [-h] --input INPUT --output OUTPUT
+
+Convert moin wiki to text archieves
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --input INPUT, -i INPUT
+                        the path of moinmoin/data/pages
+  --output OUTPUT, -o OUTPUT
+                        the path os target</code></pre>
+<p>使用范例：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">python</span> moin2txt.py -i /your/moin/path/data/pages -o /your/dropbox/path/kms</a></code></pre></div>
+<p>命令运行完，就能在对应目录生成一坨 txt 文件，文件名还是中文的，Mission complete.</p>
+<p>我将这个命令加入了 cron，每天执行一次，保证 Dropbox 中是最新的 wiki。</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2012/07/moin2txt/">https://blog.alswl.com/2012/07/moin2txt/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

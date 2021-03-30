@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>建站心得 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+
+    <meta name="author" content="alswl" />
+    <meta name="keywords" content="建站心得" />
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="Log4D" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Log4D"/>
+        <meta property="og:url" content="http://127.0.0.1:8000"/>
+        <meta property="og:description" content="Log4D"/>
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/11/emergency-declaration-on-the-reply-notification-is-spam/">紧急声明-关于回复通知是垃圾邮件</a></h2>
+                <div class="summary"><p>最近alswl发现，Google对本博客发出的回复通知邮件都判定为垃圾邮件。我正在找客服查此时，据我估计，可能同一IP上有其他域名发送大量垃圾邮件导致Goo gle服务器误判本博客。</p>
+<p>在此声明，本博客从来不发送任何垃圾邮件！</p>
+<p>请各位朋友检查自己的垃圾箱翻翻，估计里面有alswl大量回复，悲剧啊&hellip;&hellip;烦请点击&ldquo;这不是垃圾邮件&rdquo;&hellip;.谢谢了&hellip;</p>
+<p>Update 09_11_17</p>
+<p>我按照&ldquo;<a href="http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-%20user-friendly-e-mail-notification.html">修改 mail to commenter,让邮件通知更加友好 | Simple happiness</a>&rdquo;修改了Mail To Comment插件。请大家帮忙在这个页面测试回复 ^_^</p>
+<p>Update second</p>
+<p><strike>测试均告失败啊，我使用的是Mail To Commenter，大家是怎么修改sendMail函数的，请赐教，不胜感激啊。</strike></p>
+<p>Update third</p>
+<p>测试完成，问题出在发出的内容上，也许是因为我从来没有修改过Mail To Commenter的内容吧，我修改之后就可以了。下面专门写一篇文章来说明这个问题。</p>
+<p>Update fourth</p>
+<p>问题已经解决 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/11/emergency-declaration-on-the-reply-notification-is-spam/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/11/mailtocommenter-of-the-spam-problem/">MailToCommenter的垃圾邮件问题</a></h2>
+                <div class="summary"><p>Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到<a href="http://www.derekblog.cn/">derek</a>同学提出来。</p>
+<p>于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查<code>Mail To Commenter的</code>mailtocommenter_send_email<code>函数，终于修改如下代码。</code></p>
+<p><code>代码部分分别参考</code><a href="http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-%20user-friendly-e-mail-notification.html">修改 mail to commenter,让邮件通知更加友好 | Simple happiness</a>和<a href="http://www.evlos.org/2009/11/03/edit-the-poster-of-%20mailtocomments/#comment-1278">邪罗刹的菠萝阁 &raquo; 如何修改MailToCommenter插件的发件人</a>，html部分代码是模仿<a href="http://www.evlos.org/">邪 罗刹</a>的回复修改。</p>
+<p>修改<code>wp-content/plugins/mailtocommenter</code>下面的<code>mailtocommenter_functions.php</code></p>
+<pre><code>function mailtocommenter_send_email($to,$subject,$message){
+    $hostname = get_option('home' …</code></pre>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/11/mailtocommenter-of-the-spam-problem/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/11/share-this-accession-to-everyonenew-label/">给Share this加入人人、豆瓣新标签</a></h2>
+                <div class="summary"><h2 id="share-this">Share this</h2>
+<p>Share this是给博文加上分享按钮，基于prototype的一款WordPress插件。 Share this 中文，从名字你就已经知道，这个Share this插件的中文版本。当然，我想先告诉你的是，这并不是汉化，而是中文化（本土化）。还辨别不清楚吗？那就是这个插件将更适合于中文用户使用了。 Share this 由<a href="http://www.happinesz.cn/archives/328/">幸福收藏夹</a>修改。 <a href="http://www.happinesz.cn/file/share-this.zip">点击这里下载</a>（此为Share this 中文原版，为了方便，我们以下所用版本都是该版本，请不要升级你的Share this插件，否则会还原为英文） share-this唯一遗憾是用的prototy pe，这个js比较大，网上有<a href="http://www.thunderguy.com/semicolon/2007/07/30%20/share-this-jquery-a-wordpress-plugin/">jQuery版本的第三方修改版</a>，不过最好还是自行实现js。</p>
+<h2 id="增加新的按钮">增加新的按钮</h2>
+<p>下载的Share this 中文还是07年11月份的产品，很多新的Web2.0网站，比如人人、豆瓣还没有相应的分享按钮。在这里，我就把他们添上去。 1 .打开share-this …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/11/share-this-accession-to-everyonenew-label/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/11/programmer-blog-categories/">程序员博客分类目录</a></h2>
+                <div class="summary"><p>文章渐渐多了，经常在给一篇文章设定目录和标签时候犹豫。不光是因为为了SEO，也需要找到一种合适的分类对自己所有技术性文章进行划分。为此，我重新设定了自己的分 类目录，参考了<a href="http://www.javaeye.com/ask">JavaEye问答频道</a>的「问答分类」。</p>
+<p>我将「OO 设计模式领域模型」从「Java编程和Java企业应用」挪到「软件开发和项目管理」，感觉这样更适合。</p>
+<p>大标题可以作为分类，而小标题更适合作为标签。</p>
+<p>这样的划分之后，相信大部分程序员的文章可以对号入座了。</p>
+<p>ps:这个分类也能很好的检测自己行业知识的了解程度。</p>
+<p>****************************华丽丽的擦身而过***********************************</p>
+<h4 id="java编程和java企业应用">Java编程和Java企业应用</h4>
+<p>企业应用 Struts Hibernate Spring Tomcat JBoss SOA DAO Swing iBATIS</p>
+<h4 id="web前端技术ajax和ria">Web前端技术：AJAX和RIA</h4>
+<p>EXT JavaScript AJAX JQuery DWR CSS GWT UI prototype dojo JavaFX …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/11/programmer-blog-categories/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/09/about-wordpress-spaces-in-tinymce/">关于WordPress中TinyMCE空格</a></h2>
+                <div class="summary"><p>在FireFox下，粘贴到WordPress编辑器中的内容会被自动去掉空格，这对于像Python这种靠缩进控制代码段的code就是毁灭性的打击。而同时作为一 个FireFox用户，我又不愿意为了这个看上去很小的问题切换到IE下。</p>
+<p>我开始漫长的征途。</p>
+<p>相关链接：</p>
+<p><a href="http://blog.hi1980.com/2009/04/01/tinymce-%20advanced-wp-plugins.html">TinyMCE-Advanced-WP插件 | 80</a></p>
+<p><a href="http://veryi.com/w/104.html">「不聪明」的wordpress在线编辑器-Dean&hellip; For Wordpress | 素食勤俭敬老孝慈</a></p>
+<p><a href="http://blog.tgb.net.cn/index.php?load=read&amp;id=161">TinyMce对火狐不太好 - 我的博客 - 真空实验室 VLab 2.2</a></p>
+<p><a href="http://blog.tgb.net.cn/index.php?load=read&amp;id=615">F2blog和Wordpress的空格那点事 - 我的博客 - 真空实验室 VLab 2.2</a></p>
+<p>我又考虑FireFox粘贴的问题，考虑是不是这个原因，给FireFox取消了粘贴限制。</p>
+<p><a href="http://chifanhezhou.blogbus.com/logs/1406504.html">关于firefox粘贴问题的解决方法 - 愿得一心人，白首不相离 - 博客大巴</a></p>
+<p>还是无用。</p>
+<p>最后我求助了Google in English，又尝试了几种方法。</p>
+<p><a href="http://%20wiki.moxiecode.com/index.php/TinyMCE:Configuration/entity_encoding">TinyMCE:Configuration/entity encoding - Moxiecode Documentation Wiki</a></p>
+<p><a href="http://drupal.org/node/72570">TinyMCE wipes out non-breaking …</a></p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/09/about-wordpress-spaces-in-tinymce/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/09/inove-changes-under-the-heading-style/">iNove下的heading样式修改</a></h2>
+                <div class="summary"><p>前段时间主体选择了7color，但是后来发现还是iNove对各种插件的兼容性好，又转回了iNove。</p>
+<p>而iNove在我看来并不是完美的，存在些许问题，Heading问题就是我尤其不能忍受的问题。</p>
+<p>看看一般的heading，下图是LightWord的</p>
+<p>[caption id=&ldquo;attachment_12635&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;250&rdquo; caption=&ldquo;lightWord的heading&rdquo;][<img alt="7color的heading" src="https://4ocf5n.dijingchao.com/upload_dropbox/200909/7colorHeading.jpg"/>](https://4ocf5n.dijingchao.com/upload_dropbox/200909/7colorHeading.jpg)[/caption]</p>
+<p>再看看iNove的</p>
+<p>[caption id=&ldquo;attachment_12636&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;200&rdquo; caption=&ldquo;iNove的Heading&rdquo;][<img alt="iNove的Heading" src="https://4ocf5n.dijingchao.com/upload_dropbox/200909/iNoveHeading.jpg"/>](https://4ocf5n.dijingchao.com/upload_dropbox/200909/iNoveHeading.jpg)[/caption]</p>
+<p>iNove的文章内容Heading CSS和主题的Heading混合在一起，非常不雅观。我稍作修改，在iNove的style …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/09/inove-changes-under-the-heading-style/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/09/the-html-escape-codecolorer/">CodeColorer的Html转义</a></h2>
+                <div class="summary"><p>刚开始写博客时候我用的CodeColorer进行WordPress的代码高亮。后来，我觉得这个插件在格式上有些不满意的地方，于是就停用了。之后写的文章都是直 接包在WordPress的Code元素内。</p>
+<p>几天之后，我发现了这个问题，大部分的代码在这两种模式下还算正常，但是如果是遇到html下的一些转义字符，就变得麻烦了。CodeColorer的html代码添 加是在编辑器的HTML模式下编辑，编辑后不能切换到可视化编辑器下，否则代码会被编辑器格式化。HTML代码的转义靠CodeColorer自动完成。</p>
+<p>在使用WordPress自己的code元素后，也就是关闭了CodeColorer插件，代码转义靠在可视化编辑器下就进行了转义。</p>
+<p>像我这个博客，前半段代码存放的是直接html代码，而后来的存放了几篇经过转义的html代码，造成了代码显示混乱。</p>
+<h2 id="症状">症状</h2>
+<p>[caption id=&ldquo;attachment_12631&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;345&rdquo; caption=&ldquo;开启CodeColorer+可视化界面编辑结果&rdquo;][<img alt="Snap2" src="https://4ocf5n.dijingchao.com/upload_dropbox/200909/Snap2.jpg"/>](https://4ocf5n.dijingchao.com/upload_dropbox/200909/Snap2.jpg)[/caption]</p>
+<p>[caption id=&ldquo;attachment_12632&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;304 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/09/the-html-escape-codecolorer/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/08/tested-in-google-reader-using-flash/">测试在Google Reader下使用Flash</a></h2>
+                <div class="summary"><p>发现我贴的Flash都不能在Google Reader中显示，而<a href="http://jandan.net">煎蛋</a>的可以，我FireBug了一下，发现它的Flash代码和我的略有区别。</p>
+<p>我之前的Flash代码~ <code>&lt;object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="420" height="363" codebase="http://download.macromedia.com/pub/shockwav e/cabs/flash/swflash.cab#version=6,0,40,0"&gt;&lt;param name="allowFullScreen" value="true" /&gt;&lt;param name="allowscriptaccess" value="always" /&gt;&lt;param name="wmode" value="opaque" /&gt;&lt;param name …</code></p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/08/tested-in-google-reader-using-flash/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/08/wordpress-plug-match-keywords-automatically-link-to/">wordpress关键字自动链接匹配插件[转]</a></h2>
+                <div class="summary"><p>原文链接：《<a href="http://www.changshaseo.com/seo-tools/882.html">wordpress关键字自动链接匹配插件 | 长沙SEO特色高端咨询顾问服务</a>》<a href="http://www.changshaseo.com/seo-tools/882.html"></a></p>
+<p>相关链接：《<a href="http://muboard.com/591">wordpress插件 中文关键词自动连接 | Muboard</a>》（这位博主曾为该插件0.3x版本做过中文优化）</p>
+<p>中文版下载地址：<a href="href=%22http://www.changshaseo.com/blog-mechanics-keyword-link-%20plugin-v01.zip">猛击这里下载</a></p>
+<p><strong>wordpress关键字自动匹配链接插件</strong> 这个工具非常好使，我找了很久了，以后发文章就省事多了，不用一个一个去加链接了，呵呵，So Cool！</p>
+<p>下面引用原文：</p>
+<p>Wordpress Keyword Link Plugin</p>
+<p>This is a little Wordpress 2.3+ plugin that helps you to automatically link defined keywords to certain articles on your own blog, or elsewhere on …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/08/wordpress-plug-match-keywords-automatically-link-to/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/08/the-theme-for-the-7color/">换了7Color的主题</a></h2>
+                <div class="summary"><p>买了空间后，就一直使用iNove主题，虽然iNove这个主题很优秀，但时间长了，难免有些审美疲劳。我一直想换一个主题，但苦于喜欢的主题要么没有汉化，要么在I E6下不兼容，要么就是色调、字体大小不符合我的要求。</p>
+<p>我喜欢大气，亲切一点的主题，比如说Fusion，我也花了几天时间汉化了Fusion的主题，可惜最后关节，发现Fusion在IE6下显示不正常，我又没有勇气抛 弃IE6的用户，只能作罢。国内毕竟过半的人仍然在XP/IE6这个平台下，真无奈。</p>
+<p>看到<a href="http://wordpress.org/extend/themes/7color">7Color</a>这个主题后，被吸引住了，是国人自己的主题，作者为<a href="http://nishuang.de/">Ni Shuang</a>, 色调什么都挺好看，界面是自适应宽度。唯一遗憾的是文章没有加上标签，瑕不掩瑜，这还是一个很优秀的主题。</p>
+<figure>
+<img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/200908/screenshot.png"/><figcaption>image</figcaption>
+</figure>
+<p>调一下footer后，加入cnzz的分析，唔，可以enjoy it啦~</p>
+
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/08/the-theme-for-the-7color/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+
+        <ul class="pagination">
+                <li class="prev"><a href="http://127.0.0.1:8000/tag/jian-zhan-xin-de/">&laquo;</a>
+                </li>
+				<li class=""><a
+					href="http://127.0.0.1:8000/tag/jian-zhan-xin-de/">1</a></li>
+				<li class="active"><a
+						href="http://127.0.0.1:8000/tag/jian-zhan-xin-de/page/2/">2</a></li>
+				<li class=""><a
+						href="http://127.0.0.1:8000/tag/jian-zhan-xin-de/page/3/">3</a></li>
+                <li class="next"><a
+                        href="http://127.0.0.1:8000/tag/jian-zhan-xin-de/page/3/">&raquo;</a></li>
+        </ul>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2011 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Postfix 基本配置[译文] - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2013/11/postfix-basic-configuration/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Linuxer,Postfix,译文" />
+        <meta name="description" content="原文地址：Postfix Basic Configuration。 有少许编译。 介绍 Postfix 的配置文件 main.cf 有数百个配置参数， 幸运的是，所有参数都有合理的默认配置项。 大部分时候，只需要配置两三个参数即可。 安装 Postfix 的方法可以参见 安装方法。 特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在 标准配置说明 里面查看。" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2013/11/postfix-basic-configuration/"
+                       rel="bookmark"
+                       title="Permalink to Postfix 基本配置[译文]">
+                        Postfix 基本配置[译文]
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#介绍" title="介绍">介绍</a></li><li><a class="toc-href" href="#postfix-配置语法" title="Postfix 配置语法">Postfix 配置语法</a></li><li><a class="toc-href" href="#配置对外发送域名" title="配置对外发送域名">配置对外发送域名</a></li><li><a class="toc-href" href="#配置接收域名" title="配置接收域名">配置接收域名</a></li><li><a class="toc-href" href="#配置允许从哪些地方接收" title="配置允许从哪些地方接收">配置允许从哪些地方接收</a></li><li><a class="toc-href" href="#配置允许发送到的域名" title="配置允许发送到的域名">配置允许发送到的域名</a></li><li><a class="toc-href" href="#配置递送方式直接或间接" title="配置递送方式：直接或间接">配置递送方式：直接或间接</a></li><li><a class="toc-href" href="#配置报告错误" title="配置报告错误">配置报告错误</a></li><li><a class="toc-href" href="#代理nat-配置" title="代理/NAT 配置">代理/NAT 配置</a></li><li><a class="toc-href" href="#postfix-日志分布情况" title="Postfix 日志分布情况">Postfix 日志分布情况</a></li><li><a class="toc-href" href="#在-chorooted-状态下运行-postfix" title="在 chorooted 状态下运行 Postfix">在 chorooted 状态下运行 Postfix</a></li><li><a class="toc-href" href="#配置机器名" title="配置机器名">配置机器名</a></li><li><a class="toc-href" href="#配置域名" title="配置域名">配置域名</a></li><li><a class="toc-href" href="#配置网络地址" title="配置网络地址">配置网络地址</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2013-11-09T14:59:00+08:00"> 2013-11-09</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/linuxer/">Linuxer</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/postfix/">Postfix</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/yi-wen/">译文</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>原文地址：<a href="http://www.postfix.org/BASIC_CONFIGURATION_README.html#syntax">Postfix Basic Configuration</a>。 有少许编译。</p>
+<h2 id="介绍">介绍</h2>
+<p>Postfix 的配置文件 <a href="http://www.postfix.org/postconf.5.html">main.cf</a> 有数百个配置参数， 幸运的是，所有参数都有合理的默认配置项。 大部分时候，只需要配置两三个参数即可。</p>
+<p>安装 Postfix 的方法可以参见 <a href="http://www.postfix.org/INSTALL.html">安装方法</a>。</p>
+<p>特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在 <a href="http://www.postfix.org/STANDARD_CONFIGURATION_README.html">标准配置说明</a> 里面查看。</p>
+<!-- more -->
+<h2 id="postfix-配置语法">Postfix 配置语法</h2>
+<p>Postfix 的配置文件默认在 <code>/etc/postfix</code>。主力配置文件是 <a href="http://www.postfix.org/postconf.5.html">main.cf</a> 和 <a href="http://www.postfix.org/master.5.html">master.cf</a>。用户权限必须是 root 的。</p>
+<p><code>/etc/postfix/main.cf</code> 配置语法有两个要点：不用引号，可以使用 <code>$</code> 来引用参数。</p>
+<pre><code># 定义一个参数
+/etc/postfix/main.cf:
+    parameter = value
+# 引用一个已有参数
+/etc/postfix/main.cf:
+    other_parameter = $parameter</code></pre>
+<p>引用参数时候，可以再定义之前先引用（Postfix 使用延迟计算技术）。</p>
+<p>Postfix 使用数据文件来控制接入权限。详情请看 <a href="http://www.postfix.org/DATABASE_README.html">DATABASE 介绍</a>，一般这样配置：</p>
+<pre><code>/etc/postfix/main.cf:
+    virtual_alias_maps = hash:/etc/postfix/virtual</code></pre>
+<p>修改 <code>main.cf</code> 或者 <code>master.cf</code> 之后，需要 <code>postfix reload</code> 重新载入配置文件。</p>
+<h2 id="配置对外发送域名">配置对外发送域名</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#myorigin">myorigin</a> 参数指定邮件中显示的发送域名，默认使用当前机器名 <code>$myhostname</code>。 一般来说，我们会把 <code>myorigin</code> 设置成顶级域名 <code>$mydomain</code>。</p>
+<p>范例：</p>
+<pre><code>/etc/postfix/main.cf:
+    myorigin = $myhostname (default: send mail as "user@$myhostname")
+    myorigin = $mydomain   (probably desirable: "user@$mydomain")</code></pre>
+<h2 id="配置接收域名">配置接收域名</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#mynetworks">mydestination</a> 参数配置了本地直接接收的域名，而不会再对外发送。</p>
+<p>这个参数可以使用文件配置，也可以使用 <code>type:table</code>，比如 hash / btree / ldap / mysql 等等。</p>
+<p>范例：</p>
+<pre><code># 默认配置
+/etc/postfix/main.cf:
+    mydestination = $myhostname localhost.$mydomain localhost
+
+# 对整个域名生效
+/etc/postfix/main.cf:
+    mydestination = $myhostname localhost.$mydomain localhost $mydomain
+
+# 对多个 DNS 域名生效
+/etc/postfix/main.cf:
+    mydestination = $myhostname localhost.$mydomain localhost 
+        www.$mydomain ftp.$mydomain</code></pre>
+<h2 id="配置允许从哪些地方接收">配置允许从哪些地方接收</h2>
+<p>默认情况下面，Postfix 仅发送信任网络的邮件。信任网络配置在 <a href="http://www.postfix.org/postconf.5.html#mynetworks">mynetworks</a> 参数中。</p>
+<p>范例（使用下列任意一个）：</p>
+<pre><code>/etc/postfix/main.cf:
+    mynetworks_style = subnet  (default: authorize subnetworks)
+    mynetworks_style = host    (safe: authorize local machine only)
+    mynetworks = 127.0.0.0/8   (safe: authorize local machine only)
+    mynetworks = 127.0.0.0/8 168.100.189.2/32 (authorize local machine) </code></pre>
+<p>还可以这样配置：</p>
+<pre><code>/etc/postfix/main.cf:
+    mynetworks = 168.100.189.0/28, 127.0.0.0/8</code></pre>
+<h2 id="配置允许发送到的域名">配置允许发送到的域名</h2>
+<p>默认情况下，非信任网络仅仅被允许从发送邮件到特定域名。默认值是 <a href="http://www.postfix.org/postconf.5.html#mynetworks">mydestination</a> 下面的所有域名（包括子域名）。</p>
+<pre><code>/etc/postfix/main.cf:
+    relay_domains = $mydestination (default)
+    relay_domains =           (safe: never forward mail from strangers)
+    relay_domains = $mydomain (forward mail to my domain and subdomains)</code></pre>
+<h2 id="配置递送方式直接或间接">配置递送方式：直接或间接</h2>
+<p>默认情况下，Postfix 会直接递送邮件到因特网。有时候你的服务器在防火墙后面或者 无法直接连接互联网，那就需要将邮件递送到另外一个 <a href="http://www.postfix.org/postconf.5.html#relayhost">relay host</a>。</p>
+<p>范例：</p>
+<pre><code>/etc/postfix/main.cf:
+    relayhost =                   (default: direct delivery to Internet)
+    relayhost = $mydomain         (deliver via local mailhub)
+    relayhost = [mail.$mydomain]  (deliver via local mailhub)
+    relayhost = [mail.isp.tld]    (deliver via provider mailhub)</code></pre>
+<h2 id="配置报告错误">配置报告错误</h2>
+<p>可以通过配置 <a href="http://www.postfix.org/aliases.5.html">aliases</a> 来将错误报告邮件转发给其他人。</p>
+<p>范例：</p>
+<pre><code>/etc/aliases:
+    postmaster: you
+    root: you</code></pre>
+<p>默认情况下面，只会报告严重错误（资源错误和软件错误）：</p>
+<pre><code>/etc/postfix/main.cf:
+    notify_classes = resource, software</code></pre>
+<p>其他错误还有：bounce 拒收 / 2bounce 错误报告拒收 / delay 延迟 / policy 策略未通过 / protocol 协议错误 / resouce 资源错误 / software 软件错误</p>
+<h2 id="代理nat-配置">代理/NAT 配置</h2>
+<p>有时候需要通过代理或者 NAT 连接互联网。参考 <a href="http://www.postfix.org/postconf.5.html#proxy_interfaces">proxy_interfaces</a></p>
+<p>范例：</p>
+<pre><code>/etc/postfix/main.cf:
+    proxy_interfaces = 1.2.3.4 (the proxy/NAT external network address)</code></pre>
+<h2 id="postfix-日志分布情况">Postfix 日志分布情况</h2>
+<p>日志路径配置在 <code>/etc/syslog.conf</code> 中：</p>
+<pre><code>etc/syslog.conf:
+    mail.err                                    /dev/console
+    mail.debug                                  /var/log/maillog</code></pre>
+<p>建议经常这样做日志审核：</p>
+<pre><code># postfix check
+# egrep '(reject|warning|error|fatal|panic):' /some/log/file</code></pre>
+<h2 id="在-chorooted-状态下运行-postfix">在 chorooted 状态下运行 Postfix</h2>
+<p>初学者就不用管这个了。</p>
+<h2 id="配置机器名">配置机器名</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#myhostname">myhostname</a> 手工指定了 FQDN。它被其他好几个域名相关的地方引用。</p>
+<p>一般来说，如果指定了 <code>mydomain</code>，就会自动通过它生成 <code>myhostname</code>。</p>
+<p>范例：</p>
+<pre><code>/etc/postfix/main.cf:
+    myhostname = host.local.domain (machine name is not FQDN)
+    myhostname = host.virtual.domain (virtual interface)
+    myhostname = virtual.domain (virtual interface)</code></pre>
+<h2 id="配置域名">配置域名</h2>
+<p>使用 <a href="http://www.postfix.org/postconf.5.html#mydomain">mydomain</a> 配置，这个参数被很多地方引用。</p>
+<p>范例：</p>
+<pre><code>/etc/postfix/main.cf:
+    mydomain = local.domain
+    mydomain = virtual.domain (virtual interface)</code></pre>
+<h2 id="配置网络地址">配置网络地址</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#inet_interfaces">inet_interfaces</a> 配置监听网络。</p>
+<p>默认配置：</p>
+<pre><code>/etc/postfix/main.cf:
+    inet_interfaces = all</code></pre>
+<p>多个虚拟邮件服务器配置：</p>
+<pre><code>/etc/postfix/main.cf:
+    inet_interfaces = virtual.host.tld         (virtual Postfix)
+    inet_interfaces = $myhostname localhost... (non-virtual Postfix)</code></pre>
+<p>注意，这项参数配置完之后需要重启。</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2013/11/postfix-basic-configuration/">https://blog.alswl.com/2013/11/postfix-basic-configuration/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>将VisualStudio打造成Vim - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2010/09/vs-vim/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="工欲善其事必先利其器,ViEmu,Vim,VisualStudio" />
+        <meta name="description" content="image 背景：Vim in VisualStudio? 最近痴迷于Vim，尝试着在.net环境中（70%C#+20%ASPX+10%JS）使用Vim进行开发。但是似乎现成的Vim插件不太适应.net开发平台，在进 行调试、编译以及ASPX页面调整时候还是需要切换到VS。 内事不决问老婆，外事不决问Google，我以关键词“Vim C#”向G神询问，很可惜一圈一圈找下来，都没有什么有价值的答案。在StackOverlow上找到 了一些相关资源，其中几位资深人士（使用Vi/Vim大约20年）提到了一款叫做ViEmu的软件，就好奇的跑去看看。 ViEmu 让我们来见识一下ViEmu的厉害吧。ViEmu支持模式切换、移动、宏、高亮搜索，键盘映射、增强命令、正则表达、可视模式等等。反正常用的Vim功能都具备。它自 己也敢宣称支持Vim大部分功能（Vim太强大，不敢说完全模拟 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2010/09/vs-vim/"
+                       rel="bookmark"
+                       title="Permalink to 将VisualStudio打造成Vim">
+                        将VisualStudio打造成Vim
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#背景vim-in-visualstudio" title="背景：Vim in VisualStudio?">背景：Vim in VisualStudio?</a></li><li><a class="toc-href" href="#viemu" title="ViEmu">ViEmu</a></li><li><a class="toc-href" href="#安装失败" title="安装失败">安装失败</a></li><li><a class="toc-href" href="#主题" title="主题">主题</a></li><li><a class="toc-href" href="#相关链接" title="相关链接">相关链接</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2010-09-03T00:00:00+08:00"> 2010-09-03</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/gong-yu-shan-qi-shi-bi-xian-li-qi-qi/">工欲善其事必先利其器</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/viemu/">ViEmu</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/vim/">Vim</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/visualstudio/">VisualStudio</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <figure>
+<img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/201009/ViEmu.jpg"/><figcaption>image</figcaption>
+</figure>
+<h3 id="背景vim-in-visualstudio">背景：Vim in VisualStudio?</h3>
+<p>最近痴迷于Vim，尝试着在.net环境中（70%C#+20%ASPX+10%JS）使用Vim进行开发。但是似乎现成的Vim插件不太适应.net开发平台，在进 行调试、编译以及ASPX页面调整时候还是需要切换到VS。</p>
+<p>内事不决问老婆，外事不决问Google，我以关键词&ldquo;Vim C#&rdquo;向G神询问，很可惜一圈一圈找下来，都没有什么有价值的答案。在StackOverlow上找到 了一些相关资源，其中几位资深人士（使用Vi/Vim大约20年）提到了一款叫做ViEmu的软件，就好奇的跑去看看。</p>
+<h3 id="viemu">ViEmu</h3>
+<p>让我们来见识一下ViEmu的厉害吧。ViEmu支持模式切换、移动、宏、高亮搜索，键盘映射、增强命令、正则表达、可视模式等等。反正常用的Vim功能都具备。它自 己也敢宣称支持Vim大部分功能（Vim太强大，不敢说完全模拟~）。下面是一张ViEmu的官方示意图。</p>
+<figure>
+<img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/201009/viemu-movie.gif"/><figcaption>image</figcaption>
+</figure>
+<p>ViEmu不但有支持VS的版本，还有支持Word &amp; Outlook &amp; SQL Server Management Studio（SQL解析器），确实是相当强大。</p>
+<p>ViEmu的收费标准是Only $99，唉，真是残酷+万恶的资本主义啊。囊中羞涩，不得不去求破解版本。功夫不负有心人，终于找到了当前最新版本ViEmu.v. 2.5.4的破解版&ldquo;<a href="http://www.52pojie.cn/viewthread.php?tid=59277">ViEmu.v.2.5.4.for.VS.Classic.CracKed-LCG - 『LCG Area』 - 吾爱破解论坛【 LCG 】 破解论坛|破解软件|加密解密|逆向工程|软件安全|病毒分析|精品软件|破解补丁|注册机|序列号|QQ|下载|Crack|Patch|Key|SN - Powered by Discuz!</a>&rdquo;。（这标题真TMD长 ，不过论坛够意思，不用注册即可下载）。网上还有一种破解方法（我没有试过，感兴趣可以尝试）。</p>
+<blockquote>
+<p>1.删除目录 C:Documents and Settings用户名Local SettingsApplication DataIdentities {17582A9E-740A-47F2-8256-D09F1378E7FA}</p>
+</blockquote>
+<p>2.删除注册表项HKEY_CURRENT_USERSoftwareClassesCLSID{D31F31E1-B08F-46FF- 92C5-CA111A2053DF}</p>
+<h3 id="安装失败">安装失败</h3>
+<p>在公司电脑安装ViEmu没有问题，在我的机器上面（XP Sp3+VS2008+ReSharper v4.1）却出现了重大错误。启动VS之后立刻提示&ldquo;ViEmu incorrectly installed, please reinstall&rdquo;，卸载重装之后不起任何作用。</p>
+<p>我在官方支持论坛上面找到了相关讨论<a href="http://www.viemu.com/forums/viewtopic.php?id=395">ViEmu forums / ViEmu incorrectly installed message under VS 2008</a>。作者会给所有遇到问题的人发一封邮件，包含一个 Tool，能够解决这个问题并且将时间恢复至30天，<strike>下载点击<a href="http://www.viemu.com/for-%20ajsd8/XtendTest.exe">这里</a></strike>（作者发送给我时候，该链接已失效）。</p>
+<p>好在我有十全大补丸，就是上文提到的那个破解包，破解之后，连带着这个莫名的问题也莫名的解决了~</p>
+<h3 id="主题">主题</h3>
+<p>厌倦了VisualStudio那种白底黑字加上几个蓝色函数的主题了么，想回到Geek Feel的Vim主题嘛，这里就要向你隆重推荐一个网站：Studio Styles - Visual Studio color schemes，里面包含了N套VS的主题，大部分是深色背景浅色文字、保护视力的背景。比如排名最高，也是我比较喜欢的<a href="http://studiostyles.info/schemes/wekeroad-ink">WekeRoad Ink</a>。</p>
+<figure>
+<img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/201009/WekeRoad_Ink.jpg"/><figcaption>image</figcaption>
+</figure>
+<p>通过工具-导入和导出设置就可以把新主题颜色导入VS了。话说回来，真不知道VS设计团队怎么想的，需要一个一个设置不同类型的字体和颜色~~~</p>
+<h3 id="相关链接">相关链接</h3>
+<p><a href="http://www.viemu.com/">ViEmu: vi-vim editor emulation for Visual Studio, Word, Outlook and SQL Server</a> ViEmu官网</p>
+<p><a href="http://stackoverflow.com/questions/597077/is-learning-vim-worth-the-effort">Is learning VIM worth the effort? - Stack Overflow</a> CSharper怎么用Vim，老程序员的回答</p>
+<p><a href="http://www.vimer.cn/">Vimer的程序世界</a> 一个Vim爱好者的Blog</p>
+<p><a href="http://xbeta.info/vimperator.htm">Vimperator：VIM化的Firefox</a> 想在FireFox下脱离鼠标用Vim模式化操作么？</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2010/09/vs-vim/">https://blog.alswl.com/2010/09/vs-vim/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

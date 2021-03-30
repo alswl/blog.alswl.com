@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>使用XOM类库对Java对象进行序列化 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/06/xom-class-library-to-use-java-objects-serialization/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Java,JavaSE,Lib" />
+        <meta name="description" content="校内工具需要保存用户名和帐号，我就想把帐号信息作为一个XiaoneiUser类，然后对其进行对象持久化。 Google下的方法有好几种方法进行持久化，JDOM， DOM4J, SAX等。我看了之后，感觉都比较麻烦，我个人比较喜欢使用jdk自带的工具，但是查阅jdk api之后，感觉使用 javax.xml.* 下工具开发更加困难。 我仅仅是需要对一个简单的对象进行持久化来保存数据，并不需要太多太复杂的功能。最后我决定使用《Thinking in Java》推荐的开源类库：XOM 猛击这里打开www.xom.nu 友情提示一下，网站可以打开，但是下载的连接貌似被墙了，至少我教育网连不上去。推荐 一个在线代理服务器古狗在线代理（猛击这里打开），通过它就可以下载类库了。 使用类库非常简单，我这里提供个小例子。XiaoneiUser类 package cn.dddspace.xiaonei.bean; import java.io.OutputStream; import nu.xom …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/06/xom-class-library-to-use-java-objects-serialization/"
+                       rel="bookmark"
+                       title="Permalink to 使用XOM类库对Java对象进行序列化">
+                        使用XOM类库对Java对象进行序列化
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-06-10T00:00:00+08:00"> 2009-06-10</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/java/">Java</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/javase/">JavaSE</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/lib/">Lib</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>校内工具需要保存用户名和帐号，我就想把帐号信息作为一个XiaoneiUser类，然后对其进行对象持久化。 Google下的方法有好几种方法进行持久化，JDOM， DOM4J, SAX等。我看了之后，感觉都比较麻烦，我个人比较喜欢使用jdk自带的工具，但是查阅jdk api之后，感觉使用 <code>javax.xml.*</code> 下工具开发更加困难。 我仅仅是需要对一个简单的对象进行持久化来保存数据，并不需要太多太复杂的功能。最后我决定使用《Thinking in Java》推荐的开源类库：XOM <a href="http://www.xom.nu">猛击这里打开www.xom.nu</a> 友情提示一下，网站可以打开，但是下载的连接貌似被墙了，至少我教育网连不上去。推荐 一个在线代理服务器古狗在线代理（<a href="http://www.ggproxy.com/">猛击这里打开</a>），通过它就可以下载类库了。 使用类库非常简单，我这里提供个小例子。XiaoneiUser类</p>
+<pre><code>package cn.dddspace.xiaonei.bean;
+
+import java.io.OutputStream;
+
+import nu.xom.*;
+
+public class XiaoneiUser {
+
+    /**
+
+    * 用户Email  
+    */
+    private String userEmail;
+
+    /**
+
+    * 用户Password  
+    */
+    private String userPassword;
+
+    public String getUserEmail() {
+
+        return userEmail;
+
+    }
+
+    public void setUserEmail(String userEmail) {
+
+        this.userEmail = userEmail;
+
+    }
+
+    public String getUserPassword() {
+
+        return userPassword;
+
+    }
+
+    public void setUserPassword(String userPassword) {
+
+        this.userPassword = userPassword;
+
+    }
+
+    /**
+
+    * 将类转换为XML  
+    *   
+    * @return  
+    */
+    public Element getXML() {
+
+        Element userE = new Element("xiaoneiUser");
+
+        Element userEmailE = new Element("userEmail");
+
+        userEmailE.appendChild(userEmail);
+
+        Element userPasswordE = new Element("userPassword");
+
+        userPasswordE.appendChild(userPassword);
+
+        userE.appendChild(userEmailE);
+
+        userE.appendChild(userPasswordE);
+
+        return userE;
+
+    }
+
+    /**
+
+    * 复制构造函数  
+    *   
+    * @param xiaoneiUser  
+    */
+    public XiaoneiUser(Element xiaoneiUser) {
+
+        userEmail = xiaoneiUser.getFirstChildElement("userEmail").getValue();
+
+        userPassword = xiaoneiUser.getFirstChildElement("userPassword")
+
+            .getValue();
+
+    }
+
+    /**
+
+    * 构造函数  
+    *   
+    * @param userEmail  
+    * @param userPassword  
+    */
+    public XiaoneiUser(String userEmail, String userPassword) {
+
+        this.userEmail = userEmail;
+
+        this.userPassword = userPassword;
+
+    }
+
+    /**
+
+    * Format输出函数  
+    *   
+    * @param os  
+    * @param doc  
+    * @throws Exception  
+    */
+    public void format(OutputStream os, Document doc) throws Exception {
+
+        Serializer serializer = new Serializer(os, "UTF-8");
+
+        serializer.setIndent(4);
+
+        serializer.setMaxLength(60);
+
+        serializer.write(doc);
+
+        serializer.flush();
+
+    }
+
+}</code></pre>
+<p>Test类入口函数</p>
+<pre><code>/**
+ * @title Test.java
+ * @author ddd
+ * @time 2009-6-10 16:35:36
+ * @site http://log4d.com
+ */
+package cn.dddspace.xiaonei.test;
+
+import java.io.BufferedOutputStream;
+
+import java.io.File;
+
+import java.io.FileNotFoundException;
+
+import java.io.FileOutputStream;
+
+import cn.dddspace.xiaonei.bean.XiaoneiUser;
+
+import nu.xom.*;
+
+public class Test {
+
+/**
+
+* @param args  
+* @throws Exception   
+* @throws FileNotFoundException   
+*/  
+public static void main(String[] args) throws FileNotFoundException, Exception
+{
+
+XiaoneiUser user = new XiaoneiUser("a@a.com", "123");
+
+  
+//序列化user为xml文档
+
+Document doc = new Document(user.getXML());
+
+//输出到屏幕
+
+user.format(System.out, doc);
+
+//输出到XML文件user.xml
+
+user.format(new BufferedOutputStream(new FileOutputStream(
+
+"user.xml")), doc);
+
+  
+//反序列化XML文件为XiaoneiUser对象
+
+Document doc2 = new Builder().build("user.xml");
+
+Element element = doc2.getRootElement();
+
+XiaoneiUser user2 = new XiaoneiUser(element);
+
+//输出对象信息，验证对象
+
+System.out.println(user2.getUserEmail());
+
+System.out.println(user2.getUserPassword());
+
+}
+
+}</code></pre>
+<p>代码非常简单，如果要进行简单的对象序列化，我觉得这个400kb的类库非常实用</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/06/xom-class-library-to-use-java-objects-serialization/">https://blog.alswl.com/2009/06/xom-class-library-to-use-java-objects-serialization/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

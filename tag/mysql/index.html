@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>MySQL - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+
+    <meta name="author" content="alswl" />
+    <meta name="keywords" content="MySQL" />
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="Log4D" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Log4D"/>
+        <meta property="og:url" content="http://127.0.0.1:8000"/>
+        <meta property="og:description" content="Log4D"/>
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量</a></h2>
+                <div class="summary"><p>该系列三篇文章已经全部完成：</p>
+<ul>
+<li><a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
+</ul>
+<figure>
+<img alt="201806/refactor.png" src="https://4ocf5n.dijingchao.com/upload_dropbox/201806/refactor.png"/><figcaption>201806/refactor.png</figcaption>
+</figure>
+<p>我们用了两章文章 <a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移</a> / <a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机</a> 介绍我们遇到问题和解决方案。 不管是离线全量迁移还是在线无缝迁移， 核心 ETL 工具就是 yugong。</p>
+<p>Yugong 是一个成熟工具， 在阿里巴巴去 IOE 行动中起了重要作用， 它与 Otter / Canal 都是阿里中间件团队出品。 它们三者各有分工： Yugong 设计目标是异构数据库迁移； Canal 设计用来解决 MySQL binlog 订阅和消费问题； Otter 则是在 Canal 之上，以准实时标准解决数据库同步问题。 Otter 配备了相对 yugong 更健壮管理工具、分布式协调工具， 从而长期稳定运行。Yugong 设计目标则是一次性迁移工作，偏 Job 类型。 当然 yugong 本身质量不错，长期运行也没问题。 我们有个产线小伙伴使用我们魔改后 yugong， 用来将数据从管理平台同步数据到用户前台，已经稳定跑了半年多了。</p>
+
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2018/06/sql-server-migration-3/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机</a></h2>
+                <div class="summary"><p>该系列三篇文章已经全部完成：</p>
+<ul>
+<li><a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
+</ul>
+<figure>
+<img alt="flying-tanker" src="https://4ocf5n.dijingchao.com/upload_dropbox/201805/flying-tanker.png"/><figcaption>flying-tanker</figcaption>
+</figure>
+<p><smaill>（image via https://pixabay.com/en/military-stealth-bomber-refueling-602729/ ）</smaill></p>
+<p>在上篇文章 <a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL （一）：异构数据库迁移 - Log4D</a> 中，我们给大家介绍了从 SQL Server 到 MySQL 异构数据库迁移的基本问题和全量解决方案。 全量方案可以满足一部分场景的需求，但是这个方案仍然是有缺陷的： 迁移过程中需要停机，停机的时长和数据量相关。 对于核心业务来说，停机就意味着损失。 比如用户中心的服务，以它的数据量来使用全量方案，会导致迁移过程中停机若干个小时。 而一旦用户中心停止服务，几乎所有依赖于这个中央服务的系统都会停摆。</p>
+<p>能不能做到无缝的在线迁移呢？系统不需要或者只需要极短暂的停机？ 作为有追求的技术人，我们一定要想办法解决上面的问题。</p>
+
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2018/05/sql-server-migration-2/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移</a></h2>
+                <div class="summary"><p>该系列三篇文章已经全部完成：</p>
+<ul>
+<li><a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
+</ul>
+<figure>
+<img alt="201803/migration-bird.png" src="https://4ocf5n.dijingchao.com/upload_dropbox/201803/migration-bird.png"/><figcaption>201803/migration-bird.png</figcaption>
+</figure>
+<h2 id="背景">背景</h2>
+<p>沪江成立于 2001 年，作为较早期的教育学习网站， 当时技术选型范围并不大： Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购， 版本号是 3.23。 工程师们选择了当时最合适的微软体系，并在日后的岁月里， 逐步从 ASP 过度到 .net，数据库也跟随 SQL Server 进行版本升级。</p>
+<p>十几年过去了，技术社区已经发生了天翻地覆的变化。 沪江的技术栈还基本在 .net 体系上，这给业务持续发展带来了一些限制。 人才招聘、社区生态、架构优化、成本风险方面都面临挑战。 集团经过慎重考虑，发起了大规模的去 Windows 化项目。 这其中包含两个重点子项目：开发语言从 C# 迁移到 Java， 数据库从 SQL Server 迁移到 MySQL。</p>
+<p>本系列文章就是向大家介绍， 从 SQL Server 迁移到 MySQL 所面临的问题和我们的解决方案。</p>
+
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2018/03/sql-server-migration-1/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2017/09/sql-server-nolock/">一个关于 nolock 的故事：深入理解数据库隔离级别</a></h2>
+                <div class="summary"><figure>
+<img alt="sql-server.png" src="https://4ocf5n.dijingchao.com/upload_dropbox/201709/sql-server.png"/><figcaption>sql-server.png</figcaption>
+</figure>
+<p>加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：<code>nolock</code>。 这让我很困惑，<code>nolock</code> 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？</p>
+
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2017/09/sql-server-nolock/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2011/11/vps-lnmp-setup-config/">128M内存VPS LNMP安装优化小记</a></h2>
+                <div class="summary"><blockquote>
+<p>重要通知：Log4D 的域名由 <a href="http://dddspace.com">http://dddspace.com</a> 迁移到 <a href="http://log4d.com">http://log4d.com</a> 。 订阅地址现在改为 <a href="http://log4d.com/feed">http://log4d.com/feed</a> 和 <a href="http://feeds.feedburner.com/dddspace">http://feeds.feedburner.com/dddspace</a> 。（FeedBurner 的地址未发生变化）</p>
+</blockquote>
+<p>这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。 现在使用的 VPS 是 <a href="http://www.photonvps.com/billing/aff.php?aff=2188">PhotonVPS</a> 。</p>
+<p>月付5.95美元，使用优惠码 <code>TENOFF</code> 或 <code>PHOTONLEB</code> 可以打7折， 换算汇率之后是26人民币每月。</p>
+<p>这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨， 我终于配置的可用率比较高，使用 <code>siege -c 100 -t 100</code> 时候可以保持 100% 可用率。 （其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。</p>
+
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2011/11/vps-lnmp-setup-config/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/07/mysql-command-line-client-garbled-problems-and-solutions/">MySQL Command Line Client乱码问题及解决方案</a></h2>
+                <div class="summary"><p>以前用MySQL时候都是可视化界面，如MySQL Admin使用，现在学着使用MySQL Command Line client，初次接触，就遇到乱码问题。</p>
+<p>乱码是中文字符串的，Google后，找到一些解决方案。摘录如下：</p>
+<p>引用自今天去祸害哪家的闺女呢？&lt;<a href="http://leonel.javaeye.com/blog/315090">猛击这里打开</a>&gt;</p>
+<p>1:改变数据库的默认编码配置，在MYSQL的安装目录中，找到my.ini，修改默认编</p>
+<p>码为：default-character-set=utf8</p>
+<p>2:建立数据库时，CREATE DATABASE ms_db CHARACTER SET utf8 COLLATE</p>
+<p>utf8_general_ci;</p>
+<p>3:执行脚本：指定编码格式set names utf8(注意，不是UTF-8)</p>
+<p>4:如果你采用的是外部接入的方式，在连接中确定请求的编码格式如：</p>
+<p>jdbc:mysql://localhost:3306 /ms_db?</p>
+<p>useUnicode …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/07/mysql-command-line-client-garbled-problems-and-solutions/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/06/mysql-data-type-of-the-length-of-conventional-library-strategy/">MYSQL数据类型长度常规的建库策略</a></h2>
+                <div class="summary"><p>无论是在小得可怜的免费数据库空间或是大型电子商务网站，合理的设计表结构、充分利用空间是十分必要的。这就要求我们对数据库系统的常用数据类型有充分的认识。下面我 就将我的一点心得写出来跟大家分享。</p>
+<h3 id="一数字类型">一、数字类型</h3>
+<p>数字类型按照我的分类方法分为三类：整数类、小数类和数字类。</p>
+<p>我所谓的「数字类」，就是指DECIMAL和NUMERIC，它们是同一种类型。它严格的说不是一种数字类型，因为他们实际上是将数字以字符串形式保存的；他的值的每 一位（包括小数点）占一个字节的存储空间，因此这种类型耗费空间比较大。但是它的一个突出的优点是小数的位数固定，在运算中不会「失真」，所以比较适合用于「价格」、 「金额」这样对精度要求不高但准确度要求非常高的字段。</p>
+<p>小数类，即浮点数类型，根据精度的不同，有 FLOAT（单精度）和DOUBLE（双精度）两种。它们的优势是精确度，FLOAT可以表示绝对值非常小、小到约 1.17E- 38 （0.000&hellip;0117， 小数点后面有37个零）的小数，而DOUBLE更是可以表示绝对值小到约 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/06/mysql-data-type-of-the-length-of-conventional-library-strategy/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/ubuntu8-10-under-the-mysql-installation/">Ubuntu8.10下MySQL的安装</a></h2>
+                <div class="summary"><p>Ubuntu下的MySQL安装本应该很简单，但是如果因为修改了软件源的话，反而变得麻烦起来。</p>
+<p>为了加快更新一些组件的速度，我加入了清华的、交大等大学的源，是8.04下Ubuntu版本的，这个直接导致了之后安装MySQL的问题。</p>
+<p>当选择Mysql-server之后，需要一堆组建，要手动安装，基本上出现这种提示，就没戏了，硬着头皮查找软件包，最后到一个perl- api的软件包这里就再也进行不下去了。</p>
+<p>Google了好一会，才有一个人的答案正确，说是8.10下用8.04的源就会有这种问题，我换成原始的备份了的源</p>
+<p>下面就是原始的源，使用这个找到MySQL之后就一次成功了 ` # deb cdrom:[Ubuntu 8.10 <em>Intrepid Ibex</em> - Release i386 (20081029.5)]/ intrepid main restricted</p>
+<h1 id="see-httphelp.ubuntu.comcommunityupgradenotes-for-how-to-upgrade-to">See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade …</h1>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/ubuntu8-10-under-the-mysql-installation/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2008/10/mysql-database-export-import/">mysql 数据库导出/导入</a></h2>
+                <div class="summary"><p>正在学JSP，用的TomCat和MySQL，没有用CSV控制，所以数据库靠导出导入</p>
+<p>导出：</p>
+<p>cd bin;</p>
+<p>mysqldump -uroot -proot xxx &gt; xxx.sql;</p>
+<p>导入：</p>
+<p>cd bin;</p>
+<p>create xxx;</p>
+<p>source xxx.sql;</p>
+
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2008/10/mysql-database-export-import/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2018 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

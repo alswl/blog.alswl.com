@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>jQuery图片圈人功能在ASP.NET下的改进 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="dotNet,JavaScript,jQuery,人人" />
+        <meta name="description" content="项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网“图片圈人”功能效果》（强烈推荐这篇 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。 原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》 ） 样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/"
+                       rel="bookmark"
+                       title="Permalink to jQuery图片圈人功能在ASP.NET下的改进">
+                        jQuery图片圈人功能在ASP.NET下的改进
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#原始code" title="原始Code:">原始Code:</a><ul><li><a class="toc-href" href="#样式" title="样式：">样式：</a></li><li><a class="toc-href" href="#js实现代码" title="js实现代码：">js实现代码：</a></li><li><a class="toc-href" href="#html代码" title="Html代码">Html代码</a></li></ul></li><li><a class="toc-href" href="#改进_1" title="改进">改进</a><ul><li><a class="toc-href" href="#修改后js" title="修改后js:">修改后js:</a></li><li><a class="toc-href" href="#html代码-1" title="Html代码：">Html代码：</a></li><li><a class="toc-href" href="#后台asp.net文件读取" title="后台ASP.NET文件读取">后台ASP.NET文件读取</a></li><li><a class="toc-href" href="#相关下载" title="相关下载">相关下载</a></li></ul></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-09-02T00:00:00+08:00"> 2009-09-02</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/dotnet/">dotNet</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/javascript/">JavaScript</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/jquery/">jQuery</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/ren-ren/">人人</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《<a href="http://www.cnblogs.com/czy1121/archive/2009/03/03/1402105.html">JS实现校内网&ldquo;图片圈人&rdquo;功能效果</a>》（强烈推荐这篇 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。</p>
+<h2 id="原始code">原始Code:</h2>
+<p>运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《<a href="http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.html">Javascript Resize和Drag类,基于jQuery</a>》 ）</p>
+<h3 id="样式">样式：</h3>
+<pre><code>#enclose-wrapper {
+    position: relative;
+    z-index: 0;
+    border: 4px solid #DDD;
+    background-color: #FFF;
+}
+#form-add-tag {
+    margin-left: 8px;
+    position: absolute;
+    padding: 5px 3px;
+    border: 1px solid #005EAC;
+    float: left;
+    display: inline;
+    background-color: #FFF;
+}
+#select-area-box {
+    position: absolute;
+    border: 5px solid #D8DFEA;
+    float: left;
+}
+#select-area {
+    position: relative;
+    padding: 0;
+    border: 2px solid #005EAC;
+    z-index: 15;
+    cursor: move;
+    background: url(spacer.gif) no-repeat -1px -1px;
+}
+#select-area-box span {
+    position: absolute;
+    border: 1px solid #005EAC;
+    width: 8px;
+    height: 8px;
+    background-color: #FFF;
+    font-size: 0;
+    z-index: 18;
+}
+#select-area-box span.north-west-resize {
+    cursor: nw-resize;
+    left: 0;
+    top: 0;
+    margin-left: -1px;
+    margin-top: -1px;
+}
+#select-area-box span.north-east-resize {
+    cursor: ne-resize;
+    right: 0;
+    top: 0;
+    margin-right: -1px;
+    margin-top: -1px;
+}
+#select-area-box span.south-west-resize {
+    cursor: sw-resize;
+    left: 0;
+    bottom: 0;
+    margin-left: -1px;
+    margin-bottom: -1px;
+}
+#select-area-box span.south-east-resize {
+    cursor: se-resize;
+    right: 0;
+    bottom: 0;
+    margin-right: -1px;
+    margin-bottom: -1px;
+}
+#enclose-wrapper ul#tag-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 13px;
+    float: left;
+}
+#enclose-wrapper ul#tag-list li {
+    list-style: none;
+    float: left;
+}
+#enclose-wrapper ul#tag-list li a {
+    color: #F60;
+}</code></pre>
+<h3 id="js实现代码">js实现代码：</h3>
+<pre><code>var photoTag = {
+    show: function(left, top, width, height, show_resize_square) {
+        $('#select-area-box').css({
+            'left': left - 7,
+            'top': top - 7
+        })
+        $('#select-area-box').width(width + 4).height(height + 4).show();
+        $('#select-area').width(width).height(height);
+        if (show_resize_square) $('#select-area-box span').show();
+        else $('#select-area-box span').hide();
+    },
+    hide: function() {
+        $('#select-area-box').hide();
+    },
+    add: function(tag_name, tag_value, left, top, width, height) {
+        var json = {
+            id: Math.floor(Math.random() * 10000)
+        };
+        var args = left + ',' + top + ',' + width + ',' + height;
+        var li = '
+
+  * ';         li += '';         li += '([删除](javascript:;))';         li += '';         li += '
+';
+        $('#tag-list').append(li);
+    },
+    remove: function(id, li) {
+        li.parentNode.removeChild(li);
+    }
+};
+$(function() {
+    var is_started = false;
+    // 选区左上角,和高宽
+    var info = {
+        'left': 0,
+        'top': 0,
+        'width': 0,
+        'height': 0
+    };
+    var origin = {
+        x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0),
+        y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0)
+    };
+    var dnr = new DragResize($('#select-area-box')[0], {
+        minWidth: 20,
+        minHeight: 20,
+        bound: {
+            left: 0,
+            top: 0,
+            right: 9999,
+            bottom: 9999
+        },
+        callback: function(i) {
+            // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和
+            info = {
+                'left': i.left + 7,
+                'top': i.top + 7,
+                'width': i.width - 4,
+                'height': i.height - 4
+            };
+            $('#select-area').width(info.width).height(info.height);
+            // 将添加标签的表单定位在选区的右边
+            $('#form-add-tag').css({
+                'left': i.left + i.width + 10,
+                'top': i.top
+            });
+        }
+    });
+    // 拖动选区
+    $('#select-area').mousedown(function(e) {
+        dnr.drag(e);
+    });
+    // 调整选区大小
+    $('#select-area-box span').mousedown(function(e) {
+        dnr.resize(e, this.className.replace('-resize', ''));
+    });
+    // 在图片上点击一下,开始获取选区
+    $('#photo-wrapper img').mousedown(function(e) {
+        if (is_started) return;
+        is_started = true;
+        var left = e.pageX - origin.x - 50 - 7;
+        var top = e.pageY - origin.y - 50 - 7;
+        info = {
+            'left': left + 7,
+            'top': top + 7,
+            'width': 100,
+            'height': 100
+        };
+        photoTag.show(info.left, info.top, info.width, info.height, true);
+        $('#form-add-tag').show().css({
+            'left': left + 100 + 4 + 10,
+            'top': top
+        });
+    });
+    // 鼠标进入图片内时,显示选区
+    $('#photo-wrapper img').bind('mouseenter',
+    function(e) {
+        if (!is_started) return;
+        photoTag.show(info.left, info.top, info.width, info.height, true);
+    });
+    // 确定添加一个标签,或取消
+    $('#btn-add-tag, #btn-cancel').click(function(e) {
+        if (this.id == 'btn-cancel') {
+            $('#form-add-tag, #select-area-box').hide();
+            is_started = false;
+            return false;
+        }
+        if (!$('#tag-name').val()) {
+            alert('标签名不能为空！');
+            return false;
+        }
+        // 添加标签
+        photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height);
+        // 隐藏选区和表单
+        $('#form-add-tag, #select-area-box').hide();
+        is_started = false;
+    });
+    photoTag.hide();
+});</code></pre>
+<h3 id="html代码">Html代码</h3>
+<pre><code>&lt;div id="enclose-wrapper"&gt;
+  &lt;div id="photo-wrapper" style="margin:15px auto;text-align:center;"&gt; &lt;img id="photo" src="heroes_s3_peter.jpg" /&gt; &lt;/div&gt;
+  &lt;div&gt;
+    &lt;ul id="tag-list"&gt;
+      &lt;li&gt;相片中：&lt;/li&gt;
+      &lt;li&gt; &lt;span onmouseover="photoTag.show(0,0,85,66);" onmouseout="photoTag.hide();"&gt;aaa&lt;/span&gt; (&lt;a href="javascript:;" onclick="photoTag.remove('342',this.parentNode);" onmouseover="photoTag.show(0,0,85,66);" onmouseout="photoTag.hide();"&gt;删除&lt;/a&gt;) &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div id="select-area-box"&gt;
+    &lt;div id="select-area"&gt;&lt;/div&gt;
+    &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;/div&gt;
+  &lt;div id="form-add-tag" style="display:none;"&gt; 输入标签：</code></pre>
+<p><input id="tag-name" name="tag-name" type="text"/></p>
+<button id="btn-add-tag" type="button">
+确认
+</button>
+<button id="btn-cancel" type="button">
+取消
+</button>
+
+
+<h2 id="改进_1">改进</h2>
+<p>在Asp.NET下这段代码存在几个问题（毕竟这段代码应该只能算是Demo）：1.无法和服务器进行数据交互。2.无法在ASP.NET环境下获取相关id。3.只 能提交到服务器一个&ldquo;标签&rdquo;，不足以完成需求。</p>
+<h3 id="修改后js">修改后js:</h3>
+<pre><code>var photoTag = {
+    show: function(left, top, width, height, show_resize_square) {
+        $('#select-area-box').css({
+            'left': left - 7,
+            'top': top - 7
+        })
+        $('#select-area-box').width(width + 4).height(height + 4).show();
+        $('#select-area').width(width).height(height);
+        if (show_resize_square) $('#select-area-box span').show();
+        else $('#select-area-box span').hide();
+    },
+    hide: function() {
+        $('#select-area-box').hide();
+    },
+    add: function(tag_name, tag_value, left, top, width, height) {
+        var json = {
+            id: Math.floor(Math.random() * 10000)
+        };
+        //$.getJSON('add_tag.php', {'name':tag_name,'left':left,'top':top,'width':width,'height':height}, function(json) {
+        //reflesh tag list
+        //    if(json.message) alert(json.message);
+        //    if(json.error == 0) {
+        var args = left + ',' + top + ',' + width + ',' + height;
+        var li = '
+
+  * ';         li += '';         li += '([删除](javascript:;))';         li += '';         li += '
+';
+        $('#tag-list').append(li);
+        //    }
+        //});
+    },
+    remove: function(id, li) {
+        //$.getJSON('remove_tag.php', {'tag_id':id}, function(json) {
+        //reflesh tag list
+        //    if(json.message) alert(json.message);
+        //    if(json.error == 0)
+        li.parentNode.removeChild(li);
+        //});
+    }
+};
+$(function() {
+    var is_started = false;
+    // 选区左上角,和高宽
+    var info = {
+        'left': 0,
+        'top': 0,
+        'width': 0,
+        'height': 0
+    };
+    var origin = {
+        x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0),
+        y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0)
+    };
+    var dnr = new DragResize($('#select-area-box')[0], {
+        minWidth: 20,
+        minHeight: 20,
+        bound: {
+            left: 0,
+            top: 0,
+            right: 9999,
+            bottom: 9999
+        },
+        callback: function(i) {
+            // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和
+            info = {
+                'left': i.left + 7,
+                'top': i.top + 7,
+                'width': i.width - 4,
+                'height': i.height - 4
+            };
+            $('#select-area').width(info.width).height(info.height);
+            // 将添加标签的表单定位在选区的右边
+            $('#form-add-tag').css({
+                'left': i.left + i.width + 10,
+                'top': i.top
+            });
+        }
+    });
+    // 拖动选区
+    $('#select-area').mousedown(function(e) {
+        dnr.drag(e);
+    });
+    // 调整选区大小
+    $('#select-area-box span').mousedown(function(e) {
+        dnr.resize(e, this.className.replace('-resize', ''));
+    });
+    // 在图片上点击一下,开始获取选区
+    $('#photo-wrapper img').mousedown(function(e) {
+        if (is_started) return;
+        is_started = true;
+        var left = e.pageX - origin.x - 50 - 7;
+        var top = e.pageY - origin.y - 50 - 7;
+        info = {
+            'left': left + 7,
+            'top': top + 7,
+            'width': 100,
+            'height': 100
+        };
+        photoTag.show(info.left, info.top, info.width, info.height, true);
+        $('#form-add-tag').show().css({
+            'left': left + 100 + 4 + 10,
+            'top': top
+        });
+    });
+    // 鼠标进入图片内时,显示选区
+    $('#photo-wrapper img').bind('mouseenter',
+    function(e) {
+        if (!is_started) return;
+        photoTag.show(info.left, info.top, info.width, info.height, true);
+    });
+    // 确定添加一个标签,或取消
+    $('#btn-add-tag, #btn-cancel').click(function(e) {
+        if (this.id == 'btn-cancel') {
+            $('#form-add-tag, #select-area-box').hide();
+            is_started = false;
+            return false;
+        }
+        if (!$('#tag-name').val()) {
+            alert('标签名不能为空！');
+            return false;
+        }
+        // 添加标签
+        photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height);
+        // 隐藏选区和表单
+        $('#form-add-tag, #select-area-box').hide();
+        is_started = false;
+    });
+    photoTag.hide();
+});</code></pre>
+<h3 id="html代码-1">Html代码：</h3>
+<pre><code>&lt;div id="enclose-wrapper"&gt;
+  &lt;div id="photo-wrapper"&gt;
+    &lt;asp:Image ID="ImgPhoto" Visible="false" runat="server" /&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;ul id="tag-list"&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div id="select-area-box"&gt;
+    &lt;div id="select-area"&gt; &lt;/div&gt;
+    &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;/div&gt;
+  &lt;div id="form-add-tag" style="display: none;"&gt; 名称：
+    &lt;input id="tag-name" name="tag-name" type="text" /&gt;
+    </code></pre>
+<p>数值：</p>
+<p><input id="tag-value" name="tag-value" type="text"/></p>
+<button id="btn-add-tag" type="button">
+确认
+</button>
+<button id="btn-cancel" type="button">
+取消
+</button>
+
+
+<p>这边的主要修改在于把框子的右边的内容增加为名称和数值，方便数据的识别。</p>
+<h3 id="后台asp.net文件读取">后台ASP.NET文件读取</h3>
+<pre><code>string[] fields = Request.Params.GetValues("photoField");</code></pre>
+<p>这里呢，由于上传的元素<code>name</code>相同，都是<code>photoField</code>，所以通过<code>Params.GetValues()</code>就可以取出<code>string</code>数组，这样就 能获取所有数据了。数据格式是&ldquo;<code>ddl:小楠,x:98.88333129882812,y:146,width:100,height:100</code>&rdquo;这种形式，依靠 &ldquo;,&rdquo;分割。</p>
+<h3 id="相关下载">相关下载</h3>
+<p><a href="https://4ocf5n.dijingchao.com/upload_dropbox/200909/DragResize.js">DragResize.js</a> <a href="https://4ocf5n.dijingchao.com/upload_dropbox/200909/template.js">template.js</a> <a href="https://4ocf5n.dijingchao.com/upload_dropbox/200909/css.css">css.css</a></p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/">https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Python 的类型系统 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2020/06/type-safe-python/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Python" />
+        <meta name="description" content="image from pixabay.com 静态类型正在逐渐成为潮流， 2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。 过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。 我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难： 在重构阶段代码回归成本异常之高，很多历史代码不敢动。 后来技术栈转到 Java，被类型系统怀抱让人产生安全感。 最近一年在一个面向稳定性的运维系统耕耘。系统选型之初使用了 Python。 我在项目中力推了 Python 3.7，并大规模使用了 Python 的类型系统来降低潜在风险。 追根溯源，我花了一些时间了解 Python 在类型系统的设计和实现， 本文以 PEP 提案介绍一下 Python 在类型系统上面走过的路。" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2020/06/type-safe-python/"
+                       rel="bookmark"
+                       title="Permalink to Python 的类型系统">
+                        Python 的类型系统
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#类型系统" title="类型系统">类型系统</a></li><li><a class="toc-href" href="#类型安全之路" title="类型安全之路">类型安全之路</a><ul><li><a class="toc-href" href="#pep-483---核心概念" title="PEP 483 - 核心概念">PEP 483 - 核心概念</a></li><li><a class="toc-href" href="#pep-484---type-hints-核心" title="PEP 484 - Type Hints 核心">PEP 484 - Type Hints 核心</a></li><li><a class="toc-href" href="#pep-526---变量也安排上了" title="PEP 526 - 变量也安排上了">PEP 526 - 变量也安排上了</a></li><li><a class="toc-href" href="#pep-544---nominal-subtyping-vs-structural-subtyping" title="PEP 544 - Nominal Subtyping vs Structural Subtyping">PEP 544 - Nominal Subtyping vs Structural Subtyping</a></li><li><a class="toc-href" href="#pep-586-pep-589-pep-591-持续增强" title="PEP 586 / PEP 589 / PEP 591 持续增强">PEP 586 / PEP 589 / PEP 591 持续增强</a></li></ul></li><li><a class="toc-href" href="#总结_1" title="总结">总结</a></li><li><a class="toc-href" href="#参考" title="参考">参考</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2020-06-23T17:54:00+08:00"> 2020-06-23</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/python/">Python</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p><img alt="wall" src="https://4ocf5n.dijingchao.com/upload_dropbox/202006/wall.png"/> <small>image from pixabay.com</small></p>
+<p>静态类型正在逐渐成为潮流， 2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。 过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。</p>
+<p>我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难： 在重构阶段代码回归成本异常之高，很多历史代码不敢动。 后来技术栈转到 Java，被类型系统怀抱让人产生安全感。</p>
+<p>最近一年在一个面向稳定性的运维系统耕耘。系统选型之初使用了 Python。 我在项目中力推了 Python 3.7，并大规模使用了 Python 的类型系统来降低潜在风险。</p>
+<p>追根溯源，我花了一些时间了解 Python 在类型系统的设计和实现， 本文以 PEP 提案介绍一下 Python 在类型系统上面走过的路。</p>
+<!-- more -->
+<h2 id="类型系统">类型系统</h2>
+<p>谈类型系统之前，要厘定两个概念，动态语言和动态类型。</p>
+<p>动态语言（Dynamic Programming Language）则是指程序在运行时可以改变结构。 这个结构可以包含函数、对象、变量类型、程序结构。 动态类型是类型系统（Type System）其中一类，即程序在运行期间可以修改变量类型。 另外一种是静态类型：在编译期就决定了变量类型，运行期不允许发生变化。 类型系统还有一种分法是强类型和弱类型，强类型是指禁止类型不匹配的指令，弱类型反之。</p>
+<p>动态语言和动态类型这两个概念切入点不一样， Python 是一门动态语言，也是动态类型语言，还是强类型的动态类型。 这篇文章主要讨论 Python 语言的类型系统，不会涉及动态语言特性。</p>
+<h2 id="类型安全之路">类型安全之路</h2>
+<p>行业里面一直有一个争论：动态类型和静态类型哪一种更强大。 静态类型的支持者认为三个方面具备优势：性能、错误发现、高效重构。 静态类型通过编译期决定具体类型可以显著的提高运行期效率； 编译期就能够发现错误，在工程规模逐步变大时候尤其明显； 类型系统可以帮助 IDE 提示，高效重构。 动态类型的支持者则认为分析代码会更简单，减少出错机会，写起来也更为快速。</p>
+<p>Python 开发者们并非没有看到这个痛点， 一系列 PEP 提案应运而生。 在保留 Python 动态类型系统优势前提，通过语法、特性增强，将类型系统引入 Python。</p>
+<p>Python 在 2014 年即提出了 PEP 484，随后提出一个精粹版 PEP 483（The Theory of Type Hints）， 其工程实现 <a href="https://docs.python.org/3/library/typing.html">typing</a> 模块在 3.5 发布。 经过 PEP 484，PEP 526，PEP 544，PEP 586，PEP 589，PEP 591 的多次版本迭代，Python 的类型系统已经很丰富。 甚至包含了比如 Structural Subtyping 以及 Literal Typing 这边相对罕见的特性。</p>
+<h3 id="pep-483---核心概念">PEP 483 - 核心概念</h3>
+<p><a href="https://www.python.org/dev/peps/pep-0483/">PEP 483</a> 在 2014 年 12 月发布， 是 Guido 起笔的核心概念版，简明扼要的写清楚 Python 的类型系统建设方向、边界、要和不要。</p>
+<p>PEP 483 没有谈具体工程实现，提纲挈领地讲了一下 Python 类型系统如何对外呈现。 厘定 Type / Class 差别，前者是语法分析概念，后者是运行时概念。 在这个定义下面 Class 都是一个 Type，但 Type 未必是 Class。 举例 <code>Union[str, int]</code> 是 Type 但并不是 Class。</p>
+<p>PEP 483 还介绍内建基础类型：<code>Any</code> / <code>Unison</code> / <code>Optional</code> / <code>Tuple</code> / <code>Callable</code>，这些基础类型支撑上游丰富变化。</p>
+<p>静态类型系统最大的诟病是不够灵活，Go 语言现在还没有实现泛型。 PEP 483 介绍了 Python Generic types 泛型使用方法， 形式如下：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1">S <span class="op">=</span> TypeVar(<span class="st">'S'</span>, <span class="bu">str</span>, <span class="bu">bytes</span>)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">def</span> longest(first: S, second: S) <span class="op">-&gt;</span> S:</a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="cf">return</span> first <span class="cf">if</span> <span class="bu">len</span>(first) <span class="op">&gt;=</span> <span class="bu">len</span>(second) <span class="cf">else</span> second</a></code></pre></div>
+<p>最后，PEP 483 还提了一些重要的小特性：</p>
+<ul>
+<li>别称 Alias</li>
+<li>前置引用 Farward Reference（在定义类方法注解中使用定义类），eg.：解决二叉树 Node 节点中需要引用 Node 问题</li>
+<li>covariance contravariant 协变逆变</li>
+<li>使用注释标记类型</li>
+<li>转型 Cast</li>
+</ul>
+<p>PEP 483 的实现，主要依赖了 <a href="https://www.python.org/dev/peps/pep-3107/">PEP 3107 &ndash; Function Annotations</a> 这个提案。PEP 3107 介绍 function 注解使用。比如， <code>func(a: a1, b: b1) -&gt; r1</code> 这段代码， 其中冒号后面的描述符记录会到 func 的 <code>__annotations__</code> 变量中。</p>
+<p>PEP 3107 效果展示如下，可以清晰看到函数变量存放：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">def</span> add(x: <span class="bu">int</span>, y: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</a>
+<a class="sourceLine" id="cb2-2" title="2">    <span class="cf">return</span> x <span class="op">+</span> y</a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4">add.__annotations__</a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co"># {'x': int, 'y': int, 'return': int}</span></a></code></pre></div>
+<p>PS：现在 Python 有了 Decorator 装饰器 / Annotation 注解，其中 Annotation 的设计还和 Java 的 Annotation 同名，一锅粥。</p>
+<h3 id="pep-484---type-hints-核心">PEP 484 - Type Hints 核心</h3>
+<p><a href="https://www.python.org/dev/peps/pep-0484/">PEP 484 &ndash; Type Hints</a> 在 PEP 483 基础上完整讲述 Python 类型系统如何设计，如何使用，细节如何（typing 模块）</p>
+<p>这篇提案开宗明义地点出：</p>
+<blockquote>
+<p>Python will remain a dynamically typed language, and the authors have no desire to ever make type hints mandatory, even by convention.</p>
+</blockquote>
+<p>一句话断绝了 Python 在语言级别进化到静态系统的可能。</p>
+<p>提案除了 PEP 483 已经讲解的特性，还有以下吸引我的点：</p>
+<ul>
+<li>允许通过 Stub Files 为已经存在的库添加类型描述。具体是使用 Python 文件对应的 <code>.pyi</code> 文件描述 Python 代码的带类型签名。 这个方案和 TS 的 <code>@types</code> 文件有异曲同工之妙。</li>
+<li>允许使用 <code>@overload</code> 进行类型重载，这也是活久见，Python 居然可以（在某种意义上）支持重载了。</li>
+<li>介绍了 typing 实现细节，比如使用 abs（Abstract Base Class）构建常见类型的 interface，包括 <code>Sized</code> / <code>Iterable</code> 这些基础接口。 我个人认为这个工作量是其实挺大，是给已有的类进行一次依赖梳理。</li>
+<li>介绍了 Python 向后（Python 2）兼容方法，有这么几种策略： 使用 decorator（<code>@typehints(foo=str, returns=str)</code>）、comments、Stub files、Docstring</li>
+</ul>
+<h3 id="pep-526---变量也安排上了">PEP 526 - 变量也安排上了</h3>
+<p><a href="https://www.python.org/dev/peps/pep-0526/">PEP 526 &ndash; Syntax for Variable Annotations</a> 核心提案是给变量加上 Type Hints 支持。</p>
+<p>和 <code>function annotation</code> 类似，也是通过注解方式存放。 差异是并不是给实例添加一个 <code>__annotations__</code> 成员，而是将变量的 annotations 信息存放在上下文变量 <code>__annotations__</code> 之中。 这个其实也比较好理解：定义一个变量类型时候，这个变量还没有初始化。</p>
+<p>我写一段 Demo 展示一下：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1"><span class="im">from</span> typing <span class="im">import</span> List</a>
+<a class="sourceLine" id="cb3-2" title="2">users: List[<span class="bu">int</span>]</a>
+<a class="sourceLine" id="cb3-3" title="3"></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co"># print(__annotations__)</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co"># {'users': typing.List[int]}</span></a></code></pre></div>
+<p>可以看到，上述 Demo 效果是在上下文变量创建了一个 <code>users</code>，但这个 <code>users</code> 其实并不存在，只是定义了类型， 如果运行 <code>print(users)</code> 会抛出 <code>NameError: name 'users' is not defined</code>。</p>
+<p>观察字节码会更清晰：</p>
+<pre><code> L.   1         0  SETUP_ANNOTATIONS
+
+ L.   1         2  LOAD_CONST               0
+                4  LOAD_CONST               ('List',)
+                6  IMPORT_NAME              typing
+                8  IMPORT_FROM              List
+               10  STORE_NAME               List
+               12  POP_TOP
+
+ L.   3        14  LOAD_NAME                List
+               16  LOAD_NAME                int
+               18  BINARY_SUBSCR
+               20  LOAD_NAME                __annotations__
+               22  LOAD_STR                 'users'
+               24  STORE_SUBSCR
+               26  LOAD_CONST               None
+               28  RETURN_VALUE</code></pre>
+<p>可以清晰看到，并没有创建一个名为 users 的变量，而是使用了 <code>__annotations__</code> 变量。 注：Python 存储变量使用 opcode 是 <code>STORE_NAME</code>。</p>
+<p>PS：本提案中有不少被否决的提案，挺有趣的，社区提出了很多奇淫巧计。 可以看出社区决策的慎重，存量系统升级的难度。</p>
+<h3 id="pep-544---nominal-subtyping-vs-structural-subtyping">PEP 544 - Nominal Subtyping vs Structural Subtyping</h3>
+<p>PEP 484 里面类型系统讨论的是 Nominal Subtyping， 这个 <a href="https://www.python.org/dev/peps/pep-0544/">PEP 544 &ndash; Protocols: Structural subtyping (static duck typing)</a> 则是提出了Structural Subtyping。 如果非要翻译，我觉得可以称为具名子类型 / 同构子类型。 注意，也有人将 Structural Subtyping 称之为 Duck Typing，其实这两者不相同，具体可以见 <a href="https://en.wikipedia.org/wiki/Duck_typing#Structural_type_systems">Duck typing / Comparison with other type systems</a>。</p>
+<p>Nominal Subtyping 是指按字面量匹配类型，而 Structural Subtyping 则是按照结构（行为）进行匹配， 比如 Go 的 Type 就是 Structural Subtyping 实现。</p>
+<p>这里写个简单 Demo 展示一下后者：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" title="1"><span class="im">from</span> typing <span class="im">import</span> Iterator, Iterable</a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="kw">class</span> Bucket:</a>
+<a class="sourceLine" id="cb5-4" title="4">    ...</a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">int</span>: ...</a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="kw">def</span> <span class="fu">__iter__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> Iterator[<span class="bu">int</span>]: ...</a>
+<a class="sourceLine" id="cb5-7" title="7"></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="kw">def</span> collect(items: Iterable[<span class="bu">int</span>]) <span class="op">-&gt;</span> <span class="bu">int</span>: ...</a>
+<a class="sourceLine" id="cb5-9" title="9">result: <span class="bu">int</span> <span class="op">=</span> collect(Bucket())  <span class="co"># Passes type check</span></a></code></pre></div>
+<p>代码中定义了 Bucket 这种类型，并且提供了两个类成员。这两个类成员刚好是 Interator 的定义。 那么在实际使用中，就可以使用 Bucket 替换 Iterable。</p>
+<h3 id="pep-586-pep-589-pep-591-持续增强">PEP 586 / PEP 589 / PEP 591 持续增强</h3>
+<p><a href="https://www.python.org/dev/peps/pep-0586/">PEP 586 &ndash; Literal Types</a> 在 Python 3.8 实现，支持了字面量作为类型使用。 比如 <code>Literal[4]</code>，举一个更有语义的例子 <code>Literal['GREEN']</code>。</p>
+<p>我第一反应这和 Scala 里面的 Symbol 非常像，Scala 中写法是 <code>Symbol("GREEN")</code>。 这个特性使用挺学院派，很容易在 DSL 里面写的天花乱坠。 Scala 官方有说过可能在未来移除 Symbol 特性，建议直接使用常量替代。</p>
+<p><a href="https://www.python.org/dev/peps/pep-0589/">PEP 589 &ndash; TypedDict: Type Hints for Dictionaries with a Fixed Set of Keys</a> 给 Dict 增加 key 的 Type，继承 <code>TypedDict</code>。</p>
+<p><a href="https://www.python.org/dev/peps/pep-0591/">PEP 591 &ndash; Adding a final qualifier to typing</a> 增加 <code>final</code> / <code>Final</code> 两个概念，前者是装饰器，后者是注解，标注该类 / 函数 / 变量无法修改</p>
+<p>至此，Python 3.8 已经具备我们日常需要的类型系统特性（非运行时 😂）。</p>
+<h2 id="总结_1">总结</h2>
+<p>遗憾的是，<code>typing</code> 模块在文档鲜明的标注：</p>
+<blockquote>
+<p>The Python runtime does not enforce function and variable type annotations. They can be used by third party tools such as type checkers, IDEs, linters, etc.</p>
+</blockquote>
+<p>即：Python 运行时（Intercepter / Code Evaluator）并不支持函数和变量的类型装饰符。 这些装饰符只能由第三方工具检查，比如类型检查器、IDE、静态、Linter。</p>
+<p>这个信息说明了 Python 在类型安全上尝试的局限性。所有的限制、约束都不会发生在运行时， 想要从类型系统中收获工程上面的价值，只能借助第三方工具。</p>
+<p>诚然，Python 社区在竭力向类型系统靠拢，但是这种非语言级别 Runtime 的支持，到底能走多远呢？ Python 缺少金主爸爸，干爹 Red Hat 投入资源也有限。连社区从 Python 2 切换到 Python 3 都还没走完，为何？ 投入产出比太低，新特性缺乏足够的吸引力，替代品太多。</p>
+<p>另一方面，看看竞对们： 动态语言在往静态语言靠拢，而静态语言也在不断吸收动态语言的特性。比如 Java 14 里面的 REPL（Read-Eval-Print-Loop）， Kotlin / Scala 等语言的类型推断（Type Inference）。 也许这种演进方式更能够让用户接受吧。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://docs.python.org/3/library/typing.html">typing &mdash; Support for type hints &mdash; Python 3.8.3 documentation</a></li>
+<li><a href="https://www.python.org/dev/peps/pep-0483/#type-variables">PEP 483 &ndash; The Theory of Type Hints | Python.org</a></li>
+<li><a href="https://www.python.org/dev/peps/pep-0484/#abstract">PEP 484 &ndash; Type Hints | Python.org</a></li>
+<li><a href="https://www.bernat.tech/the-state-of-type-hints-in-python/">the state of type hints in Python</a></li>
+</ul>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2020/06/type-safe-python/">https://blog.alswl.com/2020/06/type-safe-python/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

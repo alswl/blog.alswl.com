@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Java笔记 使用反射来改进BaseDao - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Java,DAO,JavaSE,贴吧,重构" />
+        <meta name="description" content="关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够“观察”并且修改自己的行为。 Java中的反射示例如下： package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/"
+                       rel="bookmark"
+                       title="Permalink to Java笔记 使用反射来改进BaseDao">
+                        Java笔记 使用反射来改进BaseDao
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#关于反射" title="关于反射">关于反射</a></li><li><a class="toc-href" href="#原始basedao设计" title="原始BaseDao设计">原始BaseDao设计</a></li><li><a class="toc-href" href="#重构basedao和topicdao" title="重构BaseDao和TopicDao">重构BaseDao和TopicDao</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-11-17T00:00:00+08:00"> 2009-11-17</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/java/">Java</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/dao/">DAO</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/javase/">JavaSE</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/tie-ba/">贴吧</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/zhong-gou/">重构</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h2 id="关于反射">关于反射</h2>
+<p>反射的定义（via <a href="http://zh.wikipedia.org/zh-cn/%E5%8F%8D%E5%B0%84_%28%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%29">Wiki</a>）：在计算机科学中，反射是<strong>指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改</strong>的特性。用比喻来说，那种程式能够&ldquo;<strong>观察</strong>&rdquo;并且修改自己的行为。</p>
+<p>Java中的反射示例如下：</p>
+<pre><code>package dddspace.job.exercise1116;</code></pre>
+<p>public class Foo {</p>
+<p>public void fun(String str) {</p>
+<p>System.out.println(str);</p>
+<p>}</p>
+<p>}</p>
+<pre><code>package dddspace.job.exercise1116;</code></pre>
+<p>import java.lang.reflect.InvocationTargetException;</p>
+<p>import java.lang.reflect.Method;</p>
+<p>public class ReflectionDemo {</p>
+<p>public static void main(String[] args) throws SecurityException,</p>
+<p>NoSuchMethodException, ClassNotFoundException, InstantiationException,</p>
+<p>IllegalAccessException, IllegalArgumentException,</p>
+<p>InvocationTargetException {</p>
+<p>// 不使用反射</p>
+<p>Foo foo = new Foo();</p>
+<p>foo.fun(&ldquo;no reflection&rdquo;);</p>
+<p>// 使用反射</p>
+<p>String className = &ldquo;dddspace.job.exercise1116.Foo&rdquo;;</p>
+<p>String funName = &ldquo;fun&rdquo;;</p>
+<p>// 获取类名</p>
+<p>Class cls = Class.forName(className);</p>
+<p>// 创建Object实例</p>
+<p>Object foo2 = cls.newInstance();</p>
+<p>// 创建Method hello</p>
+<p>Method method = cls.getMethod(&ldquo;fun&rdquo;, String.class);</p>
+<p>// 使用反射来调用Method的invode方法，参数是目标对象+参数</p>
+<p>method.invoke(foo, &ldquo;use reflection&rdquo;);</p>
+<p>}</p>
+<p>}</p>
+<h2 id="原始basedao设计">原始BaseDao设计</h2>
+<p>我先阐述一下BaseDao的设计想法：BaseDao是一个<strong>抽象类</strong>，提供一系列Dao方法&ldquo;<strong>get()/getAll()/add()/update( )/delete()/getCount()</strong>&rdquo;，通过<strong>泛型匹配</strong>的获取类，我取出一个方法来做示例。</p>
+<pre><code>public int getCount()
+{
+    int count = 0;
+    Session session = null;
+    Transaction tx = null;
+    String Tstr = getClass().getSimpleName().substring (0,
+            getClass().getSimpleName().length() - 3);
+    String hql = "select count(*) from " + Tstr;
+    try {
+        session = HibernateSessionFactory.currentSession();
+        tx = session.beginTransaction();
+        Query query = session.createQuery(hql);
+        count = Integer.parseInt(query.uniqueResult().toString());
+        query = null;
+        tx.commit();
+    } catch (HibernateException e) {
+        if (tx != null) {
+            tx.rollback();
+        }
+        throw e;
+    } finally {
+        HibernateSessionFactory.closeSession();
+    }               
+    return count;
+}</code></pre>
+<p>其中有一段<strong>dirty work</strong>，就是TStr的获取，这段TStr是想从实现Dao类获取实体类的类型名称，也就是 从&ldquo;TopicDao&rdquo;获取&ldquo;Topic&rdquo;这个类型名称。整个BaseDao的泛型设计不错，但是在这一段上面存在一段dirty work，始终让我不爽。</p>
+<h2 id="重构basedao和topicdao">重构BaseDao和TopicDao</h2>
+<p>我今天复习完抽象类/接口/反射这些内容，又在纸上画了一个模型，觉得用这种新方法解决会更好一点。</p>
+<p>给抽象类BasoDao加入新的变量Class c，然后在TopicDao初始化时候对Class c进行设置为Topic.class，这样就比原来的拼字符串好的多。耦合也显得漂亮了</p>
+<pre><code>public abstract class BaseDAO&lt;T&gt; {
+    
+    protected Class c;
+    
+    private Logger logger = Logger.getLogger(this.getClass());
+    
+    /**
+     * 根据某个Bean的beanId取出Bean
+     * @param tId
+     * @return Bean
+     */
+    public T get(int tId)
+    {
+        T t=null;
+        Session session = null;
+        Transaction tx = null;
+        // 原始设计
+//      String Tstr = getClass().getSimpleName().substring (0,
+//              getClass().getSimpleName().length() - 3);
+        // 获取c的名称
+        String Tstr = c.getSimpleName();
+        String TstrId = Tstr+"Id";
+        String hql = "from " + Tstr + " where " +
+            TstrId.substring(0, 1).toLowerCase() + TstrId.substring(1) + " = ?";
+        try {
+            session = HibernateSessionFactory.currentSession();
+            tx = session.beginTransaction();
+            Query query = session.createQuery(hql);
+            query.setInteger(0,tId);
+            t = (T)query.uniqueResult();
+            query = null;
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            throw e;
+        } finally {
+            HibernateSessionFactory.closeSession();
+        }       
+        return t;
+    }
+
+public class TopicDAO extends BaseDAO&lt;Topic&gt;{
+        
+    private Logger logger = Logger.getLogger(this.getClass());
+    /**
+     * 根据froumId取出某一吧内的所有没被屏蔽的帖子
+     * @param froumId
+     * @return ArrayList&lt;Topic&gt; 
+     * @throws HibernateException
+     */
+    // 在构造函数中进行c的设置
+    public TopicDAO () {
+        c = Topic.class;
+    }
+    //doSomething
+}</code></pre>
+<p>这样完成之后，就完成了一次简单的重构，实现了<strong>变化点分离</strong>，而且不那么dirty。</p>
+<p>本文的代码来源自PostBar项目。这里有<a href="http://code.google.com/p/postbar/">Google Code链接</a>，v1.0.1的代码并没有上文的实现，本文中的修改还在trunk中。</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/">https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

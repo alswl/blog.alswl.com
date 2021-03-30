@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Delphi学习笔记03 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/11/delphi-study-notes-03/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Delphi" />
+        <meta name="description" content="学习Delphi第三天，早晨起来之后跑去图书馆找了一本书《Delphi开发经验技巧宝典》，翻开这本书发现更适合作为手册查阅，而不是学习教材。最后借了一本《Delphi面向对象程序设计》的教材，属于“21世纪高等学校应用型教材”系列。 今天主要完成了Pascal到Delphi的过度，学习使用集合set、记录record、指针Pointer和简单的可视化编程。 在百度Delphi吧逛时候发现索引越界居然是Delphi吧主，里面有一篇文章关于Delphi的编码风格，我一会转过来。 Ps:啊，你不知道索引越界？！那百度贴吧伴侣总应该听过吧，偷偷告诉你，这个软件就是索引越界用Delphi开发的。 好了，下面是正文，我今天使用的代码，咱们让代码来反应思想吧（其实我是懒得总结每个用法~）。 program P2; {集合、记录、指针学习} {$APPTYPE CONSOLE} uses SysUtils; {集合set} procedure SetTest(); type …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/11/delphi-study-notes-03/"
+                       rel="bookmark"
+                       title="Permalink to Delphi学习笔记03">
+                        Delphi学习笔记03
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-11-29T00:00:00+08:00"> 2009-11-29</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/delphi/">Delphi</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>学习Delphi第三天，早晨起来之后跑去图书馆找了一本书《<a href="http://www.china-pub.com/36610">Delphi开发经验技巧宝典</a>》，翻开这本书发现更适合作为手册查阅，而不是学习教材。最后借了一本《<a href="http://www%20.china-pub.com/734474">Delphi面向对象程序设计</a>》的教材，属于&ldquo;21世纪高等学校应用型教材&rdquo;系列。</p>
+<p>今天主要完成了Pascal到Delphi的过度，学习使用<strong>集合set</strong>、<strong>记录record</strong>、<strong>指针Pointer</strong>和<strong>简单的可视化编程</strong>。</p>
+<p>在百度<a href="http://tieba.baidu.com/f?kw=delphi">Delphi吧</a>逛时候发现<a href="http://passport.baidu.com/?business&amp;un=%CB%F7%D2%FD%D4%BD%BD%E7#0">索引越界</a>居然是Delphi吧主，里面有一篇文章关于<a href="http://tieba.baidu.com/f?kz=84767888">Delphi的编码风格</a>，我一会转过来。</p>
+<p>Ps:啊，你不知道索引越界？！那百度贴吧伴侣总应该听过吧，偷偷告诉你，这个软件就是索引越界用Delphi开发的。</p>
+<p>好了，下面是正文，我今天使用的代码，咱们让代码来反应思想吧（其实我是懒得总结每个用法~）。</p>
+<pre><code>program P2;
+{集合、记录、指针学习}
+{$APPTYPE CONSOLE}</code></pre>
+<p>uses</p>
+<p>SysUtils;</p>
+<p>{集合set}</p>
+<p>procedure SetTest();</p>
+<p>type</p>
+<p>{定义子集类型,子集类型元素不能超过256}</p>
+<p>TSomeInts = 1..250;</p>
+<p>TIntSet = set of TSomeInts;</p>
+<p>var</p>
+<p>set1, set2 : TIntSet;</p>
+<p>i : integer;</p>
+<p>begin</p>
+<p>set1 := [1, 3, 5, 7, 9];</p>
+<p>set2 := [2, 4, 6, 8, 10];</p>
+<p>{似乎Pascal不能输出Set内元素，书上解释是</p>
+<p>因为Set是无序的，只能使用下列方式来判断。</p>
+<p>使用Low()/Hign()函数获得有序数据类型的边</p>
+<p>界。}</p>
+<p>for i:= Low(TSomeInts) to High(TSomeInts) do</p>
+<p>begin</p>
+<p>{Set有一套操作方法，就是并、交、叉、等于</p>
+<p>、不等于、属于，下面就是用到属于in}</p>
+<p>if i in set1 then Write(i);</p>
+<p>end;</p>
+<p>Writeln;</p>
+<p>end;</p>
+<p>{记录record}</p>
+<p>procedure RecordTest ();</p>
+<p>type</p>
+<p>{这是定义一个记录，类似于结构体}</p>
+<p>TStudent = record</p>
+<p>StNumber : integer;</p>
+<p>StName : string;</p>
+<p>stScore : Real;</p>
+<p>end;</p>
+<p>var</p>
+<p>{其实我对这里的数据初始化不太懂，也许</p>
+<p>是因为受C++/Java影响，我始终觉得应该</p>
+<p>有一个构造过程，不知道这一个构造过程</p>
+<p>是在var实现还是在给成员变量初次赋值实</p>
+<p>现。}</p>
+<p>student1 : TStudent;</p>
+<p>begin</p>
+<p>student1.StNumber := 1000;</p>
+<p>student1.StName := &lsquo;张三&rsquo;;</p>
+<p>student1.stScore := 85.5;</p>
+<p>Writeln(student1.StName);</p>
+<p>end;</p>
+<p>{指针}</p>
+<p>procedure PointerTest ();</p>
+<p>var</p>
+<p>{定义指针}</p>
+<p>p1, p2 : ^integer;</p>
+<p>x : integer;</p>
+<p>begin</p>
+<p>x := 100;</p>
+<p>{使用@取变量地址}</p>
+<p>p1 := <span class="citation" data-cites="x">@x</span>;</p>
+<p>Writeln(&lsquo;x =&rsquo;, x);</p>
+<p>{注意^的使用}</p>
+<p>Writeln(&lsquo;p1^ =&rsquo;, p1^);</p>
+<p>{使用New()对指针分配内存空间</p>
+<p>ps；Object Pascal有一种Pointer类型，使用GetMem()</p>
+<p>来分配未知大小内存情况，Pointer表示无类型指针。}</p>
+<p>New(p2);</p>
+<p>p2^ := 20;</p>
+<p>Writeln(&lsquo;p2 =&rsquo;, p2^);</p>
+<p>{使用Dispose()释放内存空间}</p>
+<p>Dispose(p2);</p>
+<p>end;</p>
+<p>begin</p>
+<p>SetTest();</p>
+<p>RecordTest();</p>
+<p>PointerTest ();</p>
+<p>Readln;</p>
+<p>end.</p>
+<p>下面是一个学生分数登记系统，用了<code>TEdit/TRadioGroup/TListBox</code>等简单控件。整个项目一共三个文 件&ldquo;<code>P3.dpr</code>&rdquo;、&ldquo;<code>UScore.dfm</code>&rdquo;、&ldquo;<code>UScore.pas</code>&rdquo;，分别是项目文件、窗体文件、模块文件。下面是对应的代码（我发现Delphi 7想在代码状态编辑.dpr/.dfm这种文件特别麻烦）。</p>
+<pre><code>program P3;
+{项目文件，也是入口程序，相当于C#的application.cs}
+uses
+  Forms,
+  UScore in 'UScore.pas' {FrmScore};</code></pre>
+<p>{$R *.res}</p>
+<p>begin</p>
+<p>{Hejlsberg不愧是Delphi/C#之父，如此神似}</p>
+<p>Application.Initialize;</p>
+<p>Application.CreateForm(TFrmScore, FrmScore);</p>
+<p>Application.Run;</p>
+<p>end.</p>
+<p>下面是窗体文件UScore.dfm，注释始终无法加入。</p>
+<pre><code>object FrmScore: TFrmScore
+  Left = 612
+  Top = 163
+  Width = 315
+  Height = 389
+  Caption = 'Student Score'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object edtNo: TEdit
+    Left = 32
+    Top = 32
+    Width = 121
+    Height = 21
+    TabOrder = 0
+  end
+  object edtName: TEdit
+    Left = 32
+    Top = 72
+    Width = 121
+    Height = 21
+    TabOrder = 1
+  end
+  object rgSex: TRadioGroup
+    Left = 176
+    Top = 32
+    Width = 105
+    Height = 65
+    Caption = #24615#21035
+    ItemIndex = 0
+    Items.Strings = (
+      #30007
+      #22899)
+    TabOrder = 2
+  end
+  object gbScore: TGroupBox
+    Left = 32
+    Top = 112
+    Width = 249
+    Height = 81
+    Caption = 'gbScore'
+    TabOrder = 3
+    object edtChinese: TEdit
+      Left = 16
+      Top = 16
+      Width = 121
+      Height = 21
+      TabOrder = 0
+    end
+    object edtMath: TEdit
+      Left = 16
+      Top = 48
+      Width = 121
+      Height = 21
+      TabOrder = 1
+    end
+  end
+  object lbDisplay: TListBox
+    Left = 32
+    Top = 248
+    Width = 249
+    Height = 105
+    ItemHeight = 13
+    TabOrder = 4
+  end
+  object btnAdd: TButton
+    Left = 56
+    Top = 208
+    Width = 75
+    Height = 25
+    Caption = 'btnAdd'
+    TabOrder = 5
+    OnClick = btnAddClick
+  end
+  object btnDisplay: TButton
+    Left = 168
+    Top = 208
+    Width = 75
+    Height = 25
+    Caption = 'btnDisplay'
+    TabOrder = 6
+    OnClick = btnDisplayClick
+  end
+end
+
+
+unit UScore;
+{UScore.pas，一个模块文件}</code></pre>
+<p>interface</p>
+<p>uses</p>
+<p>Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,</p>
+<p>Dialogs, StdCtrls, ExtCtrls;</p>
+<p>type</p>
+<p>TFrmScore = class(TForm)</p>
+<p>edtNo: TEdit;</p>
+<p>edtName: TEdit;</p>
+<p>rgSex: TRadioGroup;</p>
+<p>gbScore: TGroupBox;</p>
+<p>edtChinese: TEdit;</p>
+<p>edtMath: TEdit;</p>
+<p>lbDisplay: TListBox;</p>
+<p>btnAdd: TButton;</p>
+<p>btnDisplay: TButton;</p>
+<p>procedure btnAddClick(Sender: TObject);</p>
+<p>procedure btnDisplayClick(Sender: TObject);</p>
+<p>private</p>
+<p>{ Private declarations }</p>
+<p>public</p>
+<p>{ Public declarations }</p>
+<p>end;</p>
+<p>{定义一个Student类型记录}</p>
+<p>Student = record</p>
+<p>stuNo : string[8];</p>
+<p>name : String[8];</p>
+<p>sex : String[2];</p>
+<p>chinese, math : integer;</p>
+<p>end;</p>
+<p>var</p>
+<p>frmScore: TFrmScore;</p>
+<p>{定义Student类型动态数组}</p>
+<p>stus : array of Student;</p>
+<p>{我没找到这个count初始化为0，应该是自动初始化为0了}</p>
+<p>count : integer;</p>
+<p>{不知道书上原始代码定义这个file干嘛，莫非想写入文件？}</p>
+<p>f : file of Student;</p>
+<p>implementation</p>
+<p>{$R *.dfm}</p>
+<p>procedure TFrmScore.btnAddClick(Sender: TObject);</p>
+<p>begin</p>
+<p>count := count + 1;</p>
+<p>SetLength(stus, count);</p>
+<p>{这里使用了with开域语句，省去重复输入stus}</p>
+<p>with stus[count - 1] do</p>
+<p>begin</p>
+<p>stuNo := edtNo.Text;</p>
+<p>name := edtName.Text;</p>
+<p>if rgSex.ItemIndex = 0 then</p>
+<p>sex := &lsquo;男&rsquo;</p>
+<p>else</p>
+<p>sex := &lsquo;女&rsquo;;</p>
+<p>chinese := StrToInt(edtChinese.Text);</p>
+<p>math := StrToInt(edtMath.Text);</p>
+<p>end;</p>
+<p>ShowMessage(&lsquo;第&rsquo; + IntToStr(count) +&lsquo;条记录添加完毕。&rsquo;);</p>
+<p>{直接调用DisplayClick，使用Sender作为触发源}</p>
+<p>btnDisplayClick(Sender);</p>
+<p>end;</p>
+<p>procedure TFrmScore.btnDisplayClick(Sender: TObject);</p>
+<p>var</p>
+<p>i : integer;</p>
+<p>s : string;</p>
+<p>begin</p>
+<p>{ListBox增加Item}</p>
+<p>lbDisplay.Items.Clear();</p>
+<p>for i := Low(stus) to High(stus) do</p>
+<p>begin</p>
+<p>s := stus[i].stuNo + &lsquo;,&rsquo; + stus[i].name + &lsquo;,&rsquo; +</p>
+<p>stus[i].sex + IntToStr(stus[i].chinese) + &lsquo;,&rsquo; +</p>
+<p>IntToStr(stus[i].math);</p>
+<p>lbDisplay.Items.Add(s);</p>
+<p>end;</p>
+<p>end;</p>
+<p>end.</p>
+<p>这个分数记录系统的作用仅仅是为了熟悉Delphi可视化开发，没有任何可实用价值，Google过来的同学估计要哭了，哈哈~</p>
+<p>明天开始要准备Object Pascal的内容，再加强控件的认识和使用。</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/11/delphi-study-notes-03/">https://blog.alswl.com/2009/11/delphi-study-notes-03/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

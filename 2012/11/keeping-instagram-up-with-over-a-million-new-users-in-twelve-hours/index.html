@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>如何让 Instagram 在一百多万用户爆炸后稳定运行 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Python,Instagram,译文,Django,Database" />
+        <meta name="description" content="原文链接：Keeping Instagram up with over a million new users in twelve hours 这周二我们发布了 Instagram for Android，反响空前强烈。 最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。 尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。 在这里我们将分享一些帮助我们解决问题的工具和技术。" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/"
+                       rel="bookmark"
+                       title="Permalink to 如何让 Instagram 在一百多万用户爆炸后稳定运行">
+                        如何让 Instagram 在一百多万用户爆炸后稳定运行
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#pgfouine" title="##PGFouine##">##PGFouine##</a></li><li><a class="toc-href" href="#one-more-thing" title="One more thing">One more thing</a></li><li><a class="toc-href" href="#interested" title="Interested?">Interested?</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2012-11-19T00:06:00+08:00"> 2012-11-19</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/python/">Python</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/instagram/">Instagram</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/yi-wen/">译文</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/django/">Django</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/database/">Database</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>原文链接：<a href="http://instagram-engineering.tumblr.com/post/20541814340/keeping-instagram-up-with-over-a-million-new-users-in">Keeping Instagram up with over a million new users in twelve hours</a></p>
+<hr/>
+<p>这周二我们发布了 <a href="https://play.google.com/store/apps/details?id=com.instagram.android">Instagram for Android</a>，反响空前强烈。 最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。 尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。 在这里我们将分享一些帮助我们解决问题的工具和技术。</p>
+<!-- more -->
+<p>##statsd##</p>
+<p><a href="http://github.com/etsy/statsd/">statsd</a> 在 Instagram 很受欢迎。这是 <a href="http://github.com/etsy/">Etsy</a> 写的一个网络监控器， 能够统计并图形化数据。它有两种核心的统计方式：计数器和计时器。 我们用计数器来跟踪许多信息，从每秒钟注册数到喜欢数量统计。 同时我们使用计时器来跟踪 feeds 变化，用户停留在 feeds 多久，和其他的主要操作。</p>
+<p>我们喜欢 statsd 的最大原因是它能迅速将状态显示并图形化出来。 Stats 几乎是实时的（在我们系统中有 10 秒钟的延时） 帮助我们评估系统状况和代码变化情况。 Stats 可以随意启用，当我们需要跟踪时，能够快速启用它。 你可以指定一个取样密度，来均匀的查看 web 应用概况， 而不会影响它运行效率。</p>
+<p>总结：实时统计可以动态添加，帮助你线上诊断而无须等待问题重现。</p>
+<p>##Dogslow##</p>
+<p><a href="http://blog.bitbucket.org/2011/05/17/tracking-slow-requests-with-dogslow/">Bitbucket</a> 出品，Dogslow 是一个 Django middleware，它能监视运行的进程， 当发现有进程运行时间超过 <em>N</em> 秒时，会保存当前进程信息的快照到磁盘。 一直开着它很耗性能，但当去定位突发问题的瓶颈时，就会非常有用（我们在 web 服务器上加了一个开关控制）。</p>
+<p>在发布那天，我们发现很多运行时间超过 1.5s 的进程都卡在 memcached 的 set() 和 get_many() 方法上。我们使用 Munin 跟踪我们的机器状态，发现 memcached 每秒有 5 万次请求，因此，尽管还没到达 CPU 上限，却被 memcached 拖慢了应用服务器速度。</p>
+<p>总结：瓶颈往往是后台的一个短板造成的，定位到底哪里卡下来能帮助找出问题根源。</p>
+<p>##Replication &amp; Read-slaves##</p>
+<p>我们主要的两个数据源 <a href="http://redis.io">Redis</a> 和 <a href="http://postgresql.org/">PostgreSQL</a> 都可以方便地主从分离。 当我们的 Redis 数据库到达每秒 4 万请求时候，开始成为瓶颈。我们在另外一台服务器 打开 <a href="http://redis.io/topics/replication">SYNCing to the master</a>，然后将读请求发送到这台服务器， 这些操作仅耗时 20 分钟。根据几个案例，有些机器的负载会偏离了我们预期， 所以我们会提前准备好从服务器，从而快速地分离出读请求。</p>
+<p>比方说 Postgres，我们混合使用 <a href="http://wiki.postgresql.org/wiki/Streaming_Replication">Streaming Replication</a> 和 Amazon EBS 快照来快速启动从服务器。所有从主 DB 到从服务器的数据不定时会有 EBS 快照。 根据这些快照，我们可以在 20 分钟内启动新的从服务器并通知主服务器。 在 AWS 这样的环境中，我们使用脚本和命令来很快的预判并部署新的从服务器。</p>
+<p>总结：如果读能力会变成瓶颈，那就预先准备好从服务器，并让他们轮询服务。 一旦出现了新的读问题，要做的仅仅是加更多的读服务器到轮询中去。</p>
+<h2 id="pgfouine">##PGFouine##</h2>
+<p><a href="http://pgfouine.projects.postgresql.org/">PGFouine</a> 是一个分析 PostgreSQL 查询日志并生成查询结果的工具。 将最重、最常用、最慢的查询拆分出来。我们写了一个 Fabric 脚本来方便的使用它， 连接到一个数据库，然后等待 30 秒并记录下其中每条查询，把结果保存到本地再用 pgfouine 来分析，这里可以看到 <a href="https://gist.github.com/2307647">as a gist</a>。PGFouine 是我们用来分析数据库性能的核心工具。帮我们找出哪些查询应该被 memcached 缓存， 哪些查询了过度的数据等等。发布那天数据库出现了一点压力，我们就跑 PGFouine， 然后部署一些提升性能的代码来缓解压力，然后再跑一次 PGFouine 来确认效果。</p>
+<p>知道平日里数据库表现性能很重要，因此我们也定期在无压力的服务器上统计信息。</p>
+<p>总结：数据库日志分析（尤其注意迭代循环查询和缓存经常使用的数据）</p>
+<h2 id="one-more-thing">One more thing</h2>
+<p>另一个帮助我们顺利通过发布第一天的工具是我们自己写的一个 node.js 服务，node2dm， 用来推送通知消息到 Android C2DM 服务。它至今已经发送了 500 万条推送。</p>
+<p>我们调查了一些支持 C2DM 的可用服务，但要么是开源包不那么被积极维护， 要么是不支持 Google 所有的功能。我们现在用 <a href="http://github.com/Instagram/node2dm">open sourcing node2dm</a>， 你可以随意 forlk / pull-request 来帮助我们改进。</p>
+<h2 id="interested">Interested?</h2>
+<p>如果你对这些很感兴趣，你可以跟我们联系来获得工作机会，<a href="http://instagram.jobscore.com/jobs/instagram/engineer/bXctey0Oir4kCZeJe4bk1X">drop us a note</a>， 我们需要知道你的想法。</p>
+<p>你可以在 Hacker News 来 <a href="http://news.ycombinator.com/item?id=3804351">discuss this post</a>。</p>
+<p>&mdash;</p>
+<p><em>Mike Krieger, co-founder</em></p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/">https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

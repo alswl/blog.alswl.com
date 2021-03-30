@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Delphi学习笔记04 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/12/delphi-study-notes-04/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Delphi" />
+        <meta name="description" content="今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。 1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。 2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C++/Java那种inner类定义，写起来难免缚手缚脚 。 3.大小写的语法规范很麻烦，像Integer/String这些关键词，我真不知道该不该首字母大写。还有变量的定义，按照“Delphi编码规范”是应该大写 ，可是这样就需要频繁的使用Shift，还是喜欢Java的那种首字符小写的驼峰式，能够清楚地把函数/过程/变量区分开。 4.fuction/procedure除了返回值又没什么大区别，现在想来真爱死void了。 下面上今天学习的代码，是类的定义、继承、多态这些。 1.类的使用 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/12/delphi-study-notes-04/"
+                       rel="bookmark"
+                       title="Permalink to Delphi学习笔记04">
+                        Delphi学习笔记04
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#类的使用" title="1.类的使用">1.类的使用</a></li><li><a class="toc-href" href="#类的继承和多态" title="2.类的继承和多态">2.类的继承和多态</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-12-01T00:00:00+08:00"> 2009-12-01</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/delphi/">Delphi</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>今天主要学习了Object Pascal的<strong>面向对象</strong>部分：类的定义、继承、多态这些基本操作。</p>
+<p>1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。</p>
+<p>2.语法结构严谨，比如类定义必须在<code>interface</code>之后，过程/函数的实现必须要分开，而无法写成C++/Java那种inner类定义，写起来难免缚手缚脚 。</p>
+<p>3.大小写的语法规范很麻烦，像<code>Integer/String</code>这些关键词，我真不知道该不该首字母大写。还有变量的定义，按照&ldquo;Delphi编码规范&rdquo;是应该大写 ，可是这样就需要频繁的使用Shift，还是喜欢Java的那种首字符小写的驼峰式，能够清楚地把函数/过程/变量区分开。</p>
+<p>4.<code>fuction/procedure</code>除了返回值又没什么大区别，现在想来真爱死void了。</p>
+<p>下面上今天学习的代码，是类的<strong>定义</strong>、<strong>继承</strong>、<strong>多态</strong>这些。</p>
+<h2 id="类的使用">1.类的使用</h2>
+<pre><code>unit USharp;</code></pre>
+<p>{接口定义}</p>
+<p>interface</p>
+<p>type</p>
+<p>{定义类TSharp}</p>
+<p>TSharp = class(TObject)</p>
+<p>private</p>
+<p>FWeight : Double;</p>
+<p>procedure SetWeight(Weight : Double);</p>
+<p>public</p>
+<p>{定义属性Weight}</p>
+<p>property Weight : Double read FWeight write SetWeight;</p>
+<p>procedure Display();</p>
+<p>procedure Draw() ;virtual;</p>
+<p>end;</p>
+<p>{实现}</p>
+<p>implementation</p>
+<p>procedure TSharp.SetWeight(Weight : Double);</p>
+<p>begin</p>
+<p>FWeight := Weight;</p>
+<p>end;</p>
+<p>procedure TSharp.Display();</p>
+<p>begin</p>
+<p>{Self.ClassName获取当前类名}</p>
+<p>Writeln(&lsquo;Im&rsquo;, Self.ClassName, &rsquo; , my weight is &rsquo;, FWeight);</p>
+<p>end;</p>
+<p>{空方法，我不明白虚方法为什么还需要在基类实现&hellip;}</p>
+<p>procedure TSharp.Draw();</p>
+<p>begin</p>
+<p>end;</p>
+<p>end.</p>
+<h2 id="类的继承和多态">2.类的继承和多态</h2>
+<pre><code>unit UCircle;
+{Circle类模块}
+interface</code></pre>
+<p>uses</p>
+<p>USharp;</p>
+<p>type</p>
+<p>TCircle = class(TSharp)</p>
+<p>private</p>
+<p>FR : Double;</p>
+<p>procedure SetR (R : Double);</p>
+<p>public</p>
+<p>property R : Double read FR write SetR;</p>
+<p>{重载父类Display方法}</p>
+<p>procedure Display();</p>
+<p>{重写父类Draw虚方法，关键词override}</p>
+<p>procedure Draw(); override;</p>
+<p>end;</p>
+<p>implementation</p>
+<p>procedure TCircle.SetR(R : Double);</p>
+<p>begin</p>
+<p>FR := R;</p>
+<p>end;</p>
+<p>procedure TCircle.Display();</p>
+<p>begin</p>
+<p>Writeln(&lsquo;Im&rsquo;, Self.ClassName, &rsquo; , I am in TCircle.&rsquo;);</p>
+<p>end;</p>
+<p>procedure TCircle.Draw();</p>
+<p>begin</p>
+<p>Writeln(&lsquo;Draw a Circle.&rsquo;);</p>
+<p>end;</p>
+<p>end.</p>
+<pre><code>unit USquare;</code></pre>
+<p>interface</p>
+<p>uses</p>
+<p>USharp;</p>
+<p>type</p>
+<p>{定义类TSharp}</p>
+<p>TSquare = class(TSharp)</p>
+<p>private</p>
+<p>FX : Double;</p>
+<p>FY : Double;</p>
+<p>procedure SetX(X : Double);</p>
+<p>procedure SetY(Y : Double);</p>
+<p>public</p>
+<p>{定义属性Weight}</p>
+<p>property X : Double read FX write SetX;</p>
+<p>property Y : Double read FY write SetY;</p>
+<p>procedure Display();</p>
+<p>{重写父类Draw虚方法，关键词override}</p>
+<p>procedure Draw(); override;</p>
+<p>end;</p>
+<p>{实现}</p>
+<p>implementation</p>
+<p>procedure TSquare.SetX(X : Double);</p>
+<p>begin</p>
+<p>FX := X;</p>
+<p>end;</p>
+<p>procedure TSquare.SetY(Y : Double);</p>
+<p>begin</p>
+<p>FY := Y;</p>
+<p>end;</p>
+<p>procedure TSquare.Display();</p>
+<p>begin</p>
+<p>{Self.ClassName获取当前类名}</p>
+<p>Writeln(&lsquo;Im&rsquo;, Self.ClassName, &rsquo; , my x is &lsquo;, X,&rsquo;, y is &rsquo;, Y);</p>
+<p>end;</p>
+<p>procedure TSquare.Draw();</p>
+<p>begin</p>
+<p>Writeln(&lsquo;Draw a Square.&rsquo;);</p>
+<p>end;</p>
+<p>end.</p>
+<pre><code>program P2;
+{使用类继承和多.pas文件}</code></pre>
+<p>{$APPTYPE CONSOLE}</p>
+<p>uses</p>
+<p>SysUtils,</p>
+<p>USharp in &lsquo;USharp.pas&rsquo;,</p>
+<p>UCircle in &lsquo;UCircle.pas&rsquo;,</p>
+<p>USquare in &lsquo;USquare.pas&rsquo;;</p>
+<p>var</p>
+<p>Sharp : TSharp;</p>
+<p>Circle : TCircle;</p>
+<p>Square : TSquare;</p>
+<p>{用来进行多态的TSharp}</p>
+<p>SharpVirtual : TSharp;</p>
+<p>{用来进行类型转换的TSquare}</p>
+<p>SquareForAs : TSquare;</p>
+<p>begin</p>
+<p>Sharp := TSharp.Create();</p>
+<p>Sharp.Weight := 1.3;</p>
+<p>Sharp.Display();</p>
+<p>Circle := TCircle.Create();</p>
+<p>Circle.Weight := 2.2;</p>
+<p>Circle.R := 1.2;</p>
+<p>Circle.Display();</p>
+<p>Square := TSquare.Create();</p>
+<p>Square.Weight := 4.5;</p>
+<p>Square.X := 2;</p>
+<p>Square.Y := 3;</p>
+<p>Square.Display();</p>
+<p>{将变量分别指向TCicle和TSquare，运行Draw实现多态}</p>
+<p>SharpVirtual := TCircle.Create();</p>
+<p>SharpVirtual.Draw();</p>
+<p>SharpVirtual := TSquare.Create();</p>
+<p>SharpVirtual.Draw();</p>
+<p>{is操作符}</p>
+<p>Writeln(Circle is TCircle);</p>
+<p>Writeln(SharpVirtual is TCircle);</p>
+<p>Writeln(SharpVirtual is TSquare);</p>
+<p>{as类转换操作符}</p>
+<p>SquareForAs := SharpVirtual as TSquare;</p>
+<p>SquareForAs.Draw;</p>
+<p>Readln;</p>
+<p>end.</p>
+<p>本来准备入手<strong>VCL</strong>，结果事情太多，下午党员会议，晚上我又提前1个月过生日请朋友吃饭唱歌，耽误了```</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/12/delphi-study-notes-04/">https://blog.alswl.com/2009/12/delphi-study-notes-04/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

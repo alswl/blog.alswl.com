@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>编码: ASCII(ANSI), GB-2312, UNICODE, UTF-8，UTF-16 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/09/encoding-ascii-ansi-gb-2312-unicode-utf-8-utf-16/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="综合技术,编码" />
+        <meta name="description" content="ASCII字符集 7位的编码方案，总共表示128个字符，其中包括了大小写英文字母、数字、标点符号等常用字符。英语世界已经足够应付。 ISO-8859-1字符集 也称ISO-Latin字符集，它扩展了ASCII字符集，用到了8bit字节里的最高一位，这样它就有256个字符，前128个字符和ASCII字符集相同 。有了ISO-Latin字符集，西方世界的一些其它语言，如西班牙语、法语、德语、意大利语都够用了。 GB系列字符集（GB2312，GBK，GB18030） 由于一个字节是无论如何也表达不了哪怕是最长用的汉字字符集的，所以为了用计算机存储汉字，必须使用多个字节。 多字节字符集就是使用可变长的编码长度来编码字符，有的字符用一个字节编码，比如ASCII字符，有的字符用两个字节编码，比如汉字。在VC里，多字节字符集等同于双 字节字符集，VC不支持多于2个字节编码长度的字符。GB系列的字符集和ISO-Latin字符集一样，前128个字符和ASCII字符集相同。GB系列字符集是兼容 的，相同的中文字符在这3个字符集里有相同的编码。GB2312和GBK一个字符最多2个字节表示，GB18030可多达4个字节。在这种编码里表示汉字时，需要一个 leading byte，它总是大于127，这个字节的含义是说明它和后面的字节（们）一起表示一个字符 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/09/encoding-ascii-ansi-gb-2312-unicode-utf-8-utf-16/"
+                       rel="bookmark"
+                       title="Permalink to 编码: ASCII(ANSI), GB-2312, UNICODE, UTF-8，UTF-16">
+                        编码: ASCII(ANSI), GB-2312, UNICODE, UTF-8，UTF-16
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#ascii字符集" title="ASCII字符集">ASCII字符集</a></li><li><a class="toc-href" href="#iso-8859-1字符集" title="ISO-8859-1字符集">ISO-8859-1字符集</a></li><li><a class="toc-href" href="#gb系列字符集gb2312gbkgb18030" title="GB系列字符集（GB2312，GBK，GB18030）">GB系列字符集（GB2312，GBK，GB18030）</a></li><li><a class="toc-href" href="#unicode字符集" title="Unicode字符集">Unicode字符集</a></li><li><a class="toc-href" href="#utf-8编码" title="UTF-8编码">UTF-8编码</a><ul><li><a class="toc-href" href="#unicode字符采用utf-8编码方案时的对照表" title="Unicode字符采用UTF-8编码方案时的对照表">Unicode字符采用UTF-8编码方案时的对照表</a></li></ul></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-09-12T00:00:00+08:00"> 2009-09-12</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/zong-he-ji-zhu/">综合技术</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/bian-ma/">编码</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h2 id="ascii字符集">ASCII字符集</h2>
+<p>7位的编码方案，总共表示128个字符，其中包括了大小写英文字母、数字、标点符号等常用字符。英语世界已经足够应付。</p>
+<h2 id="iso-8859-1字符集">ISO-8859-1字符集</h2>
+<p>也称ISO-Latin字符集，它扩展了ASCII字符集，用到了8bit字节里的最高一位，这样它就有256个字符，前128个字符和ASCII字符集相同 。有了ISO-Latin字符集，西方世界的一些其它语言，如西班牙语、法语、德语、意大利语都够用了。</p>
+<h2 id="gb系列字符集gb2312gbkgb18030">GB系列字符集（GB2312，GBK，GB18030）</h2>
+<p>由于一个字节是无论如何也表达不了哪怕是最长用的汉字字符集的，所以为了用计算机存储汉字，必须使用多个字节。</p>
+<p>多字节字符集就是使用可变长的编码长度来编码字符，有的字符用一个字节编码，比如ASCII字符，有的字符用两个字节编码，比如汉字。在VC里，多字节字符集等同于双 字节字符集，VC不支持多于2个字节编码长度的字符。GB系列的字符集和ISO-Latin字符集一样，前128个字符和ASCII字符集相同。GB系列字符集是兼容 的，相同的中文字符在这3个字符集里有相同的编码。GB2312和GBK一个字符最多2个字节表示，GB18030可多达4个字节。在这种编码里表示汉字时，需要一个 leading byte，它总是大于127，这个字节的含义是说明它和后面的字节（们）一起表示一个字符。</p>
+<p>这些字符集（ISO-Latin字符集，GB系列字符集）都是以ASCII为基础扩展而来，统称为ANSI字符集。</p>
+<p>记事本在默认情况下（选择ANSI编码）就是使用多字节字符集保存文件的，至于使用的是GB2312，GBK，还是GB18030我不清楚。</p>
+<h2 id="unicode字符集">Unicode字符集</h2>
+<p>每个地区的人都试图扩展ASCII编码来支持本地的语言，最终的结果是导致互不兼容。因为除了最低的128个字符相同以外，其它的字符都使用自己特殊的编码方案。</p>
+<p>当使用与文件保存时的编码方案不同的编码来读取文件时，就会产生错误&mdash;&mdash;比如Windows记事本那个著名的「联通BUG」。</p>
+<p>统一所有字符的编码是Unicode被设计出来的初衷。</p>
+<p>长久以来，Unicode在我心中的概念就是：使用2个字节来编码字符，使用Unicode可以表示世界上所有的字符。但这种理解并不准确！</p>
+<p>其实Unicode可以看成是一种理想：这种理想就是世界上的所有字符都只有一个唯一的标识！至于怎样去实现这种理想，有很多的实现方式：UTF- 8,UTF-16,UTF-32,甚至在Unicode标准里还介绍了一种压缩的实现方式。Unicode把这个唯一的标识称之为代码点（code point），字符的代码点以U+XXXX的方式表示，这个可以打开Windows自带的字符映射表看得到。</p>
+<p>Unicode最初被设计出来的时候希望使用2个字节就可以表示世界上的所有字符。因此，实现Unicode最直接的想法就是用两个字节来存储一个字符，如果大家都这 么想就好了，这样一个字符就可以用2个字节长的短整形来存储。但是偏偏还有一个叫做大端小端东西存在，这样2个字节的短整型在内存中的表示顺序就有2种可能，这就是为 什么当用记事本保存文本文件时可以选择Unicode或者Unicode big endian的原因。</p>
+<p>1个字符=2个字节在现实中却遇到了麻烦。一方面，用2个字节表示一个字符，浪费了大量的空间（如果仅仅用来存储ISO- Latin字符集里的字符的话），而且还会有大端小端的问题，解决的方案是UTF- 8编码；另一方面，人们在实践中发现即使用2个字节编码也无法表示所有字符，因此出现了UTF- 16。UTF-16除了使用2个字节编码外，还使用一对2个字节来表 示Unicode里很少用到的字符；另外还有UTF-32，它使用单独的4个字节来编码所有的Unicode字符。</p>
+<h2 id="utf-8编码">UTF-8编码</h2>
+<p>我想最早提出UTF-8的一定是美国人，「用2个字节来表示一个英语字母这太浪费了！」，他们肯定会这么说的。顾名思义，那个8说明UTF- 8编码中最小的单位是8bit的字节。采用UTF- 8编码，Unicode代码点中U+007F以下（包含U+007F）的字符用一个字节编码，其它的字符用多个字节编码，最多一个字符用4个字节编码。这样UTF- 8兼容ASCII，但是不兼容ISO-Latin字符集。</p>
+<h3 id="unicode字符采用utf-8编码方案时的对照表">Unicode字符采用UTF-8编码方案时的对照表</h3>
+<p>U-00000000 - U-0000007F:&nbsp; 0xxxxxxx</p>
+<p>U-00000080 - U-000007FF:&nbsp; 110xxxxx 10xxxxxx</p>
+<p>U-00000800 - U-0000FFFF:&nbsp; 1110xxxx 10xxxxxx 10xxxxxx</p>
+<p>U-00010000 - U-001FFFFF:&nbsp; 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx</p>
+<p>U-00200000 - U-03FFFFFF:&nbsp; 111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx</p>
+<p>U-04000000 - U-7FFFFFFF:&nbsp; 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx</p>
+<p>网上的很多文章都有这个表，可以看到一个Unicode代码点采用UTF-8编码时最多可达6个字节。但是从Unicode官方网站上看到的是UTF- 8编码的最大字节长度是4个字节。也就是说最下面的两行没有了。</p>
+<p>UTF-8编码的实现方式比较好理解：例如「汉」字的Unicode编码是6C49，6C49在0800-FFFF之间，所以最终编码应该是3个字节。 6C49的二进制位串是：110110001001001，把这个位串从右向左填充到那3个字节的x部分，高位不够的用0补。最终得到的3个字节是：11100110 10110001 10001001，即E6 B1 89。注意由于UTF- 8的最小编码单元是字节，所以不存在大端小端的问题。在各种Unicode编码方案之间转换的标准算法（诸如从UTF-16到UTF- 8或者反过来）已经有了，在Unicode的官方网站上可以找到。</p>
+<p>这样Unicode至少就有5种编码方案了（UTF-8，UTF-16两种，UTF-32两种），怎么区分它们呢？</p>
+<p>区分各种不同Unicode编码方案的技巧被称为Byte Order Mark（BOM）</p>
+<p>Byte order mark&nbsp;&nbsp;&nbsp;&nbsp; Description</p>
+<p>EF BB BF&nbsp;&nbsp;&nbsp;&nbsp; UTF-8</p>
+<p>FF FE&nbsp;&nbsp;&nbsp;&nbsp; UTF-16, little endian</p>
+<p>FE FF&nbsp;&nbsp;&nbsp;&nbsp; UTF-16, big endian</p>
+<p>FF FE 00 00&nbsp;&nbsp;&nbsp;&nbsp; UTF-32</p>
+<p>「像记事本、EditPlus这些软件，如果另存为unicode类型，会在文件最开头添加BOM码，如果一个文件没有BOM码，那么就很难识别，需要人工识别了。另 外，一般说Unicode编码，其实和Unicode-le(小头端)一个概念，Unicode Big endian会单独作为一种编码类型放置的。」-alswl</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/09/encoding-ascii-ansi-gb-2312-unicode-utf-8-utf-16/">https://blog.alswl.com/2009/09/encoding-ascii-ansi-gb-2312-unicode-utf-8-utf-16/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

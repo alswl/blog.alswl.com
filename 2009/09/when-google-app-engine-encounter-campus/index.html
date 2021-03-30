@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>当Google APP Engine遇上校内 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/09/when-google-app-engine-encounter-campus/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Python,GAE,人人" />
+        <meta name="description" content="昨天看《程序员》时候看到一篇讲开放接口的文章，是FaceBook的一个开发人员写的，讲了很多关于开放平台的东西 。其中提到Google App Engine的云计算支持，FaceBook的FBML（校内的称为XNML，一种标记性语言）。 Google App Engine(GAE) Google App Engine让用户可以在 Google 的基础架构上运行的网络应用程序。Google App Engine 应用程序易于构建和维护，并可根据用户的访问量和数据存储需要的增长轻松扩展。使用 Google App Engine，将不再需要维护服务器：用户只需上传用户的应用程序，它便可立即为用户的用户提供服务。 通俗的说，App Engine就像是免费提供的一个500M高性能的空间，和一个appspot.com二级域名。在Google强大的云计算能力下，服务器的速度 和质量毋容置疑。现在App Engine支持Python和Java（似乎Java有些限制，具体的细节我没有看）。 XNML XNML（xiao nei market language …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/09/when-google-app-engine-encounter-campus/"
+                       rel="bookmark"
+                       title="Permalink to 当Google APP Engine遇上校内">
+                        当Google APP Engine遇上校内
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#google-app-enginegae" title="Google App Engine(GAE)">Google App Engine(GAE)</a></li><li><a class="toc-href" href="#xnml" title="XNML">XNML</a></li><li><a class="toc-href" href="#相关链接" title="相关链接：">相关链接：</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-09-27T00:00:00+08:00"> 2009-09-27</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/python/">Python</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/gae/">GAE</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/ren-ren/">人人</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>昨天看《<a href="http://www.csdn.net">程序员</a>》时候看到一篇讲开放接口的文章，是FaceBook的一个开发人员写的，讲了很多关于开放平台的东西 。其中提到Google App Engine的云计算支持，FaceBook的FBML（校内的称为XNML，一种标记性语言）。</p>
+<h2 id="google-app-enginegae">Google App Engine(GAE)</h2>
+<p>Google App Engine让用户可以在 Google 的基础架构上运行的网络应用程序。Google App Engine 应用程序易于构建和维护，并可根据用户的访问量和数据存储需要的增长轻松扩展。使用 Google App Engine，将不再需要维护服务器：用户只需上传用户的应用程序，它便可立即为用户的用户提供服务。</p>
+<p>通俗的说，App Engine就像是免费提供的一个500M高性能的空间，和一个appspot.com二级域名。在Google强大的云计算能力下，服务器的速度 和质量毋容置疑。现在App Engine支持Python和Java（似乎Java有些限制，具体的细节我没有看）。</p>
+<h2 id="xnml">XNML</h2>
+<p>XNML（xiao nei market language）是以种标记性语言，如果学过JavaEE，就会发现它和OGNL语言很像。XNML大概的形式是&lt;xnml:iframe &hellip;.&gt;这种形式，校内服务器会负责解析这种格式的语法生成相应的内容。其实这是把一些功能性内容封装成接口，为了安全和方便。</p>
+<p>在校内提供的开发平台写应用需要自己的一个地址，肯定不能是192.168.0.X这种本机地址了。这时候Google App Engine就派上了大用场，把应用的文件和数据存储在GAE里，那是相当的爽，可以放心的开发自己的第三方应用了。</p>
+<p>我一直对开放平台的开发有兴趣，现在有了GAE这个利器，正好写一个自己的小应用玩玩，顺便练习练习自己的Python。</p>
+<h2 id="相关链接">相关链接：</h2>
+<p>校内开发者（校内开发人员必须安装的应用）：<a href="http://app.renren.com/developers/home.do">http://app.renren.com/developers/home.do</a></p>
+<p>校内开放平台文档：<a href="http://wiki.dev.renren.com/wiki/%E9%A6%96%E9%A1%B5">http://wiki.dev.renren.com/wiki/%E9%A6%96%E9%A1%B5</a></p>
+<p>Google App Engine相关下载：<a href="http://code.google.com/appengine/downloads.html">http://code.google.com/appengine/downloads.html</a></p>
+<p>Google App Engine SDK for Python-Win：<a href="http://googleappengine.googlecode.com/files/GoogleAppEngine_1.2.5.msi">GoogleAppEngine_1.2.5.msi</a></p>
+<p>Google App Engine SDK for Java：<a href="http://googleappengine.googlecode.com/files/appengine-java-sdk-1.2.5.zip">appengine-java- sdk-1.2.5.zip</a></p>
+<p>Google App Engine Documentation：<a href="http://googleappengine.googlecode.com/files/google-appengine-docs-20090921.zip">google-appengine-docs-20090921.zip</a></p>
+<p>最后一个小图标：<img alt="Powered by Google App Engine" src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"/>，呵呵，Google的图标都那么帅</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/09/when-google-app-engine-encounter-campus/">https://blog.alswl.com/2009/09/when-google-app-engine-encounter-campus/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

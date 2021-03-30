@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Python读写文件 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/09/python-to-read-and-write-files/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Python" />
+        <meta name="description" content="本文来源：Python天天美味(17) - open读写文件 - CoderZh的技术博客 - 博客园 「我本来想加上看到这篇文章的博客链接，结果粘贴时候发现了图片来源居然是cnblogs，这才反应过来这不是那个博客的原创。我不反对转载，看到的好文章我自己也会 收藏下来，转载能帮助更多需要的人，可是，至少加上人家原作者的地址呀……」-alswl Python中文件操作可以通过open函数，这的确很像C语言中的fopen。通过open函数获取一个file object，然后调用read()，write()等方法对文件进行读写操作。 1.open 使用open打开文件后一定要记得调用文件对象的close()方法。比如可以用try/finally语句来确保最后能关闭文件。 file_object = open(&#39;thefile.txt&#39;) try: all_the_text = file_object.read( ) finally: file_object.close( ) 注：不能把open语句放在try块里，因为当打开文件出现异常时，文件对象file_object无法执行close()方法。 2.读文件 读文本文件 input = open …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/09/python-to-read-and-write-files/"
+                       rel="bookmark"
+                       title="Permalink to Python读写文件">
+                        Python读写文件
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#open" title="1.open">1.open</a></li><li><a class="toc-href" href="#读文件" title="2.读文件">2.读文件</a><ul><li><a class="toc-href" href="#读文本文件" title="读文本文件">读文本文件</a></li><li><a class="toc-href" href="#读二进制文件" title="读二进制文件">读二进制文件</a></li><li><a class="toc-href" href="#读取所有内容" title="读取所有内容">读取所有内容</a></li><li><a class="toc-href" href="#读固定字节" title="读固定字节">读固定字节</a></li><li><a class="toc-href" href="#读每行" title="读每行">读每行</a></li></ul></li><li><a class="toc-href" href="#写文件_1" title="3.写文件">3.写文件</a><ul><li><a class="toc-href" href="#写文本文件" title="写文本文件">写文本文件</a></li><li><a class="toc-href" href="#写二进制文件" title="写二进制文件">写二进制文件</a></li><li><a class="toc-href" href="#追加写文件" title="追加写文件">追加写文件</a></li><li><a class="toc-href" href="#写数据" title="写数据">写数据</a></li><li><a class="toc-href" href="#写入多行" title="写入多行">写入多行</a></li></ul></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-09-12T00:00:00+08:00"> 2009-09-12</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/python/">Python</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>本文来源：<a href="http://www.cnblogs.com/coderzh/archive/2008/05/10/1191410.html">Python天天美味(17) - open读写文件 - CoderZh的技术博客 - 博客园</a></p>
+<p>「我本来想加上看到这篇文章的博客链接，结果粘贴时候发现了图片来源居然是cnblogs，这才反应过来这不是那个博客的原创。我不反对转载，看到的好文章我自己也会 收藏下来，转载能帮助更多需要的人，可是，至少加上人家原作者的地址呀&hellip;&hellip;」-alswl</p>
+<p>Python中文件操作可以通过open函数，这的确很像C语言中的fopen。通过open函数获取一个file object，然后调用read()，write()等方法对文件进行读写操作。</p>
+<h2 id="open">1.open</h2>
+<p>使用open打开文件后一定要记得调用文件对象的close()方法。比如可以用try/finally语句来确保最后能关闭文件。</p>
+<pre><code>file_object = open('thefile.txt')
+try:
+    all_the_text = file_object.read( )
+finally:
+    file_object.close( )</code></pre>
+<p>注：不能把open语句放在try块里，因为当打开文件出现异常时，文件对象file_object无法执行close()方法。</p>
+<h2 id="读文件">2.读文件</h2>
+<h3 id="读文本文件">读文本文件</h3>
+<pre><code>input = open('data', 'r')
+#第二个参数默认为r
+input = open('data')</code></pre>
+<h3 id="读二进制文件">读二进制文件</h3>
+<pre><code>input = open('data', 'rb')</code></pre>
+<h3 id="读取所有内容">读取所有内容</h3>
+<pre><code>file_object = open('thefile.txt')
+try:
+    all_the_text = file_object.read( )
+finally:
+    file_object.close( )</code></pre>
+<h3 id="读固定字节">读固定字节</h3>
+<pre><code>file_object = open('abinfile', 'rb')
+try:
+ while True:
+        chunk = file_object.read(100)
+ if not chunk:
+ break
+        do_something_with(chunk)
+finally:
+    file_object.close( )</code></pre>
+<h3 id="读每行">读每行</h3>
+<pre><code>list_of_all_the_lines = file_object.readlines( )</code></pre>
+<p>如果文件是文本文件，还可以直接遍历文件对象获取每行：</p>
+<pre><code>for line in file_object:
+    process line</code></pre>
+<h2 id="写文件_1">3.写文件</h2>
+<h3 id="写文本文件">写文本文件</h3>
+<pre><code>output = open('data', 'w')</code></pre>
+<h3 id="写二进制文件">写二进制文件</h3>
+<pre><code>output = open('data', 'wb')</code></pre>
+<h3 id="追加写文件">追加写文件</h3>
+<pre><code>output = open('data', 'w+')</code></pre>
+<h3 id="写数据">写数据</h3>
+<pre><code>file_object = open('thefile.txt', 'w')
+file_object.write(all_the_text)
+file_object.close( )</code></pre>
+<h3 id="写入多行">写入多行</h3>
+<pre><code>file_object.writelines(list_of_text_strings)</code></pre>
+<p>注意，调用writelines写入多行在性能上会比使用write一次性写入要高。</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/09/python-to-read-and-write-files/">https://blog.alswl.com/2009/09/python-to-read-and-write-files/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>AzaAjaxChat笔记-框架 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2010/08/azaajaxchat-notes-frame/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="PHP,AzaAjaxChat,CakePHP,ThinkPHP" />
+        <meta name="description" content="1个月没有动PHP了，新装的系统甚至还没有配置PHP环境，今天看到BooguNote上有一个boo是专门记录AzaAjaxChat开发时候遇到的问题和解决办 法。于是把一些东西整理记录一下。 1. 从ThinkPHP开始 最早的AzaAjaxChat是基于ThinkPHP的，我当时在OpenSouce上看到ThinkPHP的介绍，有很多优点，看的我很心动：MVC模型，Ajax 支持，详细的文档和案例，国人开发的框架。我作为一个PHP新人一下子就被他吸引住了，决定用ThinkPHP做框架。 image 随着系统开发的推进，我却感觉到一些不自在，遇到一些问题却找不好太好的解决办法。比如ThinkPHP的模块和分组两个概念，让我比较疑惑，花费了大量时间重组目录 结构，两种方法各有优劣，让我很难选择（有选择了反而难办了 ^_^）。 最让我恼火的是相对目录带来的路径混乱，在JSP开发中，静态内容习惯性放在webcontent文件夹中，而ThinkPHP的CSS、图片、JS引用让我很疑惑， 要区分App的和Model的静态文件。 在开发过程中，我也遇到过框架本身的Bug，让我对这个框架失去信心。在这里我没有贬低ThinkPHP或者ThinkPHP开发者的意思，他们的“大道至简、开发由 我”的理念很值得欣赏。只是作为初学者因为遇到的一些问题，带来了一定的开发难度，不得已放弃。 2 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2010/08/azaajaxchat-notes-frame/"
+                       rel="bookmark"
+                       title="Permalink to AzaAjaxChat笔记-框架">
+                        AzaAjaxChat笔记-框架
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#从thinkphp开始" title="1. 从ThinkPHP开始">1. 从ThinkPHP开始</a></li><li><a class="toc-href" href="#选择cakephp" title="2. 选择CakePHP">2. 选择CakePHP</a></li><li><a class="toc-href" href="#cakephp-thinkphp" title="3. CakePHP &amp; ThinkPHP">3. CakePHP &amp; ThinkPHP</a></li><li><a class="toc-href" href="#相关连接" title="4. 相关连接">4. 相关连接</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2010-08-12T00:00:00+08:00"> 2010-08-12</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/php/">PHP</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/azaajaxchat/">AzaAjaxChat</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/cakephp/">CakePHP</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/thinkphp/">ThinkPHP</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>1个月没有动PHP了，新装的系统甚至还没有配置PHP环境，今天看到BooguNote上有一个boo是专门记录AzaAjaxChat开发时候遇到的问题和解决办 法。于是把一些东西整理记录一下。</p>
+<h3 id="从thinkphp开始">1. 从ThinkPHP开始</h3>
+<p>最早的AzaAjaxChat是基于ThinkPHP的，我当时在OpenSouce上看到ThinkPHP的介绍，有很多优点，看的我很心动：MVC模型，Ajax 支持，详细的文档和案例，国人开发的框架。我作为一个PHP新人一下子就被他吸引住了，决定用ThinkPHP做框架。</p>
+<figure>
+<img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/201008/thinkphp.png"/><figcaption>image</figcaption>
+</figure>
+<p>随着系统开发的推进，我却感觉到一些不自在，遇到一些问题却找不好太好的解决办法。比如ThinkPHP的模块和分组两个概念，让我比较疑惑，花费了大量时间重组目录 结构，两种方法各有优劣，让我很难选择（有选择了反而难办了 ^_^）。</p>
+<p>最让我恼火的是相对目录带来的路径混乱，在JSP开发中，静态内容习惯性放在webcontent文件夹中，而ThinkPHP的CSS、图片、JS引用让我很疑惑， 要区分App的和Model的静态文件。</p>
+<p>在开发过程中，我也遇到过框架本身的Bug，让我对这个框架失去信心。在这里我没有贬低ThinkPHP或者ThinkPHP开发者的意思，他们的&ldquo;大道至简、开发由 我&rdquo;的理念很值得欣赏。只是作为初学者因为遇到的一些问题，带来了一定的开发难度，不得已放弃。</p>
+<h3 id="选择cakephp">2. 选择CakePHP</h3>
+<p>在遇到数次挫折之后，我终于下定决心换框架。工作室之前有过一个项目是用CakePHP开发的，保存着一些资料，阿贵强烈推荐CakePHP。我Google了几篇框 架的评测文章后，考虑了一下AzaAjaxChat的规模，决定选择CakePHP。</p>
+<figure>
+<img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/201008/cakephp.png"/><figcaption>image</figcaption>
+</figure>
+<p>CakePHP的脚手架(Scaffold)功能让我眼前一亮，让我脱离了大量CRUD繁琐的操作。而Cake Bake可以方便的根据数据库生成php代码，减少那 些没有逻辑意义的代码。AzaAjaxChat的定位是毕业设计，不是强健的产品，不会苛求太高的用户体验和安全特性，所以这个功能帮了我很多忙。</p>
+<p>CakePHP能够处理关系型数据库之间的m-n关系，由于我的系统逻辑简单，并没复杂的多表操作，所以这里没有深究。从Cake Baker的生成代码菜单上应该能够看出CakePHP还是能够处理一定的多表关联问题。</p>
+<p>CakePHP也不是那么十全十美，最麻烦的是文档少，我指的是中文文档，英文资源还是比较丰富的。其次是对Ajax的支持不如ThinkPHP那么原生，我一开始使 用JSON方案，后来使用XML方案实现Ajax数据序列化。</p>
+<h3 id="cakephp-thinkphp">3. CakePHP &amp; ThinkPHP</h3>
+<p>使用的框架最大的目的是提高效率，大幅度缩短工作时间，这两个框架都是为此而诞生的。我这里不说孰优孰劣，如果感兴趣，可以Google查看相关比较。这两个框架都使 用Ruby On Rails的Active Record理念进行开发，CakePHP更是被称为PHP版的RuR，我在编码中期还特意去图书馆查阅了RuR的相关资料，的确是高效的Web开发模型。</p>
+<p>Active Record释义</p>
+<blockquote>
+<p>ActiveRecord也属于ORM层，由Rails最早提出，遵循标准的ORM模型：表映射到记录，记录映射到对象，字段映射到对象属性。配合遵循的命名和配 置惯例，能够很大程度的快速实现模型的操作，而且简洁易懂。</p>
+</blockquote>
+<p>我在答辩的PPT中写选择CakePHP的原因有三：一站式的MVC框架、约定优于配置、更少的代码，其实这也是RuR的优势。</p>
+<h3 id="相关连接">4. 相关连接</h3>
+<ul>
+<li><p><a href="http://plod.popoever.com/archives/001110.html">Plod: [翻译]十款PHP开发框架横向比较</a></p></li>
+<li><p><a href="http://blog.chinaunix.net/tag.php?q=CakePHP">ChinaUnix一位网友写的CakePHP入门（我觉得比官方教材好上手）</a></p></li>
+<li><p><a href="http://hi.baidu.com/zsj1029/blog/item/8fa55e19502e6e4e42a9ad8c.html">cakephp jquery ajax json_天知道_百度空间（CakePHP的Ajax操作方法）</a></p></li>
+<li><p><a href="http://hi.baidu.com/thinkinginlamp/blog/category/cakephp%20%26%2347%3B%20zendframework/index/0">老王的技术手册_博客_cakephp / zendframework_百度空间（挺多CakePHP相关资料）</a></p></li>
+<li><p><a href="http://www.ibm.com/developerworks/cn/opensource/os-php-cake/">IBM developerWorks 中国 : 使用 CakePHP 快速打造 Web 站点（IBM的CakePHP教程）</a></p></li>
+</ul>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2010/08/azaajaxchat-notes-frame/">https://blog.alswl.com/2010/08/azaajaxchat-notes-frame/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

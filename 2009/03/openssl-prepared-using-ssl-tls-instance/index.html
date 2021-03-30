@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/03/openssl-prepared-using-ssl-tls-instance/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="C,OpenSSL,SSL" />
+        <meta name="description" content="◆ 用openssl编写ssl,tls程序 作者：yawl(yawl@nsfocus.com) 日期：2000-8-15 一:简介: ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可以保证应用层数据在互联网络传输不被监听,伪造和窜改. openssl(www.openssl.org)是sslv2,sslv3,tlsv1的一份完整实现,内部包含了大量加密算法程序.其命令行提供了丰富的加密,验 证,证书生成等功能,甚至可以用其建立一个完整的ca.与其同时,它也提供了一套完整的库函数,可用开发用ssl/tls的通信程序. apache的https两种 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/03/openssl-prepared-using-ssl-tls-instance/"
+                       rel="bookmark"
+                       title="Permalink to 用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】">
+                        用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-03-18T00:00:00+08:00"> 2009-03-18</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/c/">C</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/openssl/">OpenSSL</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/ssl/">SSL</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>◆ 用openssl编写ssl,tls程序</p>
+<p>作者：yawl(yawl@nsfocus.com)</p>
+<p>日期：2000-8-15</p>
+<p>一:简介:</p>
+<p>ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可以保证应用层数据在互联网络传输不被监听,伪造和窜改.</p>
+<p>openssl(www.openssl.org)是sslv2,sslv3,tlsv1的一份完整实现,内部包含了大量加密算法程序.其命令行提供了丰富的加密,验 证,证书生成等功能,甚至可以用其建立一个完整的ca.与其同时,它也提供了一套完整的库函数,可用开发用ssl/tls的通信程序. apache的https两种 版本mod_ssl和apachessl均基于它实现的.openssl继承于ssleay,并做了一定的扩展,当前的版本是0.9.5a.</p>
+<p>openssl的缺点是文档太少,连一份完整的函数说明都没有,man page也至今没做完整:-(,如果想用它编程序,除了熟悉已有的文档(包括ssleay,m od_ssl,apachessl的文档)外,可以到它的maillist上找相关的帖子,许多问题可以在以前的文章中找到答案.</p>
+<p>编程:</p>
+<p>程序分为两部分,客户端和服务器端,我们的目的是利用ssl/tls的特性保证通信双方能够互相验证对方身份(真实性),并保证数据的完整性,私密性.</p>
+<p>1.客户端程序的框架为:</p>
+<p>/<em>生成一个ssl结构</em>/</p>
+<p>meth = sslv23_client_method();</p>
+<p>ctx = ssl_ctx_new (meth);</p>
+<p>ssl = ssl_new(ctx);</p>
+<p>/<em>下面是正常的socket过程</em>/</p>
+<p>fd = socket();</p>
+<p>connect();</p>
+<p>/<em>把建立好的socket和ssl结构联系起来</em>/</p>
+<p>ssl_set_fd(ssl,fd);</p>
+<p>/<em>ssl的握手过程</em>/</p>
+<p>ssl_connect(ssl);</p>
+<p>/<em>接下来用ssl_write(), ssl_read()代替原有的write(),read()即可</em>/</p>
+<p>ssl_write(ssl,&ldquo;hello world&rdquo;,strlen(&ldquo;hello world!&rdquo;));</p>
+<p>2.服务端程序的框架为:</p>
+<p>/<em>生成一个ssl结构</em>/</p>
+<p>meth = sslv23_server_method();</p>
+<p>ctx = ssl_ctx_new (meth);</p>
+<p>ssl = ssl_new(ctx);</p>
+<p>/<em>下面是正常的socket过程</em>/</p>
+<p>fd = socket();</p>
+<p>bind();</p>
+<p>listen();</p>
+<p>accept();</p>
+<p>/<em>把建立好的socket和ssl结构联系起来</em>/</p>
+<p>ssl_set_fd(ssl,fd);</p>
+<p>/<em>ssl的握手过程</em>/</p>
+<p>ssl_connect(ssl);</p>
+<p>/<em>接下来用ssl_write(), ssl_read()代替原有的write(),read()即可</em>/</p>
+<p>ssl_read (ssl, buf, sizeof(buf));</p>
+<p>根据rfc2246(tls1.0)整个tls(ssl)的流程如下:</p>
+<p>client server</p>
+<p>clienthello &mdash;&mdash;&ndash;&gt;</p>
+<p>serverhello</p>
+<p>certificate*</p>
+<p>serverkeyexchange*</p>
+<p>certificaterequest*</p>
+<p>&lt;&mdash;&mdash;&ndash; serverhellodone</p>
+<p>certificate*</p>
+<p>clientkeyexchange</p>
+<p>certificateverify*</p>
+<p>[changecipherspec]</p>
+<p>finished &mdash;&mdash;&ndash;&gt;</p>
+<p>[changecipherspec]</p>
+<p>&lt;&mdash;&mdash;&ndash; finished</p>
+<p>application data &lt;&mdash;&mdash;-&gt; application data</p>
+<p>对程序来说,openssl将整个握手过程用一对函数体现,即客户端的ssl_connect和服务端的ssl_accept.而后的应用层数据交换则用ssl_re ad和ssl_write来完成.</p>
+<p>二:证书文件生成</p>
+<p>除将程序编译成功外,还需生成必要的证书和私钥文件使双方能够成功验证对方,步骤如下:</p>
+<p>1.首先要生成服务器端的私钥(key文件):</p>
+<p>openssl genrsa -des3 -out server.key 1024</p>
+<p>运行时会提示输入密码,此密码用于加密key文件(参数des3便是指加密算法,当然也可以选用其他你认为安全的算法.),以后每当需读取此文件(通过openssl 提供的命令或api)都需输入口令.如果觉得不方便,也可以去除这个口令,但一定要采取其他的保护措施!</p>
+<p>去除key文件口令的命令:</p>
+<p>openssl rsa -in server.key -out server.key</p>
+<p>2.openssl req -new -key server.key -out server.csr</p>
+<p>生成certificate signing request,生成的csr文件交给ca签名后形成服务端自己的证书.屏幕上将有提示,依照其指示一步一步输入要求的个人信息即可.</p>
+<p>3.对客户端也作同样的命令生成key及csr文件:</p>
+<p>openssl genrsa -des3 -out client.key 1024</p>
+<p>openssl req -new -key client.key -out client.csr</p>
+<p>4.csr文件必须有ca的签名才可形成证书.可将此文件发送到verisign等地方由它验证,要交一大笔钱,何不自己做ca呢.</p>
+<p>首先生成ca的key文件:</p>
+<p>openssl -des3 -out ca.key 1024</p>
+<p>在生成ca自签名的证书:</p>
+<p>openssl req -new -x509 -key ca.key -out ca.crt</p>
+<p>如果想让此证书有个期限,如一年,则加上&ldquo;-days 365&rdquo;.</p>
+<p>(&ldquo;如果非要为这个证书加上一个期限,我情愿是..一万年&rdquo;)</p>
+<p>5.用生成的ca的证书为刚才生成的server.csr,client.csr文件签名:</p>
+<p>可以用openssl中ca系列命令,但不是很好用(也不是多难,唉,一言难尽),一篇文章中推荐用mod_ssl中的sign.sh脚本,试了一下,确实方便了不少 ,如果ca.csr存在的话,只需:</p>
+<p>./sigh.sh server.csr</p>
+<p>./sign.sh client.csr</p>
+<p>相应的证书便生成了(后缀.crt).</p>
+<p>现在我们所需的全部文件便生成了.</p>
+<p>其实openssl中还附带了一个叫ca.pl的文件(在安装目录中的misc子目录下),可用其生成以上的文件,使用也比较方便,但此处就不作介绍了.</p>
+<p>三:需要了解的一些函数:</p>
+<p>1.int ssl_ctx_set_cipher_list(ssl_ctx <em>,const char </em>str);</p>
+<p>根据ssl/tls规范,在clienthello中,客户端会提交一份自己能够支持的加密方法的列表,由服务端选择一种方法后在serverhello中通知服务端 ,从而完成加密算法的协商.</p>
+<p>可用的算法为:</p>
+<p>edh-rsa-des-cbc3-sha</p>
+<p>edh-dss-des-cbc3-sha</p>
+<p>des-cbc3-sha</p>
+<p>dhe-dss-rc4-sha</p>
+<p>idea-cbc-sha</p>
+<p>rc4-sha</p>
+<p>rc4-md5</p>
+<p>exp1024-dhe-dss-rc4-sha</p>
+<p>exp1024-rc4-sha</p>
+<p>exp1024-dhe-dss-des-cbc-sha</p>
+<p>exp1024-des-cbc-sha</p>
+<p>exp1024-rc2-cbc-md5</p>
+<p>exp1024-rc4-md5</p>
+<p>edh-rsa-des-cbc-sha</p>
+<p>edh-dss-des-cbc-sha</p>
+<p>des-cbc-sha</p>
+<p>exp-edh-rsa-des-cbc-sha</p>
+<p>exp-edh-dss-des-cbc-sha</p>
+<p>exp-des-cbc-sha</p>
+<p>exp-rc2-cbc-md5</p>
+<p>exp-rc4-md5</p>
+<p>这些算法按一定优先级排列,如果不作任何指定,将选用des- cbc3-sha.用ssl_ctx_set_cipher_list可以指定自己希望用的算法(实际上只是提高其优先级,是否能使用还要看对方是否支持).</p>
+<p>我们在程序中选用了rc4做加密,md5做消息摘要(先进行md5运算,后进行rc4加密).即</p>
+<p>ssl_ctx_set_cipher_list(ctx,&ldquo;rc4-md5&rdquo;);</p>
+<p>在消息传输过程中采用对称加密(比公钥加密在速度上有极大的提高),其所用秘钥(shared secret)在握手过程中中协商(每次对话过程均不同,在一次对话中都有可能有几次改变),并通过公钥加密的手段由客户端提交服务端.</p>
+<p>2.void ssl_ctx_set_verify(ssl_ctx <em>ctx,int mode,int (</em>callback)(int, x509_store_ctx *));</p>
+<p>缺省mode是ssl_verify_none,如果想要验证对方的话,便要将此项变成ssl_verify_peer.ssl/tls中缺省只验证server,如 果没有设置ssl_verify_peer的话,客户端连证书都不会发过来.</p>
+<p>3.int ssl_ctx_load_verify_locations(ssl_ctx <em>ctx, const char </em>cafile,const char *capath);</p>
+<p>要验证对方的话,当然装要有ca的证书了,此函数用来便是加载ca的证书文件的.</p>
+<p>4.int ssl_ctx_use_certificate_file(ssl_ctx <em>ctx, const char </em>file, int type);</p>
+<p>加载自己的证书文件.</p>
+<p>5.int ssl_ctx_use_privatekey_file(ssl_ctx <em>ctx, const char </em>file, int type);</p>
+<p>加载自己的私钥,以用于签名.</p>
+<p>6.int ssl_ctx_check_private_key(ssl_ctx *ctx);</p>
+<p>调用了以上两个函数后,自己检验一下证书与私钥是否配对.</p>
+<p>7.void rand_seed(const void *buf,int num);</p>
+<p>在win32的环境中client程序运行时出错(ssl_connect返回-1)的一个主要机制便是与unix平台下的随机数生成机制不同(握手的时候用的到). 具体描述可见mod_ssl的faq.解决办法就是调用此函数,其中buf应该为一随机的字符串,作为&ldquo;seed&rdquo;.</p>
+<p>还可以采用一下两个函数:</p>
+<p>void rand_screen(void);</p>
+<p>int rand_event(uint, wparam, lparam);</p>
+<p>其中rand_screen()以屏幕内容作为&ldquo;seed&rdquo;产生随机数,rand_event可以捕获windows中的事件(event),以此为基础产生随机数. 如果一直有用户干预的话,用这种办法产生的随机数能够&ldquo;更加随机&rdquo;,但如果机器一直没人理(如总停在登录画面),则每次都将产生同样的数字.</p>
+<p>这几个函数都只在win32环境下编译时有用,各种unix下就不必调了.</p>
+<p>大量其他的相关函数原型,见cryptorandrand.h.</p>
+<p>8.openssl_add_ssl_algorithms()或ssleay_add_ssl_algorithms()</p>
+<p>其实都是调用int ssl_library_init(void)</p>
+<p>进行一些必要的初始化工作,用openssl编写ssl/tls程序的话第一句便应是它.</p>
+<p>9.void ssl_load_error_strings(void );</p>
+<p>如果想打印出一些方便阅读的调试信息的话,便要在一开始调用此函数.</p>
+<p>10.void err_print_errors_fp(file *fp);</p>
+<p>如果调用了ssl_load_error_strings()后,便可以随时用err_print_errors_fp()来打印错误信息了.</p>
+<p>11.x509 <em>ssl_get_peer_certificate(ssl </em>s);</p>
+<p>握手完成后,便可以用此函数从ssl结构中提取出对方的证书(此时证书得到且已经验证过了)整理成x509结构.</p>
+<p>12.x509_name <em>x509_get_subject_name(x509 </em>a);</p>
+<p>得到证书所有者的名字,参数可用通过ssl_get_peer_certificate()得到的x509对象.</p>
+<p>13.x509_name <em>x509_get_issuer_name(x509 </em>a)</p>
+<p>得到证书签署者(往往是ca)的名字,参数可用通过ssl_get_peer_certificate()得到的x509对象.</p>
+<p>14.char <em>x509_name_oneline(x509_name </em>a,char *buf,int size);</p>
+<p>将以上两个函数得到的对象变成字符型,以便打印出来.</p>
+<p>15.ssl_method的构造函数,包括</p>
+<p>ssl_method *tls</p>
+<p>发表者：colorrain</p>
+<p>/***************************************************************************** **********</p>
+<ul>
+<li>eof - cli.cpp</li>
+</ul>
+<p>***************************************************************************************/</p>
+<p>/***************************************************************************** **********</p>
+<p>*ssl/tls服务端程序win32版(以demos/server.cpp为基础)</p>
+<p>*需要用到动态连接库libeay32.dll,ssleay.dll,</p>
+<p>*同时在setting中加入ws2_32.lib libeay32.lib ssleay32.lib,</p>
+<p>*以上库文件在编译openssl后可在out32dll目录下找到,</p>
+<p>*所需证书文件请参照文章自行生成.</p>
+<p>***************************************************************************************/</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>#include &lt;stdlib.h&gt;</p>
+<p>#include &lt;memory.h&gt;</p>
+<p>#include &lt;errno.h&gt;</p>
+<p>#include &lt;sys/types.h&gt;</p>
+<p>#include &lt;winsock2.h&gt;</p>
+<p>#include &ldquo;openssl/rsa.h&rdquo;</p>
+<p>#include &ldquo;openssl/crypto.h&rdquo;</p>
+<p>#include &ldquo;openssl/x509.h&rdquo;</p>
+<p>#include &ldquo;openssl/pem.h&rdquo;</p>
+<p>#include &ldquo;openssl/ssl.h&rdquo;</p>
+<p>#include &ldquo;openssl/err.h&rdquo;</p>
+<p>/<em>所有需要的参数信息都在此处以#define的形式提供</em>/</p>
+<p>#define certf &ldquo;server.crt&rdquo; /<em>服务端的证书(需经ca签名)</em>/</p>
+<p>#define keyf &ldquo;server.key&rdquo; /<em>服务端的私钥(建议加密存储)</em>/</p>
+<p>#define cacert &ldquo;ca.crt&rdquo; /<em>ca 的证书</em>/</p>
+<p>#define port 1111 /<em>准备绑定的端口</em>/</p>
+<p>#define chk_null(x) if ((x)==null) exit (1)</p>
+<p>#define chk_err(err,s) if ((err)==-1) { perror(s); exit(1); }</p>
+<p>#define chk_ssl(err) if ((err)==-1) { err_print_errors_fp(stderr); exit(2); }</p>
+<p>int main ()</p>
+<p>{</p>
+<p>int err;</p>
+<p>int listen_sd;</p>
+<p>int sd;</p>
+<p>struct sockaddr_in sa_serv;</p>
+<p>struct sockaddr_in sa_cli;</p>
+<p>int client_len;</p>
+<p>ssl_ctx* ctx;</p>
+<p>ssl* ssl;</p>
+<p>x509* client_cert;</p>
+<p>char* str;</p>
+<p>char buf [4096];</p>
+<p>ssl_method *meth;</p>
+<p>wsadata wsadata;</p>
+<p>if(wsastartup(makeword(2,2),&amp;wsadata) != 0){</p>
+<p>printf(&ldquo;wsastartup()fail:%dn&rdquo;,getlasterror());</p>
+<p>return -1;</p>
+<p>}</p>
+<p>ssl_load_error_strings(); /<em>为打印调试信息作准备</em>/</p>
+<p>openssl_add_ssl_algorithms(); /<em>初始化</em>/</p>
+<p>meth = tlsv1_server_method(); /<em>采用什么协议(sslv2/sslv3/tlsv1)在此指定</em>/</p>
+<p>ctx = ssl_ctx_new (meth);</p>
+<p>chk_null(ctx);</p>
+<p>ssl_ctx_set_verify(ctx,ssl_verify_peer,null); /<em>验证与否</em>/</p>
+<p>ssl_ctx_load_verify_locations(ctx,cacert,null); /<em>若验证,则放置ca证书</em>/</p>
+<p>if (ssl_ctx_use_certificate_file(ctx, certf, ssl_filetype_pem) &lt;= 0) {</p>
+<p>err_print_errors_fp(stderr);</p>
+<p>exit(3);</p>
+<p>}</p>
+<p>if (ssl_ctx_use_privatekey_file(ctx, keyf, ssl_filetype_pem) &lt;= 0) {</p>
+<p>err_print_errors_fp(stderr);</p>
+<p>exit(4);</p>
+<p>}</p>
+<p>if (!ssl_ctx_check_private_key(ctx)) {</p>
+<p>printf(&ldquo;private key does not match the certificate public keyn&rdquo;);</p>
+<p>exit(5);</p>
+<p>}</p>
+<p>ssl_ctx_set_cipher_list(ctx,&ldquo;rc4-md5&rdquo;);</p>
+<p>/<em>开始正常的tcp socket过程&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</em>/</p>
+<p>printf(&ldquo;begin tcp socket&hellip;n&rdquo;);</p>
+<p>listen_sd = socket (af_inet, sock_stream, 0);</p>
+<p>chk_err(listen_sd, &ldquo;socket&rdquo;);</p>
+<p>memset (&amp;sa_serv, , sizeof(sa_serv));</p>
+<p>sa_serv.sin_family = af_inet;</p>
+<p>sa_serv.sin_addr.s_addr = inaddr_any;</p>
+<p>sa_serv.sin_port = htons (port);</p>
+<p>err = bind(listen_sd, (struct sockaddr*) &amp;sa_serv,</p>
+<p>sizeof (sa_serv));</p>
+<p>chk_err(err, &ldquo;bind&rdquo;);</p>
+<p>/<em>接受tcp链接</em>/</p>
+<p>err = listen (listen_sd, 5);</p>
+<p>chk_err(err, &ldquo;listen&rdquo;);</p>
+<p>client_len = sizeof(sa_cli);</p>
+<p>sd = accept (listen_sd, (struct sockaddr*) &amp;sa_cli, &amp;client_len);</p>
+<p>chk_err(sd, &ldquo;accept&rdquo;);</p>
+<p>closesocket (listen_sd);</p>
+<p>printf (&ldquo;connection from %lx, port %xn&rdquo;,</p>
+<p>sa_cli.sin_addr.s_addr, sa_cli.sin_port);</p>
+<p>/<em>tcp连接已建立,进行服务端的ssl过程. </em>/</p>
+<p>printf(&ldquo;begin server side ssln&rdquo;);</p>
+<p>ssl = ssl_new (ctx);</p>
+<p>chk_null(ssl);</p>
+<p>ssl_set_fd (ssl, sd);</p>
+<p>err = ssl_accept (ssl);</p>
+<p>printf(&ldquo;ssl_accept finishedn&rdquo;);</p>
+<p>chk_ssl(err);</p>
+<p>/<em>打印所有加密算法的信息(可选)</em>/</p>
+<p>printf (&ldquo;ssl connection using %sn&rdquo;, ssl_get_cipher (ssl));</p>
+<p>/<em>得到服务端的证书并打印些信息(可选) </em>/</p>
+<p>client_cert = ssl_get_peer_certificate (ssl);</p>
+<p>if (client_cert != null) {</p>
+<p>printf (&ldquo;client certificate:n&rdquo;);</p>
+<p>str = x509_name_oneline (x509_get_subject_name (client_cert), 0, 0);</p>
+<p>chk_null(str);</p>
+<p>printf (&ldquo;t subject: %sn&rdquo;, str);</p>
+<p>free (str);</p>
+<p>str = x509_name_oneline (x509_get_issuer_name (client_cert), 0, 0);</p>
+<p>chk_null(str);</p>
+<p>printf (&ldquo;t issuer: %sn&rdquo;, str);</p>
+<p>free (str);</p>
+<p>x509_free (client_cert);/<em>如不再需要,需将证书释放 </em>/</p>
+<p>}</p>
+<p>else</p>
+<p>printf (&ldquo;client does not have certificate.n&rdquo;);</p>
+<p>/* 数据交换开始,用ssl_write,ssl_read代替write,read */</p>
+<p>err = ssl_read (ssl, buf, sizeof(buf) - 1);</p>
+<p>chk_ssl(err);</p>
+<p>buf[err] = ;</p>
+<p>printf (&ldquo;got %d chars:%sn&rdquo;, err, buf);</p>
+<p>err = ssl_write (ssl, &ldquo;i hear you.&rdquo;, strlen(&ldquo;i hear you.&rdquo;));</p>
+<p>chk_ssl(err);</p>
+<p>/* 收尾工作*/</p>
+<p>shutdown (sd,2);</p>
+<p>ssl_free (ssl);</p>
+<p>ssl_ctx_free (ctx);</p>
+<p>return 0;</p>
+<p>}</p>
+<p>/*****************************************************************</p>
+<ul>
+<li>eof - serv.cpp</li>
+</ul>
+<p>*****************************************************************/</p>
+<p>五.参考文献</p>
+<p>1.ssl规范(draft302)</p>
+<p>2.tls标准(rfc2246)</p>
+<p>3.openssl源程序及文档</p>
+<p>4.ssleay programmer reference</p>
+<p>5.introducing ssl and certificates using ssleay</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/03/openssl-prepared-using-ssl-tls-instance/">https://blog.alswl.com/2009/03/openssl-prepared-using-ssl-tls-instance/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

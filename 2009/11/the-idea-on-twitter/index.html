@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>关于Twitter的idea - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2009/11/the-idea-on-twitter/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="关注互联网,Twitter" />
+        <meta name="description" content="起因-同步是个麻烦事 这几天写了几篇博文，想自动同步博文url到各类SNS以及微博，但是发现一下子同步是很麻烦的事情。就我手头维护的话，需要更新Twitter、人人、新浪微博，如 果能同步一个内容就发布到所有网站，这该多好啊。 对了，关于同步，帮xDash打一个小广告：他建了一个站点，同步控，还是挺不错的。 现状-已有先行者 将一个状态发散式同步到其他SNS网站肯定不是我想出来的，已经有很多网站在运营着了。比如… 嘀神–自动把你的状态同步到人人、开心等所有社交网站！ HelloTxt: 同时更新你的Twitter、饭否和Plurk… 嘀神的问题在于他是基于嘀咕的，在微博这一块，digu并不是最强，虽然推出了OpenCloud这个概念，但是似乎 开放API的程度成为诟病，可以看出，所谓火兔、打嘀、嘀神的一堆广播产品都是自家出品。业内曾经指出嘀咕的开放并不是真正的开放（当然，这 是目前中国IT普遍存在的，没有核心技术来保留用户群 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2009/11/the-idea-on-twitter/"
+                       rel="bookmark"
+                       title="Permalink to 关于Twitter的idea">
+                        关于Twitter的idea
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#起因-同步是个麻烦事" title="起因-同步是个麻烦事">起因-同步是个麻烦事</a></li><li><a class="toc-href" href="#现状-已有先行者" title="现状-已有先行者">现状-已有先行者</a></li><li><a class="toc-href" href="#我的想法-更多交流" title="我的想法-更多交流">我的想法-更多交流</a></li><li><a class="toc-href" href="#死穴-基本只能玩玩了" title="死穴-基本只能玩玩了">死穴-基本只能玩玩了</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2009-11-11T00:00:00+08:00"> 2009-11-11</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/guan-zhu-hu-lian-wang/">关注互联网</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/twitter/">Twitter</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h2 id="起因-同步是个麻烦事">起因-同步是个麻烦事</h2>
+<p>这几天写了几篇博文，想自动同步博文url到各类SNS以及微博，但是发现一下子同步是很麻烦的事情。就我手头维护的话，需要更新Twitter、人人、新浪微博，如 果能同步一个内容就发布到所有网站，这该多好啊。</p>
+<p>对了，关于同步，帮<a href="http://www.fanbing.net/">xDash</a>打一个小广告：他建了一个站点，<a href="http://www.syncoo.com/">同步控</a>，还是挺不错的。</p>
+<h2 id="现状-已有先行者">现状-已有先行者</h2>
+<p>将一个状态发散式同步到其他SNS网站肯定不是我想出来的，已经有很多网站在运营着了。比如&hellip;</p>
+<p><a href="http://www.digusync.com/">嘀神</a>&ndash;自动把你的状态同步到人人、开心等所有社交网站！</p>
+<p><a href="http://hellotxt.com/">HelloTxt</a>: 同时更新你的Twitter、饭否和Plurk&hellip;</p>
+<p>嘀神的问题在于他是基于<a href="http://digu.com">嘀咕</a>的，在微博这一块，digu并不是最强，虽然推出了<strong>OpenCloud</strong>这个概念，但是似乎 开放API的程度成为诟病，可以看出，所谓<strong>火兔</strong>、<strong>打嘀</strong>、<strong>嘀神</strong>的一堆广播产品都是自家出品。业内曾经指出嘀咕的开放并不是真正的开放（当然，这 是目前中国IT普遍存在的，没有核心技术来保留用户群，只能用这种不开放API的手段）。嘀神能更新的也不多，<strong>Twitter</strong>就不在其中。</p>
+<p>HelloTxt被墙了，我没有办法去仔细研究，依稀记得当时HelloTxt居然支持<strong>饭否</strong>，让我很惊讶他的同步群&hellip;&hellip;</p>
+<p>虽有先行者，势弱也~</p>
+<h2 id="我的想法-更多交流">我的想法-更多交流</h2>
+<p>光能扩散式更新还不够，我们要把所有的微博互动起来，省的一句话从Twitter同步到新浪围脖，围脖的人回复了却不知道，人家岂不是对着镜子讲话么（引用[Tim] (http://xirang.us/)语）。所以我们必须能够跨平台回复、回推，甚至引入新功能（扩散回推）。</p>
+<p>现在这个互动已经不仅仅是扩散发布，而应该是真正意义上的互相沟通，这在技术上只要有API的支持就不难实现。（在此鄙视那些伪开放API的SNS）</p>
+<p>还有一个重要功能就是消息发布，可以通过RSS协议从<strong>这个站点</strong>获取所有微博的信息，而不用关注每个微博。</p>
+<p>这个站点的适用人群是拥有很多微博，朋友分布在各个微博，都不肯统一。那么只能自己统一到这个平台进行处理，而不要奔波于各个网站。</p>
+<p>不知道这样的站点现在有没有人实现，我觉得这是很有金的想法，毕竟这么一个平台将会架空Twitter以及其他微博，使自己成为一个<strong>唯一</strong>通行路口。应该可以形 成自己的运营模式。</p>
+<h2 id="死穴-基本只能玩玩了">死穴-基本只能玩玩了</h2>
+<p>想法总是好的，实施起来就比较难了。</p>
+<p>在国外，人家盛行Twitter，用不到这个多博客更新，只有在国内才百花齐放（百花齐败？）。而在国内，这种Web2.0自由说话的地方肯定有风险，容易遭来「服务 器休整」。</p>
+<p>怎么规避风险？嗯```用GAE开发，然后做成每个人单独的个人系统，就可以简单规避，只不过这样以来，就无法形成商业化的运营了。等我工作定下来，真想花时间在GA E弄一个，然后作为毕业设计，哈哈。</p>
+<p>如果可以，Google在Wave加上这个功能，那么就犀利了，应该可以主导微博市场了。</p>
+<p>ps：想想而已，小的目光短浅，见识少，各位嘴下留情啊```</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2009/11/the-idea-on-twitter/">https://blog.alswl.com/2009/11/the-idea-on-twitter/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

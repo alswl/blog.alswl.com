@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>使用Firebug和FirePHP调试PHP[译文] - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2010/03/use-firebug-and-firephp-debugging-php/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="PHP,Firebug,FirePHP,译文" />
+        <meta name="description" content="这是我第一篇译文，在写WordPress 主题时候偶尔看到的FirePHP插件，看都这篇文章，不知道为什么，动了翻译的念头。 原文链接：Debug PHP with Firebug and FirePHP 译言的链接：译言网 | 使用Firebug和FirePHP调试PHP ×××××以下译文×××××× image 如果你和我一样，你会在开发网页项目时候完全无法离开FireBug。这个小巧的“臭虫”是一个神奇而有用的H TML/CSS/JavaScript/Ajax调试器。但是你也许不知道这个还可以用来调试PHP，没错，它可以，感谢一款名为FirePHP的FireFox插件 。 通过一个小小的服务端库，和这款在Firebug上的插件，你的PHP脚本能够发送调试信息到浏览器，轻易的通过HTTP相应头编码。一旦你设置，你可以在Fiire bug的控制台获得PHP脚本警告和错误，就感觉像直接调试JavaScript一样 使用这个工具，首先你需要安装FirePHP插件 。这个插件需要你已经安装FireBug。装好FirePHP之后，重新打开Firebug面板时候，你会看到新加了一个蓝色的臭虫图标。点击这个图标会出现一个开启 或者关闭FirePHP的菜单。 FirePHP …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2010/03/use-firebug-and-firephp-debugging-php/"
+                       rel="bookmark"
+                       title="Permalink to 使用Firebug和FirePHP调试PHP[译文]">
+                        使用Firebug和FirePHP调试PHP[译文]
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2010-03-15T00:00:00+08:00"> 2010-03-15</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/php/">PHP</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/firebug/">Firebug</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/firephp/">FirePHP</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/yi-wen/">译文</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>这是我第一篇译文，在写WordPress 主题时候偶尔看到的FirePHP插件，看都这篇文章，不知道为什么，动了翻译的念头。</p>
+<p>原文链接：<a href="http://www.sitepoint.com/blogs/2010/02/09/debug-php-firebug-firephp/">Debug PHP with Firebug and FirePHP</a></p>
+<p>译言的链接：<a href="http://article.yeeyan.org/view/119553/94520">译言网 | 使用Firebug和FirePHP调试PHP</a></p>
+<p>&times;&times;&times;&times;&times;以下译文&times;&times;&times;&times;&times;&times;</p>
+<figure>
+<img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png"/><figcaption>image</figcaption>
+</figure>
+<p>如果你和我一样，你会在开发网页项目时候完全无法离开<a href="http://getfirebug.com/">FireBug</a>。这个小巧的&ldquo;臭虫&rdquo;是一个神奇而有用的H TML/CSS/JavaScript/Ajax调试器。但是你也许不知道这个还可以用来调试PHP，没错，它可以，感谢一款名为FirePHP的FireFox插件 。</p>
+<p>通过一个小小的服务端库，和这款在Firebug上的插件，你的PHP脚本能够发送调试信息到浏览器，轻易的通过HTTP相应头编码。一旦你设置，你可以在Fiire bug的控制台获得PHP脚本警告和错误，就感觉像直接调试JavaScript一样</p>
+<p>使用这个工具，首先你需要安装<a href="https://addons.mozilla.org/en-US/firefox/addon/6149">FirePHP插件</a> 。这个插件需要你已经安装FireBug。装好FirePHP之后，重新打开Firebug面板时候，你会看到新加了一个蓝色的臭虫图标。点击这个图标会出现一个开启 或者关闭FirePHP的菜单。</p>
+<figure>
+<img alt="FirePHP Menu" src="https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png"/><figcaption>FirePHP Menu</figcaption>
+</figure>
+<p>当然，这时候我们还无法做任何事，你还需要安装FirePHP的服务端，点击<a href="http://www.firephp.org/HQ/Install.htm">这里</a>下载。这是一个独立的版本，你可以手动下载或者使用PEAR。装后之后，你可是轻松的将这个库加入你的代码。它被设计了很多版本来整合入多个框架或者管理系统，比如 <a href="http://wordpress.org/extend/plugins/wp-%20firephp/">WP-FirePHP plugin for WordPress</a> 和 <a href="http://joomlacode.org/gf/project/kune%20na/frs/?action=FrsReleaseView&amp;release_id=11823">JFirePHP plugin for Joomla</a>。暂时不管这些，我们将把精力集中在独立的功能上。</p>
+<p>一旦你在你服务器上部署了FirePHP库，你还需要在你的代码中加入以下的代码：</p>
+<p><code>require_once('FirePHPCore/fb.php');</code></p>
+<p>这是因为FirePHP通过HTTP头发送记录的数据，你需要缓存你的代码产生的输出，从而来响应头信息从这里获取代码生成的内容。这个可以通过在代码头部的<code>ob_ start</code>来实现。</p>
+<p><code>ob_start();</code></p>
+<p>当这些步骤完成后，你可以开始使用FirePHP了。你需要做的只是调用<code>fb</code>函数在任何你想要记录的地方。同时你也可以使用一个可选的标签和常量去定义预定义信息 ，一个错误，一个警告，或者一条信息。</p>
+<p>$var=array(&lsquo;a&rsquo;=&gt;&lsquo;pizza&rsquo;,&amp;nbsp_place_hold er;&lsquo;b&rsquo;=&gt;&lsquo;cookies&rsquo;,&lsquo;c&rsquo;=&gt;&lsquo;celery&rsquo;);</p>
+<p>fb($var);</p>
+<p>fb($var,&ldquo;Anarray&rdquo;);</p>
+<p>fb($var,FirePHP::WARN);</p>
+<p>fb($var,FirePHP::INFO);</p>
+<p>fb($var,&lsquo;Anarraywith&amp; nbsp_place_holder;anErrortype&rsquo;,&amp;nbsp_pla ce_holder;FirePHP::ERROR);</p>
+<pre><code>$var = array('a'=&gt;'pizza', 'b'=&gt;'cookies', 'c'=&gt;'celery');fb($var);fb($var, "An array");fb($var, FirePHP::WARN);fb($var, FirePHP::INFO);fb($var, 'An array with an Error type', FirePHP::ERROR);</code></pre>
+<p>这些代码将在Firebug控制台输出如下所示</p>
+<figure>
+<img alt="FirePHP Console Output" src="https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png"/><figcaption>FirePHP Console Output</figcaption>
+</figure>
+<p>你也可以使用FirePHP来跟踪你程序的执行情况：通过使用<code>FirePHP::TRACE常量，你可以在</code> <code>fb被调用的地方查看``行数、类名和方法名</code></p>
+<p>1</p>
+<p>functionhello(){</p>
+<p>2</p>
+<p>fb(&lsquo;HelloWorld!&rsquo;,&amp;nbs p_place_holder;FirePHP::TRACE);</p>
+<p>3</p>
+<p>}</p>
+<p>4</p>
+<p>functiongreet(){</p>
+<p>5</p>
+<p>hello();</p>
+<p>6</p>
+<p>}</p>
+<p>7</p>
+<p>greet();</p>
+<pre><code>function hello() { fb('Hello World!', FirePHP::TRACE);}function greet() { hello();}greet();</code></pre>
+<p>产生的输出如下</p>
+<figure>
+<img alt="FirePHP Trace Output" src="http://www.sitepoint.com/blogs/wp-%20content/uploads/2010/02/Screen-shot-2010-02-09-at-3.00.40-PM.png"/><figcaption>FirePHP Trace Output</figcaption>
+</figure>
+<p>这个跟踪功能可以完美的调试更复杂的代码，让你精确的知道你的方法是在哪里被调用的。</p>
+<p>当然，别忘了你需要在你代码发布之前移除你的调试语句。</p>
+<p>这里还有很多FirePHP的内容没有涉及到。我只是向你简单展示一下FirePHP的API，还有很多高级的面向对象API。你可以获得更多相关内容在 <a href="http://www.firephp.org/HQ/Use.htm">FirePHP site</a>，要记得看它哦～</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2010/03/use-firebug-and-firephp-debugging-php/">https://blog.alswl.com/2010/03/use-firebug-and-firephp-debugging-php/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

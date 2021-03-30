@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Working with Python subprocess[译文] - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="http://127.0.0.1:8000/2012/10/working-with-python-subprocess/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Python,subprocess,bash,shell,译文" />
+        <meta name="description" content="8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。 这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。 原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More 注意 关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。 在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。 我想达到的目标是： 查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
+
+    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://127.0.0.1:8000/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="http://127.0.0.1:8000/2012/10/working-with-python-subprocess/"
+                       rel="bookmark"
+                       title="Permalink to Working with Python subprocess[译文]">
+                        Working with Python subprocess[译文]
+                    </a>
+                </h1>
+                <nav class="toc col-lg-2">
+                  <div id="toc"><ul><li><a class="toc-href" href="#执行程序时发生了什么" title="执行程序时发生了什么">执行程序时发生了什么</a><ul><li><a class="toc-href" href="#数据流" title="数据流">数据流</a></li></ul></li><li><a class="toc-href" href="#使用-shell_1" title="使用 Shell">使用 Shell</a><ul><li><a class="toc-href" href="#重定向标准输入和输出到文件" title="重定向标准输入和输出到文件">重定向标准输入和输出到文件</a></li><li><a class="toc-href" href="#管道" title="管道">管道</a></li><li><a class="toc-href" href="#从文件重定向标准输入和输出" title="从文件重定向标准输入和输出">从文件重定向标准输入和输出</a></li><li><a class="toc-href" href="#管道链" title="管道链">管道链</a></li><li><a class="toc-href" href="#多重输出重定向" title="多重输出重定向">多重输出重定向</a></li><li><a class="toc-href" href="#here-文档" title="Here 文档">Here 文档</a></li></ul></li><li><a class="toc-href" href="#介绍-subprocess_1" title="介绍 subprocess">介绍 subprocess</a></li><li><a class="toc-href" href="#使用-shell-1" title="使用 Shell">使用 Shell</a></li><li><a class="toc-href" href="#字符串和参数列表" title="字符串和参数列表">字符串和参数列表</a></li><li><a class="toc-href" href="#shell-之外" title="Shell 之外">Shell 之外</a><ul><li><a class="toc-href" href="#检查-path-中的程序" title="检查 PATH 中的程序">检查 PATH 中的程序</a></li></ul></li><li><a class="toc-href" href="#从标准输出和错误重定向_1" title="从标准输出和错误重定向">从标准输出和错误重定向</a><ul><li><a class="toc-href" href="#重定向-stderr-到-stdout" title="重定向 stderr 到 stdout">重定向 stderr 到 stdout</a></li></ul></li><li><a class="toc-href" href="#写入标准输入_1" title="写入标准输入">写入标准输入</a><ul><li><a class="toc-href" href="#类文件属性" title="类文件属性">类文件属性</a></li><li><a class="toc-href" href="#读写同一个进程" title="读写同一个进程">读写同一个进程</a></li></ul></li><li><a class="toc-href" href="#获取返回值-poll-和-wait_1" title="获取返回值， poll() 和 wait()">获取返回值， poll() 和 wait()</a></li><li><a class="toc-href" href="#便捷的方法" title="便捷的方法">便捷的方法</a></li><li><a class="toc-href" href="#理解-sys.argv" title="理解 sys.argv">理解 sys.argv</a><ul><li><a class="toc-href" href="#展开-shell" title="展开 Shell">展开 Shell</a></li></ul></li><li><a class="toc-href" href="#拓展阅读_1" title="拓展阅读">拓展阅读</a></li></ul></div>
+                </nav>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2012-10-16T00:42:00+08:00"> 2012-10-16</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://127.0.0.1:8000/tag/python/">Python</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/subprocess/">subprocess</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/bash/">bash</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/shell/">shell</a>
+        /
+	<a href="http://127.0.0.1:8000/tag/yi-wen/">译文</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。</p>
+<p>这篇文章是在写 <a href="http://kenai.com/projects/btrace/pages/Home">Btrace</a> 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。</p>
+<p>原文链接：<a href="http://jimmyg.org/blog/2009/working-with-python-subprocess.html">Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More</a></p>
+<hr/>
+<p>注意</p>
+<blockquote>
+<p>关于「执行命令时候发生了什么」这个问题，可以在 <a href="http://en.wikipedia.org/wiki/Redirection_(computing)">http://en.wikipedia.org/wiki/Redirection_(computing)</a> 找到更多最新信息。这篇文章遵循 <a href="http://www.gnu.org/copyleft/fdl.html">GFDL</a> 协议。</p>
+</blockquote>
+<p>在我的上一篇日志中，我写到如何 <a href="http://jimmyg.org/blog/2009/python-command-line-interface-%28cli%29-with-sub-commands.html">build a command line interface with sub-commands in Python</a>。 这次我来尝试如何通过 Python 的 <code>subprocess</code> 模块来和命令行指令进行交互。</p>
+<p>我想达到的目标是：</p>
+<ul>
+<li>查看当你键入命令时究竟发生了什么</li>
+<li>如何确认一个命令是否存在并找出到底在哪</li>
+<li>通过 Python 或 shell 执行命令</li>
+<li>向一个运行中的进程读取 STDOUT 或写入 STDIN</li>
+<li>检查进程的退出返回状态</li>
+<li>理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序</li>
+</ul>
+<!-- more -->
+<h2 id="执行程序时发生了什么">执行程序时发生了什么</h2>
+<p>当你双击桌面上的终端程序图标时，就会打开一个载入 <code>shell</code> 的程序。 你键入的命令不会直接在内核执行，而是先和 shell 进行交互。</p>
+<pre><code>    Command      (eg. `ls -l')
+       ↓
+Terminal Program (eg. `gnome-terminal')
+       ↓
+     Shell       (eg Bash)
+       ↓
+     Kernel      (eg. Linux 2.6.24)</code></pre>
+<p>更多关于 shell 的信息：</p>
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Unix_shell">http://en.wikipedia.org/wiki/Unix_shell</a></li>
+</ul>
+<p>更多关于进程如何运行的信息：</p>
+<ul>
+<li><a href="http://pangea.stanford.edu/computerinfo/unix/shell/processes/processes.html">http://pangea.stanford.edu/computerinfo/unix/shell/processes/processes.html</a></li>
+</ul>
+<p>当你通过 Python 执行程序时候，你可以选择直接从内核执行或者通过 shell。 如果你选择直接执行，你就没办法和 bash 同样方式执行命令。</p>
+<p>我们先看看怎么使用 shell 和那些好玩的特性功能， 然后再通过 <code>subprocess</code> 来实现同样的功能，</p>
+<h3 id="数据流">数据流</h3>
+<p>在 UNIX 和 Linux 下，有三个被称作 <em>流</em> 的 I/O 通道，它们通过文本终端 （比如用 gnome-terminal 运行 Bash）和其他应用程序（比如通过 Python 的 <code>subprocess</code> ）这类环境来连接程序。 这几个 I/O 通道分别称为 <em>标准输入</em>， <em>标准输出</em>，和 <em>标准错误输出</em> , 它们的 <em>文件描述符</em> 分别为 0，1，2。</p>
+<div style="overflow-x: auto;"><table>
+<thead>
+<tr>
+<th>
+句柄
+</th>
+<th>
+名称
+</th>
+<th>
+描述
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+0
+</td>
+<td>
+stdin
+</td>
+<td>
+标准输入
+</td>
+</tr>
+<tr>
+<td>
+1
+</td>
+<td>
+stdout
+</td>
+<td>
+标准输出
+</td>
+</tr>
+<tr>
+<td>
+2
+</td>
+<td>
+stderr
+</td>
+<td>
+标准错误输出
+</td>
+</tr>
+</tbody>
+</table></div>
+<p>这里你能看到标准输入叫做 <code>stdin</code>，标准输出称作 <code>stdout</code>，标准错误输出叫做 <code>stderr</code> 。</p>
+<p>流是这样工作的：从终端输出获取输入并通过标准输入发送到程序， 程序返回的正常输出从标准输出输出，错误则返回到环境上下文的标准错误输出。 维基百科有幅图将描述这个过程：</p>
+<p><a href="http://en.wikipedia.org/wiki/File:Stdstreams-notitle.svg"><img alt="Stdstreams-notitle.svg" src="https://4ocf5n.dijingchao.com/upload_dropbox/201209/Stdstreams-notitle.svg.png"/></a></p>
+<p>如果你想将流从一个程序重定向到另一个地方，请看下文分解。</p>
+<h2 id="使用-shell_1">使用 Shell</h2>
+<h3 id="重定向标准输入和输出到文件">重定向标准输入和输出到文件</h3>
+<p>你可以在 Bash 中使用 <code>&gt;</code> 操作符将一个程序的标准输出重定向到一个文件 （在其他 Shell 也许略有语法差异）。这里有个范例：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">program1</span> <span class="op">&gt;</span> file1</a></code></pre></div>
+<p><code>program1</code> 执行后的输出结果从标准输出流写入 <code>file1</code>，并将 <code>file1</code> 其中现有的内容所替换。如果你只是想追加内容，你可以使用 <code>&gt;&gt;</code> 操作符：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">program1</span> <span class="op">&gt;&gt;</span> file1</a></code></pre></div>
+<p><code>&lt;</code> 操作符可以被用来从文件中读取数据并传输到程序的标准输入流：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">program1</span> <span class="op">&lt;</span> file1</a></code></pre></div>
+<p>同样的，<code>program1</code> 会被执行，但是此时 <code>file1</code> 取代了键盘， 成为了标准输入的数据源。</p>
+<p>你可以组合 shell 操作符以完成更复杂的操作。 下面这个范例中，<code>program1</code> 从 <code>file1</code> 获取数据并发送到标准输入。标准输出则从 <code>program1</code> 输出到 <code>file2</code>。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">program1</span> <span class="op">&lt;</span> file1 <span class="op">&gt;</span> file2</a></code></pre></div>
+<p>也许有时候你需要从一个程序获取输出并将其作为另一个程序的输入。 你可以通过一个临时文件来实现这个操作：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">program1</span> <span class="op">&gt;</span> tempfile1</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="ex">program2</span> <span class="op">&lt;</span> tempfile1</a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="fu">rm</span> tempfile1</a></code></pre></div>
+<p>这种方法有点累赘，因此 shell 提供了方便的机制，称为 <em>管道</em></p>
+<h3 id="管道">管道</h3>
+<p>管道允许一个程序的标准输出直接输入到另一个程序的标准输入流中， 而无须创建临时文件：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">program1</span> <span class="kw">|</span> <span class="ex">program2</span></a></code></pre></div>
+<p>操作符 <code>|</code> 被称作 <em>管道</em> 符号，因此这种操作就被称为 <em>管道</em>。</p>
+<p>这里有一幅来自维基百科的图片来描述管道：</p>
+<p><a href="http://en.wikipedia.org/wiki/File:Pipeline.svg"><img alt="Pipeline.svg" src="https://4ocf5n.dijingchao.com/upload_dropbox/201209/Pipeline.svg.png"/></a></p>
+<p>这里有个使用 <code>find .</code>（遍历当前目录下的文件和目录）的例子，将输出定向到 <code>grep</code> 程序来查找特定文件：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="fu">find</span> . <span class="kw">|</span> <span class="fu">grep</span> <span class="st">"The file I'm after.txt"</span></a></code></pre></div>
+<p>第一个程序产生的数据是一行一行地导向第二个程序的，所以在第一个程序运行结束之前， 第二个程序就可以开始使用它们。</p>
+<h3 id="从文件重定向标准输入和输出">从文件重定向标准输入和输出</h3>
+<p>在重定向标准输出的同时，你也可以重定向其他流， 比如重定向标准错误输出到标准输出。我们已经讨论过在 Bash 中， 可以在文件描述符之前使用 <code>&gt;</code>，<code>&lt;</code> 和 <code>&gt;&gt;</code> 操作符来重定向数据流 （还记得之前讨论的数字 0，1，2 么）。如果把标准输出代表的数字 1 省略掉看， 会发现我们一直在使用标准输出。</p>
+<p>下面这条命令执行 <code>program1</code> 并将所有标准 <em>错误</em> 数据输出到 <code>file1</code>。</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" title="1"><span class="ex">program1</span> <span class="op">2&gt;</span> file1</a></code></pre></div>
+<p>执行 <code>program1</code>，错误信息就被重定向到 <code>file</code> 了。</p>
+<p>这里有个范例程序让你来测试，将它保存成 <code>redirect1.py</code>：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" title="1"><span class="im">import</span> sys</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="cf">while</span> <span class="dv">1</span>:</a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb10-4" title="4">        <span class="bu">input</span> <span class="op">=</span> sys.stdin.readline()</a>
+<a class="sourceLine" id="cb10-5" title="5">        <span class="cf">if</span> <span class="bu">input</span>:</a>
+<a class="sourceLine" id="cb10-6" title="6">            sys.stdout.write(<span class="st">'Echo to stdout: </span><span class="sc">%s</span><span class="st">'</span><span class="op">%</span><span class="bu">input</span>)</a>
+<a class="sourceLine" id="cb10-7" title="7">            sys.stderr.write(<span class="st">'Echo to stderr: </span><span class="sc">%s</span><span class="st">'</span><span class="op">%</span><span class="bu">input</span>)</a>
+<a class="sourceLine" id="cb10-8" title="8">    <span class="cf">except</span> KeyboardError:</a>
+<a class="sourceLine" id="cb10-9" title="9">         sys.exit()</a></code></pre></div>
+<p>这个程序始终将接受到的输入数据并同时输出到 stdout 和 stderr 。</p>
+<p>在 csh 衍生出来的 shell 中，语法则是在重定向符号之后加上 <code>&amp;</code> 符号， 可以达到同样的效果。（译者注：即 <code>|&amp;</code>）</p>
+<p>另一个常用的特性是将一个输出流重定向到定一个。 最常见的用法是将标准错误输出重定向到标准输出， 这样就可以把错误信息和正确信息合并在一起，比如：</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">find</span> / -name .profile <span class="op">&gt;</span> results <span class="op">2&gt;&amp;1</span></a></code></pre></div>
+<p>命令将会找出所有名叫 <code>.profile</code> 的文件。 如果没有重定向，它将输出命中信息到 stdout，错误信息到 stderr （比如有些目录无权限访问）。如果标准输出定向到文件，错误信息则会显示在命令行上。 为了在结果文件中可以同时看到命中信息和错误信息，我们需要使用 <code>2&gt;&amp;1</code> 将标准错误输出（2）输出到标准输出（1）。（这次即使在 Bash 中也需要 <code>&amp;</code> 符。）</p>
+<p>虽然语法上可以将 <code>2&gt;&amp;1</code> 放到 <code>&gt;</code> 前面，但这样不能正常工作。 事实上，当解析器读取 <code>2&gt;&amp;1</code> 时候，它还不知道标准输出将重定向到哪里， 所以标准错误输出就不会被合并。</p>
+<p>如果使用管道合并输出流，那么合并符号 <code>2&gt;&amp;1</code> 需要在管道符号 <code>|</code> 之前。比如：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="fu">find</span> / -name .profile <span class="op">2&gt;&amp;1</span> <span class="kw">|</span> <span class="fu">less</span></a></code></pre></div>
+<p>Bash 中的合并输出简写形式是：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="bu">command</span> <span class="op">&gt;</span> file <span class="op">2&gt;&amp;1</span></a></code></pre></div>
+<p>为：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb14-1" title="1"><span class="bu">command</span> <span class="op">&amp;&gt;</span>file</a></code></pre></div>
+<p>或者：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb15-1" title="1"><span class="bu">command</span> <span class="op">&gt;</span><span class="kw">&amp;</span><span class="fu">file</span></a></code></pre></div>
+<p>但是最好别用简写形式，否则你会弄糊涂。我提倡宁愿麻烦但是要清晰。</p>
+<p><code>&amp;&gt;</code> 操作符同时重定向标准输出和标准错误输出。 它的作用和在 Bourne Shell 中的 <code>command &gt; file 2&gt;&amp;1</code> 一样。</p>
+<h3 id="管道链">管道链</h3>
+<p>重定向可以和管道连接起来组成复杂的命令，比如：</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" title="1"><span class="fu">ls</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="st">'\.sh'</span> <span class="kw">|</span> <span class="fu">sort</span> <span class="op">&gt;</span> shlist</a></code></pre></div>
+<p>列出当前目录下所有文件，然后过滤剩下仅包含 .sh 的内容，根据文字编码排序， 然后将最终结果输出到 shlist。这种类型的命令经常在 shell 脚本和批处理文件中使用。</p>
+<h3 id="多重输出重定向">多重输出重定向</h3>
+<p>标准命令 <code>tee</code> 可以重定向一个命令到多个地方。</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" title="1"><span class="fu">ls</span> -lrt <span class="kw">|</span> <span class="fu">tee</span> xyz</a></code></pre></div>
+<p>这将文件列表同时输出到标准输出和文件 <code>xyz</code> 中。</p>
+<h3 id="here-文档">Here 文档</h3>
+<p>大部分 Shell，包括 Bash 都支持 <em>Here 文档</em>，它允许你使用 <code>&lt;&lt;</code> 操作符和一些文本作为分隔符将文本块嵌入到命令之中。</p>
+<p>在下面的范例中，文本块被传送给 <code>tr</code> 命令，同时使用 <code>END_TEXT</code> 作为 Here 文档分隔符来指明文本的开始和结束。</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb18-1" title="1">$ <span class="fu">tr</span> a-z A-Z <span class="op">&lt;&lt;END_TEXT</span></a>
+<a class="sourceLine" id="cb18-2" title="2">&gt; one two three</a>
+<a class="sourceLine" id="cb18-3" title="3">&gt; uno dos tres</a>
+<a class="sourceLine" id="cb18-4" title="4">&gt; END_TEXT</a>
+<a class="sourceLine" id="cb18-5" title="5">ONE TWO THREE</a>
+<a class="sourceLine" id="cb18-6" title="6">UNO DOS TRES</a></code></pre></div>
+<p>经过 <code>tr</code> 处理后，输出的结果是 <code>ONE TWO THREE</code> 和 <code>UNO DOS TRES</code>。</p>
+<p>一种常用用法是用 Here 文档向文件添加文本。 默认情况下，文本中的变量是会被替换成真实值的。</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb19-1" title="1">$ <span class="fu">cat</span> <span class="op">&lt;&lt; EOF</span></a>
+<a class="sourceLine" id="cb19-2" title="2">&gt; Working dir <span class="va">$PWD</span></a>
+<a class="sourceLine" id="cb19-3" title="3">&gt; EOF</a>
+<a class="sourceLine" id="cb19-4" title="4">Working dir /home/user</a></code></pre></div>
+<p>通过在 Here 文档标签引上单引号或者双引号，就可以避免这种转义：</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" title="1">$ <span class="fu">cat</span> <span class="op">&lt;&lt; "EOF"</span></a>
+<a class="sourceLine" id="cb20-2" title="2">&gt; Working dir $PWD</a>
+<a class="sourceLine" id="cb20-3" title="3">&gt; EOF</a>
+<a class="sourceLine" id="cb20-4" title="4">Working dir $PWD</a></code></pre></div>
+<h2 id="介绍-subprocess_1">介绍 <code>subprocess</code></h2>
+<p>刚才我们讨论过了一些命令行提供的功能，现在让我们体验一下 <code>subprocess</code> 模块。 你可以在命令行中运行下面这条简单的命令：</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" title="1">$ <span class="bu">echo</span> <span class="st">"Hello world!"</span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="ex">Hello</span> world!</a></code></pre></div>
+<p>让我们试着在 Python 中运行它。</p>
+<p>以前我们需要使用一堆各异的标准库来实现进程管理。 从 Python 2.4 开始，所有功能都被精心地整理到 <code>subprocess</code> 这个模块， 其中的 <code>Popen</code> 类可以提供所有我们需要的。</p>
+<p>注意</p>
+<blockquote>
+<p>如果你对新的 <code>Popen</code> 如何替换旧模块，[subprocess-doc][subprocess-documentation] 有一个章节解释过去是如何作用以及当前是如何作用。</p>
+</blockquote>
+<p><code>Popen</code> 可以接受一下参数，详情可以在 [using-the-subprocess-module][http://docs.python.org/library/subprocess.html#using-the-subprocess-module]：</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb22-1" title="1"><span class="ex">subprocess.Popen</span>(args, bufsize=0, executable=None, stdin=None,</a>
+<a class="sourceLine" id="cb22-2" title="2">    <span class="va">stdout=</span>None, <span class="va">stderr=</span>None, <span class="va">preexec_fn=</span>None, <span class="va">close_fds=</span>False,</a>
+<a class="sourceLine" id="cb22-3" title="3">    <span class="va">shell=</span>False, <span class="va">cwd=</span>None, <span class="va">env=</span>None, <span class="va">universal_newlines=</span>False,</a>
+<a class="sourceLine" id="cb22-4" title="4">    <span class="va">startupinfo=</span>None, <span class="va">creationflags=</span>0</a>
+<a class="sourceLine" id="cb22-5" title="5">)</a></code></pre></div>
+<h2 id="使用-shell-1">使用 Shell</h2>
+<p>让我们以 Hello World! 这个例子开始。和之前类似，通过 Python shell 执行下列命令：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb23-1" title="1"><span class="op">&gt;&gt;&gt;</span> <span class="ex">import</span> subprocess</a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="op">&gt;&gt;&gt;</span> <span class="ex">subprocess.Popen</span>(<span class="st">'echo "Hello world!"'</span>, shell=True)</a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="ex">Hello</span> world!</a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="op">&lt;</span><span class="ex">subprocess.Popen</span> object at 0x...<span class="op">&gt;</span></a></code></pre></div>
+<p>如你所见，标准输出和同样打印出 <code>Hello world!</code> ， 区别在于命令行显示了一个我们创建的 <code>subprocess.Popen</code> 实例。</p>
+<p>如果你将代码保存为 <code>process_test.py</code> ，然后在命令行执行，你会得到一样的结果：</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb24-1" title="1">$ <span class="ex">python</span> process_test.py</a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="ex">Hello</span> world!</a></code></pre></div>
+<p>看上去运行 OK。</p>
+<p>你可能在琢磨我们到底使用了哪个 shell。Unix 的默认 shell 是 <code>/bin/sh</code> ， 而 Windows 下面则取决于 <code>COMSPEC</code> 这个环境变量。 如果你设置 <code>shell=True</code> ，则可以通过 <code>executable</code> 参数来自定义 shell。</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb25-1" title="1"><span class="op">&gt;&gt;&gt;</span> <span class="ex">subprocess.Popen</span>(<span class="st">'echo "Hello world!"'</span>, shell=True, executable=<span class="st">"/bin/bash"</span>)</a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="ex">Hello</span> world!</a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="op">&lt;</span><span class="ex">subprocess.Popen</span> object at 0x...<span class="op">&gt;</span></a></code></pre></div>
+<p>和我们之前看到的一样，但是如果你使用特定的 shell ， 你也许会发现不同的地方。</p>
+<p>让我们探索一下通过 Python 使用 shell 的其他特性：</p>
+<p>变量解析：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb26-1" title="1"><span class="op">&gt;&gt;&gt;</span> <span class="ex">subprocess.Popen</span>(<span class="st">'echo $PWD'</span>, shell=True)</a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="ex">/home/james/Desktop</span></a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="op">&lt;</span><span class="ex">subprocess.Popen</span> object at 0x...<span class="op">&gt;</span></a></code></pre></div>
+<p>管道和重定向：</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb27-1" title="1"><span class="ex">subprocess.Popen</span>(<span class="st">'echo "Hello world!" | tr a-z A-Z 2&gt; errors.txt'</span>, shell=True)</a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="op">&lt;</span><span class="ex">subprocess.Popen</span> object at 0x...<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb27-3" title="3"><span class="op">&gt;&gt;&gt;</span> <span class="ex">HELLO</span> WORLD!</a></code></pre></div>
+<p><code>errors.txt</code> 应该是空的，因为没有任何错误产生。 有趣的是在我电脑上，<code>Popen</code> 实例在 <code>HELLO WORLD!</code> 被打印到标准输出 <em>之前</em> 出现。 恩，管道和重定向都可以正常工作。</p>
+<p>Here 文档：</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb28-1" title="1"><span class="op">&gt;&gt;&gt;</span> <span class="ex">subprocess.Popen</span>(<span class="st">"""</span></a>
+<a class="sourceLine" id="cb28-2" title="2"><span class="st">... cat &lt;&lt; EOF &gt; new.txt</span></a>
+<a class="sourceLine" id="cb28-3" title="3"><span class="st">... Hello World!</span></a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="st">... EOF</span></a>
+<a class="sourceLine" id="cb28-5" title="5"><span class="st">... """</span>, shell=True)</a>
+<a class="sourceLine" id="cb28-6" title="6"><span class="op">&lt;</span><span class="ex">subprocess.Popen</span> object at 0xb7dbbe2c<span class="op">&gt;</span></a></code></pre></div>
+<p><code>new.txt</code> 文件正常生成，并且包含内容 <code>Hello World!</code> 。</p>
+<p>如我们预料，在 shell 中正常运行的命令同样可以在 Python shell 中运行。</p>
+<h2 id="字符串和参数列表">字符串和参数列表</h2>
+<p>现在可以轻松地在 Python 中执行命令行了，你也许会需要传递变量过去。 假设我们要用 <code>echo</code> 重写刚才那个函数：</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">def</span> print_string(string):</a>
+<a class="sourceLine" id="cb29-2" title="2">    <span class="bu">print</span> string</a></code></pre></div>
+<p>你也许想当然这样写：</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" title="1"><span class="kw">def</span> print_string(string):</a>
+<a class="sourceLine" id="cb30-2" title="2">    subprocess.Popen(<span class="st">'echo "</span><span class="sc">%s</span><span class="st">"'</span><span class="op">%</span>string, shell<span class="op">=</span><span class="va">True</span>)</a></code></pre></div>
+<p>这种写法，当字符串是 <code>Hello World!</code> 时候没问题：</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb31-1" title="1"><span class="op">&gt;&gt;&gt;</span> <span class="ex">print_string</span>(<span class="st">'Hello world!'</span>)</a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="ex">Hello</span> world!</a></code></pre></div>
+<p>但这样就有问题：</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb32-1" title="1"><span class="op">&gt;&gt;&gt;</span> <span class="ex">print_string</span>(<span class="st">'nasty " example'</span>)</a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="ex">/bin</span>/sh: <span class="ex">Syntax</span> error: Unterminated quoted string</a></code></pre></div>
+<p>这个命令会被执行成 <code>echo "nasty" example"</code> ，唔，这里的转义有问题。</p>
+<p>一种解决方式是在代码里面做好转义，但这样会很麻烦， 你需要处理所有可能出现的转义字符和空格等等。</p>
+<p>Python 可以帮你处理好，条件是你不能直接操作 shell， 如何操作看下文。</p>
+<h2 id="shell-之外">Shell 之外</h2>
+<p>现在让我们试试不操作 shell 来实现同样的效果：</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb33-1" title="1"><span class="ex">def</span> print_string(string)<span class="bu">:</span></a>
+<a class="sourceLine" id="cb33-2" title="2">    <span class="ex">subprocess.Popen</span>([<span class="st">'echo'</span>, string], shell=False)</a>
+<a class="sourceLine" id="cb33-3" title="3"></a>
+<a class="sourceLine" id="cb33-4" title="4"><span class="op">&gt;&gt;&gt;</span> <span class="ex">print_string</span>(<span class="st">'Hello world!'</span>)</a>
+<a class="sourceLine" id="cb33-5" title="5"><span class="ex">Hello</span> world!</a>
+<a class="sourceLine" id="cb33-6" title="6"><span class="op">&gt;&gt;&gt;</span> <span class="ex">print_string</span>(<span class="st">'nasty " example'</span>)</a>
+<a class="sourceLine" id="cb33-7" title="7"><span class="ex">nasty</span> <span class="st">" example</span></a></code></pre></div>
+<p>现在你可以看到它正常地处理了转义。</p>
+<p>注意</p>
+<blockquote>
+<p>实际上你也可以在 <code>shell=False</code> 那里直接使用一个单独的字符串作为参数， 但是它必须是命令程序本身，这种做法和在一个列表中定义一个 <code>args</code> 没什么区别。而如果当 <code>shell=False</code> 时候直接执行字符串命令，则会报错：</p>
+</blockquote>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb34-1" title="1"><span class="op">&gt;&gt;&gt;</span> subprocess.Popen(<span class="st">'echo "Hello world!"'</span>, shell<span class="op">=</span><span class="va">False</span>)</a>
+<a class="sourceLine" id="cb34-2" title="2">Traceback (most recent call last):</a>
+<a class="sourceLine" id="cb34-3" title="3">  File <span class="st">"&lt;stdin&gt;"</span>, line <span class="dv">1</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb34-4" title="4">  File <span class="st">"/usr/lib/python2.5/subprocess.py"</span>, line <span class="dv">594</span>, <span class="kw">in</span> <span class="fu">__init__</span></a>
+<a class="sourceLine" id="cb34-5" title="5">    errread, errwrite)</a>
+<a class="sourceLine" id="cb34-6" title="6">  File <span class="st">"/usr/lib/python2.5/subprocess.py"</span>, line <span class="dv">1147</span>, <span class="kw">in</span> _execute_child</a>
+<a class="sourceLine" id="cb34-7" title="7">    <span class="cf">raise</span> child_exception</a>
+<a class="sourceLine" id="cb34-8" title="8"><span class="pp">OSError</span>: [Errno <span class="dv">2</span>] No such <span class="bu">file</span> <span class="kw">or</span> directory</a></code></pre></div>
+<p>如果我们还是坚持使用一个字符串，Python 会认为这个 <em>完整的字符串</em> 是一个可执行的程序名，而实际上没有一个叫做 <code>echo "Hello world!"</code> 的程序，所以报错了。正确的做法要用 list 分开传送参数。</p>
+<h3 id="检查-path-中的程序">检查 PATH 中的程序</h3>
+<p>这里有个方法可以找出程序真正的位置：</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb35-1" title="1"><span class="im">import</span> os</a>
+<a class="sourceLine" id="cb35-2" title="2"><span class="kw">def</span> whereis(program):</a>
+<a class="sourceLine" id="cb35-3" title="3">    <span class="cf">for</span> path <span class="kw">in</span> os.environ.get(<span class="st">'PATH'</span>, <span class="st">''</span>).split(<span class="st">':'</span>):</a>
+<a class="sourceLine" id="cb35-4" title="4">        <span class="cf">if</span> os.path.exists(os.path.join(path, program)) <span class="kw">and</span> <span class="op">\</span></a>
+<a class="sourceLine" id="cb35-5" title="5">           <span class="kw">not</span> os.path.isdir(os.path.join(path, program)):</a>
+<a class="sourceLine" id="cb35-6" title="6">            <span class="cf">return</span> os.path.join(path, program)</a>
+<a class="sourceLine" id="cb35-7" title="7">    <span class="cf">return</span> <span class="va">None</span></a></code></pre></div>
+<p>让我们用它来找出 <code>echo</code> 程序在哪里：</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb36-1" title="1"><span class="op">&gt;&gt;&gt;</span> location <span class="op">=</span> whereis(<span class="st">'echo'</span>)</a>
+<a class="sourceLine" id="cb36-2" title="2"><span class="op">&gt;&gt;&gt;</span> <span class="cf">if</span> location <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb36-3" title="3">...     <span class="bu">print</span> location</a>
+<a class="sourceLine" id="cb36-4" title="4"><span class="op">/</span><span class="bu">bin</span><span class="op">/</span>echo</a></code></pre></div>
+<p>这个方法同样可以检查用户的 <code>PATH</code> 里面是否有 Python 需要的程序。</p>
+<p>当然你也可以使用命令行中的程序 <code>whereis</code> 来找出程序的路径。</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb37-1" title="1">$ <span class="fu">whereis</span> echo</a>
+<a class="sourceLine" id="cb37-2" title="2"><span class="ex">echo</span>: /bin/echo /usr/share/man/man1/echo.1.gz</a></code></pre></div>
+<p>注意</p>
+<blockquote>
+<p>无论我们使用 <code>shell</code> 为 <code>True</code> 或者 <code>False</code> ， 我们都没有指定执行程序的全路径。 如果这个程序在上下文环境的 <code>PATH</code> 变量中，我们才可以执行。 当然如果你愿意，指定全路径也没问题。</p>
+</blockquote>
+<p>你也可以坚持指定 <code>executable</code> 为想要执行的程序， 然后 <code>args</code> 就不设定程序。虽然没看到明确的文档，不过我电脑上面可以这么执行：</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb38-1" title="1"><span class="op">&gt;&gt;&gt;</span> subprocess.Popen([<span class="st">'1'</span>, <span class="st">'2'</span>, <span class="st">'3'</span>], shell<span class="op">=</span><span class="va">False</span>, executable<span class="op">=</span><span class="st">'echo'</span>)</a>
+<a class="sourceLine" id="cb38-2" title="2"><span class="dv">2</span> <span class="dv">3</span></a>
+<a class="sourceLine" id="cb38-3" title="3"><span class="op">&lt;</span>subprocess.Popen <span class="bu">object</span> at <span class="bn">0xb776f56c</span><span class="op">&gt;</span></a></code></pre></div>
+<p>不直接使用 shell 会导致不能直观地使用重定向、管道、here 文档、shell 参数或其他那些可以在命令行使用的技巧。接下来我们会看看怎么使用这些功能。</p>
+<h2 id="从标准输出和错误重定向_1">从标准输出和错误重定向</h2>
+<p>当你使用 <code>Popen</code> 执行程序时候，输出内容通常被发送到 stdout， 这也是为什么你能看到这些内容。</p>
+<p>当你想尝试从某个程序读取标准输出信息时候，则需要在调用 <code>Popen</code> 之前设定 <code>stdout</code> 参数。要设定的值是 <code>subprocess.PIPE</code>：</p>
+<p><code>subprocess.PIPE</code> &gt; 可以为 <code>Popen</code> 指定标准输入、标准输出和标准错误输出的参数， &gt; 需要注意的是标准输出流需要打开可写。</p>
+<p>这里有个范例：</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb39-1" title="1"><span class="op">&gt;&gt;&gt;</span> process <span class="op">=</span> subprocess.Popen([<span class="st">'echo'</span>, <span class="st">'Hello World!'</span>], shell<span class="op">=</span><span class="va">False</span>, stdout<span class="op">=</span>subprocess.PIPE)</a></code></pre></div>
+<p>To read the output from the pipe you use the <code>communicate()</code> method:</p>
+<p>为了从管道获取输出，你可以使用 <code>communicate()</code> 方法：</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb40-1" title="1"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> process.communicate()</a>
+<a class="sourceLine" id="cb40-2" title="2">(<span class="st">'Hello World!</span><span class="ch">\n</span><span class="st">'</span>, <span class="va">None</span>)</a></code></pre></div>
+<p><code>communicate()</code> 的返回值是一个 tuple，第一个值是标准输出的数据， 第二个输出是标准错误输出的内容。</p>
+<p>这里有段脚本能让我们测试标准输出和标准错误输出的表现行为， 将它存为 <code>test1.py</code>：</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb41-1" title="1"><span class="im">import</span> sys</a>
+<a class="sourceLine" id="cb41-2" title="2">sys.stdout.write(<span class="st">'Message to stdout</span><span class="ch">\n</span><span class="st">'</span>)</a>
+<a class="sourceLine" id="cb41-3" title="3">sys.stderr.write(<span class="st">'Message to stderr</span><span class="ch">\n</span><span class="st">'</span>)</a></code></pre></div>
+<p>执行它：</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb42-1" title="1"><span class="op">&gt;&gt;&gt;</span> process <span class="op">=</span> subprocess.Popen([<span class="st">'python'</span>, <span class="st">'test1.py'</span>], shell<span class="op">=</span><span class="va">False</span>, stdout<span class="op">=</span>subprocess.PIPE)</a>
+<a class="sourceLine" id="cb42-2" title="2">Message to stderr</a>
+<a class="sourceLine" id="cb42-3" title="3"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> process.communicate()</a>
+<a class="sourceLine" id="cb42-4" title="4">(<span class="st">'Message to stdout</span><span class="ch">\n</span><span class="st">'</span>, <span class="va">None</span>)</a></code></pre></div>
+<p>注意标准错误输出在被生成后就打印了，而标准输出则被管道传输了。 这是因为我们只设定了标准输出的管道，让我们同时也设定标准错误输出。</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb43-1" title="1"><span class="op">&gt;&gt;&gt;</span> process <span class="op">=</span> subprocess.Popen([<span class="st">'python'</span>, <span class="st">'test1.py'</span>], shell<span class="op">=</span><span class="va">False</span>, stdout<span class="op">=</span>subprocess.PIPE, stderr<span class="op">=</span>subprocess.PIPE)</a>
+<a class="sourceLine" id="cb43-2" title="2"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> process.communicate()</a>
+<a class="sourceLine" id="cb43-3" title="3">(<span class="st">'Message to stdout</span><span class="ch">\n</span><span class="st">'</span>, <span class="st">'Message to stderr</span><span class="ch">\n</span><span class="st">'</span>)</a></code></pre></div>
+<p>这次标准输出和标准错误输出都被 Python 获取到了。</p>
+<p>现在所有的消息能被打印出来了，如果我们再次调用 <code>communicate()</code>， 则会得到一个错误信息：</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb44-1" title="1"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> process.communicate()</a>
+<a class="sourceLine" id="cb44-2" title="2">Traceback (most recent call last):</a>
+<a class="sourceLine" id="cb44-3" title="3">  File <span class="st">"&lt;stdin&gt;"</span>, line <span class="dv">1</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb44-4" title="4">  File <span class="st">"/usr/lib/python2.5/subprocess.py"</span>, line <span class="dv">668</span>, <span class="kw">in</span> communicate</a>
+<a class="sourceLine" id="cb44-5" title="5">    <span class="cf">return</span> <span class="va">self</span>._communicate(<span class="bu">input</span>)</a>
+<a class="sourceLine" id="cb44-6" title="6">  File <span class="st">"/usr/lib/python2.5/subprocess.py"</span>, line <span class="dv">1207</span>, <span class="kw">in</span> _communicate</a>
+<a class="sourceLine" id="cb44-7" title="7">    rlist, wlist, xlist <span class="op">=</span> select.select(read_set, write_set, [])</a>
+<a class="sourceLine" id="cb44-8" title="8"><span class="pp">ValueError</span>: I<span class="op">/</span>O operation on closed <span class="bu">file</span></a></code></pre></div>
+<p><code>communicate()</code> 方法读取标准输出和标准错误输出时候，遇到结束符（EOF） 就会结束。</p>
+<h3 id="重定向-stderr-到-stdout">重定向 stderr 到 stdout</h3>
+<p>如果你想将错误信息重定向到标准输出，只需要给 <code>stderr</code> 参数指定一个特殊值： <code>stderr=subprocess.STDOUT</code> 即可。</p>
+<h2 id="写入标准输入_1">写入标准输入</h2>
+<p>写数据入一个进程和之前所述比较类似。为了要写入数据，需要先打开一个管道到标准输入。 通过设定 <code>Popen</code> 参数 <code>stdin=subproces.PIPE</code> 可以实现。</p>
+<p>为了测试，让我们另外写一个仅输出 <code>Received:</code> 和输入数据的程序。 它在退出之前会输出消息。调用这个 <code>test2.py</code>：</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb45-1" title="1"><span class="im">import</span> sys</a>
+<a class="sourceLine" id="cb45-2" title="2"><span class="bu">input</span> <span class="op">=</span> sys.stdin.read()</a>
+<a class="sourceLine" id="cb45-3" title="3">sys.stdout.write(<span class="st">'Received: </span><span class="sc">%s</span><span class="st">'</span><span class="op">%</span><span class="bu">input</span>)</a></code></pre></div>
+<p>为了发送消息到标准输入，把你想发送的信息作为 <code>communicate()</code> 的参数 <code>input</code> 。让我们跑起来：</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb46-1" title="1"><span class="op">&gt;&gt;&gt;</span> process <span class="op">=</span> subprocess.Popen([<span class="st">'python'</span>, <span class="st">'test2.py'</span>], shell<span class="op">=</span><span class="va">False</span>, stdin<span class="op">=</span>subprocess.PIPE)</a>
+<a class="sourceLine" id="cb46-2" title="2"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> process.communicate(<span class="st">'How are you?'</span>)</a>
+<a class="sourceLine" id="cb46-3" title="3">Received: How are you?(<span class="va">None</span>, <span class="va">None</span>)</a></code></pre></div>
+<p>注意 <code>test2.py</code> 发送的信息被打印到标准输出，随后的是 <code>(None, None)</code> ， 这是因为标准输出和标准错误输出没有设定输出管道。</p>
+<p>你可以和之前那样指定 <code>stdout=subprocess.PIPE</code> 和 <code>stderr=subprocess.PIPE</code> 来设定输出管道。</p>
+<h3 id="类文件属性">类文件属性</h3>
+<p><code>Popen</code> 拥有 <code>stdout</code> 和 <code>stderr</code> 属性，从而可以当作文件一样写出数据，同时 <code>stdin</code> 属性可以像文件一样读取数据。 你可以使用他们来替换 <code>communicate()</code>。下面我们将看如何用它们。</p>
+<h3 id="读写同一个进程">读写同一个进程</h3>
+<p>这里有个例子，将它保存为 <code>test3.py</code>：</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb47-1" title="1"><span class="im">import</span> sys</a>
+<a class="sourceLine" id="cb47-2" title="2"></a>
+<a class="sourceLine" id="cb47-3" title="3"><span class="cf">while</span> <span class="va">True</span>:</a>
+<a class="sourceLine" id="cb47-4" title="4">    <span class="bu">input</span> <span class="op">=</span> sys.stdin.readline()</a>
+<a class="sourceLine" id="cb47-5" title="5">    sys.stdout.write(<span class="st">'Received: </span><span class="sc">%s</span><span class="st">'</span><span class="op">%</span><span class="bu">input</span>)</a>
+<a class="sourceLine" id="cb47-6" title="6">    sys.stdout.flush()</a></code></pre></div>
+<p>这个程序也是简单的响应接受到的数据，让我们把它跑起来：</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb48-1" title="1"><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> time</a>
+<a class="sourceLine" id="cb48-2" title="2"><span class="op">&gt;&gt;&gt;</span> process <span class="op">=</span> subprocess.Popen([<span class="st">'python'</span>, <span class="st">'test3.py'</span>], shell<span class="op">=</span><span class="va">False</span>, stdin<span class="op">=</span>subprocess.PIPE, stdout<span class="op">=</span>subprocess.PIPE)</a>
+<a class="sourceLine" id="cb48-3" title="3"><span class="op">&gt;&gt;&gt;</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</a>
+<a class="sourceLine" id="cb48-4" title="4">...     process.stdin.write(<span class="st">'</span><span class="sc">%d</span><span class="ch">\n</span><span class="st">'</span> <span class="op">%</span> i)</a>
+<a class="sourceLine" id="cb48-5" title="5">...     output <span class="op">=</span> process.stdout.readline()</a>
+<a class="sourceLine" id="cb48-6" title="6">...     <span class="bu">print</span> output</a>
+<a class="sourceLine" id="cb48-7" title="7">...     time.sleep(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb48-8" title="8">...</a>
+<a class="sourceLine" id="cb48-9" title="9">Received: <span class="dv">0</span></a>
+<a class="sourceLine" id="cb48-10" title="10"></a>
+<a class="sourceLine" id="cb48-11" title="11">Received: <span class="dv">1</span></a>
+<a class="sourceLine" id="cb48-12" title="12"></a>
+<a class="sourceLine" id="cb48-13" title="13">Received: <span class="dv">2</span></a>
+<a class="sourceLine" id="cb48-14" title="14"></a>
+<a class="sourceLine" id="cb48-15" title="15">Received: <span class="dv">3</span></a>
+<a class="sourceLine" id="cb48-16" title="16"></a>
+<a class="sourceLine" id="cb48-17" title="17">Received: <span class="dv">4</span></a>
+<a class="sourceLine" id="cb48-18" title="18"></a>
+<a class="sourceLine" id="cb48-19" title="19"><span class="op">&gt;&gt;&gt;</span></a></code></pre></div>
+<p>每隔一秒钟会输出一行。</p>
+<p>现在你应该掌握了所有需要通过 Python 来跟 Shell 交互需要的知识。</p>
+<h2 id="获取返回值-poll-和-wait_1">获取返回值， <code>poll()</code> 和 <code>wait()</code></h2>
+<p>当一个程序退出时候，他会返回一个正整数来表明它的退出状态。 0 代表「成功地结束」，非零则表示「非正常结束」。 大部分系统要求返回值在 0-127 之间，其他都是未定义的结果。 一些系统会有事先定义好的错误对应关系，但一般不被拿出来用。 Unix 程序通常使用 2 作为命令语法错误，1 作为其他错误。</p>
+<p>你可以通过 <code>Popen</code> 的 <code>.returncode</code> 属性获取程序返回值。这儿有个例子：</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb49-1" title="1"><span class="op">&gt;&gt;&gt;</span> process <span class="op">=</span> subprocess.Popen([<span class="st">'echo'</span>, <span class="st">'Hello world!'</span>], shell<span class="op">=</span><span class="va">False</span>)</a>
+<a class="sourceLine" id="cb49-2" title="2"><span class="op">&gt;&gt;&gt;</span> process.poll()</a>
+<a class="sourceLine" id="cb49-3" title="3"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> process.returncode</a>
+<a class="sourceLine" id="cb49-4" title="4"><span class="va">None</span></a>
+<a class="sourceLine" id="cb49-5" title="5"><span class="op">&gt;&gt;&gt;</span> process.poll()</a>
+<a class="sourceLine" id="cb49-6" title="6"><span class="dv">0</span></a>
+<a class="sourceLine" id="cb49-7" title="7"><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span> process.returncode</a>
+<a class="sourceLine" id="cb49-8" title="8"><span class="dv">0</span></a></code></pre></div>
+<p>这个 <code>returncode</code> 并不是一开始就设定好的，最初是默认值 <code>None</code>， 它会一直是 <code>None</code> 知道你调用 <code>subprocess</code> 的方法比如 <code>poll()</code> 和 <code>wait()</code>。 这些方法会设定 <code>returncode</code>。因此，如果你想知道返回值，那就调用 <code>poll()</code> 和 <code>wait()</code>。</p>
+<p><code>poll()</code> 和 <code>wait()</code> 方法区别很小：</p>
+<dl>
+<dt><code>Popen.poll()</code></dt>
+<dd>检查子进程是否结束。并设置和返回 <code>.returncode</code> 属性。 <code>Popen.wait()</code>
+</dd>
+<dd>等待子进程结束。并设置和返回 <code>.returncode</code> 属性。
+</dd>
+</dl>
+<h2 id="便捷的方法">便捷的方法</h2>
+<p><code>subprocess</code> 模块还提供了很多方便的方法来使得执行 shell 命令更方便。 我没有全部试试。（译者：意思是让读者自己挖掘？）</p>
+<h2 id="理解-sys.argv">理解 <code>sys.argv</code></h2>
+<p>如果你想写一个 Python 脚本来接受命令行参数， 那么命令行的参数会被传送并成参数 <code>sys.argv</code>。 这里有个小范例，将它保存成 <code>command.py</code> 。</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb50-1" title="1"><span class="co">#!/usr/bin/env python</span></a>
+<a class="sourceLine" id="cb50-2" title="2"></a>
+<a class="sourceLine" id="cb50-3" title="3"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</a>
+<a class="sourceLine" id="cb50-4" title="4">    <span class="im">import</span> sys</a>
+<a class="sourceLine" id="cb50-5" title="5">    <span class="bu">print</span> <span class="st">"Executable: </span><span class="sc">%s</span><span class="st">"</span><span class="op">%</span>sys.argv[<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb50-6" title="6">    <span class="cf">for</span> arg <span class="kw">in</span> sys.argv[<span class="dv">1</span>:]:</a>
+<a class="sourceLine" id="cb50-7" title="7">        <span class="bu">print</span> <span class="st">"Arg: </span><span class="sc">%s</span><span class="st">"</span><span class="op">%</span>arg</a></code></pre></div>
+<p><code>if __name__ == '__main__'</code> 这行确保代码在被执行是才运行， 而不是被引入时候运行。给这个文件执行权限：</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb51-1" title="1">$ <span class="fu">chmod</span> 755 command.py</a></code></pre></div>
+<p>这里是一些运行时的范例：</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb52-1" title="1">$ <span class="ex">python</span> command.py</a>
+<a class="sourceLine" id="cb52-2" title="2"><span class="ex">Executable</span>: command.py</a>
+<a class="sourceLine" id="cb52-3" title="3">$ <span class="ex">python</span> command.py arg1</a>
+<a class="sourceLine" id="cb52-4" title="4"><span class="ex">Executable</span>: command.py</a>
+<a class="sourceLine" id="cb52-5" title="5"><span class="ex">Arg</span>: arg1</a>
+<a class="sourceLine" id="cb52-6" title="6">$ <span class="ex">python</span> command.py arg1 arg2</a>
+<a class="sourceLine" id="cb52-7" title="7"><span class="ex">Executable</span>: command.py</a>
+<a class="sourceLine" id="cb52-8" title="8"><span class="ex">Arg</span>: arg1</a>
+<a class="sourceLine" id="cb52-9" title="9"><span class="ex">Arg</span>: arg2</a></code></pre></div>
+<p>注意无论 Python 脚本怎么执行， <code>sys.argv[0]</code> 始终是脚本的名称。 <code>sys.argv[1]</code> 和之后的参数是命令行接受的参数。 你可以通过使用参数 <code>-m</code> 来强制 Python 脚本作为模块导入使用。</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb53-1" title="1">$ <span class="ex">python</span> -m command</a>
+<a class="sourceLine" id="cb53-2" title="2"><span class="ex">Executable</span>: /home/james/Desktop/command.py</a>
+<a class="sourceLine" id="cb53-3" title="3">$ <span class="ex">python</span> -m command arg1</a>
+<a class="sourceLine" id="cb53-4" title="4"><span class="ex">Executable</span>: /home/james/Desktop/command.py</a>
+<a class="sourceLine" id="cb53-5" title="5"><span class="ex">Arg</span>: arg1</a>
+<a class="sourceLine" id="cb53-6" title="6">$ <span class="ex">python</span> -m command arg1 arg2</a>
+<a class="sourceLine" id="cb53-7" title="7"><span class="ex">Executable</span>: /home/james/Desktop/command.py</a>
+<a class="sourceLine" id="cb53-8" title="8"><span class="ex">Arg</span>: arg1</a>
+<a class="sourceLine" id="cb53-9" title="9"><span class="ex">Arg</span>: arg2</a></code></pre></div>
+<p>如你所见，Python 将 <code>-m</code> 作为命令的一部分，因此 `sys.srgv[0] 包含了脚本的全路径。 现在我们来直接执行它：</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb54-1" title="1">$ <span class="ex">./command.py</span></a>
+<a class="sourceLine" id="cb54-2" title="2"><span class="ex">Executable</span>: ./command.py</a>
+<a class="sourceLine" id="cb54-3" title="3">$ <span class="ex">./command.py</span> arg1</a>
+<a class="sourceLine" id="cb54-4" title="4"><span class="ex">Executable</span>: ./command.py</a>
+<a class="sourceLine" id="cb54-5" title="5"><span class="ex">Arg</span>: arg1</a>
+<a class="sourceLine" id="cb54-6" title="6">$ <span class="ex">./command.py</span> arg1 arg2</a>
+<a class="sourceLine" id="cb54-7" title="7"><span class="ex">Executable</span>: ./command.py</a>
+<a class="sourceLine" id="cb54-8" title="8"><span class="ex">Arg</span>: arg1</a>
+<a class="sourceLine" id="cb54-9" title="9"><span class="ex">Arg</span>: arg2</a></code></pre></div>
+<p>看吧，<code>sys.argv[0]</code> 包含 Python 脚本的名称， <code>sys.argv[1]</code> 以及他的兄弟们还是老样子，包含各类参数。</p>
+<h3 id="展开-shell">展开 Shell</h3>
+<p>有时候，我们会在 shell 中使用通配符来设定一组参数，比如， 我们在 Bash 中运行：</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb55-1" title="1">$ <span class="ex">./command.py</span> *.txt</a></code></pre></div>
+<p>你可能觉得输出应该是：</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb56-1" title="1"><span class="ex">Executable</span>: ./command.py</a>
+<a class="sourceLine" id="cb56-2" title="2"><span class="ex">Arg</span>: *.txt</a></code></pre></div>
+<p>这不是你想要的结果。输出结果应该依赖当前文件夹中 <code>.txt</code> 文件的数目。执行效果如下：</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb57-1" title="1"><span class="ex">Executable</span>: ./command.py</a>
+<a class="sourceLine" id="cb57-2" title="2"><span class="ex">Arg</span>: errors.txt</a>
+<a class="sourceLine" id="cb57-3" title="3"><span class="ex">Arg</span>: new.txt</a>
+<a class="sourceLine" id="cb57-4" title="4"><span class="ex">Arg</span>: output.txt</a></code></pre></div>
+<p>Bash 会将 <code>\*.txt</code> 自动展开成所有符合 <code>.txt</code> 的参数。所以接受到的参数会超过你预期。</p>
+<p>你可以通过将参数用引号抱起来来关闭 Shell 解释特性， 但是只要你用过，就会意识到在大多数情况下面这是非常有用的功能。</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb58-1" title="1">$ <span class="ex">./command.py</span> <span class="st">"*.txt"</span></a>
+<a class="sourceLine" id="cb58-2" title="2"><span class="ex">Executable</span>: ./command.py</a>
+<a class="sourceLine" id="cb58-3" title="3"><span class="ex">Arg</span>: *.txt</a></code></pre></div>
+<p>更多关于 Bash 解释信息，可以看 <a href="http://www.gnu.org/software/bash/manual/bashref.html#Filename-Expansion">http://www.gnu.org/software/bash/manual/bashref.html#Filename-Expansion</a></p>
+<h2 id="拓展阅读_1">拓展阅读</h2>
+<p>可以参考：</p>
+<ul>
+<li><a href="http://www.doughellmann.com/PyMOTW/subprocess/">http://www.doughellmann.com/PyMOTW/subprocess/</a> (and its O’Reilly copy here)</li>
+<li><a href="http://docs.python.org/library/subprocess.html">http://docs.python.org/library/subprocess.html</a></li>
+<li><a href="http://webpython.codepoint.net/cgi_shell_command">http://webpython.codepoint.net/cgi_shell_command</a></li>
+<li><a href="http://www.artima.com/weblogs/viewpost.jsp?thread=4829">http://www.artima.com/weblogs/viewpost.jsp?thread=4829</a> (About writing main() functions)</li>
+</ul>
+<p>未来相关的文章：</p>
+<ul>
+<li>进程间信号通信</li>
+<li>后台执行程序</li>
+</ul>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2012/10/working-with-python-subprocess/">https://blog.alswl.com/2012/10/working-with-python-subprocess/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-8822123-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>
