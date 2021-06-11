@@ -67,6 +67,22 @@ Log4D            </a>
         <div class="col-lg-8 col-lg-offset-2">
 
             <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/battle-of-garbled/">乱码之战</a></h2>
+                <div class="summary"><p>今天重新设计了贴吧的数据库，参考了WordPress的无外键，设置default的值，我取消了两个外键，仅保留一个对应CategoryId的外键。</p>
+<p>修改数据库时候发现MySQL的charset还是&rsquo;latin&rsquo;，就顺手修改成&rsquo;utf-8&rsquo;来保证统一，结果就出事了。</p>
+<p>因为我修改了DAO，单元测试之后重新走一遍网页测试流程，结果发帖时候遇到乱码。</p>
+<p>一回生两回熟，咱也不怕。</p>
+<p>在Action里面设置logger，输出相应的数据，发现那里就是乱码，说明在Severlet或者Interceptor那里就出了问题。</p>
+<p>仿照上次设置Tomcat字符集，详情见<a href="../2009/05/12238.html">Eclipse中开发的Jave EE项目在Tomcat的部署</a>，但是测试发现没有效果。</p>
+<p>接着查看web.xml，发现里面还有Spring的filter，贴吧现阶段还没有加入Spring，删除，有一个编码过滤器org.apache.struts2 .dispatcher.FilterDispatcher，采用org.apache.struts2.dispatcher.FilterDispatcher可 以不适用，删除。</p>
+<p>这么一删，就发现乱码问题解决了。</p>
+<p>呵呵，只要人类还有很多语言，乱码仍然会存在，遇到了不要怕，慢慢调试就出来了</p>
+
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/battle-of-garbled/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
                 <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/landscaping-postviews/">美化postviews</a></h2>
                 <div class="summary"><p>很多朋友用postviews这个插件，的确很适合国人的风格，但是如果单纯的添加到页面中，会显得很突兀，难看，我做了几个美化工作。</p>
 <p>首先，在用到postviews函数时候都定义span id，比如在single.php中修改，在下面代码</p>
@@ -213,20 +229,6 @@ background:url(img/icons …</code></pre>
                 <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/garbled-see-also-garbled/"><i class="icon-circle-arrow-right"></i>more ...</a>
             </article>
             <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/to-submit-the-issue-of-an-action/">一个Action提交的问题</a></h2>
-                <div class="summary"><p>贴吧在提交帖子时候必须提供贴吧分类id categoryId，但是怎么把这个id提交到PostAction就比较麻烦了，在jsp页面中我试了好多办法，尝试使 用param和hidden（baidu用的hidden）标签，但是都不能读出cagegory.jsp页面的categoryId值。</p>
-<p>最后我索性用试所有的表达式</p>
-<pre><code>&lt;s:hidden name="topicCategoryId" value="%{#categoryId}" /&gt;
-&lt;s:hidden name="topicCategoryId" value="#categoryId" /&gt;
-&lt;s:hidden name="topicCategoryId" value="%{categoryId}" /&gt;</code></pre>
-<p>最后一个果然有效。。。</p>
-<p>貌似记得这是OPGL表达式？****</p>
-
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/to-submit-the-issue-of-an-action/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="http://127.0.0.1:8000/page/38/">&laquo;</a>
@@ -321,6 +323,11 @@ background:url(img/icons …</code></pre>
                             </a>
                         </li>
                         <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/sre/">
+                                <i class="fa fa-folder-open fa-lg"></i> SRE
+                            </a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="http://127.0.0.1:8000/category/thinking/">
                                 <i class="fa fa-folder-open fa-lg"></i> Thinking
                             </a>
@@ -349,7 +356,7 @@ background:url(img/icons …</code></pre>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2005-2020 alswl
+         <div class="col-xs-10">&copy; 2005-2021 alswl
             &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,

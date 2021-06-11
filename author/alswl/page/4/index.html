@@ -67,6 +67,33 @@ Log4D            </a>
         <div class="col-lg-8 col-lg-offset-2">
 
             <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2015/11/ss-with-haproxy/">SS with Haproxy</a></h2>
+                <div class="summary"><figure>
+<img alt="shadowsocks.png" src="https://4ocf5n.dijingchao.com/upload_dropbox/201512/shadowsocks.png"/><figcaption>shadowsocks.png</figcaption>
+</figure>
+<p>以前用自己的 SS，Linode 美国，后来 Linode 日本，但是始终拼不过上海电信的国际带宽。 经常不稳定，丢一半的包。</p>
+<p>于是买了 <a href="https://portal.shadowsocks.com.hk/aff.php?aff=4215">SS</a> 服务， 9 台服务器，自己挑觉得速度快的服务器。</p>
+<p>但一直固定某台服务器也会偶尔出问题，导致邮件出不来，网页打不开。 需要手动切换一下服务器。 于是用 HA 做了一个本地代理，调整了一些参数，让 SS 总是有快速的服务器供选择。</p>
+<p>结构：</p>
+<pre><code>+-----------------+                                                  +----------------+
+|                 |                                                  |                |
+|    Server 1     |&gt;&gt;&gt;&gt;v                                           &gt;&gt;|   Mail.app     |
+|                 |    v                                           ^ |                |
++-----------------+    v                                           ^ +----------------+
+                       v                                           ^
++-----------------+    v    |----------------+      +------------+ ^ +----------------+
+|                 |    v    |                |      |            | ^ |                |
+|    Server 2     |&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;|    HAProxy     |&gt;&gt;&gt;&gt;&gt;&gt;| SS-Client  |&gt;&gt;&gt;|   Browser      |
+|                 |    ^    |                |      |            | v |                |
++-----------------+    ^    +----------------+      +------------+ v +----------------+
+                       ^                                           v   
++-----------------+    ^                                           v +----------------+
+|                 |    ^                                           v …</code></pre>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2015/11/ss-with-haproxy/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
                 <h2 class="title"><a href="http://127.0.0.1:8000/2015/10/a-security-password/">几步拥有一个安全密码</a></h2>
                 <div class="summary"><figure>
 <img alt="password.jpg" src="https://4ocf5n.dijingchao.com/upload_dropbox/201512/password.jpg"/><figcaption>password.jpg</figcaption>
@@ -209,25 +236,6 @@ Log4D            </a>
                 <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2014/08/work-overtime/"><i class="icon-circle-arrow-right"></i>more ...</a>
             </article>
             <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2014/08/life-with-pain/">痛、快、活</a></h2>
-                <div class="summary"><p>上个月回家，在亲戚家里和侄子聊天，他刚从大学毕业，在家人的帮助下面找了算是对口的工作，对工作之后的状态有一些茫然，看不到前途和未来，我问了一个问题：</p>
-<blockquote>
-<p>你平时是怎么面对困难和挑战的？</p>
-</blockquote>
-<p>犹豫了一会儿，他告诉我：「大部分时间都是逃避掉困难」。</p>
-<p>这个问题反而让我自己开始思考：面对困难的时候，为什么更倾向于逃避，而不是挑战和面对？</p>
-<h2 id="困难和逃避">困难和逃避</h2>
-<p>想要一点点对这个问题抽丝剥茧，要做的第一步就是，来定义「困难」和「挑战」。这两个词都意味着，面临的事情可能超出处理者当前的能力范畴。比如让一个游泳初学者去横渡长江，让一个厨师学徒工去做满汉全席，让一个幼儿去思索人生的意义，或者让一个工程师去管理一个技术团队。</p>
-<p>逃避可以让当事人避免处理不擅长的事情，不会面临各种碰壁，不会带来灾难，不会给自己带来痛苦，不会在结果不优秀时候受到嘲笑和讥讽。 另外，从技术和实施的角度看，面临不了解或不擅长的领域和事情，也会有无从下手的困苦。</p>
-<p>「好人不长寿，王八活千年」这句谚语也标榜着这种逃避态度。枪打出头鸟，所以只要保持自己低调和保守，不接受挑战，即可以安安稳稳了么？</p>
-<h2 id="野心和痛苦">野心和痛苦</h2>
-<p>我发现，在进行任务管理时候，给予的任务往往会高于执行者的当前能力一点点。原因有二。</p>
-<p>第一 …</p>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2014/08/life-with-pain/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="http://127.0.0.1:8000/author/alswl/page/3/">&laquo;</a>
@@ -316,6 +324,11 @@ Log4D            </a>
                             </a>
                         </li>
                         <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/sre/">
+                                <i class="fa fa-folder-open fa-lg"></i> SRE
+                            </a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="http://127.0.0.1:8000/category/thinking/">
                                 <i class="fa fa-folder-open fa-lg"></i> Thinking
                             </a>
@@ -344,7 +357,7 @@ Log4D            </a>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2005-2020 alswl
+         <div class="col-xs-10">&copy; 2005-2021 alswl
             &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,

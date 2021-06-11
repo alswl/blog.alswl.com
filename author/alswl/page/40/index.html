@@ -67,6 +67,28 @@ Log4D            </a>
         <div class="col-lg-8 col-lg-offset-2">
 
             <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/struts2-encoding-problem/">Struts2的编码问题</a></h2>
+                <div class="summary"><p>继续昨天的编码问题 我一直全部采用UTF-8格式，而且在jUnit测试中并没有问题，说明是在Struts进行数据收集时候出错。</p>
+<p>Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效果。</p>
+<p>网上建议在web.xml中添加 ：</p>
+<pre><code>&lt;filter&gt;
+    &lt;filter-name&gt;struts-cleanup&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.apache.struts2.dispatcher.ActionContextCleanUp
+    &lt;/filter-class&gt;
+&lt;/filter&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;struts-cleanup&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;</code></pre>
+<p>来设定本地化和编码，然后在struts.xml中添加过滤器</p>
+<pre><code>&lt;constant value="UTF-8" name="struts.i18n.encoding"&gt;&lt;/constant&gt;
+&lt;constant value="UTF-8" name="struts.locale"&gt;&lt;/constant&gt;</code></pre>
+<p>根据我测试 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/struts2-encoding-problem/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
                 <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/learning-to-use-log4j/">学习使用log4j</a></h2>
                 <div class="summary"><p>今天用Log4j时候，感觉只显示message讯息太少了，直觉上这些流行的工具应该会提供更强大的定制功能，就去google了一下</p>
 <p>果不其然：相关配置参数如下</p>
@@ -195,24 +217,6 @@ Log4D            </a>
                 <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/03/the-most-powerful-ibm-publib-information-center/"><i class="icon-circle-arrow-right"></i>more ...</a>
             </article>
             <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/03/apabi-buy-archipelago/">Apabi买书奇遇记</a></h2>
-                <div class="summary"><p>最近为OpenSSL焦头烂额，资料实在太少</p>
-<p>在chinaunix中看到一篇《OpenSSL 编程入门》，从Eric Rescola文档中翻译过来的，突发奇想，搜索Eric Rescola ，居然在China-pub发现了奇书《SSL and TSL》</p>
-<figure>
-<img alt="SSL" src="https://4ocf5n.dijingchao.com/upload_dropbox/200903/zcover.jpg"/><figcaption>SSL</figcaption>
-</figure>
-<p>这本书非常不错，前面讲了SSL协议和内部结构，后面提供了详实的代码例子，而且这本书是翻译版，哈哈，天不亡我啊。</p>
-<p>可惜China-pub缺货，不过Apabi那里有电子书卖。</p>
-<p>购买时，原价9.99的书分成三本，我以为是系统错误，就删掉两本，毕竟这三个书名一摸一样，也没有说明是三册分开传的。</p>
-<p>买完之后发现只有前5章，那个痛苦啊</p>
-<p>后来还是邮件客服才知道的，郁闷，重新买了后三册</p>
-<p>呵呵，这本书是02年的，正在翻看，老外的书就是好，比国内那本《OpenSSL与网络信息安全》好不知道多少</p>
-
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/03/apabi-buy-archipelago/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
 
         <ul class="pagination">
                 <li class="prev"><a href="http://127.0.0.1:8000/author/alswl/page/39/">&laquo;</a>
@@ -303,6 +307,11 @@ Log4D            </a>
                             </a>
                         </li>
                         <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/sre/">
+                                <i class="fa fa-folder-open fa-lg"></i> SRE
+                            </a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="http://127.0.0.1:8000/category/thinking/">
                                 <i class="fa fa-folder-open fa-lg"></i> Thinking
                             </a>
@@ -331,7 +340,7 @@ Log4D            </a>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2005-2020 alswl
+         <div class="col-xs-10">&copy; 2005-2021 alswl
             &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,

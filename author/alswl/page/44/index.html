@@ -67,6 +67,32 @@ Log4D            </a>
         <div class="col-lg-8 col-lg-offset-2">
 
             <article class="article-list">
+                <h2 class="title"><a href="http://127.0.0.1:8000/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/">网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受</a></h2>
+                <div class="summary"><p>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受</p>
+<p>网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义</p>
+<p>玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的</p>
+<p>首先是ARP的接收，来看一下程序的流程</p>
+<p>获取网络设备列表</p>
+<p>pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)</p>
+<p>然后人机交互一下，获得需要工作的网卡</p>
+<p>打开需要的网卡</p>
+<p>(adhandle= pcap_open(d-&gt;name, // 设备名</p>
+<p>65536, // 要捕捉的数据包的部分</p>
+<p>// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容</p>
+<p>PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式</p>
+<p>1000, // 读取超时时间</p>
+<p>NULL, // 远程机器验证</p>
+<p>errbuf // 错误缓冲池</p>
+<p>)</p>
+<p>检查数据链路层，我们只考虑以太网</p>
+<p>pcap_datalink(adhandle) != DLT_EN10MB</p>
+<p>编译过滤器</p>
+<p>pcap_compile(adhandle …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
                 <h2 class="title"><a href="http://127.0.0.1:8000/2008/09/arp/">ARP</a></h2>
                 <div class="summary"><p>挺累的，连续两天忙到3点睡觉，早上9点起来继续做</p>
 <p>开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。</p>
@@ -293,6 +319,11 @@ Log4D            </a>
                             </a>
                         </li>
                         <li class="list-group-item">
+                            <a href="http://127.0.0.1:8000/category/sre/">
+                                <i class="fa fa-folder-open fa-lg"></i> SRE
+                            </a>
+                        </li>
+                        <li class="list-group-item">
                             <a href="http://127.0.0.1:8000/category/thinking/">
                                 <i class="fa fa-folder-open fa-lg"></i> Thinking
                             </a>
@@ -321,7 +352,7 @@ Log4D            </a>
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2005-2020 alswl
+         <div class="col-xs-10">&copy; 2005-2021 alswl
             &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
