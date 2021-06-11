@@ -1,341 +1,44 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>Python中使用Struct数据格式转换 - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-<link rel="canonical" href="http://127.0.0.1:8000/2009/09/python-data-format-conversion-using-struct/">
-
-        <meta name="author" content="alswl" />
-        <meta name="keywords" content="Python" />
-        <meta name="description" content="本文来源：Python模块学习 —- struct 数据格式转换 - JGood的专栏 - CSDN博客 Python是一门非常简洁的语言，对于数据类型的表示，不像其他语言预定义了许多类型（如：在C#中，光整型就定义了8种），它只定义了六种基本类型：字符串，整数 ，浮点数，元组，列表，字典。通过这六种数据类型，我们可以完成大部分工作。但当Python需要通过网络与其他的平台进行交互的时候，必须考虑到将这些数据类型与其 他平台或语言之间的类型进行互相转换问题。打个比方：C++写的客户端发送一个int型(4字节)变量的数据到 Python写的服务器，Python接收到表示这个整数的4个字节数据，怎么解析成Python认识的整数呢？ Python的标准模块struct就用来解决这个问题。 struct模块的内容不多，也不是太难，下面对其中最常用的方法进行介绍： struct.pack struct.pack用于将Python的值根据格式符，转换为字符串（因为Python中没有字节(Byte)类型，可以把这里的字符串理解为字节流，或字节数组 ）。其函数原型为：struct.pack …" />
-
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
-
-    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="http://127.0.0.1:8000/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-    <section id="content">
-        <article class="article-detail">
-            <header class="page-header">
-                <h1 class="title">
-                    <a href="http://127.0.0.1:8000/2009/09/python-data-format-conversion-using-struct/"
-                       rel="bookmark"
-                       title="Permalink to Python中使用Struct数据格式转换">
-                        Python中使用Struct数据格式转换
-                    </a>
-                </h1>
-                <nav class="toc col-lg-2">
-                  <div id="toc"><ul><li><a class="toc-href" href="#struct.pack" title="struct.pack">struct.pack</a></li><li><a class="toc-href" href="#struct.unpack" title="struct.unpack">struct.unpack</a></li><li><a class="toc-href" href="#struct.calcsize" title="struct.calcsize">struct.calcsize</a></li><li><a class="toc-href" href="#struct.pack_into-struct.unpack_from" title="struct.pack_into, struct.unpack_from">struct.pack_into, struct.unpack_from</a></li><li><a class="toc-href" href="#关于格式字符串" title="关于格式字符串">关于格式字符串</a></li></ul></div>
-                </nav>
-            </header>
-            <div class="entry-content">
-                <div class="panel">
-                    <div class="panel-body">
-<footer class="post-info">
-    <span class="label label-default">Date</span>
-    <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2009-09-14T00:00:00+08:00"> 2009-09-14</time>
-    </span>
-
-
-
-<span class="label label-default">Tags</span>
-	<a href="http://127.0.0.1:8000/tag/python/">Python</a>
-    
-</footer><!-- /.post-info -->                    </div>
-                </div>
-                <p>本文来源：<a href="http://blog.csdn.net/JGood/archive/2009/06/22/4290158.aspx">Python模块学习 &mdash;- struct 数据格式转换 - JGood的专栏 - CSDN博客</a></p>
-<p>Python是一门非常简洁的语言，对于数据类型的表示，不像其他语言预定义了许多类型（如：在C#中，光整型就定义了8种），它只定义了六种基本类型：字符串，整数 ，浮点数，元组，列表，字典。通过这六种数据类型，我们可以完成大部分工作。但当Python需要通过网络与其他的平台进行交互的时候，必须考虑到将这些数据类型与其 他平台或语言之间的类型进行互相转换问题。打个比方：C++写的客户端发送一个int型(4字节)变量的数据到 Python写的服务器，Python接收到表示这个整数的4个字节数据，怎么解析成Python认识的整数呢？ Python的标准模块struct就用来解决这个问题。</p>
-<p>struct模块的内容不多，也不是太难，下面对其中最常用的方法进行介绍：</p>
-<h2 id="struct.pack">struct.pack</h2>
-<p>struct.pack用于将Python的值根据格式符，转换为字符串（因为Python中没有字节(Byte)类型，可以把这里的字符串理解为字节流，或字节数组 ）。其函数原型为：struct.pack(fmt, v1, v2, &hellip;)，参数fmt是格式字符串，关于格式字符串的相关信息在<a href="http://bl%20og.csdn.net/JGood/archive/2009/06/22/4290158.aspx#fmt">下面</a>有所介绍。v1, v2, &hellip;表示要转换的python值。下面的例子将两个整数转换为字符串（字节流）:</p>
-<pre><code>import struct  
+<!DOCTYPE html><html lang=en> <head><title>Python中使用Struct数据格式转换 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2009/09/python-data-format-conversion-using-struct/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Python><meta name=description content="本文来源：Python模块学习 —- struct 数据格式转换 - JGood的专栏 - CSDN博客 Python是一门非常简洁的语言，对于数据类型的表示，不像其他语言预定义了许多类型（如：在C#中，光整型就定义了8种），它只定义了六种基本类型：字符串，整数 ，浮点数，元组，列表，字典。通过这六种数据类型，我们可以完成大部分工作。但当Python需要通过网络与其他的平台进行交互的时候，必须考虑到将这些数据类型与其 他平台或语言之间的类型进行互相转换问题。打个比方：C++写的客户端发送一个int型(4字节)变量的数据到 Python写的服务器，Python接收到表示这个整数的4个字节数据，怎么解析成Python认识的整数呢？ Python的标准模块struct就用来解决这个问题。 struct模块的内容不多，也不是太难，下面对其中最常用的方法进行介绍： struct.pack struct.pack用于将Python的值根据格式符，转换为字符串（因为Python中没有字节(Byte)类型，可以把这里的字符串理解为字节流，或字节数组 ）。其函数原型为：struct.pack …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2009/09/python-data-format-conversion-using-struct/ rel=bookmark title="Permalink to Python中使用Struct数据格式转换"> Python中使用Struct数据格式转换 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#struct.pack title=struct.pack>struct.pack</a></li><li><a class=toc-href href=#struct.unpack title=struct.unpack>struct.unpack</a></li><li><a class=toc-href href=#struct.calcsize title=struct.calcsize>struct.calcsize</a></li><li><a class=toc-href href=#struct.pack_into-struct.unpack_from title="struct.pack_into, struct.unpack_from">struct.pack_into, struct.unpack_from</a></li><li><a class=toc-href href=#关于格式字符串 title=关于格式字符串>关于格式字符串</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2009-09-14T00:00:00+08:00> 2009-09-14</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/python/ >Python</a> </footer><!-- /.post-info --> </div> </div> <p>本文来源：<a href=http://blog.csdn.net/JGood/archive/2009/06/22/4290158.aspx>Python模块学习 &mdash;- struct 数据格式转换 - JGood的专栏 - CSDN博客</a></p> <p>Python是一门非常简洁的语言，对于数据类型的表示，不像其他语言预定义了许多类型（如：在C#中，光整型就定义了8种），它只定义了六种基本类型：字符串，整数 ，浮点数，元组，列表，字典。通过这六种数据类型，我们可以完成大部分工作。但当Python需要通过网络与其他的平台进行交互的时候，必须考虑到将这些数据类型与其 他平台或语言之间的类型进行互相转换问题。打个比方：C++写的客户端发送一个int型(4字节)变量的数据到 Python写的服务器，Python接收到表示这个整数的4个字节数据，怎么解析成Python认识的整数呢？ Python的标准模块struct就用来解决这个问题。</p> <p>struct模块的内容不多，也不是太难，下面对其中最常用的方法进行介绍：</p> <h2 id=struct.pack>struct.pack</h2> <p>struct.pack用于将Python的值根据格式符，转换为字符串（因为Python中没有字节(Byte)类型，可以把这里的字符串理解为字节流，或字节数组 ）。其函数原型为：struct.pack(fmt, v1, v2, &hellip;)，参数fmt是格式字符串，关于格式字符串的相关信息在<a href=http://bl%20og.csdn.net/JGood/archive/2009/06/22/4290158.aspx#fmt>下面</a>有所介绍。v1, v2, &hellip;表示要转换的python值。下面的例子将两个整数转换为字符串（字节流）:</p> <pre><code>import struct  
   
 a = 20  
-b = 400  </code></pre>
-<p>str = struct.pack(&ldquo;ii&rdquo;, a, b) #转换后的str虽然是字符串类型，但相当于其他语言中的字节流（字节数组），可以在网络上传输 print &lsquo;length:&rsquo;, len(str) print str print repr(str)</p>
-<p>#&mdash;- result</p>
-<p>#length: 8</p>
-<h1 id="这里是乱码">&mdash;-这里是乱码</h1>
-<p>#&lsquo;x14x00x00x00x90x01x00x00&rsquo;</p>
-<p>格式符&ldquo;i&rdquo;表示转换为int，&rsquo;ii&rsquo;表示有两个int变量。进行转换后的结果长度为8个字节（int类型占用4个字节，两个int为8个字节），可以看到输出的结 果是乱码，因为结果是二进制数据，所以显示为乱码。可以使用python的内置函数repr来获取可识别的字符串，其中十六进制的 0x00000014, 0x00001009分别表示20和400。</p>
-<h2 id="struct.unpack">struct.unpack</h2>
-<p>struct.unpack做的工作刚好与struct.pack相反，用于将字节流转换成python数据类型。它的函数原型为：struct.unpack(fm t, string)，该函数返回一个<strong>元组</strong>。 下面是一个简单的例子：</p>
-<pre><code>str = struct.pack("ii", 20, 400)  
+b = 400  </code></pre> <p>str = struct.pack(&ldquo;ii&rdquo;, a, b) #转换后的str虽然是字符串类型，但相当于其他语言中的字节流（字节数组），可以在网络上传输 print &lsquo;length:&rsquo;, len(str) print str print repr(str)</p> <p>#&mdash;- result</p> <p>#length: 8</p> <h1 id=这里是乱码>&mdash;-这里是乱码</h1> <p>#&lsquo;x14x00x00x00x90x01x00x00&rsquo;</p> <p>格式符&ldquo;i&rdquo;表示转换为int，&rsquo;ii&rsquo;表示有两个int变量。进行转换后的结果长度为8个字节（int类型占用4个字节，两个int为8个字节），可以看到输出的结 果是乱码，因为结果是二进制数据，所以显示为乱码。可以使用python的内置函数repr来获取可识别的字符串，其中十六进制的 0x00000014, 0x00001009分别表示20和400。</p> <h2 id=struct.unpack>struct.unpack</h2> <p>struct.unpack做的工作刚好与struct.pack相反，用于将字节流转换成python数据类型。它的函数原型为：struct.unpack(fm t, string)，该函数返回一个<strong>元组</strong>。 下面是一个简单的例子：</p> <pre><code>str = struct.pack("ii", 20, 400)  
 a1, a2 = struct.unpack("ii", str)  
 print 'a1:', a1  
 print 'a2:', a2  
   
 #---- result:  
 #a1: 20  
-#a2: 400  </code></pre>
-<h2 id="struct.calcsize">struct.calcsize</h2>
-<p>struct.calcsize用于计算格式字符串所对应的结果的长度，如：struct.calcsize(&lsquo;ii&rsquo;)，返回8。因为两个int类型所占用的长度是 8个字节。</p>
-<h2 id="struct.pack_into-struct.unpack_from">struct.pack_into, struct.unpack_from</h2>
-<p>这两个函数在Python手册中有所介绍，但没有给出如何使用的例子。其实它们在实际应用中用的并不多。Google了很久，才找到一个例子，贴出来共享一下：</p>
-<pre><code>import struct
-from ctypes import create_string_buffer</code></pre>
-<p>buf = create_string_buffer(12) print repr(buf.raw)</p>
-<p>struct.pack_into(&ldquo;iii&rdquo;, buf, 0, 1, 2, -1) print repr(buf.raw)</p>
-<p>print struct.unpack_from(&lsquo;iii&rsquo;, buf, 0)</p>
-<p>#&mdash;- result</p>
-<p>#&lsquo;x00x00x00x00x00x00x00x00x00x00x00x00&rsquo;</p>
-<p>#&lsquo;x01x00x00x00x02x00x00x00xffxffxffxff&rsquo;</p>
-<p>#(1, 2, -1)</p>
-<h2 id="关于格式字符串">关于格式字符串</h2>
-<p><strong>格式符</strong></p>
-<p><strong>C语言类型</strong></p>
-<p><strong>Python类型</strong></p>
-<p><strong>注解</strong></p>
-<p>x</p>
-<p>pad byte</p>
-<p>no value</p>
-<p>c</p>
-<p>char</p>
-<p>string of length 1</p>
-<p>b</p>
-<p>signed char</p>
-<p>integer</p>
-<p>B</p>
-<p>unsigned char</p>
-<p>integer</p>
-<p>?</p>
-<p>_Bool</p>
-<p>bool</p>
-<ol type="1">
-<li></li>
-</ol>
-<p>h</p>
-<p>short</p>
-<p>integer</p>
-<p>H</p>
-<p>unsigned short</p>
-<p>integer</p>
-<p>i</p>
-<p>int</p>
-<p>integer</p>
-<p>I</p>
-<p>unsigned int</p>
-<p>integer or long</p>
-<p>l</p>
-<p>long</p>
-<p>integer</p>
-<p>L</p>
-<p>unsigned long</p>
-<p>long</p>
-<p>q</p>
-<p>long long</p>
-<p>long</p>
-<ol start="2" type="1">
-<li></li>
-</ol>
-<p>Q</p>
-<p>unsigned long long</p>
-<p>long</p>
-<ol start="2" type="1">
-<li></li>
-</ol>
-<p>f</p>
-<p>float</p>
-<p>float</p>
-<p>d</p>
-<p>double</p>
-<p>float</p>
-<p>s</p>
-<p>char[]</p>
-<p>string</p>
-<p>p</p>
-<p>char[]</p>
-<p>string</p>
-<p>P</p>
-<p>void *</p>
-<p>long</p>
-<p>Notes:</p>
-<p>1.The <code>'?'</code> conversion code corresponds to the <code>_Bool</code> type defined by C99. If this type is not available, it is simulated using a <code>char</code>. In standard mode, it is always represented by one byte.</p>
-<p>New in version 2.6.</p>
-<p>2.The <code>'q'</code> and <code>'Q'</code> conversion codes are available in native mode only if the platform C compiler supports C <code>long long</code>, or, on Windows, <code>__int64</code>. They are always available in standard modes.</p>
-<p>New in version 2.2.</p>
-<p>在Python手册中，给出了C语言中常用类型与Python类型对应的格式符：具体内容请参考Python手册 <a href="http://docs.python.org/library/struct.html#module-struct">struct</a> 模块</p>
+#a2: 400  </code></pre> <h2 id=struct.calcsize>struct.calcsize</h2> <p>struct.calcsize用于计算格式字符串所对应的结果的长度，如：struct.calcsize(&lsquo;ii&rsquo;)，返回8。因为两个int类型所占用的长度是 8个字节。</p> <h2 id=struct.pack_into-struct.unpack_from>struct.pack_into, struct.unpack_from</h2> <p>这两个函数在Python手册中有所介绍，但没有给出如何使用的例子。其实它们在实际应用中用的并不多。Google了很久，才找到一个例子，贴出来共享一下：</p> <pre><code>import struct
+from ctypes import create_string_buffer</code></pre> <p>buf = create_string_buffer(12) print repr(buf.raw)</p> <p>struct.pack_into(&ldquo;iii&rdquo;, buf, 0, 1, 2, -1) print repr(buf.raw)</p> <p>print struct.unpack_from(&lsquo;iii&rsquo;, buf, 0)</p> <p>#&mdash;- result</p> <p>#&lsquo;x00x00x00x00x00x00x00x00x00x00x00x00&rsquo;</p> <p>#&lsquo;x01x00x00x00x02x00x00x00xffxffxffxff&rsquo;</p> <p>#(1, 2, -1)</p> <h2 id=关于格式字符串>关于格式字符串</h2> <p><strong>格式符</strong></p> <p><strong>C语言类型</strong></p> <p><strong>Python类型</strong></p> <p><strong>注解</strong></p> <p>x</p> <p>pad byte</p> <p>no value</p> <p>c</p> <p>char</p> <p>string of length 1</p> <p>b</p> <p>signed char</p> <p>integer</p> <p>B</p> <p>unsigned char</p> <p>integer</p> <p>?</p> <p>_Bool</p> <p>bool</p> <ol type=1> <li></li> </ol> <p>h</p> <p>short</p> <p>integer</p> <p>H</p> <p>unsigned short</p> <p>integer</p> <p>i</p> <p>int</p> <p>integer</p> <p>I</p> <p>unsigned int</p> <p>integer or long</p> <p>l</p> <p>long</p> <p>integer</p> <p>L</p> <p>unsigned long</p> <p>long</p> <p>q</p> <p>long long</p> <p>long</p> <ol start=2 type=1> <li></li> </ol> <p>Q</p> <p>unsigned long long</p> <p>long</p> <ol start=2 type=1> <li></li> </ol> <p>f</p> <p>float</p> <p>float</p> <p>d</p> <p>double</p> <p>float</p> <p>s</p> <p>char[]</p> <p>string</p> <p>p</p> <p>char[]</p> <p>string</p> <p>P</p> <p>void *</p> <p>long</p> <p>Notes:</p> <p>1.The <code>'?'</code> conversion code corresponds to the <code>_Bool</code> type defined by C99. If this type is not available, it is simulated using a <code>char</code>. In standard mode, it is always represented by one byte.</p> <p>New in version 2.6.</p> <p>2.The <code>'q'</code> and <code>'Q'</code> conversion codes are available in native mode only if the platform C compiler supports C <code>long long</code>, or, on Windows, <code>__int64</code>. They are always available in standard modes.</p> <p>New in version 2.2.</p> <p>在Python手册中，给出了C语言中常用类型与Python类型对应的格式符：具体内容请参考Python手册 <a href=http://docs.python.org/library/struct.html#module-struct>struct</a> 模块</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2009/09/python-data-format-conversion-using-struct/ >https://blog.alswl.com/2009/09/python-data-format-conversion-using-struct/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-            </div>
-            <!-- /.entry-content -->
-              
-<hr>
-<div class="panel">
-<div class="panel-body">
-   <small>原文链接: <a href="https://blog.alswl.com/2009/09/python-data-format-conversion-using-struct/">https://blog.alswl.com/2009/09/python-data-format-conversion-using-struct/</a></small><br>
-   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
-</div>
-</div>
+                    var disqus_identifier = 'python-data-format-conversion-using-struct';
+                var disqus_url = 'https://blog.alswl.com/2009/09/python-data-format-conversion-using-struct/';
 
-        </article>
-    </section>
+            var disqus_config = function () {
+                this.language = "en";
+            };
 
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2021 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2021 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -349,7 +52,4 @@ from ctypes import create_string_buffer</code></pre>
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>

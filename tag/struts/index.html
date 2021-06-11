@@ -1,177 +1,14 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>Struts - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-
-    <meta name="author" content="alswl" />
-    <meta name="keywords" content="Struts" />
-
-    <!-- Open Graph tags -->
-        <meta property="og:site_name" content="Log4D" />
-        <meta property="og:type" content="website"/>
-        <meta property="og:title" content="Log4D"/>
-        <meta property="og:url" content="http://127.0.0.1:8000"/>
-        <meta property="og:description" content="Log4D"/>
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
-
-    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="http://127.0.0.1:8000/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/06/return-s-if-the-use-of/">再谈s:if的使用</a></h2>
-                <div class="summary"><p>上次遇到过<s:if>的问题，费了好久才弄好，这次又遇到，有了一点新的体验。</s:if></p>
-<p><s:if test="">中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。</s:if></p>
-<p>尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？</p>
-<p>其实使用<s:if test='str=="中文"'>，就可以了，请注意，是单引号-双引号-中文-双引号- 单引号的顺序，这样才能够正确的解析中文字符串是否相等。</s:if></p>
-<p>唔。。。终于可以做下一个部分了</p>
-
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/06/return-s-if-the-use-of/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/struts2-in-the-use-of-ajax/">Struts2中Ajax的使用</a></h2>
-                <div class="summary"><p>贴吧1.0差不多可以完成了，进入界面美化，我服务器验证写完之后，开始用jQuery写js。</p>
-<p>使用了jQuery的UI，后来想加入Ajax验证，但是遇到了问题：</p>
-<p>09-05-23 07:53 WARN [org.apache.struts2.dispatcher.Dispatcher] - Could not find action or result</p>
-<p>There is no Action mapped for namespace / and action name AjaxLogin. - [unknown location]</p>
-<p>我整整找了一个多小时，曾以为是action name的问题或者是package name, package namespace 的问题，为此我特意重新学习了一下他们的使用方法，但是仍然没有效果。</p>
-<p>最后，终于在Google找到了一些资料：</p>
-<p><a href="http://huqilong.blog.51cto.com/53638/136802">struts2 json jquery …</a></p>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/struts2-in-the-use-of-ajax/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/battle-of-garbled/">乱码之战</a></h2>
-                <div class="summary"><p>今天重新设计了贴吧的数据库，参考了WordPress的无外键，设置default的值，我取消了两个外键，仅保留一个对应CategoryId的外键。</p>
-<p>修改数据库时候发现MySQL的charset还是&rsquo;latin&rsquo;，就顺手修改成&rsquo;utf-8&rsquo;来保证统一，结果就出事了。</p>
-<p>因为我修改了DAO，单元测试之后重新走一遍网页测试流程，结果发帖时候遇到乱码。</p>
-<p>一回生两回熟，咱也不怕。</p>
-<p>在Action里面设置logger，输出相应的数据，发现那里就是乱码，说明在Severlet或者Interceptor那里就出了问题。</p>
-<p>仿照上次设置Tomcat字符集，详情见<a href="../2009/05/12238.html">Eclipse中开发的Jave EE项目在Tomcat的部署</a>，但是测试发现没有效果。</p>
-<p>接着查看web.xml，发现里面还有Spring的filter，贴吧现阶段还没有加入Spring，删除，有一个编码过滤器org.apache.struts2 .dispatcher.FilterDispatcher，采用org.apache.struts2.dispatcher.FilterDispatcher可 以不适用，删除。</p>
-<p>这么一删，就发现乱码问题解决了。</p>
-<p>呵呵，只要人类还有很多语言，乱码仍然会存在，遇到了不要怕，慢慢调试就出来了</p>
-
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/battle-of-garbled/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/struts2-tags-the-curve-of-the-bug-and-the-use-of/">Struts2的s:if标签的Bug和曲线使用</a></h2>
-                <div class="summary"><p>贴吧的用户状态显示，登录和未登录应该是不同的div显示，我决定用做标签。</p>
-<p>本来应该很简单的事情，却没有我预想中的情形出现，检查后发现失效了，代码如下：</p>
-<pre><code>&lt;li&gt;${session.userName}欢迎你&lt;/li&gt;
-&lt;li&gt;&lt;a href="Logout.action"&gt;注销&lt;/a&gt;&lt;/li&gt;</code></pre>
-<p>Struts2的官方文档中标签库介绍写的很清楚，官方示例文档如下</p>
-<pre><code>&lt;s:if test="%{false}"&gt;
+<!DOCTYPE html><html lang=en> <head><title>Struts - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><meta name=author content=alswl><meta name=keywords content=Struts><!-- Open Graph tags --><meta property=og:site_name content=Log4D><meta property=og:type content=website><meta property=og:title content=Log4D><meta property=og:url content=https://blog.alswl.com><meta property=og:description content=Log4D><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/06/return-s-if-the-use-of/ >再谈s:if的使用</a></h2> <div class=summary><p>上次遇到过<s:if>的问题，费了好久才弄好，这次又遇到，有了一点新的体验。</s:if></p> <p><s:if test>中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。</s:if></p> <p>尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？</p> <p>其实使用<s:if test='str=="中文"'>，就可以了，请注意，是单引号-双引号-中文-双引号- 单引号的顺序，这样才能够正确的解析中文字符串是否相等。</s:if></p> <p>唔。。。终于可以做下一个部分了</p> </div> <a href=https://blog.alswl.com/2009/06/return-s-if-the-use-of/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/05/struts2-in-the-use-of-ajax/ >Struts2中Ajax的使用</a></h2> <div class=summary><p>贴吧1.0差不多可以完成了，进入界面美化，我服务器验证写完之后，开始用jQuery写js。</p> <p>使用了jQuery的UI，后来想加入Ajax验证，但是遇到了问题：</p> <p>09-05-23 07:53 WARN [org.apache.struts2.dispatcher.Dispatcher] - Could not find action or result</p> <p>There is no Action mapped for namespace / and action name AjaxLogin. - [unknown location]</p> <p>我整整找了一个多小时，曾以为是action name的问题或者是package name, package namespace 的问题，为此我特意重新学习了一下他们的使用方法，但是仍然没有效果。</p> <p>最后，终于在Google找到了一些资料：</p> <p><a href=http://huqilong.blog.51cto.com/53638/136802>struts2 json jquery …</a></p> </div> <a href=https://blog.alswl.com/2009/05/struts2-in-the-use-of-ajax/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/05/battle-of-garbled/ >乱码之战</a></h2> <div class=summary><p>今天重新设计了贴吧的数据库，参考了WordPress的无外键，设置default的值，我取消了两个外键，仅保留一个对应CategoryId的外键。</p> <p>修改数据库时候发现MySQL的charset还是&rsquo;latin&rsquo;，就顺手修改成&rsquo;utf-8&rsquo;来保证统一，结果就出事了。</p> <p>因为我修改了DAO，单元测试之后重新走一遍网页测试流程，结果发帖时候遇到乱码。</p> <p>一回生两回熟，咱也不怕。</p> <p>在Action里面设置logger，输出相应的数据，发现那里就是乱码，说明在Severlet或者Interceptor那里就出了问题。</p> <p>仿照上次设置Tomcat字符集，详情见<a href=../2009/05/12238.html>Eclipse中开发的Jave EE项目在Tomcat的部署</a>，但是测试发现没有效果。</p> <p>接着查看web.xml，发现里面还有Spring的filter，贴吧现阶段还没有加入Spring，删除，有一个编码过滤器org.apache.struts2 .dispatcher.FilterDispatcher，采用org.apache.struts2.dispatcher.FilterDispatcher可 以不适用，删除。</p> <p>这么一删，就发现乱码问题解决了。</p> <p>呵呵，只要人类还有很多语言，乱码仍然会存在，遇到了不要怕，慢慢调试就出来了</p> </div> <a href=https://blog.alswl.com/2009/05/battle-of-garbled/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/05/struts2-tags-the-curve-of-the-bug-and-the-use-of/ >Struts2的s:if标签的Bug和曲线使用</a></h2> <div class=summary><p>贴吧的用户状态显示，登录和未登录应该是不同的div显示，我决定用做标签。</p> <p>本来应该很简单的事情，却没有我预想中的情形出现，检查后发现失效了，代码如下：</p> <pre><code>&lt;li&gt;${session.userName}欢迎你&lt;/li&gt;
+&lt;li&gt;&lt;a href="Logout.action"&gt;注销&lt;/a&gt;&lt;/li&gt;</code></pre> <p>Struts2的官方文档中标签库介绍写的很清楚，官方示例文档如下</p> <pre><code>&lt;s:if test="%{false}"&gt;
 &lt;div&gt;Will Not Be Executed&lt;/div&gt;
 &lt;/s:if&gt;
 &lt;s:elseif test="%{true}"&gt;
 &lt;div&gt;Will Be Executed&lt;/div&gt;
 &lt;/s:elseif&gt;
 &lt;s:else&gt;
-&lt;div&gt;Will Not …</code></pre>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/struts2-tags-the-curve-of-the-bug-and-the-use-of/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/ognl-operators-in/">OGNL中的操作符</a></h2>
-                <div class="summary"><p><s:textfield name="loginName" value="%{#request.loginNames}"></s:textfield></p>
-<p>使用此表达式，会生成一个文本框，并且，如果request.attribute中有loginNames属性，将会做为些文本框的默认值。</p>
-<p>如果只使用#request.loginNames在struts2的标签内部，是不会显示任何值的，注意外面加上的%{}附号，才会被正常的使用。</p>
-<p>如果希望如EL语言一样直接输出文件，如在一个<a></a>之间的innerHTML文本为#request.loginNames的值，我们只要使用：<s:pr operty="" value="#request.loginNames"></s:pr>使可以正常使用！</p>
-<p>注：</p>
-<p>1.<span class="math inline">\({}是EL语言的 %{}这样的形式是ognl表过式语言的，在struts2的标签内部，使用%{}这样的形式，在标签外部可以使用\)</span>{}EL语言的方式。如 果在struts2的标签内部使用${}这样的方式，会出现以下的错误提示：</p>
-<p>According to TLD or attribute directive in tag file, attribute value does not accept any expressions</p>
-<p>2 …</p>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/ognl-operators-in/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/garbled-see-also-garbled/">乱码！又见乱码！</a></h2>
-                <div class="summary"><p>今天解决了贴吧发帖的问题，可以正确的发送到正确的分类了。</p>
-<p>随后遇到的问题是发帖完毕返回 Category.action 时候，无法读取争取的贴吧分类数据，经过在 struts.xml 里的Category.action 里的 result 后面的url加入参数，可以读取正确categoryId了</p>
-<p>本来想在result中加入param元素而不是在url后面加 ？categoryId=0来实现，但是尝试了好久，Google和官方文档都没有什么解决方案</p>
-<p>其中遇到的一个问题是「&amp;」这个符号不能直接使用，需要进行转义，用「&amp;」来替代。</p>
-<p>最后是categoryName的问题了，本来以为很简单，却遇到了编码问题，之前从Home.action转到Category.action能正确编码，像 ht tp://localhost:8080/PostBar/Category.action?categoryId=4&amp;categoryName=%E9%9F%B 3%E4%B9%90 …</p>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/garbled-see-also-garbled/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/to-submit-the-issue-of-an-action/">一个Action提交的问题</a></h2>
-                <div class="summary"><p>贴吧在提交帖子时候必须提供贴吧分类id categoryId，但是怎么把这个id提交到PostAction就比较麻烦了，在jsp页面中我试了好多办法，尝试使 用param和hidden（baidu用的hidden）标签，但是都不能读出cagegory.jsp页面的categoryId值。</p>
-<p>最后我索性用试所有的表达式</p>
-<pre><code>&lt;s:hidden name="topicCategoryId" value="%{#categoryId}" /&gt;
+&lt;div&gt;Will Not …</code></pre> </div> <a href=https://blog.alswl.com/2009/05/struts2-tags-the-curve-of-the-bug-and-the-use-of/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/05/ognl-operators-in/ >OGNL中的操作符</a></h2> <div class=summary><p><s:textfield name=loginName value=%{#request.loginNames}></s:textfield></p> <p>使用此表达式，会生成一个文本框，并且，如果request.attribute中有loginNames属性，将会做为些文本框的默认值。</p> <p>如果只使用#request.loginNames在struts2的标签内部，是不会显示任何值的，注意外面加上的%{}附号，才会被正常的使用。</p> <p>如果希望如EL语言一样直接输出文件，如在一个<a></a>之间的innerHTML文本为#request.loginNames的值，我们只要使用：<s:pr operty value=#request.loginNames></s:pr>使可以正常使用！</p> <p>注：</p> <p>1.<span class="math inline">\({}是EL语言的 %{}这样的形式是ognl表过式语言的，在struts2的标签内部，使用%{}这样的形式，在标签外部可以使用\)</span>{}EL语言的方式。如 果在struts2的标签内部使用${}这样的方式，会出现以下的错误提示：</p> <p>According to TLD or attribute directive in tag file, attribute value does not accept any expressions</p> <p>2 …</p> </div> <a href=https://blog.alswl.com/2009/05/ognl-operators-in/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/05/garbled-see-also-garbled/ >乱码！又见乱码！</a></h2> <div class=summary><p>今天解决了贴吧发帖的问题，可以正确的发送到正确的分类了。</p> <p>随后遇到的问题是发帖完毕返回 Category.action 时候，无法读取争取的贴吧分类数据，经过在 struts.xml 里的Category.action 里的 result 后面的url加入参数，可以读取正确categoryId了</p> <p>本来想在result中加入param元素而不是在url后面加 ？categoryId=0来实现，但是尝试了好久，Google和官方文档都没有什么解决方案</p> <p>其中遇到的一个问题是「&amp;」这个符号不能直接使用，需要进行转义，用「&amp;」来替代。</p> <p>最后是categoryName的问题了，本来以为很简单，却遇到了编码问题，之前从Home.action转到Category.action能正确编码，像 ht tp://localhost:8080/PostBar/Category.action?categoryId=4&amp;categoryName=%E9%9F%B 3%E4%B9%90 …</p> </div> <a href=https://blog.alswl.com/2009/05/garbled-see-also-garbled/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/05/to-submit-the-issue-of-an-action/ >一个Action提交的问题</a></h2> <div class=summary><p>贴吧在提交帖子时候必须提供贴吧分类id categoryId，但是怎么把这个id提交到PostAction就比较麻烦了，在jsp页面中我试了好多办法，尝试使 用param和hidden（baidu用的hidden）标签，但是都不能读出cagegory.jsp页面的categoryId值。</p> <p>最后我索性用试所有的表达式</p> <pre><code>&lt;s:hidden name="topicCategoryId" value="%{#categoryId}" /&gt;
 &lt;s:hidden name="topicCategoryId" value="#categoryId" /&gt;
-&lt;s:hidden name="topicCategoryId" value="%{categoryId}" /&gt;</code></pre>
-<p>最后一个果然有效。。。</p>
-<p>貌似记得这是OPGL表达式？****</p>
-
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/to-submit-the-issue-of-an-action/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/struts2-encoding-problem/">Struts2的编码问题</a></h2>
-                <div class="summary"><p>继续昨天的编码问题 我一直全部采用UTF-8格式，而且在jUnit测试中并没有问题，说明是在Struts进行数据收集时候出错。</p>
-<p>Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效果。</p>
-<p>网上建议在web.xml中添加 ：</p>
-<pre><code>&lt;filter&gt;
+&lt;s:hidden name="topicCategoryId" value="%{categoryId}" /&gt;</code></pre> <p>最后一个果然有效。。。</p> <p>貌似记得这是OPGL表达式？****</p> </div> <a href=https://blog.alswl.com/2009/05/to-submit-the-issue-of-an-action/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/05/struts2-encoding-problem/ >Struts2的编码问题</a></h2> <div class=summary><p>继续昨天的编码问题 我一直全部采用UTF-8格式，而且在jUnit测试中并没有问题，说明是在Struts进行数据收集时候出错。</p> <p>Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效果。</p> <p>网上建议在web.xml中添加 ：</p> <pre><code>&lt;filter&gt;
     &lt;filter-name&gt;struts-cleanup&lt;/filter-name&gt;
     &lt;filter-class&gt;org.apache.struts2.dispatcher.ActionContextCleanUp
     &lt;/filter-class&gt;
@@ -179,155 +16,20 @@ Log4D            </a>
 &lt;filter-mapping&gt;
     &lt;filter-name&gt;struts-cleanup&lt;/filter-name&gt;
     &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-&lt;/filter-mapping&gt;</code></pre>
-<p>来设定本地化和编码，然后在struts.xml中添加过滤器</p>
-<pre><code>&lt;constant value="UTF-8" name="struts.i18n.encoding"&gt;&lt;/constant&gt;
-&lt;constant value="UTF-8" name="struts.locale"&gt;&lt;/constant&gt;</code></pre>
-<p>根据我测试 …</p>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/struts2-encoding-problem/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/post-bar-progress-09-05-07/">贴吧进度-09-05-07</a></h2>
-                <div class="summary"><p>今天写到创建帖子，在编码上遇到问题，jUnit下调用函数没有任何问题，那就表示问题出在Struts Filter捕获的文本上。</p>
-<p>找了好几个方法都没有奏效。</p>
-<p>游客登录情况下的Session还存在一点问题，原因是session类型转换上的问题，今天还没有好好的研究一下。</p>
-<p>至此为止，登录注册写完了，静态校验写了一个毛胚，今天写完的现实帖子的列表，表现层用OGNL完成的，终于脱离开代码混杂的页面。</p>
-<p>解决了一个tx.commit的错误，原来是《开发者突击》书上的代码有问题，我参考了Hibernate的官方文档，终于发现了错误的原因，tx.rollback ()应该在catch里面而不是final里面。</p>
-<p>写着写着就感觉自己太多的不足，太多要学习的地方，加油！</p>
+&lt;/filter-mapping&gt;</code></pre> <p>来设定本地化和编码，然后在struts.xml中添加过滤器</p> <pre><code>&lt;constant value="UTF-8" name="struts.i18n.encoding"&gt;&lt;/constant&gt;
+&lt;constant value="UTF-8" name="struts.locale"&gt;&lt;/constant&gt;</code></pre> <p>根据我测试 …</p> </div> <a href=https://blog.alswl.com/2009/05/struts2-encoding-problem/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/05/post-bar-progress-09-05-07/ >贴吧进度-09-05-07</a></h2> <div class=summary><p>今天写到创建帖子，在编码上遇到问题，jUnit下调用函数没有任何问题，那就表示问题出在Struts Filter捕获的文本上。</p> <p>找了好几个方法都没有奏效。</p> <p>游客登录情况下的Session还存在一点问题，原因是session类型转换上的问题，今天还没有好好的研究一下。</p> <p>至此为止，登录注册写完了，静态校验写了一个毛胚，今天写完的现实帖子的列表，表现层用OGNL完成的，终于脱离开代码混杂的页面。</p> <p>解决了一个tx.commit的错误，原来是《开发者突击》书上的代码有问题，我参考了Hibernate的官方文档，终于发现了错误的原因，tx.rollback ()应该在catch里面而不是final里面。</p> <p>写着写着就感觉自己太多的不足，太多要学习的地方，加油！</p> </div> <a href=https://blog.alswl.com/2009/05/post-bar-progress-09-05-07/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/05/no-configuration-found-for-the-specified-action/ >No configuration found for the specified action</a></h2> <div class=summary><p>Tomcat 控制台打出如下警告：</p> <p>WARN - No configuration found for the specified action: &lsquo;xxxxx&rsquo;in namespace: &lsquo;/&rsquo;. Form action defaulting to &lsquo;action&rsquo; attribute&rsquo;s literal value.</p> <p>主要由于在写struts2表单时有给action指定全名，如:<s:form action=」xxxAction.do」…>,直接写成<s:form action=」xxxAction」…>即可,因为在struts.xml中struts.action.extension属性有指定啦。</s:form></s:form></p> <p>有一个关于在namespace上的设置在 <a href=http://hi.baidu.com/mum0532/blog/item/128f9a64fa8594f5f6365457.html>hi.baidu.com/mum0532/blog/item/128f9a64fa8594f5f6365457. html</a> 。这位朋友讲的很透彻很详细</p> <p>关于Struts2 的 namespace 详细解释 <a href=http://www.javaeye.com/topic/125743>www.javaeye.com/topic/125743</a></p> </div> <a href=https://blog.alswl.com/2009/05/no-configuration-found-for-the-specified-action/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2009 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/post-bar-progress-09-05-07/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/05/no-configuration-found-for-the-specified-action/">No configuration found for the specified action</a></h2>
-                <div class="summary"><p>Tomcat 控制台打出如下警告：</p>
-<p>WARN - No configuration found for the specified action: &lsquo;xxxxx&rsquo;in namespace: &lsquo;/&rsquo;. Form action defaulting to &lsquo;action&rsquo; attribute&rsquo;s literal value.</p>
-<p>主要由于在写struts2表单时有给action指定全名，如:<s:form action="」xxxAction.do」&hellip;">,直接写成<s:form action="」xxxAction」&hellip;">即可,因为在struts.xml中struts.action.extension属性有指定啦。</s:form></s:form></p>
-<p>有一个关于在namespace上的设置在 <a href="http://hi.baidu.com/mum0532/blog/item/128f9a64fa8594f5f6365457.html">hi.baidu.com/mum0532/blog/item/128f9a64fa8594f5f6365457. html</a> 。这位朋友讲的很透彻很详细</p>
-<p>关于Struts2 的 namespace 详细解释 <a href="http://www.javaeye.com/topic/125743">www.javaeye.com/topic/125743</a></p>
-
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/05/no-configuration-found-for-the-specified-action/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-
-
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
-
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2009 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -341,7 +43,4 @@ Log4D            </a>
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>

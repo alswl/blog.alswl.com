@@ -1,296 +1,35 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>一次艰难的 Wiki 升级 - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-<link rel="canonical" href="http://127.0.0.1:8000/2016/01/confluence-upgrade/">
-
-        <meta name="author" content="alswl" />
-        <meta name="keywords" content="confluence" />
-        <meta name="description" content="公司使用 Confluence 管理自己的知识库， 现在使用的版本还是 3.0.1，而最新的 Confluence 版本已经是 5.4+。 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑）， 在群众的强烈呼声下，我着手开始升级。 201601/confluence_river.jpg" />
-
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
-
-    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="http://127.0.0.1:8000/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-    <section id="content">
-        <article class="article-detail">
-            <header class="page-header">
-                <h1 class="title">
-                    <a href="http://127.0.0.1:8000/2016/01/confluence-upgrade/"
-                       rel="bookmark"
-                       title="Permalink to 一次艰难的 Wiki 升级">
-                        一次艰难的 Wiki 升级
-                    </a>
-                </h1>
-                <nav class="toc col-lg-2">
-                  <div id="toc"><ul><li><a class="toc-href" href="#from-embedded-to-mysql" title="From embedded to MySQL">From embedded to MySQL</a></li><li><a class="toc-href" href="#横插一刀的-emoji" title="横插一刀的 Emoji 😊😢💗">横插一刀的 Emoji 😊😢💗</a></li><li><a class="toc-href" href="#妈蛋自己干" title="妈蛋，自己干">妈蛋，自己干</a></li></ul></div>
-                </nav>
-            </header>
-            <div class="entry-content">
-                <div class="panel">
-                    <div class="panel-body">
-<footer class="post-info">
-    <span class="label label-default">Date</span>
-    <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2016-01-12T22:53:55+08:00"> 2016-01-12</time>
-    </span>
-
-
-
-<span class="label label-default">Tags</span>
-	<a href="http://127.0.0.1:8000/tag/confluence/">confluence</a>
-    
-</footer><!-- /.post-info -->                    </div>
-                </div>
-                <p>公司使用 <a href="https://www.atlassian.com/software/confluence">Confluence</a> 管理自己的知识库， 现在使用的版本还是 3.0.1，而最新的 Confluence 版本已经是 5.4+。 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑）， 在群众的强烈呼声下，我着手开始升级。</p>
-<figure>
-<img alt="201601/confluence_river.jpg" src="https://4ocf5n.dijingchao.com/upload_dropbox/201601/confluence_river.jpg"/><figcaption>201601/confluence_river.jpg</figcaption>
-</figure>
-<!-- more -->
-<p>官方的升级路线很扯，3.0.1 的升级路线是：</p>
-<ul>
-<li>3.0.1 -&gt; 3.5.17</li>
-<li>5.0.3 -&gt; 5.4.4</li>
-</ul>
-<p>中间两次大版本升级，第一次原因不明，第二次是更新了 markup 渲染引擎， 改为 HTML 格式类型的渲染模式。</p>
-<p>由于一些原因，我们系统还跑在 embedded 模式下（其实就是 HyperSQL），这种大版本升级， 需要先从内置库升级到外部数据库，比如 MySQL。</p>
-<p>苦逼旅程就开始了。</p>
-<h2 id="from-embedded-to-mysql">From embedded to MySQL</h2>
-<p>更新内置库到外部库的操作流程：</p>
-<ul>
-<li>导出当前的数据备份，包括附件，我导出后 1G+</li>
-<li>使用当前同版本（3.0.1）安装一个全新的 wiki，注意下载 JDBC-connector</li>
-<li>安装之后，配置好 MySQL，开始导入之前准备好的备份</li>
-<li>悲剧上演</li>
-</ul>
-<p>遇到了错误：</p>
-<blockquote>
-<p>Import failed. Hibernate operation: could not insert: [com.atlassian.confluence.core.BodyContent#12028015]; SQL []; Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;</p>
-</blockquote>
-<p>官方文档 <a href="https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html">https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html</a> 让修改重复键数据，好吧，我改，搜索一把重复主键，将备份里面的 <code>entities.xml</code> 弄出来。</p>
-<pre><code># 格式化
+<!DOCTYPE html><html lang=en> <head><title>一次艰难的 Wiki 升级 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2016/01/confluence-upgrade/ rel=canonical><meta name=author content=alswl><meta name=keywords content=confluence><meta name=description content="公司使用 Confluence 管理自己的知识库， 现在使用的版本还是 3.0.1，而最新的 Confluence 版本已经是 5.4+。 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑）， 在群众的强烈呼声下，我着手开始升级。 201601/confluence_river.jpg"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2016/01/confluence-upgrade/ rel=bookmark title="Permalink to 一次艰难的 Wiki 升级"> 一次艰难的 Wiki 升级 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#from-embedded-to-mysql title="From embedded to MySQL">From embedded to MySQL</a></li><li><a class=toc-href href=#横插一刀的-emoji title="横插一刀的 Emoji 😊😢💗">横插一刀的 Emoji 😊😢💗</a></li><li><a class=toc-href href=#妈蛋自己干 title=妈蛋，自己干>妈蛋，自己干</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2016-01-12T22:53:55+08:00> 2016-01-12</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/confluence/ >confluence</a> </footer><!-- /.post-info --> </div> </div> <p>公司使用 <a href=https://www.atlassian.com/software/confluence>Confluence</a> 管理自己的知识库， 现在使用的版本还是 3.0.1，而最新的 Confluence 版本已经是 5.4+。 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑）， 在群众的强烈呼声下，我着手开始升级。</p> <figure> <img alt=201601/confluence_river.jpg src=https://4ocf5n.dijingchao.com/upload_dropbox/201601/confluence_river.jpg><figcaption>201601/confluence_river.jpg</figcaption> </figure> <!-- more --> <p>官方的升级路线很扯，3.0.1 的升级路线是：</p> <ul> <li>3.0.1 -&gt; 3.5.17</li> <li>5.0.3 -&gt; 5.4.4</li> </ul> <p>中间两次大版本升级，第一次原因不明，第二次是更新了 markup 渲染引擎， 改为 HTML 格式类型的渲染模式。</p> <p>由于一些原因，我们系统还跑在 embedded 模式下（其实就是 HyperSQL），这种大版本升级， 需要先从内置库升级到外部数据库，比如 MySQL。</p> <p>苦逼旅程就开始了。</p> <h2 id=from-embedded-to-mysql>From embedded to MySQL</h2> <p>更新内置库到外部库的操作流程：</p> <ul> <li>导出当前的数据备份，包括附件，我导出后 1G+</li> <li>使用当前同版本（3.0.1）安装一个全新的 wiki，注意下载 JDBC-connector</li> <li>安装之后，配置好 MySQL，开始导入之前准备好的备份</li> <li>悲剧上演</li> </ul> <p>遇到了错误：</p> <blockquote> <p>Import failed. Hibernate operation: could not insert: [com.atlassian.confluence.core.BodyContent#12028015]; SQL []; Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;</p> </blockquote> <p>官方文档 <a href=https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html>https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html</a> 让修改重复键数据，好吧，我改，搜索一把重复主键，将备份里面的 <code>entities.xml</code> 弄出来。</p> <pre><code># 格式化
 awk '{s=s $0}END{gsub(/&gt;&lt;/,"&gt;\n&lt;",s);s=gensub(/&gt;([^ \n&gt;]*)&lt;/,"&gt;\n\\1\n&lt;","g",s);print s}' entities.xml &gt; entities.xml.format
-# 找重复主键 cat entities.xml.format G 'content" class="Page' -A 2 G -E '[0-9]+' | sort | uniq -c | sort -gr L cat entities.xml.format | grep 'name="id"' -A 1 -B 1 | grep -E '[0-9]+' -B 2 L</code></pre>
-<p>操作过程中，发现有数据就一条数据（grep entities.xml），还是插入重复（13238835）。 官方文档解释是，内置数据库的锁有时候会不灵，插入重复键。 于是决定再试试去掉主键约束方案，大不了那个数据我就不要了。</p>
-<pre><code>ALTER TABLE BODYCONTENT DROP PRIMARY KEY;</code></pre>
-<p>结果还有其他 PK 约束，我于是一条一条解开，然后&hellip;&hellip;还是不行，真是作了一手的好死。</p>
-<p>结论是，这数据错误了太多，已经无法手工修复。</p>
-<h2 id="横插一刀的-emoji">横插一刀的 Emoji 😊😢💗</h2>
-<p>导入时候报了这么一个错误：</p>
-<blockquote>
-<p>Caused by: java.sql.SQLException: Incorrect string value: &lsquo;09F8C8D59B&hellip;&rsquo; for column &lsquo;BODY&rsquo; at row 1 org.xml.sax.SAXException: Error while parsing 2015-10-19 23:14:13,108 ERROR [Importing data task] [confluence.importexport.impl.ReverseDatabinder] fromXML Error processing backup: &ndash; referer: http://10.1.2.155:8087/setup/setup-restore-start.action | url: /setup/setup-restore-local.action | userName: anonymous | action: setup-restore-local org.xml.sax.SAXException: Error while parsing net.sf.hibernate.exception.GenericJDBCException: could not insert: [com.atlassian.confluence.core.BodyContent#12028161]</p>
-</blockquote>
-<p>这是 Emoji 编码的问题，理论上 MySQL 换到 5.6+，更新 encoding 就可以了。</p>
-<p>但是&hellip;&hellip;Confluence 的建表 SQL 爆出了 255 varchar 超过 1000 限制的错误 ，我尝试使用&nbsp;<a href="https://github.com/rails/rails/issues/9855">innodb_large_prefix</a> 似乎可以解决（因为重复键的问题，导致导入已经行不通）。</p>
-<p>另外&nbsp;innodb_large_prefix&nbsp;是 5.6.3 才有的，只能升级 MySQL， 并且需要创建表时候使用&nbsp;DYNAMIC&nbsp;参数。</p>
-<p>弄个 Emoji 这么绕，这导致我直接弃用了 MySQL。</p>
-<p>如果是正常迁移，不遇到重复键，Emoji 的问题，可以参考官方的文档，完成平滑迁移：</p>
-<ul>
-<li>https://confluence.atlassian.com/doc/migrating-to-another-database-148867.html</li>
-<li>https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html</li>
-<li>https://confluence.atlassian.com/doc/upgrading-confluence-4578.html</li>
-<li>https://confluence.atlassian.com/doc/upgrading-confluence-manually-255363437.html</li>
-<li>https://confluence.atlassian.com/conf56/confluence-user-s-guide/creating-content/using-the-editor/using-symbols-emoticons-and-special-characters</li>
-</ul>
-<h2 id="妈蛋自己干">妈蛋，自己干</h2>
-<p>上面这么点东西，陆陆续续花了我两周的时间（晚上）。已经确认走不通平滑迁移，那就别怪我手段糙了。</p>
-<p>使用 API 导出后直接导入，这种做法最大问题是不平滑，会丢掉 Wiki 修改的历史记录， 在和各个业务方沟通之后，最后达成了一致：可以暴力升级。</p>
-<p>升级流程：</p>
-<ul>
-<li>准备最新 Confluence 新站点</li>
-<li>关停站点</li>
-<li>导出数据，包括 Page、评论、附件</li>
-<li>导入 Page，评论，附件</li>
-<li>启动旧站点，开启只读模式</li>
-<li>启用新站点</li>
-</ul>
-<p>官方有一个 <a href="https://migrations.atlassian.net/wiki">Universal Wiki Converter</a>， 我在 Bitbucket 上面找到了源码，但是已经不可工作了。 虽然宣称「The UWC will however save you 1-2+ weeks of scripting development time, compared with starting from scratch, for many of the most common conversion cases.」 但并没有卵用。</p>
-<p>不行就自己随便搞搞好了，看了一下开发需要的 <a href="https://confluence.atlassian.com/display/CONF30/Remote+API+Specification+2.4#RemoteAPISpecification2.4-Page">Conflunce API</a>， 和尤其贴心的新版本 <a href="https://developer.atlassian.com/confdev/confluence-rest-api?continue=https%3A%2F%2Fdeveloper.atlassian.com%2Fconfdev%2Fconfluence-rest-api&amp;application=dac">RESTful API</a>，就开始搞了。</p>
-<p>写迁移代码，在这里 <a href="https://github.com/duitang/atlassian-confluence-xxoo">atlassian-confluence-xxoo</a>，已经开源了，只使用过一次，成功的从 3.0.1 迁移到 5.4.4， 理论上，支持任意版本的 3.x/4.x Confluence 迁移到最新。</p>
-<p>使用 <code>python app.py -h</code> 查看帮助，不行就看看代码。</p>
-<p>希望有迁移需求的同学，搜索到这里能够获得一些帮助。</p>
+# 找重复主键 cat entities.xml.format G 'content" class="Page' -A 2 G -E '[0-9]+' | sort | uniq -c | sort -gr L cat entities.xml.format | grep 'name="id"' -A 1 -B 1 | grep -E '[0-9]+' -B 2 L</code></pre> <p>操作过程中，发现有数据就一条数据（grep entities.xml），还是插入重复（13238835）。 官方文档解释是，内置数据库的锁有时候会不灵，插入重复键。 于是决定再试试去掉主键约束方案，大不了那个数据我就不要了。</p> <pre><code>ALTER TABLE BODYCONTENT DROP PRIMARY KEY;</code></pre> <p>结果还有其他 PK 约束，我于是一条一条解开，然后&hellip;&hellip;还是不行，真是作了一手的好死。</p> <p>结论是，这数据错误了太多，已经无法手工修复。</p> <h2 id=横插一刀的-emoji>横插一刀的 Emoji 😊😢💗</h2> <p>导入时候报了这么一个错误：</p> <blockquote> <p>Caused by: java.sql.SQLException: Incorrect string value: &lsquo;09F8C8D59B&hellip;&rsquo; for column &lsquo;BODY&rsquo; at row 1 org.xml.sax.SAXException: Error while parsing 2015-10-19 23:14:13,108 ERROR [Importing data task] [confluence.importexport.impl.ReverseDatabinder] fromXML Error processing backup: &ndash; referer: http://10.1.2.155:8087/setup/setup-restore-start.action | url: /setup/setup-restore-local.action | userName: anonymous | action: setup-restore-local org.xml.sax.SAXException: Error while parsing net.sf.hibernate.exception.GenericJDBCException: could not insert: [com.atlassian.confluence.core.BodyContent#12028161]</p> </blockquote> <p>这是 Emoji 编码的问题，理论上 MySQL 换到 5.6+，更新 encoding 就可以了。</p> <p>但是&hellip;&hellip;Confluence 的建表 SQL 爆出了 255 varchar 超过 1000 限制的错误 ，我尝试使用&nbsp;<a href=https://github.com/rails/rails/issues/9855>innodb_large_prefix</a> 似乎可以解决（因为重复键的问题，导致导入已经行不通）。</p> <p>另外&nbsp;innodb_large_prefix&nbsp;是 5.6.3 才有的，只能升级 MySQL， 并且需要创建表时候使用&nbsp;DYNAMIC&nbsp;参数。</p> <p>弄个 Emoji 这么绕，这导致我直接弃用了 MySQL。</p> <p>如果是正常迁移，不遇到重复键，Emoji 的问题，可以参考官方的文档，完成平滑迁移：</p> <ul> <li>https://confluence.atlassian.com/doc/migrating-to-another-database-148867.html</li> <li>https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html</li> <li>https://confluence.atlassian.com/doc/upgrading-confluence-4578.html</li> <li>https://confluence.atlassian.com/doc/upgrading-confluence-manually-255363437.html</li> <li>https://confluence.atlassian.com/conf56/confluence-user-s-guide/creating-content/using-the-editor/using-symbols-emoticons-and-special-characters</li> </ul> <h2 id=妈蛋自己干>妈蛋，自己干</h2> <p>上面这么点东西，陆陆续续花了我两周的时间（晚上）。已经确认走不通平滑迁移，那就别怪我手段糙了。</p> <p>使用 API 导出后直接导入，这种做法最大问题是不平滑，会丢掉 Wiki 修改的历史记录， 在和各个业务方沟通之后，最后达成了一致：可以暴力升级。</p> <p>升级流程：</p> <ul> <li>准备最新 Confluence 新站点</li> <li>关停站点</li> <li>导出数据，包括 Page、评论、附件</li> <li>导入 Page，评论，附件</li> <li>启动旧站点，开启只读模式</li> <li>启用新站点</li> </ul> <p>官方有一个 <a href=https://migrations.atlassian.net/wiki>Universal Wiki Converter</a>， 我在 Bitbucket 上面找到了源码，但是已经不可工作了。 虽然宣称「The UWC will however save you 1-2+ weeks of scripting development time, compared with starting from scratch, for many of the most common conversion cases.」 但并没有卵用。</p> <p>不行就自己随便搞搞好了，看了一下开发需要的 <a href=https://confluence.atlassian.com/display/CONF30/Remote+API+Specification+2.4#RemoteAPISpecification2.4-Page>Conflunce API</a>， 和尤其贴心的新版本 <a href="https://developer.atlassian.com/confdev/confluence-rest-api?continue=https%3A%2F%2Fdeveloper.atlassian.com%2Fconfdev%2Fconfluence-rest-api&application=dac">RESTful API</a>，就开始搞了。</p> <p>写迁移代码，在这里 <a href=https://github.com/duitang/atlassian-confluence-xxoo>atlassian-confluence-xxoo</a>，已经开源了，只使用过一次，成功的从 3.0.1 迁移到 5.4.4， 理论上，支持任意版本的 3.x/4.x Confluence 迁移到最新。</p> <p>使用 <code>python app.py -h</code> 查看帮助，不行就看看代码。</p> <p>希望有迁移需求的同学，搜索到这里能够获得一些帮助。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2016/01/confluence-upgrade/ >https://blog.alswl.com/2016/01/confluence-upgrade/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-            </div>
-            <!-- /.entry-content -->
-              
-<hr>
-<div class="panel">
-<div class="panel-body">
-   <small>原文链接: <a href="https://blog.alswl.com/2016/01/confluence-upgrade/">https://blog.alswl.com/2016/01/confluence-upgrade/</a></small><br>
-   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
-</div>
-</div>
+                    var disqus_identifier = 'confluence-upgrade';
+                var disqus_url = 'https://blog.alswl.com/2016/01/confluence-upgrade/';
 
-        </article>
-    </section>
+            var disqus_config = function () {
+                this.language = "en";
+            };
 
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2021 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2021 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -304,7 +43,4 @@ awk '{s=s $0}END{gsub(/&gt;&lt;/,"&gt;\n&lt;",s);s=gensub(/&gt;([^ \n&gt;]*)&lt;
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>

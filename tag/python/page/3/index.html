@@ -1,376 +1,52 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>Python - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-
-    <meta name="author" content="alswl" />
-    <meta name="keywords" content="Python" />
-
-    <!-- Open Graph tags -->
-        <meta property="og:site_name" content="Log4D" />
-        <meta property="og:type" content="website"/>
-        <meta property="og:title" content="Log4D"/>
-        <meta property="og:url" content="http://127.0.0.1:8000"/>
-        <meta property="og:description" content="Log4D"/>
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
-
-    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="http://127.0.0.1:8000/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2011/05/run-pylons-in-eclipse/">Eclipse中运行Pylons</a></h2>
-                <div class="summary"><p>官方中pylons都是通过在shell中运行paster serve &ndash;reload development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤可以在Eclipse中运行pylons。</p>
-<p>配置Run Configuration - Python Run如下。</p>
-<p>Main页签中Main Module指向paster-script.py，可以使用绝对路径。</p>
-<figure>
-<img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/201105/eclipse-main.png"/><figcaption>image</figcaption>
-</figure>
-<p>配置Arguments页签的参数，添加serve &ndash;reload development.ini，后面的ini配置文件可以使用绝对路径。</p>
-<figure>
-<img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/201105/eclipse-arguments.png"/><figcaption>image</figcaption>
-</figure>
-<p>勾选Common下的Allocate Console来进行paster调试信息输出。</p>
-<p>在Windows - Preference - Pydev - Interpreter - Python中的PYTHONPATH加入pylons目标环境 ，报过site-packages目录和site-packages目录下面的egg文件（理解为jar包，称之为蟒蛇蛋）。</p>
-<p>不出意外的话，就可以通过Run跑起整个应用了。</p>
-<p>很可惜的是，这样做还是不能对应用进行Debug，pylons的debug依然依赖于pylons的&ldquo;交互调试页面&rdquo;。</p>
-<p>参考<a href="http://stackoverflow.com/questions/147650/debug-pylons-application-%20through-eclipse">http://stackoverflow.com/questions/147650/debug-pylons-application-through- eclipse</a></p>
-
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2011/05/run-pylons-in-eclipse/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2011/01/a-simple-gae-proxy/">最简陋的GAE代理</a></h2>
-                <div class="summary"><p>年前换了一次服务器，之后发现<a href="http://log4d.com/stream">Lifestream</a>的Errors飙升到1000+错误，检查一下，发现是获 取不了豆瓣的rss链接。正好这台主机支持SSH，连入之后CURL了一下豆瓣服务器，发现Time out。</p>
-<p>紧接着发现中国内的所有域名都无法使用CURL获取，联系小张之后，得知该主机曾经被入侵过，于是屏蔽了中国大陆的ip段（囧~入侵和中国ip有毛关系）</p>
-<p>遂想用GAE做个代理服务器，反正获取RSS也只要Get一下，代码没几句。把这项任务放入Toodledo之后，就一直没去弄，今天发现GAE Laucher升级了，就部署到自己GAE上了。</p>
-<p>地址格式如<a href="http://jasontiproxy.appspot.com/proxy?url=www.douban.com/feed/people/alswl/interests">http://jasontiproxy.appspot.com/proxy?url=www.douban. com/feed/people/alswl/interests</a>，url参数名后面跟着具体的url。</p>
-<p>代码其实就是用urllib2获取一下html，核心如下。</p>
-<pre><code>#!/usr/bin/env python</code></pre>
-<p>from google.appengine …</p>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2011/01/a-simple-gae-proxy/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2010/11/a-week-python/">一周Python小记</a></h2>
-                <div class="summary"><p>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。</p>
-<h2 id="一配置文件">一、配置文件</h2>
-<h3 id="yaml格式">1、YAML格式</h3>
-<p>数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。</p>
-<p>YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成对应的格式变量。</p>
-<p>之所以选择YAML，是看中它对语言的亲和性和可读性，GAE的配置文件就是YAML格式。YAML的语法相当简单，用:来分隔key: value，用 - 来分隔列表，注意点是缩进需要用空格，关键符号和内容之间要加上一个空格。我的配置文件如下：</p>
-<pre><code>taskId: PQMI06
+<!DOCTYPE html><html lang=en> <head><title>Python - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><meta name=author content=alswl><meta name=keywords content=Python><!-- Open Graph tags --><meta property=og:site_name content=Log4D><meta property=og:type content=website><meta property=og:title content=Log4D><meta property=og:url content=https://blog.alswl.com><meta property=og:description content=Log4D><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/05/run-pylons-in-eclipse/ >Eclipse中运行Pylons</a></h2> <div class=summary><p>官方中pylons都是通过在shell中运行paster serve &ndash;reload development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤可以在Eclipse中运行pylons。</p> <p>配置Run Configuration - Python Run如下。</p> <p>Main页签中Main Module指向paster-script.py，可以使用绝对路径。</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201105/eclipse-main.png><figcaption>image</figcaption> </figure> <p>配置Arguments页签的参数，添加serve &ndash;reload development.ini，后面的ini配置文件可以使用绝对路径。</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201105/eclipse-arguments.png><figcaption>image</figcaption> </figure> <p>勾选Common下的Allocate Console来进行paster调试信息输出。</p> <p>在Windows - Preference - Pydev - Interpreter - Python中的PYTHONPATH加入pylons目标环境 ，报过site-packages目录和site-packages目录下面的egg文件（理解为jar包，称之为蟒蛇蛋）。</p> <p>不出意外的话，就可以通过Run跑起整个应用了。</p> <p>很可惜的是，这样做还是不能对应用进行Debug，pylons的debug依然依赖于pylons的&ldquo;交互调试页面&rdquo;。</p> <p>参考<a href=http://stackoverflow.com/questions/147650/debug-pylons-application-%20through-eclipse>http://stackoverflow.com/questions/147650/debug-pylons-application-through- eclipse</a></p> </div> <a href=https://blog.alswl.com/2011/05/run-pylons-in-eclipse/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/01/a-simple-gae-proxy/ >最简陋的GAE代理</a></h2> <div class=summary><p>年前换了一次服务器，之后发现<a href=http://log4d.com/stream>Lifestream</a>的Errors飙升到1000+错误，检查一下，发现是获 取不了豆瓣的rss链接。正好这台主机支持SSH，连入之后CURL了一下豆瓣服务器，发现Time out。</p> <p>紧接着发现中国内的所有域名都无法使用CURL获取，联系小张之后，得知该主机曾经被入侵过，于是屏蔽了中国大陆的ip段（囧~入侵和中国ip有毛关系）</p> <p>遂想用GAE做个代理服务器，反正获取RSS也只要Get一下，代码没几句。把这项任务放入Toodledo之后，就一直没去弄，今天发现GAE Laucher升级了，就部署到自己GAE上了。</p> <p>地址格式如<a href="http://jasontiproxy.appspot.com/proxy?url=www.douban.com/feed/people/alswl/interests">http://jasontiproxy.appspot.com/proxy?url=www.douban. com/feed/people/alswl/interests</a>，url参数名后面跟着具体的url。</p> <p>代码其实就是用urllib2获取一下html，核心如下。</p> <pre><code>#!/usr/bin/env python</code></pre> <p>from google.appengine …</p> </div> <a href=https://blog.alswl.com/2011/01/a-simple-gae-proxy/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/11/a-week-python/ >一周Python小记</a></h2> <div class=summary><p>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。</p> <h2 id=一配置文件>一、配置文件</h2> <h3 id=yaml格式>1、YAML格式</h3> <p>数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。</p> <p>YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成对应的格式变量。</p> <p>之所以选择YAML，是看中它对语言的亲和性和可读性，GAE的配置文件就是YAML格式。YAML的语法相当简单，用:来分隔key: value，用 - 来分隔列表，注意点是缩进需要用空格，关键符号和内容之间要加上一个空格。我的配置文件如下：</p> <pre><code>taskId: PQMI06
 taskName: 测试建制作业
 author: alswl
-confirmId: 20101025xxx</code></pre>
-<p>headFiles:</p>
-<ul>
-<li>head1.txt<br/>
-</li>
-<li>head2.txt<br/>
-</li>
-<li><p>head3.txt<br/>
-bodyFiles:</p></li>
-<li>body1.txt<br/>
-</li>
-<li>body2.txt …</li></ul>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2010/11/a-week-python/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2010/10/python-clipboard/">Python读写剪贴板</a></h2>
-                <div class="summary"><p>最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。</p>
-<p>由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1"><span class="co">#coding=utf-8</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="co">'''</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="co">读写剪贴板</span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="co">'''</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="im">import</span> win32clipboard <span class="im">as</span> w</a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="im">import</span> win32con</a>
-<a class="sourceLine" id="cb1-7" title="7"></a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="kw">def</span> getText():</a>
-<a class="sourceLine" id="cb1-9" title="9">  w.OpenClipboard()</a>
-<a class="sourceLine" id="cb1-10" title="10">  d <span class="op">=</span> w.GetClipboardData(win32con.CF_TEXT)</a>
-<a class="sourceLine" id="cb1-11" title="11">  w.CloseClipboard()</a>
-<a class="sourceLine" id="cb1-12" title="12">  <span class="cf">return</span> d</a>
-<a class="sourceLine" id="cb1-13" title="13"></a>
-<a class="sourceLine" id="cb1-14" title="14"><span class="kw">def</span> setText(aString):</a>
-<a class="sourceLine" id="cb1-15" title="15">  w.OpenClipboard()</a>
-<a class="sourceLine" id="cb1-16" title="16">  w.EmptyClipboard()</a>
-<a class="sourceLine" id="cb1-17" title="17">  w.SetClipboardData(win32con.CF_TEXT, aString)</a>
-<a class="sourceLine" id="cb1-18" title="18">  w.CloseClipboard()</a></code></pre></div>
-<p>别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。</p>
-<p>如果双击 <code>.py …</code></p>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2010/10/python-clipboard/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2010/09/script-mm2html/">小脚本mm->html</a></h2>
-                <div class="summary"><p>我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见<a href="http://log4d.com/2010/04/desktop-recording-tool-boogunote">桌面记录神器- BooguNote</a> &amp; <a href="http://log4d.com/2010/09/my-kms">我所使用的知识管理系统</a>。</p>
-<p>我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。</p>
-<p>BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。</p>
-<p>BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。</p>
-<pre><code>#coding=utf-8
+confirmId: 20101025xxx</code></pre> <p>headFiles:</p> <ul> <li>head1.txt<br> </li> <li>head2.txt<br> </li> <li><p>head3.txt<br> bodyFiles:</p></li> <li>body1.txt<br> </li> <li>body2.txt …</li></ul> </div> <a href=https://blog.alswl.com/2010/11/a-week-python/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/10/python-clipboard/ >Python读写剪贴板</a></h2> <div class=summary><p>最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。</p> <p>由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。</p> <div class=sourceCode id=cb1><pre class="sourceCode python"><code class="sourceCode python"><a class=sourceLine id=cb1-1 title=1><span class=co>#coding=utf-8</span></a>
+<a class=sourceLine id=cb1-2 title=2><span class=co>'''</span></a>
+<a class=sourceLine id=cb1-3 title=3><span class=co>读写剪贴板</span></a>
+<a class=sourceLine id=cb1-4 title=4><span class=co>'''</span></a>
+<a class=sourceLine id=cb1-5 title=5><span class=im>import</span> win32clipboard <span class=im>as</span> w</a>
+<a class=sourceLine id=cb1-6 title=6><span class=im>import</span> win32con</a>
+<a class=sourceLine id=cb1-7 title=7></a>
+<a class=sourceLine id=cb1-8 title=8><span class=kw>def</span> getText():</a>
+<a class=sourceLine id=cb1-9 title=9>  w.OpenClipboard()</a>
+<a class=sourceLine id=cb1-10 title=10>  d <span class=op>=</span> w.GetClipboardData(win32con.CF_TEXT)</a>
+<a class=sourceLine id=cb1-11 title=11>  w.CloseClipboard()</a>
+<a class=sourceLine id=cb1-12 title=12>  <span class=cf>return</span> d</a>
+<a class=sourceLine id=cb1-13 title=13></a>
+<a class=sourceLine id=cb1-14 title=14><span class=kw>def</span> setText(aString):</a>
+<a class=sourceLine id=cb1-15 title=15>  w.OpenClipboard()</a>
+<a class=sourceLine id=cb1-16 title=16>  w.EmptyClipboard()</a>
+<a class=sourceLine id=cb1-17 title=17>  w.SetClipboardData(win32con.CF_TEXT, aString)</a>
+<a class=sourceLine id=cb1-18 title=18>  w.CloseClipboard()</a></code></pre></div> <p>别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。</p> <p>如果双击 <code>.py …</code></p> </div> <a href=https://blog.alswl.com/2010/10/python-clipboard/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/09/script-mm2html/ >小脚本mm->html</a></h2> <div class=summary><p>我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见<a href=http://log4d.com/2010/04/desktop-recording-tool-boogunote>桌面记录神器- BooguNote</a> &amp; <a href=http://log4d.com/2010/09/my-kms>我所使用的知识管理系统</a>。</p> <p>我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。</p> <p>BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。</p> <p>BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。</p> <pre><code>#coding=utf-8
 from xml.dom import minidom
 import sys
-import os</code></pre>
-<p>class MM2Html:</p>
-<p>&lsquo;转换MM-&gt;Html类&rsquo;</p>
-<p>def <strong>init</strong>(self):</p>
-<p>self.html = &rsquo;&rsquo;&rsquo;&lt;!DOCTYPE html PUBLIC &ldquo;-//W3C//DTD XHTML 1 …</p>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2010/09/script-mm2html/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2010/07/get-daily-bing-picture/">获取每日Bing图片</a></h2>
-                <div class="summary"><p>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。</p>
-<p>放狗搜索，发现一篇文章 <a href="http://blog.csdn.net/huangct/archive/2009/10/27/4734844.aspx">抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客</a>，文中提供了抓取程式的Python代码，我摘录如下。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" title="1"><span class="im">import</span> urllib</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="im">import</span> time</a>
-<a class="sourceLine" id="cb1-3" title="3"></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="kw">def</span> main():</a>
-<a class="sourceLine" id="cb1-5" title="5">    url <span class="op">=</span> <span class="st">'http://www.bing.com'</span></a>
-<a class="sourceLine" id="cb1-6" title="6">    f <span class="op">=</span> urllib.urlopen(url)</a>
-<a class="sourceLine" id="cb1-7" title="7">    html <span class="op">=</span> f.read()</a>
-<a class="sourceLine" id="cb1-8" title="8">    f.close()</a>
-<a class="sourceLine" id="cb1-9" title="9">    a <span class="op">=</span> html[html.index(<span class="st">'/fd/hpk2'</span>):]</a>
-<a class="sourceLine" id="cb1-10" title="10">    data <span class="op">=</span> a[:a.index(<span class="st">''</span>,<span class="bu">id</span>:<span class="st">')]</span></a>
-<a class="sourceLine" id="cb1-11" title="11"><span class="st">    url = data.replace('</span><span class="op">\</span><span class="st">', '')</span></a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="st">    url = '</span>http:<span class="op">//</span>www.bing …</a></code></pre></div>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2010/07/get-daily-bing-picture/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/11/jagged-alliance-edt-txt-converter-v0-9/">铁血联盟EdtTxt转换器v0.9</a></h2>
-                <div class="summary"><p>上个月时候，<a href="http://zww.me/">zwwooooo</a>同鞋联系我让帮写一个铁血联盟中需要用到的Edt&lt;-&gt;Txt转换器，我前前后后大约三个星期完成 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高 人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思&hellip;&hellip;)。 一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：</p>
-<blockquote>
-<p>edt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下</p>
-</blockquote>
-<p>一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明</p>
-<ol type="1">
-<li><p>把 000.edt 文件用16进制方式打开，对话从&ldquo;0&rdquo;处开始，结束标志是2个16进制字节：00 00</p></li>
-<li><p>000.edt …</p></li></ol>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/11/jagged-alliance-edt-txt-converter-v0-9/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/10/python-enter-the-16-hex-save-to-file/">Python输入16进制保存到文件</a></h2>
-                <div class="summary"><p>（题目有点勉强，不过问题真的很难描述，希望Google/Baidu到这里的童鞋不要失望） 前几天给<a href="http://zww.me/">zwwooooo</a>写一个 小工具，其中遇到一个输入的问题。具体描述就是：&ldquo;输入4个16进制的数字，如&rsquo;00a0&rsquo;，输入之后必须能够把这个输入给保存到文件中存为2进制格式，必须是原始的 16进制，而不是字符串类型。如&rsquo;x00xa0&rsquo;&rdquo;。（其实这是用在处理文本上的） 不知道各位大大有没有明白我的意思，我花了很长时间没有一个好的解决方案。 第一种方案，先用int()转换，然后转换hex()，直接失败，hex()转换后格式为&rsquo;0x00a0&rsquo;，是字符串格式，根本不是我需要的内容。 我苦思冥想三天，终于找到一个最傻，也最好用的方法，用list进行匹配。 下面是生成匹配list的脚本：</p>
-<pre><code>lst = '{'
+import os</code></pre> <p>class MM2Html:</p> <p>&lsquo;转换MM-&gt;Html类&rsquo;</p> <p>def <strong>init</strong>(self):</p> <p>self.html = &rsquo;&rsquo;&rsquo;&lt;!DOCTYPE html PUBLIC &ldquo;-//W3C//DTD XHTML 1 …</p> </div> <a href=https://blog.alswl.com/2010/09/script-mm2html/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/07/get-daily-bing-picture/ >获取每日Bing图片</a></h2> <div class=summary><p>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。</p> <p>放狗搜索，发现一篇文章 <a href=http://blog.csdn.net/huangct/archive/2009/10/27/4734844.aspx>抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客</a>，文中提供了抓取程式的Python代码，我摘录如下。</p> <div class=sourceCode id=cb1><pre class="sourceCode python"><code class="sourceCode python"><a class=sourceLine id=cb1-1 title=1><span class=im>import</span> urllib</a>
+<a class=sourceLine id=cb1-2 title=2><span class=im>import</span> time</a>
+<a class=sourceLine id=cb1-3 title=3></a>
+<a class=sourceLine id=cb1-4 title=4><span class=kw>def</span> main():</a>
+<a class=sourceLine id=cb1-5 title=5>    url <span class=op>=</span> <span class=st>'http://www.bing.com'</span></a>
+<a class=sourceLine id=cb1-6 title=6>    f <span class=op>=</span> urllib.urlopen(url)</a>
+<a class=sourceLine id=cb1-7 title=7>    html <span class=op>=</span> f.read()</a>
+<a class=sourceLine id=cb1-8 title=8>    f.close()</a>
+<a class=sourceLine id=cb1-9 title=9>    a <span class=op>=</span> html[html.index(<span class=st>'/fd/hpk2'</span>):]</a>
+<a class=sourceLine id=cb1-10 title=10>    data <span class=op>=</span> a[:a.index(<span class=st>''</span>,<span class=bu>id</span>:<span class=st>')]</span></a>
+<a class=sourceLine id=cb1-11 title=11><span class=st>    url = data.replace('</span><span class=op>\</span><span class=st>', '')</span></a>
+<a class=sourceLine id=cb1-12 title=12><span class=st>    url = '</span>http:<span class=op>//</span>www.bing …</a></code></pre></div> </div> <a href=https://blog.alswl.com/2010/07/get-daily-bing-picture/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/ >铁血联盟EdtTxt转换器v0.9</a></h2> <div class=summary><p>上个月时候，<a href=http://zww.me/ >zwwooooo</a>同鞋联系我让帮写一个铁血联盟中需要用到的Edt&lt;-&gt;Txt转换器，我前前后后大约三个星期完成 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高 人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思&hellip;&hellip;)。 一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：</p> <blockquote> <p>edt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下</p> </blockquote> <p>一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明</p> <ol type=1> <li><p>把 000.edt 文件用16进制方式打开，对话从&ldquo;0&rdquo;处开始，结束标志是2个16进制字节：00 00</p></li> <li><p>000.edt …</p></li></ol> </div> <a href=https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/10/python-enter-the-16-hex-save-to-file/ >Python输入16进制保存到文件</a></h2> <div class=summary><p>（题目有点勉强，不过问题真的很难描述，希望Google/Baidu到这里的童鞋不要失望） 前几天给<a href=http://zww.me/ >zwwooooo</a>写一个 小工具，其中遇到一个输入的问题。具体描述就是：&ldquo;输入4个16进制的数字，如&rsquo;00a0&rsquo;，输入之后必须能够把这个输入给保存到文件中存为2进制格式，必须是原始的 16进制，而不是字符串类型。如&rsquo;x00xa0&rsquo;&rdquo;。（其实这是用在处理文本上的） 不知道各位大大有没有明白我的意思，我花了很长时间没有一个好的解决方案。 第一种方案，先用int()转换，然后转换hex()，直接失败，hex()转换后格式为&rsquo;0x00a0&rsquo;，是字符串格式，根本不是我需要的内容。 我苦思冥想三天，终于找到一个最傻，也最好用的方法，用list进行匹配。 下面是生成匹配list的脚本：</p> <pre><code>lst = '{'
 for i in range(int('0x00', 16), int('0xff', 16) + 1):
-    hv …</code></pre>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/10/python-enter-the-16-hex-save-to-file/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/09/gae-initial-contact-with-the-school-app/">GAE+校内App初接触</a></h2>
-                <div class="summary"><p>下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello World来介绍一个开发步骤。</p>
-<h2 id="创建gae应用">1.创建GAE应用</h2>
-<p>建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 <img alt="App Engine" src="https://www.google.com/accounts/ah/ah20x20.gif"/> <a href="http://code.google.com/appengine/">App Engine</a> ，激活这个服务，就可以<a href="https://appengine.google.com/">创建新的应用</a>。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。</p>
-<p><img alt="image" src="https://4ocf5n.dijingchao.com/upload_dropbox/200909/image3.png"/> 一个简单的App控制台</p>
-<h2 id="部署gae-app">2.部署GAE App</h2>
-<p>刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置 ，所以Nothing,检查http状态会发现返回的是404状态）。</p>
-<p>这时候我们就要开始部署这个GAE App了：1.下载一个<a href="http://googleappengine.googlecode.com/files/GoogleAppEngine_1.2.5.msi">Google App Engine SDK for Python-Win</a>，这样就可以在本地测试项目 …</p>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/09/gae-initial-contact-with-the-school-app/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
-            <article class="article-list">
-                <h2 class="title"><a href="http://127.0.0.1:8000/2009/09/when-google-app-engine-encounter-campus/">当Google APP Engine遇上校内</a></h2>
-                <div class="summary"><p>昨天看《<a href="http://www.csdn.net">程序员</a>》时候看到一篇讲开放接口的文章，是FaceBook的一个开发人员写的，讲了很多关于开放平台的东西 。其中提到Google App Engine的云计算支持，FaceBook的FBML（校内的称为XNML，一种标记性语言）。</p>
-<h2 id="google-app-enginegae">Google App Engine(GAE)</h2>
-<p>Google App Engine让用户可以在 Google 的基础架构上运行的网络应用程序。Google App Engine 应用程序易于构建和维护，并可根据用户的访问量和数据存储需要的增长轻松扩展。使用 Google App Engine，将不再需要维护服务器：用户只需上传用户的应用程序，它便可立即为用户的用户提供服务。</p>
-<p>通俗的说，App Engine就像是免费提供的一个500M高性能的空间，和一个appspot.com二级域名。在Google强大的云计算能力下，服务器的速度 和质量毋容置疑。现在App Engine支持Python和Java（似乎Java有些限制，具体的细节我没有看）。</p>
-<h2 id="xnml">XNML</h2>
-<p>XNML（xiao nei market language …</p>
-                </div>
-                <a class="btn btn-default btn-lg" href="http://127.0.0.1:8000/2009/09/when-google-app-engine-encounter-campus/"><i class="icon-circle-arrow-right"></i>more ...</a>
-            </article>
-            <hr/>
+    hv …</code></pre> </div> <a href=https://blog.alswl.com/2009/10/python-enter-the-16-hex-save-to-file/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/09/gae-initial-contact-with-the-school-app/ >GAE+校内App初接触</a></h2> <div class=summary><p>下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello World来介绍一个开发步骤。</p> <h2 id=创建gae应用>1.创建GAE应用</h2> <p>建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 <img alt="App Engine" src=https://www.google.com/accounts/ah/ah20x20.gif> <a href=http://code.google.com/appengine/ >App Engine</a> ，激活这个服务，就可以<a href=https://appengine.google.com/ >创建新的应用</a>。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。</p> <p><img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/200909/image3.png> 一个简单的App控制台</p> <h2 id=部署gae-app>2.部署GAE App</h2> <p>刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置 ，所以Nothing,检查http状态会发现返回的是404状态）。</p> <p>这时候我们就要开始部署这个GAE App了：1.下载一个<a href=http://googleappengine.googlecode.com/files/GoogleAppEngine_1.2.5.msi>Google App Engine SDK for Python-Win</a>，这样就可以在本地测试项目 …</p> </div> <a href=https://blog.alswl.com/2009/09/gae-initial-contact-with-the-school-app/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2009/09/when-google-app-engine-encounter-campus/ >当Google APP Engine遇上校内</a></h2> <div class=summary><p>昨天看《<a href=http://www.csdn.net>程序员</a>》时候看到一篇讲开放接口的文章，是FaceBook的一个开发人员写的，讲了很多关于开放平台的东西 。其中提到Google App Engine的云计算支持，FaceBook的FBML（校内的称为XNML，一种标记性语言）。</p> <h2 id=google-app-enginegae>Google App Engine(GAE)</h2> <p>Google App Engine让用户可以在 Google 的基础架构上运行的网络应用程序。Google App Engine 应用程序易于构建和维护，并可根据用户的访问量和数据存储需要的增长轻松扩展。使用 Google App Engine，将不再需要维护服务器：用户只需上传用户的应用程序，它便可立即为用户的用户提供服务。</p> <p>通俗的说，App Engine就像是免费提供的一个500M高性能的空间，和一个appspot.com二级域名。在Google强大的云计算能力下，服务器的速度 和质量毋容置疑。现在App Engine支持Python和Java（似乎Java有些限制，具体的细节我没有看）。</p> <h2 id=xnml>XNML</h2> <p>XNML（xiao nei market language …</p> </div> <a href=https://blog.alswl.com/2009/09/when-google-app-engine-encounter-campus/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <ul class=pagination> <li class=prev><a href=https://blog.alswl.com/tag/python/page/2/ >&laquo;</a> </li> <li class><a href=https://blog.alswl.com/tag/python/ >1</a></li> <li class><a href=https://blog.alswl.com/tag/python/page/2/ >2</a></li> <li class=active><a href=https://blog.alswl.com/tag/python/page/3/ >3</a></li> <li class=next><a href=https://blog.alswl.com/tag/python/page/4/ >&raquo;</a></li> </ul> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2020 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-        <ul class="pagination">
-                <li class="prev"><a href="http://127.0.0.1:8000/tag/python/page/2/">&laquo;</a>
-                </li>
-				<li class=""><a
-					href="http://127.0.0.1:8000/tag/python/">1</a></li>
-				<li class=""><a
-						href="http://127.0.0.1:8000/tag/python/page/2/">2</a></li>
-				<li class="active"><a
-						href="http://127.0.0.1:8000/tag/python/page/3/">3</a></li>
-                <li class="next"><a
-                        href="http://127.0.0.1:8000/tag/python/page/4/">&raquo;</a></li>
-        </ul>
-
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
-
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2020 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -384,7 +60,4 @@ for i in range(int('0x00', 16), int('0xff', 16) + 1):
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>

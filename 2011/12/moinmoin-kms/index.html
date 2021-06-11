@@ -1,168 +1,7 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>使用MoinMoin作为个人KMS - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-<link rel="canonical" href="http://127.0.0.1:8000/2011/12/moinmoin-kms/">
-
-        <meta name="author" content="alswl" />
-        <meta name="keywords" content="工欲善其事必先利其器,image2attach,KMS,MoinMoin,nginx,uwsgi,wiz" />
-        <meta name="description" content="去年9月份时候，我写过一篇《我所使用的知识管理系统》 来介绍我使用的KMS系统。当时经过我层层筛选之后，我选用了Wiz作为我的KMS。 一年多过去了，Wiz在Windows下面工作的非常不错，Wiz团队里陆续推出了iOS / Android / Web版本。我的Wiz收藏的内容也增加到近1000篇。 此时我遇到了KMS再选型的问题，原因很简单：我全线转换到Linux平台， Wiz不符合我的要求了。 我重新整理一下我要求KMS的特性： 跨平台：Linux / Web / iOS / Android / Windows 数据保存格式：移植方便，将图片保存到本地 数据采集方式：支持网络直接拷贝复制 数据索引：支持分类 + tag 协同工作：方便的分享机制 免费 经过我历时N月的搜寻筛选，MoinMoin Wiki中标了！ 1. 关于MoinMoin MoinMoin是使用Python编写的Wiki实现，MoinMoin当前版本1.9。 MoinMoin的优点是： 安装简单; 支持中文全文检索； 汉化较好； 不依赖外界的数据库, 使用纯文本保存, 备份非常容易 …" />
-
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
-
-    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="http://127.0.0.1:8000/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-    <section id="content">
-        <article class="article-detail">
-            <header class="page-header">
-                <h1 class="title">
-                    <a href="http://127.0.0.1:8000/2011/12/moinmoin-kms/"
-                       rel="bookmark"
-                       title="Permalink to 使用MoinMoin作为个人KMS">
-                        使用MoinMoin作为个人KMS
-                    </a>
-                </h1>
-                <nav class="toc col-lg-2">
-                  <div id="toc"><ul><li><a class="toc-href" href="#关于moinmoin" title="1. 关于MoinMoin">1. 关于MoinMoin</a></li><li><a class="toc-href" href="#安装moinmoin" title="2. 安装MoinMoin">2. 安装MoinMoin</a><ul><li><a class="toc-href" href="#使用moinmoin桌面版最简单" title="2.1. 使用MoinMoin桌面版（最简单）">2.1. 使用MoinMoin桌面版（最简单）</a></li><li><a class="toc-href" href="#nginxuwsgi方式程序员适用" title="2.2. nginx+uWsgi方式（程序员适用）">2.2. nginx+uWsgi方式（程序员适用）</a><ul><li><a class="toc-href" href="#安装需要软件" title="2.2.1. 安装需要软件">2.2.1. 安装需要软件</a></li><li><a class="toc-href" href="#配置moinmoin" title="2.2.2. 配置MoinMoin">2.2.2. 配置MoinMoin</a></li><li><a class="toc-href" href="#配置nginx" title="2.2.3. 配置nginx">2.2.3. 配置nginx</a></li><li><a class="toc-href" href="#配置启动文件" title="2.2.4. 配置启动文件">2.2.4. 配置启动文件</a></li></ul></li></ul></li><li><a class="toc-href" href="#image2attach_2" title="3. Image2Attach">3. Image2Attach</a></li><li><a class="toc-href" href="#moinmoin的简单上手" title="4. MoinMoin的简单上手">4. MoinMoin的简单上手</a><ul><li><a class="toc-href" href="#安装语言包" title="安装语言包">安装语言包</a></li><li><a class="toc-href" href="#如何加入内容" title="如何加入内容">如何加入内容</a></li></ul></li><li><a class="toc-href" href="#moinmoin的一些修改_1" title="5. MoinMoin的一些修改">5. MoinMoin的一些修改</a></li><li><a class="toc-href" href="#wiz转moinmoin经验" title="6. wiz转MoinMoin经验">6. wiz转MoinMoin经验</a></li></ul></div>
-                </nav>
-            </header>
-            <div class="entry-content">
-                <div class="panel">
-                    <div class="panel-body">
-<footer class="post-info">
-    <span class="label label-default">Date</span>
-    <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2011-12-26T00:00:00+08:00"> 2011-12-26</time>
-    </span>
-
-
-
-<span class="label label-default">Tags</span>
-	<a href="http://127.0.0.1:8000/tag/gong-yu-shan-qi-shi-bi-xian-li-qi-qi/">工欲善其事必先利其器</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/image2attach/">image2attach</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/kms/">KMS</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/moinmoin/">MoinMoin</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/nginx/">nginx</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/uwsgi/">uwsgi</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/wiz/">wiz</a>
-    
-</footer><!-- /.post-info -->                    </div>
-                </div>
-                <p>去年9月份时候，我写过一篇《<a href="http://log4d.com/2010/09/my-kms">我所使用的知识管理系统</a>》 来介绍我使用的KMS系统。当时经过我层层筛选之后，我选用了Wiz作为我的KMS。</p>
-<p>一年多过去了，Wiz在Windows下面工作的非常不错，Wiz团队里陆续推出了iOS / Android / <a href="http://service.wiz.cn/web/">Web</a>版本。我的Wiz收藏的内容也增加到近1000篇。</p>
-<p>此时我遇到了KMS再选型的问题，原因很简单：我全线转换到Linux平台， Wiz不符合我的要求了。</p>
-<p>我重新整理一下我要求KMS的特性：</p>
-<ul>
-<li>跨平台：Linux / Web / iOS / Android / Windows</li>
-<li>数据保存格式：移植方便，将图片保存到本地</li>
-<li>数据采集方式：支持网络直接拷贝复制</li>
-<li>数据索引：支持分类 + tag</li>
-<li>协同工作：方便的分享机制</li>
-<li>免费</li>
-</ul>
-<p>经过我历时N月的搜寻筛选，MoinMoin Wiki中标了！</p>
-<h2 id="关于moinmoin">1. 关于MoinMoin</h2>
-<p>MoinMoin是使用Python编写的Wiki实现，MoinMoin当前版本1.9。</p>
-<p>MoinMoin的优点是：</p>
-<ul>
-<li>安装简单;</li>
-<li>支持中文全文检索；</li>
-<li>汉化较好；</li>
-<li>不依赖外界的数据库, 使用纯文本保存, 备份非常容易, 直接复制即可。</li>
-<li>支持从html转换到MoinMoin Wiki格式，纯文本的wiki格式比html来的更纯粹，只保存需要的数据，而不保存冗余的样式，MoinMoin这点做的非常好，支持几乎全部html标记的转换。</li>
-</ul>
-<h2 id="安装moinmoin">2. 安装MoinMoin</h2>
-<p>MoinMoin基于Python，因此安装比基于php的MediaWiki麻烦一点。</p>
-<p>你也可以参考<a href="http://moinmo.in/HowTo">官方安装指导（英文）</a>，里面有 Ubuntu / CentOS / SuSE 等系统的安装方法。</p>
-<h3 id="使用moinmoin桌面版最简单">2.1. 使用MoinMoin桌面版（最简单）</h3>
-<p>好在有MoinMoin下载包里面包含了简单的可执行版本，只需3个步骤就可以运行了。</p>
-<ol type="1">
-<li>下载 MoinMoin <a href="https://moinmo.in/MoinMoinDownload">MoinMoinDownload - MoinMoin</a></li>
-<li>解压缩到合适的目录（安装目录）</li>
-<li>运行目录下面的 <code>wikiserver.py</code>
-<ol type="1">
-<li>Linux/Unix：在命令行里面运行 <code>wikiserver.py</code></li>
-<li>Mac：在 <code>wikiserver.py</code> 上面点击右键，选择 <code>open with...</code> - <code>All Applications</code> - <code>Always Open With</code> - <code>Terminal.app</code></li>
-<li>Windows：下载 <a href="http://www.python.org/download/">Python</a> （2.5-2.6）， 安装之后双击 <code>wikiserver.py</code> 运行。</li>
-</ol></li>
-</ol>
-<p>安装好之后，打开浏览器，在地址栏输入 <a href="http://localhost:8080/">http://localhost:8080/</a> 即可访问。</p>
-<p>PS：如果你将MoinMoin安装的优盘，甚至可以做成移动知识库哦~</p>
-<p>更多可以参考 <a href="http://moinmo.in/DesktopEdition">官方DesktopEdition帮助文档（英文）</a></p>
-<h3 id="nginxuwsgi方式程序员适用">2.2. nginx+uWsgi方式（程序员适用）</h3>
-<p><code>wikiserver.py</code> 虽然可以运行，但是作为开发者，我当然要使用效率更高的方式。 运行Python Web应用需要 <code>Appach / ngnix + CGI / FastCGI / uWSGI</code> 环境。 我这里使用nginx + uWSGI进行环境配置。</p>
-<p>Google了N多资料之后，这篇 <a href="http://typedef.me/2011/08/30/archlinux-nginx-uwsgi-moinmoin-setup">ArchLinux 下使用 Nginx + uWSGI 部署 MoinMoin</a> 最是详细，另外还可以参考 <a href="http://garfileo.is-programmer.com/2011/4/24/run-moinmoin-on-uwsgi-and-nginx.26347.html">运行在 nginx 与 uwsgi 之上的 moinmoin</a>。</p>
-<p>我将主要步骤和我的一些修改列出来。</p>
-<h4 id="安装需要软件">2.2.1. 安装需要软件</h4>
-<p>我当前系统是Arch，运行一下命令安装，其他系统也类似</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="ex">pacman</span> -S nginx moinmoin</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="ex">yaourt</span> uwsgi</a></code></pre></div>
-<h4 id="配置moinmoin">2.2.2. 配置MoinMoin</h4>
-<p>默认情况下，moinmoin 被安装在了 <code>/usr/lib/python2.7/site-packages/MoinMoin</code> 和 <code>/usr/moin/share</code> 这两个目录下。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="bu">cd</span> /usr/share/moin/</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="fu">ln</span> -s /usr/share/moin/server/moin.wsgi .</a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="fu">ln</span> -s /usr/share/moin/config/wikiconfig.py .</a></code></pre></div>
-<h4 id="配置nginx">2.2.3. 配置nginx</h4>
-<p>在上文的基础上，我做了一些小修改，我的nginx站点配置如下，我没有使用端口9090 作为uwsgi的监听端口，而是使用了UNIX Sock，这样相对安全一些。</p>
-<p>ps：貌似这个版本的uwsgi 0.9.9.2有点小问题，无法在 <code>/var/run</code> 里面创建sock， 我只能将 <code>uwsgi.sock</code> 放在 <code>/tmp</code> 里面</p>
-<pre class="nginx"><code>server {
+<!DOCTYPE html><html lang=en> <head><title>使用MoinMoin作为个人KMS - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2011/12/moinmoin-kms/ rel=canonical><meta name=author content=alswl><meta name=keywords content=工欲善其事必先利其器,image2attach,KMS,MoinMoin,nginx,uwsgi,wiz><meta name=description content="去年9月份时候，我写过一篇《我所使用的知识管理系统》 来介绍我使用的KMS系统。当时经过我层层筛选之后，我选用了Wiz作为我的KMS。 一年多过去了，Wiz在Windows下面工作的非常不错，Wiz团队里陆续推出了iOS / Android / Web版本。我的Wiz收藏的内容也增加到近1000篇。 此时我遇到了KMS再选型的问题，原因很简单：我全线转换到Linux平台， Wiz不符合我的要求了。 我重新整理一下我要求KMS的特性： 跨平台：Linux / Web / iOS / Android / Windows 数据保存格式：移植方便，将图片保存到本地 数据采集方式：支持网络直接拷贝复制 数据索引：支持分类 + tag 协同工作：方便的分享机制 免费 经过我历时N月的搜寻筛选，MoinMoin Wiki中标了！ 1. 关于MoinMoin MoinMoin是使用Python编写的Wiki实现，MoinMoin当前版本1.9。 MoinMoin的优点是： 安装简单; 支持中文全文检索； 汉化较好； 不依赖外界的数据库, 使用纯文本保存, 备份非常容易 …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2011/12/moinmoin-kms/ rel=bookmark title="Permalink to 使用MoinMoin作为个人KMS"> 使用MoinMoin作为个人KMS </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#关于moinmoin title="1. 关于MoinMoin">1. 关于MoinMoin</a></li><li><a class=toc-href href=#安装moinmoin title="2. 安装MoinMoin">2. 安装MoinMoin</a><ul><li><a class=toc-href href=#使用moinmoin桌面版最简单 title="2.1. 使用MoinMoin桌面版（最简单）">2.1. 使用MoinMoin桌面版（最简单）</a></li><li><a class=toc-href href=#nginxuwsgi方式程序员适用 title="2.2. nginx+uWsgi方式（程序员适用）">2.2. nginx+uWsgi方式（程序员适用）</a><ul><li><a class=toc-href href=#安装需要软件 title="2.2.1. 安装需要软件">2.2.1. 安装需要软件</a></li><li><a class=toc-href href=#配置moinmoin title="2.2.2. 配置MoinMoin">2.2.2. 配置MoinMoin</a></li><li><a class=toc-href href=#配置nginx title="2.2.3. 配置nginx">2.2.3. 配置nginx</a></li><li><a class=toc-href href=#配置启动文件 title="2.2.4. 配置启动文件">2.2.4. 配置启动文件</a></li></ul></li></ul></li><li><a class=toc-href href=#image2attach_2 title="3. Image2Attach">3. Image2Attach</a></li><li><a class=toc-href href=#moinmoin的简单上手 title="4. MoinMoin的简单上手">4. MoinMoin的简单上手</a><ul><li><a class=toc-href href=#安装语言包 title=安装语言包>安装语言包</a></li><li><a class=toc-href href=#如何加入内容 title=如何加入内容>如何加入内容</a></li></ul></li><li><a class=toc-href href=#moinmoin的一些修改_1 title="5. MoinMoin的一些修改">5. MoinMoin的一些修改</a></li><li><a class=toc-href href=#wiz转moinmoin经验 title="6. wiz转MoinMoin经验">6. wiz转MoinMoin经验</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2011-12-26T00:00:00+08:00> 2011-12-26</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/gong-yu-shan-qi-shi-bi-xian-li-qi-qi/ >工欲善其事必先利其器</a> / <a href=https://blog.alswl.com/tag/image2attach/ >image2attach</a> / <a href=https://blog.alswl.com/tag/kms/ >KMS</a> / <a href=https://blog.alswl.com/tag/moinmoin/ >MoinMoin</a> / <a href=https://blog.alswl.com/tag/nginx/ >nginx</a> / <a href=https://blog.alswl.com/tag/uwsgi/ >uwsgi</a> / <a href=https://blog.alswl.com/tag/wiz/ >wiz</a> </footer><!-- /.post-info --> </div> </div> <p>去年9月份时候，我写过一篇《<a href=http://log4d.com/2010/09/my-kms>我所使用的知识管理系统</a>》 来介绍我使用的KMS系统。当时经过我层层筛选之后，我选用了Wiz作为我的KMS。</p> <p>一年多过去了，Wiz在Windows下面工作的非常不错，Wiz团队里陆续推出了iOS / Android / <a href=http://service.wiz.cn/web/ >Web</a>版本。我的Wiz收藏的内容也增加到近1000篇。</p> <p>此时我遇到了KMS再选型的问题，原因很简单：我全线转换到Linux平台， Wiz不符合我的要求了。</p> <p>我重新整理一下我要求KMS的特性：</p> <ul> <li>跨平台：Linux / Web / iOS / Android / Windows</li> <li>数据保存格式：移植方便，将图片保存到本地</li> <li>数据采集方式：支持网络直接拷贝复制</li> <li>数据索引：支持分类 + tag</li> <li>协同工作：方便的分享机制</li> <li>免费</li> </ul> <p>经过我历时N月的搜寻筛选，MoinMoin Wiki中标了！</p> <h2 id=关于moinmoin>1. 关于MoinMoin</h2> <p>MoinMoin是使用Python编写的Wiki实现，MoinMoin当前版本1.9。</p> <p>MoinMoin的优点是：</p> <ul> <li>安装简单;</li> <li>支持中文全文检索；</li> <li>汉化较好；</li> <li>不依赖外界的数据库, 使用纯文本保存, 备份非常容易, 直接复制即可。</li> <li>支持从html转换到MoinMoin Wiki格式，纯文本的wiki格式比html来的更纯粹，只保存需要的数据，而不保存冗余的样式，MoinMoin这点做的非常好，支持几乎全部html标记的转换。</li> </ul> <h2 id=安装moinmoin>2. 安装MoinMoin</h2> <p>MoinMoin基于Python，因此安装比基于php的MediaWiki麻烦一点。</p> <p>你也可以参考<a href=http://moinmo.in/HowTo>官方安装指导（英文）</a>，里面有 Ubuntu / CentOS / SuSE 等系统的安装方法。</p> <h3 id=使用moinmoin桌面版最简单>2.1. 使用MoinMoin桌面版（最简单）</h3> <p>好在有MoinMoin下载包里面包含了简单的可执行版本，只需3个步骤就可以运行了。</p> <ol type=1> <li>下载 MoinMoin <a href=https://moinmo.in/MoinMoinDownload>MoinMoinDownload - MoinMoin</a></li> <li>解压缩到合适的目录（安装目录）</li> <li>运行目录下面的 <code>wikiserver.py</code> <ol type=1> <li>Linux/Unix：在命令行里面运行 <code>wikiserver.py</code></li> <li>Mac：在 <code>wikiserver.py</code> 上面点击右键，选择 <code>open with...</code> - <code>All Applications</code> - <code>Always Open With</code> - <code>Terminal.app</code></li> <li>Windows：下载 <a href=http://www.python.org/download/ >Python</a> （2.5-2.6）， 安装之后双击 <code>wikiserver.py</code> 运行。</li> </ol></li> </ol> <p>安装好之后，打开浏览器，在地址栏输入 <a href=http://localhost:8080/ >http://localhost:8080/</a> 即可访问。</p> <p>PS：如果你将MoinMoin安装的优盘，甚至可以做成移动知识库哦~</p> <p>更多可以参考 <a href=http://moinmo.in/DesktopEdition>官方DesktopEdition帮助文档（英文）</a></p> <h3 id=nginxuwsgi方式程序员适用>2.2. nginx+uWsgi方式（程序员适用）</h3> <p><code>wikiserver.py</code> 虽然可以运行，但是作为开发者，我当然要使用效率更高的方式。 运行Python Web应用需要 <code>Appach / ngnix + CGI / FastCGI / uWSGI</code> 环境。 我这里使用nginx + uWSGI进行环境配置。</p> <p>Google了N多资料之后，这篇 <a href=http://typedef.me/2011/08/30/archlinux-nginx-uwsgi-moinmoin-setup>ArchLinux 下使用 Nginx + uWSGI 部署 MoinMoin</a> 最是详细，另外还可以参考 <a href=http://garfileo.is-programmer.com/2011/4/24/run-moinmoin-on-uwsgi-and-nginx.26347.html>运行在 nginx 与 uwsgi 之上的 moinmoin</a>。</p> <p>我将主要步骤和我的一些修改列出来。</p> <h4 id=安装需要软件>2.2.1. 安装需要软件</h4> <p>我当前系统是Arch，运行一下命令安装，其他系统也类似</p> <div class=sourceCode id=cb1><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb1-1 title=1><span class=ex>pacman</span> -S nginx moinmoin</a>
+<a class=sourceLine id=cb1-2 title=2><span class=ex>yaourt</span> uwsgi</a></code></pre></div> <h4 id=配置moinmoin>2.2.2. 配置MoinMoin</h4> <p>默认情况下，moinmoin 被安装在了 <code>/usr/lib/python2.7/site-packages/MoinMoin</code> 和 <code>/usr/moin/share</code> 这两个目录下。</p> <div class=sourceCode id=cb2><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb2-1 title=1><span class=bu>cd</span> /usr/share/moin/</a>
+<a class=sourceLine id=cb2-2 title=2><span class=fu>ln</span> -s /usr/share/moin/server/moin.wsgi .</a>
+<a class=sourceLine id=cb2-3 title=3><span class=fu>ln</span> -s /usr/share/moin/config/wikiconfig.py .</a></code></pre></div> <h4 id=配置nginx>2.2.3. 配置nginx</h4> <p>在上文的基础上，我做了一些小修改，我的nginx站点配置如下，我没有使用端口9090 作为uwsgi的监听端口，而是使用了UNIX Sock，这样相对安全一些。</p> <p>ps：貌似这个版本的uwsgi 0.9.9.2有点小问题，无法在 <code>/var/run</code> 里面创建sock， 我只能将 <code>uwsgi.sock</code> 放在 <code>/tmp</code> 里面</p> <pre class=nginx><code>server {
         listen       80;
         server_name  wiki.localhost;
         location /{
@@ -175,219 +14,75 @@ Log4D            </a>
         }
 }
 
-# vim: set ft=conf:</code></pre>
-<h4 id="配置启动文件">2.2.4. 配置启动文件</h4>
-<p>因为使用 UNIX Sock 连接，所以 <code>/etc/rc.d/uwsgi</code> 启动文件也略做修改（ Ubunt 的启动配置文件在 <code>/etc/init.d/</code> 下面）， 加入了 <code>SOCK</code> ，同时我为 uwsgi 指定运行用户 <code>http</code> ，避免root启动带来的安全隐患。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="co">#!/bin/bash</span></a>
-<a class="sourceLine" id="cb4-2" title="2"></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="co">#PORT=9090</span></a>
-<a class="sourceLine" id="cb4-4" title="4"></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="va">SOCK=</span>/tmp/uwsgi.sock</a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="va">PROCESSES=</span>4</a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="va">USER=</span>httpLOG=<span class="ex">/var/log/uwsgi.log</span></a>
-<a class="sourceLine" id="cb4-8" title="8"><span class="va">PID=</span><span class="kw">`</span><span class="fu">pidof</span> -o %PPID /usr/bin/uwsgi<span class="kw">`</span></a>
-<a class="sourceLine" id="cb4-9" title="9"></a>
-<a class="sourceLine" id="cb4-10" title="10"><span class="bu">.</span> <span class="ex">/etc/rc.conf</span></a>
-<a class="sourceLine" id="cb4-11" title="11"><span class="bu">.</span> <span class="ex">/etc/rc.d/functions</span></a>
-<a class="sourceLine" id="cb4-12" title="12"></a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="kw">case</span> <span class="st">"</span><span class="va">$1</span><span class="st">"</span><span class="kw"> in</span></a>
-<a class="sourceLine" id="cb4-14" title="14">    start<span class="kw">)</span></a>
-<a class="sourceLine" id="cb4-15" title="15">        <span class="ex">stat_busy</span> <span class="st">"Starting uwsgi"</span></a>
-<a class="sourceLine" id="cb4-16" title="16">        <span class="kw">if</span><span class="bu"> [</span> <span class="ot">-n</span> <span class="st">"</span><span class="va">$PID</span><span class="st">"</span><span class="bu"> ]</span>; <span class="kw">then</span></a>
-<a class="sourceLine" id="cb4-17" title="17">            <span class="ex">stat_busy</span> <span class="st">"uwsgi is already running"</span></a>
-<a class="sourceLine" id="cb4-18" title="18">            <span class="ex">stat_die</span></a>
-<a class="sourceLine" id="cb4-19" title="19">        <span class="kw">else</span></a>
-<a class="sourceLine" id="cb4-20" title="20">            <span class="co">#uwsgi --uid $USER -s ":$PORT" -M -p $PROCESSES -d $LOG &amp;&gt; /dev/null # use socket port</span></a>
-<a class="sourceLine" id="cb4-21" title="21">            <span class="ex">uwsgi</span> --uid <span class="va">$USER</span> --socket <span class="va">$SOCK</span> -M -p <span class="va">$PROCESSES</span> -d <span class="va">$LOG</span> <span class="op">&amp;&gt;</span> /dev/null <span class="co"># use unix sock</span></a>
-<a class="sourceLine" id="cb4-22" title="22">            <span class="ex">add_daemon</span> uwsgi</a>
-<a class="sourceLine" id="cb4-23" title="23">            <span class="ex">stat_done</span></a>
-<a class="sourceLine" id="cb4-24" title="24">        <span class="kw">fi</span></a>
-<a class="sourceLine" id="cb4-25" title="25">        <span class="kw">;;</span></a>
-<a class="sourceLine" id="cb4-26" title="26">    stop<span class="kw">)</span></a>
-<a class="sourceLine" id="cb4-27" title="27">        <span class="ex">stat_busy</span> <span class="st">"Stopping uwsgi"</span></a>
-<a class="sourceLine" id="cb4-28" title="28">        <span class="fu">killall</span> -QUIT uwsgi <span class="op">&amp;&gt;</span> /dev/null</a>
-<a class="sourceLine" id="cb4-29" title="29">        <span class="ex">rm_daemon</span> uwsgi</a>
-<a class="sourceLine" id="cb4-30" title="30">        <span class="ex">stat_done</span></a>
-<a class="sourceLine" id="cb4-31" title="31">        <span class="kw">;;</span></a>
-<a class="sourceLine" id="cb4-32" title="32">    restart<span class="kw">)</span></a>
-<a class="sourceLine" id="cb4-33" title="33">        <span class="va">$0</span> <span class="ex">stop</span></a>
-<a class="sourceLine" id="cb4-34" title="34">        <span class="fu">sleep</span> 1</a>
-<a class="sourceLine" id="cb4-35" title="35">        <span class="va">$0</span> <span class="ex">start</span></a>
-<a class="sourceLine" id="cb4-36" title="36">        <span class="kw">;;</span></a>
-<a class="sourceLine" id="cb4-37" title="37">    *<span class="kw">)</span></a>
-<a class="sourceLine" id="cb4-38" title="38">        <span class="bu">echo</span> <span class="st">"usage: </span><span class="va">$0</span><span class="st"> {start|stop|restart}"</span></a>
-<a class="sourceLine" id="cb4-39" title="39"><span class="kw">esac</span></a>
-<a class="sourceLine" id="cb4-40" title="40"><span class="bu">exit</span> 0</a></code></pre></div>
-<h2 id="image2attach_2">3. Image2Attach</h2>
-<p>去年我选择Wiz而不选择Wiki类产品时候，是考虑到一个图片保存本地化的问题。 即保存一篇网页时候，要将里面的图片保存到本地，而不是使用链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。</p>
-<p>Wiz使用的方案是使用mht格式将图片保存在问题，而大部分 Wiki，包括 MoinMoin 都以 文本的形式保存数据，那就无法保存远程图片了。</p>
-<p>经我研究，MoinMoin 中有附件的方法可以保存文件，并且当这种附件存放的是图片文件时， 也可以直接使用 <code>{{attachment:xxx.jpg}}</code> 这样的 Wiki 语法来查看图片。</p>
-<p>我尝试在 MoinMoin 插件库里面找将远程图片本地化的插件未果，于是就花了一个星期左右 时间写了一个实现这样功能的插件 Image2Attach。</p>
-<p>更多使用可以参考这篇文章 <a href="http://log4d.com/2011/12/moinmoin-plugin-image2attach">MoinMoin plugin: image2attach v0.0.2 released</a></p>
-<p>所以说，当程序员就是好，功能没有就自己实现呗。</p>
-<h2 id="moinmoin的简单上手">4. MoinMoin的简单上手</h2>
-<p><span class="citation" data-cites="张刚">[@张刚]</span>(http://zhanggang.net/) 同学发邮件给我和我交流了两个问题，我顺便整理到这里。（2011-12-28更新）</p>
-<h3 id="安装语言包">安装语言包</h3>
-<ul>
-<li>首先请确保当前登录账户是超级用户，超级用户设置在 <code>/usr/share/moin/wikiconfig.py</code> （可能路径有所差异）里面的 <code>superuser = [u"yourid"]</code> ，加入你需要设定的用户id</li>
-<li>中文界面会根据浏览器语言设定获取，而相应的中文帮助文件默认没有安装，我建议安装。安装步骤如下：
-<ul>
-<li>访问http://localhost/LanguageSetup，里面有安装文档链接http://localhost/LanguageSetup?action=language_setup</li>
-<li>在http://wiki.localhost/LanguageSetup?action=language_setup中，选择 <code>Simplified_Chinese</code> 点击最下面 <code>all_pages</code></li>
-<li>同时我也建议安装英文版本的 <code>all_pages</code> ，因为中文有一些翻译不全。</li>
-</ul></li>
-</ul>
-<p>更多的中文信息你可以访问<a href="http://master.moinmo.in/%E9%A6%96%E9%A1%B5">MoinMoin主版本中文网站</a>。</p>
-<h3 id="如何加入内容">如何加入内容</h3>
-<p>下面是我自己总结的步骤，目前工作的还不错。</p>
-<ul>
-<li>进入新页面http://localhost/newpage，如果不存在就会创建新页面</li>
-<li>默认是文本模式编辑器，切换到图形编辑模式（默认编辑器可以在个人设置里面修改）</li>
-<li>从某个网页粘帖内容到图形编辑模式（这个图形编辑器是CKEditor的精简版）。</li>
-<li>查看图形编辑器原始码，再返回&ldquo;所见即所得&rdquo;状态（这个步骤可以去除一些空格）</li>
-<li>返回文本模式编辑器，MoinMoin会自动转换html-&gt;wiki（目前我遇到3个bug，中文开头空格/BR换行/fieldset，前两个我已经修 复，diff文件在<a href="https://4ocf5n.dijingchao.com/upload_dropbox/201112/moinmoin.diff">https://4ocf5n.dijingchao.com/upload_dropbox/201112/moinmoin.diff</a>）</li>
-<li>人工审核一下wiki，也顺便仔细看看文章内容</li>
-<li>加入Category，预览，保存</li>
-</ul>
-<h2 id="moinmoin的一些修改_1">5. MoinMoin的一些修改</h2>
-<p>在使用MoinMoin这段时间，我发现了一些小问题，就对源码做了一些小修改。 当然如果你觉得麻烦，不做这些修改也一样可以使用的很好。</p>
-<p>我修改了 <code>/usr/lib/python2.7/site-packages/MoinMoin/converter/text_html_text_moin_wiki.py</code> 这个文件。点击 <a href="https://4ocf5n.dijingchao.com/upload_dropbox/201112/moinmoin.diff">diff文件</a>下载。</p>
-<h2 id="wiz转moinmoin经验">6. wiz转MoinMoin经验</h2>
-<p>Wiz中数据存储格式其实是mht，微软的鸟东西，数据转换颇为不方便。</p>
-<p>第一种方法是借助Wiz Web服务，Wiz小组推出的 <a href="http://service.wiz.cn/web">Web服务</a> 可以很方便的查看所有同步 过的内容，里面就是标准的html代码了，直接可以复制粘帖。Wiz的Web端图片也不用 Cookie认证，取到图片地址就可以抓取了。</p>
-<p>另一种办法就是使用Wiz的导出功能，导出成mht格式， 然后使用MoinMoin站点提供的插件 <a href="http://moinmo.in/MicrosoftWordConverter">Word2Moin</a> 脚本进行转换。</p>
-<p>我使用的方法是第一种。</p>
+# vim: set ft=conf:</code></pre> <h4 id=配置启动文件>2.2.4. 配置启动文件</h4> <p>因为使用 UNIX Sock 连接，所以 <code>/etc/rc.d/uwsgi</code> 启动文件也略做修改（ Ubunt 的启动配置文件在 <code>/etc/init.d/</code> 下面）， 加入了 <code>SOCK</code> ，同时我为 uwsgi 指定运行用户 <code>http</code> ，避免root启动带来的安全隐患。</p> <div class=sourceCode id=cb4><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb4-1 title=1><span class=co>#!/bin/bash</span></a>
+<a class=sourceLine id=cb4-2 title=2></a>
+<a class=sourceLine id=cb4-3 title=3><span class=co>#PORT=9090</span></a>
+<a class=sourceLine id=cb4-4 title=4></a>
+<a class=sourceLine id=cb4-5 title=5><span class=va>SOCK=</span>/tmp/uwsgi.sock</a>
+<a class=sourceLine id=cb4-6 title=6><span class=va>PROCESSES=</span>4</a>
+<a class=sourceLine id=cb4-7 title=7><span class=va>USER=</span>httpLOG=<span class=ex>/var/log/uwsgi.log</span></a>
+<a class=sourceLine id=cb4-8 title=8><span class=va>PID=</span><span class=kw>`</span><span class=fu>pidof</span> -o %PPID /usr/bin/uwsgi<span class=kw>`</span></a>
+<a class=sourceLine id=cb4-9 title=9></a>
+<a class=sourceLine id=cb4-10 title=10><span class=bu>.</span> <span class=ex>/etc/rc.conf</span></a>
+<a class=sourceLine id=cb4-11 title=11><span class=bu>.</span> <span class=ex>/etc/rc.d/functions</span></a>
+<a class=sourceLine id=cb4-12 title=12></a>
+<a class=sourceLine id=cb4-13 title=13><span class=kw>case</span> <span class=st>"</span><span class=va>$1</span><span class=st>"</span><span class=kw> in</span></a>
+<a class=sourceLine id=cb4-14 title=14>    start<span class=kw>)</span></a>
+<a class=sourceLine id=cb4-15 title=15>        <span class=ex>stat_busy</span> <span class=st>"Starting uwsgi"</span></a>
+<a class=sourceLine id=cb4-16 title=16>        <span class=kw>if</span><span class=bu> [</span> <span class=ot>-n</span> <span class=st>"</span><span class=va>$PID</span><span class=st>"</span><span class=bu> ]</span>; <span class=kw>then</span></a>
+<a class=sourceLine id=cb4-17 title=17>            <span class=ex>stat_busy</span> <span class=st>"uwsgi is already running"</span></a>
+<a class=sourceLine id=cb4-18 title=18>            <span class=ex>stat_die</span></a>
+<a class=sourceLine id=cb4-19 title=19>        <span class=kw>else</span></a>
+<a class=sourceLine id=cb4-20 title=20>            <span class=co>#uwsgi --uid $USER -s ":$PORT" -M -p $PROCESSES -d $LOG &amp;&gt; /dev/null # use socket port</span></a>
+<a class=sourceLine id=cb4-21 title=21>            <span class=ex>uwsgi</span> --uid <span class=va>$USER</span> --socket <span class=va>$SOCK</span> -M -p <span class=va>$PROCESSES</span> -d <span class=va>$LOG</span> <span class=op>&amp;&gt;</span> /dev/null <span class=co># use unix sock</span></a>
+<a class=sourceLine id=cb4-22 title=22>            <span class=ex>add_daemon</span> uwsgi</a>
+<a class=sourceLine id=cb4-23 title=23>            <span class=ex>stat_done</span></a>
+<a class=sourceLine id=cb4-24 title=24>        <span class=kw>fi</span></a>
+<a class=sourceLine id=cb4-25 title=25>        <span class=kw>;;</span></a>
+<a class=sourceLine id=cb4-26 title=26>    stop<span class=kw>)</span></a>
+<a class=sourceLine id=cb4-27 title=27>        <span class=ex>stat_busy</span> <span class=st>"Stopping uwsgi"</span></a>
+<a class=sourceLine id=cb4-28 title=28>        <span class=fu>killall</span> -QUIT uwsgi <span class=op>&amp;&gt;</span> /dev/null</a>
+<a class=sourceLine id=cb4-29 title=29>        <span class=ex>rm_daemon</span> uwsgi</a>
+<a class=sourceLine id=cb4-30 title=30>        <span class=ex>stat_done</span></a>
+<a class=sourceLine id=cb4-31 title=31>        <span class=kw>;;</span></a>
+<a class=sourceLine id=cb4-32 title=32>    restart<span class=kw>)</span></a>
+<a class=sourceLine id=cb4-33 title=33>        <span class=va>$0</span> <span class=ex>stop</span></a>
+<a class=sourceLine id=cb4-34 title=34>        <span class=fu>sleep</span> 1</a>
+<a class=sourceLine id=cb4-35 title=35>        <span class=va>$0</span> <span class=ex>start</span></a>
+<a class=sourceLine id=cb4-36 title=36>        <span class=kw>;;</span></a>
+<a class=sourceLine id=cb4-37 title=37>    *<span class=kw>)</span></a>
+<a class=sourceLine id=cb4-38 title=38>        <span class=bu>echo</span> <span class=st>"usage: </span><span class=va>$0</span><span class=st> {start|stop|restart}"</span></a>
+<a class=sourceLine id=cb4-39 title=39><span class=kw>esac</span></a>
+<a class=sourceLine id=cb4-40 title=40><span class=bu>exit</span> 0</a></code></pre></div> <h2 id=image2attach_2>3. Image2Attach</h2> <p>去年我选择Wiz而不选择Wiki类产品时候，是考虑到一个图片保存本地化的问题。 即保存一篇网页时候，要将里面的图片保存到本地，而不是使用链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。</p> <p>Wiz使用的方案是使用mht格式将图片保存在问题，而大部分 Wiki，包括 MoinMoin 都以 文本的形式保存数据，那就无法保存远程图片了。</p> <p>经我研究，MoinMoin 中有附件的方法可以保存文件，并且当这种附件存放的是图片文件时， 也可以直接使用 <code>{{attachment:xxx.jpg}}</code> 这样的 Wiki 语法来查看图片。</p> <p>我尝试在 MoinMoin 插件库里面找将远程图片本地化的插件未果，于是就花了一个星期左右 时间写了一个实现这样功能的插件 Image2Attach。</p> <p>更多使用可以参考这篇文章 <a href=http://log4d.com/2011/12/moinmoin-plugin-image2attach>MoinMoin plugin: image2attach v0.0.2 released</a></p> <p>所以说，当程序员就是好，功能没有就自己实现呗。</p> <h2 id=moinmoin的简单上手>4. MoinMoin的简单上手</h2> <p><span class=citation data-cites=张刚>[@张刚]</span>(http://zhanggang.net/) 同学发邮件给我和我交流了两个问题，我顺便整理到这里。（2011-12-28更新）</p> <h3 id=安装语言包>安装语言包</h3> <ul> <li>首先请确保当前登录账户是超级用户，超级用户设置在 <code>/usr/share/moin/wikiconfig.py</code> （可能路径有所差异）里面的 <code>superuser = [u"yourid"]</code> ，加入你需要设定的用户id</li> <li>中文界面会根据浏览器语言设定获取，而相应的中文帮助文件默认没有安装，我建议安装。安装步骤如下： <ul> <li>访问http://localhost/LanguageSetup，里面有安装文档链接http://localhost/LanguageSetup?action=language_setup</li> <li>在http://wiki.localhost/LanguageSetup?action=language_setup中，选择 <code>Simplified_Chinese</code> 点击最下面 <code>all_pages</code></li> <li>同时我也建议安装英文版本的 <code>all_pages</code> ，因为中文有一些翻译不全。</li> </ul></li> </ul> <p>更多的中文信息你可以访问<a href=http://master.moinmo.in/%E9%A6%96%E9%A1%B5>MoinMoin主版本中文网站</a>。</p> <h3 id=如何加入内容>如何加入内容</h3> <p>下面是我自己总结的步骤，目前工作的还不错。</p> <ul> <li>进入新页面http://localhost/newpage，如果不存在就会创建新页面</li> <li>默认是文本模式编辑器，切换到图形编辑模式（默认编辑器可以在个人设置里面修改）</li> <li>从某个网页粘帖内容到图形编辑模式（这个图形编辑器是CKEditor的精简版）。</li> <li>查看图形编辑器原始码，再返回&ldquo;所见即所得&rdquo;状态（这个步骤可以去除一些空格）</li> <li>返回文本模式编辑器，MoinMoin会自动转换html-&gt;wiki（目前我遇到3个bug，中文开头空格/BR换行/fieldset，前两个我已经修 复，diff文件在<a href=https://4ocf5n.dijingchao.com/upload_dropbox/201112/moinmoin.diff>https://4ocf5n.dijingchao.com/upload_dropbox/201112/moinmoin.diff</a>）</li> <li>人工审核一下wiki，也顺便仔细看看文章内容</li> <li>加入Category，预览，保存</li> </ul> <h2 id=moinmoin的一些修改_1>5. MoinMoin的一些修改</h2> <p>在使用MoinMoin这段时间，我发现了一些小问题，就对源码做了一些小修改。 当然如果你觉得麻烦，不做这些修改也一样可以使用的很好。</p> <p>我修改了 <code>/usr/lib/python2.7/site-packages/MoinMoin/converter/text_html_text_moin_wiki.py</code> 这个文件。点击 <a href=https://4ocf5n.dijingchao.com/upload_dropbox/201112/moinmoin.diff>diff文件</a>下载。</p> <h2 id=wiz转moinmoin经验>6. wiz转MoinMoin经验</h2> <p>Wiz中数据存储格式其实是mht，微软的鸟东西，数据转换颇为不方便。</p> <p>第一种方法是借助Wiz Web服务，Wiz小组推出的 <a href=http://service.wiz.cn/web>Web服务</a> 可以很方便的查看所有同步 过的内容，里面就是标准的html代码了，直接可以复制粘帖。Wiz的Web端图片也不用 Cookie认证，取到图片地址就可以抓取了。</p> <p>另一种办法就是使用Wiz的导出功能，导出成mht格式， 然后使用MoinMoin站点提供的插件 <a href=http://moinmo.in/MicrosoftWordConverter>Word2Moin</a> 脚本进行转换。</p> <p>我使用的方法是第一种。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2011/12/moinmoin-kms/ >https://blog.alswl.com/2011/12/moinmoin-kms/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-            </div>
-            <!-- /.entry-content -->
-              
-<hr>
-<div class="panel">
-<div class="panel-body">
-   <small>原文链接: <a href="https://blog.alswl.com/2011/12/moinmoin-kms/">https://blog.alswl.com/2011/12/moinmoin-kms/</a></small><br>
-   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
-</div>
-</div>
+                    var disqus_identifier = 'moinmoin-kms';
+                var disqus_url = 'https://blog.alswl.com/2011/12/moinmoin-kms/';
 
-        </article>
-    </section>
+            var disqus_config = function () {
+                this.language = "en";
+            };
 
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2021 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2021 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -401,7 +96,4 @@ Log4D            </a>
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>

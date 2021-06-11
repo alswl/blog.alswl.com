@@ -1,163 +1,14 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>一周Python小记 - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-<link rel="canonical" href="http://127.0.0.1:8000/2010/11/a-week-python/">
-
-        <meta name="author" content="alswl" />
-        <meta name="keywords" content="Python,pymssql,PyYAML,YAML" />
-        <meta name="description" content="上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。 一、配置文件 1、YAML格式 数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。 YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成对应的格式变量。 之所以选择YAML，是看中它对语言的亲和性和可读性，GAE的配置文件就是YAML格式。YAML的语法相当简单，用:来分隔key: value，用 - 来分隔列表，注意点是缩进需要用空格，关键符号和内容之间要加上一个空格。我的配置文件如下： taskId: PQMI06 taskName: 测试建制作业 author: alswl confirmId: 20101025xxx headFiles: head1.txt head2.txt head3.txt bodyFiles: body1.txt body2.txt …" />
-
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
-
-    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="http://127.0.0.1:8000/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-    <section id="content">
-        <article class="article-detail">
-            <header class="page-header">
-                <h1 class="title">
-                    <a href="http://127.0.0.1:8000/2010/11/a-week-python/"
-                       rel="bookmark"
-                       title="Permalink to 一周Python小记">
-                        一周Python小记
-                    </a>
-                </h1>
-                <nav class="toc col-lg-2">
-                  <div id="toc"><ul><li><a class="toc-href" href="#一配置文件" title="一、配置文件">一、配置文件</a><ul><li><a class="toc-href" href="#yaml格式" title="1、YAML格式">1、YAML格式</a></li></ul></li><li><a class="toc-href" href="#二数据库连接-pymssql_1" title="二、数据库连接-pymssql">二、数据库连接-pymssql</a></li><li><a class="toc-href" href="#三脚本运行完之后继续操作" title="三、脚本运行完之后继续操作">三、脚本运行完之后继续操作</a></li></ul></div>
-                </nav>
-            </header>
-            <div class="entry-content">
-                <div class="panel">
-                    <div class="panel-body">
-<footer class="post-info">
-    <span class="label label-default">Date</span>
-    <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2010-11-09T00:00:00+08:00"> 2010-11-09</time>
-    </span>
-
-
-
-<span class="label label-default">Tags</span>
-	<a href="http://127.0.0.1:8000/tag/python/">Python</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/pymssql/">pymssql</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/pyyaml/">PyYAML</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/yaml/">YAML</a>
-    
-</footer><!-- /.post-info -->                    </div>
-                </div>
-                <p>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。</p>
-<h2 id="一配置文件">一、配置文件</h2>
-<h3 id="yaml格式">1、YAML格式</h3>
-<p>数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。</p>
-<p>YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成对应的格式变量。</p>
-<p>之所以选择YAML，是看中它对语言的亲和性和可读性，GAE的配置文件就是YAML格式。YAML的语法相当简单，用:来分隔key: value，用 - 来分隔列表，注意点是缩进需要用空格，关键符号和内容之间要加上一个空格。我的配置文件如下：</p>
-<pre><code>taskId: PQMI06
+<!DOCTYPE html><html lang=en> <head><title>一周Python小记 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2010/11/a-week-python/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Python,pymssql,PyYAML,YAML><meta name=description content="上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。 一、配置文件 1、YAML格式 数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。 YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成对应的格式变量。 之所以选择YAML，是看中它对语言的亲和性和可读性，GAE的配置文件就是YAML格式。YAML的语法相当简单，用:来分隔key: value，用 - 来分隔列表，注意点是缩进需要用空格，关键符号和内容之间要加上一个空格。我的配置文件如下： taskId: PQMI06 taskName: 测试建制作业 author: alswl confirmId: 20101025xxx headFiles: head1.txt head2.txt head3.txt bodyFiles: body1.txt body2.txt …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2010/11/a-week-python/ rel=bookmark title="Permalink to 一周Python小记"> 一周Python小记 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#一配置文件 title=一、配置文件>一、配置文件</a><ul><li><a class=toc-href href=#yaml格式 title=1、YAML格式>1、YAML格式</a></li></ul></li><li><a class=toc-href href=#二数据库连接-pymssql_1 title=二、数据库连接-pymssql>二、数据库连接-pymssql</a></li><li><a class=toc-href href=#三脚本运行完之后继续操作 title=三、脚本运行完之后继续操作>三、脚本运行完之后继续操作</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2010-11-09T00:00:00+08:00> 2010-11-09</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/python/ >Python</a> / <a href=https://blog.alswl.com/tag/pymssql/ >pymssql</a> / <a href=https://blog.alswl.com/tag/pyyaml/ >PyYAML</a> / <a href=https://blog.alswl.com/tag/yaml/ >YAML</a> </footer><!-- /.post-info --> </div> </div> <p>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。</p> <h2 id=一配置文件>一、配置文件</h2> <h3 id=yaml格式>1、YAML格式</h3> <p>数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。</p> <p>YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成对应的格式变量。</p> <p>之所以选择YAML，是看中它对语言的亲和性和可读性，GAE的配置文件就是YAML格式。YAML的语法相当简单，用:来分隔key: value，用 - 来分隔列表，注意点是缩进需要用空格，关键符号和内容之间要加上一个空格。我的配置文件如下：</p> <pre><code>taskId: PQMI06
 taskName: 测试建制作业
 author: alswl
-confirmId: 20101025xxx</code></pre>
-<p>headFiles:</p>
-<ul>
-<li>head1.txt<br/>
-</li>
-<li>head2.txt<br/>
-</li>
-<li><p>head3.txt<br/>
-bodyFiles:</p></li>
-<li>body1.txt<br/>
-</li>
-<li>body2.txt<br/>
-</li>
-<li><p>body3.txt</p></li>
-</ul>
-<p>qbe: qbe.txt</p>
-<p>qbeGrid: qbegrid.txt</p>
-<p>server: 172.16.1.20</p>
-<p>user: sa</p>
-<p>dbpassword: 518518</p>
-<p>databaseSys: ebChainSys30_0</p>
-<p>databaseSyn: ebChainSyn30_0</p>
-<p>YAML可以用VIM或者notepad++进行编辑，两者都对YAML提供语法高亮支持（博客的SyantaxHighLighter不支持~）。</p>
-<p>相关链接：<a href="http://www.yaml.org/">YAML的官方网站</a>（网站的分隔就是YAML格式，相当有趣） <a href="http://www.ibm.com/developerworks/cn/xml/x-cn-yamlintro/">YAML简介</a>（来自IBM）</p>
-<p>2、PyYAML</p>
-<p>Python有几种YAML的实现，我这里推荐使用PyYAML，比较流行的模块，毕竟我这里只需要简单的读写操作。</p>
-<p>PyYAML通过官方宣称的神奇的yaml.load()方法载入YAML文件，可以将列表识别为list和dictionary，通过key可以直接读取对应的值。</p>
-<p>我的Demo代码如下：</p>
-<pre><code>#coding=utf-8
+confirmId: 20101025xxx</code></pre> <p>headFiles:</p> <ul> <li>head1.txt<br> </li> <li>head2.txt<br> </li> <li><p>head3.txt<br> bodyFiles:</p></li> <li>body1.txt<br> </li> <li>body2.txt<br> </li> <li><p>body3.txt</p></li> </ul> <p>qbe: qbe.txt</p> <p>qbeGrid: qbegrid.txt</p> <p>server: 172.16.1.20</p> <p>user: sa</p> <p>dbpassword: 518518</p> <p>databaseSys: ebChainSys30_0</p> <p>databaseSyn: ebChainSyn30_0</p> <p>YAML可以用VIM或者notepad++进行编辑，两者都对YAML提供语法高亮支持（博客的SyantaxHighLighter不支持~）。</p> <p>相关链接：<a href=http://www.yaml.org/ >YAML的官方网站</a>（网站的分隔就是YAML格式，相当有趣） <a href=http://www.ibm.com/developerworks/cn/xml/x-cn-yamlintro/ >YAML简介</a>（来自IBM）</p> <p>2、PyYAML</p> <p>Python有几种YAML的实现，我这里推荐使用PyYAML，比较流行的模块，毕竟我这里只需要简单的读写操作。</p> <p>PyYAML通过官方宣称的神奇的yaml.load()方法载入YAML文件，可以将列表识别为list和dictionary，通过key可以直接读取对应的值。</p> <p>我的Demo代码如下：</p> <pre><code>#coding=utf-8
 '''
 全局配置文件
 alswl
 20101026
 '''
 import os
-import yaml</code></pre>
-<p>rootPath = os.path.normpath(os.path.dirname(<strong>file</strong>) + &lsquo;..&rsquo;)</p>
-<p>configFile = open(rootPath + &rsquo;&lsquo;&rsquo;inconfig.yaml&rsquo;&rsquo;&rsquo;)</p>
-<p>configYaml = configFile.read()</p>
-<p>configFile.close()</p>
-<p>CONFIG = yaml.load(configYaml)</p>
-<p>通过上面的方法，我就能获取CONFIG这个变量，然后设置为全局变量使用了。</p>
-<p>上面代码中一个小技巧就是使用os.path.dirname(<strong>file</strong>)获取当前的路径的父路径，在通过normpath转换为绝对路径，这样可以使用配置 文件的相对路径，以方便文件的迁移。（使用sys.path[0]也能获取文件运行路径，两者略有小区别）</p>
-<p>相关链接：<a href="http://pyyaml.org/">PyYAML的官网</a> <a href="http://pyyaml.org/dow%20nload/pyyaml/PyYAML-3.09.win32-py2.6.exe">PyYAML_3.09-2.6下载</a></p>
-<h2 id="二数据库连接-pymssql_1">二、数据库连接-pymssql</h2>
-<p>Python连接MSSQL有多种模块选择，我选用pymssql。pymssql可以在<a href="http://code.google.com/p/pymssq%20l/">这里</a>下载到。我使用的版本是1.9.908。</p>
-<p>其他的一些数据库连接模块，可以参考这里：<a href="http://wiki.woodpecker.org.cn/moin/Py4Database">Py4Database - Woodpecker Wiki for CPUG</a>以及<a href="http://wiki.woodpecker.org.cn/moin/DatabaseModules">DatabaseModules - Woodpecker Wiki for CPUG</a></p>
-<p>很不幸的是，pymssql在IDLE下面会导致IDLE崩溃（经我测试，只要import _mssql就会崩溃，这个Bug已经在pymssql报告了），所以当操作pymssql时候必须使用PythonWin或者Python Shell。另外截止目前，pymssql还仅仅支持Python2.6。</p>
-<p>下面的Code是简单的操作数据库，定义数据库连接，获取dataset，在for循环读取一遍，完成一个简单的检测动作</p>
-<pre><code>conn =_mssql.connect(server=CONFIG['server'], user=CONFIG['user'], password=str(CONFIG['dbpassword']), database=CONFIG['databaseSys'])
+import yaml</code></pre> <p>rootPath = os.path.normpath(os.path.dirname(<strong>file</strong>) + &lsquo;..&rsquo;)</p> <p>configFile = open(rootPath + &rsquo;&lsquo;&rsquo;inconfig.yaml&rsquo;&rsquo;&rsquo;)</p> <p>configYaml = configFile.read()</p> <p>configFile.close()</p> <p>CONFIG = yaml.load(configYaml)</p> <p>通过上面的方法，我就能获取CONFIG这个变量，然后设置为全局变量使用了。</p> <p>上面代码中一个小技巧就是使用os.path.dirname(<strong>file</strong>)获取当前的路径的父路径，在通过normpath转换为绝对路径，这样可以使用配置 文件的相对路径，以方便文件的迁移。（使用sys.path[0]也能获取文件运行路径，两者略有小区别）</p> <p>相关链接：<a href=http://pyyaml.org/ >PyYAML的官网</a> <a href=http://pyyaml.org/dow%20nload/pyyaml/PyYAML-3.09.win32-py2.6.exe>PyYAML_3.09-2.6下载</a></p> <h2 id=二数据库连接-pymssql_1>二、数据库连接-pymssql</h2> <p>Python连接MSSQL有多种模块选择，我选用pymssql。pymssql可以在<a href=http://code.google.com/p/pymssq%20l/ >这里</a>下载到。我使用的版本是1.9.908。</p> <p>其他的一些数据库连接模块，可以参考这里：<a href=http://wiki.woodpecker.org.cn/moin/Py4Database>Py4Database - Woodpecker Wiki for CPUG</a>以及<a href=http://wiki.woodpecker.org.cn/moin/DatabaseModules>DatabaseModules - Woodpecker Wiki for CPUG</a></p> <p>很不幸的是，pymssql在IDLE下面会导致IDLE崩溃（经我测试，只要import _mssql就会崩溃，这个Bug已经在pymssql报告了），所以当操作pymssql时候必须使用PythonWin或者Python Shell。另外截止目前，pymssql还仅仅支持Python2.6。</p> <p>下面的Code是简单的操作数据库，定义数据库连接，获取dataset，在for循环读取一遍，完成一个简单的检测动作</p> <pre><code>conn =_mssql.connect(server=CONFIG['server'], user=CONFIG['user'], password=str(CONFIG['dbpassword']), database=CONFIG['databaseSys'])
 
 def validateEntityInFrmFields(self, webControls, conn, boid):
     if webControls[0].d_ != '':
@@ -179,147 +30,37 @@ def validateEntityInFrmFields(self, webControls, conn, boid):
         print u'检测成功，恭喜你'
         print u'页面元件需要的Field全部存在于在SYSFrmFieldsn'
     else:
-        print u'检测失败'</code></pre>
-<p>print u&rsquo;检测完毕&rsquo;</p>
-<p>简单的pymssql就这么用，import _mssql就可以了，如果需要原生的支持DB-API方式编程，可以使用import mssql。</p>
-<h2 id="三脚本运行完之后继续操作">三、脚本运行完之后继续操作</h2>
-<p>脚本不可避免的需要分包，分模块，然后在里面撰写代码，但有时候我们需要中途使用一些数据完成特定即时的操作。使用IDE的Debug暂停当然可以，但这不是最佳的解 决办法。</p>
-<p>下面是我自己摸索出来的方法，也许不是最佳办法，但是可以用，可以在脚本执行完之后继续操作里面定义的变量，以完成更多动作。</p>
-<p>用IDE打开Script，然后在里面键入类似代码。</p>
-<pre><code>import codegenx;from codegenx import WEBCONTROLS;codegenx.main()
-qbe = WEBCONTROLS['qbe'];</code></pre>
-<p>Python中可以通过加入分号来让多条语句放在同一行。经过上面代码的执行，我就可以获取WEBCONTROLS这个codegenx模块中的对象。如果担心cod egenx中的WEBCONTROLS和Shell中的不一致，可以用id()来看一下内存标示，经我检测发现是一致的。</p>
+        print u'检测失败'</code></pre> <p>print u&rsquo;检测完毕&rsquo;</p> <p>简单的pymssql就这么用，import _mssql就可以了，如果需要原生的支持DB-API方式编程，可以使用import mssql。</p> <h2 id=三脚本运行完之后继续操作>三、脚本运行完之后继续操作</h2> <p>脚本不可避免的需要分包，分模块，然后在里面撰写代码，但有时候我们需要中途使用一些数据完成特定即时的操作。使用IDE的Debug暂停当然可以，但这不是最佳的解 决办法。</p> <p>下面是我自己摸索出来的方法，也许不是最佳办法，但是可以用，可以在脚本执行完之后继续操作里面定义的变量，以完成更多动作。</p> <p>用IDE打开Script，然后在里面键入类似代码。</p> <pre><code>import codegenx;from codegenx import WEBCONTROLS;codegenx.main()
+qbe = WEBCONTROLS['qbe'];</code></pre> <p>Python中可以通过加入分号来让多条语句放在同一行。经过上面代码的执行，我就可以获取WEBCONTROLS这个codegenx模块中的对象。如果担心cod egenx中的WEBCONTROLS和Shell中的不一致，可以用id()来看一下内存标示，经我检测发现是一致的。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2010/11/a-week-python/ >https://blog.alswl.com/2010/11/a-week-python/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-            </div>
-            <!-- /.entry-content -->
-              
-<hr>
-<div class="panel">
-<div class="panel-body">
-   <small>原文链接: <a href="https://blog.alswl.com/2010/11/a-week-python/">https://blog.alswl.com/2010/11/a-week-python/</a></small><br>
-   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
-</div>
-</div>
+                    var disqus_identifier = 'a-week-python';
+                var disqus_url = 'https://blog.alswl.com/2010/11/a-week-python/';
 
-        </article>
-    </section>
+            var disqus_config = function () {
+                this.language = "en";
+            };
 
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2021 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2021 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -333,7 +74,4 @@ qbe = WEBCONTROLS['qbe'];</code></pre>
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>

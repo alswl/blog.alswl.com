@@ -1,329 +1,41 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>使用pptpclient连接vpn网络[译文] - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-<link rel="canonical" href="http://127.0.0.1:8000/2011/09/pptpclient/">
-
-        <meta name="author" content="alswl" />
-        <meta name="keywords" content="Linuxer,arch,pptp,VPN,译文" />
-        <meta name="description" content="最近在ddwrt配置vpn，参考了arch的pptpclient配置文档Microsoft VPN client setup with pptpclien t，同时顺便花了一点时间翻译成中文，正文如下（使用wiky.js转换pe diawiki到html，原文会有更多的wiki模板样式便于查看，有问题请参照原文）。 pptpclient是一个实现Microsoft PPTP协议的程序。因此它能够被用来接入另一个Microsoft VPN网络，比如学校和单位。 安装PPTPClient pptpclient由安装包pptpclient提供，运行下列命令可以安装： pacman -S pptpclient 配置 你需要从网络管理员获取以下信息来配置pptpclient: VPN服务器的ip或者域名 VPN隧道名称 Windows域（不是所有网络都需要） VPN用户名 VPN密码 编辑配置文件 用你称手的编辑器打开/etc/ppp/options.pptp。这个文件为你的VPN连接启用了一系列默认安全设置。如果你连接时候出现问题，你可以自定义配置。 你的options.pptp文件最少需要包含以下内容： lock noauth …" />
-
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
-
-    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="http://127.0.0.1:8000/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-    <section id="content">
-        <article class="article-detail">
-            <header class="page-header">
-                <h1 class="title">
-                    <a href="http://127.0.0.1:8000/2011/09/pptpclient/"
-                       rel="bookmark"
-                       title="Permalink to 使用pptpclient连接vpn网络[译文]">
-                        使用pptpclient连接vpn网络[译文]
-                    </a>
-                </h1>
-                <nav class="toc col-lg-2">
-                  <div id="toc"><ul><li><a class="toc-href" href="#安装pptpclient" title="安装PPTPClient">安装PPTPClient</a></li><li><a class="toc-href" href="#配置" title="配置">配置</a></li><li><a class="toc-href" href="#编辑配置文件_1" title="编辑配置文件">编辑配置文件</a></li><li><a class="toc-href" href="#编辑密码文件" title="编辑密码文件">编辑密码文件</a></li><li><a class="toc-href" href="#命名你的vpn隧道" title="命名你的VPN隧道">命名你的VPN隧道</a></li><li><a class="toc-href" href="#配置路由" title="配置路由">配置路由</a></li><li><a class="toc-href" href="#选择路由" title="选择路由">选择路由</a></li><li><a class="toc-href" href="#配置为默认路由" title="配置为默认路由">配置为默认路由</a><ul><li><a class="toc-href" href="#断开连接" title="断开连接">断开连接</a></li><li><a class="toc-href" href="#把一个vpn连接配为默认启动" title="把一个VPN连接配为默认启动">把一个VPN连接配为默认启动</a></li><li><a class="toc-href" href="#注意" title="注意">注意</a></li></ul></li></ul></div>
-                </nav>
-            </header>
-            <div class="entry-content">
-                <div class="panel">
-                    <div class="panel-body">
-<footer class="post-info">
-    <span class="label label-default">Date</span>
-    <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2011-09-04T00:00:00+08:00"> 2011-09-04</time>
-    </span>
-
-
-
-<span class="label label-default">Tags</span>
-	<a href="http://127.0.0.1:8000/tag/linuxer/">Linuxer</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/arch/">arch</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/pptp/">pptp</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/vpn/">VPN</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/yi-wen/">译文</a>
-    
-</footer><!-- /.post-info -->                    </div>
-                </div>
-                <p>最近在ddwrt配置vpn，参考了arch的pptpclient配置文档<a href="https://wiki.archlinux.org/index.php/Microsoft_VPN_client_setup_with_pptpcl%20ient">Microsoft VPN client setup with pptpclien t</a>，同时顺便花了一点时间翻译成中文，正文如下（使用<a href="https://github.com/tanin47/wiky.js">wiky.js</a>转换pe diawiki到html，原文会有更多的wiki模板样式便于查看，有问题请参照原文）。</p>
-<p>pptpclient是一个实现Microsoft PPTP协议的程序。因此它能够被用来接入另一个Microsoft VPN网络，比如学校和单位。</p>
-<h3 id="安装pptpclient">安装PPTPClient</h3>
-<p>pptpclient由安装包pptpclient提供，运行下列命令可以安装：</p>
-<h1 id="pacman--s-pptpclient">pacman -S pptpclient</h1>
-<h3 id="配置">配置</h3>
-<p>你需要从网络管理员获取以下信息来配置pptpclient:</p>
-<ul>
-<li>VPN服务器的ip或者域名</li>
-<li>VPN隧道名称</li>
-<li>Windows域（不是所有网络都需要）</li>
-<li>VPN用户名</li>
-<li>VPN密码</li>
-</ul>
-<h2 id="编辑配置文件_1">编辑配置文件</h2>
-<p>用你称手的编辑器打开/etc/ppp/options.pptp。这个文件为你的VPN连接启用了一系列默认安全设置。如果你连接时候出现问题，你可以自定义配置。 你的options.pptp文件最少需要包含以下内容：</p>
-<pre><code>lock
+<!DOCTYPE html><html lang=en> <head><title>使用pptpclient连接vpn网络[译文] - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2011/09/pptpclient/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Linuxer,arch,pptp,VPN,译文><meta name=description content="最近在ddwrt配置vpn，参考了arch的pptpclient配置文档Microsoft VPN client setup with pptpclien t，同时顺便花了一点时间翻译成中文，正文如下（使用wiky.js转换pe diawiki到html，原文会有更多的wiki模板样式便于查看，有问题请参照原文）。 pptpclient是一个实现Microsoft PPTP协议的程序。因此它能够被用来接入另一个Microsoft VPN网络，比如学校和单位。 安装PPTPClient pptpclient由安装包pptpclient提供，运行下列命令可以安装： pacman -S pptpclient 配置 你需要从网络管理员获取以下信息来配置pptpclient: VPN服务器的ip或者域名 VPN隧道名称 Windows域（不是所有网络都需要） VPN用户名 VPN密码 编辑配置文件 用你称手的编辑器打开/etc/ppp/options.pptp。这个文件为你的VPN连接启用了一系列默认安全设置。如果你连接时候出现问题，你可以自定义配置。 你的options.pptp文件最少需要包含以下内容： lock noauth …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2011/09/pptpclient/ rel=bookmark title="Permalink to 使用pptpclient连接vpn网络[译文]"> 使用pptpclient连接vpn网络[译文] </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#安装pptpclient title=安装PPTPClient>安装PPTPClient</a></li><li><a class=toc-href href=#配置 title=配置>配置</a></li><li><a class=toc-href href=#编辑配置文件_1 title=编辑配置文件>编辑配置文件</a></li><li><a class=toc-href href=#编辑密码文件 title=编辑密码文件>编辑密码文件</a></li><li><a class=toc-href href=#命名你的vpn隧道 title=命名你的VPN隧道>命名你的VPN隧道</a></li><li><a class=toc-href href=#配置路由 title=配置路由>配置路由</a></li><li><a class=toc-href href=#选择路由 title=选择路由>选择路由</a></li><li><a class=toc-href href=#配置为默认路由 title=配置为默认路由>配置为默认路由</a><ul><li><a class=toc-href href=#断开连接 title=断开连接>断开连接</a></li><li><a class=toc-href href=#把一个vpn连接配为默认启动 title=把一个VPN连接配为默认启动>把一个VPN连接配为默认启动</a></li><li><a class=toc-href href=#注意 title=注意>注意</a></li></ul></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2011-09-04T00:00:00+08:00> 2011-09-04</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/linuxer/ >Linuxer</a> / <a href=https://blog.alswl.com/tag/arch/ >arch</a> / <a href=https://blog.alswl.com/tag/pptp/ >pptp</a> / <a href=https://blog.alswl.com/tag/vpn/ >VPN</a> / <a href=https://blog.alswl.com/tag/yi-wen/ >译文</a> </footer><!-- /.post-info --> </div> </div> <p>最近在ddwrt配置vpn，参考了arch的pptpclient配置文档<a href=https://wiki.archlinux.org/index.php/Microsoft_VPN_client_setup_with_pptpcl%20ient>Microsoft VPN client setup with pptpclien t</a>，同时顺便花了一点时间翻译成中文，正文如下（使用<a href=https://github.com/tanin47/wiky.js>wiky.js</a>转换pe diawiki到html，原文会有更多的wiki模板样式便于查看，有问题请参照原文）。</p> <p>pptpclient是一个实现Microsoft PPTP协议的程序。因此它能够被用来接入另一个Microsoft VPN网络，比如学校和单位。</p> <h3 id=安装pptpclient>安装PPTPClient</h3> <p>pptpclient由安装包pptpclient提供，运行下列命令可以安装：</p> <h1 id=pacman--s-pptpclient>pacman -S pptpclient</h1> <h3 id=配置>配置</h3> <p>你需要从网络管理员获取以下信息来配置pptpclient:</p> <ul> <li>VPN服务器的ip或者域名</li> <li>VPN隧道名称</li> <li>Windows域（不是所有网络都需要）</li> <li>VPN用户名</li> <li>VPN密码</li> </ul> <h2 id=编辑配置文件_1>编辑配置文件</h2> <p>用你称手的编辑器打开/etc/ppp/options.pptp。这个文件为你的VPN连接启用了一系列默认安全设置。如果你连接时候出现问题，你可以自定义配置。 你的options.pptp文件最少需要包含以下内容：</p> <pre><code>lock
 noauth
 nobsdcomp
-nodeflate</code></pre>
-<h2 id="编辑密码文件">编辑密码文件</h2>
-<p>下一步，打开或者创建/etc/ppp/chap- secrets。我们将在这个文件里面存储你的密码，记得修改权限让除root之外所有用户不能访问它。这个文件的格式如下：</p>
-<pre><code>&lt;DOMAIN&gt;\&lt;USERNAME&gt; PPTP &lt;PASSWORD&gt; *</code></pre>
-<p>如果你的服务器不要求域，则配置如下：</p>
-<pre><code>&lt;USERNAME&gt; PPTP &lt;PASSWORD&gt; *</code></pre>
-<p>替换掉上文中范例中的占位符。注意，如果你的密码包含特殊字符，比如&ldquo;$&rdquo;，你需要用双引号把它们包起来。</p>
-<h2 id="命名你的vpn隧道">命名你的VPN隧道</h2>
-<p>用你称手的编辑器创建类似/etc/ppp/peers/的文件，把这里替换成你的VPN连接名。这个文件设置之后看起来如下：</p>
-<pre><code>pty "pptp &lt;SERVER&gt; --nolaunchpppd"
+nodeflate</code></pre> <h2 id=编辑密码文件>编辑密码文件</h2> <p>下一步，打开或者创建/etc/ppp/chap- secrets。我们将在这个文件里面存储你的密码，记得修改权限让除root之外所有用户不能访问它。这个文件的格式如下：</p> <pre><code>&lt;DOMAIN&gt;\&lt;USERNAME&gt; PPTP &lt;PASSWORD&gt; *</code></pre> <p>如果你的服务器不要求域，则配置如下：</p> <pre><code>&lt;USERNAME&gt; PPTP &lt;PASSWORD&gt; *</code></pre> <p>替换掉上文中范例中的占位符。注意，如果你的密码包含特殊字符，比如&ldquo;$&rdquo;，你需要用双引号把它们包起来。</p> <h2 id=命名你的vpn隧道>命名你的VPN隧道</h2> <p>用你称手的编辑器创建类似/etc/ppp/peers/的文件，把这里替换成你的VPN连接名。这个文件设置之后看起来如下：</p> <pre><code>pty "pptp &lt;SERVER&gt; --nolaunchpppd"
 name &lt;DOMAIN&gt;\&lt;USERNAME&gt;
 remotename PPTP
 require-mppe-128
 file /etc/ppp/options.pptp
-ipparam &lt;TUNNEL&gt;</code></pre>
-<p>{{Note|跟刚才一样，如果你的连接不要求域，忽略范例中的""}} {{Note|PPTP远程主机使用Chap-Secrets文件中的}}</p>
-<p>是VPN服务器的地址，是你所属的域，是你将要用来连接服务器的用户名，是连接的名称。</p>
-<p>{{Note|如果你不需要使用MPPE，你应当从/etc/ppp/options.pptp中移除require-mppe-128这个选项}}</p>
-<p>创建你的连接</p>
-<p>用root执行以下命令来确保配置是正确的： # pon $TUNNEL debug dump logfd 2 nodetach 如果一切都配置好了，pon命令应当不会自动结束。一旦你感觉差不多OK了，就可以终止这个命令。 {{Note|另一个用来确保配置正确的命令是ifconfig -a，看看里面时候有一个名叫ppp0的新驱动，并且还是可用的}} 执行以下命令来连接VPN隧道： # pon 是你之前命名过的VPN隧道名称。注意使用root命令执行。</p>
-<h2 id="配置路由">配置路由</h2>
-<p>一旦你成功连接上VPN，你就可以和VPN服务器交互了。当然在此之前，咱们需要添加一个新的路由到你的路由表，从而可以接入远程网络。</p>
-<p>{{Note|根据你的环境配置，你可能需要每次都重复添加路由信息}}</p>
-<p>你可以阅读<a href="http://pptpclient.sourceforge.net/routing.phtml">PPTP Routing Howto</a>来获得更 多如何添加路由的信息，里面还有很多范例。</p>
-<h2 id="选择路由">选择路由</h2>
-<p>对我来说，只有传输到VPN网络的数据包才应该走VPN连接，所以我添加如下路由条目： # route add -net 192.168.10.0 netmask 255.255.255.0 dev ppp0 这将路由所有目的地址为191.168.10.xxx的数据到VPN连接。</p>
-<h2 id="配置为默认路由">配置为默认路由</h2>
-<p>如果你想要所有数据从VPN连接走，下面这条命令包你爽： # route add default dev ppp0 {{Note|所有数据从VPN连接走的话会比正常连接慢一些}}</p>
-<h3 id="断开连接">断开连接</h3>
-<p>下面这条命令用来断开VPN连接： # poff 是你VPN连接的名称。</p>
-<h3 id="把一个vpn连接配为默认启动">把一个VPN连接配为默认启动</h3>
-<p>你可以在rc.d创建一个快捷命令来实现自动在后台连接VPN网络。</p>
-<p>{{Note|和平常一样，是你隧道的名字，是你加入路由表的命令。}}</p>
-<pre><code>#!/bin/bash</code></pre>
-<p>. /etc/rc.conf</p>
-<p>. /etc/rc.d/functions</p>
-<p>DAEMON=<tunnel>-vpn</tunnel></p>
-<p>ARGS=</p>
-<p>[ -r /etc/conf.d/$DAEMON ] &amp;&amp; . /etc/conf.d/$DAEMON</p>
-<p>case &ldquo;$1&rdquo; in</p>
-<p>start)</p>
-<p>stat_busy &ldquo;Starting $DAEMON&rdquo;</p>
-<p>pon <tunnel> updetach persist &amp;&gt; /dev/null &amp;&amp; <routing command=""> &amp;&gt;/dev/null</routing></tunnel></p>
-<p>if [ $? = 0 ]; then</p>
-<p>add_daemon $DAEMON</p>
-<p>stat_done</p>
-<p>else</p>
-<p>stat_fail</p>
-<p>exit 1</p>
-<p>fi</p>
-<p>;;</p>
-<p>stop)</p>
-<p>stat_busy &ldquo;Stopping $DAEMON&rdquo;</p>
-<p>poff MST &amp;&gt;/dev/null</p>
-<p>if [ $? = 0 ]; then</p>
-<p>rm_daemon $DAEMON</p>
-<p>stat_done</p>
-<p>else</p>
-<p>stat_fail</p>
-<p>exit 1</p>
-<p>fi</p>
-<p>;;</p>
-<p>restart)</p>
-<p>$0 stop</p>
-<p>sleep 1</p>
-<p>$0 start</p>
-<p>;;</p>
-<p>*)<br/>
-echo &ldquo;usage: $0 {start|stop|restart}&rdquo;</p>
-<p>esac</p>
-<p>注意，我们可以使用updetach和persist这两个附加命令在pon上。updetach保证pon阻塞知道连接被建立。另外一个命令persist保证网络 自动重练。如果需要开机自动启动，则添加@-vpn到rc.conf的DAEMONS中去。</p>
-<h3 id="注意">注意</h3>
-<p>你可以在<a href="http://pptpclient.sourceforge.net/">pptpclient website</a>查到更多关于pptpclient的配 置信息。Ubuntu的帮助手册也有一些帮助你配置的信息。这些范例能够很轻松的稍加变换从而添加到daemons中去，从而帮助你自动化运行。</p>
+ipparam &lt;TUNNEL&gt;</code></pre> <p>{{Note|跟刚才一样，如果你的连接不要求域，忽略范例中的""}} {{Note|PPTP远程主机使用Chap-Secrets文件中的}}</p> <p>是VPN服务器的地址，是你所属的域，是你将要用来连接服务器的用户名，是连接的名称。</p> <p>{{Note|如果你不需要使用MPPE，你应当从/etc/ppp/options.pptp中移除require-mppe-128这个选项}}</p> <p>创建你的连接</p> <p>用root执行以下命令来确保配置是正确的： # pon $TUNNEL debug dump logfd 2 nodetach 如果一切都配置好了，pon命令应当不会自动结束。一旦你感觉差不多OK了，就可以终止这个命令。 {{Note|另一个用来确保配置正确的命令是ifconfig -a，看看里面时候有一个名叫ppp0的新驱动，并且还是可用的}} 执行以下命令来连接VPN隧道： # pon 是你之前命名过的VPN隧道名称。注意使用root命令执行。</p> <h2 id=配置路由>配置路由</h2> <p>一旦你成功连接上VPN，你就可以和VPN服务器交互了。当然在此之前，咱们需要添加一个新的路由到你的路由表，从而可以接入远程网络。</p> <p>{{Note|根据你的环境配置，你可能需要每次都重复添加路由信息}}</p> <p>你可以阅读<a href=http://pptpclient.sourceforge.net/routing.phtml>PPTP Routing Howto</a>来获得更 多如何添加路由的信息，里面还有很多范例。</p> <h2 id=选择路由>选择路由</h2> <p>对我来说，只有传输到VPN网络的数据包才应该走VPN连接，所以我添加如下路由条目： # route add -net 192.168.10.0 netmask 255.255.255.0 dev ppp0 这将路由所有目的地址为191.168.10.xxx的数据到VPN连接。</p> <h2 id=配置为默认路由>配置为默认路由</h2> <p>如果你想要所有数据从VPN连接走，下面这条命令包你爽： # route add default dev ppp0 {{Note|所有数据从VPN连接走的话会比正常连接慢一些}}</p> <h3 id=断开连接>断开连接</h3> <p>下面这条命令用来断开VPN连接： # poff 是你VPN连接的名称。</p> <h3 id=把一个vpn连接配为默认启动>把一个VPN连接配为默认启动</h3> <p>你可以在rc.d创建一个快捷命令来实现自动在后台连接VPN网络。</p> <p>{{Note|和平常一样，是你隧道的名字，是你加入路由表的命令。}}</p> <pre><code>#!/bin/bash</code></pre> <p>. /etc/rc.conf</p> <p>. /etc/rc.d/functions</p> <p>DAEMON=<tunnel>-vpn</tunnel></p> <p>ARGS=</p> <p>[ -r /etc/conf.d/$DAEMON ] &amp;&amp; . /etc/conf.d/$DAEMON</p> <p>case &ldquo;$1&rdquo; in</p> <p>start)</p> <p>stat_busy &ldquo;Starting $DAEMON&rdquo;</p> <p>pon <tunnel> updetach persist &amp;&gt; /dev/null &amp;&amp; <routing command> &amp;&gt;/dev/null</routing></tunnel></p> <p>if [ $? = 0 ]; then</p> <p>add_daemon $DAEMON</p> <p>stat_done</p> <p>else</p> <p>stat_fail</p> <p>exit 1</p> <p>fi</p> <p>;;</p> <p>stop)</p> <p>stat_busy &ldquo;Stopping $DAEMON&rdquo;</p> <p>poff MST &amp;&gt;/dev/null</p> <p>if [ $? = 0 ]; then</p> <p>rm_daemon $DAEMON</p> <p>stat_done</p> <p>else</p> <p>stat_fail</p> <p>exit 1</p> <p>fi</p> <p>;;</p> <p>restart)</p> <p>$0 stop</p> <p>sleep 1</p> <p>$0 start</p> <p>;;</p> <p>*)<br> echo &ldquo;usage: $0 {start|stop|restart}&rdquo;</p> <p>esac</p> <p>注意，我们可以使用updetach和persist这两个附加命令在pon上。updetach保证pon阻塞知道连接被建立。另外一个命令persist保证网络 自动重练。如果需要开机自动启动，则添加@-vpn到rc.conf的DAEMONS中去。</p> <h3 id=注意>注意</h3> <p>你可以在<a href=http://pptpclient.sourceforge.net/ >pptpclient website</a>查到更多关于pptpclient的配 置信息。Ubuntu的帮助手册也有一些帮助你配置的信息。这些范例能够很轻松的稍加变换从而添加到daemons中去，从而帮助你自动化运行。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2011/09/pptpclient/ >https://blog.alswl.com/2011/09/pptpclient/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-            </div>
-            <!-- /.entry-content -->
-              
-<hr>
-<div class="panel">
-<div class="panel-body">
-   <small>原文链接: <a href="https://blog.alswl.com/2011/09/pptpclient/">https://blog.alswl.com/2011/09/pptpclient/</a></small><br>
-   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
-</div>
-</div>
+                    var disqus_identifier = 'pptpclient';
+                var disqus_url = 'https://blog.alswl.com/2011/09/pptpclient/';
 
-        </article>
-    </section>
+            var disqus_config = function () {
+                this.language = "en";
+            };
 
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2021 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2021 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -337,7 +49,4 @@ echo &ldquo;usage: $0 {start|stop|restart}&rdquo;</p>
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>

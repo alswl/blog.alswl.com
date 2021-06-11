@@ -1,257 +1,42 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>Eclipse中开发的Jave EE项目在Tomcat的部署 - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-<link rel="canonical" href="http://127.0.0.1:8000/2009/05/eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat/">
-
-        <meta name="author" content="alswl" />
-        <meta name="keywords" content="Java,Tomcat,编码" />
-        <meta name="description" content="贴吧最基本的功能写完了，正好可以应付数据库设计课的实验。于是我准备把贴吧的项目从Eclipse的开发环境中移植出来，在Tomcat中进行部署。 也许是习惯了Eclipse提供的便利，这个小小的移植，居然难倒了我，直接把Eclipse里的PostBar考出，根本不能运行，直接报404错误。Google 上也没有提供详细的步骤，也许大家都觉得这个问题很简单吧，呵呵。 我琢磨了一会，终于整理出了头绪。 1.修改Apache-conf-server.xml这个文件，修改其中一段…如下所示 &lt;host appbase=&#34;webapps&#34; name=&#34;localhost&#34; unpackWARs=&#34;true&#34; autoDeploy=&#34;true&#34; xmlValidation=&#34;false&#34; xmlNamespaceAware=&#34;false&#34;&gt; &lt;context debug=&#34;0&#34; docbase=&#34;F:T3&#34; path=&#34;/postbar&#34;&gt; reloadable=&#34;true&#34; crossContext=&#34;true&#34;&gt; &lt;/context&gt; &lt;/host&gt; 这一段的作用是在原先webapps的目录下添加虚拟目录/postbar …" />
-
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="http://127.0.0.1:8000/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/style.css" type="text/css"/>
-
-    <link href="http://127.0.0.1:8000/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="http://127.0.0.1:8000/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="http://127.0.0.1:8000/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://127.0.0.1:8000/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-    <section id="content">
-        <article class="article-detail">
-            <header class="page-header">
-                <h1 class="title">
-                    <a href="http://127.0.0.1:8000/2009/05/eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat/"
-                       rel="bookmark"
-                       title="Permalink to Eclipse中开发的Jave EE项目在Tomcat的部署">
-                        Eclipse中开发的Jave EE项目在Tomcat的部署
-                    </a>
-                </h1>
-            </header>
-            <div class="entry-content">
-                <div class="panel">
-                    <div class="panel-body">
-<footer class="post-info">
-    <span class="label label-default">Date</span>
-    <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2009-05-20T00:00:00+08:00"> 2009-05-20</time>
-    </span>
-
-
-
-<span class="label label-default">Tags</span>
-	<a href="http://127.0.0.1:8000/tag/java/">Java</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/tomcat/">Tomcat</a>
-        /
-	<a href="http://127.0.0.1:8000/tag/bian-ma/">编码</a>
-    
-</footer><!-- /.post-info -->                    </div>
-                </div>
-                <p>贴吧最基本的功能写完了，正好可以应付数据库设计课的实验。于是我准备把贴吧的项目从Eclipse的开发环境中移植出来，在Tomcat中进行部署。</p>
-<p>也许是习惯了Eclipse提供的便利，这个小小的移植，居然难倒了我，直接把Eclipse里的PostBar考出，根本不能运行，直接报404错误。Google 上也没有提供详细的步骤，也许大家都觉得这个问题很简单吧，呵呵。</p>
-<p>我琢磨了一会，终于整理出了头绪。</p>
-<p>1.修改Apache-conf-server.xml这个文件，修改其中一段<host>&hellip;</host>如下所示</p>
-<pre><code>&lt;host appbase="webapps" name="localhost"
+<!DOCTYPE html><html lang=en> <head><title>Eclipse中开发的Jave EE项目在Tomcat的部署 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2009/05/eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Java,Tomcat,编码><meta name=description content='贴吧最基本的功能写完了，正好可以应付数据库设计课的实验。于是我准备把贴吧的项目从Eclipse的开发环境中移植出来，在Tomcat中进行部署。 也许是习惯了Eclipse提供的便利，这个小小的移植，居然难倒了我，直接把Eclipse里的PostBar考出，根本不能运行，直接报404错误。Google 上也没有提供详细的步骤，也许大家都觉得这个问题很简单吧，呵呵。 我琢磨了一会，终于整理出了头绪。 1.修改Apache-conf-server.xml这个文件，修改其中一段…如下所示 <host appbase="webapps" name="localhost" unpackWARs="true" autoDeploy="true" xmlValidation="false" xmlNamespaceAware="false"> <context debug="0" docbase="F:T3" path="/postbar"> reloadable="true" crossContext="true"> </context> </host> 这一段的作用是在原先webapps的目录下添加虚拟目录/postbar …'><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2009/05/eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat/ rel=bookmark title="Permalink to Eclipse中开发的Jave EE项目在Tomcat的部署"> Eclipse中开发的Jave EE项目在Tomcat的部署 </a> </h1> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2009-05-20T00:00:00+08:00> 2009-05-20</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/java/ >Java</a> / <a href=https://blog.alswl.com/tag/tomcat/ >Tomcat</a> / <a href=https://blog.alswl.com/tag/bian-ma/ >编码</a> </footer><!-- /.post-info --> </div> </div> <p>贴吧最基本的功能写完了，正好可以应付数据库设计课的实验。于是我准备把贴吧的项目从Eclipse的开发环境中移植出来，在Tomcat中进行部署。</p> <p>也许是习惯了Eclipse提供的便利，这个小小的移植，居然难倒了我，直接把Eclipse里的PostBar考出，根本不能运行，直接报404错误。Google 上也没有提供详细的步骤，也许大家都觉得这个问题很简单吧，呵呵。</p> <p>我琢磨了一会，终于整理出了头绪。</p> <p>1.修改Apache-conf-server.xml这个文件，修改其中一段<host>&hellip;</host>如下所示</p> <pre><code>&lt;host appbase="webapps" name="localhost"
     unpackWARs="true" autoDeploy="true"
     xmlValidation="false" xmlNamespaceAware="false"&gt;
     &lt;context debug="0" docbase="F:T3" path="/postbar"&gt;
           reloadable="true" crossContext="true"&gt;
     &lt;/context&gt;
-&lt;/host&gt;</code></pre>
-<p>这一段的作用是在原先webapps的目录下添加虚拟目录/postbar，并且指定实际目录是&ldquo;F:T3&rdquo;</p>
-<p>2.打开目录listtings功能，这样能帮助调试，正式发布可以关闭。 在Apache-conf-web.xml中找到</p>
-<pre><code>&lt;init-param&gt;
+&lt;/host&gt;</code></pre> <p>这一段的作用是在原先webapps的目录下添加虚拟目录/postbar，并且指定实际目录是&ldquo;F:T3&rdquo;</p> <p>2.打开目录listtings功能，这样能帮助调试，正式发布可以关闭。 在Apache-conf-web.xml中找到</p> <pre><code>&lt;init-param&gt;
     &lt;param-name&gt;listings&lt;/param-name&gt;
     &lt;param-value&gt;false&lt;/param-value&gt;
-&lt;/init-param&gt;</code></pre>
-<p>把其中的false改为true就可以了。</p>
-<p>3.打包Java EE项目。其实与其我们花时间考虑classes的位置，tld文件位置等繁琐的问题，可以直接使用Eclipse的输出功能，具体是项目右键- Export 然后选择WAR file，就可以输出一个打包的项目文件。</p>
-<p>4.在Tomcat的index.jsp里有stauts，输入管理密码后，可以进入一个状态页面，这里提供上传WAR文件并配置，可以这么做，但是其实可以直接用W inRAR解压缩WAR文件，然后复制到之前设置的目录中。</p>
-<p>这样，就可以再Tomcat使用项目，而不用考虑太多的部署问题了。 当然，我更建议初学者好好研究一下Java EE项目的部署要求，而不是简单的会用。 我也该认真看看孙鑫大大的Java EE前面的基础章节了&hellip;</p>
-<p>本以为这样就可以使用项目，结果半路杀出一个程咬金，表单提交的中文都是乱码。</p>
-<p>又遇到乱码问题了，呵呵，幸好不是初哥，我用Log4j调试一下，查看Tomcat/logs/，检查下面相应的txt文件，发现Action读取时候就出现了乱码， 数据库也是乱码，说明乱码产生原因在服务器端获取数据时候，我Google一下，发现Connector可以设置编码集，具体设置是Tomcat/conf/serv er.xml</p>
-<pre><code>&lt;Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000"/&gt;</code></pre>
-<p>将其修改为</p>
-<pre><code>&lt;Connector port="8080" protocol="HTTP/1.1"  connectionTimeout="20000" redirectPort="8443" URIEncoding="utf-8" /&gt;</code></pre>
-<p>重新测试表单数据发送，一切没有问题了。 细节决定一切啊.</p>
+&lt;/init-param&gt;</code></pre> <p>把其中的false改为true就可以了。</p> <p>3.打包Java EE项目。其实与其我们花时间考虑classes的位置，tld文件位置等繁琐的问题，可以直接使用Eclipse的输出功能，具体是项目右键- Export 然后选择WAR file，就可以输出一个打包的项目文件。</p> <p>4.在Tomcat的index.jsp里有stauts，输入管理密码后，可以进入一个状态页面，这里提供上传WAR文件并配置，可以这么做，但是其实可以直接用W inRAR解压缩WAR文件，然后复制到之前设置的目录中。</p> <p>这样，就可以再Tomcat使用项目，而不用考虑太多的部署问题了。 当然，我更建议初学者好好研究一下Java EE项目的部署要求，而不是简单的会用。 我也该认真看看孙鑫大大的Java EE前面的基础章节了&hellip;</p> <p>本以为这样就可以使用项目，结果半路杀出一个程咬金，表单提交的中文都是乱码。</p> <p>又遇到乱码问题了，呵呵，幸好不是初哥，我用Log4j调试一下，查看Tomcat/logs/，检查下面相应的txt文件，发现Action读取时候就出现了乱码， 数据库也是乱码，说明乱码产生原因在服务器端获取数据时候，我Google一下，发现Connector可以设置编码集，具体设置是Tomcat/conf/serv er.xml</p> <pre><code>&lt;Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000"/&gt;</code></pre> <p>将其修改为</p> <pre><code>&lt;Connector port="8080" protocol="HTTP/1.1"  connectionTimeout="20000" redirectPort="8443" URIEncoding="utf-8" /&gt;</code></pre> <p>重新测试表单数据发送，一切没有问题了。 细节决定一切啊.</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2009/05/eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat/ >https://blog.alswl.com/2009/05/eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-            </div>
-            <!-- /.entry-content -->
-              
-<hr>
-<div class="panel">
-<div class="panel-body">
-   <small>原文链接: <a href="https://blog.alswl.com/2009/05/eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat/">https://blog.alswl.com/2009/05/eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat/</a></small><br>
-   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
-</div>
-</div>
+                    var disqus_identifier = 'eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat';
+                var disqus_url = 'https://blog.alswl.com/2009/05/eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat/';
 
-        </article>
-    </section>
+            var disqus_config = function () {
+                this.language = "en";
+            };
 
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2021 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="http://127.0.0.1:8000/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="http://127.0.0.1:8000/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2021 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -265,7 +50,4 @@ Log4D            </a>
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>
