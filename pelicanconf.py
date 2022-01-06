@@ -34,7 +34,7 @@ PLUGINS = [
     'feed_footer_insert',
     #  'minify',
     #  'yuicompressor',  # disable for dev
-    'table_with_div',
+    # 'table_with_div',
     'render_math',
     'pandoc_reader',
 ]
