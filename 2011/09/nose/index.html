@@ -1,169 +1,42 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>使用nose做测试 - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-<link rel="canonical" href="https://blog.alswl.com/2011/09/nose/">
-
-        <meta name="author" content="alswl" />
-        <meta name="keywords" content="Python,nose,Pylons" />
-        <meta name="description" content="不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用 nose 做单元测试，颇有心得， 在这里分享一下。 1. Pylons中依赖 …" />
-
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="https://blog.alswl.com/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://blog.alswl.com/theme/css/style.css" type="text/css"/>
-
-    <link href="https://blog.alswl.com/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="https://blog.alswl.com/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="https://blog.alswl.com/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://blog.alswl.com/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-    <section id="content">
-        <article class="article-detail">
-            <header class="page-header">
-                <h1 class="title">
-                    <a href="https://blog.alswl.com/2011/09/nose/"
-                       rel="bookmark"
-                       title="Permalink to 使用nose做测试">
-                        使用nose做测试
-                    </a>
-                </h1>
-            </header>
-            <div class="entry-content">
-                <div class="panel">
-                    <div class="panel-body">
-<footer class="post-info">
-    <span class="label label-default">Date</span>
-    <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2011-09-22T00:00:00+08:00"> 2011-09-22</time>
-    </span>
-
-
-
-<span class="label label-default">Tags</span>
-	<a href="https://blog.alswl.com/tag/python/">Python</a>
-        /
-	<a href="https://blog.alswl.com/tag/nose/">nose</a>
-        /
-	<a href="https://blog.alswl.com/tag/pylons/">Pylons</a>
-    
-</footer><!-- /.post-info -->                    </div>
-                </div>
-                <p>不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用 <a href="http://readthedocs.org/docs/nose/en/latest">nose</a> 做单元测试，颇有心得， 在这里分享一下。</p>
-<h2 id="pylons中依赖包">1. Pylons中依赖包</h2>
-<p>先简单介绍一下Pylons, Pylons与其说是一个框架，不如说是一堆框架的组合， Pylons在其中做到一个胶水的作用。Pylons依赖的包如下。</p>
-<ul>
-<li><a href="https://github.com/danielfm/pybreaker">breaker，缓存和Session</a></li>
-<li><a href="http://formencode.org/">FormEncode，用户输入检查</a></li>
-<li><a href="http://www.makotemplates.org/">Mako，模板渲染</a></li>
-<li><a href="http://readthedocs.org/docs/nose/en/latest/">nose，自动化测试</a></li>
-<li><a href="http://pythonpaste.org/script/">Paste，服务器</a></li>
-<li><a href="http://routes.groovie.org/">Routes, 路由</a></li>
-<li><a href="http://pythonpaste.org/tempita/">Tempita，Paste的模板</a></li>
-<li><a href="http://packages.python.org/WebCore/modules/thirdparty/weberror.html">Weberror</a></li>
-<li><a href="http://docs.webob.org/en/latest/index.html">WebOb，提供WSGI请求响应等对象</a></li>
-<li><a href="http://pythonpaste.org/webtest/">WebTest，Paste自带的测试小框架， 提供TestResponse和TestRequest两个有用的小东西</a></li>
-</ul>
-<p>Pylons的测试主要使用的其中的 Paste / nose / WebOb / WebTest。 遇到问题的时候，可以去翻一翻上面的文档。</p>
-<h2 id="pylons中测试目录结构">2. Pylons中测试目录结构</h2>
-<p>目录结构如下</p>
-<pre><code>├─config
+<!DOCTYPE html><html lang=en> <head><title>使用nose做测试 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2011/09/nose/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Python,nose,Pylons><meta name=description content="不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用 nose 做单元测试，颇有心得， 在这里分享一下。 1. Pylons中依赖包 先简单介绍一下Pylons, Pylons与其说是一个框架，不如说是一堆框架的组合， Pylons在其中做到一个胶水的作用。Pylons依赖的包如下。 breaker，缓存和Session FormEncode，用户输入检查 Mako，模板渲染 nose，自动化测试 Paste，服务器 Routes, 路由 Tempita，Paste的模板 Weberror WebOb，提供WSGI请求响应等对象 WebTest，Paste自带的测试小框架， 提供TestResponse和TestRequest两个有用的小东西 Pylons的测试主要使用的其中的 Paste / nose / WebOb / WebTest。 遇到问题的时候，可以去翻一翻上面的文档。 2. Pylons中测试目录结构 目录结构如下 ├─config ├─controllers ├─lib ├─model ├─public ├─templates …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2011/09/nose/ rel=bookmark title="Permalink to 使用nose做测试"> 使用nose做测试 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#pylons中依赖包 title="1. Pylons中依赖包">1. Pylons中依赖包</a></li><li><a class=toc-href href=#pylons中测试目录结构 title="2. Pylons中测试目录结构">2. Pylons中测试目录结构</a></li><li><a class=toc-href href=#第一个简单的测试用例 title="3. 第一个简单的测试用例">3. 第一个简单的测试用例</a><ul><li><a class=toc-href href=#撰写单元测试文件 title="3.1. 撰写单元测试文件">3.1. 撰写单元测试文件</a></li><li><a class=toc-href href=#撰写测试配置文件 title="3.2. 撰写测试配置文件">3.2. 撰写测试配置文件</a></li><li><a class=toc-href href=#运行nose title="3.3. 运行nose">3.3. 运行nose</a></li></ul></li><li><a class=toc-href href=#高级一点的测试方法_1 title="4. 高级一点的测试方法">4. 高级一点的测试方法</a><ul><li><a class=toc-href href=#测试返回类型为http-status的方法 title="4.1. 测试返回类型为HTTP STATUS的方法">4.1. 测试返回类型为HTTP STATUS的方法</a></li><li><a class=toc-href href=#测试返回类型为html的方法 title="4.2. 测试返回类型为html的方法">4.2. 测试返回类型为html的方法</a></li><li><a class=toc-href href=#测试返回类型为json的方法 title="4.3. 测试返回类型为json的方法">4.3. 测试返回类型为json的方法</a></li><li><a class=toc-href href=#测试返回类型为重定向的方法 title="4.4. 测试返回类型为重定向的方法">4.4. 测试返回类型为重定向的方法</a></li><li><a class=toc-href href=#用户登录生成session title="4.5. 用户登录生成Session">4.5. 用户登录生成Session</a></li><li><a class=toc-href href=#批量测试 title="4.6. 批量测试">4.6. 批量测试</a></li></ul></li><li><a class=toc-href href=#遇到的问题_1 title="5. 遇到的问题">5. 遇到的问题</a><ul><li><a class=toc-href href=#编码问题 title="5.1. 编码问题">5.1. 编码问题</a></li></ul></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2011-09-22T00:00:00+08:00> 2011-09-22</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/python/ >Python</a> / <a href=https://blog.alswl.com/tag/nose/ >nose</a> / <a href=https://blog.alswl.com/tag/pylons/ >Pylons</a> </footer><!-- /.post-info --> </div> </div> <p>不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用 <a href=http://readthedocs.org/docs/nose/en/latest>nose</a> 做单元测试，颇有心得， 在这里分享一下。</p> <h2 id=pylons中依赖包>1. Pylons中依赖包</h2> <p>先简单介绍一下Pylons, Pylons与其说是一个框架，不如说是一堆框架的组合， Pylons在其中做到一个胶水的作用。Pylons依赖的包如下。</p> <ul> <li><a href=https://github.com/danielfm/pybreaker>breaker，缓存和Session</a></li> <li><a href=http://formencode.org/ >FormEncode，用户输入检查</a></li> <li><a href=http://www.makotemplates.org/ >Mako，模板渲染</a></li> <li><a href=http://readthedocs.org/docs/nose/en/latest/ >nose，自动化测试</a></li> <li><a href=http://pythonpaste.org/script/ >Paste，服务器</a></li> <li><a href=http://routes.groovie.org/ >Routes, 路由</a></li> <li><a href=http://pythonpaste.org/tempita/ >Tempita，Paste的模板</a></li> <li><a href=http://packages.python.org/WebCore/modules/thirdparty/weberror.html>Weberror</a></li> <li><a href=http://docs.webob.org/en/latest/index.html>WebOb，提供WSGI请求响应等对象</a></li> <li><a href=http://pythonpaste.org/webtest/ >WebTest，Paste自带的测试小框架， 提供TestResponse和TestRequest两个有用的小东西</a></li> </ul> <p>Pylons的测试主要使用的其中的 Paste / nose / WebOb / WebTest。 遇到问题的时候，可以去翻一翻上面的文档。</p> <h2 id=pylons中测试目录结构>2. Pylons中测试目录结构</h2> <p>目录结构如下</p> <pre><code>├─config
 ├─controllers
 ├─lib
 ├─model
 ├─public
 ├─templates
 └─tests
-    └─functional</code></pre>
-<p>目录中的 <code>config / controllers / lib / model / public</code> 在不同的web框架下面可能会略有差别，在这里我不关注他们，我关注 <code>tests / functional</code> 中存放相应的测试脚本，比如 <code>test_user.py</code></p>
-<h2 id="第一个简单的测试用例">3. 第一个简单的测试用例</h2>
-<h3 id="撰写单元测试文件">3.1. 撰写单元测试文件</h3>
-<p>最简单的test脚本如下</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" title="1"><span class="im">from</span> myb.tests <span class="im">import</span> <span class="op">*</span></a>
-<a class="sourceLine" id="cb2-2" title="2"></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="kw">class</span> TestIndexController(TestController):</a>
-<a class="sourceLine" id="cb2-4" title="4">    <span class="kw">def</span> test_index(<span class="va">self</span>):</a>
-<a class="sourceLine" id="cb2-5" title="5">    <span class="cf">pass</span></a>
-<a class="sourceLine" id="cb2-6" title="6">    <span class="co"># Test response...</span></a></code></pre></div>
-<p>这里我们从 <code>myb.tests</code> 这个目录下面引入了所有包 （其实起作用的是 <code>__init__.py</code> ）</p>
-<p><code>__init__.py</code> 如下：</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" title="1"><span class="co">#!/usr/bin/env python</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="co">#coding: utf-8</span></a>
-<a class="sourceLine" id="cb3-3" title="3"></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="im">from</span> webob.headers <span class="im">import</span> ResponseHeaders</a>
-<a class="sourceLine" id="cb3-5" title="5"><span class="im">from</span> unittest <span class="im">import</span> TestCase</a>
-<a class="sourceLine" id="cb3-6" title="6"></a>
-<a class="sourceLine" id="cb3-7" title="7"><span class="im">from</span> paste.deploy <span class="im">import</span> loadapp</a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="im">from</span> paste.script.appinstall <span class="im">import</span> SetupCommand</a>
-<a class="sourceLine" id="cb3-9" title="9"><span class="im">from</span> pylons <span class="im">import</span> url</a>
-<a class="sourceLine" id="cb3-10" title="10"><span class="im">from</span> routes.util <span class="im">import</span> URLGenerator</a>
-<a class="sourceLine" id="cb3-11" title="11"><span class="im">from</span> webtest <span class="im">import</span> TestApp</a>
-<a class="sourceLine" id="cb3-12" title="12"><span class="im">import</span> pylons.test</a>
-<a class="sourceLine" id="cb3-13" title="13"></a>
-<a class="sourceLine" id="cb3-14" title="14">__all__ <span class="op">=</span> [<span class="st">&#39;environ&#39;</span>, <span class="st">&#39;url&#39;</span>, <span class="st">&#39;TestController&#39;</span>]</a>
-<a class="sourceLine" id="cb3-15" title="15"></a>
-<a class="sourceLine" id="cb3-16" title="16"><span class="co"># Invoke websetup with the current config file</span></a>
-<a class="sourceLine" id="cb3-17" title="17">SetupCommand(<span class="st">&#39;setup-app&#39;</span>).run([pylons.test.pylonsapp.config[<span class="st">&#39;__file__&#39;</span>]])</a>
-<a class="sourceLine" id="cb3-18" title="18">environ <span class="op">=</span> {}</a>
-<a class="sourceLine" id="cb3-19" title="19"></a>
-<a class="sourceLine" id="cb3-20" title="20"><span class="kw">class</span> TestController(TestCase):</a>
-<a class="sourceLine" id="cb3-21" title="21">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, <span class="op">*</span>args, <span class="op">**</span>kwargs):</a>
-<a class="sourceLine" id="cb3-22" title="22">        wsgiapp <span class="op">=</span> pylons.test.pylonsapp</a>
-<a class="sourceLine" id="cb3-23" title="23">        config <span class="op">=</span> wsgiapp.config</a>
-<a class="sourceLine" id="cb3-24" title="24">        <span class="va">self</span>.app <span class="op">=</span> TestApp(wsgiapp)</a>
-<a class="sourceLine" id="cb3-25" title="25">        url._push_object(URLGenerator(config[<span class="st">&#39;routes.map&#39;</span>], environ))</a>
-<a class="sourceLine" id="cb3-26" title="26"></a>
-<a class="sourceLine" id="cb3-27" title="27">TestCase.<span class="fu">__init__</span>(<span class="va">self</span>, <span class="op">*</span>args, <span class="op">**</span>kwargs)</a></code></pre></div>
-<p>可以看到，这里使用了 <code>TestController</code> 继承了 <code>TestCase</code> 这个单元测试基类， 并且在里面进行了web应用的环境初始化。</p>
-<h3 id="撰写测试配置文件">3.2. 撰写测试配置文件</h3>
-<p>上文撰写了一个最简单的测试代码，我们接着做一些单元测试配置。</p>
-<p>在app应用的同级文件里面，修改 <code>test.ini</code> 文件。</p>
-<pre><code>[DEFAULT]
+    └─functional</code></pre> <p>目录中的 <code>config / controllers / lib / model / public</code> 在不同的web框架下面可能会略有差别，在这里我不关注他们，我关注 <code>tests / functional</code> 中存放相应的测试脚本，比如 <code>test_user.py</code></p> <h2 id=第一个简单的测试用例>3. 第一个简单的测试用例</h2> <h3 id=撰写单元测试文件>3.1. 撰写单元测试文件</h3> <p>最简单的test脚本如下</p> <div class=sourceCode id=cb2><pre class="sourceCode python"><code class="sourceCode python"><a class=sourceLine id=cb2-1 title=1><span class=im>from</span> myb.tests <span class=im>import</span> <span class=op>*</span></a>
+<a class=sourceLine id=cb2-2 title=2></a>
+<a class=sourceLine id=cb2-3 title=3><span class=kw>class</span> TestIndexController(TestController):</a>
+<a class=sourceLine id=cb2-4 title=4>    <span class=kw>def</span> test_index(<span class=va>self</span>):</a>
+<a class=sourceLine id=cb2-5 title=5>    <span class=cf>pass</span></a>
+<a class=sourceLine id=cb2-6 title=6>    <span class=co># Test response...</span></a></code></pre></div> <p>这里我们从 <code>myb.tests</code> 这个目录下面引入了所有包 （其实起作用的是 <code>__init__.py</code> ）</p> <p><code>__init__.py</code> 如下：</p> <div class=sourceCode id=cb3><pre class="sourceCode python"><code class="sourceCode python"><a class=sourceLine id=cb3-1 title=1><span class=co>#!/usr/bin/env python</span></a>
+<a class=sourceLine id=cb3-2 title=2><span class=co>#coding: utf-8</span></a>
+<a class=sourceLine id=cb3-3 title=3></a>
+<a class=sourceLine id=cb3-4 title=4><span class=im>from</span> webob.headers <span class=im>import</span> ResponseHeaders</a>
+<a class=sourceLine id=cb3-5 title=5><span class=im>from</span> unittest <span class=im>import</span> TestCase</a>
+<a class=sourceLine id=cb3-6 title=6></a>
+<a class=sourceLine id=cb3-7 title=7><span class=im>from</span> paste.deploy <span class=im>import</span> loadapp</a>
+<a class=sourceLine id=cb3-8 title=8><span class=im>from</span> paste.script.appinstall <span class=im>import</span> SetupCommand</a>
+<a class=sourceLine id=cb3-9 title=9><span class=im>from</span> pylons <span class=im>import</span> url</a>
+<a class=sourceLine id=cb3-10 title=10><span class=im>from</span> routes.util <span class=im>import</span> URLGenerator</a>
+<a class=sourceLine id=cb3-11 title=11><span class=im>from</span> webtest <span class=im>import</span> TestApp</a>
+<a class=sourceLine id=cb3-12 title=12><span class=im>import</span> pylons.test</a>
+<a class=sourceLine id=cb3-13 title=13></a>
+<a class=sourceLine id=cb3-14 title=14>__all__ <span class=op>=</span> [<span class=st>'environ'</span>, <span class=st>'url'</span>, <span class=st>'TestController'</span>]</a>
+<a class=sourceLine id=cb3-15 title=15></a>
+<a class=sourceLine id=cb3-16 title=16><span class=co># Invoke websetup with the current config file</span></a>
+<a class=sourceLine id=cb3-17 title=17>SetupCommand(<span class=st>'setup-app'</span>).run([pylons.test.pylonsapp.config[<span class=st>'__file__'</span>]])</a>
+<a class=sourceLine id=cb3-18 title=18>environ <span class=op>=</span> {}</a>
+<a class=sourceLine id=cb3-19 title=19></a>
+<a class=sourceLine id=cb3-20 title=20><span class=kw>class</span> TestController(TestCase):</a>
+<a class=sourceLine id=cb3-21 title=21>    <span class=kw>def</span> <span class=fu>__init__</span>(<span class=va>self</span>, <span class=op>*</span>args, <span class=op>**</span>kwargs):</a>
+<a class=sourceLine id=cb3-22 title=22>        wsgiapp <span class=op>=</span> pylons.test.pylonsapp</a>
+<a class=sourceLine id=cb3-23 title=23>        config <span class=op>=</span> wsgiapp.config</a>
+<a class=sourceLine id=cb3-24 title=24>        <span class=va>self</span>.app <span class=op>=</span> TestApp(wsgiapp)</a>
+<a class=sourceLine id=cb3-25 title=25>        url._push_object(URLGenerator(config[<span class=st>'routes.map'</span>], environ))</a>
+<a class=sourceLine id=cb3-26 title=26></a>
+<a class=sourceLine id=cb3-27 title=27>TestCase.<span class=fu>__init__</span>(<span class=va>self</span>, <span class=op>*</span>args, <span class=op>**</span>kwargs)</a></code></pre></div> <p>可以看到，这里使用了 <code>TestController</code> 继承了 <code>TestCase</code> 这个单元测试基类， 并且在里面进行了web应用的环境初始化。</p> <h3 id=撰写测试配置文件>3.2. 撰写测试配置文件</h3> <p>上文撰写了一个最简单的测试代码，我们接着做一些单元测试配置。</p> <p>在app应用的同级文件里面，修改 <code>test.ini</code> 文件。</p> <pre><code>[DEFAULT]
 debug = true
 #email_to = you@yourdomain.com
 smtp_server = localhost
@@ -197,7 +70,7 @@ level = INFO
 handlers =
 qualname = routes.middleware
 
-# &quot;level = DEBUG&quot; logs the route matched and routing variables.
+# "level = DEBUG" logs the route matched and routing variables.
 [logger_myb]
 level = DEBUG
 handlers =
@@ -208,9 +81,9 @@ level = INFO
 handlers =
 qualname = sqlalchemy.engine
 
-# &quot;level = INFO&quot; logs SQL queries.
-# &quot;level = DEBUG&quot; logs SQL queries and results.
-# &quot;level = WARN&quot; logs neither. (Recommended for production systems.)
+# "level = INFO" logs SQL queries.
+# "level = DEBUG" logs SQL queries and results.
+# "level = WARN" logs neither. (Recommended for production systems.)
 
 [handler_console]
 class = StreamHandler
@@ -220,40 +93,28 @@ formatter = generic
 
 [formatter_generic]
 format = %(asctime)s,%(msecs)03d %(levelname)-5.5s [%(name)s] [%(threadName)s] %(message)s
-datefmt = %H:%M:%S</code></pre>
-<p>这个配置文件设定了基本调试信息，数据库（使用myb_test数据库来避免修改原始数据） ，log方式。</p>
-<p>在 <code>[app:main]</code> 里面，我直接引用了 <code>development.ini</code> 的配置。</p>
-<h3 id="运行nose">3.3. 运行nose</h3>
-<p>在shell里面切换到app所在的目录（test.ini）所在的目录，运行 <code>nosetests myb/tests/functional/test_hello world.py</code> 。 之后会出现一些log内容，不出意外的话，应该出现 <code>OK</code> 。</p>
-<p>如果遇到 <code>FAILED</code> ，那就根据错误提示的信息来查错。 nose会输出log的信息和print标准输出的信息。</p>
-<h2 id="高级一点的测试方法">4. 高级一点的测试方法</h2>
-<p>在开发过程中，我们需要判定单元测试是否正确，我罗列一些常见的用法</p>
-<h3 id="测试返回类型为http-status的方法">4.1. 测试返回类型为HTTP STATUS的方法</h3>
-<p>每次HTTP请求都会返回HTTP STATUS，正常是200，找不到是404，服务器错误是500， 我们可以根据这些返回状态值来判断测试是否跑通。</p>
-<pre><code>class TestQuestionController(TestController):
+datefmt = %H:%M:%S</code></pre> <p>这个配置文件设定了基本调试信息，数据库（使用myb_test数据库来避免修改原始数据） ，log方式。</p> <p>在 <code>[app:main]</code> 里面，我直接引用了 <code>development.ini</code> 的配置。</p> <h3 id=运行nose>3.3. 运行nose</h3> <p>在shell里面切换到app所在的目录（test.ini）所在的目录，运行 <code>nosetests myb/tests/functional/test_hello world.py</code> 。 之后会出现一些log内容，不出意外的话，应该出现 <code>OK</code> 。</p> <p>如果遇到 <code>FAILED</code> ，那就根据错误提示的信息来查错。 nose会输出log的信息和print标准输出的信息。</p> <h2 id=高级一点的测试方法_1>4. 高级一点的测试方法</h2> <p>在开发过程中，我们需要判定单元测试是否正确，我罗列一些常见的用法</p> <h3 id=测试返回类型为http-status的方法>4.1. 测试返回类型为HTTP STATUS的方法</h3> <p>每次HTTP请求都会返回HTTP STATUS，正常是200，找不到是404，服务器错误是500， 我们可以根据这些返回状态值来判断测试是否跑通。</p> <pre><code>class TestQuestionController(TestController):
 
   def test_suggest_question(self):
 
     #正常返回200
-    response = self.app.get(url=url(controller=&#39;question&#39;,
-    action=&#39;suggest_question&#39;,
+    response = self.app.get(url=url(controller='question',
+    action='suggest_question',
     ),
 
     params={
     },
     headers=self.headers,
     status=200,
-    )</code></pre>
-<p>#不存在的id返回404</p>
-<pre><code>response = self.app.get(url=url(controller=&#39;question&#39;,
+    )</code></pre> <p>#不存在的id返回404</p> <pre><code>response = self.app.get(url=url(controller='question',
 
-action=&#39;suggest_question&#39;,
+action='suggest_question',
 
 ),
 
 params={
 
-&#39;id&#39;: &#39;345&#39;,
+'id': '345',
 
 },
 
@@ -261,169 +122,123 @@ headers=self.headers,
 
 status=404,
 
-)</code></pre>
-<p>我习惯使用 <code>url()</code> 方法来生成url，这样一方面不用记住冗长的url， 另外在url路由表发生变化之后，也不用去改变测试代码。</p>
-<h3 id="测试返回类型为html的方法">4.2. 测试返回类型为html的方法</h3>
-<pre><code>        def test_register(self):
-            response = self.app.post(url(controller = &#39;users&#39;,
-                                         action = &#39;register&#39;,
-                                         format = &#39;json&#39;),
+)</code></pre> <p>我习惯使用 <code>url()</code> 方法来生成url，这样一方面不用记住冗长的url， 另外在url路由表发生变化之后，也不用去改变测试代码。</p> <h3 id=测试返回类型为html的方法>4.2. 测试返回类型为html的方法</h3> <pre><code>        def test_register(self):
+            response = self.app.post(url(controller = 'users',
+                                         action = 'register',
+                                         format = 'json'),
                                      {
-                                         &#39;login_name&#39;: &#39;nose_json&#39;,
-                                         &#39;login_pass&#39;: &#39;123&#39;,
-                                         &#39;user_name&#39;: &#39;测试机器人_json&#39;,
+                                         'login_name': 'nose_json',
+                                         'login_pass': '123',
+                                         'user_name': '测试机器人_json',
                                      },
                                      status=200
                                      )
-            assert &#39;202cb962ac59075b964b07152d234b70&#39; in response.body #返回的加密密码
-            #log.debug( u&#39;器&#39; in response.unicode_body) #无法测试中文
-            #log.debug( u&#39;测试机器人_json&#39; in response.unicode_body) #无法测试中文</code></pre>
-<p>使用 <code>response.body</code> 来判定html里面的内容（这里对中文支持不太好）。</p>
-<h3 id="测试返回类型为json的方法">4.3. 测试返回类型为json的方法</h3>
-<p>AJAX请求正常返回的状态吗都是200，我们需要判定里面的内容进行assert</p>
-<pre><code>            response = self.app.post(url=url(controller=&#39;invitation&#39;,
-                                             action=&#39;invite_by_mail&#39;),
+            assert '202cb962ac59075b964b07152d234b70' in response.body #返回的加密密码
+            #log.debug( u'器' in response.unicode_body) #无法测试中文
+            #log.debug( u'测试机器人_json' in response.unicode_body) #无法测试中文</code></pre> <p>使用 <code>response.body</code> 来判定html里面的内容（这里对中文支持不太好）。</p> <h3 id=测试返回类型为json的方法>4.3. 测试返回类型为json的方法</h3> <p>AJAX请求正常返回的状态吗都是200，我们需要判定里面的内容进行assert</p> <pre><code>            response = self.app.post(url=url(controller='invitation',
+                                             action='invite_by_mail'),
                                      params={
-                                         &#39;to_address&#39;: &#39;&#39;,
-                                         &#39;to_user_name&#39;: &#39;大爷&#39;,
+                                         'to_address': '',
+                                         'to_user_name': '大爷',
                                      },
                                      headers=self.headers,
                                      status=200
                                     )
             result = response.json
-            assert(result[&#39;success&#39;] == False)
-            assert(result[&#39;message&#39;] == u&#39;发送失败：你妹不漂亮&#39;)</code></pre>
-<h3 id="测试返回类型为重定向的方法">4.4. 测试返回类型为重定向的方法</h3>
-<p>这是HTTP状态吗的特殊形式，比如登录之后做一次跳转之类的。</p>
-<pre><code>        def test_add(self):
+            assert(result['success'] == False)
+            assert(result['message'] == u'发送失败：你妹不漂亮')</code></pre> <h3 id=测试返回类型为重定向的方法>4.4. 测试返回类型为重定向的方法</h3> <p>这是HTTP状态吗的特殊形式，比如登录之后做一次跳转之类的。</p> <pre><code>        def test_add(self):
             #成功之后返回302做跳转，同时判定返回内容中跳转路径
-            response = self.app.post(url=url(controller=&#39;question&#39;,
-                                             action=&#39;add&#39;,
+            response = self.app.post(url=url(controller='question',
+                                             action='add',
                                              ),
                                      params={
-                                         &#39;question_title&#39;: &#39;hwti1&#39;,
-                                         &#39;question_content&#39;: &#39;wgtinzrs1&#39;,
+                                         'question_title': 'hwti1',
+                                         'question_content': 'wgtinzrs1',
                                      },
                                      headers=self.headers,
                                      status=302,
                                     )
-            assert re.match(r&#39;^http://localhost/question/d*&#39;,
-                            response.headers[&#39;Location&#39;])</code></pre>
-<h3 id="用户登录生成session">4.5. 用户登录生成Session</h3>
-<p>有些方法需要登录后才能运行，这依赖于服务器和浏览器之间的Cookie。如果要对这类 方法进行测试，我们需要事先获取Cookie，再在每一次请求发出的时候附带这个Cookie。</p>
-<p>在下面的方法中，我实现了用户登录操作。 在test目录下的 <code>__init.py__</code> 中 <code>TestController</code> 加入新方法 <code>login()</code></p>
-<pre><code>        def login(self, login_name, login_pass):
-            &quot;&quot;&quot;
+            assert re.match(r'^http://localhost/question/d*',
+                            response.headers['Location'])</code></pre> <h3 id=用户登录生成session>4.5. 用户登录生成Session</h3> <p>有些方法需要登录后才能运行，这依赖于服务器和浏览器之间的Cookie。如果要对这类 方法进行测试，我们需要事先获取Cookie，再在每一次请求发出的时候附带这个Cookie。</p> <p>在下面的方法中，我实现了用户登录操作。 在test目录下的 <code>__init.py__</code> 中 <code>TestController</code> 加入新方法 <code>login()</code></p> <pre><code>        def login(self, login_name, login_pass):
+            """
             用户登录操作，获取Cookie
 
-&quot;&quot;&quot;
+"""
 
-response = self.app.post(url=url(controller=&#39;users&#39;,
+response = self.app.post(url=url(controller='users',
 
-action=&#39;login&#39;),
+action='login'),
 
 params={
 
-&#39;login_name&#39;: login_name,
+'login_name': login_name,
 
-&#39;login_pass&#39;: login_pass,
+'login_pass': login_pass,
 
 },
 
 )
 
-cookie = response.headers.getall(&#39;Set-cookie&#39;)[0]
+cookie = response.headers.getall('Set-cookie')[0]
 
 self.headers = ResponseHeaders()
 
-self.headers.add(&#39;Cookie&#39;, cookie)</code></pre>
-<p>这样就可以通过 <code>self.headers</code> 保存登录之后的cookie。</p>
-<h3 id="批量测试">4.6. 批量测试</h3>
-<p>除了制定 <code>test_xxx.py</code> 文件进行单元测试，我们还可以直接使用 <code>nosetests</code> 测试所有测试用例。</p>
-<pre><code>nosetests
-//该目录下需要存在 test.ini 配置文件</code></pre>
-<h2 id="遇到的问题">5. 遇到的问题</h2>
-<h3 id="编码问题">5.1. 编码问题</h3>
-<pre><code>      File &quot;buildbdist.win32eggwebtest__init__.py&quot;, line 211, in post
+self.headers.add('Cookie', cookie)</code></pre> <p>这样就可以通过 <code>self.headers</code> 保存登录之后的cookie。</p> <h3 id=批量测试>4.6. 批量测试</h3> <p>除了制定 <code>test_xxx.py</code> 文件进行单元测试，我们还可以直接使用 <code>nosetests</code> 测试所有测试用例。</p> <pre><code>nosetests
+//该目录下需要存在 test.ini 配置文件</code></pre> <h2 id=遇到的问题_1>5. 遇到的问题</h2> <h3 id=编码问题>5.1. 编码问题</h3> <pre><code>      File "buildbdist.win32eggwebtest__init__.py", line 211, in post
         content_type=content_type)
-      File &quot;buildbdist.win32eggwebtest__init__.py&quot;, line 191, in _gen_request
+      File "buildbdist.win32eggwebtest__init__.py", line 191, in _gen_request
         expect_errors=expect_errors)
-      File &quot;buildbdist.win32eggwebtest__init__.py&quot;, line 370, in do_request
+      File "buildbdist.win32eggwebtest__init__.py", line 370, in do_request
         res = req.get_response(app, catch_exc_info=True)
-      File &quot;buildbdist.win32eggwebobrequest.py&quot;, line 1004, in get_response
+      File "buildbdist.win32eggwebobrequest.py", line 1004, in get_response
         application, catch_exc_info=True)
-      File &quot;buildbdist.win32eggwebobrequest.py&quot;, line 977, in call_application
+      File "buildbdist.win32eggwebobrequest.py", line 977, in call_application
         app_iter = application(self.environ, start_response)
-      File &quot;buildbdist.win32eggwebtestlint.py&quot;, line 170, in lint_app
+      File "buildbdist.win32eggwebtestlint.py", line 170, in lint_app
         iterator = application(environ, start_response_wrapper)
-      File &quot;d:programmingpython26libsite-packagespaste-1.7.5.1-py2.6.eggpastecascade.py&quot;, line 130, in __call__
+      File "d:programmingpython26libsite-packagespaste-1.7.5.1-py2.6.eggpastecascade.py", line 130, in __call__
         return self.apps[-1](environ, start_response)
-      File &quot;d:programmingpython26libsite-packagespaste-1.7.5.1-py2.6.eggpasteregistry.py&quot;, line 379, in __call__
+      File "d:programmingpython26libsite-packagespaste-1.7.5.1-py2.6.eggpasteregistry.py", line 379, in __call__
         app_iter = self.application(environ, start_response)
-      File &quot;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsmiddleware.py&quot;, line 150, in __call__
+      File "d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsmiddleware.py", line 150, in __call__
         self.app, environ, catch_exc_info=True)
-      File &quot;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsutil.py&quot;, line 48, in call_wsgi_application
+      File "d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsutil.py", line 48, in call_wsgi_application
         app_iter = application(environ, start_response)
-      File &quot;d:programmingpython26libsite-packagesweberror-0.10.3-py2.6.eggweberrorevalexception.py&quot;, line 235, in __call__
+      File "d:programmingpython26libsite-packagesweberror-0.10.3-py2.6.eggweberrorevalexception.py", line 235, in __call__
         return self.respond(environ, start_response)
-      File &quot;d:programmingpython26libsite-packagesweberror-0.10.3-py2.6.eggweberrorevalexception.py&quot;, line 418, in respond
+      File "d:programmingpython26libsite-packagesweberror-0.10.3-py2.6.eggweberrorevalexception.py", line 418, in respond
         return self.application(environ, start_response)
-      File &quot;d:programmingpython26libsite-packagesbeaker-1.5.4-py2.6.eggbeakermiddleware.py&quot;, line 152, in __call__
+      File "d:programmingpython26libsite-packagesbeaker-1.5.4-py2.6.eggbeakermiddleware.py", line 152, in __call__
         return self.wrap_app(environ, session_start_response)
-      File &quot;d:programmingpython26libsite-packagesroutes-1.12.3-py2.6.eggroutesmiddleware.py&quot;, line 131, in __call__
+      File "d:programmingpython26libsite-packagesroutes-1.12.3-py2.6.eggroutesmiddleware.py", line 131, in __call__
         response = self.app(environ, start_response)
-      File &quot;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonswsgiapp.py&quot;, line 107, in __call__
+      File "d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonswsgiapp.py", line 107, in __call__
         response = self.dispatch(controller, environ, start_response)
-      File &quot;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonswsgiapp.py&quot;, line 312, in dispatch
+      File "d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonswsgiapp.py", line 312, in dispatch
         return controller(environ, start_response)
-      File &quot;F:workxintongworkspaceMYB_WENDAmybmyblibbase.py&quot;, line 52, in __call__
+      File "F:workxintongworkspaceMYB_WENDAmybmyblibbase.py", line 52, in __call__
         return WSGIController.__call__(self, environ, start_response)
-      File &quot;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonscontrollerscore.py&quot;, line 266, in __call__
+      File "d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonscontrollerscore.py", line 266, in __call__
         return response(environ, self.start_response)
-      File &quot;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&quot;, line 517, in __call__
+      File "d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py", line 517, in __call__
         environ, start_response)
-      File &quot;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&quot;, line 341, in __call__
+      File "d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py", line 341, in __call__
         return self.generate_response(environ, start_response)
-      File &quot;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&quot;, line 322, in generate_response
+      File "d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py", line 322, in generate_response
         body = self.plain_body(environ)
-      File &quot;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&quot;, line 301, in plain_body
+      File "d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py", line 301, in plain_body
         body = self._make_body(environ, no_escape)
-      File &quot;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&quot;, line 294, in _make_body
+      File "d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py", line 294, in _make_body
         args[k] = escape(v)
-      File &quot;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&quot;, line 182, in no_escape
+      File "d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py", line 182, in no_escape
         value = str(value)
-      File &quot;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsutil.py&quot;, line 112, in __repr__
+      File "d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsutil.py", line 112, in __repr__
         value_repr = repr(value)
-    UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 8-18: ordinal not in range(128)</code></pre>
-<p>这是一个明显由编码引起的错误。</p>
-<p>修改pylons-1.0-py2.6.eggPylonsutil.py中112行修改为</p>
-<pre><code>    try:
+    UnicodeEncodeError: 'ascii' codec can't encode characters in position 8-18: ordinal not in range(128)</code></pre> <p>这是一个明显由编码引起的错误。</p> <p>修改pylons-1.0-py2.6.eggPylonsutil.py中112行修改为</p> <pre><code>    try:
         value_repr = repr(value)
     except UnicodeEncodeError, e:
-        log.error(&#39;encode error in pylons/utils.py&#39;)
-        continue</code></pre>
-<p>这样虽然不能从根本上解决问题，但是至少规避了问题。</p>
-
-            </div>
-            <!-- /.entry-content -->
-              
-<hr>
-<div class="panel">
-<div class="panel-body">
-   <small>原文链接: <a href="https://blog.alswl.com/2011/09/nose/">https://blog.alswl.com/2011/09/nose/</a></small><br>
-   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
-</div>
-</div>
-
-    <hr/>
-    <section class="comments" id="comments">
-        <h2>Comments</h2>
-
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
+        log.error('encode error in pylons/utils.py')
+        continue</code></pre> <p>这样虽然不能从根本上解决问题，但是至少规避了问题。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2011/09/nose/ >https://blog.alswl.com/2011/09/nose/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -440,128 +255,7 @@ self.headers.add(&#39;Cookie&#39;, cookie)</code></pre>
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-        </script>
-		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-		<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    
-
-    </section>
-        </article>
-    </section>
-
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
-
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="https://blog.alswl.com/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2022 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Disqus -->
-    <script type="text/javascript">
+        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -573,10 +267,7 @@ self.headers.add(&#39;Cookie&#39;, cookie)</code></pre>
             s.src = '//' + disqus_shortname + '.disqus.com/count.js';
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
-    </script>
-    <!-- End Disqus Code -->
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -590,7 +281,4 @@ self.headers.add(&#39;Cookie&#39;, cookie)</code></pre>
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>

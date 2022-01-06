@@ -1,216 +1,41 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>关于 NetworkManager / PolicyKit / ConsoleKit 的那些屌事 - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-<link rel="canonical" href="https://blog.alswl.com/2012/05/networkmanager-policykit-consolekit/">
-
-        <meta name="author" content="alswl" />
-        <meta name="keywords" content="Linuxer,NetworkManager,PolicyKit,ConsoleKit,GDM,Gnome" />
-        <meta name="description" content="在使用 Awesome 的过程中，我又遇到了一个老问题「NetworkManager 在非 Gnome 环境启动后，会无法 添加 / 删除 / 编辑 无线连接」。明眼人一看就知道， 这是 …" />
-
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="https://blog.alswl.com/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://blog.alswl.com/theme/css/style.css" type="text/css"/>
-
-    <link href="https://blog.alswl.com/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="https://blog.alswl.com/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="https://blog.alswl.com/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://blog.alswl.com/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-    <section id="content">
-        <article class="article-detail">
-            <header class="page-header">
-                <h1 class="title">
-                    <a href="https://blog.alswl.com/2012/05/networkmanager-policykit-consolekit/"
-                       rel="bookmark"
-                       title="Permalink to 关于 NetworkManager / PolicyKit / ConsoleKit 的那些屌事">
-                        关于 NetworkManager / PolicyKit / ConsoleKit 的那些屌事
-                    </a>
-                </h1>
-            </header>
-            <div class="entry-content">
-                <div class="panel">
-                    <div class="panel-body">
-<footer class="post-info">
-    <span class="label label-default">Date</span>
-    <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2012-05-17T09:07:00+08:00"> 2012-05-17</time>
-    </span>
-
-
-
-<span class="label label-default">Tags</span>
-	<a href="https://blog.alswl.com/tag/linuxer/">Linuxer</a>
-        /
-	<a href="https://blog.alswl.com/tag/networkmanager/">NetworkManager</a>
-        /
-	<a href="https://blog.alswl.com/tag/policykit/">PolicyKit</a>
-        /
-	<a href="https://blog.alswl.com/tag/consolekit/">ConsoleKit</a>
-        /
-	<a href="https://blog.alswl.com/tag/gdm/">GDM</a>
-        /
-	<a href="https://blog.alswl.com/tag/gnome/">Gnome</a>
-    
-</footer><!-- /.post-info -->                    </div>
-                </div>
-                <p>在使用 Awesome 的过程中，我又遇到了一个老问题「NetworkManager 在非 Gnome 环境启动后，会无法 添加 / 删除 / 编辑 无线连接」。明眼人一看就知道， 这是权限的问题。</p>
-<h2 id="问题描述">问题描述</h2>
-<p>我的环境是 <strong>ArchLinux / xmonad 0.10 / awesome v3.4.11 / GDM 3.4.1 / NetworkManager 0.9.4.0</strong>， 下面我用 awesome 做示例，其他非 Gnome WM 也应该是类似配置。</p>
-<p>我的 WM 启动流程是： 通过 GDM 启动 xmonad / awesome，启动 xsession 是 <code>/usr/share/xsessions/awesome.desktop</code>， 内容如下</p>
-<!-- more -->
-<div class="sourceCode" id="cb1"><pre class="sourceCode ini"><code class="sourceCode ini"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">[Desktop Entry]</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="dt">Name</span><span class="ot">=</span><span class="st">Awesome</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="dt">Comment</span><span class="ot">=</span><span class="st">This session logs you into Awesome</span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="dt">Type</span><span class="ot">=</span><span class="st">Application</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="dt">Exec</span><span class="ot">=</span><span class="st">ck-launch-session dbus-launch $HOME/.start-session.sh awesome</span></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="dt">TryExec</span><span class="ot">=</span><span class="st">/usr/bin/awesome</span></a></code></pre></div>
-<p><code>$HOME/.start-session.sh</code> 中的作用是启动 <strong>nm-applet</strong> 和 <strong>exec awesome</strong>。</p>
-<p>启动之后的情况是 NetworkManager 无线 编辑/删除 按钮变灰无法点击，或者可以点击， 但是会发生 <strong>insufficient privileges</strong> 错误。</p>
-<figure>
-<img src="https://4ocf5n.dijingchao.com/upload_dropbox/201205/insufficient-privileges.png" alt="insufficient privileges" /><figcaption>insufficient privileges</figcaption>
-</figure>
-<h2 id="问题原因">问题原因</h2>
-<p>这个问题是由 PolicyKit 和 ConsoleKit 启动不当引起的。</p>
-<p>PolicyKit 是：</p>
-<blockquote>
-<p>PolicyKit allows fine-tuned capabilities in desktop enviroment. Traditionally only privilaged user (root) was allowed to configure network. However while in server enviroment it is reasonable assumption it would be too limiting to not allowed to connect to hotspot on laptop. Still however you may not want to give full privilages to this person (like installing programs) or you want to limit options for some people (for example on your children laptops only ‘trusted’ networks with parential filters can be used). As far as I remember it works like:</p>
-<ul>
-<li>Program send message to daemon via dbus about action</li>
-<li>Daemon uses PolicyKit libraries/configuration (in fact PolicyKit daemon) to determine if user is allowed to perform action. It may happen that the certain confition must be fullfilled (like entering password or hardware access).</li>
-<li>Deamon performs action according to it (returns auth error or perform action)</li>
-</ul>
-</blockquote>
-<p>ConsoleKit 是：</p>
-<blockquote>
-<p>In short consolekit is service which tracks user sessions (i.e. where user is logged in). It allows switching users without logging out [many user can be logged in on the same hardware at the same time with one user active]. It is also used to check if session is “local” i.e. if user have direct access to hardware (which may be considered more secure then remote access).</p>
-</blockquote>
-<p>参考：<a href="http://unix.stackexchange.com/questions/5220/what-are-consolekit-and-policykit-how-do-they-work">What are ConsoleKit and PolicyKit? How do they work?</a></p>
-<p>所以简而言之，ConsoleKit 是用来管理用户会话的，PolicyKit 是用来处理用户申请特殊权限的， 他们两个经常工作在一起。</p>
-<p>有个 PolicyKit 认证 API 教程可以一看：</p>
-<ul>
-<li><a href="http://www.kissuki.com/blog/2009/03/10/policykit/">使用 PolicyKit 进行身份认证（上）</a></li>
-<li><a href="http://www.kissuki.com/blog/2009/03/12/policykit/">使用 PolicyKit 进行身份认证（中）</a></li>
-<li><a href="http://www.kissuki.com/blog/2009/03/13/policykit/">使用 PolicyKit 进行身份认证（下）</a></li>
-</ul>
-<p>我的这个问题就是由于 PolicyKit 无法正确授权引起的。</p>
-<h2 id="问题解决">问题解决</h2>
-<p>我开始吭次吭次的 Google，一会就找到了 Arch Wiki 中 <a href="https://wiki.archlinux.org/index.php/NetworkManager#Set_up_PolicyKit_permissions">NetworkManager</a> 的解决办法：</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="bu">exec</span> ck-launch-session dbus-launch wm</a></code></pre></div>
-<p>写的很清楚，使用 <strong>ck-launch-session</strong> 和 <strong>dbus-launch</strong> 来加载 WM。但是我已经使用 <code>ck-launch-session</code> 来启动 WM 了。</p>
-<p>随后我把怀疑的目光放到 <code>/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1</code> 这个程序给系统提供 PolicyKit 权限认证，请求时候会让用户输入密码，如下图：</p>
-<figure>
-<img src="https://4ocf5n.dijingchao.com/upload_dropbox/201205/policykit-agent.png" alt="PolicyKit Agent" /><figcaption>PolicyKit Agent</figcaption>
-</figure>
-<p>可惜还是不行。</p>
-<p>我甚至还参考<a href="http://blog.san-ss.com.ar/2011/03/using-gnome-keyring-in-xmonad.html">Using gnome keyring in xmonad</a> 试图手工建立一个 Gnome Keyring。事实证明，Gnome Keyring 和这个问题无关。</p>
-<p>最后，我用 <code>ck-list-sessions</code> 命令查看运行的用户 Session，发现同时运行着两个， 一个处于 <code>Active</code>，一个不处于 <code>Active</code>，这下真相大白了：GDM 启动时候会自己启动 <code>ck-launch-session</code>，不用自己手动启动，否则会造成两个会话而无法正确授权。</p>
-<pre><code>Session2:
-    unix-user = &#39;1000&#39;
-    realname = &#39;Jason Ti&#39;
-    seat = &#39;Seat1&#39;
-    session-type = &#39;&#39;
+<!DOCTYPE html><html lang=en> <head><title>关于 NetworkManager / PolicyKit / ConsoleKit 的那些屌事 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2012/05/networkmanager-policykit-consolekit/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Linuxer,NetworkManager,PolicyKit,ConsoleKit,GDM,Gnome><meta name=description content="在使用 Awesome 的过程中，我又遇到了一个老问题「NetworkManager 在非 Gnome 环境启动后，会无法 添加 / 删除 / 编辑 无线连接」。明眼人一看就知道， 这是权限的问题。 问题描述 我的环境是 ArchLinux / xmonad 0.10 / awesome v3.4.11 / GDM 3.4.1 / NetworkManager 0.9.4.0， 下面我用 awesome 做示例，其他非 Gnome WM 也应该是类似配置。 我的 WM 启动流程是： 通过 GDM 启动 xmonad / awesome，启动 xsession 是 /usr/share/xsessions/awesome.desktop， 内容如下"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2012/05/networkmanager-policykit-consolekit/ rel=bookmark title="Permalink to 关于 NetworkManager / PolicyKit / ConsoleKit 的那些屌事"> 关于 NetworkManager / PolicyKit / ConsoleKit 的那些屌事 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#问题描述 title=问题描述>问题描述</a></li><li><a class=toc-href href=#问题原因 title=问题原因>问题原因</a></li><li><a class=toc-href href=#问题解决 title=问题解决>问题解决</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2012-05-17T09:07:00+08:00> 2012-05-17</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/linuxer/ >Linuxer</a> / <a href=https://blog.alswl.com/tag/networkmanager/ >NetworkManager</a> / <a href=https://blog.alswl.com/tag/policykit/ >PolicyKit</a> / <a href=https://blog.alswl.com/tag/consolekit/ >ConsoleKit</a> / <a href=https://blog.alswl.com/tag/gdm/ >GDM</a> / <a href=https://blog.alswl.com/tag/gnome/ >Gnome</a> </footer><!-- /.post-info --> </div> </div> <p>在使用 Awesome 的过程中，我又遇到了一个老问题「NetworkManager 在非 Gnome 环境启动后，会无法 添加 / 删除 / 编辑 无线连接」。明眼人一看就知道， 这是权限的问题。</p> <h2 id=问题描述>问题描述</h2> <p>我的环境是 <strong>ArchLinux / xmonad 0.10 / awesome v3.4.11 / GDM 3.4.1 / NetworkManager 0.9.4.0</strong>， 下面我用 awesome 做示例，其他非 Gnome WM 也应该是类似配置。</p> <p>我的 WM 启动流程是： 通过 GDM 启动 xmonad / awesome，启动 xsession 是 <code>/usr/share/xsessions/awesome.desktop</code>， 内容如下</p> <!-- more --> <div class=sourceCode id=cb1><pre class="sourceCode ini"><code class="sourceCode ini"><a class=sourceLine id=cb1-1 title=1><span class=kw>[Desktop Entry]</span></a>
+<a class=sourceLine id=cb1-2 title=2><span class=dt>Name</span><span class=ot>=</span><span class=st>Awesome</span></a>
+<a class=sourceLine id=cb1-3 title=3><span class=dt>Comment</span><span class=ot>=</span><span class=st>This session logs you into Awesome</span></a>
+<a class=sourceLine id=cb1-4 title=4><span class=dt>Type</span><span class=ot>=</span><span class=st>Application</span></a>
+<a class=sourceLine id=cb1-5 title=5><span class=dt>Exec</span><span class=ot>=</span><span class=st>ck-launch-session dbus-launch $HOME/.start-session.sh awesome</span></a>
+<a class=sourceLine id=cb1-6 title=6><span class=dt>TryExec</span><span class=ot>=</span><span class=st>/usr/bin/awesome</span></a></code></pre></div> <p><code>$HOME/.start-session.sh</code> 中的作用是启动 <strong>nm-applet</strong> 和 <strong>exec awesome</strong>。</p> <p>启动之后的情况是 NetworkManager 无线 编辑/删除 按钮变灰无法点击，或者可以点击， 但是会发生 <strong>insufficient privileges</strong> 错误。</p> <figure> <img alt="insufficient privileges" src=https://4ocf5n.dijingchao.com/upload_dropbox/201205/insufficient-privileges.png><figcaption>insufficient privileges</figcaption> </figure> <h2 id=问题原因>问题原因</h2> <p>这个问题是由 PolicyKit 和 ConsoleKit 启动不当引起的。</p> <p>PolicyKit 是：</p> <blockquote> <p>PolicyKit allows fine-tuned capabilities in desktop enviroment. Traditionally only privilaged user (root) was allowed to configure network. However while in server enviroment it is reasonable assumption it would be too limiting to not allowed to connect to hotspot on laptop. Still however you may not want to give full privilages to this person (like installing programs) or you want to limit options for some people (for example on your children laptops only &lsquo;trusted&rsquo; networks with parential filters can be used). As far as I remember it works like:</p> <ul> <li>Program send message to daemon via dbus about action</li> <li>Daemon uses PolicyKit libraries/configuration (in fact PolicyKit daemon) to determine if user is allowed to perform action. It may happen that the certain confition must be fullfilled (like entering password or hardware access).</li> <li>Deamon performs action according to it (returns auth error or perform action)</li> </ul> </blockquote> <p>ConsoleKit 是：</p> <blockquote> <p>In short consolekit is service which tracks user sessions (i.e.&nbsp;where user is logged in). It allows switching users without logging out [many user can be logged in on the same hardware at the same time with one user active]. It is also used to check if session is &ldquo;local&rdquo; i.e.&nbsp;if user have direct access to hardware (which may be considered more secure then remote access).</p> </blockquote> <p>参考：<a href=http://unix.stackexchange.com/questions/5220/what-are-consolekit-and-policykit-how-do-they-work>What are ConsoleKit and PolicyKit? How do they work?</a></p> <p>所以简而言之，ConsoleKit 是用来管理用户会话的，PolicyKit 是用来处理用户申请特殊权限的， 他们两个经常工作在一起。</p> <p>有个 PolicyKit 认证 API 教程可以一看：</p> <ul> <li><a href=http://www.kissuki.com/blog/2009/03/10/policykit/ >使用 PolicyKit 进行身份认证（上）</a></li> <li><a href=http://www.kissuki.com/blog/2009/03/12/policykit/ >使用 PolicyKit 进行身份认证（中）</a></li> <li><a href=http://www.kissuki.com/blog/2009/03/13/policykit/ >使用 PolicyKit 进行身份认证（下）</a></li> </ul> <p>我的这个问题就是由于 PolicyKit 无法正确授权引起的。</p> <h2 id=问题解决>问题解决</h2> <p>我开始吭次吭次的 Google，一会就找到了 Arch Wiki 中 <a href=https://wiki.archlinux.org/index.php/NetworkManager#Set_up_PolicyKit_permissions>NetworkManager</a> 的解决办法：</p> <div class=sourceCode id=cb2><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb2-1 title=1><span class=bu>exec</span> ck-launch-session dbus-launch wm</a></code></pre></div> <p>写的很清楚，使用 <strong>ck-launch-session</strong> 和 <strong>dbus-launch</strong> 来加载 WM。但是我已经使用 <code>ck-launch-session</code> 来启动 WM 了。</p> <p>随后我把怀疑的目光放到 <code>/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1</code> 这个程序给系统提供 PolicyKit 权限认证，请求时候会让用户输入密码，如下图：</p> <figure> <img alt="PolicyKit Agent" src=https://4ocf5n.dijingchao.com/upload_dropbox/201205/policykit-agent.png><figcaption>PolicyKit Agent</figcaption> </figure> <p>可惜还是不行。</p> <p>我甚至还参考<a href=http://blog.san-ss.com.ar/2011/03/using-gnome-keyring-in-xmonad.html>Using gnome keyring in xmonad</a> 试图手工建立一个 Gnome Keyring。事实证明，Gnome Keyring 和这个问题无关。</p> <p>最后，我用 <code>ck-list-sessions</code> 命令查看运行的用户 Session，发现同时运行着两个， 一个处于 <code>Active</code>，一个不处于 <code>Active</code>，这下真相大白了：GDM 启动时候会自己启动 <code>ck-launch-session</code>，不用自己手动启动，否则会造成两个会话而无法正确授权。</p> <pre><code>Session2:
+    unix-user = '1000'
+    realname = 'Jason Ti'
+    seat = 'Seat1'
+    session-type = ''
     active = TRUE
-    x11-display = &#39;:0&#39;
-    x11-display-device = &#39;/dev/tty7&#39;
-    display-device = &#39;&#39;
-    remote-host-name = &#39;&#39;
+    x11-display = ':0'
+    x11-display-device = '/dev/tty7'
+    display-device = ''
+    remote-host-name = ''
     is-local = TRUE
-    on-since = &#39;2012-05-17T00:54:31.706019Z&#39;
-    login-session-id = &#39;2&#39;
+    on-since = '2012-05-17T00:54:31.706019Z'
+    login-session-id = '2'
 Session3:
-    unix-user = &#39;1000&#39;
-    realname = &#39;Jason Ti&#39;
-    seat = &#39;Seat1&#39;
-    session-type = &#39;&#39;
+    unix-user = '1000'
+    realname = 'Jason Ti'
+    seat = 'Seat1'
+    session-type = ''
     active = False
-    x11-display = &#39;:0&#39;
-    x11-display-device = &#39;/dev/tty7&#39;
-    display-device = &#39;&#39;
-    remote-host-name = &#39;&#39;
+    x11-display = ':0'
+    x11-display-device = '/dev/tty7'
+    display-device = ''
+    remote-host-name = ''
     is-local = TRUE
-    on-since = &#39;2012-05-17T00:54:33.3465302Z&#39;
-    login-session-id = &#39;2&#39;</code></pre>
-<p>修正 <code>/usr/share/xsessions/awesome.desktop</code> 如下：</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode ini"><code class="sourceCode ini"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">[Desktop Entry]</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="dt">Name</span><span class="ot">=</span><span class="st">Awesome</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="dt">Comment</span><span class="ot">=</span><span class="st">This session logs you into Awesome</span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="dt">Type</span><span class="ot">=</span><span class="st">Application</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="dt">Exec</span><span class="ot">=</span><span class="st">$HOME/.start-session.sh awesome</span></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="dt">TryExec</span><span class="ot">=</span><span class="st">/usr/bin/awesome</span></a></code></pre></div>
-<p>事实上，在启动完 GDM 还没进入 WM 之前，<code>Ctrl+Alt+F1</code> 切换到命令行下面，查看进程会发现</p>
-<pre><code>root       637     1  0 08:44 ?        00:00:00 /usr/lib/polkit-1/polkitd --no-debug
+    on-since = '2012-05-17T00:54:33.3465302Z'
+    login-session-id = '2'</code></pre> <p>修正 <code>/usr/share/xsessions/awesome.desktop</code> 如下：</p> <div class=sourceCode id=cb4><pre class="sourceCode ini"><code class="sourceCode ini"><a class=sourceLine id=cb4-1 title=1><span class=kw>[Desktop Entry]</span></a>
+<a class=sourceLine id=cb4-2 title=2><span class=dt>Name</span><span class=ot>=</span><span class=st>Awesome</span></a>
+<a class=sourceLine id=cb4-3 title=3><span class=dt>Comment</span><span class=ot>=</span><span class=st>This session logs you into Awesome</span></a>
+<a class=sourceLine id=cb4-4 title=4><span class=dt>Type</span><span class=ot>=</span><span class=st>Application</span></a>
+<a class=sourceLine id=cb4-5 title=5><span class=dt>Exec</span><span class=ot>=</span><span class=st>$HOME/.start-session.sh awesome</span></a>
+<a class=sourceLine id=cb4-6 title=6><span class=dt>TryExec</span><span class=ot>=</span><span class=st>/usr/bin/awesome</span></a></code></pre></div> <p>事实上，在启动完 GDM 还没进入 WM 之前，<code>Ctrl+Alt+F1</code> 切换到命令行下面，查看进程会发现</p> <pre><code>root       637     1  0 08:44 ?        00:00:00 /usr/lib/polkit-1/polkitd --no-debug
 root      1072     1  0 08:44 ?        00:00:00 /usr/sbin/console-kit-daemon --no-daemon
-rtkit     1260     1  0 08:45 ?        00:00:00 /usr/lib/rtkit-daemon</code></pre>
-<p>果不其然，PolicyKit 和 ConsoleKit 已经在运行了。</p>
-<p>实测 Awesome / Xmonad 已经可以正常授权 NetworkManager 来编辑无线了。</p>
-
-            </div>
-            <!-- /.entry-content -->
-              
-<hr>
-<div class="panel">
-<div class="panel-body">
-   <small>原文链接: <a href="https://blog.alswl.com/2012/05/networkmanager-policykit-consolekit/">https://blog.alswl.com/2012/05/networkmanager-policykit-consolekit/</a></small><br>
-   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
-</div>
-</div>
-
-    <hr/>
-    <section class="comments" id="comments">
-        <h2>Comments</h2>
-
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
+rtkit     1260     1  0 08:45 ?        00:00:00 /usr/lib/rtkit-daemon</code></pre> <p>果不其然，PolicyKit 和 ConsoleKit 已经在运行了。</p> <p>实测 Awesome / Xmonad 已经可以正常授权 NetworkManager 来编辑无线了。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2012/05/networkmanager-policykit-consolekit/ >https://blog.alswl.com/2012/05/networkmanager-policykit-consolekit/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -227,128 +52,7 @@ rtkit     1260     1  0 08:45 ?        00:00:00 /usr/lib/rtkit-daemon</code></pr
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-        </script>
-		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-		<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    
-
-    </section>
-        </article>
-    </section>
-
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
-
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="https://blog.alswl.com/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2022 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Disqus -->
-    <script type="text/javascript">
+        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -360,10 +64,7 @@ rtkit     1260     1  0 08:45 ?        00:00:00 /usr/lib/rtkit-daemon</code></pr
             s.src = '//' + disqus_shortname + '.disqus.com/count.js';
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
-    </script>
-    <!-- End Disqus Code -->
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -377,7 +78,4 @@ rtkit     1260     1  0 08:45 ?        00:00:00 /usr/lib/rtkit-daemon</code></pr
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>

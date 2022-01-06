@@ -1,166 +1,12 @@
-<!DOCTYPE html>
-<html lang="en"
->
-<head>
-    <title>CakePHP的全局变量 - Log4D</title>
-    <!-- Using the latest rendering mode for IE -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-
-
-
-<link rel="canonical" href="https://blog.alswl.com/2010/05/cakephp-global-variables/">
-
-        <meta name="author" content="alswl" />
-        <meta name="keywords" content="PHP,AzaAjaxChat,CakePHP" />
-        <meta name="description" content="毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。 忙了一会发现，原来PHP没有Application对象这个概念 …" />
-
-
-
-    <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
-    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-    <link href="https://blog.alswl.com/theme/css/pygments/native.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://blog.alswl.com/theme/css/style.css" type="text/css"/>
-
-    <link href="https://blog.alswl.com/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
-    <link href="https://blog.alswl.com/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
-
-</head>
-<body>
-
-<div class="navbar navbar-default" role="navigation">
-    <div class="container  col-lg-8 col-lg-offset-2">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="https://blog.alswl.com/" class="navbar-brand">
-Log4D            </a>
-        </div>
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav">
-                    <li><a href="/tags/">Tags</a></li>
-                    <li><a href="/links/">Links</a></li>
-                    <li><a href="/about/">About</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://blog.alswl.com/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-</div> <!-- /.navbar -->
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-    <section id="content">
-        <article class="article-detail">
-            <header class="page-header">
-                <h1 class="title">
-                    <a href="https://blog.alswl.com/2010/05/cakephp-global-variables/"
-                       rel="bookmark"
-                       title="Permalink to CakePHP的全局变量">
-                        CakePHP的全局变量
-                    </a>
-                </h1>
-            </header>
-            <div class="entry-content">
-                <div class="panel">
-                    <div class="panel-body">
-<footer class="post-info">
-    <span class="label label-default">Date</span>
-    <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2010-05-17T00:00:00+08:00"> 2010-05-17</time>
-    </span>
-
-
-
-<span class="label label-default">Tags</span>
-	<a href="https://blog.alswl.com/tag/php/">PHP</a>
-        /
-	<a href="https://blog.alswl.com/tag/azaajaxchat/">AzaAjaxChat</a>
-        /
-	<a href="https://blog.alswl.com/tag/cakephp/">CakePHP</a>
-    
-</footer><!-- /.post-info -->                    </div>
-                </div>
-                <p>毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。</p>
-<p>忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application 和全局变量其实完全不是同一个概念）</p>
-<p>我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。</p>
-<h3 id="一使用bootstrap.php文件">一、使用bootstrap.php文件</h3>
-<p>在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。</p>
-<blockquote>
-<ul>
-<li>定义方便的函数</li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>注册全局常量</li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>定义新增的控制器，视图，控制器路径</li>
-</ul>
-</blockquote>
-<p>通过这个文件可以实现全局变量的声明。</p>
-<pre><code>if (!isset ($globalAAC)) {
+<!DOCTYPE html><html lang=en> <head><title>CakePHP的全局变量 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2010/05/cakephp-global-variables/ rel=canonical><meta name=author content=alswl><meta name=keywords content=PHP,AzaAjaxChat,CakePHP><meta name=description content="毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。 忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application 和全局变量其实完全不是同一个概念） 我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。 一、使用bootstrap.php文件 在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。 定义方便的函数 注册全局常量 定义新增的控制器，视图，控制器路径 通过这个文件可以实现全局变量的声明。 if (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( 'currentMessageId' => -1, 'onlineUsers' => array() ); } 在其他文件中就可以调用这个全局变量了。 二、通过Configure 类 Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法 …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2010/05/cakephp-global-variables/ rel=bookmark title="Permalink to CakePHP的全局变量"> CakePHP的全局变量 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#一使用bootstrap.php文件 title=一、使用bootstrap.php文件>一、使用bootstrap.php文件</a></li><li><a class=toc-href href=#二通过configure-类 title="二、通过Configure 类">二、通过Configure 类</a></li><li><a class=toc-href href=#三关于类似application-对象的全局变量 title="三、关于类似Application 对象的全局变量">三、关于类似Application 对象的全局变量</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2010-05-17T00:00:00+08:00> 2010-05-17</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/php/ >PHP</a> / <a href=https://blog.alswl.com/tag/azaajaxchat/ >AzaAjaxChat</a> / <a href=https://blog.alswl.com/tag/cakephp/ >CakePHP</a> </footer><!-- /.post-info --> </div> </div> <p>毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。</p> <p>忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application 和全局变量其实完全不是同一个概念）</p> <p>我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。</p> <h3 id=一使用bootstrap.php文件>一、使用bootstrap.php文件</h3> <p>在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。</p> <blockquote> <ul> <li>定义方便的函数</li> </ul> </blockquote> <blockquote> <ul> <li>注册全局常量</li> </ul> </blockquote> <blockquote> <ul> <li>定义新增的控制器，视图，控制器路径</li> </ul> </blockquote> <p>通过这个文件可以实现全局变量的声明。</p> <pre><code>if (!isset ($globalAAC)) {
     global $globalAAC;
     $globalAAC = array (
-        &#39;currentMessageId&#39; =&gt; -1,
-        &#39;onlineUsers&#39; =&gt; array()
+        'currentMessageId' =&gt; -1,
+        'onlineUsers' =&gt; array()
     );
-}</code></pre>
-<p>在其他文件中就可以调用这个全局变量了。</p>
-<h3 id="二通过configure-类">二、通过Configure 类</h3>
-<p>Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。</p>
-<pre><code>Configure::write(&#39;Aac.currentMessageId&#39;, -1);
-Configure::read(&#39;Aac.currentMessageId&#39;);</code></pre>
-<p>其中，还有一个使用Configure的偏门方法，我从 <a href="http://debuggable.com/posts/need-to-share-global-%20variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb">Need to share global variables throughout your app? » Debuggable Ltd</a> 看到的。</p>
-<pre><code>$config =&amp; Configure::getInstance();
-$config-&gt;myVariable = &#39;Hello World&#39;;</code></pre>
-<p>$config =&amp; Configure::getInstance();</p>
-<p>debug($config-&gt;myVariable);</p>
-<p>其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。</p>
-<h3 id="三关于类似application-对象的全局变量">三、关于类似Application 对象的全局变量</h3>
-<p>以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。</p>
-<p>我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。</p>
-<p>什么是Application 对象？Application 对象用于存储和访问来自任何页面的变量，类似于 session 对象。不同之处在于，所有的用户分享一个 Application 对象，而 session 对象和用户的关系是一一对应的。</p>
-<p>在翻阅PHP资料之后，我终于在ChinaUNIX找到一些蛛丝马迹 <a href="http://bbs.chinaunix.net/viewthread.php?tid=79537">全局变量，在多个页面的可以使用吗？ - Php - ChinaUnix.net</a> 。文中一位读者给了很肯定的回答“php中没有基于整个网站的全局变量，一般用数据库什么的替代方案。”。</p>
-<p>我再检查一个基于PHP的聊天系统，果然是通过数据库的 online_users来实现在线用户的保存。</p>
-<p>吃亏吃在用传统的Java思想做PHP，并且PHP接触时间太短，以后学习的时候必须多用用心了~</p>
-
-            </div>
-            <!-- /.entry-content -->
-              
-<hr>
-<div class="panel">
-<div class="panel-body">
-   <small>原文链接: <a href="https://blog.alswl.com/2010/05/cakephp-global-variables/">https://blog.alswl.com/2010/05/cakephp-global-variables/</a></small><br>
-   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
-   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
-   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
-</div>
-</div>
-
-    <hr/>
-    <section class="comments" id="comments">
-        <h2>Comments</h2>
-
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
+}</code></pre> <p>在其他文件中就可以调用这个全局变量了。</p> <h3 id=二通过configure-类>二、通过Configure 类</h3> <p>Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。</p> <pre><code>Configure::write('Aac.currentMessageId', -1);
+Configure::read('Aac.currentMessageId');</code></pre> <p>其中，还有一个使用Configure的偏门方法，我从 <a href=http://debuggable.com/posts/need-to-share-global-%20variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb>Need to share global variables throughout your app? &raquo; Debuggable Ltd</a> 看到的。</p> <pre><code>$config =&amp; Configure::getInstance();
+$config-&gt;myVariable = 'Hello World';</code></pre> <p>$config =&amp; Configure::getInstance();</p> <p>debug($config-&gt;myVariable);</p> <p>其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。</p> <h3 id=三关于类似application-对象的全局变量>三、关于类似Application 对象的全局变量</h3> <p>以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。</p> <p>我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。</p> <p>什么是Application 对象？Application 对象用于存储和访问来自任何页面的变量，类似于 session 对象。不同之处在于，所有的用户分享一个 Application 对象，而 session 对象和用户的关系是一一对应的。</p> <p>在翻阅PHP资料之后，我终于在ChinaUNIX找到一些蛛丝马迹 <a href="http://bbs.chinaunix.net/viewthread.php?tid=79537">全局变量，在多个页面的可以使用吗？ - Php - ChinaUnix.net</a> 。文中一位读者给了很肯定的回答&ldquo;php中没有基于整个网站的全局变量，一般用数据库什么的替代方案。&rdquo;。</p> <p>我再检查一个基于PHP的聊天系统，果然是通过数据库的 online_users来实现在线用户的保存。</p> <p>吃亏吃在用传统的Java思想做PHP，并且PHP接触时间太短，以后学习的时候必须多用用心了~</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2010/05/cakephp-global-variables/ >https://blog.alswl.com/2010/05/cakephp-global-variables/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -177,128 +23,7 @@ $config-&gt;myVariable = &#39;Hello World&#39;;</code></pre>
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-        </script>
-		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-		<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    
-
-    </section>
-        </article>
-    </section>
-
-        </div>
-        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
-
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-                  <ul class="list-group" id="social">
-                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
-                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
-                  </ul>
-                </li>
-
-
-
-
-        </ul>
-    </section>
-
-</aside>        </div>
-    <div class="col-lg-3" id="sidebar">
-<aside>
-    <section>
-        <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="https://blog.alswl.com/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                    <ul class="list-group" id="categories">
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/coding/">
-                                <i class="fa fa-folder-open fa-lg"></i> Coding
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/efficiency/">
-                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/fun/">
-                                <i class="fa fa-folder-open fa-lg"></i> Fun
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/internet/">
-                                <i class="fa fa-folder-open fa-lg"></i> Internet
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/life/">
-                                <i class="fa fa-folder-open fa-lg"></i> Life
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/managment/">
-                                <i class="fa fa-folder-open fa-lg"></i> Managment
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/sre/">
-                                <i class="fa fa-folder-open fa-lg"></i> SRE
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/thinking/">
-                                <i class="fa fa-folder-open fa-lg"></i> Thinking
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/ui/">
-                                <i class="fa fa-folder-open fa-lg"></i> UI
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="https://blog.alswl.com/category/viewpoint/">
-                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-
-        </ul>
-    </section>
-
-</aside>    </div>
-    </div>
-</div>
-<footer>
-   <div class="container">
-      <hr>
-      <div class="row">
-         <div class="col-xs-10">&copy; 2005-2022 alswl
-            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
-            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
-            <p>
-              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
-            </p>
-         </div>
-         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
-      </div>
-   </div>
-</footer>
-<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
-
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
-
-<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-
-    <!-- Disqus -->
-    <script type="text/javascript">
+        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -310,10 +35,7 @@ $config-&gt;myVariable = &#39;Hello World&#39;;</code></pre>
             s.src = '//' + disqus_shortname + '.disqus.com/count.js';
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
-    </script>
-    <!-- End Disqus Code -->
-    <!-- Google Analytics -->
-    <script type="text/javascript">
+    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -327,7 +49,4 @@ $config-&gt;myVariable = &#39;Hello World&#39;;</code></pre>
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
-    <!-- End Google Analytics Code -->
-</body>
-</html>
+    </script> <!-- End Google Analytics Code --> </body> </html>

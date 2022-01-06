@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Log4D - 小莞</title><link href="https://blog.alswl.com/" rel="alternate"></link><link href="https://blog.alswl.com/feeds/xiao-wan.atom.xml" rel="self"></link><id>https://blog.alswl.com/</id><updated>2017-11-12T15:30:12+08:00</updated><entry><title>服务性能监控：USE 方法（The USE Method）</title><link href="https://blog.alswl.com/2017/11/use-method/" rel="alternate"></link><published>2017-11-12T15:30:12+08:00</published><updated>2017-11-12T15:30:12+08:00</updated><author><name>小莞</name></author><id>tag:blog.alswl.com,2017-11-12:/2017/11/use-method/</id><summary type="html">&lt;p&gt;本文首发在沪江技术学院公众号，小莞翻译，我做了校对。 由于微信公众号的封闭性，我担心未来文章不容易被发现。 为了避 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;本文首发在沪江技术学院公众号，小莞翻译，我做了校对。 由于微信公众号的封闭性，我担心未来文章不容易被发现。 为了避免沧海遗珠，特意转到这里。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Log4D - 小莞</title><link href="https://blog.alswl.com/" rel="alternate"></link><link href="https://blog.alswl.com/feeds/xiao-wan.atom.xml" rel="self"></link><id>https://blog.alswl.com/</id><updated>2017-11-12T15:30:12+08:00</updated><entry><title>服务性能监控：USE 方法（The USE Method）</title><link href="https://blog.alswl.com/2017/11/use-method/" rel="alternate"></link><published>2017-11-12T15:30:12+08:00</published><updated>2017-11-12T15:30:12+08:00</updated><author><name>小莞</name></author><id>tag:blog.alswl.com,2017-11-12:2017/11/use-method/</id><summary type="html">&lt;p&gt;本文首发在沪江技术学院公众号，小莞翻译，我做了校对。 由于微信公众号的封闭性，我担心未来文章不容易被发现。 为了避免沧海遗珠，特意转到这里。&lt;/p&gt;
 &lt;p&gt;英文原文：&lt;a href="http://www.brendangregg.com/usemethod.html"&gt;The USE Method&lt;/a&gt;。&lt;/p&gt;
-&lt;hr /&gt;
+&lt;hr/&gt;
 &lt;figure&gt;
-&lt;img src="https://4ocf5n.dijingchao.com/upload_dropbox/201711/performance_900.jpg" alt="201711/performance.jpg" /&gt;&lt;figcaption&gt;201711/performance.jpg&lt;/figcaption&gt;
+&lt;img alt="201711/performance.jpg" src="https://4ocf5n.dijingchao.com/upload_dropbox/201711/performance_900.jpg"/&gt;&lt;figcaption&gt;201711/performance.jpg&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;USE 方法是一种能分析任何系统性能的方法论。 我们可以根据能帮助系统分析的结构化清单，来迅速的定位资源的瓶颈和错误所在。 它通常会先以列出问题为开始，然后再寻找适合的指标，而不是给你制定一些固定的指标， 然后让你按部就班的执行下去。&lt;/p&gt;
 &lt;!-- more --&gt;
@@ -58,7 +58,7 @@
 &lt;p&gt;另外一种迭代资源的方法，是找到或者绘制一张系统的功能模块示意图。&lt;/p&gt;
 &lt;p&gt;这些显示了模块关系的图，在你查找数据流的瓶颈的时候是非常有用的，这里有一张Sun Fire V480 Guide(page 82)的例图：&lt;/p&gt;
 &lt;figure&gt;
-&lt;img src="https://4ocf5n.dijingchao.com/upload_dropbox/201711/v480.png" alt="201711/v480.png" /&gt;&lt;figcaption&gt;201711/v480.png&lt;/figcaption&gt;
+&lt;img alt="201711/v480.png" src="https://4ocf5n.dijingchao.com/upload_dropbox/201711/v480.png"/&gt;&lt;figcaption&gt;201711/v480.png&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;我喜欢这些图表，尽管制作出它很难。 不过，由硬件工程师来画这张图是最适合的-他们最善于做这类事。如果不信的话你可以自己试试。&lt;/p&gt;
 &lt;p&gt;在确定各种总线的利用率的同时，为每个总线的功能图表，注释好它的最大带宽。这样我们就能在进行单次测量之前，得到能将系统瓶颈识别出来的图表。&lt;/p&gt;
@@ -67,7 +67,7 @@
 &lt;p&gt;使用 USE 方法，至少你会意识到你没有考虑过的内容：interconnect 性能。 有关使用 USE 方法确定的互连问题的示例，请参阅分析 Analyzing the HyperTransport。&lt;/p&gt;
 &lt;h2 id="metrics"&gt;Metrics&lt;/h2&gt;
 &lt;p&gt;给定资源列表，识别指标类型：利用率，饱和度和错误指标。这里有几个示例。看下面的 table，思考下每个资源和指标类型，metric 列是一些通用的 Unix/Linux 的术语提示（你可以描述的更具体些）：&lt;/p&gt;
-&lt;table&gt;
+&lt;div style="overflow-x: auto;"&gt;&lt;table&gt;
 &lt;tbody&gt;
 &lt;tr class="odd"&gt;
 &lt;td style="text-align: left;"&gt;resource&lt;/td&gt;
@@ -115,11 +115,11 @@
 &lt;td style="text-align: left;"&gt;device errors (“soft”, “hard”, …)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;/table&gt;&lt;/div&gt;
 &lt;p&gt;这些指标是每段间隔或者计数的平均值，作为你的自定义清单，要包括使用的监控软件，以及要查看的统计信息。如果是不可用的指标，可以打个问号。最后，你会完成一个完事的、简单、易读的 metrics 清单.&lt;/p&gt;
 &lt;h2 id="harder-metrics"&gt;Harder Metrics&lt;/h2&gt;
 &lt;p&gt;再来看几个硬件指标的组合&lt;/p&gt;
-&lt;table&gt;
+&lt;div style="overflow-x: auto;"&gt;&lt;table&gt;
 &lt;tbody&gt;
 &lt;tr class="odd"&gt;
 &lt;td style="text-align: left;"&gt;resource&lt;/td&gt;
@@ -162,7 +162,7 @@
 &lt;td style="text-align: left;"&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
-&lt;/table&gt;
+&lt;/table&gt;&lt;/div&gt;
 &lt;p&gt;这些依赖于操作系统的指标一般会更难测量些， 而我通常要用自己写的软件去收集这些指标。&lt;/p&gt;
 &lt;p&gt;重复所有的组合，并附上获取每个指标的说明，你会完成一个大概有30项指标的列表，其中有些是不能被测量的，还有些是难以测量的。&lt;/p&gt;
 &lt;p&gt;幸运的是，最常见的问题往往是简单的（例如，CPU 饱和度，内存容量饱和度，网络接口利用率，磁盘利用率），这类问题往往第一时间就能被检查出来。&lt;/p&gt;
@@ -198,7 +198,7 @@
 &lt;h2 id="strategy"&gt;Strategy&lt;/h2&gt;
 &lt;p&gt;下面是用流程图 的方式画了 USE 方法的示意图。 请注意，错误检查优先于利用率和饱和度检查（因为通常错误更快的表现出来，并更容易解释）。&lt;/p&gt;
 &lt;figure&gt;
-&lt;img src="https://4ocf5n.dijingchao.com/upload_dropbox/201711/usemethod_flow.png" alt="201711/usemethod_flow.png" /&gt;&lt;figcaption&gt;201711/usemethod_flow.png&lt;/figcaption&gt;
+&lt;img alt="201711/usemethod_flow.png" src="https://4ocf5n.dijingchao.com/upload_dropbox/201711/usemethod_flow.png"/&gt;&lt;figcaption&gt;201711/usemethod_flow.png&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;USE 方法定位到的问题，可能是系统瓶颈。 不幸的是，系统可能会遇到多个性能问题，因此您发现的第一个可能的问题最终却不是个问题。 发现的每个问题都可以用方法持续的挖掘，然后继续使用 USE 方法对更多资源进行反复排查。&lt;/p&gt;
 &lt;p&gt;进一步分析的策略包括工作量特征和 drill-down 分析。 完成这些后，你应该有依据据能判断，纠正措施是要调整应用的负载或调整资源本身。&lt;/p&gt;
@@ -206,7 +206,7 @@
 &lt;p&gt;（译者注：Apollo 这一段我们可以不太关注，它主要是讲 USE 方法，与阿波罗登月计划相关的系统设计的一些渊源）&lt;/p&gt;
 &lt;p&gt;我之前有提到过，USE 方法可以被应用到除服务器之外。为了找到一个有趣的例子， 我想到了一个我没有完全不了解的系统，并且不知道从哪里开始：阿波罗月球模块指导系统。 USE 方法提供了一个简单的流程来尝试第一步是寻找一个资源列表，或者更理想的话，找到一个功能模块图表。我在 【Lunar Module - LM10 Through LM14 Familiarization Manual】中发现了以下内容：&lt;/p&gt;
 &lt;figure&gt;
-&lt;img src="https://4ocf5n.dijingchao.com/upload_dropbox/201711/apollo_LM_guidance.png" alt="201711/apollo_LM_guidance.png" /&gt;&lt;figcaption&gt;201711/apollo_LM_guidance.png&lt;/figcaption&gt;
+&lt;img alt="201711/apollo_LM_guidance.png" src="https://4ocf5n.dijingchao.com/upload_dropbox/201711/apollo_LM_guidance.png"/&gt;&lt;figcaption&gt;201711/apollo_LM_guidance.png&lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;p&gt;这些组件中的一部分可能未表现出利用率或饱和度特性。在迭代后， 就可以重新绘制只包含相关组件的图表（还可以包括：“可擦除存储”部分的内存，“核心区域”和 “vac区域”寄存器）。&lt;/p&gt;
 &lt;p&gt;我将从阿波罗主脑（AGC）本身开始。 对于每个指标，我浏览了各种 LM 文档，看看哪些是合理的（有意义的）：&lt;/p&gt;
@@ -260,4 +260,15 @@
 &lt;li&gt;LuceraHQ 正在 SmartOS 上，为他们高性能金融云的性能监测，实施 USE 方法指标&lt;/li&gt;
 &lt;li&gt;I spoke about the USE Method for OS X at MacIT 2014 (slides)。&lt;/li&gt;
 &lt;/ul&gt;
-</content><category term="Coding"></category><category term="Metrics"></category><category term="Brendan Gregg"></category><category term="译文"></category></entry></feed>
+
+&lt;hr&gt;
+&lt;div class="panel"&gt;
+&lt;div class="panel-body"&gt;
+   &lt;small&gt;原文链接: &lt;a href="https://blog.alswl.com/2017/11/use-method/"&gt;https://blog.alswl.com/2017/11/use-method/&lt;/a&gt;&lt;/small&gt;&lt;br&gt;
+   &lt;small&gt;3a1ff193cee606bd1e2ea554a16353ee&lt;/small&gt;&lt;br&gt;
+   &lt;small&gt;欢迎关注我的微信公众号：&lt;a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect"&gt;窥豹&lt;/a&gt;&lt;/small&gt;&lt;br&gt;
+   &lt;small&gt;&lt;img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/&gt;&lt;/small&gt;
+   &lt;small&gt;&lt;img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/&gt;&lt;/small&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</summary><category term="Metrics"></category><category term="Brendan Gregg"></category><category term="译文"></category></entry></feed>
