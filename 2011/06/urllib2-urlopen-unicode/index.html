@@ -1,76 +1,199 @@
-<!DOCTYPE html><html lang=en> <head><title>urllib2.urlopen的中文URL问题 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Python><meta name=description content='在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。 Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完Python字符串的encode与decode 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。 Traceback (most recent call last): File "<stdin>", line 1, in <module> File "/usr/lib/python2.6/urllib2.py", line 126, in urlopen return _opener.open(url, data, timeout) File "/usr/lib/python2.6/urllib2.py", line …'><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/ rel=bookmark title="Permalink to urllib2.urlopen的中文URL问题"> urllib2.urlopen的中文URL问题 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#ascii-unicode-测试 title="1. ascii + unicode 测试">1. ascii + unicode 测试</a></li><li><a class=toc-href href=#urllib2的测试 title="2. urllib2的测试">2. urllib2的测试</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2011-06-14T00:00:00+08:00> 2011-06-14</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/python/ >Python</a> </footer><!-- /.post-info --> </div> </div> <p>在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。</p> <p>Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完<a href=http://ipie.blogbus.com/logs/19379694.html>Python字符串的encode与decode</a> 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。</p> <pre><code>Traceback (most recent call last):
-  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-  File "/usr/lib/python2.6/urllib2.py", line 126, in urlopen
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>urllib2.urlopen的中文URL问题 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Python" />
+        <meta name="description" content="在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://blog.alswl.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://blog.alswl.com/theme/css/style.css" type="text/css"/>
+
+    <link href="https://blog.alswl.com/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="https://blog.alswl.com/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://blog.alswl.com/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://blog.alswl.com/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/"
+                       rel="bookmark"
+                       title="Permalink to urllib2.urlopen的中文URL问题">
+                        urllib2.urlopen的中文URL问题
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2011-06-14T00:00:00+08:00"> 2011-06-14</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="https://blog.alswl.com/tag/python/">Python</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。</p>
+<p>Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完<a href="http://ipie.blogbus.com/logs/19379694.html">Python字符串的encode与decode</a> 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。</p>
+<pre><code>Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 126, in urlopen
     return _opener.open(url, data, timeout)
-  File "/usr/lib/python2.6/urllib2.py", line 391, in open
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 391, in open
     response = self._open(req, data)
-  File "/usr/lib/python2.6/urllib2.py", line 409, in _open
-    '_open', req)
-  File "/usr/lib/python2.6/urllib2.py", line 369, in _call_chain
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 409, in _open
+    &#39;_open&#39;, req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 369, in _call_chain
     result = func(*args)
-  File "/usr/lib/python2.6/urllib2.py", line 1170, in http_open
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1170, in http_open
     return self.do_open(httplib.HTTPConnection, req)
-  File "/usr/lib/python2.6/urllib2.py", line 1142, in do_open
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1142, in do_open
     h.request(req.get_method(), req.get_selector(), req.data, headers)
-  File "/usr/lib/python2.6/httplib.py", line 914, in request
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 914, in request
     self._send_request(method, url, body, headers)
-  File "/usr/lib/python2.6/httplib.py", line 951, in _send_request
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 951, in _send_request
     self.endheaders()
-  File "/usr/lib/python2.6/httplib.py", line 908, in endheaders
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 908, in endheaders
     self._send_output()
-  File "/usr/lib/python2.6/httplib.py", line 780, in _send_output
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 780, in _send_output
     self.send(msg)
-  File "/usr/lib/python2.6/httplib.py", line 759, in send
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 759, in send
     self.sock.sendall(str)
-  File "&lt;string&gt;", line 1, in sendall
-UnicodeEncodeError: 'ascii' codec can't encode characters in position 7-8: ordinal not in range(128)</code></pre> <p>这次错误引发是在 <code>urlopen()</code> 引起的，很有特色，开始使用 <code>url.encode('utf-8')</code> 就可以解决了。 今天我做了一些测试。</p> <h2 id=ascii-unicode-测试>1. ascii + unicode 测试</h2> <pre><code>&gt;&gt;&gt; 'a' + u'b'
-&gt;&gt;&gt; '你' + u'好'
+  File &quot;&lt;string&gt;&quot;, line 1, in sendall
+UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 7-8: ordinal not in range(128)</code></pre>
+<p>这次错误引发是在 <code>urlopen()</code> 引起的，很有特色，开始使用 <code>url.encode('utf-8')</code> 就可以解决了。 今天我做了一些测试。</p>
+<h2 id="ascii-unicode-测试">1. ascii + unicode 测试</h2>
+<pre><code>&gt;&gt;&gt; &#39;a&#39; + u&#39;b&#39;
+&gt;&gt;&gt; &#39;你&#39; + u&#39;好&#39;
 Traceback (most recent call last):
-  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)
-&gt;&gt;&gt; u'你' + u'好'
-u'u4f60u597d'
-&gt;&gt;&gt; u'a' + '你' + u'好'
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe4 in position 0: ordinal not in range(128)
+&gt;&gt;&gt; u&#39;你&#39; + u&#39;好&#39;
+u&#39;u4f60u597d&#39;
+&gt;&gt;&gt; u&#39;a&#39; + &#39;你&#39; + u&#39;好&#39;
 Traceback (most recent call last):
-  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)</code></pre> <p>上面的测试说明ascii码和unicode码相连操作，结论是有中文记得带上u，就不会有问题。 Python默认解码器是ascii，无法解码unicode中的中文。</p> <h2 id=urllib2的测试>2. urllib2的测试</h2> <pre><code>&gt;&gt;&gt; import urllib2
-&gt;&gt;&gt; h1 = 'http://baidu.com'
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe4 in position 0: ordinal not in range(128)</code></pre>
+<p>上面的测试说明ascii码和unicode码相连操作，结论是有中文记得带上u，就不会有问题。 Python默认解码器是ascii，无法解码unicode中的中文。</p>
+<h2 id="urllib2的测试">2. urllib2的测试</h2>
+<pre><code>&gt;&gt;&gt; import urllib2
+&gt;&gt;&gt; h1 = &#39;http://baidu.com&#39;
 &gt;&gt;&gt; urllib2.urlopen(h1)
 &lt;addinfourl at 153439532 whose fp = &lt;socket._fileobject object at 0xb74e51ac&gt;&gt;
-&gt;&gt;&gt; h2 = u'http://baidu.com'
+&gt;&gt;&gt; h2 = u&#39;http://baidu.com&#39;
 &gt;&gt;&gt; urllib2.urlopen(h2)
 &lt;addinfourl at 153440236 whose fp = &lt;socket._fileobject object at 0x925912c&gt;&gt;
-&gt;&gt;&gt; h3 = 'http://baidu.com?w=测试'
+&gt;&gt;&gt; h3 = &#39;http://baidu.com?w=测试&#39;
 &gt;&gt;&gt; urllib2.urlopen(h3)
 &lt;addinfourl at 153482348 whose fp = &lt;socket._fileobject object at 0x92593ac&gt;&gt;
-&gt;&gt;&gt; h4 = u'http://baidu.com?w=测试'
+&gt;&gt;&gt; h4 = u&#39;http://baidu.com?w=测试&#39;
 &gt;&gt;&gt; urllib2.urlopen(h4)
 Traceback (most recent call last):
-  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-  File "/usr/lib/python2.6/urllib2.py", line 126, in urlopen
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 126, in urlopen
     return _opener.open(url, data, timeout)
-  File "/usr/lib/python2.6/urllib2.py", line 391, in open
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 391, in open
     response = self._open(req, data)
-  File "/usr/lib/python2.6/urllib2.py", line 409, in _open
-    '_open', req)
-  File "/usr/lib/python2.6/urllib2.py", line 369, in _call_chain
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 409, in _open
+    &#39;_open&#39;, req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 369, in _call_chain
     result = func(*args)
-  File "/usr/lib/python2.6/urllib2.py", line 1170, in http_open
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1170, in http_open
     return self.do_open(httplib.HTTPConnection, req)
-  File "/usr/lib/python2.6/urllib2.py", line 1142, in do_open
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1142, in do_open
     h.request(req.get_method(), req.get_selector(), req.data, headers)
-  File "/usr/lib/python2.6/httplib.py", line 914, in request
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 914, in request
     self._send_request(method, url, body, headers)
-  File "/usr/lib/python2.6/httplib.py", line 951, in _send_request
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 951, in _send_request
     self.endheaders()
-  File "/usr/lib/python2.6/httplib.py", line 908, in endheaders
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 908, in endheaders
     self._send_output()
-  File "/usr/lib/python2.6/httplib.py", line 780, in _send_output
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 780, in _send_output
     self.send(msg)
-  File "/usr/lib/python2.6/httplib.py", line 759, in send
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 759, in send
     self.sock.sendall(str)
-  File "&lt;string&gt;", line 1, in sendall
-UnicodeEncodeError: 'ascii' codec can't encode characters in position 7-8: ordinal not in range(128)</code></pre> <p>这个测试说明， <code>urllib2.urlopen()</code> 可以接受ascii/unicode的英文，也可以接受ascii的中文， 但是一旦是unicode的中文url，就会报转码错误。</p> <p>so，请尽量英文url，非要用中文，请记得转码。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/ >https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
+  File &quot;&lt;string&gt;&quot;, line 1, in sendall
+UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 7-8: ordinal not in range(128)</code></pre>
+<p>这个测试说明， <code>urllib2.urlopen()</code> 可以接受ascii/unicode的英文，也可以接受ascii的中文， 但是一旦是unicode的中文url，就会报转码错误。</p>
+<p>so，请尽量英文url，非要用中文，请记得转码。</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/">https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -87,7 +210,128 @@ UnicodeEncodeError: 'ascii' codec can't encode characters in position 7-8: ordin
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        </script>
+		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="https://blog.alswl.com/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/sre/">
+                                <i class="fa fa-folder-open fa-lg"></i> SRE
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2022 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Disqus -->
+    <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -99,7 +343,10 @@ UnicodeEncodeError: 'ascii' codec can't encode characters in position 7-8: ordin
             s.src = '//' + disqus_shortname + '.disqus.com/count.js';
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -113,4 +360,7 @@ UnicodeEncodeError: 'ascii' codec can't encode characters in position 7-8: ordin
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

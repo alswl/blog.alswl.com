@@ -1,4 +1,229 @@
-<!DOCTYPE html><html lang=en> <head><title>GAE 编程指南读书笔记 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2012/03/gae/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Python,GAE,读书笔记><meta name=description content="GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也假模假样的看文档， 就是没有什么产出。 去年写了一个小应用 dbevent2gc ， 期间发现 GAE 和普通程序开发的诸多不同，又遭遇 GAE 配额大幅缩水， 写出来的应用运转的不太稳定。在南京图书馆的架上看见这本《GAE 编程指南读书笔记》， 立即借回家仔细阅读。 GAE 的简介 运行时环境 Python / Java 数据存储 Datastore（实体 / 查询 / 索引 / 事务） 服务（Memcache / GAccount / 任务队列 / 计划任务） 工具（SDK / appcfg / dev_appserver / 控制台） 入门（安装 / GAccount / webapp / app …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2012/03/gae/ rel=bookmark title="Permalink to GAE 编程指南读书笔记"> GAE 编程指南读书笔记 </a> </h1> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2012-03-24T00:00:00+08:00> 2012-03-24</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/python/ >Python</a> / <a href=https://blog.alswl.com/tag/gae/ >GAE</a> / <a href=https://blog.alswl.com/tag/du-shu-bi-ji/ >读书笔记</a> </footer><!-- /.post-info --> </div> </div> <p>GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也假模假样的看文档， 就是没有什么产出。</p> <p>去年写了一个小应用 <a href=https://github.com/alswl/dbevent2gc>dbevent2gc</a> ， 期间发现 GAE 和普通程序开发的诸多不同，又遭遇 GAE 配额大幅缩水， 写出来的应用运转的不太稳定。在南京图书馆的架上看见这本《GAE 编程指南读书笔记》， 立即借回家仔细阅读。</p> <ul> <li><p>GAE 的简介</p> <ul> <li>运行时环境 Python / Java</li> <li>数据存储 Datastore（实体 / 查询 / 索引 / 事务）</li> <li>服务（Memcache / GAccount / 任务队列 / 计划任务）</li> <li>工具（SDK / appcfg / dev_appserver / 控制台）</li> </ul></li> <li><p>入门（安装 / GAccount / webapp / app.yaml / /_ah/admin / 注册部署 / login:required）</p></li> <li><p>处理流程：请求 - 前端 - 引用服务器 / 静态文件服务器 - 服务</p> <ul> <li>配额限制：请求限制 / CPU 限制 / 服务限制 / 部署限制 （最新配额：http://code.google.com/intl/zh-CN/appengine/docs/quotas.html）</li> </ul></li> <li><p>数据存储</p> <ul> <li><p>GAE 的数据存储方式和传统的 RDBMS 差异比较大，更类似于对象数据库。</p></li> <li><p>类别 kind / 键 / 键名 key name</p></li> <li><p>可以通过键来获取和操作对象</p> <ul> <li><code>e = db.get(db.Key('Entity', 'alphabeta'))</code> / <code>e = Entity.get(k)</code></li> <li><code>e = db.get(k)</code></li> <li><code>e.delete()</code> / <code>db.delete(e1, e2)</code> / <code>db.delete(k)</code></li> </ul></li> <li><p>Expando 基类可以任意扩展属性，Model 基类则不可。</p></li> <li><p>GAE 中基本类型与 Python / Java 中基本类型的差异</p></li> <li><p>多值属性</p></li> </ul></li> <li><p>数据查询</p> <ul> <li>查询和类别 <code>db.query()</code> <code>query.filter()</code> <code>query.order()</code></li> <li>查询和键：查询结果要么返回实体，要么返回键（ <code>key_only=True</code> ）</li> <li>可以用 GQL 写查询语句，不能写 CUD</li> <li>获取结果： <code>fetch()</code></li> </ul></li> <li><p>索引</p> <ul> <li>每条查询都需要维护一条索引，在 <code>index.yaml</code> 中可以配置</li> <li>排序之后的索引查询很快，查询效率和返回结果集有关</li> <li>实体的每个属性会自动维护两条索引：升序和降序</li> <li>查询时候选取对应的索引进行查询，条件语句可能和排序语句相冲突</li> <li>不等于 / IN 操作符将引发一系列变换出的查询</li> <li>多值字段的索引：每个值会成为索引中一行 / 实体会因此分散 / 取第一次成功扫描到的行</li> <li>多值会引入爆炸索引问题</li> </ul></li> <li><p>事务</p> <ul> <li>通过实体组来控制事务，实体组会在同一块存储区</li> <li>GAE 使用乐观锁</li> <li>使用 <code>AModel(parent=p)</code> 构造祖先，然后通过 <code>run_in_transation()</code> 回调事务处理函数</li> <li>BigTable 中使用日志+时间戳来跟踪实体的修改，保证数据并发和一致性</li> <li>事务更新和索引更新：可能返回的索引结果和实体不一致</li> </ul></li> <li><p>Python 数据建模</p> <ul> <li><p>声明 / 类型 / 验证（ <code>validate()</code> ）</p></li> <li><p>不编入索引的属性 <code>indexed=False</code></p></li> <li><p>时间类型的自动值</p></li> <li><p>模型变化带来的维护问题：修改属性类型 / 添加一个必要属性是不向后兼容的。</p></li> <li><p>关系建模</p> <ul> <li>db.ReferenceProperty</li> <li>collection_name</li> </ul></li> <li><p>多对多关系的处理</p> <ul> <li>键列表方法：使用多值属性</li> <li>链接模型方法：相当于中间表概念</li> </ul></li> <li><p>模型的继承：通过 <code>db.PolyModel</code> 实现多态查询</p></li> </ul></li> <li><p>Memcache</p> <ul> <li>CRUD</li> </ul></li> <li><p>获取 URL 资源</p> <ul> <li><code>urlfetch()</code></li> </ul></li> <li><p>RPC 异步请求调用，闭包调用</p></li> <li><p>邮件和 XMPP</p> <ul> <li>额，亲用到时候看 Google 官方文档吧～</li> </ul></li> <li><p>大批量数据操作和远程访问</p> <ul> <li><code>/remote_api</code></li> <li>Bulk Loader 大量数据操作</li> <li>远程 shell <code>remote_api_shell.py app-id</code></li> </ul></li> <li><p>任务队列和计划任务</p> <ul> <li>队列： <code>queue.yaml</code> / 令牌桶</li> <li>计划任务： <code>cron.yaml</code></li> <li>都是通过设定主动触发某个 url</li> </ul></li> <li><p>Django</p> <ul> <li>看 Django 文档吧，亲～</li> </ul></li> <li><p>部署</p> <ul> <li>上传 <code>appcfg.py update ./clock</code></li> <li>通过 url 使用特定版本： <code>version-id.latest.app-id.appspot.com</code></li> <li>版本只维护代码，数据库还是同一份</li> <li>下载日志 <code>appcfg.py request_logs clock logs.txt</code></li> </ul></li> </ul> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2012/03/gae/ >https://blog.alswl.com/2012/03/gae/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>GAE 编程指南读书笔记 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="https://blog.alswl.com/2012/03/gae/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Python,GAE,读书笔记" />
+        <meta name="description" content="GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://blog.alswl.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://blog.alswl.com/theme/css/style.css" type="text/css"/>
+
+    <link href="https://blog.alswl.com/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="https://blog.alswl.com/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://blog.alswl.com/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://blog.alswl.com/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="https://blog.alswl.com/2012/03/gae/"
+                       rel="bookmark"
+                       title="Permalink to GAE 编程指南读书笔记">
+                        GAE 编程指南读书笔记
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2012-03-24T00:00:00+08:00"> 2012-03-24</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="https://blog.alswl.com/tag/python/">Python</a>
+        /
+	<a href="https://blog.alswl.com/tag/gae/">GAE</a>
+        /
+	<a href="https://blog.alswl.com/tag/du-shu-bi-ji/">读书笔记</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也假模假样的看文档， 就是没有什么产出。</p>
+<p>去年写了一个小应用 <a href="https://github.com/alswl/dbevent2gc">dbevent2gc</a> ， 期间发现 GAE 和普通程序开发的诸多不同，又遭遇 GAE 配额大幅缩水， 写出来的应用运转的不太稳定。在南京图书馆的架上看见这本《GAE 编程指南读书笔记》， 立即借回家仔细阅读。</p>
+<ul>
+<li><p>GAE 的简介</p>
+<ul>
+<li>运行时环境 Python / Java</li>
+<li>数据存储 Datastore（实体 / 查询 / 索引 / 事务）</li>
+<li>服务（Memcache / GAccount / 任务队列 / 计划任务）</li>
+<li>工具（SDK / appcfg / dev_appserver / 控制台）</li>
+</ul></li>
+<li>入门（安装 / GAccount / webapp / app.yaml / /_ah/admin / 注册部署 / login:required）</li>
+<li><p>处理流程：请求 - 前端 - 引用服务器 / 静态文件服务器 - 服务</p>
+<ul>
+<li>配额限制：请求限制 / CPU 限制 / 服务限制 / 部署限制 （最新配额：http://code.google.com/intl/zh-CN/appengine/docs/quotas.html）</li>
+</ul></li>
+<li><p>数据存储</p>
+<ul>
+<li>GAE 的数据存储方式和传统的 RDBMS 差异比较大，更类似于对象数据库。</li>
+<li>类别 kind / 键 / 键名 key name</li>
+<li><p>可以通过键来获取和操作对象</p>
+<ul>
+<li><code>e = db.get(db.Key('Entity', 'alphabeta'))</code> / <code>e = Entity.get(k)</code></li>
+<li><code>e = db.get(k)</code></li>
+<li><code>e.delete()</code> / <code>db.delete(e1, e2)</code> / <code>db.delete(k)</code></li>
+</ul></li>
+<li>Expando 基类可以任意扩展属性，Model 基类则不可。</li>
+<li>GAE 中基本类型与 Python / Java 中基本类型的差异</li>
+<li>多值属性</li>
+</ul></li>
+<li><p>数据查询</p>
+<ul>
+<li>查询和类别 <code>db.query()</code> <code>query.filter()</code> <code>query.order()</code></li>
+<li>查询和键：查询结果要么返回实体，要么返回键（ <code>key_only=True</code> ）</li>
+<li>可以用 GQL 写查询语句，不能写 CUD</li>
+<li>获取结果： <code>fetch()</code></li>
+</ul></li>
+<li><p>索引</p>
+<ul>
+<li>每条查询都需要维护一条索引，在 <code>index.yaml</code> 中可以配置</li>
+<li>排序之后的索引查询很快，查询效率和返回结果集有关</li>
+<li>实体的每个属性会自动维护两条索引：升序和降序</li>
+<li>查询时候选取对应的索引进行查询，条件语句可能和排序语句相冲突</li>
+<li>不等于 / IN 操作符将引发一系列变换出的查询</li>
+<li>多值字段的索引：每个值会成为索引中一行 / 实体会因此分散 / 取第一次成功扫描到的行</li>
+<li>多值会引入爆炸索引问题</li>
+</ul></li>
+<li><p>事务</p>
+<ul>
+<li>通过实体组来控制事务，实体组会在同一块存储区</li>
+<li>GAE 使用乐观锁</li>
+<li>使用 <code>AModel(parent=p)</code> 构造祖先，然后通过 <code>run_in_transation()</code> 回调事务处理函数</li>
+<li>BigTable 中使用日志+时间戳来跟踪实体的修改，保证数据并发和一致性</li>
+<li>事务更新和索引更新：可能返回的索引结果和实体不一致</li>
+</ul></li>
+<li><p>Python 数据建模</p>
+<ul>
+<li>声明 / 类型 / 验证（ <code>validate()</code> ）</li>
+<li>不编入索引的属性 <code>indexed=False</code></li>
+<li>时间类型的自动值</li>
+<li>模型变化带来的维护问题：修改属性类型 / 添加一个必要属性是不向后兼容的。</li>
+<li><p>关系建模</p>
+<ul>
+<li>db.ReferenceProperty</li>
+<li>collection_name</li>
+</ul></li>
+<li><p>多对多关系的处理</p>
+<ul>
+<li>键列表方法：使用多值属性</li>
+<li>链接模型方法：相当于中间表概念</li>
+</ul></li>
+<li>模型的继承：通过 <code>db.PolyModel</code> 实现多态查询</li>
+</ul></li>
+<li><p>Memcache</p>
+<ul>
+<li>CRUD</li>
+</ul></li>
+<li><p>获取 URL 资源</p>
+<ul>
+<li><code>urlfetch()</code></li>
+</ul></li>
+<li>RPC 异步请求调用，闭包调用</li>
+<li><p>邮件和 XMPP</p>
+<ul>
+<li>额，亲用到时候看 Google 官方文档吧～</li>
+</ul></li>
+<li><p>大批量数据操作和远程访问</p>
+<ul>
+<li><code>/remote_api</code></li>
+<li>Bulk Loader 大量数据操作</li>
+<li>远程 shell <code>remote_api_shell.py app-id</code></li>
+</ul></li>
+<li><p>任务队列和计划任务</p>
+<ul>
+<li>队列： <code>queue.yaml</code> / 令牌桶</li>
+<li>计划任务： <code>cron.yaml</code></li>
+<li>都是通过设定主动触发某个 url</li>
+</ul></li>
+<li><p>Django</p>
+<ul>
+<li>看 Django 文档吧，亲～</li>
+</ul></li>
+<li><p>部署</p>
+<ul>
+<li>上传 <code>appcfg.py update ./clock</code></li>
+<li>通过 url 使用特定版本： <code>version-id.latest.app-id.appspot.com</code></li>
+<li>版本只维护代码，数据库还是同一份</li>
+<li>下载日志 <code>appcfg.py request_logs clock logs.txt</code></li>
+</ul></li>
+</ul>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2012/03/gae/">https://blog.alswl.com/2012/03/gae/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -15,7 +240,128 @@
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        </script>
+		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="https://blog.alswl.com/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/sre/">
+                                <i class="fa fa-folder-open fa-lg"></i> SRE
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2022 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Disqus -->
+    <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -27,7 +373,10 @@
             s.src = '//' + disqus_shortname + '.disqus.com/count.js';
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -41,4 +390,7 @@
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

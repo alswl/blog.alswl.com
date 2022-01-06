@@ -1,4 +1,284 @@
-<!DOCTYPE html><html lang=en> <head><title>API 集成测试实践 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2016/08/api-integration-test/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Test,API><meta name=description content="abao.png 为了提高测试，工程师需要对自己提交的产物进行测试，一般是单元测试、集成测试。 之后提交物流转到 QA 团队，QA 团队根据需求描述对提交物进行测试， 这个测试过程非常耗费人力。 尤其是当开发交付的质量不高时候，很可能自身没有经过测试，会遇到主干流程都无法进行的状况。 如果在 QA 人工介入测试之前，就进行一轮黑盒自动化集成测试，可以大大地提高 QA 团队的工作效率。 基于这样的判断，我们团队花了一些时间，将基于 API 的自动化测试系统搭建起来。 现在将这个系统的选型和运行状况拎出来，和大家分享。 确认测试范围、目标和意义 范围 后台输出的 API 级别 URL 使用场景 打包时候的冒烟 Dev / QA 手工添加添加新特性用例 目标 覆盖大部分的 URL，当期设计为 top 10 URL，仅包含 GET …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2016/08/api-integration-test/ rel=bookmark title="Permalink to API 集成测试实践"> API 集成测试实践 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#确认测试范围目标和意义 title=确认测试范围、目标和意义>确认测试范围、目标和意义</a></li><li><a class=toc-href href=#特性需求 title=特性需求>特性需求</a></li><li><a class=toc-href href=#挑选出来的选型和评价 title=挑选出来的选型和评价>挑选出来的选型和评价</a></li><li><a class=toc-href href=#搭建-demo进行试用 title="搭建 demo，进行试用">搭建 demo，进行试用</a></li><li><a class=toc-href href=#使用感觉 title=使用感觉>使用感觉</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2016-08-14T19:08:20+08:00> 2016-08-14</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/test/ >Test</a> / <a href=https://blog.alswl.com/tag/api/ >API</a> </footer><!-- /.post-info --> </div> </div> <figure> <img alt=abao.png src=https://4ocf5n.dijingchao.com/upload_dropbox/201608/abao_thumbnail.png><figcaption aria-hidden=true>abao.png</figcaption> </figure> <p>为了提高测试，工程师需要对自己提交的产物进行测试，一般是单元测试、集成测试。 之后提交物流转到 QA 团队，QA 团队根据需求描述对提交物进行测试， 这个测试过程非常耗费人力。 尤其是当开发交付的质量不高时候，很可能自身没有经过测试，会遇到主干流程都无法进行的状况。</p> <p>如果在 QA 人工介入测试之前，就进行一轮黑盒自动化集成测试，可以大大地提高 QA 团队的工作效率。 基于这样的判断，我们团队花了一些时间，将基于 API 的自动化测试系统搭建起来。 现在将这个系统的选型和运行状况拎出来，和大家分享。</p> <h2 id=确认测试范围目标和意义>确认测试范围、目标和意义</h2> <ul> <li>范围 <ul> <li>后台输出的 API 级别 URL</li> <li>使用场景 <ul> <li>打包时候的冒烟</li> <li>Dev / QA 手工添加添加新特性用例</li> </ul></li> </ul></li> <li>目标 <ul> <li>覆盖大部分的 URL，当期设计为 top 10 URL，仅包含 GET 接口</li> <li>选型时，需要考虑非幂等（POST / DELETE / PUT）等接口</li> </ul></li> <li>意义 <ul> <li>提高开发效率，一种自动化的 IT 测试方案</li> <li>提高测试效率，减少人工集成测试成本</li> <li>提高工程质量，通过覆盖率提升，保证工程质量逐步提升，放心开发新功能</li> </ul></li> </ul> <h2 id=特性需求>特性需求</h2> <p>选型一个系统，不是看市面上有哪些可以供选择，而是看我需要什么样特性的一款产品。 如果自己的需求和市面上的现成产品差异过大，也可以考虑自己定制。</p> <ul> <li>Required <ul> <li>开源</li> <li>免费</li> <li>使用 DSL 或者简单代码描述测试用例</li> <li>支持细粒度的单 API 测试和构建带过程的测试用例</li> <li>HTTP API</li> </ul></li> <li>Optional <ul> <li>CI 集成</li> <li>UI</li> </ul></li> </ul> <h2 id=挑选出来的选型和评价>挑选出来的选型和评价</h2> <ul> <li><a href=https://www.runscope.com/ >API Monitoring and Testing &middot; Runscope</a> <ul> <li>收费</li> <li>非开源</li> <li>有监控特性</li> </ul></li> <li><a href=https://www.atlassian.com/software/bamboo>Bamboo - Continuous integration, deployment &amp; release management | Atlassian</a> <ul> <li>收费</li> <li>CI</li> </ul></li> <li><a href=https://circleci.com/features/ >Continuous Integration Product and Features - CircleCI</a> <ul> <li>CI</li> <li>收费</li> </ul></li> <li>Sauce Labs <ul> <li>客户端测试，收费</li> </ul></li> <li>Apiary <ul> <li>API 设计工具 + API Test</li> </ul></li> <li><a href=http://frisbyjs.com/ >http://frisbyjs.com/</a> <ul> <li>code</li> <li>npm</li> <li>open source</li> <li>NO UI</li> </ul></li> <li><a href=https://github.com/vowsjs/api-easy>https://github.com/vowsjs/api-easy</a> <ul> <li>同上</li> <li>真是热爱造轮子的 JS 生态圈</li> </ul></li> <li><a href=https://github.com/visionmedia/supertest>https://github.com/visionmedia/supertest</a> <ul> <li>同上</li> <li>从 Star 看，这个质量最高</li> </ul></li> <li><a href=http://dareid.github.io/chakram/ >http://dareid.github.io/chakram/</a> <ul> <li>code</li> <li>npm</li> <li>open source</li> <li>NO UI</li> </ul></li> <li><a href=https://vrest.io/ >https://vrest.io/</a> <ul> <li>收费</li> <li>不开源</li> <li>无插件</li> </ul></li> <li><a href=http://swagger.io/open-source-integrations/ >http://swagger.io/open-source-integrations/</a> <ul> <li>for API</li> <li>生态环境强大</li> <li><a href=https://github.com/cachecontrol/hippie-swagger>https://github.com/cachecontrol/hippie-swagger</a></li> <li>用户端似乎在尝试用 swagger</li> </ul></li> <li><a href=http://robotframework.org/ >http://robotframework.org/</a> <ul> <li>一个通用自动化测试工具</li> <li>DSL</li> <li>扩展性较强</li> <li>活跃度在降低&nbsp;<a href=https://github.com/robotframework/robotframework/graphs/contributors>https://github.com/robotframework/robotframework/graphs/contributors</a></li> </ul></li> <li><a href=https://cucumber.io/ >https://cucumber.io/</a> <ul> <li><a href=https://cucumber.io/docs/reference>https://cucumber.io/docs/reference</a></li> <li>和 Robotframework 相似，通用自动化测试工具</li> <li>DSL</li> <li>活跃度降低&nbsp;<a href=https://github.com/cucumber/cucumber-jvm/graphs/contributors>https://github.com/cucumber/cucumber-jvm/graphs/contributors</a></li> </ul></li> <li><a href=https://www.solanolabs.com/ >https://www.solanolabs.com/</a> <ul> <li>Airbnb 在用</li> <li>收费</li> <li>云端的通用测试环境</li> </ul></li> <li><a href=https://github.com/christophd/citrus>https://github.com/christophd/citrus</a> <ul> <li><a href=http://www.citrusframework.org/ >http://www.citrusframework.org/</a></li> <li>依赖 mvn / ant，离代码太近</li> <li>项目不够活跃</li> </ul></li> <li>代码内测试 <ul> <li>src/it/com/duitang/xxx</li> <li>eg. tritornis</li> <li>Spring <ul> <li><a href=http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html>http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html</a></li> <li><a href=http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html>http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html</a></li> </ul></li> </ul></li> </ul> <p>这部分工作，是和团队的其他成员一起去看的，大家各自分头寻找一些产品，然后进行评测，给出结论。</p> <p>经过讨论，我们将重点关注放在这么几款下面：</p> <ul> <li>supertest</li> <li>robotframework</li> <li>swagger</li> <li>讨论时候的新发现&nbsp;<a href=https://github.com/svanoort/pyresttest>https://github.com/svanoort/pyresttest</a></li> </ul> <h2 id=搭建-demo进行试用>搭建 demo，进行试用</h2> <p>在确定选用那几款产品之后，就可以集中精力在几款候选者里面。搭建相应的环境，对他们进行实际测试。</p> <p>supertest：</p> <ul> <li>功能太简单了，简单到几乎可以自己写掉，不算一个 test framework</li> </ul> <p>pyresttest：</p> <ul> <li>哈哈哈，YAML based，dreamed feature</li> <li>支持 YAML / extractor / validator</li> <li>天生支持 host 为参数</li> <li>create for me!!!</li> </ul> <p>hippie-swagger：</p> <ul> <li>在使用上，和 supertest 差异不大</li> <li>仍然需要自己定义，在 swagger 描述文件不存在时候会抛错，描述文件不符合时会抛错</li> </ul> <p>robotframework：</p> <ul> <li>较为复杂</li> <li>有 YAML 了，不用试了</li> </ul> <h2 id=使用感觉>使用感觉</h2> <p>经过一个季度的试用，我们基于 pyresttest 的项目 abao 运行较稳定。 尽量在工程师提交代码之后，运行一次，从而可以在早期发现问题。</p> <p>由于是基于 Python 的源代码，我们还给 pyresttest 开发了几款插件：</p> <ul> <li>cookie_extractor：用来解析特定的 cookie</li> <li>file_choice_generator：从文件随机选择预设数据</li> <li>file_seq_generator：从文件顺序选择预设数据</li> </ul> <p>在和 CI 的配合方面，我们在 Jinkins 搭建了 abao / abao-master 项目， 前者响应每次 Push 请求，都会自动构建一遍，后者每天凌晨会将 master 运行一遍。</p> <p>感谢项目贡献者：</p> <pre><code>project  : abao
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>API 集成测试实践 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="https://blog.alswl.com/2016/08/api-integration-test/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Test,API" />
+        <meta name="description" content="abao.png 为了提高测试，工程师需要对自己提交的产物进行测试，一般是单元测试、集成测试。 之后提交物流转到 QA 团队，QA 团队 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://blog.alswl.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://blog.alswl.com/theme/css/style.css" type="text/css"/>
+
+    <link href="https://blog.alswl.com/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="https://blog.alswl.com/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://blog.alswl.com/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://blog.alswl.com/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="https://blog.alswl.com/2016/08/api-integration-test/"
+                       rel="bookmark"
+                       title="Permalink to API 集成测试实践">
+                        API 集成测试实践
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-08-14T19:08:20+08:00"> 2016-08-14</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="https://blog.alswl.com/tag/test/">Test</a>
+        /
+	<a href="https://blog.alswl.com/tag/api/">API</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <figure>
+<img src="https://4ocf5n.dijingchao.com/upload_dropbox/201608/abao_thumbnail.png" alt="abao.png" /><figcaption>abao.png</figcaption>
+</figure>
+<p>为了提高测试，工程师需要对自己提交的产物进行测试，一般是单元测试、集成测试。 之后提交物流转到 QA 团队，QA 团队根据需求描述对提交物进行测试， 这个测试过程非常耗费人力。 尤其是当开发交付的质量不高时候，很可能自身没有经过测试，会遇到主干流程都无法进行的状况。</p>
+<p>如果在 QA 人工介入测试之前，就进行一轮黑盒自动化集成测试，可以大大地提高 QA 团队的工作效率。 基于这样的判断，我们团队花了一些时间，将基于 API 的自动化测试系统搭建起来。 现在将这个系统的选型和运行状况拎出来，和大家分享。</p>
+<h2 id="确认测试范围目标和意义">确认测试范围、目标和意义</h2>
+<ul>
+<li>范围
+<ul>
+<li>后台输出的 API 级别 URL</li>
+<li>使用场景
+<ul>
+<li>打包时候的冒烟</li>
+<li>Dev / QA 手工添加添加新特性用例</li>
+</ul></li>
+</ul></li>
+<li>目标
+<ul>
+<li>覆盖大部分的 URL，当期设计为 top 10 URL，仅包含 GET 接口</li>
+<li>选型时，需要考虑非幂等（POST / DELETE / PUT）等接口</li>
+</ul></li>
+<li>意义
+<ul>
+<li>提高开发效率，一种自动化的 IT 测试方案</li>
+<li>提高测试效率，减少人工集成测试成本</li>
+<li>提高工程质量，通过覆盖率提升，保证工程质量逐步提升，放心开发新功能</li>
+</ul></li>
+</ul>
+<h2 id="特性需求">特性需求</h2>
+<p>选型一个系统，不是看市面上有哪些可以供选择，而是看我需要什么样特性的一款产品。 如果自己的需求和市面上的现成产品差异过大，也可以考虑自己定制。</p>
+<ul>
+<li>Required
+<ul>
+<li>开源</li>
+<li>免费</li>
+<li>使用 DSL 或者简单代码描述测试用例</li>
+<li>支持细粒度的单 API 测试和构建带过程的测试用例</li>
+<li>HTTP API</li>
+</ul></li>
+<li>Optional
+<ul>
+<li>CI 集成</li>
+<li>UI</li>
+</ul></li>
+</ul>
+<h2 id="挑选出来的选型和评价">挑选出来的选型和评价</h2>
+<ul>
+<li><a href="https://www.runscope.com/">API Monitoring and Testing · Runscope</a>
+<ul>
+<li>收费</li>
+<li>非开源</li>
+<li>有监控特性</li>
+</ul></li>
+<li><a href="https://www.atlassian.com/software/bamboo">Bamboo - Continuous integration, deployment &amp; release management | Atlassian</a>
+<ul>
+<li>收费</li>
+<li>CI</li>
+</ul></li>
+<li><a href="https://circleci.com/features/">Continuous Integration Product and Features - CircleCI</a>
+<ul>
+<li>CI</li>
+<li>收费</li>
+</ul></li>
+<li>Sauce Labs
+<ul>
+<li>客户端测试，收费</li>
+</ul></li>
+<li>Apiary
+<ul>
+<li>API 设计工具 + API Test</li>
+</ul></li>
+<li><a href="http://frisbyjs.com/">http://frisbyjs.com/</a>
+<ul>
+<li>code</li>
+<li>npm</li>
+<li>open source</li>
+<li>NO UI</li>
+</ul></li>
+<li><a href="https://github.com/vowsjs/api-easy">https://github.com/vowsjs/api-easy</a>
+<ul>
+<li>同上</li>
+<li>真是热爱造轮子的 JS 生态圈</li>
+</ul></li>
+<li><a href="https://github.com/visionmedia/supertest">https://github.com/visionmedia/supertest</a>
+<ul>
+<li>同上</li>
+<li>从 Star 看，这个质量最高</li>
+</ul></li>
+<li><a href="http://dareid.github.io/chakram/">http://dareid.github.io/chakram/</a>
+<ul>
+<li>code</li>
+<li>npm</li>
+<li>open source</li>
+<li>NO UI</li>
+</ul></li>
+<li><a href="https://vrest.io/">https://vrest.io/</a>
+<ul>
+<li>收费</li>
+<li>不开源</li>
+<li>无插件</li>
+</ul></li>
+<li><a href="http://swagger.io/open-source-integrations/">http://swagger.io/open-source-integrations/</a>
+<ul>
+<li>for API</li>
+<li>生态环境强大</li>
+<li><a href="https://github.com/cachecontrol/hippie-swagger">https://github.com/cachecontrol/hippie-swagger</a></li>
+<li>用户端似乎在尝试用 swagger</li>
+</ul></li>
+<li><a href="http://robotframework.org/">http://robotframework.org/</a>
+<ul>
+<li>一个通用自动化测试工具</li>
+<li>DSL</li>
+<li>扩展性较强</li>
+<li>活跃度在降低 <a href="https://github.com/robotframework/robotframework/graphs/contributors">https://github.com/robotframework/robotframework/graphs/contributors</a></li>
+</ul></li>
+<li><a href="https://cucumber.io/">https://cucumber.io/</a>
+<ul>
+<li><a href="https://cucumber.io/docs/reference">https://cucumber.io/docs/reference</a></li>
+<li>和 Robotframework 相似，通用自动化测试工具</li>
+<li>DSL</li>
+<li>活跃度降低 <a href="https://github.com/cucumber/cucumber-jvm/graphs/contributors">https://github.com/cucumber/cucumber-jvm/graphs/contributors</a></li>
+</ul></li>
+<li><a href="https://www.solanolabs.com/">https://www.solanolabs.com/</a>
+<ul>
+<li>Airbnb 在用</li>
+<li>收费</li>
+<li>云端的通用测试环境</li>
+</ul></li>
+<li><a href="https://github.com/christophd/citrus">https://github.com/christophd/citrus</a>
+<ul>
+<li><a href="http://www.citrusframework.org/">http://www.citrusframework.org/</a></li>
+<li>依赖 mvn / ant，离代码太近</li>
+<li>项目不够活跃</li>
+</ul></li>
+<li>代码内测试
+<ul>
+<li>src/it/com/duitang/xxx</li>
+<li>eg. tritornis</li>
+<li>Spring
+<ul>
+<li><a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html">http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html</a></li>
+<li><a href="http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html">http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<p>这部分工作，是和团队的其他成员一起去看的，大家各自分头寻找一些产品，然后进行评测，给出结论。</p>
+<p>经过讨论，我们将重点关注放在这么几款下面：</p>
+<ul>
+<li>supertest</li>
+<li>robotframework</li>
+<li>swagger</li>
+<li>讨论时候的新发现 <a href="https://github.com/svanoort/pyresttest">https://github.com/svanoort/pyresttest</a></li>
+</ul>
+<h2 id="搭建-demo进行试用">搭建 demo，进行试用</h2>
+<p>在确定选用那几款产品之后，就可以集中精力在几款候选者里面。搭建相应的环境，对他们进行实际测试。</p>
+<p>supertest：</p>
+<ul>
+<li>功能太简单了，简单到几乎可以自己写掉，不算一个 test framework</li>
+</ul>
+<p>pyresttest：</p>
+<ul>
+<li>哈哈哈，YAML based，dreamed feature</li>
+<li>支持 YAML / extractor / validator</li>
+<li>天生支持 host 为参数</li>
+<li>create for me!!!</li>
+</ul>
+<p>hippie-swagger：</p>
+<ul>
+<li>在使用上，和 supertest 差异不大</li>
+<li>仍然需要自己定义，在 swagger 描述文件不存在时候会抛错，描述文件不符合时会抛错</li>
+</ul>
+<p>robotframework：</p>
+<ul>
+<li>较为复杂</li>
+<li>有 YAML 了，不用试了</li>
+</ul>
+<h2 id="使用感觉">使用感觉</h2>
+<p>经过一个季度的试用，我们基于 pyresttest 的项目 abao 运行较稳定。 尽量在工程师提交代码之后，运行一次，从而可以在早期发现问题。</p>
+<p>由于是基于 Python 的源代码，我们还给 pyresttest 开发了几款插件：</p>
+<ul>
+<li>cookie_extractor：用来解析特定的 cookie</li>
+<li>file_choice_generator：从文件随机选择预设数据</li>
+<li>file_seq_generator：从文件顺序选择预设数据</li>
+</ul>
+<p>在和 CI 的配合方面，我们在 Jinkins 搭建了 abao / abao-master 项目， 前者响应每次 Push 请求，都会自动构建一遍，后者每天凌晨会将 master 运行一遍。</p>
+<p>感谢项目贡献者：</p>
+<pre><code>project  : abao
  repo age : 5 months
  active   : 32 days
  commits  : 109
@@ -8,7 +288,43 @@
     17  yanqi.chen  15.6%
     11  橙子        10.1%
      7  fiona66     6.4%
-     2  雪糕        1.8%</code></pre> <hr> <p>参考文档</p> <ul> <li><a href=https://github.com/integrations>Integrations Directory</a></li> <li><a href="http://www.infoq.com/cn/search.action?queryString=%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95&page=1&searchOrder=&sst=guKeEhPzzhUs7xpS">http://www.infoq.com/cn/search.action?queryString=%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95&amp;page=1&amp;searchOrder=&amp;sst=guKeEhPzzhUs7xpS</a></li> <li><a href=http://www.infoq.com/cn/news/2014/02/autotest-2013>http://www.infoq.com/cn/news/2014/02/autotest-2013</a></li> <li><a href=http://www.infoq.com/cn/articles/cucumber-robotframework-comparison>http://www.infoq.com/cn/articles/cucumber-robotframework-comparison</a></li> <li><a href=http://www.infoq.com/cn/articles/http-api-automated-test-from-manual-to-platform>http://www.infoq.com/cn/articles/http-api-automated-test-from-manual-to-platform</a></li> <li><a href=http://nerds.airbnb.com/testing-at-airbnb/ >http://nerds.airbnb.com/testing-at-airbnb/</a></li> <li>Google keywords <ul> <li>integration api test framework</li> <li>github intergration test</li> </ul></li> </ul> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2016/08/api-integration-test/ >https://blog.alswl.com/2016/08/api-integration-test/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
+     2  雪糕        1.8%</code></pre>
+<hr />
+<p>参考文档</p>
+<ul>
+<li><a href="https://github.com/integrations">Integrations Directory</a></li>
+<li><a href="http://www.infoq.com/cn/search.action?queryString=%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95&amp;page=1&amp;searchOrder=&amp;sst=guKeEhPzzhUs7xpS">http://www.infoq.com/cn/search.action?queryString=%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95&amp;page=1&amp;searchOrder=&amp;sst=guKeEhPzzhUs7xpS</a></li>
+<li><a href="http://www.infoq.com/cn/news/2014/02/autotest-2013">http://www.infoq.com/cn/news/2014/02/autotest-2013</a></li>
+<li><a href="http://www.infoq.com/cn/articles/cucumber-robotframework-comparison">http://www.infoq.com/cn/articles/cucumber-robotframework-comparison</a></li>
+<li><a href="http://www.infoq.com/cn/articles/http-api-automated-test-from-manual-to-platform">http://www.infoq.com/cn/articles/http-api-automated-test-from-manual-to-platform</a></li>
+<li><a href="http://nerds.airbnb.com/testing-at-airbnb/">http://nerds.airbnb.com/testing-at-airbnb/</a></li>
+<li>Google keywords
+<ul>
+<li>integration api test framework</li>
+<li>github intergration test</li>
+</ul></li>
+</ul>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2016/08/api-integration-test/">https://blog.alswl.com/2016/08/api-integration-test/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -25,7 +341,128 @@
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        </script>
+		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="https://blog.alswl.com/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/sre/">
+                                <i class="fa fa-folder-open fa-lg"></i> SRE
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2022 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Disqus -->
+    <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -37,7 +474,10 @@
             s.src = '//' + disqus_shortname + '.disqus.com/count.js';
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -51,4 +491,7 @@
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

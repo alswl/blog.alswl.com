@@ -1,13 +1,296 @@
-<!DOCTYPE html><html lang=en> <head><title>Coding - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><meta name=author content=alswl><meta name=keywords content=Coding><!-- Open Graph tags --><meta property=og:site_name content=Log4D><meta property=og:type content=website><meta property=og:title content=Log4D><meta property=og:url content=https://blog.alswl.com><meta property=og:description content=Log4D><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/05/pylons/ >Pylons使用小记</a></h2> <div class=summary><p>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201105/pylons.png><figcaption aria-hidden=true>image</figcaption> </figure> <h2 id=关于pylons>关于Pylons</h2> <p><a href=http://pylonsproject.org/ >Pylons</a>是一个用pythons写的web框架，优点是配置灵活，默认使用<a href=http:%20//www.makotemplates.org/ >Mako</a>作为Template，<a href=http://www.sqlalchemy.org/ >SQLAlchemy</a>作为 ORM映射。使用BSD作为授权协议。</p> <p>托WSGI的福，python的web框架超多，甚至高手5分钟可以自己手写一个web框架，这种情况也导致了Python web框架的纷杂。我这里选择Pylons（其实是被选择），并不是说Pylons一定最好，而是比较适合当前项目。更多的Python web框架对比建议看这篇<a href=http://feilong.me/2011/01/talk-about-python-web-%20framework>浅谈Python web框架</a>，另外，这个<a href=http://www.bestwebframeworks.com/python/ >Best Web- Framework</a>有直观的对比。</p> <h2 id=pylons环境配置>Pylons环境配置</h2> <p>因为开发机是刚到手的ThinkPad，没有冒险安装Linux，所以这里的安装环境是Win7 + Python 2.6 + MySQL5.1。</p> <h3 id=安装pylons>1、安装Pylons</h3> <p>Pylons似乎没有方便的easy_install，原因是由于Pylons在安装过程中 …</p> </div> <a href=https://blog.alswl.com/2011/05/pylons/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/05/run-pylons-in-eclipse/ >Eclipse中运行Pylons</a></h2> <div class=summary><p>官方中pylons都是通过在shell中运行paster serve &ndash;reload development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤可以在Eclipse中运行pylons。</p> <p>配置Run Configuration - Python Run如下。</p> <p>Main页签中Main Module指向paster-script.py，可以使用绝对路径。</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201105/eclipse-main.png><figcaption aria-hidden=true>image</figcaption> </figure> <p>配置Arguments页签的参数，添加serve &ndash;reload development.ini，后面的ini配置文件可以使用绝对路径。</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201105/eclipse-arguments.png><figcaption aria-hidden=true>image</figcaption> </figure> <p>勾选Common下的Allocate Console来进行paster调试信息输出。</p> <p>在Windows - Preference - Pydev - Interpreter - Python中的PYTHONPATH加入pylons目标环境 ，报过site-packages目录和site-packages目录下面的egg文件（理解为jar包，称之为蟒蛇蛋）。</p> <p>不出意外的话，就可以通过Run跑起整个应用了。</p> <p>很可惜的是，这样做还是不能对应用进行Debug，pylons的debug依然依赖于pylons的&rdquo;交互调试页面&rdquo;。</p> <p>参考<a href=http://stackoverflow.com/questions/147650/debug-pylons-application-%20through-eclipse>http://stackoverflow.com/questions/147650/debug-pylons-application-through- eclipse</a></p> </div> <a href=https://blog.alswl.com/2011/05/run-pylons-in-eclipse/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/04/ubuntu-setup/ >Ubuntu安装之后设定操作</a></h2> <div class=summary><p>前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。</p> <p>这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。</p> <pre><code>= init Linux programs and setting =
-:author: alswl
-:email: alswlx#gmail.com
-:toc:
-:numbered:</code></pre> <p>== first of all ==</p> <p>.update (打补丁、升级)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get update</td> </tr> <tr class=even> <td>Update System(fix bugs for sercurity): 299.0MB</td> </tr> </tbody> </table></div> <p>.reset permission(谨慎使用，设定文件为644,设定文件夹为755)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>find /home …</td></tr></tbody></table></div> </div> <a href=https://blog.alswl.com/2011/04/ubuntu-setup/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/04/run-jetty-in-maven/ >Maven 下 Jetty 启动</a></h2> <div class=summary><p>部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。</p> <h2 id=准备-maven-配置文件>准备 Maven 配置文件</h2> <p>我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 <a href=http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html>Maven - Introduction to the Standard Directory Layout</a></p> <ul> <li>src/main/java <ul> <li>Application/Library sources</li> </ul></li> <li>src/main/resources <ul> <li>Application/Library resources …</li></ul></li></ul> </div> <a href=https://blog.alswl.com/2011/04/run-jetty-in-maven/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/04/ubuntu-crebs/ >Ubuntu桌面自动换背景</a></h2> <div class=summary><p>GNOME桌面系统可以使用一系列的图片作为背景，每过一段时间能够自动更换。这个功能核Win7下面自动换背景效果一致。不过很可惜，系统自带的可自动更换图片集只 有几张，也找不到什么按钮可以直接设定。</p> <p>下图就是系统自带的两个图片集（第二行第一组和第二组）。</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201104/appearance_preferences.png><figcaption aria-hidden=true>image</figcaption> </figure> <p>我们可以通过撰写xml自己制作图片集，xml格式模板在<code>/usr/share/gnome-background-properties/cosmos.xml</code> ，实际的xml存放在类似于<code>/usr/share/backgrounds/cosmos/background-1.xml</code>的配置文档里面。</p> <p>除了手工撰写xml，我们还可以通过crebs小软件来自动生成xml文件。</p> <p>官方介绍如下：</p> <blockquote> <p>A background slideshow creator for the GNOME desktop wallpaper.</p> </blockquote> <p>The GNOME desktop is able to use a sequence of images for its …</p> </div> <a href=https://blog.alswl.com/2011/04/ubuntu-crebs/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/03/plrcmatch4d/ >历史记录-歌词复制器</a></h2> <div class=summary><p>之前写过一个Java的小工具叫做Mp3Lrc歌词复制器，用来复制歌词到Mp3播放器中的对应目录下面。之前的文章参见<a href=http://log4d.com/2009/05/the-executable-file-%20mp3lrc>Mp3Lrc的可执行文件</a>和<a href=http://log4d.com/2009/05/lyrics-written-in-java-%20replicator-mp3>Java写的Mp3歌词复制器</a>。</p> <p>这几天整理硬盘时候发现大四时候还用Delphi写了一个完整的GUI界面的Mp3歌词复制工具叫做PLrcMatch4D。</p> <p>源码已经丢失，只剩下可执行文件，T_T。</p> <p>如果非要定义以下这个工具的作用，就是从某个固定文件夹（歌词文件夹）复制对应Mp3播放器中歌曲的lrc文件到目标文件夹，从而让Mp3播放器可以正常显示歌词。</p> <p>下载点击这里，<a href=https://4ocf5n.dijingchao.com/upload_dropbox/201103/PLrcMatch4D.zip>PLrcMatch4D.zip</a></p> <p>界面比较实在，大致是这样：</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201103/plrcmatch4d.jpg><figcaption aria-hidden=true>image</figcaption> </figure> </div> <a href=https://blog.alswl.com/2011/03/plrcmatch4d/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/03/maven-eclipse/ >在Eclipse中使用Maven</a></h2> <div class=summary><p>一提到Eclipse中使用Maven，都会想到<a href=http://m2eclipse.codehaus.org/ >m2eclipse</a>这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。</p> <h2 id=分钟maven>3分钟Maven</h2> <p>Maven官方提供了<a href=http://maven.apache.org/guides%20/getting-started/maven-in-five-minutes.html>Getting Started in 5 Minutes</a>和<a href=http://maven.apache.org/guides/getting-%20started/index.html>Getting Started in 30 Minutes</a>两种教程，我这里再简化一下，记录一下常用命令。</p> <pre><code>#建立一个空项目，包含一个HelloWorld，可以通过
-#-DarchetypeGroupId=&lt;archetype-groupId&gt; -DarchetypeArtifactId=&lt;archetype-artifactId&gt;
-#命令创建更多类型项目
-mvn archetype:create -DgroupId=com.dddspace.java -DartifactId=helloworld</code></pre> <p>#编译打包到jar或者war，根据pom中定义</p> <p>maven package</p> <p>#jUnit跑跑</p> <p>mvn test</p> <p>#神奇的命令，帮助创建Eclipse项目 …</p> </div> <a href=https://blog.alswl.com/2011/03/maven-eclipse/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/02/dataconnectiondialog/ >使用DataConnectionDialog来获取连接字符串</a></h2> <div class=summary><p>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方 法来动态生成连接字符串，这种方法充满了Bad Smell。</p> <p>昨天用CodeSmith时候，看到它的数据连接配置界面，如此的眼熟，如下图。</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201102/DataConnectionDialog.jpg><figcaption aria-hidden=true>image</figcaption> </figure> <p>Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命名空间为Microsoft.VisualStudio.Data。</p> <p>使用的方法也很简单，引用Microsoft.Data.ConnectionUI.dll和Microsoft.Data.ConnectionUI.Dialog .dll，这两个文件位于Microsoft Visual Studio 9.0Common7IDE下面。</p> <p>这两个dll并没有其他依赖关系，可以放心的放到自己的程序中使用。</p> <p>使用代码如下</p> <pre><code>DataConnectionDialog dataConnectionDialog = new DataConnectionDialog();
-DataSource.AddStandardDataSources(dataConnectionDialog);
-if (DataConnectionDialog.Show(dataConnectionDialog) == DialogResult …</code></pre> </div> <a href=https://blog.alswl.com/2011/02/dataconnectiondialog/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/01/gac/ >在.net中使用GAC</a></h2> <div class=summary><h2 id=gac>GAC</h2> <p>GAC是什么？是用来干嘛的？GAC的全称叫做全局程序集缓存，通俗的理解就是存放各种.net平台下面需要使用的dll的地方。GAC的具体目录在windows/ assembly。</p> <p>喜欢使用破解软件的朋友可能会经常使用替换DLL这招，这个DLL虽然和.net下面的DLL有所不同，但大致起的作用还是一样的：使用共同的动态链接库来提高库复用 ，减少文件体积。在.net平台之前，程序们都把可能用到的公共DLL存放到system32文件夹下。由于版本的不一致及其他原因（将控制信息存放到注册表），造成 了很有名的<a href=http://zh.wikipedia.org/zh-cn/DLL%E5%9C%B0%E7%8D%84>DLL Hell</a>。</p> <p>最近在读俞甲子的《<a href=http://book.douban.com/subject/3652388/ >程序员的自我修养</a>》，中间花了很大的篇幅描述程序编译中 的链接这个过程。而比较巧合的是，我的《<a href=http://book.douban.com/subject/3563971/ >C#与.NET 3.5高级程序设计</a>》也正好读到程序集这一块。微软使用了GAC来避免DLL重蹈覆辙。现在，我就来部署一个简单的通用类库到GAC中。</p> <h2 id=获取强名称签名>获取强名称（签名）</h2> <p>并不是随便一个DLL都可以放到GAC中，如果这样的话，和之前的DLL Hell也没什么区别了。GAC使用一个强名称（签名）的方式来区分不同的DLL。每个签名 都是独一无二的公钥私钥对。现在我们使用SDK的sn工具为我的DUtil库生成一个snk签名 …</p> </div> <a href=https://blog.alswl.com/2011/01/gac/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/01/regex-group-catch/ >正则表达式抓捕替换</a></h2> <div class=summary><h2 id=问题情境>问题情境</h2> <p>需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,&ldquo;total&rdquo;, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,&ldquo;total&rdquo;, Parameters!Language.Value, &ldquo;ReportConnection0107&rdquo;)。</p> <h2 id=思路>思路</h2> <p>使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。</p> <h3 id=vim实现>Vim实现</h3> <p>%s/GetComment(((s<em>w+!w+.w+s</em>,){2}s<em>&ldquo;w+&rdquo;s</em>,s<em>w+!w+.w+s</em>))/GetCommentForReport(1 , &ldquo;ReportConnection0107&rdquo;)/gc</p> <p>解释 …</p> </div> <a href=https://blog.alswl.com/2011/01/regex-group-catch/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <ul class=pagination> <li class=prev><a href=https://blog.alswl.com/category/coding/page/7/ >&laquo;</a> </li> <li class><a href=https://blog.alswl.com/category/coding/ >1</a></li> <li class=disabled><a href>&hellip;</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/3/ >3</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/4/ >4</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/5/ >5</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/6/ >6</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/7/ >7</a></li> <li class=active><a href=https://blog.alswl.com/category/coding/page/8/ >8</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/9/ >9</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/10/ >10</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/11/ >11</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/12/ >12</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/13/ >13</a></li> <li class=disabled><a href>&hellip;</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/23/ >23</a></li> <li class=next><a href=https://blog.alswl.com/category/coding/page/9/ >&raquo;</a></li> </ul> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2020 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Coding - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+
+    <meta name="author" content="alswl" />
+    <meta name="keywords" content="Coding" />
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="Log4D" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Log4D"/>
+        <meta property="og:url" content="https://blog.alswl.com"/>
+        <meta property="og:description" content="Log4D"/>
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://blog.alswl.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://blog.alswl.com/theme/css/style.css" type="text/css"/>
+
+    <link href="https://blog.alswl.com/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="https://blog.alswl.com/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://blog.alswl.com/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://blog.alswl.com/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/05/pylons/">Pylons使用小记</a></h2>
+                <div class="summary"><p>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/05/pylons/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/05/run-pylons-in-eclipse/">Eclipse中运行Pylons</a></h2>
+                <div class="summary"><p>官方中pylons都是通过在shell中运行paster serve –reload development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/05/run-pylons-in-eclipse/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/04/ubuntu-setup/">Ubuntu安装之后设定操作</a></h2>
+                <div class="summary"><p>前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/04/ubuntu-setup/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/04/run-jetty-in-maven/">Maven 下 Jetty 启动</a></h2>
+                <div class="summary"><p>部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/04/run-jetty-in-maven/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/04/ubuntu-crebs/">Ubuntu桌面自动换背景</a></h2>
+                <div class="summary"><p>GNOME桌面系统可以使用一系列的图片作为背景，每过一段时间能够自动更换。这个功能核Win7下面自动换背景效果一致。不过 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/04/ubuntu-crebs/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/03/plrcmatch4d/">历史记录-歌词复制器</a></h2>
+                <div class="summary"><p>之前写过一个Java的小工具叫做Mp3Lrc歌词复制器，用来复制歌词到Mp3播放器中的对应目录下面。之前的文章参见<a href="http://log4d.com/2009/05/the-executable-file-%20mp3lrc">Mp3Lrc的可执行 …</a></p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/03/plrcmatch4d/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/03/maven-eclipse/">在Eclipse中使用Maven</a></h2>
+                <div class="summary"><p>一提到Eclipse中使用Maven，都会想到<a href="http://m2eclipse.codehaus.org/">m2eclipse</a>这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。</p>
+<h2 id="分钟maven">3 …</h2>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/03/maven-eclipse/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/02/dataconnectiondialog/">使用DataConnectionDialog来获取连接字符串</a></h2>
+                <div class="summary"><p>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/02/dataconnectiondialog/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/01/gac/">在.net中使用GAC</a></h2>
+                <div class="summary"><h2 id="gac">GAC</h2>
+<p>GAC是什么？是用来干嘛的？GAC的全称叫做全局程序集缓存，通俗的理解就是存放各种.net平台下面需要使用的dll的地方。GAC …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/01/gac/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/01/regex-group-catch/">正则表达式抓捕替换</a></h2>
+                <div class="summary"><h2 id="问题情境">问题情境</h2>
+<p>需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,“total”, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,“total”, Parameters!Language.Value, “ReportConnection0107”)。</p>
+<h2 id="思路">思路</h2>
+<p>使用正则表达式里 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/01/regex-group-catch/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+
+        <ul class="pagination">
+                <li class="prev"><a href="https://blog.alswl.com/category/coding/page/7/">&laquo;</a>
+                </li>
+				<li class=""><a
+					href="https://blog.alswl.com/category/coding/">1</a></li>
+				<li class="disabled"><a href="">&hellip;</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/3/">3</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/4/">4</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/5/">5</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/6/">6</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/7/">7</a></li>
+				<li class="active"><a
+						href="https://blog.alswl.com/category/coding/page/8/">8</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/9/">9</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/10/">10</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/11/">11</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/12/">12</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/13/">13</a></li>
+				<li class="disabled"><a href="">&hellip;</a></li>
+				<li class=""><a
+					href="https://blog.alswl.com/category/coding/page/23/">23</a></li>
+                <li class="next"><a
+                        href="https://blog.alswl.com/category/coding/page/9/">&raquo;</a></li>
+        </ul>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="https://blog.alswl.com/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/sre/">
+                                <i class="fa fa-folder-open fa-lg"></i> SRE
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Disqus -->
+    <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -19,7 +302,10 @@ if (DataConnectionDialog.Show(dataConnectionDialog) == DialogResult …</code></
             s.src = '//' + disqus_shortname + '.disqus.com/count.js';
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -33,4 +319,7 @@ if (DataConnectionDialog.Show(dataConnectionDialog) == DialogResult …</code></
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

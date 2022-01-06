@@ -1,4 +1,102 @@
-<!DOCTYPE html><html lang=en> <head><title>MoinMoin Wiki 转换 Text 脚本 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2012/07/moin2txt/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Python,MoinMoin><meta name=description content="我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考 [使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 data 目录链接到 Dropbox 同步目录下面，从而可以备份并查看我的知识库。 我想同步阅读 KMS 数据 想在移动设备阅读 KMS 数据时，我遇到一个麻烦，MoinMoin 使用文件来保存 wiki 数据， 比如「28个Unix.Linux的命令行神器」这篇 wiki 目录在 data/28(e4b8aa)Unix(2e)Linux(e79a84e591bde4bba4e8a18ce7a59ee599a8) 中， 结构如下："><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2012/07/moin2txt/ rel=bookmark title="Permalink to MoinMoin Wiki 转换 Text 脚本"> MoinMoin Wiki 转换 Text 脚本 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#我想同步阅读-kms-数据 title="我想同步阅读 KMS 数据">我想同步阅读 KMS 数据</a></li><li><a class=toc-href href=#一个脚本 title=一个脚本>一个脚本</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2012-07-27T09:02:00+08:00> 2012-07-27</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/python/ >Python</a> / <a href=https://blog.alswl.com/tag/moinmoin/ >MoinMoin</a> </footer><!-- /.post-info --> </div> </div> <p>我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考 [使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 <code>data</code> 目录链接到 Dropbox 同步目录下面，从而可以备份并查看我的知识库。</p> <h2 id=我想同步阅读-kms-数据>我想同步阅读 KMS 数据</h2> <p>想在移动设备阅读 KMS 数据时，我遇到一个麻烦，MoinMoin 使用文件来保存 wiki 数据， 比如「28个Unix.Linux的命令行神器」这篇 wiki 目录在 <code>data/28(e4b8aa)Unix(2e)Linux(e79a84e591bde4bba4e8a18ce7a59ee599a8)</code> 中， 结构如下：</p> <!-- more --> <pre><code>|---revisions
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>MoinMoin Wiki 转换 Text 脚本 - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+<link rel="canonical" href="https://blog.alswl.com/2012/07/moin2txt/">
+
+        <meta name="author" content="alswl" />
+        <meta name="keywords" content="Python,MoinMoin" />
+        <meta name="description" content="我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考 [使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 data 目录链接到 Dropbox 同步目录下面，从而可 …" />
+
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://blog.alswl.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://blog.alswl.com/theme/css/style.css" type="text/css"/>
+
+    <link href="https://blog.alswl.com/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="https://blog.alswl.com/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://blog.alswl.com/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://blog.alswl.com/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+    <section id="content">
+        <article class="article-detail">
+            <header class="page-header">
+                <h1 class="title">
+                    <a href="https://blog.alswl.com/2012/07/moin2txt/"
+                       rel="bookmark"
+                       title="Permalink to MoinMoin Wiki 转换 Text 脚本">
+                        MoinMoin Wiki 转换 Text 脚本
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2012-07-27T09:02:00+08:00"> 2012-07-27</time>
+    </span>
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="https://blog.alswl.com/tag/python/">Python</a>
+        /
+	<a href="https://blog.alswl.com/tag/moinmoin/">MoinMoin</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考 [使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 <code>data</code> 目录链接到 Dropbox 同步目录下面，从而可以备份并查看我的知识库。</p>
+<h2 id="我想同步阅读-kms-数据">我想同步阅读 KMS 数据</h2>
+<p>想在移动设备阅读 KMS 数据时，我遇到一个麻烦，MoinMoin 使用文件来保存 wiki 数据， 比如「28个Unix.Linux的命令行神器」这篇 wiki 目录在 <code>data/28(e4b8aa)Unix(2e)Linux(e79a84e591bde4bba4e8a18ce7a59ee599a8)</code> 中， 结构如下：</p>
+<!-- more -->
+<pre><code>|---revisions
 |        |---00000002
 |        |---00000001
 |---edit-log
@@ -42,7 +140,11 @@
 |---cache
 |    |---text_html
 |    |---pagelinks
-</code></pre> <p>可以看到，中文名称的 wiki 在存储时候，MoinMoin 会将中文保存为 utf-8 码， 不能直接阅读。并且我需要将目录下面有多级目录，阅读麻烦。</p> <h2 id=一个脚本>一个脚本</h2> <p>为了解决这个问题，我写了如下小脚本，帮我解决这个问题：</p> <pre><code>#!/usr/bin/env python2
+</code></pre>
+<p>可以看到，中文名称的 wiki 在存储时候，MoinMoin 会将中文保存为 utf-8 码， 不能直接阅读。并且我需要将目录下面有多级目录，阅读麻烦。</p>
+<h2 id="一个脚本">一个脚本</h2>
+<p>为了解决这个问题，我写了如下小脚本，帮我解决这个问题：</p>
+<pre><code>#!/usr/bin/env python2
 # coding=utf-8
 
 # convert MoinMoin wiki to text
@@ -63,22 +165,22 @@ def convert(root, dir, target):
     name = name_decode(dir)
     if not name:
         return
-    dst = os.path.join(target, name.replace('/', '-') + '.txt')
+    dst = os.path.join(target, name.replace(&#39;/&#39;, &#39;-&#39;) + &#39;.txt&#39;)
     try:
-        version = open(os.path.join(root, dir, 'current'),
-                       'r').readline().strip()
-        src = os.path.join(root, dir, 'revisions', version)
+        version = open(os.path.join(root, dir, &#39;current&#39;),
+                       &#39;r&#39;).readline().strip()
+        src = os.path.join(root, dir, &#39;revisions&#39;, version)
         shutil.copyfile(src, dst)
     except IOError, e:
         if IS_DECODE_PATH:
-            dir = dir.replace('(', r'\(').replace(')', r'\)')
-        sys.stderr.write('File %s, Name: %s, Message: %s\n'
+            dir = dir.replace(&#39;(&#39;, r&#39;\(&#39;).replace(&#39;)&#39;, r&#39;\)&#39;)
+        sys.stderr.write(&#39;File %s, Name: %s, Message: %s\n&#39;
                          %(dir, name, str(e)))
 
 def name_decode(name):
-    raw = ''
+    raw = &#39;&#39;
     lastpos = 0
-    ENCODE_RE = re.compile(r'\(([\w\d]+)\)')
+    ENCODE_RE = re.compile(r&#39;\(([\w\d]+)\)&#39;)
     match =ENCODE_RE.search(name)
     while(match):
         raw += name[lastpos : lastpos + match.start()]
@@ -93,22 +195,24 @@ def walk(path, target):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Convert moin wiki to text archieves'
+        description=&#39;Convert moin wiki to text archieves&#39;
         )
-    parser.add_argument('--input', '-i',
-                        help='the path of moinmoin/data/pages',
+    parser.add_argument(&#39;--input&#39;, &#39;-i&#39;,
+                        help=&#39;the path of moinmoin/data/pages&#39;,
                         type=str,
                         required=True)
-    parser.add_argument('--output', '-o',
-                        help='the path os target',
+    parser.add_argument(&#39;--output&#39;, &#39;-o&#39;,
+                        help=&#39;the path os target&#39;,
                         type=str,
                         required=True)
     args = parser.parse_args()
 
     walk(args.input, args.output)
 
-if __name__ == '__main__':
-    main()</code></pre> <p>使用帮助：</p> <pre><code>usage: moin2txt.py [-h] --input INPUT --output OUTPUT
+if __name__ == &#39;__main__&#39;:
+    main()</code></pre>
+<p>使用帮助：</p>
+<pre><code>usage: moin2txt.py [-h] --input INPUT --output OUTPUT
 
 Convert moin wiki to text archieves
 
@@ -117,7 +221,32 @@ optional arguments:
   --input INPUT, -i INPUT
                         the path of moinmoin/data/pages
   --output OUTPUT, -o OUTPUT
-                        the path os target</code></pre> <p>使用范例：</p> <div class=sourceCode id=cb4><pre class="sourceCode bash"><code class="sourceCode bash"><span id=cb4-1><a aria-hidden=true href=#cb4-1 tabindex=-1></a><span class=ex>python</span> moin2txt.py <span class=at>-i</span> /your/moin/path/data/pages <span class=at>-o</span> /your/dropbox/path/kms</span></code></pre></div> <p>命令运行完，就能在对应目录生成一坨 txt 文件，文件名还是中文的，Mission complete.</p> <p>我将这个命令加入了 cron，每天执行一次，保证 Dropbox 中是最新的 wiki。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2012/07/moin2txt/ >https://blog.alswl.com/2012/07/moin2txt/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
+                        the path os target</code></pre>
+<p>使用范例：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">python</span> moin2txt.py -i /your/moin/path/data/pages -o /your/dropbox/path/kms</a></code></pre></div>
+<p>命令运行完，就能在对应目录生成一坨 txt 文件，文件名还是中文的，Mission complete.</p>
+<p>我将这个命令加入了 cron，每天执行一次，保证 Dropbox 中是最新的 wiki。</p>
+
+            </div>
+            <!-- /.entry-content -->
+              
+<hr>
+<div class="panel">
+<div class="panel-body">
+   <small>原文链接: <a href="https://blog.alswl.com/2012/07/moin2txt/">https://blog.alswl.com/2012/07/moin2txt/</a></small><br>
+   <small>3a1ff193cee606bd1e2ea554a16353ee</small><br>
+   <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"/></small>
+   <small><img src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"/></small>
+</div>
+</div>
+
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -134,7 +263,128 @@ optional arguments:
             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
         })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+        </script>
+		<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="https://blog.alswl.com/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/sre/">
+                                <i class="fa fa-folder-open fa-lg"></i> SRE
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2022 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Disqus -->
+    <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -146,7 +396,10 @@ optional arguments:
             s.src = '//' + disqus_shortname + '.disqus.com/count.js';
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -160,4 +413,7 @@ optional arguments:
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>

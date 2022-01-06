@@ -1,17 +1,320 @@
-<!DOCTYPE html><html lang=en> <head><title>Coding - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><meta name=author content=alswl><meta name=keywords content=Coding><!-- Open Graph tags --><meta property=og:site_name content=Log4D><meta property=og:type content=website><meta property=og:title content=Log4D><meta property=og:url content=https://blog.alswl.com><meta property=og:description content=Log4D><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/08/nxserver/ >使用NX替代VNC</a></h2> <div class=summary><p><a href=http://www.nomachine.com>NX</a> 是 NoMachine 公司推出的下一代远程桌面技术，可以说是用来替换 VNC 的一个较好方案。</p> <blockquote> <p><a href=http://www.realvnc.com>VNC</a> is remote control software which allows you to view and fully interact with one computer desktop (the &ldquo;VNC server&rdquo;) using a simple program (the &ldquo;VNC viewer&rdquo;) on another computer desktop anywhere on the Internet.</p> </blockquote> <blockquote> </blockquote> <blockquote> <p>VNC 是一个允许你从一台电脑（VNC 查看器）查看并且操作另外一台电脑（VNC 服务器）小程序 …</p></blockquote> </div> <a href=https://blog.alswl.com/2011/08/nxserver/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/08/mako-typeerror/ >TypeError: sequence item 22: expected string or Unicode, long found</a></h2> <div class=summary><p>Mako 下面开发时候，遇到这个问题</p> <blockquote> <p>TypeError: sequence item : expected string or Unicode, long found</p> </blockquote> <p>Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息）</p> <blockquote> <p>File &lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&rsquo;, line 239 in staticpage</p> </blockquote> <blockquote> </blockquote> <blockquote> <p>return render(&lsquo;/pages/%s.html&rsquo; % name)</p> </blockquote> <blockquote> </blockquote> <blockquote> <p>File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2 …</p></blockquote> </div> <a href=https://blog.alswl.com/2011/08/mako-typeerror/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/08/auto-clean-input/ >简单输入提示框实现</a></h2> <div class=summary><p>早期的输入框提示是这样的（via <a href=http://tieba.baidu.com/index.html>baidu</a>）</p> <figure> <img alt=tieba src=https://4ocf5n.dijingchao.com/upload_dropbox/201108/login1.png><figcaption aria-hidden=true>tieba</figcaption> </figure> <p>左边一个 label ，右边一个输入框。</p> <p>比较现代的方式是（via <a href=http://www.discuz.net/ >Discuz!</a>）</p> <figure> <img alt=discuz! src=https://4ocf5n.dijingchao.com/upload_dropbox/201108/login2.png><figcaption aria-hidden=true>discuz!</figcaption> </figure> <p>更漂亮的方式是（via <a href=http://www.diandian.com/login>点点</a>）</p> <figure> <img alt=diandian src=https://4ocf5n.dijingchao.com/upload_dropbox/201108/login_diandian.png><figcaption aria-hidden=true>diandian</figcaption> </figure> <p>登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。</p> <p>我需要达到几个要求：</p> <ol type=1> <li>提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息</li> <li>只需为 text / textarea 添加一个 class 即可实现效果</li> <li>不修改 DOM 节点，避免影响上下文选择器</li> </ol> <p>为了实现效果，我需要将提示信息暂存到某个地方。有3个地方可供选择： js 全局变量、输入框自定义属性、上下文 DOM 节点。</p> <p>js 全局变量比较难控制元素标识，并不是每个元素都可以精准的用 id 标记；输入框自定义属性会破坏语义；在上下文加入节点会破坏 DOM 树 …</p> </div> <a href=https://blog.alswl.com/2011/08/auto-clean-input/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/08/get-json-failed-in-ie/ >get json failed in IE</a></h2> <div class=summary><p>半夜在开工打补丁，某个 bug 是 Firefox 下面能接受到 Ajax 回调请求，而 IE 不行。</p> <p>解决方案在<a href=http://stackoverflow.com/questions/425854/jquery-ajax-request-failing-%20in-ie>http://stackoverflow.com/questions/425854/jquery-ajax-request-failing- in-ie</a></p> <p>缘由是由于 IE 不能正常识别<code>application/json; charset=utf8</code></p> <p>于是修改为<code>response.headers['Content-Type'] = 'application/json'</code></p> <p>狗日的 IE！</p> </div> <a href=https://blog.alswl.com/2011/08/get-json-failed-in-ie/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/ >go-pylons.py在Python2.7下错误解决</a></h2> <div class=summary><p>当使用 Python2.7 +<a href=http://pylonshq.com/download/1.0/go-pylons.py>go-pylons.py</a> 创建 Pylons 运行环境的话，会报一下错误。</p> <pre><code>[alswl@arch-vm xingtong]$ python go-pylons.py myb_env
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+    <title>Coding - Log4D</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="block-all-mixed-content">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+
+
+
+    <meta name="author" content="alswl" />
+    <meta name="keywords" content="Coding" />
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="Log4D" />
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Log4D"/>
+        <meta property="og:url" content="https://blog.alswl.com"/>
+        <meta property="og:description" content="Log4D"/>
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css"/>
+    <link href="https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="https://blog.alswl.com/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://blog.alswl.com/theme/css/style.css" type="text/css"/>
+
+    <link href="https://blog.alswl.com/atom.xml" type="application/atom+xml" rel="alternate" title="Log4D Atom Feed" />
+    <link href="https://blog.alswl.com/rss.xml" type="application/rss+xml" rel="alternate" title="Log4D RSS Feed" />
+
+</head>
+<body>
+
+<div class="navbar navbar-default" role="navigation">
+    <div class="container  col-lg-8 col-lg-offset-2">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="https://blog.alswl.com/" class="navbar-brand">
+Log4D            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/tags/">Tags</a></li>
+                    <li><a href="/links/">Links</a></li>
+                    <li><a href="/about/">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="https://blog.alswl.com/archives/"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/08/nxserver/">使用NX替代VNC</a></h2>
+                <div class="summary"><p><a href="http://www.nomachine.com">NX</a> 是 NoMachine 公司推出的下一代远程桌面技术，可以说是用来替换 VNC 的一个较好方案。</p>
+<blockquote>
+<p><a href="http://www.realvnc.com">VNC</a> is remote control software which allows you to view and fully interact with one computer desktop …</p></blockquote>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/08/nxserver/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/08/mako-typeerror/">TypeError: sequence item 22: expected string or Unicode, long found</a></h2>
+                <div class="summary"><p>Mako 下面开发时候，遇到这个问题</p>
+<blockquote>
+<p>TypeError: sequence item : expected string or Unicode, long found</p>
+</blockquote>
+<p>Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/08/mako-typeerror/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/08/auto-clean-input/">简单输入提示框实现</a></h2>
+                <div class="summary"><p>早期的输入框提示是这样的（via <a href="http://tieba.baidu.com/index.html">baidu</a>）</p>
+<figure>
+<img src="https://4ocf5n.dijingchao.com/upload_dropbox/201108/login1.png" alt="tieba" /><figcaption>tieba</figcaption>
+</figure>
+<p>左边一个 label ，右边一个输入框。</p>
+<p>比较现代的方式是（via <a href="http://www.discuz.net/">Discuz!</a>）</p>
+<figure>
+<img src="https://4ocf5n.dijingchao.com/upload_dropbox/201108/login2.png" alt="discuz!" /><figcaption>discuz!</figcaption>
+</figure>
+<p>更漂亮的方式是（via <a href="http://www.diandian.com/login">点点</a>）</p>
+<figure>
+<img src="https://4ocf5n.dijingchao.com/upload_dropbox/201108/login_diandian.png" alt="diandian" /><figcaption>diandian</figcaption>
+</figure>
+<p>登 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/08/auto-clean-input/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/08/get-json-failed-in-ie/">get json failed in IE</a></h2>
+                <div class="summary"><p>半夜在开工打补丁，某个 bug 是 Firefox 下面能接受到 Ajax 回调请求，而 IE 不行。</p>
+<p>解决方案在<a href="http://stackoverflow.com/questions/425854/jquery-ajax-request-failing-%20in-ie">http://stackoverflow.com/questions/425854/jquery-ajax-request-failing- in-ie</a></p>
+<p>缘由是由于 IE 不能正常 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/08/get-json-failed-in-ie/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/">go-pylons.py在Python2.7下错误解决</a></h2>
+                <div class="summary"><p>当使用 Python2.7 +<a href="http://pylonshq.com/download/1.0/go-pylons.py">go-pylons.py</a> 创建 Pylons 运行环境的话，会报一下错误。</p>
+<pre><code>[alswl@arch-vm xingtong]$ python go-pylons.py myb_env
 New python executable in myb_env/bin/python
 Traceback (most recent call last):
-  File "/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py", line 67, in &lt;module&gt;
-    import os
-  File "/home/alswl/work/xingtong …</code></pre> </div> <a href=https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/07/lrzsz/ >安装lrzsz</a></h2> <div class=summary><p>lrzsz 是一款 Linux 下面的文件传输工具。实现原理是通过 Xmodem / Ymodem / Zmodem 协议传输文件。lrzsz 可以在支持这三种协议的Shell界面的工具下工作，比如XShell。</p> <blockquote> <p>lrzsz是一个古老的软件，最新版本0.12.20是在1998年更新的。</p> </blockquote> <p>大部分linux发行版的安装工具都可以直接安装 lrzsz，比如apt-get / pacman，当然我们也可以下载安装包手动安装。这次由于我所在的服务器没有管理员权限，我就使用源码包安装。</p> <pre><code>$ mkdir /home/alswl/app
-$ wget http://ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz
-$ tar xzvf lrzsz-0.12.20.tar.gz
-$ cd lrzsz-0.12.20
-$ ./configure …</code></pre> </div> <a href=https://blog.alswl.com/2011/07/lrzsz/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/07/eventbug/ >Html元素事件查看器Eventbug</a></h2> <div class=summary><p>Chrome的开发者工具里面有一个小功能：查看当前元素的Event，比如onclick/onblur等事件。</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201107/chrome_event.png><figcaption aria-hidden=true>image</figcaption> </figure> <p>一直想在Firefox里面也找到类似的插件，今天正好看到这么一个好东西，叫做EventBug。</p> <p>官方的介绍如下</p> <blockquote> <p>Eventbug是一款能够列出所有绑定事件的Firebug扩展，它将这些事件按事件类型排列。</p> </blockquote> <blockquote> </blockquote> <blockquote> <ul> <li>需要Firebug1.5</li> </ul> </blockquote> <blockquote> <ul> <li>源码沿用Firebug的BSD风格协议</li> </ul> </blockquote> <blockquote> <ul> <li>请使用Firebug的Bug报告列表来提交问题</li> </ul> </blockquote> <blockquote> <ul> <li>请使用Firebug的新闻列表来提出问题</li> </ul> </blockquote> <blockquote> </blockquote> <blockquote> <p>作者：John J. Barton, Jan Odvarko</p> </blockquote> <p>测试发现在Firefox5下面没有问题。</p> <p><a href=https://4ocf5n.dijingchao.com/2011/07/eventbug.png><img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201107/eventbug.png></a></p> <p>这么一款插件在调试js或者对别人的页面做一些js hack特别有用，强烈推荐之。</p> <ul> <li><a href=http://getfirebug.com/wiki/index.php/Firebug_Extensions#Eventbug>Eventbug官方地址</a></li> <li><a href=http://www.softwareishard.com/blog/firebug/eventbug-alpha-released/ >Eventbug介绍博文（En）</a></li> <li><a href=http://getfirebug.com/releases/eventbug/ >Eventbug下载链接</a></li> </ul> </div> <a href=https://blog.alswl.com/2011/07/eventbug/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/ >urllib2.urlopen的中文URL问题</a></h2> <div class=summary><p>在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。</p> <p>Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完<a href=http://ipie.blogbus.com/logs/19379694.html>Python字符串的encode与decode</a> 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。</p> <pre><code>Traceback (most recent call last):
-  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-  File "/usr/lib/python2.6/urllib2.py", line 126, in urlopen
-    return _opener.open(url, data, timeout)
-  File "/usr/lib/python2.6/urllib2.py", line …</code></pre> </div> <a href=https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/06/ddns-ssh/ >使用DDNS+SSH连通家庭/工作电脑</a></h2> <div class=summary><h2 id=背景>1. 背景</h2> <p>我目前有两台电脑，一台是家里使用的Linux笔记本（Dell 6400，4年）， 一台是公司使用的Windows笔记本（IBM X201，1个月）。 我有时候需要在办公室连入家庭电脑，进行一些操作，比如同步，比如使用linux特定服务。</p> <p>完成这项工作需要两个条件，ip互通+对应通讯协议。被连接的服务器需要一个公网地址， 而非局域网的192.x.x.x。可供选择的协议比较多，http/ftp/ssh等常规协议都可以使用。</p> <blockquote> <p><strong>什么是<a href=http://www.oray.com/peanuthull/ >花生壳</a></strong></p> </blockquote> <blockquote> </blockquote> <blockquote> <p>花生壳动态域名是全球用户量最大的完全免费的动态域名解析软件。当您使用花生壳服务， 无论您在任何地点、任何时间、任何线路，均可通过固定的花生壳域名访问您的远程主机服务。</p> </blockquote> <blockquote> </blockquote> <blockquote> <p>现在花生壳为千万的域名提供动态域名解析服务，并广泛应用于网站建设、视频监控、 遥感测绘、FTP、VPN、企业OA、ERP等应用领域。</p> </blockquote> <p>ps：除了花生壳，还有很多DDNS服务可以供选择。由于TP-Link和D-Link都默认内置花生壳， 我这里用花生壳做范例。而我使用的<a href=http://www.dd-wrt.com/ >DD- …</a></p> </div> <a href=https://blog.alswl.com/2011/06/ddns-ssh/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2011/06/mako-vim/ >一个mako.vim</a></h2> <div class=summary><p>给Vim找了一个Mako的语法高亮，发现着色居然有问题。查看更新记录后发现作者<a href=http://lucumr.pocoo.org/ >Armin Ronacher</a>只更新到08年9月份。之后Mako更新了一些少许细节，我修改了一下mako.vim，放在这里供下载。</p> <p>其实我只改了57/58行，增加一个block语法。</p> <p>点击这里下载：<a href=https://4ocf5n.dijingchao.com/upload_dropbox/201106/mako.vim>mako.vim</a></p> <p>使用方法，放入vimfiles/syntax</p> <p>相关链接：</p> <p>原始mako.vim：<a href="http://www.vim.org/scripts/script.php?script_id=1858">http://www.vim.org/scripts/script.php?script_id=1858</a></p> <p>另外一个mako.vim是缩进用的，放入vimfiles/syntax：<a href="http://www.vim.org/scripts/script.php?script_id=2663">http://www.vim.org/scripts/script.php?script_id=2663</a></p> <p>ps：Mako是一个Python下面的Template框架。</p> <p>pss：貌似服务器ip被认证了，讨厌~</p> </div> <a href=https://blog.alswl.com/2011/06/mako-vim/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <ul class=pagination> <li class=prev><a href=https://blog.alswl.com/category/coding/page/6/ >&laquo;</a> </li> <li class><a href=https://blog.alswl.com/category/coding/ >1</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/2/ >2</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/3/ >3</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/4/ >4</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/5/ >5</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/6/ >6</a></li> <li class=active><a href=https://blog.alswl.com/category/coding/page/7/ >7</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/8/ >8</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/9/ >9</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/10/ >10</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/11/ >11</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/12/ >12</a></li> <li class=disabled><a href>&hellip;</a></li> <li class><a href=https://blog.alswl.com/category/coding/page/23/ >23</a></li> <li class=next><a href=https://blog.alswl.com/category/coding/page/8/ >&raquo;</a></li> </ul> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2020 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
+  File &quot;/home/alswl/work/xingtong/myb_env …</code></pre>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/07/lrzsz/">安装lrzsz</a></h2>
+                <div class="summary"><p>lrzsz 是一款 Linux 下面的文件传输工具。实现原理是通过 Xmodem / Ymodem / Zmodem 协议传输文件。lrzsz 可以在支持这三种协议的Shell界面的工具下工 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/07/lrzsz/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/07/eventbug/">Html元素事件查看器Eventbug</a></h2>
+                <div class="summary"><p>Chrome的开发者工具里面有一个小功能：查看当前元素的Event，比如onclick/onblur等事件。</p>
+<figure>
+<img src="https://4ocf5n.dijingchao.com/upload_dropbox/201107/chrome_event.png" alt="image" /><figcaption>image</figcaption>
+</figure>
+<p>一直想在Firefox里面也找到类似的插件，今天正好 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/07/eventbug/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/">urllib2.urlopen的中文URL问题</a></h2>
+                <div class="summary"><p>在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/06/ddns-ssh/">使用DDNS+SSH连通家庭/工作电脑</a></h2>
+                <div class="summary"><h2 id="背景">1. 背景</h2>
+<p>我目前有两台电脑，一台是家里使用的Linux笔记本（Dell 6400，4年）， 一台是公司使用的Windows笔记本（IBM X201，1个月）。 我有时候需要 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/06/ddns-ssh/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+            <article class="article-list">
+                <h2 class="title"><a href="https://blog.alswl.com/2011/06/mako-vim/">一个mako.vim</a></h2>
+                <div class="summary"><p>给Vim找了一个Mako的语法高亮，发现着色居然有问题。查看更新记录后发现作者<a href="http://lucumr.pocoo.org/">Armin Ronacher</a>只更新到08年9月份。之后Mako更新了一 …</p>
+                </div>
+                <a class="btn btn-default btn-lg" href="https://blog.alswl.com/2011/06/mako-vim/"><i class="icon-circle-arrow-right"></i>more ...</a>
+            </article>
+            <hr/>
+
+        <ul class="pagination">
+                <li class="prev"><a href="https://blog.alswl.com/category/coding/page/6/">&laquo;</a>
+                </li>
+				<li class=""><a
+					href="https://blog.alswl.com/category/coding/">1</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/2/">2</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/3/">3</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/4/">4</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/5/">5</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/6/">6</a></li>
+				<li class="active"><a
+						href="https://blog.alswl.com/category/coding/page/7/">7</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/8/">8</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/9/">9</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/10/">10</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/11/">11</a></li>
+				<li class=""><a
+						href="https://blog.alswl.com/category/coding/page/12/">12</a></li>
+				<li class="disabled"><a href="">&hellip;</a></li>
+				<li class=""><a
+					href="https://blog.alswl.com/category/coding/page/23/">23</a></li>
+                <li class="next"><a
+                        href="https://blog.alswl.com/category/coding/page/8/">&raquo;</a></li>
+        </ul>
+
+        </div>
+        <div class="col-lg-3 col-lg-offset-2" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="https://blog.alswl.com/atom.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
+                    <li class="list-group-item"><a href="https://twitter.com/alswl"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
+                    <li class="list-group-item"><a href="https://github.com/alswl"><i class="fa fa-github-square fa-lg"></i> Github</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/alswlx"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    <div class="col-lg-3" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="https://blog.alswl.com/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/coding/">
+                                <i class="fa fa-folder-open fa-lg"></i> Coding
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/efficiency/">
+                                <i class="fa fa-folder-open fa-lg"></i> Efficiency
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/fun/">
+                                <i class="fa fa-folder-open fa-lg"></i> Fun
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/internet/">
+                                <i class="fa fa-folder-open fa-lg"></i> Internet
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/life/">
+                                <i class="fa fa-folder-open fa-lg"></i> Life
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/managment/">
+                                <i class="fa fa-folder-open fa-lg"></i> Managment
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/sre/">
+                                <i class="fa fa-folder-open fa-lg"></i> SRE
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/thinking/">
+                                <i class="fa fa-folder-open fa-lg"></i> Thinking
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/ui/">
+                                <i class="fa fa-folder-open fa-lg"></i> UI
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="https://blog.alswl.com/category/viewpoint/">
+                                <i class="fa fa-folder-open fa-lg"></i> Viewpoint
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+        </ul>
+    </section>
+
+</aside>    </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2005-2020 alswl
+            &middot; Powered by <a href="https://github.com/alswl/pelican-bootstrap3" target="_blank" style="font-weight: bold">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank" style="font-weight: bold">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank" style="font-weight: bold">Bootstrap</a>,
+            <p>
+              <small> <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license"><img alt="Creative Commons License" style="border-width:0" src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png"></a> Content licensed under a <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/" rel="license">Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small>
+            </p>
+         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+
+    <!-- Disqus -->
+    <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
         var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
 
@@ -23,7 +326,10 @@ $ ./configure …</code></pre> </div> <a href=https://blog.alswl.com/2011/07/lrz
             s.src = '//' + disqus_shortname + '.disqus.com/count.js';
             (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
         }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-8822123-3']);
@@ -37,4 +343,7 @@ $ ./configure …</code></pre> </div> <a href=https://blog.alswl.com/2011/07/lrz
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </script>
+    <!-- End Google Analytics Code -->
+</body>
+</html>
