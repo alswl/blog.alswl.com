@@ -19,10 +19,11 @@ Date: 2012-05-14 21:21
 
 ## 博客记录
 
+- 2021-06-11 使用 Github 提供的 Pages 服务
 - 2017-08-13 使用 Coding 提供的 Pages 服务
 - 2016-09-21 更换域名 blog.alswl.com
 - 2016-04-26 使用 HTTPS
-- 2016-04-25 使用 AWS
+- 2016-04-25 使用 AWS EC2 作为服务器
 - 2014-12-23 使用 GitCafe 提供的 Pages 服务
 - 2014-01-24 使用 VPS [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
 - 2013-12-03 更换博客系统 Pelican
@@ -30,7 +31,7 @@ Date: 2012-05-14 21:21
 - 2012-01-01 使用 VPS [Linode](https://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c)
 - 2011-11-02 更换域名 log4d.com
 - 2009-12-24 更换域名 dddspace.com
-- 2009-05-14 创建 dddspace.cn
+- 2009-05-14 使用域名 dddspace.cn
 - 2008 使用 Yo2
 - 2007 使用 Baidu Hi
 - 2005-05-30 在 MSN Space 创建博客
@@ -69,11 +70,11 @@ echo -n 'H4sIAMLFCF4AA4VTQY7DMAi85xW8YB+QU79iRVETKdk9pGp75MDBL+gD9yW7rQ0MTqpKdhR
 - [Facebook](https://www.facebook.com/alswl)
 - [Twitter](https://twitter.com/alswl/)
 - [Github](https://github.com/alswl/)
-- [新浪微博](http://weibo.com/alswlx)
 - [知乎](https://www.zhihu.com/people/alswl)
 - [豆瓣](http://www.douban.com/people/alswl/)
-- [堆糖](https://www.duitang.com/people/?user_id=1723564092)
-- [LinkedIn](https://www.linkedin.com/in/jason-di-b4883928/)
+- [LinkedIn](https://www.linkedin.com/in/jingchao-di-b4883928/)
+- <del>[新浪微博](http://weibo.com/alswlx)</del>
+- <del>[堆糖](https://www.duitang.com/people/?user_id=1723564092)</del>
 - <del>[Google+](https://plus.google.com/+JasonTi?hl=zh_cn)</del>
 - <del>[LastFM](http://cn.last.fm/user/alswl)</del>
 - <del>[Diigo](https://www.diigo.com/profile/alswlx)</del>
