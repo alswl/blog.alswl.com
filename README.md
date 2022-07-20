@@ -1,6 +1,8 @@
 # blog.alswl.com
 
 https://blog.alswl.com/
+https://www.zhihu.com/column/alswl
+https://www.jianshu.com/u/90d9cec0f932
 
 This is my blog.
 
@@ -41,6 +43,7 @@ make coding
 
 ## Tips
 
+
 Asset prefix: `https://4ocf5n.dijingchao.com/upload_dropbox/`
 
 Article footer:
@@ -65,7 +68,8 @@ Markdown to GFM:
 cat content/some-md.md | pandoc -f markdown_mmd -t gfm --wrap=none | pbcopy
 ```
 
-Wechat mp link process:
+<del>Wechat mp link process</del>
+[微信 Markdown 编辑器 | Doocs 开源社区](https://doocs.gitee.io/md/):
 
 
 ```
