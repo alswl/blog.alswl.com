@@ -1,0 +1,285 @@
+---
+title: "OpenSSL中的BIO【转载】"
+author: "alswl"
+slug: "openssl-s-bio"
+date: "2009-03-19T00:00:00+08:00"
+tags: ["c", "openssl", "ssl"]
+categories: ["coding"]
+---
+
+SSL类型的BIO
+
+ ---根据openssl
+doccryptobio_f_ssl.pod翻译和自己的理解写成
+
+
+
+ （作者：DragonKing,
+Mail: wzhah@263.net ,发布于：http://openssl.126.com 之openssl专业论坛）
+
+
+
+ 从名字就可以看出，这是一个非常重要的BI
+O类型，它封装了openssl里面的ssl规则和函数，相当于提供了一个使用SSL很好的有效工具，一个很好的助手。其定义（opensslbio.h,opens
+slssl.h）如下：
+
+
+
+
+BIO_METHOD *BIO_f_ssl(void);
+
+
+#define BIO_set_ssl(b,ssl,c) BIO_ctrl(b,BIO_C_SET_SSL,c,(char *)ssl)
+
+
+#define BIO_get_ssl(b,sslp) BIO_ctrl(b,BIO_C_GET_SSL,0,(char *)sslp)
+
+
+#define BIO_set_ssl_mode(b,client) BIO_ctrl(b,BIO_C_SSL_MODE,client,NULL)
+
+
+#define BIO_set_ssl_renegotiate_bytes(b,num)
+BIO_ctrl(b,BIO_C_SET_SSL_RENEGOTIATE_BYTES,num,NULL);
+
+
+#define BIO_set_ssl_renegotiate_timeout(b,seconds)
+BIO_ctrl(b,BIO_C_SET_SSL_RENEGOTIATE_TIMEOUT,seconds,NULL);
+
+
+#define BIO_get_num_renegotiates(b)
+BIO_ctrl(b,BIO_C_SET_SSL_NUM_RENEGOTIATES,0,NULL);
+
+
+BIO *BIO_new_ssl(SSL_CTX *ctx,int client);
+
+
+BIO *BIO_new_ssl_connect(SSL_CTX *ctx);
+
+
+BIO *BIO_new_buffer_ssl_connect(SSL_CTX *ctx);
+
+
+int BIO_ssl_copy_session_id(BIO *to,BIO *from);
+
+
+void BIO_ssl_shutdown(BIO *bio);
+
+
+#define BIO_do_handshake(b) BIO_ctrl(b,BIO_C_DO_STATE_MACHINE,0,NULL)
+
+
+该类型BIO的实现文件在sslbio_ssl.c里面，大家可以参看这个文件得到详细的函数实现信息。
+
+ 【BIO_f_ssl】
+
+
+该函数返回一个SSL类型的BIO_METHOD结构，其定义如下：
+
+ static BIO_METHOD
+methods_sslp=
+
+ {
+
+
+BIO_TYPE_SSL,"ssl",
+
+
+ssl_write,
+
+
+ssl_read,
+
+
+ssl_puts,
+
+
+NULL, /* ssl_gets, */
+
+
+ssl_ctrl,
+
+
+ssl_new,
+
+
+ssl_free,
+
+
+ssl_callback_ctrl,
+
+
+};
+
+
+可见，SSL类型BIO不支持BIO_gets的功能。
+
+ BIO_read和BIO_write函数
+调用的时候，SSL类型的BIO会使用SSL协议进行底层的I/O操作。如果此时SSL连接并没有建立，那么就会在调用第一个IO函数的时候先进行连接的建立。
+
+
+如果使用BIO_push将一个BIO附加到一个SSL类型的BIO上，那么SSL类型的BIO读写数据的时候，它会被自动调用。
+
+ BIO_reset调用的时候，会调用SS
+L_shutdown函数关闭目前所有处于连接状态的SSL，然后再对下一个BIO调用BIO_reset，这功能一般就是将底层的传输连接断开。调用完成之后，SS
+L类型的BIO就处于初始的接受或连接状态。
+
+
+如果设置了BIO关闭标志，那么SSL类型BIO释放的时候，内部的SSL结构也会被SSL_free函数释放。
+
+ 【BIO_set_ssl】
+
+
+该函数设置SSL类型BIO的内部ssl指针指向ssl，同时使用参数c设置了关闭标志。
+
+ 【BIO_get_ssl】
+
+
+该函数返回SSL类型BIO的内部的SSL结构指针，得到该指针后，可以使用标志的SSL函数对它进行操作。
+
+ 【BIO_set_ssl_mode】
+
+
+该函数设置SSL的工作模式，如果参数client是1，那么SSL工作模式为客户端模式，如果client为0，那么SSL工作模式为服务器模式。
+
+
+【BIO_set_ssl_renegotiate_bytes】
+
+ 该函数设置需要重新进行session协商
+的读写数据的长度为num。当设置完成后，在没读写的数据一共到达num字节后，SSL连接就会自动重新进行session协商，这可以加强SSL连接的安全性。参数
+num最少为512字节。
+
+
+【BIO_set_ssl_renegotiate_timeout】
+
+
+该函数跟上述函数一样都是为了加强SSL连接的安全性的。不同的是，该函数采用的参数是时间。该函数设置重新进行session协商的时间，其单位是秒。当SSL
+session连接建立的时间到达其设置的时间时，连接就会自动重新进行session协商。
+
+
+【BIO_get_num_renegotiates】
+
+
+该函数返回SSL连接在因为字节限制或时间限制导致session重新协商之前总共读写的数据长度。
+
+ 【BIO_new_ssl】
+
+
+该函数使用ctx参数所代表的SSL_CTX结构创建一个SSL类型的BIO，如果参数client为非零值，就使用客户端模式。
+
+
+【BIO_new_ssl_connect】
+
+
+该函数创建一个包含SSL类型BIO的新BIO链，并在后面附加了一个连接类型的BIO。
+
+ 方便而且有趣的是，因为在filter类型
+的BIO里，如果是该BIO不知道（没有实现）BIO_ctrl操作，它会自动把该操作传到下一个BIO进行调用，所以我们可以在调用本函数得到BIO上直接调用BI
+O_set_host函数来设置服务器名字和端口，而不需要先找到连接BIO。
+
+
+【BIO_new_buffer_ssl_connect】
+
+
+创建一个包含buffer型的BIO，一个SSL类型的BIO以及一个连接类型的BIO。
+
+
+【BIO_ssl_copy_session_id】
+
+ 该函数将BIO链from的SSL
+Session
+ID拷贝到BIO链to中。事实上，它是通过查找到两个BIO链中的SSL类型BIO，然后调用SSL_copy_session_id来完成操作的。
+
+ 【BIO_ssl_shutdown】
+
+
+该函数关闭一个BIO链中的SSL连接。事实上，该函数通过查找到该BIO链中的SSL类型BIO，然后调用SSL_shutdown函数关闭其内部的SSL指针。
+
+ 【BIO_do_handshake】
+
+ 该函数在相关的BIO上启动SSL握手过程
+并建立SSL连接。连接成功建立返回1，否则返回0或负值，如果连接BIO是非阻塞型的BIO，此时可以调用BIO_should_retry函数以决定释放需要重试
+。如果调用该函数的时候SSL连接已经建立了，那么该函数不会做任何事情。一般情况下，应用程序不需要直接调用本函数，除非你希望将握手过程跟其它IO操作分离开来。
+
+
+需要注意的是，如果底层是阻塞型（openssl帮助文档写的是非阻塞型,non blocking,但是根据上下文意思已经BIO的其它性质，我个人认为是阻塞型，
+blocking才是正确的）的BIO，在一些意外的情况SSL类型BIO下也会发出意外的重试请求，如在执行BIO_read操作的时候如果启动了session重
+新协商的过程就会发生这种情况。在0.9.6和以后的版本，可以通过SSL的标志SSL_AUTO_RETRY将该类行为禁止，这样设置之后，使用阻塞型传输的SSL
+类型BIO就永远不会发出重试的请求。
+
+ 【例子】
+
+
+1.一个SSL/TLS客户端的例子，完成从一个SSL/TLS服务器返回一个页面的功能。其中IO操作的方法跟连接类型BIO里面的例子是相同的。
+
+
+
+
+BIO *sbio, *out;
+
+
+int len;
+
+
+char tmpbuf[1024];
+
+
+SSL_CTX *ctx;
+
+
+SSL *ssl;
+
+
+
+
+ERR_load_crypto_strings();
+
+
+ERR_load_SSL_strings();
+
+
+OpenSSL_add_all_algorithms();
+
+
+
+
+//如果系统平台不支持自动进行随机数种子的设置，这里应该进行设置(seed PRNG)
+
+
+ctx = SSL_CTX_new(SSLv23_client_method());
+
+
+
+
+//通常应该在这里设置一些验证路径和模式等，因为这里没有设置，所以该例子可以跟使用任意CA签发证书的任意服务器建立连接
+
+
+sbio = BIO_new_ssl_connect(ctx);
+
+
+
+
+BIO_get_ssl(sbio, &ssl);
+
+
+
+
+if(!ssl) {
+
+
+fprintf(stderr, "Can't locate SSL pointern");
+
+ }
+
+
+
+
+/* 不需要任何重试请求*/
+
+
+SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
+
+
+
+
+//这里你可以添加对SSL的其它一些设置
+

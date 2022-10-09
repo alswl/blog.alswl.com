@@ -1,7 +1,9 @@
-Title: About
-Slug: about
-Author: alswl
-Date: 2012-05-14 21:21
+---
+title: "About"
+slug: "about"
+author: "alswl"
+date: "2012-05-14T21:21:00+08:00"
+---
 
 我是 alswl ，alswl 这个词来源于我小时候写的一部小说的主人公。
 

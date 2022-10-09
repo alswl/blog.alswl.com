@@ -1,7 +1,9 @@
-Title: 友情链接
-Author: alswl
-Date: 2012-05-15 17:33
-Slug: links
+---
+title: "友情链接"
+author: "alswl"
+date: "2012-05-15T17:33:00+08:00"
+slug: "links"
+---
 
 
 ## 朋友们的博客 ##
