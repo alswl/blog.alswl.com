@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>capacity on Log4D</title>
+    <link>https://blog.alswl.com/tags/capacity/</link>
+    <description>Recent content in capacity on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 19 Jun 2016 23:57:39 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/capacity/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>搞定暴涨的流量</title>
+      <link>https://blog.alswl.com/2016/06/capacity-planning/</link>
+      <pubDate>Sun, 19 Jun 2016 23:57:39 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2016/06/capacity-planning/</guid>
+      <description>2013 年左右，我司业务发展迅速，每天晚上都会面临服务器濒临崩溃情况。
+我相信每个高速发展的互联网企业在某个阶段都会面临这样的情形，比如去年爆红的「足迹」。
+过程往往是：线上出现故障，手机会收到报警，然后登录到服务器上去解决问题。
+处理这种问题工种现在有一个时髦的名称，叫做「SRE（Site Reliability Engineer）」系统可用性工程师。
+虽然我常常救火，但是我还是想尽可能避免线上发生故障。「最好的消息，就是没有消息。」
+减少故障出现概率，增强系统可用性，降低故障处理时间是 SRE 的最大课题。
+在这里有最常用的两个手段，一个是优化性能，一个是做好容量规划和扩展。
+这里我着重讨论后者「容量规划」。
+^ 看我的一堆报警消息
+面临的问题 面对暴涨流量，一边是业务方的满心欢喜，一边就是工程师的烦恼和压力了。
+也许是一个受欢迎的功能上线了，或者是某个社会活动导致流量爆发，系统开始出现高延迟，磁盘 IO 不够用了。
+也许是 DB 第一个倒下，也许是 RPC 系统第一个倒下……
+呃，大神可能会说，我艹，RPC 系统第一个倒下还搞个屁啊，赶紧倒闭算了。
+核心的问题就是，在现有性能下面，在面临可能的大流量冲击时候，如何做到不慌不忙，能够 handle 住突如其来的流量？
+设定容量目标 在解决这个问题之前，我们得先考虑清楚，我们到底要多强的流量处理能力。
+如果今天我们只是一个两三台服务器的小团队，却企图设计一个能够抗住 1 亿 pv 访问的系统，
+显然是不现实的，至少是不经济的。
+衡量系统容量的指标可以简化为在什么流量下面，提供什么样的可用性保证。
+一个实际的样例是，在 1 亿 pv 下面，提供 99.99% 的可用性，
+其可用性的评判标准是「服务器在 200ms 内返回正确的数据」。
+这里有一个重要的概念，可用性保证，术语是服务等级协议（SLA）。
+这个指标可以从大部分标准云供应商的标准条款里看到，比如我司机房供应商提供的可用性保证是 99.9%。
+阿里云 ECS 的 SLA 是「99.95%」，统计周期是 1 个月
+（如果故障时间低于 5 min，不计入故障时间，云供应商都这样，特别霸权）。
+一个对 SLA 的直观认识是（具体数据来自 High availability - Wikipedia, the free encyclopedia）：</description>
+    </item>
+    
+  </channel>
+</rss>

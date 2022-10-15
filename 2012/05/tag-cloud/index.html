@@ -1,48 +1,458 @@
-<!DOCTYPE html><html lang=en> <head><title>给 Octopress 加上标签功能 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2012/05/tag-cloud/ rel=canonical><meta name=author content=alswl><meta name=keywords content=建站,Octopress><meta name=description content="上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。 我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。 只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。 一篇文章只能属于一个 category，但可以同时属于多个 tag。 Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2012/05/tag-cloud/ rel=bookmark title="Permalink to 给 Octopress 加上标签功能"> 给 Octopress 加上标签功能 </a> </h1> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2012-05-21T15:17:00+08:00> 2012-05-21</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/jian-zhan/ >建站</a> / <a href=https://blog.alswl.com/tag/octopress/ >Octopress</a> </footer><!-- /.post-info --> </div> </div> <p>上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。</p> <p>我当时使用了YORKXIN的<a href=https://gist.github.com/1394128>修改版本</a>来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见<a href=http://blog.dayanjia.com/2012/04/migration-to-octopress-from-wordpress/ >从Wordpress迁移到Octopress</a>。</p> <p>只是虽然 tag 的数据保留了，但是 <strong>Octopress 仅支持 category 的分类，而完全忽略 tag</strong>。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。 <strong>一篇文章只能属于一个 category，但可以同时属于多个 tag</strong>。 Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。</p> <!-- more --> <p>ps：Octopress 官方也推荐了一个所谓「<a href=https://github.com/tokkonopapa/octopress-tagcloud>octopress-tagcloud</a>」的插件， <strong>但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag 概念</strong>。更多官方插件可以查看 <a href=https://github.com/imathis/octopress/wiki/3rd-party-plugins>3rd party plugins</a>。</p> <p>就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件： <a href=https://github.com/robbyedwards/octopress-tag-pages>robbyedwards / octopress-tag-pages</a>和 <a href=https://github.com/robbyedwards/octopress-tag-cloud>robbyedwards / octopress-tag-cloud</a>。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。</p> <p>这两个插件使用很简单，将插件文件放入对应的目录（<strong>注意备份，存在覆盖的情况</strong>）。 然后再给插件「octopress-tag-cloud」添加一个专属页面存放标签云即可。 这个标签云生成的标记是 <code>li...li</code> ，需要在 <code>sass/custom/_styles.scss</code> 添加对应的样式：</p> <div class=sourceCode id=cb1><pre class="sourceCode css"><code class="sourceCode css"><a class=sourceLine id=cb1-1 title=1><span class=pp>#content</span> article <span class=fu>.cloud</span> li{</a>
-<a class=sourceLine id=cb1-2 title=2>    <span class=kw>display</span>: <span class=dv>inline</span><span class=op>;</span></a>
-<a class=sourceLine id=cb1-3 title=3>    <span class=kw>list-style</span>: <span class=dv>none</span> <span class=dv>outside</span> <span class=dv>none</span><span class=op>;</span></a>
-<a class=sourceLine id=cb1-4 title=4>    <span class=kw>padding</span>: <span class=dv>0</span> <span class=dv>4</span><span class=dt>px</span><span class=op>;</span></a>
-<a class=sourceLine id=cb1-5 title=5>}</a></code></pre></div> <p>第二个插件 octopress-tag-cloud 会和 Octopress 官方推荐的所谓「Octopress Tag Cloud」 文件 / tag 标记 冲突，我建议修改官方的那个插件。</p> <p>我修改过的 octopress-tagcloud 在这里，被重命名为 <a href=https://github.com/alswl/octopress-category-list>alswl / octopress-category-list</a>。</p> <p>这个版本同时参考了 <a href=http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud/ >pf_miles</a> 的 utf-8 修改，以修复问题 <code>Liquid error: incompatible encoding regexp match (ASCII-8BIT regexp with UTF-8 string)</code> 。</p> <p>最后 Show 一下我的<a href=http://log4d.com/tag/ >一坨标签云</a>， 等有时间我再将标签和类别精简一下，以适应 Octopress。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2012/05/tag-cloud/ >https://blog.alswl.com/2012/05/tag-cloud/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+<!DOCTYPE html>
+<html lang="en" dir="auto">
 
-                    var disqus_identifier = 'tag-cloud';
-                var disqus_url = 'https://blog.alswl.com/2012/05/tag-cloud/';
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>给 Octopress 加上标签功能 | Log4D</title>
+<meta name="keywords" content="建站, octopress">
+<meta name="description" content="上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。
+自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后，
+就只剩下 tag 的问题没有搞定了。
+我当时使用了YORKXIN的修改版本来处理 Wordpress
+的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category /
+tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。
+只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略
+tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。
+一篇文章只能属于一个 category，但可以同时属于多个 tag。
+Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。
+ps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件，
+但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag
+概念。更多官方插件可以查看
+3rd party plugins。
+就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件：
+robbyedwards / octopress-tag-pages和
+robbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2012/05/tag-cloud/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-            var disqus_config = function () {
-                this.language = "en";
-            };
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+            .list {
+                background: var(--theme);
+            }
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="给 Octopress 加上标签功能" />
+<meta property="og:description" content="上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。
+自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后，
+就只剩下 tag 的问题没有搞定了。
+我当时使用了YORKXIN的修改版本来处理 Wordpress
+的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category /
+tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。
+只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略
+tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。
+一篇文章只能属于一个 category，但可以同时属于多个 tag。
+Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。
+ps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件，
+但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag
+概念。更多官方插件可以查看
+3rd party plugins。
+就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件：
+robbyedwards / octopress-tag-pages和
+robbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2012/05/tag-cloud/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2012-05-21T15:17:00+08:00" />
+<meta property="article:modified_time" content="2012-05-21T15:17:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="给 Octopress 加上标签功能"/>
+<meta name="twitter:description" content="上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。
+自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后，
+就只剩下 tag 的问题没有搞定了。
+我当时使用了YORKXIN的修改版本来处理 Wordpress
+的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category /
+tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。
+只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略
+tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。
+一篇文章只能属于一个 category，但可以同时属于多个 tag。
+Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。
+ps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件，
+但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag
+概念。更多官方插件可以查看
+3rd party plugins。
+就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件：
+robbyedwards / octopress-tag-pages和
+robbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "给 Octopress 加上标签功能",
+      "item": "https://blog.alswl.com/2012/05/tag-cloud/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "给 Octopress 加上标签功能",
+  "name": "给 Octopress 加上标签功能",
+  "description": "上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。\n自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后，\n就只剩下 tag 的问题没有搞定了。\n我当时使用了YORKXIN的修改版本来处理 Wordpress\n的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category /\ntag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。\n只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略\ntag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。\n一篇文章只能属于一个 category，但可以同时属于多个 tag。\nOctopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。\nps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件，\n但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag\n概念。更多官方插件可以查看\n3rd party plugins。\n就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件：\nrobbyedwards / octopress-tag-pages和\nrobbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。",
+  "keywords": [
+    "建站", "octopress"
+  ],
+  "articleBody": "上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。\n自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后，\n就只剩下 tag 的问题没有搞定了。\n我当时使用了YORKXIN的修改版本来处理 Wordpress\n的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category /\ntag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。\n只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略\ntag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。\n一篇文章只能属于一个 category，但可以同时属于多个 tag。\nOctopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。\nps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件，\n但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag\n概念。更多官方插件可以查看\n3rd party plugins。\n就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件：\nrobbyedwards / octopress-tag-pages和\nrobbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。\n这两个插件使用很简单，将插件文件放入对应的目录（注意备份，存在覆盖的情况）。\n然后再给插件「octopress-tag-cloud」添加一个专属页面存放标签云即可。\n这个标签云生成的标记是 li...li ，需要在 sass/custom/_styles.scss 添加对应的样式：\n#content article .cloud li{ display: inline; list-style: none outside none; padding: 0 4px; } 第二个插件 octopress-tag-cloud 会和 Octopress 官方推荐的所谓「Octopress Tag Cloud」\n文件 / tag 标记 冲突，我建议修改官方的那个插件。\n我修改过的 octopress-tagcloud 在这里，被重命名为\nalswl / octopress-category-list。\n这个版本同时参考了 pf_miles 的 utf-8 修改，以修复问题 Liquid error: incompatible encoding regexp match (ASCII-8BIT regexp with UTF-8 string) 。\n最后 Show 一下我的一坨标签云，\n等有时间我再将标签和类别精简一下，以适应 Octopress。\n",
+  "wordCount" : "132",
+  "inLanguage": "en",
+  "datePublished": "2012-05-21T15:17:00+08:00",
+  "dateModified": "2012-05-21T15:17:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2012/05/tag-cloud/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      给 Octopress 加上标签功能
+    </h1>
+    <div class="post-meta"><span title='2012-05-21 15:17:00 +0800 CST'>2012-05-21</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。<br />
+自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后，<br />
+就只剩下 tag 的问题没有搞定了。</p>
+<p>我当时使用了YORKXIN的<a href="https://gist.github.com/1394128">修改版本</a>来处理 Wordpress<br />
+的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category /<br />
+tag 都给予了保留。具体使用方法可以参见<a href="http://blog.dayanjia.com/2012/04/migration-to-octopress-from-wordpress/">从Wordpress迁移到Octopress</a>。</p>
+<p>只是虽然 tag 的数据保留了，但是 <strong>Octopress 仅支持 category 的分类，而完全忽略<br />
+tag</strong>。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。<br />
+<strong>一篇文章只能属于一个 category，但可以同时属于多个 tag</strong>。<br />
+Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。</p>
+<!-- more -->
+<p>ps：Octopress 官方也推荐了一个所谓「<a href="https://github.com/tokkonopapa/octopress-tagcloud">octopress-tagcloud</a>」的插件，<br />
+<strong>但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag<br />
+概念</strong>。更多官方插件可以查看<br />
+<a href="https://github.com/imathis/octopress/wiki/3rd-party-plugins">3rd party plugins</a>。</p>
+<p>就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件：<br />
+<a href="https://github.com/robbyedwards/octopress-tag-pages">robbyedwards / octopress-tag-pages</a>和<br />
+<a href="https://github.com/robbyedwards/octopress-tag-cloud">robbyedwards / octopress-tag-cloud</a>。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。</p>
+<p>这两个插件使用很简单，将插件文件放入对应的目录（<strong>注意备份，存在覆盖的情况</strong>）。<br />
+然后再给插件「octopress-tag-cloud」添加一个专属页面存放标签云即可。<br />
+这个标签云生成的标记是 <code>li...li</code> ，需要在 <code>sass/custom/_styles.scss</code> 添加对应的样式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="p">#</span><span class="nn">content</span> <span class="nt">article</span> <span class="p">.</span><span class="nc">cloud</span> <span class="nt">li</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">display</span><span class="p">:</span> <span class="kc">inline</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">list-style</span><span class="p">:</span> <span class="kc">none</span> <span class="kc">outside</span> <span class="kc">none</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">padding</span><span class="p">:</span> <span class="mi">0</span> <span class="mi">4</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>第二个插件 octopress-tag-cloud 会和 Octopress 官方推荐的所谓「Octopress Tag Cloud」<br />
+文件 / tag 标记 冲突，我建议修改官方的那个插件。</p>
+<p>我修改过的 octopress-tagcloud 在这里，被重命名为<br />
+<a href="https://github.com/alswl/octopress-category-list">alswl / octopress-category-list</a>。</p>
+<p>这个版本同时参考了 <a href="http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud/">pf_miles</a> 的 utf-8 修改，以修复问题 <code>Liquid error: incompatible encoding regexp match (ASCII-8BIT regexp with UTF-8 string)</code> 。</p>
+<p>最后 Show 一下我的<a href="http://log4d.com/tag/">一坨标签云</a>，<br />
+等有时间我再将标签和类别精简一下，以适应 Octopress。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/%E5%BB%BA%E7%AB%99/">建站</a></li>
+      <li><a href="https://blog.alswl.com/tags/octopress/">octopress</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2012/05/support-rss/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>让 Octopress 支持 RSS2.0</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2012/05/the-non-designers-design-book/">
+    <span class="title">Next »</span>
+    <br>
+    <span>《写给大家看的设计书》读后感</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-alswl-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

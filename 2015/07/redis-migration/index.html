@@ -1,47 +1,544 @@
-<!DOCTYPE html><html lang=en> <head><title>Redis 集群扩容 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2015/07/redis-migration/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Redis><meta name=description content="几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。 主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、 存储结构丰富、有持久化功能。 我大堆糖的 Session 存储系统也正是基于 Redis。 可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication 也是在逐步完善完善过程中 （2.4 支持 Replication，2.8 加入 Replication partial resynchronization 功能）。 纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。 而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2015/07/redis-migration/ rel=bookmark title="Permalink to Redis 集群扩容"> Redis 集群扩容 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#方案的关键词 title=方案的关键词>方案的关键词</a><ul><li><a class=toc-href href=#dump-restore-pttl title="dump / restore / pttl">dump / restore / pttl</a></li><li><a class=toc-href href=#presharding title=Presharding>Presharding</a></li><li><a class=toc-href href=#twemproxy title=Twemproxy>Twemproxy</a></li><li><a class=toc-href href=#一致性-hash title="一致性 Hash">一致性 Hash</a></li><li><a class=toc-href href=#db-大小预估 title="db 大小预估">db 大小预估</a></li><li><a class=toc-href href=#动态迁移数据 title=动态迁移数据>动态迁移数据</a></li><li><a class=toc-href href=#后台迁移数据 title=后台迁移数据>后台迁移数据</a></li><li><a class=toc-href href=#pipeline title=pipeline>pipeline</a></li><li><a class=toc-href href=#multikey title=multikey>multikey</a></li></ul></li><li><a class=toc-href href=#正式操作_1 title=正式操作>正式操作</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2015-07-26T15:33:49+08:00> 2015-07-26</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/redis/ >Redis</a> </footer><!-- /.post-info --> </div> </div> <p>几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。 主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、 存储结构丰富、有持久化功能。 我大堆糖的 Session 存储系统也正是基于 Redis。</p> <p>可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication 也是在逐步完善完善过程中 （2.4 支持 <code>Replication</code>，2.8 加入 <code>Replication partial resynchronization</code> 功能）。 纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。 而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding 特性要等到何年马月。</p> <p>随着业务规模的扩大，单台 Redis 实例不能满足需求。 考虑到 Redis 也是久经考验的战士，替换掉他成本比较高，那就对 Redis 进行扩容。</p> <p>扩容的基本要求是：</p> <ul> <li>扩大系统容量，成为分布式系统，未来有横向扩展</li> <li>业务不中断</li> <li>保证原始数据的可用性</li> </ul> <p>Google 了一下，有两个项目可以参考： <a href=https://github.com/idning/redis-mgr>https://github.com/idning/redis-mgr</a> 和豌豆荚的 <a href=https://github.com/wandoulabs/codis>Codis</a>。</p> <p>研究了这两项目的代码之后，发现前者存在几个问题： 需要停机进行操作。 后者提供了完整一套解决方案，Server/Proxy/Config Manage，对我这次迁移来说，太重了， 而且项目比较新，风险高，只能用来参考实现方法。</p> <p>最后我决定参考 redis-mgr 的方案，然后使用两种方式同步数据： 系统运行中打上 patch 完成数据的动态迁移；后台跑迁移数据脚本。</p> <h2 id=方案的关键词>方案的关键词</h2> <h3 id=dump-restore-pttl><code>dump</code> / <code>restore</code> / <code>pttl</code></h3> <p>核心的操作流程是： 使用 <code>dump</code> 命令导出数据，<code>restore</code> 命令恢复数据，<code>pttl</code> 命令获取设置 TTL。</p> <h3 id=presharding>Presharding</h3> <p>Redis 官方没有 sharding 方案，但提供一种策略 presharding。 Redis 作者写了一篇<a href=http://oldblog.antirez.com/post/redis-presharding.html>Redis Presharding</a>。核心是： 提前做 2^n 个实例，避免扩容时候数据迁移，一般使用 2^n 个实例， 目的是为了能够自然地乘以 2 进行拆分。 这些实例可以分开放，也可以放在同一台机器上面。</p> <p>我这次操作，将 <code>OLD_CLUSTER</code> 的一个实例拆分为了 <code>NEW_CLUSTER</code> 的 32 个实例， 跑在 4 台服务器上面。</p> <h3 id=twemproxy>Twemproxy</h3> <p>Redis 的 经典款 Proxy，用来实现对多个 Redis 实例 sharding， Twitter 出品，<a href=https://github.com/twitter/twemproxy>链接</a>。</p> <h3 id=一致性-hash>一致性 Hash</h3> <p>传统的 Hash 方法是 <code>hash(key) = value % nodes.length</code>， 当加入、减少 Hash 节点时候，会导致 <code>hash(key)</code> 的全部失效。 典型的一致性 Hash 算法，<a href=https://github.com/RJ/ketama>Ketama</a> 通过环状 node 分布，解决了这个问题。</p> <p>Twemproxy 还提供 <code>modula</code> 和 random 两种分布式方案。</p> <h3 id=db-大小预估>db 大小预估</h3> <p>Redis 只能查看整个实例内存尺寸。不能查看单个 db。 使用 <code>ramdomkey</code> 做抽样检查，取 1% key 抽样，估计单个 key 大小， 然后做 benchmark 估算操作性能，估算操作时间。</p> <h3 id=动态迁移数据>动态迁移数据</h3> <p>为了在迁移过程中保证服务可用，需要将数据兼容 Redis 集群 <code>OLD_CLUSTER</code> / <code>NEW_CLUSTER</code>， 业务代码必须同时支持访问两个集群，做法也很简单</p> <ul> <li>访问 <code>NEW_CLUSTER</code></li> <li>有数据则继续操作，无数据则访问 <code>OLD_CLUSTER</code>，获取数据 <code>DATA</code></li> <li>将数据和 TTL 保存到 <code>NEW_CLUSTER</code></li> </ul> <p>将这个逻辑封装成一个 client，替换掉原来 Redis Client 即可。</p> <p>注意，这个点可能产生幻读，读取 key 和写入 key 有个时间差， 但是我处理的 session 是 immutable 数据，不会出现问题。 而如果将 Redis 用作 Persistence，就要评估对业务的影响了。</p> <h3 id=后台迁移数据>后台迁移数据</h3> <p>依赖用户访问来进行迁移，效率太低了，这个迁移时间和最长 TTL 时间相当， 需要主动将这个数据从 <code>OLD_CLUSTER</code> 迁移到 <code>NEW_CLUSTER</code>。</p> <p>方案也很简单，使用 <code>randomkey</code> 获取一批数据，然后按动态迁移数据方法进行迁移。</p> <h3 id=pipeline>pipeline</h3> <p>如果在业务逻辑中使用了 PIPELINE，就会遇到问题，需要改写掉业务方案， 待迁移完成之后，再进行恢复。</p> <h3 id=multikey>multikey</h3> <p><code>mget</code> / <code>mset</code> 等多键操作方法需要注意拆解 key，然后一一 <code>dump</code> / <code>restore</code> / <code>ttl</code>。</p> <h2 id=正式操作_1>正式操作</h2> <p>线上操作的数据：</p> <pre><code># 0.483 g db0
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Redis 集群扩容 | Log4D</title>
+<meta name="keywords" content="redis">
+<meta name="description" content="几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。
+主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、
+存储结构丰富、有持久化功能。
+我大堆糖的 Session 存储系统也正是基于 Redis。
+可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication
+也是在逐步完善完善过程中
+（2.4 支持 Replication，2.8 加入 Replication partial resynchronization 功能）。
+纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。
+而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding 特性要等到何年马月。
+随着业务规模的扩大，单台 Redis 实例不能满足需求。
+考虑到 Redis 也是久经考验的战士，替换掉他成本比较高，那就对 Redis 进行扩容。
+扩容的基本要求是：
+扩大系统容量，成为分布式系统，未来有横向扩展 业务不中断 保证原始数据的可用性 Google 了一下，有两个项目可以参考：
+https://github.com/idning/redis-mgr
+和豌豆荚的 Codis。
+研究了这两项目的代码之后，发现前者存在几个问题：
+需要停机进行操作。
+后者提供了完整一套解决方案，Server/Proxy/Config Manage，对我这次迁移来说，太重了，
+而且项目比较新，风险高，只能用来参考实现方法。
+最后我决定参考 redis-mgr 的方案，然后使用两种方式同步数据：
+系统运行中打上 patch 完成数据的动态迁移；后台跑迁移数据脚本。
+方案的关键词 dump / restore / pttl 核心的操作流程是：">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2015/07/redis-migration/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="Redis 集群扩容" />
+<meta property="og:description" content="几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。
+主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、
+存储结构丰富、有持久化功能。
+我大堆糖的 Session 存储系统也正是基于 Redis。
+可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication
+也是在逐步完善完善过程中
+（2.4 支持 Replication，2.8 加入 Replication partial resynchronization 功能）。
+纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。
+而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding 特性要等到何年马月。
+随着业务规模的扩大，单台 Redis 实例不能满足需求。
+考虑到 Redis 也是久经考验的战士，替换掉他成本比较高，那就对 Redis 进行扩容。
+扩容的基本要求是：
+扩大系统容量，成为分布式系统，未来有横向扩展 业务不中断 保证原始数据的可用性 Google 了一下，有两个项目可以参考：
+https://github.com/idning/redis-mgr
+和豌豆荚的 Codis。
+研究了这两项目的代码之后，发现前者存在几个问题：
+需要停机进行操作。
+后者提供了完整一套解决方案，Server/Proxy/Config Manage，对我这次迁移来说，太重了，
+而且项目比较新，风险高，只能用来参考实现方法。
+最后我决定参考 redis-mgr 的方案，然后使用两种方式同步数据：
+系统运行中打上 patch 完成数据的动态迁移；后台跑迁移数据脚本。
+方案的关键词 dump / restore / pttl 核心的操作流程是：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2015/07/redis-migration/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2015-07-26T15:33:49+08:00" />
+<meta property="article:modified_time" content="2015-07-26T15:33:49+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Redis 集群扩容"/>
+<meta name="twitter:description" content="几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。
+主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、
+存储结构丰富、有持久化功能。
+我大堆糖的 Session 存储系统也正是基于 Redis。
+可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication
+也是在逐步完善完善过程中
+（2.4 支持 Replication，2.8 加入 Replication partial resynchronization 功能）。
+纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。
+而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding 特性要等到何年马月。
+随着业务规模的扩大，单台 Redis 实例不能满足需求。
+考虑到 Redis 也是久经考验的战士，替换掉他成本比较高，那就对 Redis 进行扩容。
+扩容的基本要求是：
+扩大系统容量，成为分布式系统，未来有横向扩展 业务不中断 保证原始数据的可用性 Google 了一下，有两个项目可以参考：
+https://github.com/idning/redis-mgr
+和豌豆荚的 Codis。
+研究了这两项目的代码之后，发现前者存在几个问题：
+需要停机进行操作。
+后者提供了完整一套解决方案，Server/Proxy/Config Manage，对我这次迁移来说，太重了，
+而且项目比较新，风险高，只能用来参考实现方法。
+最后我决定参考 redis-mgr 的方案，然后使用两种方式同步数据：
+系统运行中打上 patch 完成数据的动态迁移；后台跑迁移数据脚本。
+方案的关键词 dump / restore / pttl 核心的操作流程是："/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Redis 集群扩容",
+      "item": "https://blog.alswl.com/2015/07/redis-migration/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Redis 集群扩容",
+  "name": "Redis 集群扩容",
+  "description": "几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。\n主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、\n存储结构丰富、有持久化功能。\n我大堆糖的 Session 存储系统也正是基于 Redis。\n可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication\n也是在逐步完善完善过程中\n（2.4 支持 Replication，2.8 加入 Replication partial resynchronization 功能）。\n纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。\n而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding 特性要等到何年马月。\n随着业务规模的扩大，单台 Redis 实例不能满足需求。\n考虑到 Redis 也是久经考验的战士，替换掉他成本比较高，那就对 Redis 进行扩容。\n扩容的基本要求是：\n扩大系统容量，成为分布式系统，未来有横向扩展 业务不中断 保证原始数据的可用性 Google 了一下，有两个项目可以参考：\nhttps://github.com/idning/redis-mgr\n和豌豆荚的 Codis。\n研究了这两项目的代码之后，发现前者存在几个问题：\n需要停机进行操作。\n后者提供了完整一套解决方案，Server/Proxy/Config Manage，对我这次迁移来说，太重了，\n而且项目比较新，风险高，只能用来参考实现方法。\n最后我决定参考 redis-mgr 的方案，然后使用两种方式同步数据：\n系统运行中打上 patch 完成数据的动态迁移；后台跑迁移数据脚本。\n方案的关键词 dump / restore / pttl 核心的操作流程是：",
+  "keywords": [
+    "redis"
+  ],
+  "articleBody": "几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。\n主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、\n存储结构丰富、有持久化功能。\n我大堆糖的 Session 存储系统也正是基于 Redis。\n可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication\n也是在逐步完善完善过程中\n（2.4 支持 Replication，2.8 加入 Replication partial resynchronization 功能）。\n纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。\n而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding 特性要等到何年马月。\n随着业务规模的扩大，单台 Redis 实例不能满足需求。\n考虑到 Redis 也是久经考验的战士，替换掉他成本比较高，那就对 Redis 进行扩容。\n扩容的基本要求是：\n扩大系统容量，成为分布式系统，未来有横向扩展 业务不中断 保证原始数据的可用性 Google 了一下，有两个项目可以参考：\nhttps://github.com/idning/redis-mgr\n和豌豆荚的 Codis。\n研究了这两项目的代码之后，发现前者存在几个问题：\n需要停机进行操作。\n后者提供了完整一套解决方案，Server/Proxy/Config Manage，对我这次迁移来说，太重了，\n而且项目比较新，风险高，只能用来参考实现方法。\n最后我决定参考 redis-mgr 的方案，然后使用两种方式同步数据：\n系统运行中打上 patch 完成数据的动态迁移；后台跑迁移数据脚本。\n方案的关键词 dump / restore / pttl 核心的操作流程是：\n使用 dump 命令导出数据，restore 命令恢复数据，pttl 命令获取设置 TTL。\nPresharding Redis 官方没有 sharding 方案，但提供一种策略 presharding。\nRedis 作者写了一篇Redis Presharding。核心是：\n提前做 2^n 个实例，避免扩容时候数据迁移，一般使用 2^n 个实例，\n目的是为了能够自然地乘以 2 进行拆分。\n这些实例可以分开放，也可以放在同一台机器上面。\n我这次操作，将 OLD_CLUSTER 的一个实例拆分为了 NEW_CLUSTER 的 32 个实例，\n跑在 4 台服务器上面。\nTwemproxy Redis 的 经典款 Proxy，用来实现对多个 Redis 实例 sharding，\nTwitter 出品，链接。\n一致性 Hash 传统的 Hash 方法是 hash(key) = value % nodes.length，\n当加入、减少 Hash 节点时候，会导致 hash(key) 的全部失效。\n典型的一致性 Hash 算法，Ketama 通过环状 node 分布，解决了这个问题。\nTwemproxy 还提供 modula 和 random 两种分布式方案。\ndb 大小预估 Redis 只能查看整个实例内存尺寸。不能查看单个 db。\n使用 ramdomkey 做抽样检查，取 1% key 抽样，估计单个 key 大小，\n然后做 benchmark 估算操作性能，估算操作时间。\n动态迁移数据 为了在迁移过程中保证服务可用，需要将数据兼容 Redis 集群 OLD_CLUSTER / NEW_CLUSTER，\n业务代码必须同时支持访问两个集群，做法也很简单\n访问 NEW_CLUSTER 有数据则继续操作，无数据则访问 OLD_CLUSTER，获取数据 DATA 将数据和 TTL 保存到 NEW_CLUSTER 将这个逻辑封装成一个 client，替换掉原来 Redis Client 即可。\n注意，这个点可能产生幻读，读取 key 和写入 key 有个时间差，\n但是我处理的 session 是 immutable 数据，不会出现问题。\n而如果将 Redis 用作 Persistence，就要评估对业务的影响了。\n后台迁移数据 依赖用户访问来进行迁移，效率太低了，这个迁移时间和最长 TTL 时间相当，\n需要主动将这个数据从 OLD_CLUSTER 迁移到 NEW_CLUSTER。\n方案也很简单，使用 randomkey 获取一批数据，然后按动态迁移数据方法进行迁移。\npipeline 如果在业务逻辑中使用了 PIPELINE，就会遇到问题，需要改写掉业务方案，\n待迁移完成之后，再进行恢复。\nmultikey mget / mset 等多键操作方法需要注意拆解 key，然后一一 dump / restore /\nttl。\n正式操作 线上操作的数据：\n# 0.483 g db0 12:05:19,444 - __main__ - INFO - v, dumps keys 1014/1375371/..., time: 974.183676004 # 4.552 g db1 17:38:36,422 - __main__ - INFO - v, dumps keys 1392/7711834/..., time: 3076.41647506 附上 Migration Script：https://blog.alswl.com/2015/07/redis-migration/ Redis Cluster Migration\n",
+  "wordCount" : "262",
+  "inLanguage": "en",
+  "datePublished": "2015-07-26T15:33:49+08:00",
+  "dateModified": "2015-07-26T15:33:49+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2015/07/redis-migration/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      Redis 集群扩容
+    </h1>
+    <div class="post-meta"><span title='2015-07-26 15:33:49 +0800 CST'>2015-07-26</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#方案的关键词">方案的关键词</a>
+      <ul>
+        <li><a href="#dump--restore--pttl"><code>dump</code> / <code>restore</code> / <code>pttl</code></a></li>
+        <li><a href="#presharding">Presharding</a></li>
+        <li><a href="#twemproxy">Twemproxy</a></li>
+        <li><a href="#一致性-hash">一致性 Hash</a></li>
+        <li><a href="#db-大小预估">db 大小预估</a></li>
+        <li><a href="#动态迁移数据">动态迁移数据</a></li>
+        <li><a href="#后台迁移数据">后台迁移数据</a></li>
+        <li><a href="#pipeline">pipeline</a></li>
+        <li><a href="#multikey">multikey</a></li>
+      </ul>
+    </li>
+    <li><a href="#正式操作">正式操作</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。<br />
+主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、<br />
+存储结构丰富、有持久化功能。<br />
+我大堆糖的 Session 存储系统也正是基于 Redis。</p>
+<p>可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication<br />
+也是在逐步完善完善过程中<br />
+（2.4 支持 <code>Replication</code>，2.8 加入 <code>Replication partial resynchronization</code> 功能）。<br />
+纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。<br />
+而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding 特性要等到何年马月。</p>
+<p>随着业务规模的扩大，单台 Redis 实例不能满足需求。<br />
+考虑到 Redis 也是久经考验的战士，替换掉他成本比较高，那就对 Redis 进行扩容。</p>
+<p>扩容的基本要求是：</p>
+<ul>
+<li>扩大系统容量，成为分布式系统，未来有横向扩展</li>
+<li>业务不中断</li>
+<li>保证原始数据的可用性</li>
+</ul>
+<p>Google 了一下，有两个项目可以参考：<br />
+<a href="https://github.com/idning/redis-mgr">https://github.com/idning/redis-mgr</a><br />
+和豌豆荚的 <a href="https://github.com/wandoulabs/codis">Codis</a>。</p>
+<p>研究了这两项目的代码之后，发现前者存在几个问题：<br />
+需要停机进行操作。<br />
+后者提供了完整一套解决方案，Server/Proxy/Config Manage，对我这次迁移来说，太重了，<br />
+而且项目比较新，风险高，只能用来参考实现方法。</p>
+<p>最后我决定参考 redis-mgr 的方案，然后使用两种方式同步数据：<br />
+系统运行中打上 patch 完成数据的动态迁移；后台跑迁移数据脚本。</p>
+<h2 id="方案的关键词">方案的关键词<a hidden class="anchor" aria-hidden="true" href="#方案的关键词">#</a></h2>
+<h3 id="dump--restore--pttl"><code>dump</code> / <code>restore</code> / <code>pttl</code><a hidden class="anchor" aria-hidden="true" href="#dump--restore--pttl">#</a></h3>
+<p>核心的操作流程是：<br />
+使用 <code>dump</code> 命令导出数据，<code>restore</code> 命令恢复数据，<code>pttl</code> 命令获取设置 TTL。</p>
+<h3 id="presharding">Presharding<a hidden class="anchor" aria-hidden="true" href="#presharding">#</a></h3>
+<p>Redis 官方没有 sharding 方案，但提供一种策略 presharding。<br />
+Redis 作者写了一篇<a href="http://oldblog.antirez.com/post/redis-presharding.html">Redis Presharding</a>。核心是：<br />
+提前做 2^n 个实例，避免扩容时候数据迁移，一般使用 2^n 个实例，<br />
+目的是为了能够自然地乘以 2 进行拆分。<br />
+这些实例可以分开放，也可以放在同一台机器上面。</p>
+<p>我这次操作，将 <code>OLD_CLUSTER</code> 的一个实例拆分为了 <code>NEW_CLUSTER</code> 的 32 个实例，<br />
+跑在 4 台服务器上面。</p>
+<h3 id="twemproxy">Twemproxy<a hidden class="anchor" aria-hidden="true" href="#twemproxy">#</a></h3>
+<p>Redis 的 经典款 Proxy，用来实现对多个 Redis 实例 sharding，<br />
+Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p>
+<h3 id="一致性-hash">一致性 Hash<a hidden class="anchor" aria-hidden="true" href="#一致性-hash">#</a></h3>
+<p>传统的 Hash 方法是 <code>hash(key) = value % nodes.length</code>，<br />
+当加入、减少 Hash 节点时候，会导致 <code>hash(key)</code> 的全部失效。<br />
+典型的一致性 Hash 算法，<a href="https://github.com/RJ/ketama">Ketama</a> 通过环状 node 分布，解决了这个问题。</p>
+<p>Twemproxy 还提供 <code>modula</code> 和 random 两种分布式方案。</p>
+<h3 id="db-大小预估">db 大小预估<a hidden class="anchor" aria-hidden="true" href="#db-大小预估">#</a></h3>
+<p>Redis 只能查看整个实例内存尺寸。不能查看单个 db。<br />
+使用 <code>ramdomkey</code> 做抽样检查，取 1% key 抽样，估计单个 key 大小，<br />
+然后做 benchmark 估算操作性能，估算操作时间。</p>
+<h3 id="动态迁移数据">动态迁移数据<a hidden class="anchor" aria-hidden="true" href="#动态迁移数据">#</a></h3>
+<p>为了在迁移过程中保证服务可用，需要将数据兼容 Redis 集群 <code>OLD_CLUSTER</code> / <code>NEW_CLUSTER</code>，<br />
+业务代码必须同时支持访问两个集群，做法也很简单</p>
+<ul>
+<li>访问 <code>NEW_CLUSTER</code></li>
+<li>有数据则继续操作，无数据则访问 <code>OLD_CLUSTER</code>，获取数据 <code>DATA</code></li>
+<li>将数据和 TTL 保存到 <code>NEW_CLUSTER</code></li>
+</ul>
+<p>将这个逻辑封装成一个 client，替换掉原来 Redis Client 即可。</p>
+<p>注意，这个点可能产生幻读，读取 key 和写入 key 有个时间差，<br />
+但是我处理的 session 是 immutable 数据，不会出现问题。<br />
+而如果将 Redis 用作 Persistence，就要评估对业务的影响了。</p>
+<h3 id="后台迁移数据">后台迁移数据<a hidden class="anchor" aria-hidden="true" href="#后台迁移数据">#</a></h3>
+<p>依赖用户访问来进行迁移，效率太低了，这个迁移时间和最长 TTL 时间相当，<br />
+需要主动将这个数据从 <code>OLD_CLUSTER</code> 迁移到 <code>NEW_CLUSTER</code>。</p>
+<p>方案也很简单，使用 <code>randomkey</code> 获取一批数据，然后按动态迁移数据方法进行迁移。</p>
+<h3 id="pipeline">pipeline<a hidden class="anchor" aria-hidden="true" href="#pipeline">#</a></h3>
+<p>如果在业务逻辑中使用了 PIPELINE，就会遇到问题，需要改写掉业务方案，<br />
+待迁移完成之后，再进行恢复。</p>
+<h3 id="multikey">multikey<a hidden class="anchor" aria-hidden="true" href="#multikey">#</a></h3>
+<p><code>mget</code> / <code>mset</code> 等多键操作方法需要注意拆解 key，然后一一 <code>dump</code> / <code>restore</code> /<br />
+<code>ttl</code>。</p>
+<h2 id="正式操作">正式操作<a hidden class="anchor" aria-hidden="true" href="#正式操作">#</a></h2>
+<p>线上操作的数据：</p>
+<pre tabindex="0"><code># 0.483 g db0
 12:05:19,444 - __main__ - INFO - v, dumps keys 1014/1375371/..., time: 974.183676004
 # 4.552 g db1
-17:38:36,422 - __main__ - INFO - v, dumps keys 1392/7711834/..., time: 3076.41647506</code></pre> <p>附上 Migration Script：<a href=https://gist.github.com/alswl/e96a5308ebac4f69f809f9ba56dfe168>https://blog.alswl.com/2015/07/redis-migration/ Redis Cluster Migration</a></p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2015/07/redis-migration/ >https://blog.alswl.com/2015/07/redis-migration/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+17:38:36,422 - __main__ - INFO - v, dumps keys 1392/7711834/..., time: 3076.41647506
+</code></pre><p>附上 Migration Script：<a href="https://gist.github.com/alswl/e96a5308ebac4f69f809f9ba56dfe168">https://blog.alswl.com/2015/07/redis-migration/ Redis Cluster Migration</a></p>
 
-                    var disqus_identifier = 'redis-migration';
-                var disqus_url = 'https://blog.alswl.com/2015/07/redis-migration/';
 
-            var disqus_config = function () {
-                this.language = "en";
-            };
+  </div>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/redis/">redis</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2015/10/how-to-log/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>怎么打日志</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2015/07/liu-bi-xie-fu/">
+    <span class="title">Next »</span>
+    <br>
+    <span>带理想的执行者 - 柳比歇夫的一生</span>
+  </a>
+</nav>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-alswl-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

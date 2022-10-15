@@ -1,44 +1,529 @@
-<!DOCTYPE html><html lang=en> <head><title>char nchar varchar nvarchar 区别 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/ rel=canonical><meta name=author content=alswl><meta name=keywords content=综合技术><meta name=description content="在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。 私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。 原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园 联机帮助上的： char(n) 定长 索引效率高 程序里面使用trim去除多余的空白 n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节 varchar(n) 变长 效率没char高 灵活 n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度 …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/ rel=bookmark title="Permalink to char nchar varchar nvarchar 区别"> char nchar varchar nvarchar 区别 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#char title=1、CHAR。>1、CHAR。</a></li><li><a class=toc-href href=#varchar title=2、VARCHAR。>2、VARCHAR。</a></li><li><a class=toc-href href=#text title=3、TEXT。>3、TEXT。</a></li><li><a class=toc-href href=#ncharnvarcharntext title=4、NCHAR、NVARCHAR、NTEXT。>4、NCHAR、NVARCHAR、NTEXT。</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2010-07-16T00:00:00+08:00> 2010-07-16</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/zong-he-ji-zhu/ >综合技术</a> </footer><!-- /.post-info --> </div> </div> <p>在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。</p> <p>私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。</p> <p>原文出处：<a href=http://www.cnblogs.com/yoyozhou/archive/2008/11/21/1338452.html>char nchar varchar nvarchar 区别 - Rainbow - 博客园</a></p> <p>联机帮助上的：</p> <p>char(n)</p> <p>定长</p> <p>索引效率高 程序里面使用trim去除多余的空白</p> <p>n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节</p> <p>varchar(n)</p> <p>变长</p> <p>效率没char高 灵活</p> <p>n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节</p> <p>text(n)</p> <p>变长</p> <p>非Unicode数据</p> <p>nchar(n)</p> <p>定长</p> <p>处理unicode数据类型(所有的字符使用两个字节表示)</p> <p>n 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍</p> <p>nvarchar(n)</p> <p>变长</p> <p>处理unicode数据类型(所有的字符使用两个字节表示)</p> <p>n 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零</p> <p>ntext(n)</p> <p>变长</p> <p>处理unicode数据类型(所有的字符使用两个字节表示)</p> <h2 id=char>1、CHAR。</h2> <p>CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足 的自动用空格填充，所以在读取的时候可能要多次用到trim（）。</p> <h2 id=varchar>2、VARCHAR。</h2> <p>存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。 VARCHAR类型的实际长度是它的值的实际长度+1。为什么&ldquo;+1&rdquo;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考 虑，用char合适，关键是根据实际情况找到权衡点。</p> <h2 id=text>3、TEXT。</h2> <p>text存储可变长度的非Unicode数据，最大长度为2^31-1(2,147,483,647)个字符。</p> <h2 id=ncharnvarcharntext>4、NCHAR、NVARCHAR、NTEXT。</h2> <p>这三种从名字上看比前面三种多了个&ldquo;N&rdquo;。它表示存储的是Unicode数据类型的字符。我们知道字符中，英文字符只需要一个字节存储就足够了，但汉字众多，需要两个 字节存储，英文与汉字同时存在时容易造成混乱，Unicode字符集就是为了解决字符集这种不兼容的问题而产生的，它所有的字符都用两个字节表示，即英文字符也是用两 个字节表示。nchar、nvarchar的长度是在1到4000之间。和char、varchar比较起来，nchar、nvarchar则最多存储4000个字符 ，不论是英文还是汉字；而char、varchar最多能存储8000个英文，4000个汉字。可以看出使用nchar、nvarchar数据类型时不用担心输入的字 符是英文还是汉字，较为方便，但在存储英文时数量上有些损失。</p> <p>所以一般来说，如果含有中文字符，用nchar/nvarchar，如果纯英文和数字，用char/varchar</p> <p>我把他们的区别概括成：</p> <p>CHAR，NCHAR 定长，速度快，占空间大，需处理</p> <p>VARCHAR，NVARCHAR，TEXT 不定长，空间小，速度慢，无需处理</p> <p>NCHAR、NVARCHAR、NTEXT处理Unicode码</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/ >https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+<!DOCTYPE html>
+<html lang="en" dir="auto">
 
-                    var disqus_identifier = 'difference-between-char-nchar-varchar-nvarchar';
-                var disqus_url = 'https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/';
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>char nchar varchar nvarchar 区别 | Log4D</title>
+<meta name="keywords" content="综合技术">
+<meta name="description" content="在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim(
+)操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。
+私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。
+原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园
+联机帮助上的：
+char(n)
+定长
+索引效率高 程序里面使用trim去除多余的空白
+n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节
+varchar(n)
+变长
+效率没char高 灵活
+n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节
+text(n)
+变长
+非Unicode数据
+nchar(n)
+定长
+处理unicode数据类型(所有的字符使用两个字节表示)
+n 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍
+nvarchar(n)
+变长
+处理unicode数据类型(所有的字符使用两个字节表示)
+n 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零
+ntext(n)
+变长
+处理unicode数据类型(所有的字符使用两个字节表示)
+1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足
+的自动用空格填充，所以在读取的时候可能要多次用到trim（）。
+2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。
+VARCHAR类型的实际长度是它的值的实际长度&#43;1。为什么&quot;&#43;1&quot;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-            var disqus_config = function () {
-                this.language = "en";
-            };
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+            .list {
+                background: var(--theme);
+            }
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="char nchar varchar nvarchar 区别" />
+<meta property="og:description" content="在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim(
+)操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。
+私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。
+原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园
+联机帮助上的：
+char(n)
+定长
+索引效率高 程序里面使用trim去除多余的空白
+n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节
+varchar(n)
+变长
+效率没char高 灵活
+n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节
+text(n)
+变长
+非Unicode数据
+nchar(n)
+定长
+处理unicode数据类型(所有的字符使用两个字节表示)
+n 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍
+nvarchar(n)
+变长
+处理unicode数据类型(所有的字符使用两个字节表示)
+n 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零
+ntext(n)
+变长
+处理unicode数据类型(所有的字符使用两个字节表示)
+1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足
+的自动用空格填充，所以在读取的时候可能要多次用到trim（）。
+2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。
+VARCHAR类型的实际长度是它的值的实际长度&#43;1。为什么&quot;&#43;1&quot;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2010-07-16T00:00:00+08:00" />
+<meta property="article:modified_time" content="2010-07-16T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="char nchar varchar nvarchar 区别"/>
+<meta name="twitter:description" content="在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim(
+)操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。
+私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。
+原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园
+联机帮助上的：
+char(n)
+定长
+索引效率高 程序里面使用trim去除多余的空白
+n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节
+varchar(n)
+变长
+效率没char高 灵活
+n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节
+text(n)
+变长
+非Unicode数据
+nchar(n)
+定长
+处理unicode数据类型(所有的字符使用两个字节表示)
+n 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍
+nvarchar(n)
+变长
+处理unicode数据类型(所有的字符使用两个字节表示)
+n 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零
+ntext(n)
+变长
+处理unicode数据类型(所有的字符使用两个字节表示)
+1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足
+的自动用空格填充，所以在读取的时候可能要多次用到trim（）。
+2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。
+VARCHAR类型的实际长度是它的值的实际长度&#43;1。为什么&quot;&#43;1&quot;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "char nchar varchar nvarchar 区别",
+      "item": "https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "char nchar varchar nvarchar 区别",
+  "name": "char nchar varchar nvarchar 区别",
+  "description": "在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim(\n)操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。\n私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。\n原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园\n联机帮助上的：\nchar(n)\n定长\n索引效率高 程序里面使用trim去除多余的空白\nn 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节\nvarchar(n)\n变长\n效率没char高 灵活\nn 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节\ntext(n)\n变长\n非Unicode数据\nnchar(n)\n定长\n处理unicode数据类型(所有的字符使用两个字节表示)\nn 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍\nnvarchar(n)\n变长\n处理unicode数据类型(所有的字符使用两个字节表示)\nn 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零\nntext(n)\n变长\n处理unicode数据类型(所有的字符使用两个字节表示)\n1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足\n的自动用空格填充，所以在读取的时候可能要多次用到trim（）。\n2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。\nVARCHAR类型的实际长度是它的值的实际长度+1。为什么\u0026quot;+1\u0026quot;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考",
+  "keywords": [
+    "综合技术"
+  ],
+  "articleBody": "在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim(\n)操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。\n私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。\n原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园\n联机帮助上的：\nchar(n)\n定长\n索引效率高 程序里面使用trim去除多余的空白\nn 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节\nvarchar(n)\n变长\n效率没char高 灵活\nn 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节\ntext(n)\n变长\n非Unicode数据\nnchar(n)\n定长\n处理unicode数据类型(所有的字符使用两个字节表示)\nn 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍\nnvarchar(n)\n变长\n处理unicode数据类型(所有的字符使用两个字节表示)\nn 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零\nntext(n)\n变长\n处理unicode数据类型(所有的字符使用两个字节表示)\n1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足\n的自动用空格填充，所以在读取的时候可能要多次用到trim（）。\n2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。\nVARCHAR类型的实际长度是它的值的实际长度+1。为什么\"+1\"呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考\n虑，用char合适，关键是根据实际情况找到权衡点。\n3、TEXT。 text存储可变长度的非Unicode数据，最大长度为2^31-1(2,147,483,647)个字符。\n4、NCHAR、NVARCHAR、NTEXT。 这三种从名字上看比前面三种多了个\"N\"。它表示存储的是Unicode数据类型的字符。我们知道字符中，英文字符只需要一个字节存储就足够了，但汉字众多，需要两个\n字节存储，英文与汉字同时存在时容易造成混乱，Unicode字符集就是为了解决字符集这种不兼容的问题而产生的，它所有的字符都用两个字节表示，即英文字符也是用两\n个字节表示。nchar、nvarchar的长度是在1到4000之间。和char、varchar比较起来，nchar、nvarchar则最多存储4000个字符\n，不论是英文还是汉字；而char、varchar最多能存储8000个英文，4000个汉字。可以看出使用nchar、nvarchar数据类型时不用担心输入的字\n符是英文还是汉字，较为方便，但在存储英文时数量上有些损失。\n所以一般来说，如果含有中文字符，用nchar/nvarchar，如果纯英文和数字，用char/varchar\n我把他们的区别概括成：\nCHAR，NCHAR 定长，速度快，占空间大，需处理\nVARCHAR，NVARCHAR，TEXT 不定长，空间小，速度慢，无需处理\nNCHAR、NVARCHAR、NTEXT处理Unicode码\n",
+  "wordCount" : "86",
+  "inLanguage": "en",
+  "datePublished": "2010-07-16T00:00:00+08:00",
+  "dateModified": "2010-07-16T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      char nchar varchar nvarchar 区别
+    </h1>
+    <div class="post-meta"><span title='2010-07-16 00:00:00 +0800 CST'>2010-07-16</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1char">1、CHAR。</a></li>
+    <li><a href="#2varchar">2、VARCHAR。</a></li>
+    <li><a href="#3text">3、TEXT。</a></li>
+    <li><a href="#4ncharnvarcharntext">4、NCHAR、NVARCHAR、NTEXT。</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim(<br />
+)操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。</p>
+<p>私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。</p>
+<p>原文出处：<a href="http://www.cnblogs.com/yoyozhou/archive/2008/11/21/1338452.html">char nchar varchar nvarchar 区别 - Rainbow - 博客园</a></p>
+<p>联机帮助上的：</p>
+<p>char(n)</p>
+<p>定长</p>
+<p>索引效率高 程序里面使用trim去除多余的空白</p>
+<p>n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节</p>
+<p>varchar(n)</p>
+<p>变长</p>
+<p>效率没char高 灵活</p>
+<p>n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节</p>
+<p>text(n)</p>
+<p>变长</p>
+<p>非Unicode数据</p>
+<p>nchar(n)</p>
+<p>定长</p>
+<p>处理unicode数据类型(所有的字符使用两个字节表示)</p>
+<p>n 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍</p>
+<p>nvarchar(n)</p>
+<p>变长</p>
+<p>处理unicode数据类型(所有的字符使用两个字节表示)</p>
+<p>n 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零</p>
+<p>ntext(n)</p>
+<p>变长</p>
+<p>处理unicode数据类型(所有的字符使用两个字节表示)</p>
+<h2 id="1char">1、CHAR。<a hidden class="anchor" aria-hidden="true" href="#1char">#</a></h2>
+<p>CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足<br />
+的自动用空格填充，所以在读取的时候可能要多次用到trim（）。</p>
+<h2 id="2varchar">2、VARCHAR。<a hidden class="anchor" aria-hidden="true" href="#2varchar">#</a></h2>
+<p>存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。<br />
+VARCHAR类型的实际长度是它的值的实际长度+1。为什么&quot;+1&quot;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考<br />
+虑，用char合适，关键是根据实际情况找到权衡点。</p>
+<h2 id="3text">3、TEXT。<a hidden class="anchor" aria-hidden="true" href="#3text">#</a></h2>
+<p>text存储可变长度的非Unicode数据，最大长度为2^31-1(2,147,483,647)个字符。</p>
+<h2 id="4ncharnvarcharntext">4、NCHAR、NVARCHAR、NTEXT。<a hidden class="anchor" aria-hidden="true" href="#4ncharnvarcharntext">#</a></h2>
+<p>这三种从名字上看比前面三种多了个&quot;N&quot;。它表示存储的是Unicode数据类型的字符。我们知道字符中，英文字符只需要一个字节存储就足够了，但汉字众多，需要两个<br />
+字节存储，英文与汉字同时存在时容易造成混乱，Unicode字符集就是为了解决字符集这种不兼容的问题而产生的，它所有的字符都用两个字节表示，即英文字符也是用两<br />
+个字节表示。nchar、nvarchar的长度是在1到4000之间。和char、varchar比较起来，nchar、nvarchar则最多存储4000个字符<br />
+，不论是英文还是汉字；而char、varchar最多能存储8000个英文，4000个汉字。可以看出使用nchar、nvarchar数据类型时不用担心输入的字<br />
+符是英文还是汉字，较为方便，但在存储英文时数量上有些损失。</p>
+<p>所以一般来说，如果含有中文字符，用nchar/nvarchar，如果纯英文和数字，用char/varchar</p>
+<p>我把他们的区别概括成：</p>
+<p>CHAR，NCHAR 定长，速度快，占空间大，需处理</p>
+<p>VARCHAR，NVARCHAR，TEXT 不定长，空间小，速度慢，无需处理</p>
+<p>NCHAR、NVARCHAR、NTEXT处理Unicode码</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/%E7%BB%BC%E5%90%88%E6%8A%80%E6%9C%AF/">综合技术</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2010/07/7-crucial-tips-for-designing-and-maintaining-a-large-site/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>7条大型网站设计和维护的关键技巧[译文]</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2010/07/xi-mi-lu-with-milk/">
+    <span class="title">Next »</span>
+    <br>
+    <span>牛奶西米露</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-alswl-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

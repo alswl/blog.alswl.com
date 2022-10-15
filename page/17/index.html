@@ -1,38 +1,582 @@
-<!DOCTYPE html><html lang=en> <head><title>Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link rel=canonical href=https://blog.alswl.com><meta name=author content=alswl><!-- Open Graph tags --><meta property=og:site_name content=Log4D><meta property=og:type content=website><meta property=og:title content=Log4D><meta property=og:url content=https://blog.alswl.com><meta property=og:description content=Log4D><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/ >AzaAjaxChat笔记-实现</a></h2> <div class=summary><p>唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~</p> <h3 id=一comet服务器推技术>一、Comet服务器推技术</h3> <p>Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考<a href=http://www.ibm.com/developerworks/cn/web/wa-lo-comet/ >Comet：基于 HTTP 长连接的&ldquo;服务器推&rdquo;技术</a>。</p> <p>我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询 （long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询 …</p> </div> <a href=https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/08/cook-book/ >新手入厨好书-《从零开始学下厨》</a></h2> <div class=summary><p>今天在人人戏言&ldquo;其实，我高考第一志愿是新东方烹饪学校，分数不够才学的计算机&rdquo;，居然有朋友问我真的假的，认真你就输了~</p> <p>不过话说回来，烹饪是我为数不多的爱好之一，虽然技术不是很娴熟，会做的菜也不多，但毕竟保持兴趣还是不错的。</p> <p>现在过着单身男人的生活，心血来潮也会自己做菜吃，可惜时间一久，会做的那几道简单的菜都让我反复做过了，想不出什么新花样。复杂的菜又要繁琐的工序和额外的操作，搞 得我很吃力。总不能一有问题就电话给老妈吧，我思虑再三，决定买一本入门级的烹饪书。</p> <p>在China-pub，豆瓣，卓越，当当比较之后，看到这本《<a href=http://book.douban.com/subject/3136744/ >从零开始学下厨</a>》很是喜欢，最后在当当下订单。</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201008/s3174468.jpg><figcaption>image</figcaption> </figure> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201008/cook_book.jpg><figcaption>image</figcaption> </figure> <p>我是一向讨厌《从零开始学XXX》的这类题目的书，给人不可靠，不扎实，这本书倒是给我带来不一样的感觉。书中详细的从器具、主食、常用食品、家常小菜这几个方面一一 进行了介绍。适合读者是基本没有什么做菜经验的朋友。</p> <p>我在豆瓣给这本书打5星，因为这本书对它的读者群帮助很大，堪称菜鸟速成手册，全彩印刷。仅有两个小缺点是封面设计有点土+喜欢在文中称读者为小厨娘 …</p> </div> <a href=https://blog.alswl.com/2010/08/cook-book/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/08/azaajaxchat-notes-frame/ >AzaAjaxChat笔记-框架</a></h2> <div class=summary><p>1个月没有动PHP了，新装的系统甚至还没有配置PHP环境，今天看到BooguNote上有一个boo是专门记录AzaAjaxChat开发时候遇到的问题和解决办 法。于是把一些东西整理记录一下。</p> <h3 id=从thinkphp开始>1. 从ThinkPHP开始</h3> <p>最早的AzaAjaxChat是基于ThinkPHP的，我当时在OpenSouce上看到ThinkPHP的介绍，有很多优点，看的我很心动：MVC模型，Ajax 支持，详细的文档和案例，国人开发的框架。我作为一个PHP新人一下子就被他吸引住了，决定用ThinkPHP做框架。</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201008/thinkphp.png><figcaption>image</figcaption> </figure> <p>随着系统开发的推进，我却感觉到一些不自在，遇到一些问题却找不好太好的解决办法。比如ThinkPHP的模块和分组两个概念，让我比较疑惑，花费了大量时间重组目录 结构，两种方法各有优劣，让我很难选择（有选择了反而难办了 ^_^）。</p> <p>最让我恼火的是相对目录带来的路径混乱，在JSP开发中，静态内容习惯性放在webcontent文件夹中，而ThinkPHP的CSS、图片、JS引用让我很疑惑， 要区分App的和Model的静态文件。</p> <p>在开发过程中，我也遇到过框架本身的Bug，让我对这个框架失去信心。在这里我没有贬低ThinkPHP或者ThinkPHP开发者的意思，他们的&ldquo;大道至简、开发由 我&rdquo;的理念很值得欣赏。只是作为初学者因为遇到的一些问题，带来了一定的开发难度，不得已放弃。</p> <h3 id=选择cakephp>2 …</h3> </div> <a href=https://blog.alswl.com/2010/08/azaajaxchat-notes-frame/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/08/teachers/ >一路走来，师恩难忘</a></h2> <div class=summary><p>毕业答辩的最后一天，我以AzaAjaxChat聊天系统完成答辩。在走下答辩桌之后，得知自己成绩是3个优秀，我长嘘一口气，这个成绩终于给自己的大学生活划上了最 后一个比较完美的句号。总算没有对不起自己喜爱的计算机专业。</p> <p>晚上是和灵动工作室的同学们、系主任杨老师和工作室负责人孙老师一起聚会的，回来的路上，我一直在想，哪些人在我前进的路上给了我帮助呢？</p> <p>晃了晃有喝晕的头，想起那些在我计算机成长路上给了我巨大帮助和前进方向的老师们，回忆起和他们在一起的点点滴滴。</p> <h3 id=高中班主任-老张>高中班主任-老张</h3> <p>这是列出来第一个也是唯一一个不是做IT的老师。老张是我高中班主任，典型的陕西人，他老婆也是我英语老师，我一直很难想象身材魁梧的老张怎么骗到娇小的小郭。高中时 候学校管理特别严格，教室里有一台教学用电脑，我仗着自己电脑技术还可以，整天偷偷玩电脑。老张为了不让我玩电脑，甚至放下话说谁逮到我玩电脑，就奖励举报人5块钱。 不过到高考之后也没有人举报我。</p> <p>虽然老张对我进行军事管制，不过还是让我参加了江苏省奥林匹克信息比赛，幸运的是，我还拿到一个不错的名次，其实里面很多猫腻，不过培养了我对计算机的浓厚兴趣。（过 几天等我写计算机生涯时候再详细透露）</p> <p>今年过年时候，我大年初一就到老张家里拜年，老张也带着他刚2个月的老婆孩子大年初二到我家拜年，老张还提到我当时晚上偷偷去网吧魔兽公测，偷偷用班级电脑下载BT的 事情，我就汗颜了，原来都知道啊～</p> <p>祝福老张的孩子健康成长哈，到时候还要喊我哥的～</p> <h3 id=高中计算机老师-徐老师>高中计算机老师-徐老师 …</h3> </div> <a href=https://blog.alswl.com/2010/08/teachers/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/08/10_08_01-update/ >10_08_01 Update</a></h2> <div class=summary><p>1.好久没有Update了，今天废话一次。</p> <p>2.最近更新较少，倒不是文囧，只因为平日里用BooguNote记录的东西相当琐碎。我工作刚进入正轨，一边又到处看房子，所以没能静下心来整理，之前的AzaAj axChat的很多资料没有整理出来，在Google Calendar上安排的GTD日程也被一拖再拖～残念。</p> <p>3.CSDN立功了！之前翻译了一篇文章<a href=http://log4d.com/2010/07/7%20-crucial-tips-for-designing-and-maintaining-a-large-site>7条大型网站设计和维护的关键技巧[译文] - Log4D</a>被CSDN编辑放到首页第二条<a href=http://java.csdn.net/a/20100730/277483.%20html>http:/ /java.csdn.net/a/20100730/277483.html</a>，真是惭愧，英语水平被大批，我今天留了一条言。</p> <blockquote> <p>这个，没想到会上CSDN首页～</p> </blockquote> <p>这是我第三次翻译文章，水平有限，请大家谅解。</p> <p>年初的时候，在啄木鸟论坛看见这样一个宣言</p> <blockquote> </blockquote> <blockquote> <p>"每日至少抽一刻钟,解答邮件列表中初学者的问题，</p> </blockquote> <p>每周至少抽两小时,整理新学知识将体验发表/分享出去，</p> <p>通过Blog/Wiki/MaiList/个人网站&hellip;&hellip;</p> <p>每旬至少抽四个小时 …</p> </div> <a href=https://blog.alswl.com/2010/08/10_08_01-update/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/07/sql-format-tool-sql-pretty-printer/ >SQL格式化工具-SQL Pretty Printer</a></h2> <div class=summary><h3 id=背景>背景</h3> <p>最近写了一些SQL，数据库用的是MS-SQL，而SQL Server Management Studio是不自带代码格式化功能的，这让我用起来很郁闷，PL/SQL Developer格式起来多爽啊。</p> <p>在网上找了一下SQL格式化工具，只有一个用起来还不错的<a href=http://www.dpriver.com/pp/sqlformat.htm>在线版本</a>，我测试 了一下，功能强大，可惜不支持中文，注释的中文会被打上？？</p> <h3 id=sql-pretty-printer>SQL Pretty Printer</h3> <p>我在那个在线网站看到了Desktop Version的菜单，进去一看，哦，原来这个网站本身就在做一款SQL格式化工具的产品，叫做 SQL Pretty Printer。</p> <p><a href=https://4ocf5n.dijingchao.com/upload_dropbox/201007/spp_app.jpg><img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201007/spp_app.jpg></a></p> <p>SQL Pretty Printer 的桌面版本</p> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201007/spp_code.jpg><figcaption>image</figcaption> </figure> <p>格式化好之后的代码</p> <h3 id=功能>功能</h3> <p>SQL Pretty Printer目前提供4种使用方式，桌面版本，SSMS(SQL Server Management Studio)插件，VS插件，和提供API接口 …</p> </div> <a href=https://blog.alswl.com/2010/07/sql-format-tool-sql-pretty-printer/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/07/get-daily-bing-picture/ >获取每日Bing图片</a></h2> <div class=summary><p>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。</p> <p>放狗搜索，发现一篇文章 <a href=http://blog.csdn.net/huangct/archive/2009/10/27/4734844.aspx>抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客</a>，文中提供了抓取程式的Python代码，我摘录如下。</p> <div class=sourceCode id=cb1><pre class="sourceCode python"><code class="sourceCode python"><a class=sourceLine id=cb1-1 title=1><span class=im>import</span> urllib</a>
-<a class=sourceLine id=cb1-2 title=2><span class=im>import</span> time</a>
-<a class=sourceLine id=cb1-3 title=3></a>
-<a class=sourceLine id=cb1-4 title=4><span class=kw>def</span> main():</a>
-<a class=sourceLine id=cb1-5 title=5>    url <span class=op>=</span> <span class=st>'http://www.bing.com'</span></a>
-<a class=sourceLine id=cb1-6 title=6>    f <span class=op>=</span> urllib.urlopen(url)</a>
-<a class=sourceLine id=cb1-7 title=7>    html <span class=op>=</span> f.read()</a>
-<a class=sourceLine id=cb1-8 title=8>    f.close()</a>
-<a class=sourceLine id=cb1-9 title=9>    a <span class=op>=</span> html[html.index(<span class=st>'/fd/hpk2'</span>):]</a>
-<a class=sourceLine id=cb1-10 title=10>    data <span class=op>=</span> a[:a.index(<span class=st>''</span>,<span class=bu>id</span>:<span class=st>')]</span></a>
-<a class=sourceLine id=cb1-11 title=11><span class=st>    url = data.replace('</span><span class=op>\</span><span class=st>', '')</span></a>
-<a class=sourceLine id=cb1-12 title=12><span class=st>    url = '</span>http:<span class=op>//</span>www.bing …</a></code></pre></div> </div> <a href=https://blog.alswl.com/2010/07/get-daily-bing-picture/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/07/7-crucial-tips-for-designing-and-maintaining-a-large-site/ >7条大型网站设计和维护的关键技巧[译文]</a></h2> <div class=summary><p>原文出处：<a href=http://net.tutsplus.com/articles/general/7-crucial-tips-for-%20designing-and-maintaining-a-large-site/ >7 Crucial Tips for Designing and Maintaining a Large Site | Nettuts+</a></p> <p>译者：<a href=http://log4d.com>alswl</a></p> <p>以下为译文</p> <hr> <p>项目范围和规模各不相同，他们带来的挑战各不相同一样。作为一个独立的网页设计师，我最大的职责就是负责FlashDen。随着成千上万的活动用户聊天，上传和购物， 网站处理着大额的金钱和巨大的流量。</p> <p>设计，重构，维护和开发团队的工作给了我一些能使事情变得更容易的用用的见解和技巧。而且，就在昨天，我们开始了对网站最大的一次重构，着看上去是一次很好的机会来记 录我最有用的7个秘诀。</p> <h3 id=可维护的设计和代码>1. 可维护的设计和代码</h3> <figure> <img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201007/button.jpg><figcaption>image</figcaption> </figure> <p>我给的第一条也是最条一条秘诀是设计站点保证可以轻松维护。很多时候，当你设计一个站点，你可能为了美学牺牲一些东西。例如，你可能使用一个图片而文字或者样式就可以 应付。或者你可能故意使用一个没有空间缩放的菜单结构。当网站变大时，这将将成为一个非常糟糕的设计。</p> <p>当我两年前建成FlashDen的第一个版本时，我使用图片按钮。他们看起来很漂亮，但同时我被100多个不同的按钮图片库拖累着，更谈不上修改图片了。之后在接下来 的几个月中 …</p> </div> <a href=https://blog.alswl.com/2010/07/7-crucial-tips-for-designing-and-maintaining-a-large-site/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/ >char nchar varchar nvarchar 区别</a></h2> <div class=summary><p>在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。</p> <p>私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。</p> <p>原文出处：<a href=http://www.cnblogs.com/yoyozhou/archive/2008/11/21/1338452.html>char nchar varchar nvarchar 区别 - Rainbow - 博客园</a></p> <p>联机帮助上的：</p> <p>char(n)</p> <p>定长</p> <p>索引效率高 程序里面使用trim去除多余的空白</p> <p>n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节</p> <p>varchar(n)</p> <p>变长</p> <p>效率没char高 灵活</p> <p>n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度 …</p> </div> <a href=https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <article class=article-list> <h2 class=title><a href=https://blog.alswl.com/2010/07/xi-mi-lu-with-milk/ >牛奶西米露</a></h2> <div class=summary><p>在下厨房看到一篇做西米露的文章，就想起在广东时候吃煲仔饭时候赠送的一碗西米露。于是乎晚上跑去苏果采购了一袋西米，由于买的时候以为西米露是用牛奶做的，误买了一 罐牛奶。</p> <p>西米露煮法说难也不难，就是用小火煮煮，然后闷上十几分钟，然后继续煮，继续闷，直到中间的白色芯消失的差不多，就可以起锅用清水洗了。煮的时候记得多放点水，西米会 吸水的。</p> <p>如果用来做甜品吃，记得买小西米，我买的时候还不知道有大小西米之分。买了大西米然后一煮，就膨胀了～</p> <p>西米不能用冷水洗，因为使用土豆等制作的二次食品，冷水一洗就化掉了～</p> <p>这是最好的成果，大西米的爽滑口感不如小西米，而且比小西米难煮，我至少重复闷了4次，牛奶的口感也不如椰汁。</p> <p><a href=https://4ocf5n.dijingchao.com/2010/07/ximilu.jpg><img alt=image src=https://4ocf5n.dijingchao.com/upload_dropbox/201007/ximilu.jpg></a></p> <p>下次继续努力咯～</p> </div> <a href=https://blog.alswl.com/2010/07/xi-mi-lu-with-milk/ class="btn btn-default btn-lg"><i class=icon-circle-arrow-right></i>more ...</a> </article> <hr> <ul class=pagination> <li class=prev><a href=https://blog.alswl.com/page/16/ >&laquo;</a> </li> <li class><a href=https://blog.alswl.com/ >1</a></li> <li class=disabled><a href>&hellip;</a></li> <li class><a href=https://blog.alswl.com/page/12/ >12</a></li> <li class><a href=https://blog.alswl.com/page/13/ >13</a></li> <li class><a href=https://blog.alswl.com/page/14/ >14</a></li> <li class><a href=https://blog.alswl.com/page/15/ >15</a></li> <li class><a href=https://blog.alswl.com/page/16/ >16</a></li> <li class=active><a href=https://blog.alswl.com/page/17/ >17</a></li> <li class><a href=https://blog.alswl.com/page/18/ >18</a></li> <li class><a href=https://blog.alswl.com/page/19/ >19</a></li> <li class><a href=https://blog.alswl.com/page/20/ >20</a></li> <li class><a href=https://blog.alswl.com/page/21/ >21</a></li> <li class><a href=https://blog.alswl.com/page/22/ >22</a></li> <li class=disabled><a href>&hellip;</a></li> <li class><a href=https://blog.alswl.com/page/45/ >45</a></li> <li class=next><a href=https://blog.alswl.com/page/18/ >&raquo;</a></li> </ul> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+<!DOCTYPE html>
+<html lang="en" dir="auto">
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+<head>
+	<meta name="generator" content="Hugo 0.104.3" /><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Log4D</title>
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+<meta name="description" content="">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/atom.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="Log4D" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://blog.alswl.com/" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Log4D"/>
+<meta name="twitter:description" content=""/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Log4D",
+  "url": "https://blog.alswl.com/",
+  "description": "",
+  "thumbnailUrl": "https://blog.alswl.com/favicon.ico",
+  "sameAs": [
+      "https://twitter.com/alswl", "https://github.com/alswl", "/atom.xml"
+  ]
+}
+</script>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>AzaAjaxChat笔记-实现
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
+一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co
+met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile
+的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的&#34;服务器推&#34;技术。
+我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询
+（long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。
+这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&#34;查询-&gt;返回-&gt;再查询&#34;中间的一段断开时间进行重连接。最后因为技术
+实现和开发时间，我决定放弃了Comet的实现。
+PS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。
+相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet–“服务器推&#34;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：“一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。“按照一般设计思路，这个动作应该由后台每
+过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的
+解决办法。
+我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。
+这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所
+有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。
+如果有PHP达人看到这个，望不惜赐教。
+三、RTMP RTPM是一个流媒体传输的协议，我在AzaAjaxChat中用它进行视频聊天画面和音频传输。这块内容可以洋洋洒洒的写一大篇日志，我在这里只是简单罗列一下我用
+到的相关内容。
+Real Time Messaging Protocol（实时消息传送协议协议)概述，实时消息传送协议是Adobe
+Systems公司为Flash播放器和服务器之间音频、视频和数据传输开发的私有协议。它有三种变种： 1)工作在TCP之上的明文协议，使用端口1935；
+2)RTMPT封装在HTTP请求之中，可穿越防火墙； 3)RTMPS类似RTMPT，但使用的是HTTPS连接；
+RTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP协议或者轮询 HTTP协议之上。
+RTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。
+这些通道中的包都是按照固定大小的包传输的。
+我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash
+Video流媒体播放功能的服务器软件。
+FMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司
+跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。
+四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a
+dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-08-22 00:00:00 +0800 CST'>2010-08-22</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to AzaAjaxChat笔记-实现" href="https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>新手入厨好书-《从零开始学下厨》
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>今天在人人戏言&#34;其实，我高考第一志愿是新东方烹饪学校，分数不够才学的计算机&#34;，居然有朋友问我真的假的，认真你就输了~
+不过话说回来，烹饪是我为数不多的爱好之一，虽然技术不是很娴熟，会做的菜也不多，但毕竟保持兴趣还是不错的。
+现在过着单身男人的生活，心血来潮也会自己做菜吃，可惜时间一久，会做的那几道简单的菜都让我反复做过了，想不出什么新花样。复杂的菜又要繁琐的工序和额外的操作，搞
+得我很吃力。总不能一有问题就电话给老妈吧，我思虑再三，决定买一本入门级的烹饪书。
+在China-pub，豆瓣，卓越，当当比较之后，看到这本《从零开始学下厨》很是喜欢，最后在当当下订单。
+我是一向讨厌《从零开始学XXX》的这类题目的书，给人不可靠，不扎实，这本书倒是给我带来不一样的感觉。书中详细的从器具、主食、常用食品、家常小菜这几个方面一一
+进行了介绍。适合读者是基本没有什么做菜经验的朋友。
+我在豆瓣给这本书打5星，因为这本书对它的读者群帮助很大，堪称菜鸟速成手册，全彩印刷。仅有两个小缺点是封面设计有点土&#43;喜欢在文中称读者为小厨娘（让我情何以堪啊
+）。
+PS:赞一下当当的发货速度，两天就到了。批评一下China-pub的发货速度，我等了1个星期的书都没到，亏得我都是消费700&#43;的准4星级会员。</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-08-18 00:00:00 +0800 CST'>2010-08-18</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 新手入厨好书-《从零开始学下厨》" href="https://blog.alswl.com/2010/08/cook-book/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>AzaAjaxChat笔记-框架
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1个月没有动PHP了，新装的系统甚至还没有配置PHP环境，今天看到BooguNote上有一个boo是专门记录AzaAjaxChat开发时候遇到的问题和解决办
+法。于是把一些东西整理记录一下。
+1. 从ThinkPHP开始 最早的AzaAjaxChat是基于ThinkPHP的，我当时在OpenSouce上看到ThinkPHP的介绍，有很多优点，看的我很心动：MVC模型，Ajax
+支持，详细的文档和案例，国人开发的框架。我作为一个PHP新人一下子就被他吸引住了，决定用ThinkPHP做框架。
+随着系统开发的推进，我却感觉到一些不自在，遇到一些问题却找不好太好的解决办法。比如ThinkPHP的模块和分组两个概念，让我比较疑惑，花费了大量时间重组目录
+结构，两种方法各有优劣，让我很难选择（有选择了反而难办了 ^_^）。
+最让我恼火的是相对目录带来的路径混乱，在JSP开发中，静态内容习惯性放在webcontent文件夹中，而ThinkPHP的CSS、图片、JS引用让我很疑惑，
+要区分App的和Model的静态文件。
+在开发过程中，我也遇到过框架本身的Bug，让我对这个框架失去信心。在这里我没有贬低ThinkPHP或者ThinkPHP开发者的意思，他们的&#34;大道至简、开发由
+我&#34;的理念很值得欣赏。只是作为初学者因为遇到的一些问题，带来了一定的开发难度，不得已放弃。
+2. 选择CakePHP 在遇到数次挫折之后，我终于下定决心换框架。工作室之前有过一个项目是用CakePHP开发的，保存着一些资料，阿贵强烈推荐CakePHP。我Google了几篇框
+架的评测文章后，考虑了一下AzaAjaxChat的规模，决定选择CakePHP。
+CakePHP的脚手架(Scaffold)功能让我眼前一亮，让我脱离了大量CRUD繁琐的操作。而Cake Bake可以方便的根据数据库生成php代码，减少那
+些没有逻辑意义的代码。AzaAjaxChat的定位是毕业设计，不是强健的产品，不会苛求太高的用户体验和安全特性，所以这个功能帮了我很多忙。
+CakePHP能够处理关系型数据库之间的m-n关系，由于我的系统逻辑简单，并没复杂的多表操作，所以这里没有深究。从Cake
+Baker的生成代码菜单上应该能够看出CakePHP还是能够处理一定的多表关联问题。
+CakePHP也不是那么十全十美，最麻烦的是文档少，我指的是中文文档，英文资源还是比较丰富的。其次是对Ajax的支持不如ThinkPHP那么原生，我一开始使
+用JSON方案，后来使用XML方案实现Ajax数据序列化。
+3. CakePHP &amp; ThinkPHP 使用的框架最大的目的是提高效率，大幅度缩短工作时间，这两个框架都是为此而诞生的。我这里不说孰优孰劣，如果感兴趣，可以Google查看相关比较。这两个框架都使
+用Ruby On Rails的Active
+Record理念进行开发，CakePHP更是被称为PHP版的RuR，我在编码中期还特意去图书馆查阅了RuR的相关资料，的确是高效的Web开发模型。
+Active Record释义
+ActiveRecord也属于ORM层，由Rails最早提出，遵循标准的ORM模型：表映射到记录，记录映射到对象，字段映射到对象属性。配合遵循的命名和配
+置惯例，能够很大程度的快速实现模型的操作，而且简洁易懂。
+我在答辩的PPT中写选择CakePHP的原因有三：一站式的MVC框架、约定优于配置、更少的代码，其实这也是RuR的优势。
+4. 相关连接 Plod: [翻译]十款PHP开发框架横向比较 ChinaUnix一位网友写的CakePHP入门（我觉得比官方教材好上手） cakephp jquery ajax json_天知道_百度空间（CakePHP的Ajax操作方法） 老王的技术手册_博客_cakephp / zendframework_百度空间（挺多CakePHP相关资料） IBM developerWorks 中国 : 使用 CakePHP 快速打造 Web 站点（IBM的CakePHP教程） </p>
+  </div>
+  <footer class="entry-footer"><span title='2010-08-12 00:00:00 +0800 CST'>2010-08-12</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to AzaAjaxChat笔记-框架" href="https://blog.alswl.com/2010/08/azaajaxchat-notes-frame/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>一路走来，师恩难忘
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>毕业答辩的最后一天，我以AzaAjaxChat聊天系统完成答辩。在走下答辩桌之后，得知自己成绩是3个优秀，我长嘘一口气，这个成绩终于给自己的大学生活划上了最
+后一个比较完美的句号。总算没有对不起自己喜爱的计算机专业。
+晚上是和灵动工作室的同学们、系主任杨老师和工作室负责人孙老师一起聚会的，回来的路上，我一直在想，哪些人在我前进的路上给了我帮助呢？
+晃了晃有喝晕的头，想起那些在我计算机成长路上给了我巨大帮助和前进方向的老师们，回忆起和他们在一起的点点滴滴。
+高中班主任-老张 这是列出来第一个也是唯一一个不是做IT的老师。老张是我高中班主任，典型的陕西人，他老婆也是我英语老师，我一直很难想象身材魁梧的老张怎么骗到娇小的小郭。高中时
+候学校管理特别严格，教室里有一台教学用电脑，我仗着自己电脑技术还可以，整天偷偷玩电脑。老张为了不让我玩电脑，甚至放下话说谁逮到我玩电脑，就奖励举报人5块钱。
+不过到高考之后也没有人举报我。
+虽然老张对我进行军事管制，不过还是让我参加了江苏省奥林匹克信息比赛，幸运的是，我还拿到一个不错的名次，其实里面很多猫腻，不过培养了我对计算机的浓厚兴趣。（过
+几天等我写计算机生涯时候再详细透露）
+今年过年时候，我大年初一就到老张家里拜年，老张也带着他刚2个月的老婆孩子大年初二到我家拜年，老张还提到我当时晚上偷偷去网吧魔兽公测，偷偷用班级电脑下载BT的
+事情，我就汗颜了，原来都知道啊～
+祝福老张的孩子健康成长哈，到时候还要喊我哥的～
+高中计算机老师-徐老师 徐老师是高中的计算机老师，上文提到的江苏省奥林匹克信息比赛就是他带着我去参加的。我是不知道其他城市的高中信息化教育普及是什么程度，反正我那时候高中就是教教怎
+么用Windows和Word，简单几句VB，而且有一半的计算机课会被数理化等科目强制霸占。私底下认为，这种教育方法泯灭了多少人才啊～
+当时徐老师不光要教学，还负责学校的机器维护，班里电脑出了我解决不了的问题，到了他那里肯定可以解决，当时看到他一手拿着一个硬盘，一手做着Ghost真是崇拜不已
+。现在想起来，高中我那会的计算机水平纯粹也就是把玩把玩各种新奇的软件，看《电脑报》看得一头是劲。
+高考填完志愿之后，偶遇徐老师，问我填的什么专业，我如实回答，他叹了一口气。。。唔～～～我至今不知道这口气什么意思～
+编程启蒙-杨老师 杨老师是我们的系主任，上课时候妙语连珠，带过我们3门课，都留下了非常深刻的印象。
+大一入学之后第一门课是计算机基础，就是杨老师带的，当时我上课特别活泼，又喜欢显摆，挺出风头，其实那课也没什么技术含量。真正的编程入门时大一下学期的C&#43;&#43;，也
+是杨老师教的，印象中对C&#43;&#43;的指针非常头疼。真是这门C&#43;&#43;帮我打开了走进编程的大门，向我展现了精彩的计算机世界。
+现在想来，同学们以后的方向就在那里开始分叉，我很庆幸杨老师带来精彩的入门，没让我在大一上学期的真三生活中继续堕落下去。这门课从某种程度上拯救了我的大学生活，
+甚至是整个人生。
+大三时的系统安全也是杨老师带的，那时候我刚和他完成了一个基于OpenSSL的分级Web服务器，我书写了全部的代码，这门课最高分通过～当时上课上到SSL安全链
+路那一章，杨老师都让我上台讲了一会，嘿嘿～
+当时很多OpenSSL的资料汇总，以前在BaiduHi的文章，后来移植过来的。
+编程/思想-孙老师 孙老师也是大学老师，带过离散数学、软件工程和网络编程。离散数学就不提了，我数学上了高中之后就其差无比，勉强才及格。软件工程就给我深深的上了一课。孙老师备课极
+为认真而且涉猎范围又广，虽然软件工程课我有时候也昏昏欲睡，但是却帮我换了一种姿态看软件，从PR上升到SD。之所以昏昏欲睡，是因为我当时沉迷于敏捷开发，对面向
+过程的软件工程不屑一顾。
+孙老师的网络编程课是在大三时候，这是一门让我能相当得意的课。那年暑假我参加ACM暑期培训，但是到后期我退出ACM转为帮孙老师准备网络编程的课件Demo，以至
+于上课时候的那些协议和Socket编程相当熟悉。最让我骄傲的是在我下一届学弟们上这门课时候，孙老师感慨&#34;以前还有alswl听得懂，你们这一届谁听的懂&#34;。
+孙老师最大的贡献是拓展了我的视野，强化了我网络编程能力，并完成了一定的自我价值实现。
+一些零碎的网络编程资料，当时还在BaiduHi，资料挺乱而且不完全。
+倪经理 我去年年末到今年（2010）在广东待了半年时间，做一个企业信息化的项目。当时完全是作坊式工作，加上属于出差性质，管理有点混乱。技术上面也不能提供发展空间，我
+做Java开发，却没有Java项目经理，很多东西甚至要我自己摸索。繁重的工作一度导致我对程序开发有抵触心理。那段时间，我也写了[保持IT工作兴趣](http
+://log4d.com/2010/04/keep-it-work-interest)这样的文章。
+到3月份的时候，倪经理加入了我们，给我带来一个崭新的Java感官。具体细节[最近在学的技术](http://log4d.com/2010/04
+/recent-study-technologys)从可以看出来。
+虽然和倪经理共事的时间不长，但是他在那段极端的日子里面给我很大的帮助，感谢他无私的付出。
+Last 其实还有更多的老师和朋友给了我帮助，比如刘昆老师，初中时候那位计算机老师，现在的同事等等，这里不能一一道明。
+这篇文章一直拖了一个多月，今天看完XDash的[我的互联网生涯（上）](http://www.fanbing.net/my-internet-
+career-1.html)才从BooguNote中拉出完成，真的很对不起诸位老师～</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-08-04 00:00:00 +0800 CST'>2010-08-04</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 一路走来，师恩难忘" href="https://blog.alswl.com/2010/08/teachers/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>10_08_01 Update
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1.好久没有Update了，今天废话一次。
+2.最近更新较少，倒不是文囧，只因为平日里用BooguNote记录的东西相当琐碎。我工作刚进入正轨，一边又到处看房子，所以没能静下心来整理，之前的AzaAj
+axChat的很多资料没有整理出来，在Google Calendar上安排的GTD日程也被一拖再拖～残念。
+3.CSDN立功了！之前翻译了一篇文章[7条大型网站设计和维护的关键技巧[译文] - Log4D](http://log4d.com/2010/07/7
+-crucial-tips-for-designing-and-maintaining-a-large-site)被CSDN编辑放到首页第二条[http:/
+/java.csdn.net/a/20100730/277483.html](http://java.csdn.net/a/20100730/277483.
+html)，真是惭愧，英语水平被大批，我今天留了一条言。
+这个，没想到会上CSDN首页～
+这是我第三次翻译文章，水平有限，请大家谅解。
+年初的时候，在啄木鸟论坛看见这样一个宣言
+“每日至少抽一刻钟,解答邮件列表中初学者的问题，
+每周至少抽两小时,整理新学知识将体验发表/分享出去，
+通过Blog/Wiki/MaiList/个人网站……
+每旬至少抽四个小时, 来翻译自个儿喜爱的自由软件的文档，
+每月至少抽八小时, 快乐的编程，推进自个儿的项目，
+每年至少参加一次, 自由软件的活动，传播自由软件思想，
+发展一名&#34;自由人”……
+只要我们每个人都坚持下去……
+10年！就足以改变中国软件的整体风貌！&#34;
+我还没到宣言中提到的如此伟大，只是站在初学者的角度做一些对自己也有帮助的工作～同时把自己的一些积累分享出来。
+感谢CSDN编辑，虽然这只是一篇译文，但是给我莫大的鼓舞，我会继续努力的。
+谢谢CSDN网友们的评论，我会加强自己的英文水平的～谢谢大家～
+不管怎样，还是给了我莫大的鼓励～
+4.一个人的日子果然不好过啊，做饭都做着没意思了～求包养，求收购啊。。。。</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-08-01 00:00:00 +0800 CST'>2010-08-01</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 10_08_01 Update" href="https://blog.alswl.com/2010/08/10_08_01-update/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>SQL格式化工具-SQL Pretty Printer
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>背景 最近写了一些SQL，数据库用的是MS-SQL，而SQL Server Management
+Studio是不自带代码格式化功能的，这让我用起来很郁闷，PL/SQL Developer格式起来多爽啊。
+在网上找了一下SQL格式化工具，只有一个用起来还不错的在线版本，我测试
+了一下，功能强大，可惜不支持中文，注释的中文会被打上？？
+SQL Pretty Printer 我在那个在线网站看到了Desktop Version的菜单，进去一看，哦，原来这个网站本身就在做一款SQL格式化工具的产品，叫做 SQL Pretty
+Printer。
+SQL Pretty Printer 的桌面版本
+格式化好之后的代码
+功能 SQL Pretty Printer目前提供4种使用方式，桌面版本，SSMS(SQL Server Management
+Studio)插件，VS插件，和提供API接口。
+SSMS(SQL Server Management Studio)插件版本
+可以将SQL转化成代码格式，支持数种语言
+可以将SQL转化成HTML格式
+获取 使用版本只能提供30次，而且桌面版本的无法将代码复制出来，我使用的是SSMS插件版本，可以直接在查询器里面格式化，试用版的限制比较多。
+翻遍SQL Pretty Printer的网站，终于发现了Get SQL Pretty Printer Desktop Version For
+Free信息，作者说可以通过4种途径获取免费的授权码。
+1.If you are a technical/software blogger or journalist willing to write
+us up (honest reviews are the most useful to us) [email us](mailto:support@dpr
+iver.com?subject=I%20want%20to%20review%20sql%20pretty%20printer%20on%20my%20s...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-07-28 00:00:00 +0800 CST'>2010-07-28</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to SQL格式化工具-SQL Pretty Printer" href="https://blog.alswl.com/2010/07/sql-format-tool-sql-pretty-printer/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>获取每日Bing图片
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。
+放狗搜索，发现一篇文章 抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客，文中提供了抓取程式的Python代码，我摘录如下。
+import urllib import time def main(): url = &#39;http://www.bing.com&#39; f = urllib.urlopen(url) html = f.read() f.close() a = html[html.index(&#39;/fd/hpk2&#39;):] data = a[:a.index(&#39;&#39;,id:&#39;)] url = data.replace(&#39;\&#39;, &#39;&#39;) url = &#39;http://www.bing.com&#39;&#43;url name=time.strftime(&#34;%Y%m%d&#34;, time.localtime()) name=name&#43;&#34;.jpg&#34; urllib.urlretrieve(url,name) if __name__ == &#34;__main__&#34;: main() 关键的步骤是MS修改了jpg的url方式，用g_img={url:’/fd/hpk2/BambooBoat_ZH-
+CN1057817945.jpg’这样的字符串躲避机器人的抓取。简单的替换即可完成。
+我用C#重写了代码实现，如下所示。
+using System; using System.Collections.Generic; using System.Text; using System.Net; using System.IO; namespace com.dddspace.GetBingImg
+{ #region 获取Bing图片
+class GetBingImg
+{
+static void Main(string[] args)...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-07-19 00:00:00 +0800 CST'>2010-07-19</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 获取每日Bing图片" href="https://blog.alswl.com/2010/07/get-daily-bing-picture/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>7条大型网站设计和维护的关键技巧[译文]
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>原文出处：[7 Crucial Tips for Designing and Maintaining a Large Site | Nettuts&#43;](http://net.tutsplus.com/articles/general/7-crucial-tips-for-
+designing-and-maintaining-a-large-site/)
+译者：alswl
+以下为译文
+项目范围和规模各不相同，他们带来的挑战各不相同一样。作为一个独立的网页设计师，我最大的职责就是负责FlashDen。随着成千上万的活动用户聊天，上传和购物，
+网站处理着大额的金钱和巨大的流量。
+设计，重构，维护和开发团队的工作给了我一些能使事情变得更容易的用用的见解和技巧。而且，就在昨天，我们开始了对网站最大的一次重构，着看上去是一次很好的机会来记
+录我最有用的7个秘诀。
+1. 可维护的设计和代码 我给的第一条也是最条一条秘诀是设计站点保证可以轻松维护。很多时候，当你设计一个站点，你可能为了美学牺牲一些东西。例如，你可能使用一个图片而文字或者样式就可以
+应付。或者你可能故意使用一个没有空间缩放的菜单结构。当网站变大时，这将将成为一个非常糟糕的设计。
+当我两年前建成FlashDen的第一个版本时，我使用图片按钮。他们看起来很漂亮，但同时我被100多个不同的按钮图片库拖累着，更谈不上修改图片了。之后在接下来
+的几个月中，当一个开发者需要一个新按钮时候他们向我要一个新图片。不用说，我学到这个教训很快，我们切换到一个单独的按钮类，虽然看上去不是很好，但是这种情况更能
+安心。
+可维护性的另一面是考虑站点将会怎样成长和变化。比如，当一个新页面增加时，它到哪里去？我一直想要一个横向的导航栏，但是经过一些尝试，我们限制地使用了加入子栏目
+的垂直的导航栏，从而加入一个标签结构到页面来保证相关的页面能被归类到一起。我不敢说这是世界上最好的导航栏，但是它肯定能够让我们不用重新设计在一个新的节点加入
+网站的时候。
+所以当你在设计大型站点时候，设法让它变得简单，你会为此而感到高兴的！
+2. 找出你的用户群和任务 大型网站网站和小型站点的最大一个区别就是使用网站的不同用户类型的数量。例如在FlashDen上，有买家、作家、访客、管理员和会员。每个用户组都有他们各自不同
+的目标和任务。有时候他们的任务重叠，但是他们有很大的不同。
+一个地方的用户任务在相互对立的观点最好的例子是在一个网页。网站上没有任何一个地方不衔接的每个用户组，并在其他地方是如此的重要，以确保每个人都会有他们想要的。
+当然，你要小心，在服务一个用户组你不忽略另一个。
+在这次最新一次FlashDen重新设计时候，我所作工作最大的地方是主页。我做的第一件事情是给自己列出每个用户组需要做的事情：
+买家 - 在FlashDen上购买文件的人
+浏览项目，搜索，访问他们的个人主页，存款，学习使用网站（新买家） 作者 - 在FlashDen上卖商品的人
+与其他会员聊天，在主页上展示他们项目的功能，了解网站的新闻，快速的获取他们的投资搭配和收益 新访客 - 潜在的买家/作者/会员，刚到站点的人
+快速了解到站点是干嘛的，起步教程，查看不同类别的文件和价格 会员 - 不是真正的买家或作者，而是在社区中活跃
+和其他会员聊天，查看站点新闻，浏览文件 管理员/审稿人 - 我们的工作人员，管理文件的批准，主持论坛，参与大部分活动
+快速批准文件，查看最新论坛主题，添加站点新闻 当你知道不同的用户群体想要做什么，那么你可以设计一个网页，解决了他们所有的需要。不用说，这是随着用户组和任务数量指数级增加的困难的任务。在该网站的其他网页，
+你会经常为部分用户组而苦恼，而在主页上，他们却又都集中在一起。不用怀疑，主页是你设计一个网站时候最重要的一项工作。
+在你解决不同需求之前，你需要先考虑用户群。为了做到这个，你需要了解该网站是要实现的目标。
+3. 了解网站目标 虽然每个用户组会很自然地认为他们是最重要的，但是你应该根据他们的优先度来判别站点要实现的目标。比如在FlashDen上，我们给候补人员列出下面几条结论：
+该网站的首要任务是为买家服务。为买家服务可以带来不断的收入，同时也可以为作者群服务。 让游客更快的了解网站进而成为会员也是至关重要的。FlashDen还处在一个比较新兴的市场，不断有新竞争对手出现，如何将注册会员变成买家或者作者是相当重要的。 创作者是FlashDen的核心部分，他们也是非常重要，和其他用户群不同的是，他们是网站坚定的拥护者。 注册会员虽然没有创作者或者买家这么重要，但是他们也在为周边的社群作出贡献。 作为雇员，管理员/审稿人是相对最不重要的。 因此，从以上所说可以得出结论，网站服务的的用户需求优先顺序：访客&gt;买家&gt;作者&gt;成员&#34;&gt;管理员。
+认识你的网站正在努力实现的却是最终用户线程的缝制任务一起，并告诉你什么你应该尝试把页面上。...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-07-17 00:00:00 +0800 CST'>2010-07-17</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 7条大型网站设计和维护的关键技巧[译文]" href="https://blog.alswl.com/2010/07/7-crucial-tips-for-designing-and-maintaining-a-large-site/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>char nchar varchar nvarchar 区别
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim(
+)操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。
+私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。
+原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园
+联机帮助上的：
+char(n)
+定长
+索引效率高 程序里面使用trim去除多余的空白
+n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节
+varchar(n)
+变长
+效率没char高 灵活
+n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节
+text(n)
+变长
+非Unicode数据
+nchar(n)
+定长
+处理unicode数据类型(所有的字符使用两个字节表示)
+n 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍
+nvarchar(n)
+变长
+处理unicode数据类型(所有的字符使用两个字节表示)
+n 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零
+ntext(n)
+变长
+处理unicode数据类型(所有的字符使用两个字节表示)
+1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足
+的自动用空格填充，所以在读取的时候可能要多次用到trim（）。
+2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。
+VARCHAR类型的实际长度是它的值的实际长度&#43;1。为什么&#34;&#43;1&#34;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-07-16 00:00:00 +0800 CST'>2010-07-16</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to char nchar varchar nvarchar 区别" href="https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>牛奶西米露
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在下厨房看到一篇做西米露的文章，就想起在广东时候吃煲仔饭时候赠送的一碗西米露。于是乎晚上跑去苏果采购了一袋西米，由于买的时候以为西米露是用牛奶做的，误买了一
+罐牛奶。
+西米露煮法说难也不难，就是用小火煮煮，然后闷上十几分钟，然后继续煮，继续闷，直到中间的白色芯消失的差不多，就可以起锅用清水洗了。煮的时候记得多放点水，西米会
+吸水的。
+如果用来做甜品吃，记得买小西米，我买的时候还不知道有大小西米之分。买了大西米然后一煮，就膨胀了～
+西米不能用冷水洗，因为使用土豆等制作的二次食品，冷水一洗就化掉了～
+这是最好的成果，大西米的爽滑口感不如小西米，而且比小西米难煮，我至少重复闷了4次，牛奶的口感也不如椰汁。
+下次继续努力咯～</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-07-15 00:00:00 +0800 CST'>2010-07-15</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 牛奶西米露" href="https://blog.alswl.com/2010/07/xi-mi-lu-with-milk/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://blog.alswl.com/page/16/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="https://blog.alswl.com/page/18/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

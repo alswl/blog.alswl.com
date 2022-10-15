@@ -1,44 +1,742 @@
-<!DOCTYPE html><html lang=en> <head><title>使用 OpenSSL API 进行安全编程【转载】 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/ rel=canonical><meta name=author content=alswl><meta name=keywords content=C,OpenSSL,SSL><meta name=description content="使用 OpenSSL API 进行安全编程 创建基本的安全连接和非安全连接 级别： 初级 Kenneth Ballard (kenneth.ballard@ptk.org), 自由程序员 2004 年 8 月 09 日 学习如何使用 OpenSSL —- 用于安全通信的最著名的开放库 —- 的 API 有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的 BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。 OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL 使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题 …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/ rel=bookmark title="Permalink to 使用 OpenSSL API 进行安全编程【转载】"> 使用 OpenSSL API 进行安全编程【转载】 </a> </h1> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2009-03-17T00:00:00+08:00> 2009-03-17</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/c/ >C</a> / <a href=https://blog.alswl.com/tag/openssl/ >OpenSSL</a> / <a href=https://blog.alswl.com/tag/ssl/ >SSL</a> </footer><!-- /.post-info --> </div> </div> <p>使用 OpenSSL API 进行安全编程</p> <p>创建基本的安全连接和非安全连接</p> <p>级别： 初级</p> <p>Kenneth Ballard (<a href=mailto:kenneth.ballard@ptk.org>kenneth.ballard@ptk.org</a>), 自由程序员</p> <p>2004 年 8 月 09 日</p> <p>学习如何使用 OpenSSL &mdash;- 用于安全通信的最著名的开放库 &mdash;- 的 API 有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的 BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。</p> <p>OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL 使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。</p> <p>学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但 OpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？</p> <p>OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&ldquo;SSL library&rdquo;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于 1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General Public License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的 参考资料 ，以获得其他信息）。</p> <p>那么，是什么使得 OpenSSL 比 GNU TLS、Mozilla NSS 或其他所有的库都优越呢？许可是一方面因素（请参阅 参考资料）。此外，GNS TLS（迄今为止）只支持 TLS v1.0 和 SSL v3.0 协议，仅此而已。</p> <p>Mozilla NSS 的发行既遵循 Mozilla Public License 又遵循 GNU GPL，它允许开发人员进行选择。不过，Mozilla NSS 比 OpenSSL 大，并且需要其他外部库来对库进行编译，而 OpenSSL 是完全自包含的。与 OpenSSL 相同，大部分 NSS API 也没有文档资料。Mozilla NSS 获得了 PKCS #11 支持，该支持可以用于诸如智能卡这样的加密标志。OpenSSL 就不具备这一支持。</p> <p>先决条件</p> <p>要充分理解并利用本文，您应该：</p> <p>精通 C 编程。</p> <p>熟悉 Internet 通信和支持 Internet 的应用程序的编写。</p> <p>并不绝对要求您熟悉 SSL ，因为稍后将给出对 SLL 的简短说明；不过，如果您希望得到详细论述 SSL 的文章的链接，请参阅 参考资料部分。拥有密码学方面的知识固然好，但这并不是必需的。</p> <p>回页首</p> <p>什么是 SSL？</p> <p>SSL 是一个缩写，代表的是 Secure Sockets Layer。它是支持在 Internet 上进行安全通信的标准，并且将数据密码术集成到了协议之中 。数据在离开您的计算机之前就已经被加密，然后只有到达它预定的目标后才被解密。证书和密码学算法支持了这一切的运转，使用 OpenSSL，您将有机会切身体会它们。</p> <p>理论上，如果加密的数据在到达目标之前被截取或窃听，那些数据是不可能被破解的。不过，由于计算机的变化一年比一年快，而且密码翻译方法有了新的发展，因此，SSL 中使用的加密协议被破解的可能性也在增大。</p> <p>可以将 SSL 和安全连接用于 Internet 上任何类型的协议，不管是 HTTP、POP3，还是 FTP。还可以用 SSL 来保护 Telnet 会话。虽然可以用 SSL 保护任何连接，但是不必对每一类连接都使用 SSL。如果连接传输敏感信息，则应使用 SSL。</p> <p>回页首</p> <p>什么是 OpenSSL？</p> <p>OpenSSL 不仅仅是 SSL。它可以实现消息摘要、文件的加密和解密、数字证书、数字签名和随机数字。关于 OpenSSL 库的内容非常多，远不是一篇文章可以容纳的。</p> <p>OpenSSL 不只是 API，它还是一个命令行工具。命令行工具可以完成与 API 同样的工作，而且更进一步，可以测试 SSL 服务器和客户机。它还让开发人员对 OpenSSL 的能力有一个认识。要获得关于如何使用 OpenSSL 命令行工具的资料，请参阅 参考资料部分。</p> <p>回页首</p> <p>您需要什么</p> <p>首先需要的是最新版本的 OpenSSL。查阅参考资料部分，以确定从哪里可以获得最新的可以自己编译的源代码，或者最新版本的二进制文件（如果您不希望花费时间来编 译的话）。不过，为了安全起见，我建议您下载最新的源代码并自己编译它。二进制版本通常是由第三方而不是由 OpenSSL 的开发人员来编译和发行的。</p> <p>一些 Linux 的发行版本附带了 OpenSSL 的二进制版本，对于学习如何使用 OpenSSL 库来说，这足够了；不过，如果您打算去做一些实际的事情，那么一定要得到最新的版本，并保持该版本一直是最新的。</p> <p>对于以 RPM 形式安装的 Linux 发行版本（Red Hat、Mandrake 等），建议您通过从发行版本制造商那里获得 RPM 程序包来更新您的 OpenSSL 发行版本。出于安全方面的原因，建议您使用最新版本的发行版本。如果您的发行版本不能使用最新版本的 OpenSSL，那么建议您只覆盖库文件，不要覆盖可执行文件。OpenSSL 附带的 FAQ 文档中包含了有关这方面的细节。</p> <p>还要注意的是，OpenSSL 并没有在所有的平台上都获得官方支持。虽然制造商已经尽力使其能够跨平台兼容，但仍然存在 OpenSSL 不能用于您的计算机 和/或 操作系统的可能。请参阅 OpenSSL 的 Web 站点（ 参考资料 中的链接），以获得关于哪些平台可以得到支持的信息。</p> <p>如果想使用 OpenSSL 来生成证书请求和数字证书，那么必须创建一个配置文件。在 OpenSSL 程序包的 apps 文件夹中，有一个名为 openssl.cnf 的可用模板文件。我不会对该文件进行讨论，因为这不在本文要求范围之内。不过，该模板文件有一些非常好的注释，而且如果在 Internet 上搜索，您可以找到很多讨论修改该文件的教程。</p> <p>回页首</p> <p>头文件和初始化</p> <p>本教程所使用的头文件只有三个：ssl.h、bio.h 和 err.h。它们都位于 openssl 子目录中，而且都是开发您的项目所必需的。要初始化 OpenSSL 库，只需要三个代码行即可。清单 1 中列出了所有内容。其他的头文件 和/或 初始化函数可能是其他一些功能所必需的。</p> <p>清单 1. 必需的头文件</p> <p>/* OpenSSL headers */</p> <p>#include &ldquo;openssl/bio.h&rdquo;</p> <p>#include &ldquo;openssl/ssl.h&rdquo;</p> <p>#include &ldquo;openssl/err.h&rdquo;</p> <p>/* Initializing OpenSSL */</p> <p>SSL_load_error_strings();</p> <p>ERR_load_BIO_strings();</p> <p>OpenSSL_add_all_algorithms();</p> <p>回页首</p> <p>建立非安全连接</p> <p>不管连接是安全的还是不安全的，OpenSSL 都使用了一个名为 BIO 的抽象库来处理包括文件和套接字在内的各种类型的通信。您还可以将 OpenSSL 设置成为一个过滤器，比如用于 UU 或 Base64 编码的过滤器。</p> <p>在这里对 BIO 库进行全面说明有点麻烦，所以我将根据需要一点一点地介绍它。首先，我将向您展示如何建立一个标准的套接字连接。相对于使用 BSD 套接字库，该操作需要的代码行更少一些。</p> <p>在建立连接（无论安全与否）之前，要创建一个指向 BIO 对象的指针。这类似于在标准 C 中为文件流创建 FILE 指针。</p> <p>清单 2. 指针</p> <p>BIO * bio;</p> <p>打开连接</p> <p>创建新的连接需要调用 BIO_new_connect 。您可以在同一个调用中同时指定主机名和端口号。也可以将其拆分为两个单独的调用：一个是创建连接并设置主机名的 BIO_new_connect 调用，另一个是设置端口号的 BIO_set_conn_port （或者 BIO_set_conn_int_port ）调用。</p> <p>不管怎样，一旦 BIO 的主机名和端口号都已指定，该指针会尝试打开连接。没有什么可以影响它。如果创建 BIO 对象时遇到问题，指针将会是 NULL。为了确保连接成功，必须执行 BIO_do_connect 调用。</p> <p>清单 3. 创建并打开连接</p> <p>bio = BIO_new_connect(&ldquo;hostname:port&rdquo;);</p> <p>if(bio == NULL)</p> <p>{</p> <p>/* Handle the failure */</p> <p>}</p> <p>if(BIO_do_connect(bio) &lt;= 0)</p> <p>{</p> <p>/* Handle failed connection */</p> <p>}</p> <p>在这里，第一行代码使用指定的主机名和端口创建了一个新的 BIO 对象，并以所示风格对该对象进行 格式化。例如，如果您要连接到 <a href=http://www.ibm.com/ >www.ibm.com</a> 的 80 端口，那么该字符串将是 <a href=http://www.ibm.com/ >www.ibm.com:80</a> 。调用 BIO_do_connect 检查连接是否成功。如果出错，则返回 0 或 -1。</p> <p>与服务器进行通信</p> <p>不管 BIO 对象是套接字还是文件，对其进行的读和写操作都是通过以下两个函数来完成的： BIO_read 和 BIO_write 。很简单，对吧？精彩之处就在于它始终如此。</p> <p>BIO_read 将尝试从服务器读取一定数目的字节。它返回读取的字节数、 0 或者 -1。在受阻塞的连接中，该函数返回 0，表示连接已经关闭，而 -1 则表示连接出现错误。在非阻塞连接的情况下，返回 0 表示没有可以获得的数据，返回 -1 表示连接出错。可以调用 BIO_should_retry 来确定是否可能重复出现该错误。</p> <p>清单 4. 从连接读取</p> <p>int x = BIO_read(bio, buf, len);</p> <p>if(x == 0)</p> <p>{</p> <p>/* Handle closed connection */</p> <p>}</p> <p>else if(x &lt; 0)</p> <p>{</p> <p>if(! BIO_should_retry(bio))</p> <p>{</p> <p>&amp;n bsp_place_holder; /* Handle failed read here */</p> <p>}</p> <p>/* Do something to handle the retry */</p> <p>}</p> <p>BIO_write 会试着将字节写入套接字。它将返回实际写入的字节数、0 或者 -1。同 BIO_read ，0 或 -1 不一定表示错误。 BIO_should_retry 是找出问题的途径。如果需要重试写操作，它必须使用和前一次完全相同的参数。</p> <p>清单 5. 写入到连接</p> <p>if(BIO_write(bio, buf, len) &lt;= 0)</p> <p>{</p> <p>if(! BIO_should_retry(bio))</p> <p>{</p> <p>&amp;n bsp_place_holder; /* Handle failed write here */</p> <p>}</p> <p>/* Do something to handle the retry */</p> <p>}</p> <p>关闭连接</p> <p>关闭连接也很简单。您可以使用以下两种方式之一来关闭连接： BIO_reset 或 BIO_free_all 。如果您还需要重新使用对象，那么请使用第一种方式。如果您不再重新使用它，则可以使用第二种方式。</p> <p>BIO_reset 关闭连接并重新设置 BIO 对象的内部状态，以便可以重新使用连接。如果要在整个应用程序中使用同一对象，比如使用一台安全的聊天客户机，那么这样做是有益的。该函数没有返回值。</p> <p>BIO_free_all 所做正如其所言：它释放内部结构体，并释放所有相关联的内存，其中包括关闭相关联的套接字。如果将 BIO 嵌入于一个类中，那么应该在类的析构函数中使用这个调用。</p> <p>清单 6. 关闭连接</p> <p>/* To reuse the connection, use this line */</p> <p>BIO_reset(bio);</p> <p>/* To free it from memory, use this line */</p> <p>BIO_free_all(bio);</p> <p>回页首</p> <p>建立安全连接</p> <p>现在需要给出建立安全连接需要做哪些事情。惟一要改变的地方就是建立并进行连接。其他所有内容都是相同的。</p> <p>安全连接要求在连接建立后进行握手。在握手过程中，服务器向客户机发送一个证书，然后，客户机根据一组可信任证书来核实该证书。它还将检查证书，以确保它没有过期。要 检验证书是可信任的，需要在连接建立之前提前加载一个可信任证书库。</p> <p>只有在服务器发出请求时，客户机才会向服务器发送一个证书。该过程叫做客户机认证。使用证书，在客户机和服务器之间传递密码参数，以建立安全连接。尽管握手是在建立连 接之后才进行的，但是客户机或服务器可以在任何时刻请求进行一次新的握手。</p> <p>参考资料 部分中列出的 Netscasp 文章和 RFC 2246 ，对握手以及建立安全连接的其他方面的知识进行了更详尽的论述。</p> <p>为安全连接进行设置</p> <p>为安全连接进行设置要多几行代码。同时需要有另一个类型为 SSL_CTX 的指针。该结构保存了一些 SSL 信息。您也可以利用它通过 BIO 库建立 SSL 连接。可以通过使用 SSL 方法函数调用 SSL_CTX_new 来创建这个结构，该方法函数通常是 SSLv23_client_method 。</p> <p>还需要另一个 SSL 类型的指针来保持 SSL 连接结构（这是短时间就能完成的一些连接所必需的）。以后还可以用该 SSL 指针来检查连接信息或设置其他 SSL 参数。</p> <p>清单 7. 设置 SSL 指针</p> <p>SSL_CTX * ctx = SSL_CTX_new(SSLv23_client_method());</p> <p>SSL * ssl;</p> <p>加载可信任证书库</p> <p>在创建上下文结构之后，必须加载一个可信任证书库。这是成功验证每个证书所必需的。如果不能确认证书是可信任的，那么 OpenSSL 会将证书标记为无效（但连接仍可以继续）。</p> <p>OpenSSL 附带了一组可信任证书。它们位于源文件树的 certs 目录中。不过，每个证书都是一个独立的文件 &mdash;- 也就是说，需要单独加载每一个证书。在 certs 目录下，还有一个存放过期证书的子目录。试图加载这些证书将会出错。</p> <p>如果您愿意，可以分别加载每一个文件，但为了简便起见，最新的 OpenSSL 发行版本的可信任证书通常存放在源代码档案文件中，这些档案文件位于名为&ldquo;Trust Store.pem&rdquo;的单个文件中。如果已经有了一个可信任证书库，并打算将它用于特定的项目中，那么只需使用您的文件替换清单 8 中的&ldquo;TrustStore.pem&rdquo;（或者使用单独的函数调用将它们全部加载）即可。</p> <p>可以调用 SSL_CTX_load_verify_locations 来加载可信任证书库文件。这里要用到三个参数：上下文指针、可信任库文件的路径和文件名，以 及证书所在目录的路径。必须指定可信任库文件或证书的目录。如果指定成功，则返回 1，如果遇到问题，则返回 0。</p> <p>清单 8. 加载信任库</p> <p>if(! SSL_CTX_load_verify_locations(ctx, &ldquo;/path/to/TrustStore.pem&rdquo;, NULL))</p> <p>{</p> <p>/* Handle failed load here */</p> <p>}</p> <p>如果打算使用目录存储可信任库，那么必须要以特定的方式命名文件。OpenSSL 文档清楚地说明了应该如何去做，不过，OpenSSL 附带了一个名为 c_rehash 的工具，它可以将文件夹配置为可用于 SSL_CTX_load_verify_locations 的路径参数。</p> <p>清单 9. 配置证书文件夹并使用它</p> <p>/* Use this at the command line */</p> <p>c_rehash /path/to/certfolder</p> <p>/* then call this from within the application */</p> <p>if(! SSL_CTX_load_verify_locations(ctx, NULL, &ldquo;/path/to/certfolder&rdquo;))</p> <p>{</p> <p>/* Handle error here */</p> <p>}</p> <p>为了指定所有需要的验证证书，您可以根据需要命名任意数量的单独文件或文件夹。您还可以同时指定文件和文件夹。</p> <p>创建连接</p> <p>将指向 SSL 上下文的指针作为惟一参数，使用 BIO_new_ssl_connect 创建 BIO 对象。还需要获得指向 SSL 结构的指针。在本文中，只将该指针用于 SSL_set_mode 函数。而这个函数是用来设置 SSL_MODE_AUTO_RETRY 标记的。使用这个选项进行设置，如果服务器突然希望进行一次新的握手，那么 OpenSSL 可以在后台处理它。如果没有这个选项，当服务器希望进行一次新的握手时，进行读或写操作都将返回一个错误，同时还会在该过程中设置 retry 标记。</p> <p>清单 10. 设置 BIO 对象</p> <p>bio = BIO_new_ssl_connect(ctx);</p> <p>BIO_get_ssl(bio, &amp; ssl);</p> <p>SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);</p> <p>设置 SSL 上下文结构之后，就可以创建连接了。主机名是使用 BIO_set_conn_hostname 函数设置的。主机名和端口的指定格式与前面的相同。该函数还可以打开到主机的连接。为了确认已经成功打开连接，必须执行对 BIO_do_connect 的调用。该调用还将执行握手来建立安全连接。</p> <p>清单 11. 打开安全连接</p> <p>/* Attempt to connect */</p> <p>BIO_set_conn_hostname(bio, &ldquo;hostname:port&rdquo;);</p> <p>/* Verify the connection opened and perform the handshake */</p> <p>if(BIO_do_connect(bio) &lt;= 0)</p> <p>{</p> <p>/* Handle failed connection */</p> <p>}</p> <p>连接建立后，必须检查证书，以确定它是否有效。实际上，OpenSSL 为我们完成了这项任务。如果证书有致命的问题（例如，哈希值无效），那么将无法建立连接。但是 ，如果证书的问题并不是致命的（当它已经过期或者尚不合法时），那么仍可以继续使用连接。</p> <p>可以将 SSL 结构作为惟一参数，调用 SSL_get_verify_result 来查明证书是否通过了 OpenSSL 的检验。如果证书通过了包括信任检查在内的 OpenSSL 的内部检查，则返回 X509_V_OK。如果有地方出了问题，则返回一个错误代码，该代码被记录在命令行工具的 verify 选项下。</p> <p>应该注意的是，验证失败并不意味着连接不能使用。是否应该使用连接取决于验证结果和安全方面的考虑。例如，失败的信任验证可能只是意味着没有可信任的证书。连接仍然可 用，只是需要从思想上提高安全意识。</p> <p>清单 12. 检查证书是否有效</p> <p>if(SSL_get_verify_result(ssl) != X509_V_OK)</p> <p>{</p> <p>/* Handle the failed verification */</p> <p>}</p> <p>这就是所需要的全部操作。通常，与服务器进行通信都要使用 BIO_read 和 BIO_write 。并且只需调用 BIO_free_all 或 BIO_reset ，就可以关闭连接，具体调用哪一个方法取决于是否重用 BIO。</p> <p>必须在结束应用程序之前的某个时刻释放 SSL 上下文结构。可以调用 SSL_CTX_free 来释放该结构。</p> <p>清单 13. 清除 SSL 上下文</p> <p>SSL_CTX_free(ctx);</p> <p>回页首</p> <p>错误检测</p> <p>显然 OpenSSL 抛出了某种类型的错误。这意味着什么？首先，您需要得到错误代码本身； ERR_get_error 可以完成这项任务；然后，需要将错误代码转换为错误字符串，它是一个指向由 SSL_load_error_strings 或 ERR_load_BIO_strings 加载到内存中的永久字符串的指针。可以在一个嵌套调用中完成这项操作。</p> <p>表 1 略述了从错误栈检索错误的方法。清单 24 展示了如何打印文本字符串中的最后一个错误信息。</p> <p>表 1. 从栈中检索错误</p> <p>ERR_reason_error_string 返回一个静态字符串的指针，然后可以将字符串显示在屏幕上、写入文件，或者以任何您希望的方式进行处理</p> <p>ERR_lib_error_string 指出错误发生在哪个库中</p> <p>ERR_func_error_string 返回导致错误的 OpenSSL 函数</p> <p>清单 14. 打印出最后一个错误</p> <p>printf(&ldquo;Error: %sn&rdquo;, ERR_reason_error_string(ERR_get_error()));</p> <p>您还可以让库给出预先格式化了的错误字符串。可以调用 ERR_error_string 来得到该字符串。该函数将错误代码和一个预分配的缓冲区作为参数。而这个缓冲区必须是 256 字节长。如果参数为 NULL，则 OpenSSL 会将字符串写入到一个长度为 256 字节的静态缓冲区中，并返回指向该缓冲区的指针。否则，它将返回您给出的指针。如果您选择的是静态缓冲区选项，那么在下一次调用 ERR_error_string 时，该缓冲区会被覆盖。</p> <p>清单 15. 获得预先格式化的错误字符串</p> <p>printf(&ldquo;%sn&rdquo;, ERR_error_string(ERR_get_error(), NULL));</p> <p>您还可以将整个错误队列转储到文件或 BIO 中。可以通过 ERR_print_errors 或 ERR_print_errors_fp 来实现这项操作。队列是以可读格式被转储的。第一个函数将队列发送到 BIO ，第二个函数将队列发送到 FILE 。字符串格式如下（引自 OpenSSL 文档）：</p> <p>name]:[line]:[optional text message]</p> <p>其中， <a href=error:%5Berror%20code%5D:%5Blibrary%20name%5D:%5Bfunction%20name%5D:%5Breason%20string%5D:%5Bfile>pid</a> 是进程 ID， [error code] 是一个 8 位十六进制代码， [file name] 是 OpenSSL 库中的源代码文件， [line] 是源文件中的行号。</p> <p>清单 16. 转储错误队列</p> <p>ERR_print_errors_fp(FILE *);</p> <p>ERR_print_errors(BIO *);</p> <p>回页首</p> <p>开始做吧</p> <p>使用 OpenSSL 创建基本的连接并不困难，但是，当试着确定该如何去做时，文档可能是一个小障碍。本文向您介绍了一些基本概念，但 OpenSSL 还有很多灵活之处有待发掘，而且您还可能需要一些高级设置，以便项目能够充分利用 SSL 的功能。</p> <p>本文中有两个样例。一个样例展示了到 <a href=http://www.verisign.com/ >http://www.verisign.com/</a> 的非安全连接，另一个则展示了到 <a href=http://www.verisign.com/ >http://www.verisign.com/</a> 的安全 SSL 连接。两者都是连接到服务器并下载其主页。它们没有进行任何安全检查，而且库中的所有设置都是默认值 &mdash;- 作为本文的一部分，应该只将这些用于教学目的。</p> <p>在任何支持的平台上，源代码的编译都应该是非常容易的，不过我建议您使用最新版本的 OpenSSL。在撰写本文时，OpenSSL 的最新版本是 0.9.7d。</p> <p>参考资料</p> <p>您可以参阅本文在 developerWorks 全球站点上的 英文原文.</p> <p>下载本文中用到的 源代码。</p> <p>您可以从 OpenSSL Project 下载 OpenSSL 源文件；一定要去查看一下 文档 的当前状态。您还可以从 邮件列表（滚动到底部，以获得到存档文件的链接）中学到很多知识，而且应该&mdash;-当然，如往常一样&mdash;-花一些时间去 阅读 FAQ！</p> <p>OpenSSL 源自 SSLeay （它甚至有非常 完善的文档）。</p> <p>此外，请参阅由两部分构成的文章" An Introduction to OpenSSL Programming&ldquo;（ Linux Journal，2001 年）（以及 第二部分），而且可以通过（ informIT， 2001 年）获得的另一篇来自 Sams 的文章&rdquo; Securing Sockets with OpenSSL"和它的 第二部分，该文章也是由两部分构成的。</p> <p>在线阅读 BIO library documentation 和 Network Security with OpenSSL （O&rsquo;Reilly &amp; Associates，2002 年）的样例章节。 Linux Socket Programming （Sams，2001 年）摘自 Sams 的书。</p> <p>OpenSSL 的发布遵循 BSD/Apache-type 许可。如果您是自由软件（Free Software）的支持者（或者是 good documentation 的支持者），您可能还希望查看 The GNU Transport Layer Security Library （注意，如果没有异常子句，GPL 的软件不能针对 OpenSSL 进行链接）。 Mozilla Network Security Services（NSS） 是双许可的，它既遵循 Mozilla Public License（MPL）又遵循 GNU General Public License （GNU GPL），而且有相当好的 文档。要深入了解 TLS，请阅读 Wikipedia 的文章 Transport Layer Security。</p> <p>可以在 RFC 2246 中找到关于 Transport Layer Security 的备忘录和技术细节，RFC 2246 定义了标准，并且它被 RFC 3546 更新，后者定义了对 TLS 协议的扩展。</p> <p>" 使用 Twisted 框架进行网络编程, 第 4 部分"（ developerWorks，2003 年 9 月）中 David Mertz 讨论了使用 Python twisted 框架进行 SSL 编程。</p> <p>要深入学习套接字编程，请参阅 Linux Socket 编程，第一部分（ developerWorks，2003 年 10 月）和 Linux Socket 编程，第二部分，这也是 David Mertz 的一个教程系列（ developerWorks，2004 年 1 月）。对那些刚开始进行套接字编程的人来说， Beej&rsquo;s Guide to Network Programming Using Internet Sockets 也是一个不错的参考资料。</p> <p>如果您是 刚刚 开始接触套接字，那么请先阅读 " Understanding Sockets in Unix, NT, and Java"（ developerWorks，1998 年 6 月），那篇文章提供了什么是套接字以及它们适用于何处的极好的入门级概述。</p> <p>此外，还可以参阅来自 Communications Programming Concepts Sockets 的关于 Sockets 的 IBM 文档，以及来自 Technical Reference: Communications, Volume 2 的 Programming sockets on AIX。</p> <p>可以通过" Encryption using OpenSSL&rsquo;s crypto libraries" （ Linux Gazette，2003 年）初步了解加密，并通过 " Introduction to Cryptography" （ PGP Corporation，2003 年 5 月 &mdash;- XPDF 格式） 或 " Introduction to cryptography" （ developerWorks，2001 年 3 月）获得对加密的总体上的深入理解。可以以 Postscript 和 PDF 格式在线获得 Handbook of Appplied Cryptography （CRC Press，1996 年）（可以通过订购获得更新后的 2001 版本）。</p> <p>在 developerWorks Linux 专区 可以找到更多为 Linux 开发人员准备的参考资料。</p> <p>可以在 Developer Bookstore Linux 区中定购 打折出售的 Linux 书籍。</p> <p>从 developerWorks 的 Speed-start your Linux app 专区下载可以运行于 Linux 之上的精选的 developerWorks Subscription 产品免费测试版本，其中包括 WebSphere Studio Site Developer、WebSphere SDK for Web services、WebSphere Application Server、DB2 Universal Database Personal Developers Edition、Tivoli Access Manager 和 Lotus Domino Server。想更快地开始上手，请参阅针对各个产品的 how-to 文章和技术支持。</p> <p>关于作者</p> <p>Kenneth 是 Peru State College（位于 Peru, Nebraska）计算机科学专业的大四学生。他还是学生报 The Peru State Times 的职业作者。他拥有 Southwestern Community College （位于 Creston, Iowa）计算机编程专业的理学副学士（Associate of Science）学位，在这所大学里，他是一名半工半读的 PC 技术员。他的研究领域包括 Java、C++、COBOL、 Visual Basic 和网络。</p> <p>原出处:</p> <p><a href=http://www.ibm.%20com/developerworks/cn/linux/l-openssl.html#Resources>www.ibm.com/developerworks/cn/linux/l-openssl.html#Resources</a></p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/ >https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+<!DOCTYPE html>
+<html lang="en" dir="auto">
 
-                    var disqus_identifier = 'safe-use-of-openssl-api-programming';
-                var disqus_url = 'https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/';
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>使用 OpenSSL API 进行安全编程【转载】 | Log4D</title>
+<meta name="keywords" content="c, openssl, ssl">
+<meta name="description" content="使用 OpenSSL API 进行安全编程
+创建基本的安全连接和非安全连接
+级别： 初级
+Kenneth Ballard (kenneth.ballard@ptk.org),
+自由程序员
+2004 年 8 月 09 日
+学习如何使用 OpenSSL &mdash;- 用于安全通信的最著名的开放库 &mdash;- 的 API
+有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的
+BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。
+OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL
+使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。
+学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但
+OpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？
+OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&quot;SSL library&quot;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于
+1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General
+Public License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-            var disqus_config = function () {
-                this.language = "en";
-            };
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+            .list {
+                background: var(--theme);
+            }
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="使用 OpenSSL API 进行安全编程【转载】" />
+<meta property="og:description" content="使用 OpenSSL API 进行安全编程
+创建基本的安全连接和非安全连接
+级别： 初级
+Kenneth Ballard (kenneth.ballard@ptk.org),
+自由程序员
+2004 年 8 月 09 日
+学习如何使用 OpenSSL &mdash;- 用于安全通信的最著名的开放库 &mdash;- 的 API
+有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的
+BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。
+OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL
+使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。
+学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但
+OpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？
+OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&quot;SSL library&quot;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于
+1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General
+Public License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2009-03-17T00:00:00+08:00" />
+<meta property="article:modified_time" content="2009-03-17T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用 OpenSSL API 进行安全编程【转载】"/>
+<meta name="twitter:description" content="使用 OpenSSL API 进行安全编程
+创建基本的安全连接和非安全连接
+级别： 初级
+Kenneth Ballard (kenneth.ballard@ptk.org),
+自由程序员
+2004 年 8 月 09 日
+学习如何使用 OpenSSL &mdash;- 用于安全通信的最著名的开放库 &mdash;- 的 API
+有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的
+BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。
+OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL
+使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。
+学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但
+OpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？
+OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&quot;SSL library&quot;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于
+1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General
+Public License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "使用 OpenSSL API 进行安全编程【转载】",
+      "item": "https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "使用 OpenSSL API 进行安全编程【转载】",
+  "name": "使用 OpenSSL API 进行安全编程【转载】",
+  "description": "使用 OpenSSL API 进行安全编程\n创建基本的安全连接和非安全连接\n级别： 初级\nKenneth Ballard (kenneth.ballard@ptk.org),\n自由程序员\n2004 年 8 月 09 日\n学习如何使用 OpenSSL \u0026mdash;- 用于安全通信的最著名的开放库 \u0026mdash;- 的 API\n有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的\nBIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。\nOpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL\n使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。\n学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但\nOpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？\nOpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索\u0026quot;SSL library\u0026quot;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于\n1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General\nPublic License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的",
+  "keywords": [
+    "c", "openssl", "ssl"
+  ],
+  "articleBody": "使用 OpenSSL API 进行安全编程\n创建基本的安全连接和非安全连接\n级别： 初级\nKenneth Ballard (kenneth.ballard@ptk.org),\n自由程序员\n2004 年 8 月 09 日\n学习如何使用 OpenSSL —- 用于安全通信的最著名的开放库 —- 的 API\n有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的\nBIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。\nOpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL\n使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。\n学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但\nOpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？\nOpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索\"SSL library\"得到的返回结果中，列表最上方就是 OpenSSL。它诞生于\n1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General\nPublic License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的\n参考资料 ，以获得其他信息）。\n那么，是什么使得 OpenSSL 比 GNU TLS、Mozilla NSS 或其他所有的库都优越呢？许可是一方面因素（请参阅 参考资料）。此外，GNS\nTLS（迄今为止）只支持 TLS v1.0 和 SSL v3.0 协议，仅此而已。\nMozilla NSS 的发行既遵循 Mozilla Public License 又遵循 GNU GPL，它允许开发人员进行选择。不过，Mozilla\nNSS 比 OpenSSL 大，并且需要其他外部库来对库进行编译，而 OpenSSL 是完全自包含的。与 OpenSSL 相同，大部分 NSS API\n也没有文档资料。Mozilla NSS 获得了 PKCS #11 支持，该支持可以用于诸如智能卡这样的加密标志。OpenSSL 就不具备这一支持。\n先决条件\n要充分理解并利用本文，您应该：\n精通 C 编程。\n熟悉 Internet 通信和支持 Internet 的应用程序的编写。\n并不绝对要求您熟悉 SSL ，因为稍后将给出对 SLL 的简短说明；不过，如果您希望得到详细论述 SSL 的文章的链接，请参阅\n参考资料部分。拥有密码学方面的知识固然好，但这并不是必需的。\n回页首\n什么是 SSL？\nSSL 是一个缩写，代表的是 Secure Sockets Layer。它是支持在 Internet 上进行安全通信的标准，并且将数据密码术集成到了协议之中\n。数据在离开您的计算机之前就已经被加密，然后只有到达它预定的目标后才被解密。证书和密码学算法支持了这一切的运转，使用\nOpenSSL，您将有机会切身体会它们。\n理论上，如果加密的数据在到达目标之前被截取或窃听，那些数据是不可能被破解的。不过，由于计算机的变化一年比一年快，而且密码翻译方法有了新的发展，因此，SSL\n中使用的加密协议被破解的可能性也在增大。\n可以将 SSL 和安全连接用于 Internet 上任何类型的协议，不管是 HTTP、POP3，还是 FTP。还可以用 SSL 来保护 Telnet\n会话。虽然可以用 SSL 保护任何连接，但是不必对每一类连接都使用 SSL。如果连接传输敏感信息，则应使用 SSL。\n回页首\n什么是 OpenSSL？\nOpenSSL 不仅仅是 SSL。它可以实现消息摘要、文件的加密和解密、数字证书、数字签名和随机数字。关于 OpenSSL\n库的内容非常多，远不是一篇文章可以容纳的。\nOpenSSL 不只是 API，它还是一个命令行工具。命令行工具可以完成与 API 同样的工作，而且更进一步，可以测试 SSL\n服务器和客户机。它还让开发人员对 OpenSSL 的能力有一个认识。要获得关于如何使用 OpenSSL 命令行工具的资料，请参阅 参考资料部分。\n回页首\n您需要什么\n首先需要的是最新版本的 OpenSSL。查阅参考资料部分，以确定从哪里可以获得最新的可以自己编译的源代码，或者最新版本的二进制文件（如果您不希望花费时间来编\n译的话）。不过，为了安全起见，我建议您下载最新的源代码并自己编译它。二进制版本通常是由第三方而不是由 OpenSSL 的开发人员来编译和发行的。\n一些 Linux 的发行版本附带了 OpenSSL 的二进制版本，对于学习如何使用 OpenSSL\n库来说，这足够了；不过，如果您打算去做一些实际的事情，那么一定要得到最新的版本，并保持该版本一直是最新的。\n对于以 RPM 形式安装的 Linux 发行版本（Red Hat、Mandrake 等），建议您通过从发行版本制造商那里获得 RPM 程序包来更新您的\nOpenSSL 发行版本。出于安全方面的原因，建议您使用最新版本的发行版本。如果您的发行版本不能使用最新版本的\nOpenSSL，那么建议您只覆盖库文件，不要覆盖可执行文件。OpenSSL 附带的 FAQ 文档中包含了有关这方面的细节。\n还要注意的是，OpenSSL 并没有在所有的平台上都获得官方支持。虽然制造商已经尽力使其能够跨平台兼容，但仍然存在 OpenSSL 不能用于您的计算机\n和/或 操作系统的可能。请参阅 OpenSSL 的 Web 站点（ 参考资料 中的链接），以获得关于哪些平台可以得到支持的信息。\n如果想使用 OpenSSL 来生成证书请求和数字证书，那么必须创建一个配置文件。在 OpenSSL 程序包的 apps 文件夹中，有一个名为\nopenssl.cnf 的可用模板文件。我不会对该文件进行讨论，因为这不在本文要求范围之内。不过，该模板文件有一些非常好的注释，而且如果在 Internet\n上搜索，您可以找到很多讨论修改该文件的教程。\n回页首\n头文件和初始化\n本教程所使用的头文件只有三个：ssl.h、bio.h 和 err.h。它们都位于 openssl 子目录中，而且都是开发您的项目所必需的。要初始化\nOpenSSL 库，只需要三个代码行即可。清单 1 中列出了所有内容。其他的头文件 和/或 初始化函数可能是其他一些功能所必需的。\n清单 1. 必需的头文件\n/* OpenSSL headers */\n#include “openssl/bio.h”\n#include “openssl/ssl.h”\n#include “openssl/err.h”\n/* Initializing OpenSSL */\nSSL_load_error_strings();\nERR_load_BIO_strings();\nOpenSSL_add_all_algorithms();\n回页首\n建立非安全连接\n不管连接是安全的还是不安全的，OpenSSL 都使用了一个名为 BIO 的抽象库来处理包括文件和套接字在内的各种类型的通信。您还可以将 OpenSSL\n设置成为一个过滤器，比如用于 UU 或 Base64 编码的过滤器。\n在这里对 BIO 库进行全面说明有点麻烦，所以我将根据需要一点一点地介绍它。首先，我将向您展示如何建立一个标准的套接字连接。相对于使用 BSD\n套接字库，该操作需要的代码行更少一些。\n在建立连接（无论安全与否）之前，要创建一个指向 BIO 对象的指针。这类似于在标准 C 中为文件流创建 FILE 指针。\n清单 2. 指针\nBIO * bio;\n打开连接\n创建新的连接需要调用 BIO_new_connect\n。您可以在同一个调用中同时指定主机名和端口号。也可以将其拆分为两个单独的调用：一个是创建连接并设置主机名的 BIO_new_connect\n调用，另一个是设置端口号的 BIO_set_conn_port （或者 BIO_set_conn_int_port ）调用。\n不管怎样，一旦 BIO 的主机名和端口号都已指定，该指针会尝试打开连接。没有什么可以影响它。如果创建 BIO 对象时遇到问题，指针将会是\nNULL。为了确保连接成功，必须执行 BIO_do_connect 调用。\n清单 3. 创建并打开连接\nbio = BIO_new_connect(“hostname:port”);\nif(bio == NULL)\n{\n/* Handle the\nfailure */\n}\nif(BIO_do_connect(bio) \u003c= 0)\n{\n/* Handle failed\nconnection */\n}\n在这里，第一行代码使用指定的主机名和端口创建了一个新的 BIO 对象，并以所示风格对该对象进行 格式化。例如，如果您要连接到\nwww.ibm.com 的 80 端口，那么该字符串将是\nwww.ibm.com:80 。调用 BIO_do_connect 检查连接是否成功。如果出错，则返回 0 或\n-1。\n与服务器进行通信\n不管 BIO 对象是套接字还是文件，对其进行的读和写操作都是通过以下两个函数来完成的： BIO_read 和 BIO_write\n。很简单，对吧？精彩之处就在于它始终如此。\nBIO_read 将尝试从服务器读取一定数目的字节。它返回读取的字节数、 0 或者 -1。在受阻塞的连接中，该函数返回 0，表示连接已经关闭，而 -1\n则表示连接出现错误。在非阻塞连接的情况下，返回 0 表示没有可以获得的数据，返回 -1 表示连接出错。可以调用 BIO_should_retry\n来确定是否可能重复出现该错误。\n清单 4. 从连接读取\nint x = BIO_read(bio, buf, len);\nif(x == 0)\n{\n/* Handle closed\nconnection */\n}\nelse if(x \u003c 0)\n{\nif(! BIO_should_retry(bio))\n{\n\u0026n\nbsp_place_holder; /* Handle failed read\nhere */\n}\n/* Do something to\nhandle the retry */\n}\nBIO_write 会试着将字节写入套接字。它将返回实际写入的字节数、0 或者 -1。同 BIO_read ，0 或 -1 不一定表示错误。\nBIO_should_retry 是找出问题的途径。如果需要重试写操作，它必须使用和前一次完全相同的参数。\n清单 5. 写入到连接\nif(BIO_write(bio, buf, len) \u003c= 0)\n{\nif(!\nBIO_should_retry(bio))\n{\n\u0026n\nbsp_place_holder; /* Handle failed write\nhere */\n}\n/* Do something to\nhandle the retry */\n}\n关闭连接\n关闭连接也很简单。您可以使用以下两种方式之一来关闭连接： BIO_reset 或 BIO_free_all\n。如果您还需要重新使用对象，那么请使用第一种方式。如果您不再重新使用它，则可以使用第二种方式。\nBIO_reset 关闭连接并重新设置 BIO\n对象的内部状态，以便可以重新使用连接。如果要在整个应用程序中使用同一对象，比如使用一台安全的聊天客户机，那么这样做是有益的。该函数没有返回值。\nBIO_free_all 所做正如其所言：它释放内部结构体，并释放所有相关联的内存，其中包括关闭相关联的套接字。如果将 BIO\n嵌入于一个类中，那么应该在类的析构函数中使用这个调用。\n清单 6. 关闭连接\n/* To reuse the connection, use this line */\nBIO_reset(bio);\n/* To free it from memory, use this line */\nBIO_free_all(bio);\n回页首\n建立安全连接\n现在需要给出建立安全连接需要做哪些事情。惟一要改变的地方就是建立并进行连接。其他所有内容都是相同的。\n安全连接要求在连接建立后进行握手。在握手过程中，服务器向客户机发送一个证书，然后，客户机根据一组可信任证书来核实该证书。它还将检查证书，以确保它没有过期。要\n检验证书是可信任的，需要在连接建立之前提前加载一个可信任证书库。\n只有在服务器发出请求时，客户机才会向服务器发送一个证书。该过程叫做客户机认证。使用证书，在客户机和服务器之间传递密码参数，以建立安全连接。尽管握手是在建立连\n接之后才进行的，但是客户机或服务器可以在任何时刻请求进行一次新的握手。\n参考资料 部分中列出的 Netscasp 文章和 RFC 2246 ，对握手以及建立安全连接的其他方面的知识进行了更详尽的论述。\n为安全连接进行设置\n为安全连接进行设置要多几行代码。同时需要有另一个类型为 SSL_CTX 的指针。该结构保存了一些 SSL 信息。您也可以利用它通过 BIO 库建立 SSL\n连接。可以通过使用 SSL 方法函数调用 SSL_CTX_new 来创建这个结构，该方法函数通常是 SSLv23_client_method 。\n还需要另一个 SSL 类型的指针来保持 SSL 连接结构（这是短时间就能完成的一些连接所必需的）。以后还可以用该 SSL 指针来检查连接信息或设置其他\nSSL 参数。\n清单 7. 设置 SSL 指针\nSSL_CTX * ctx = SSL_CTX_new(SSLv23_client_method());\nSSL * ssl;\n加载可信任证书库\n在创建上下文结构之后，必须加载一个可信任证书库。这是成功验证每个证书所必需的。如果不能确认证书是可信任的，那么 OpenSSL\n会将证书标记为无效（但连接仍可以继续）。\nOpenSSL 附带了一组可信任证书。它们位于源文件树的 certs 目录中。不过，每个证书都是一个独立的文件 —-\n也就是说，需要单独加载每一个证书。在 certs 目录下，还有一个存放过期证书的子目录。试图加载这些证书将会出错。\n如果您愿意，可以分别加载每一个文件，但为了简便起见，最新的 OpenSSL 发行版本的可信任证书通常存放在源代码档案文件中，这些档案文件位于名为\"Trust\nStore.pem\"的单个文件中。如果已经有了一个可信任证书库，并打算将它用于特定的项目中，那么只需使用您的文件替换清单 8\n中的\"TrustStore.pem\"（或者使用单独的函数调用将它们全部加载）即可。\n可以调用 SSL_CTX_load_verify_locations 来加载可信任证书库文件。这里要用到三个参数：上下文指针、可信任库文件的路径和文件名，以\n及证书所在目录的路径。必须指定可信任库文件或证书的目录。如果指定成功，则返回 1，如果遇到问题，则返回 0。\n清单 8. 加载信任库\nif(! SSL_CTX_load_verify_locations(ctx, “/path/to/TrustStore.pem”, NULL))\n{\n/* Handle failed\nload here */\n}\n如果打算使用目录存储可信任库，那么必须要以特定的方式命名文件。OpenSSL 文档清楚地说明了应该如何去做，不过，OpenSSL 附带了一个名为\nc_rehash 的工具，它可以将文件夹配置为可用于 SSL_CTX_load_verify_locations 的路径参数。\n清单 9. 配置证书文件夹并使用它\n/* Use this at the command line */\nc_rehash /path/to/certfolder\n/* then call this from within the application */\nif(! SSL_CTX_load_verify_locations(ctx, NULL, “/path/to/certfolder”))\n{\n/* Handle error here\n*/\n}\n为了指定所有需要的验证证书，您可以根据需要命名任意数量的单独文件或文件夹。您还可以同时指定文件和文件夹。\n创建连接\n将指向 SSL 上下文的指针作为惟一参数，使用 BIO_new_ssl_connect 创建 BIO 对象。还需要获得指向 SSL\n结构的指针。在本文中，只将该指针用于 SSL_set_mode 函数。而这个函数是用来设置 SSL_MODE_AUTO_RETRY\n标记的。使用这个选项进行设置，如果服务器突然希望进行一次新的握手，那么 OpenSSL\n可以在后台处理它。如果没有这个选项，当服务器希望进行一次新的握手时，进行读或写操作都将返回一个错误，同时还会在该过程中设置 retry 标记。\n清单 10. 设置 BIO 对象\nbio = BIO_new_ssl_connect(ctx);\nBIO_get_ssl(bio, \u0026 ssl);\nSSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);\n设置 SSL 上下文结构之后，就可以创建连接了。主机名是使用 BIO_set_conn_hostname\n函数设置的。主机名和端口的指定格式与前面的相同。该函数还可以打开到主机的连接。为了确认已经成功打开连接，必须执行对 BIO_do_connect\n的调用。该调用还将执行握手来建立安全连接。\n清单 11. 打开安全连接\n/* Attempt to connect */\nBIO_set_conn_hostname(bio, “hostname:port”);\n/* Verify the connection opened and perform the handshake */\nif(BIO_do_connect(bio) \u003c= 0)\n{\n/* Handle failed\nconnection */\n}\n连接建立后，必须检查证书，以确定它是否有效。实际上，OpenSSL 为我们完成了这项任务。如果证书有致命的问题（例如，哈希值无效），那么将无法建立连接。但是\n，如果证书的问题并不是致命的（当它已经过期或者尚不合法时），那么仍可以继续使用连接。\n可以将 SSL 结构作为惟一参数，调用 SSL_get_verify_result 来查明证书是否通过了 OpenSSL\n的检验。如果证书通过了包括信任检查在内的 OpenSSL 的内部检查，则返回\nX509_V_OK。如果有地方出了问题，则返回一个错误代码，该代码被记录在命令行工具的 verify 选项下。\n应该注意的是，验证失败并不意味着连接不能使用。是否应该使用连接取决于验证结果和安全方面的考虑。例如，失败的信任验证可能只是意味着没有可信任的证书。连接仍然可\n用，只是需要从思想上提高安全意识。\n清单 12. 检查证书是否有效\nif(SSL_get_verify_result(ssl) != X509_V_OK)\n{\n/* Handle the failed\nverification */\n}\n这就是所需要的全部操作。通常，与服务器进行通信都要使用 BIO_read 和 BIO_write 。并且只需调用 BIO_free_all 或\nBIO_reset ，就可以关闭连接，具体调用哪一个方法取决于是否重用 BIO。\n必须在结束应用程序之前的某个时刻释放 SSL 上下文结构。可以调用 SSL_CTX_free 来释放该结构。\n清单 13. 清除 SSL 上下文\nSSL_CTX_free(ctx);\n回页首\n错误检测\n显然 OpenSSL 抛出了某种类型的错误。这意味着什么？首先，您需要得到错误代码本身； ERR_get_error\n可以完成这项任务；然后，需要将错误代码转换为错误字符串，它是一个指向由 SSL_load_error_strings 或\nERR_load_BIO_strings 加载到内存中的永久字符串的指针。可以在一个嵌套调用中完成这项操作。\n表 1 略述了从错误栈检索错误的方法。清单 24 展示了如何打印文本字符串中的最后一个错误信息。\n表 1. 从栈中检索错误\nERR_reason_error_string 返回一个静态字符串的指针，然后可以将字符串显示在屏幕上、写入文件，或者以任何您希望的方式进行处理\nERR_lib_error_string 指出错误发生在哪个库中\nERR_func_error_string 返回导致错误的 OpenSSL 函数\n清单 14. 打印出最后一个错误\nprintf(“Error: %sn”, ERR_reason_error_string(ERR_get_error()));\n您还可以让库给出预先格式化了的错误字符串。可以调用 ERR_error_string\n来得到该字符串。该函数将错误代码和一个预分配的缓冲区作为参数。而这个缓冲区必须是 256 字节长。如果参数为 NULL，则 OpenSSL\n会将字符串写入到一个长度为 256 字节的静态缓冲区中，并返回指向该缓冲区的指针。否则，它将返回您给出的指针。如果您选择的是静态缓冲区选项，那么在下一次调用\nERR_error_string 时，该缓冲区会被覆盖。\n清单 15. 获得预先格式化的错误字符串\nprintf(\"%sn\", ERR_error_string(ERR_get_error(), NULL));\n您还可以将整个错误队列转储到文件或 BIO 中。可以通过 ERR_print_errors 或 ERR_print_errors_fp\n来实现这项操作。队列是以可读格式被转储的。第一个函数将队列发送到 BIO ，第二个函数将队列发送到 FILE 。字符串格式如下（引自 OpenSSL\n文档）：\n[pid]:error:[error code]:[library name]:[function name]:[reason string]:[file\nname]:[line]:[optional text message]\n其中， [pid] 是进程 ID， [error code] 是一个 8 位十六进制代码， [file name] 是 OpenSSL 库中的源代码文件，\n[line] 是源文件中的行号。\n清单 16. 转储错误队列\nERR_print_errors_fp(FILE *);\nERR_print_errors(BIO *);\n回页首\n开始做吧\n使用 OpenSSL 创建基本的连接并不困难，但是，当试着确定该如何去做时，文档可能是一个小障碍。本文向您介绍了一些基本概念，但 OpenSSL\n还有很多灵活之处有待发掘，而且您还可能需要一些高级设置，以便项目能够充分利用 SSL 的功能。\n本文中有两个样例。一个样例展示了到 http://www.verisign.com/\n的非安全连接，另一个则展示了到 http://www.verisign.com/ 的安全 SSL\n连接。两者都是连接到服务器并下载其主页。它们没有进行任何安全检查，而且库中的所有设置都是默认值 —- 作为本文的一部分，应该只将这些用于教学目的。\n在任何支持的平台上，源代码的编译都应该是非常容易的，不过我建议您使用最新版本的 OpenSSL。在撰写本文时，OpenSSL 的最新版本是 0.9.7d。\n参考资料\n您可以参阅本文在 developerWorks 全球站点上的 英文原文.\n下载本文中用到的 源代码。\n您可以从 OpenSSL Project 下载 OpenSSL 源文件；一定要去查看一下 文档 的当前状态。您还可以从\n邮件列表（滚动到底部，以获得到存档文件的链接）中学到很多知识，而且应该—-当然，如往常一样—-花一些时间去 阅读 FAQ！\nOpenSSL 源自 SSLeay （它甚至有非常 完善的文档）。\n此外，请参阅由两部分构成的文章\" An Introduction to OpenSSL Programming\"（ Linux Journal，2001\n年）（以及 第二部分），而且可以通过（ informIT， 2001 年）获得的另一篇来自 Sams 的文章 \" Securing Sockets with\nOpenSSL\"和它的 第二部分，该文章也是由两部分构成的。\n在线阅读 BIO library documentation 和 Network Security with OpenSSL （O’Reilly \u0026\nAssociates，2002 年）的样例章节。 Linux Socket Programming （Sams，2001 年）摘自 Sams 的书。\nOpenSSL 的发布遵循 BSD/Apache-type 许可。如果您是自由软件（Free Software）的支持者（或者是 good\ndocumentation 的支持者），您可能还希望查看 The GNU Transport Layer Security Library\n（注意，如果没有异常子句，GPL 的软件不能针对 OpenSSL 进行链接）。 Mozilla Network Security Services（NSS）\n是双许可的，它既遵循 Mozilla Public License（MPL）又遵循 GNU General Public License （GNU\nGPL），而且有相当好的 文档。要深入了解 TLS，请阅读 Wikipedia 的文章 Transport Layer Security。\n可以在 RFC 2246 中找到关于 Transport Layer Security 的备忘录和技术细节，RFC 2246 定义了标准，并且它被 RFC\n3546 更新，后者定义了对 TLS 协议的扩展。\n\" 使用 Twisted 框架进行网络编程, 第 4 部分\"（ developerWorks，2003 年 9 月）中 David Mertz 讨论了使用\nPython twisted 框架进行 SSL 编程。\n要深入学习套接字编程，请参阅 Linux Socket 编程，第一部分（ developerWorks，2003 年 10 月）和 Linux Socket\n编程，第二部分，这也是 David Mertz 的一个教程系列（ developerWorks，2004 年 1 月）。对那些刚开始进行套接字编程的人来说，\nBeej’s Guide to Network Programming Using Internet Sockets 也是一个不错的参考资料。\n如果您是 刚刚 开始接触套接字，那么请先阅读 \" Understanding Sockets in Unix, NT, and Java\"（\ndeveloperWorks，1998 年 6 月），那篇文章提供了什么是套接字以及它们适用于何处的极好的入门级概述。\n此外，还可以参阅来自 Communications Programming Concepts Sockets 的关于 Sockets 的 IBM\n文档，以及来自 Technical Reference: Communications, Volume 2 的 Programming sockets on\nAIX。\n可以通过\" Encryption using OpenSSL’s crypto libraries\" （ Linux Gazette，2003\n年）初步了解加密，并通过 \" Introduction to Cryptography\" （ PGP Corporation，2003 年 5 月 —-\nXPDF 格式） 或 \" Introduction to cryptography\" （ developerWorks，2001 年 3\n月）获得对加密的总体上的深入理解。可以以 Postscript 和 PDF 格式在线获得 Handbook of Appplied Cryptography\n（CRC Press，1996 年）（可以通过订购获得更新后的 2001 版本）。\n在 developerWorks Linux 专区 可以找到更多为 Linux 开发人员准备的参考资料。\n可以在 Developer Bookstore Linux 区中定购 打折出售的 Linux 书籍。\n从 developerWorks 的 Speed-start your Linux app 专区下载可以运行于 Linux 之上的精选的\ndeveloperWorks Subscription 产品免费测试版本，其中包括 WebSphere Studio Site\nDeveloper、WebSphere SDK for Web services、WebSphere Application Server、DB2\nUniversal Database Personal Developers Edition、Tivoli Access Manager 和 Lotus\nDomino Server。想更快地开始上手，请参阅针对各个产品的 how-to 文章和技术支持。\n关于作者\nKenneth 是 Peru State College（位于 Peru, Nebraska）计算机科学专业的大四学生。他还是学生报 The Peru\nState Times 的职业作者。他拥有 Southwestern Community College （位于 Creston,\nIowa）计算机编程专业的理学副学士（Associate of Science）学位，在这所大学里，他是一名半工半读的 PC 技术员。他的研究领域包括\nJava、C++、COBOL、 Visual Basic 和网络。\n原出处:\n[www.ibm.com/developerworks/cn/linux/l-openssl.html#Resources](http://www.ibm.\ncom/developerworks/cn/linux/l-openssl.html#Resources)\n",
+  "wordCount" : "1199",
+  "inLanguage": "en",
+  "datePublished": "2009-03-17T00:00:00+08:00",
+  "dateModified": "2009-03-17T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      使用 OpenSSL API 进行安全编程【转载】
+    </h1>
+    <div class="post-meta"><span title='2009-03-17 00:00:00 +0800 CST'>2009-03-17</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>使用 OpenSSL API 进行安全编程</p>
+<p>创建基本的安全连接和非安全连接</p>
+<p>级别： 初级</p>
+<p>Kenneth Ballard (<a href="mailto:kenneth.ballard@ptk.org">kenneth.ballard@ptk.org</a>),<br />
+自由程序员</p>
+<p>2004 年 8 月 09 日</p>
+<p>学习如何使用 OpenSSL &mdash;- 用于安全通信的最著名的开放库 &mdash;- 的 API<br />
+有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的<br />
+BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。</p>
+<p>OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL<br />
+使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。</p>
+<p>学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但<br />
+OpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？</p>
+<p>OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&quot;SSL library&quot;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于<br />
+1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General<br />
+Public License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的<br />
+参考资料 ，以获得其他信息）。</p>
+<p>那么，是什么使得 OpenSSL 比 GNU TLS、Mozilla NSS 或其他所有的库都优越呢？许可是一方面因素（请参阅 参考资料）。此外，GNS<br />
+TLS（迄今为止）只支持 TLS v1.0 和 SSL v3.0 协议，仅此而已。</p>
+<p>Mozilla NSS 的发行既遵循 Mozilla Public License 又遵循 GNU GPL，它允许开发人员进行选择。不过，Mozilla<br />
+NSS 比 OpenSSL 大，并且需要其他外部库来对库进行编译，而 OpenSSL 是完全自包含的。与 OpenSSL 相同，大部分 NSS API<br />
+也没有文档资料。Mozilla NSS 获得了 PKCS #11 支持，该支持可以用于诸如智能卡这样的加密标志。OpenSSL 就不具备这一支持。</p>
+<p>先决条件</p>
+<p>要充分理解并利用本文，您应该：</p>
+<p>精通 C 编程。</p>
+<p>熟悉 Internet 通信和支持 Internet 的应用程序的编写。</p>
+<p>并不绝对要求您熟悉 SSL ，因为稍后将给出对 SLL 的简短说明；不过，如果您希望得到详细论述 SSL 的文章的链接，请参阅<br />
+参考资料部分。拥有密码学方面的知识固然好，但这并不是必需的。</p>
+<p>回页首</p>
+<p>什么是 SSL？</p>
+<p>SSL 是一个缩写，代表的是 Secure Sockets Layer。它是支持在 Internet 上进行安全通信的标准，并且将数据密码术集成到了协议之中<br />
+。数据在离开您的计算机之前就已经被加密，然后只有到达它预定的目标后才被解密。证书和密码学算法支持了这一切的运转，使用<br />
+OpenSSL，您将有机会切身体会它们。</p>
+<p>理论上，如果加密的数据在到达目标之前被截取或窃听，那些数据是不可能被破解的。不过，由于计算机的变化一年比一年快，而且密码翻译方法有了新的发展，因此，SSL<br />
+中使用的加密协议被破解的可能性也在增大。</p>
+<p>可以将 SSL 和安全连接用于 Internet 上任何类型的协议，不管是 HTTP、POP3，还是 FTP。还可以用 SSL 来保护 Telnet<br />
+会话。虽然可以用 SSL 保护任何连接，但是不必对每一类连接都使用 SSL。如果连接传输敏感信息，则应使用 SSL。</p>
+<p>回页首</p>
+<p>什么是 OpenSSL？</p>
+<p>OpenSSL 不仅仅是 SSL。它可以实现消息摘要、文件的加密和解密、数字证书、数字签名和随机数字。关于 OpenSSL<br />
+库的内容非常多，远不是一篇文章可以容纳的。</p>
+<p>OpenSSL 不只是 API，它还是一个命令行工具。命令行工具可以完成与 API 同样的工作，而且更进一步，可以测试 SSL<br />
+服务器和客户机。它还让开发人员对 OpenSSL 的能力有一个认识。要获得关于如何使用 OpenSSL 命令行工具的资料，请参阅 参考资料部分。</p>
+<p>回页首</p>
+<p>您需要什么</p>
+<p>首先需要的是最新版本的 OpenSSL。查阅参考资料部分，以确定从哪里可以获得最新的可以自己编译的源代码，或者最新版本的二进制文件（如果您不希望花费时间来编<br />
+译的话）。不过，为了安全起见，我建议您下载最新的源代码并自己编译它。二进制版本通常是由第三方而不是由 OpenSSL 的开发人员来编译和发行的。</p>
+<p>一些 Linux 的发行版本附带了 OpenSSL 的二进制版本，对于学习如何使用 OpenSSL<br />
+库来说，这足够了；不过，如果您打算去做一些实际的事情，那么一定要得到最新的版本，并保持该版本一直是最新的。</p>
+<p>对于以 RPM 形式安装的 Linux 发行版本（Red Hat、Mandrake 等），建议您通过从发行版本制造商那里获得 RPM 程序包来更新您的<br />
+OpenSSL 发行版本。出于安全方面的原因，建议您使用最新版本的发行版本。如果您的发行版本不能使用最新版本的<br />
+OpenSSL，那么建议您只覆盖库文件，不要覆盖可执行文件。OpenSSL 附带的 FAQ 文档中包含了有关这方面的细节。</p>
+<p>还要注意的是，OpenSSL 并没有在所有的平台上都获得官方支持。虽然制造商已经尽力使其能够跨平台兼容，但仍然存在 OpenSSL 不能用于您的计算机<br />
+和/或 操作系统的可能。请参阅 OpenSSL 的 Web 站点（ 参考资料 中的链接），以获得关于哪些平台可以得到支持的信息。</p>
+<p>如果想使用 OpenSSL 来生成证书请求和数字证书，那么必须创建一个配置文件。在 OpenSSL 程序包的 apps 文件夹中，有一个名为<br />
+openssl.cnf 的可用模板文件。我不会对该文件进行讨论，因为这不在本文要求范围之内。不过，该模板文件有一些非常好的注释，而且如果在 Internet<br />
+上搜索，您可以找到很多讨论修改该文件的教程。</p>
+<p>回页首</p>
+<p>头文件和初始化</p>
+<p>本教程所使用的头文件只有三个：ssl.h、bio.h 和 err.h。它们都位于 openssl 子目录中，而且都是开发您的项目所必需的。要初始化<br />
+OpenSSL 库，只需要三个代码行即可。清单 1 中列出了所有内容。其他的头文件 和/或 初始化函数可能是其他一些功能所必需的。</p>
+<p>清单 1. 必需的头文件</p>
+<p>/* OpenSSL headers */</p>
+<p>#include &ldquo;openssl/bio.h&rdquo;</p>
+<p>#include &ldquo;openssl/ssl.h&rdquo;</p>
+<p>#include &ldquo;openssl/err.h&rdquo;</p>
+<p>/* Initializing OpenSSL */</p>
+<p>SSL_load_error_strings();</p>
+<p>ERR_load_BIO_strings();</p>
+<p>OpenSSL_add_all_algorithms();</p>
+<p>回页首</p>
+<p>建立非安全连接</p>
+<p>不管连接是安全的还是不安全的，OpenSSL 都使用了一个名为 BIO 的抽象库来处理包括文件和套接字在内的各种类型的通信。您还可以将 OpenSSL<br />
+设置成为一个过滤器，比如用于 UU 或 Base64 编码的过滤器。</p>
+<p>在这里对 BIO 库进行全面说明有点麻烦，所以我将根据需要一点一点地介绍它。首先，我将向您展示如何建立一个标准的套接字连接。相对于使用 BSD<br />
+套接字库，该操作需要的代码行更少一些。</p>
+<p>在建立连接（无论安全与否）之前，要创建一个指向 BIO 对象的指针。这类似于在标准 C 中为文件流创建 FILE 指针。</p>
+<p>清单 2. 指针</p>
+<p>BIO * bio;</p>
+<p>打开连接</p>
+<p>创建新的连接需要调用 BIO_new_connect<br />
+。您可以在同一个调用中同时指定主机名和端口号。也可以将其拆分为两个单独的调用：一个是创建连接并设置主机名的 BIO_new_connect<br />
+调用，另一个是设置端口号的 BIO_set_conn_port （或者 BIO_set_conn_int_port ）调用。</p>
+<p>不管怎样，一旦 BIO 的主机名和端口号都已指定，该指针会尝试打开连接。没有什么可以影响它。如果创建 BIO 对象时遇到问题，指针将会是<br />
+NULL。为了确保连接成功，必须执行 BIO_do_connect 调用。</p>
+<p>清单 3. 创建并打开连接</p>
+<p>bio = BIO_new_connect(&ldquo;hostname:port&rdquo;);</p>
+<p>if(bio == NULL)</p>
+<p>{</p>
+<p>/* Handle the<br />
+failure */</p>
+<p>}</p>
+<p>if(BIO_do_connect(bio) &lt;= 0)</p>
+<p>{</p>
+<p>/* Handle failed<br />
+connection */</p>
+<p>}</p>
+<p>在这里，第一行代码使用指定的主机名和端口创建了一个新的 BIO 对象，并以所示风格对该对象进行 格式化。例如，如果您要连接到<br />
+<a href="http://www.ibm.com/">www.ibm.com</a> 的 80 端口，那么该字符串将是<br />
+<a href="http://www.ibm.com/">www.ibm.com:80</a> 。调用 BIO_do_connect 检查连接是否成功。如果出错，则返回 0 或<br />
+-1。</p>
+<p>与服务器进行通信</p>
+<p>不管 BIO 对象是套接字还是文件，对其进行的读和写操作都是通过以下两个函数来完成的： BIO_read 和 BIO_write<br />
+。很简单，对吧？精彩之处就在于它始终如此。</p>
+<p>BIO_read 将尝试从服务器读取一定数目的字节。它返回读取的字节数、 0 或者 -1。在受阻塞的连接中，该函数返回 0，表示连接已经关闭，而 -1<br />
+则表示连接出现错误。在非阻塞连接的情况下，返回 0 表示没有可以获得的数据，返回 -1 表示连接出错。可以调用 BIO_should_retry<br />
+来确定是否可能重复出现该错误。</p>
+<p>清单 4. 从连接读取</p>
+<p>int x = BIO_read(bio, buf, len);</p>
+<p>if(x == 0)</p>
+<p>{</p>
+<p>/* Handle closed<br />
+connection */</p>
+<p>}</p>
+<p>else if(x &lt; 0)</p>
+<p>{</p>
+<p>if(! BIO_should_retry(bio))</p>
+<p>{</p>
+<p>&amp;n<br />
+bsp_place_holder; /* Handle failed read<br />
+here */</p>
+<p>}</p>
+<p>/* Do something to<br />
+handle the retry */</p>
+<p>}</p>
+<p>BIO_write 会试着将字节写入套接字。它将返回实际写入的字节数、0 或者 -1。同 BIO_read ，0 或 -1 不一定表示错误。<br />
+BIO_should_retry 是找出问题的途径。如果需要重试写操作，它必须使用和前一次完全相同的参数。</p>
+<p>清单 5. 写入到连接</p>
+<p>if(BIO_write(bio, buf, len) &lt;= 0)</p>
+<p>{</p>
+<p>if(!<br />
+BIO_should_retry(bio))</p>
+<p>{</p>
+<p>&amp;n<br />
+bsp_place_holder; /* Handle failed write<br />
+here */</p>
+<p>}</p>
+<p>/* Do something to<br />
+handle the retry */</p>
+<p>}</p>
+<p>关闭连接</p>
+<p>关闭连接也很简单。您可以使用以下两种方式之一来关闭连接： BIO_reset 或 BIO_free_all<br />
+。如果您还需要重新使用对象，那么请使用第一种方式。如果您不再重新使用它，则可以使用第二种方式。</p>
+<p>BIO_reset 关闭连接并重新设置 BIO<br />
+对象的内部状态，以便可以重新使用连接。如果要在整个应用程序中使用同一对象，比如使用一台安全的聊天客户机，那么这样做是有益的。该函数没有返回值。</p>
+<p>BIO_free_all 所做正如其所言：它释放内部结构体，并释放所有相关联的内存，其中包括关闭相关联的套接字。如果将 BIO<br />
+嵌入于一个类中，那么应该在类的析构函数中使用这个调用。</p>
+<p>清单 6. 关闭连接</p>
+<p>/* To reuse the connection, use this line */</p>
+<p>BIO_reset(bio);</p>
+<p>/* To free it from memory, use this line */</p>
+<p>BIO_free_all(bio);</p>
+<p>回页首</p>
+<p>建立安全连接</p>
+<p>现在需要给出建立安全连接需要做哪些事情。惟一要改变的地方就是建立并进行连接。其他所有内容都是相同的。</p>
+<p>安全连接要求在连接建立后进行握手。在握手过程中，服务器向客户机发送一个证书，然后，客户机根据一组可信任证书来核实该证书。它还将检查证书，以确保它没有过期。要<br />
+检验证书是可信任的，需要在连接建立之前提前加载一个可信任证书库。</p>
+<p>只有在服务器发出请求时，客户机才会向服务器发送一个证书。该过程叫做客户机认证。使用证书，在客户机和服务器之间传递密码参数，以建立安全连接。尽管握手是在建立连<br />
+接之后才进行的，但是客户机或服务器可以在任何时刻请求进行一次新的握手。</p>
+<p>参考资料 部分中列出的 Netscasp 文章和 RFC 2246 ，对握手以及建立安全连接的其他方面的知识进行了更详尽的论述。</p>
+<p>为安全连接进行设置</p>
+<p>为安全连接进行设置要多几行代码。同时需要有另一个类型为 SSL_CTX 的指针。该结构保存了一些 SSL 信息。您也可以利用它通过 BIO 库建立 SSL<br />
+连接。可以通过使用 SSL 方法函数调用 SSL_CTX_new 来创建这个结构，该方法函数通常是 SSLv23_client_method 。</p>
+<p>还需要另一个 SSL 类型的指针来保持 SSL 连接结构（这是短时间就能完成的一些连接所必需的）。以后还可以用该 SSL 指针来检查连接信息或设置其他<br />
+SSL 参数。</p>
+<p>清单 7. 设置 SSL 指针</p>
+<p>SSL_CTX * ctx = SSL_CTX_new(SSLv23_client_method());</p>
+<p>SSL * ssl;</p>
+<p>加载可信任证书库</p>
+<p>在创建上下文结构之后，必须加载一个可信任证书库。这是成功验证每个证书所必需的。如果不能确认证书是可信任的，那么 OpenSSL<br />
+会将证书标记为无效（但连接仍可以继续）。</p>
+<p>OpenSSL 附带了一组可信任证书。它们位于源文件树的 certs 目录中。不过，每个证书都是一个独立的文件 &mdash;-<br />
+也就是说，需要单独加载每一个证书。在 certs 目录下，还有一个存放过期证书的子目录。试图加载这些证书将会出错。</p>
+<p>如果您愿意，可以分别加载每一个文件，但为了简便起见，最新的 OpenSSL 发行版本的可信任证书通常存放在源代码档案文件中，这些档案文件位于名为&quot;Trust<br />
+Store.pem&quot;的单个文件中。如果已经有了一个可信任证书库，并打算将它用于特定的项目中，那么只需使用您的文件替换清单 8<br />
+中的&quot;TrustStore.pem&quot;（或者使用单独的函数调用将它们全部加载）即可。</p>
+<p>可以调用 SSL_CTX_load_verify_locations 来加载可信任证书库文件。这里要用到三个参数：上下文指针、可信任库文件的路径和文件名，以<br />
+及证书所在目录的路径。必须指定可信任库文件或证书的目录。如果指定成功，则返回 1，如果遇到问题，则返回 0。</p>
+<p>清单 8. 加载信任库</p>
+<p>if(! SSL_CTX_load_verify_locations(ctx, &ldquo;/path/to/TrustStore.pem&rdquo;, NULL))</p>
+<p>{</p>
+<p>/* Handle failed<br />
+load here */</p>
+<p>}</p>
+<p>如果打算使用目录存储可信任库，那么必须要以特定的方式命名文件。OpenSSL 文档清楚地说明了应该如何去做，不过，OpenSSL 附带了一个名为<br />
+c_rehash 的工具，它可以将文件夹配置为可用于 SSL_CTX_load_verify_locations 的路径参数。</p>
+<p>清单 9. 配置证书文件夹并使用它</p>
+<p>/* Use this at the command line */</p>
+<p>c_rehash /path/to/certfolder</p>
+<p>/* then call this from within the application */</p>
+<p>if(! SSL_CTX_load_verify_locations(ctx, NULL, &ldquo;/path/to/certfolder&rdquo;))</p>
+<p>{</p>
+<p>/* Handle error here<br />
+*/</p>
+<p>}</p>
+<p>为了指定所有需要的验证证书，您可以根据需要命名任意数量的单独文件或文件夹。您还可以同时指定文件和文件夹。</p>
+<p>创建连接</p>
+<p>将指向 SSL 上下文的指针作为惟一参数，使用 BIO_new_ssl_connect 创建 BIO 对象。还需要获得指向 SSL<br />
+结构的指针。在本文中，只将该指针用于 SSL_set_mode 函数。而这个函数是用来设置 SSL_MODE_AUTO_RETRY<br />
+标记的。使用这个选项进行设置，如果服务器突然希望进行一次新的握手，那么 OpenSSL<br />
+可以在后台处理它。如果没有这个选项，当服务器希望进行一次新的握手时，进行读或写操作都将返回一个错误，同时还会在该过程中设置 retry 标记。</p>
+<p>清单 10. 设置 BIO 对象</p>
+<p>bio = BIO_new_ssl_connect(ctx);</p>
+<p>BIO_get_ssl(bio, &amp; ssl);</p>
+<p>SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);</p>
+<p>设置 SSL 上下文结构之后，就可以创建连接了。主机名是使用 BIO_set_conn_hostname<br />
+函数设置的。主机名和端口的指定格式与前面的相同。该函数还可以打开到主机的连接。为了确认已经成功打开连接，必须执行对 BIO_do_connect<br />
+的调用。该调用还将执行握手来建立安全连接。</p>
+<p>清单 11. 打开安全连接</p>
+<p>/* Attempt to connect */</p>
+<p>BIO_set_conn_hostname(bio, &ldquo;hostname:port&rdquo;);</p>
+<p>/* Verify the connection opened and perform the handshake */</p>
+<p>if(BIO_do_connect(bio) &lt;= 0)</p>
+<p>{</p>
+<p>/* Handle failed<br />
+connection */</p>
+<p>}</p>
+<p>连接建立后，必须检查证书，以确定它是否有效。实际上，OpenSSL 为我们完成了这项任务。如果证书有致命的问题（例如，哈希值无效），那么将无法建立连接。但是<br />
+，如果证书的问题并不是致命的（当它已经过期或者尚不合法时），那么仍可以继续使用连接。</p>
+<p>可以将 SSL 结构作为惟一参数，调用 SSL_get_verify_result 来查明证书是否通过了 OpenSSL<br />
+的检验。如果证书通过了包括信任检查在内的 OpenSSL 的内部检查，则返回<br />
+X509_V_OK。如果有地方出了问题，则返回一个错误代码，该代码被记录在命令行工具的 verify 选项下。</p>
+<p>应该注意的是，验证失败并不意味着连接不能使用。是否应该使用连接取决于验证结果和安全方面的考虑。例如，失败的信任验证可能只是意味着没有可信任的证书。连接仍然可<br />
+用，只是需要从思想上提高安全意识。</p>
+<p>清单 12. 检查证书是否有效</p>
+<p>if(SSL_get_verify_result(ssl) != X509_V_OK)</p>
+<p>{</p>
+<p>/* Handle the failed<br />
+verification */</p>
+<p>}</p>
+<p>这就是所需要的全部操作。通常，与服务器进行通信都要使用 BIO_read 和 BIO_write 。并且只需调用 BIO_free_all 或<br />
+BIO_reset ，就可以关闭连接，具体调用哪一个方法取决于是否重用 BIO。</p>
+<p>必须在结束应用程序之前的某个时刻释放 SSL 上下文结构。可以调用 SSL_CTX_free 来释放该结构。</p>
+<p>清单 13. 清除 SSL 上下文</p>
+<p>SSL_CTX_free(ctx);</p>
+<p>回页首</p>
+<p>错误检测</p>
+<p>显然 OpenSSL 抛出了某种类型的错误。这意味着什么？首先，您需要得到错误代码本身； ERR_get_error<br />
+可以完成这项任务；然后，需要将错误代码转换为错误字符串，它是一个指向由 SSL_load_error_strings 或<br />
+ERR_load_BIO_strings 加载到内存中的永久字符串的指针。可以在一个嵌套调用中完成这项操作。</p>
+<p>表 1 略述了从错误栈检索错误的方法。清单 24 展示了如何打印文本字符串中的最后一个错误信息。</p>
+<p>表 1. 从栈中检索错误</p>
+<p>ERR_reason_error_string 返回一个静态字符串的指针，然后可以将字符串显示在屏幕上、写入文件，或者以任何您希望的方式进行处理</p>
+<p>ERR_lib_error_string 指出错误发生在哪个库中</p>
+<p>ERR_func_error_string 返回导致错误的 OpenSSL 函数</p>
+<p>清单 14. 打印出最后一个错误</p>
+<p>printf(&ldquo;Error: %sn&rdquo;, ERR_reason_error_string(ERR_get_error()));</p>
+<p>您还可以让库给出预先格式化了的错误字符串。可以调用 ERR_error_string<br />
+来得到该字符串。该函数将错误代码和一个预分配的缓冲区作为参数。而这个缓冲区必须是 256 字节长。如果参数为 NULL，则 OpenSSL<br />
+会将字符串写入到一个长度为 256 字节的静态缓冲区中，并返回指向该缓冲区的指针。否则，它将返回您给出的指针。如果您选择的是静态缓冲区选项，那么在下一次调用<br />
+ERR_error_string 时，该缓冲区会被覆盖。</p>
+<p>清单 15. 获得预先格式化的错误字符串</p>
+<p>printf(&quot;%sn&quot;, ERR_error_string(ERR_get_error(), NULL));</p>
+<p>您还可以将整个错误队列转储到文件或 BIO 中。可以通过 ERR_print_errors 或 ERR_print_errors_fp<br />
+来实现这项操作。队列是以可读格式被转储的。第一个函数将队列发送到 BIO ，第二个函数将队列发送到 FILE 。字符串格式如下（引自 OpenSSL<br />
+文档）：</p>
+<p>[pid]:error:[error code]:[library name]:[function name]:[reason string]:[file<br />
+name]:[line]:[optional text message]</p>
+<p>其中， [pid] 是进程 ID， [error code] 是一个 8 位十六进制代码， [file name] 是 OpenSSL 库中的源代码文件，<br />
+[line] 是源文件中的行号。</p>
+<p>清单 16. 转储错误队列</p>
+<p>ERR_print_errors_fp(FILE *);</p>
+<p>ERR_print_errors(BIO *);</p>
+<p>回页首</p>
+<p>开始做吧</p>
+<p>使用 OpenSSL 创建基本的连接并不困难，但是，当试着确定该如何去做时，文档可能是一个小障碍。本文向您介绍了一些基本概念，但 OpenSSL<br />
+还有很多灵活之处有待发掘，而且您还可能需要一些高级设置，以便项目能够充分利用 SSL 的功能。</p>
+<p>本文中有两个样例。一个样例展示了到 <a href="http://www.verisign.com/">http://www.verisign.com/</a><br />
+的非安全连接，另一个则展示了到 <a href="http://www.verisign.com/">http://www.verisign.com/</a> 的安全 SSL<br />
+连接。两者都是连接到服务器并下载其主页。它们没有进行任何安全检查，而且库中的所有设置都是默认值 &mdash;- 作为本文的一部分，应该只将这些用于教学目的。</p>
+<p>在任何支持的平台上，源代码的编译都应该是非常容易的，不过我建议您使用最新版本的 OpenSSL。在撰写本文时，OpenSSL 的最新版本是 0.9.7d。</p>
+<p>参考资料</p>
+<p>您可以参阅本文在 developerWorks 全球站点上的 英文原文.</p>
+<p>下载本文中用到的 源代码。</p>
+<p>您可以从 OpenSSL Project 下载 OpenSSL 源文件；一定要去查看一下 文档 的当前状态。您还可以从<br />
+邮件列表（滚动到底部，以获得到存档文件的链接）中学到很多知识，而且应该&mdash;-当然，如往常一样&mdash;-花一些时间去 阅读 FAQ！</p>
+<p>OpenSSL 源自 SSLeay （它甚至有非常 完善的文档）。</p>
+<p>此外，请参阅由两部分构成的文章&quot; An Introduction to OpenSSL Programming&quot;（ Linux Journal，2001<br />
+年）（以及 第二部分），而且可以通过（ informIT， 2001 年）获得的另一篇来自 Sams 的文章 &quot; Securing Sockets with<br />
+OpenSSL&quot;和它的 第二部分，该文章也是由两部分构成的。</p>
+<p>在线阅读 BIO library documentation 和 Network Security with OpenSSL （O&rsquo;Reilly &amp;<br />
+Associates，2002 年）的样例章节。 Linux Socket Programming （Sams，2001 年）摘自 Sams 的书。</p>
+<p>OpenSSL 的发布遵循 BSD/Apache-type 许可。如果您是自由软件（Free Software）的支持者（或者是 good<br />
+documentation 的支持者），您可能还希望查看 The GNU Transport Layer Security Library<br />
+（注意，如果没有异常子句，GPL 的软件不能针对 OpenSSL 进行链接）。 Mozilla Network Security Services（NSS）<br />
+是双许可的，它既遵循 Mozilla Public License（MPL）又遵循 GNU General Public License （GNU<br />
+GPL），而且有相当好的 文档。要深入了解 TLS，请阅读 Wikipedia 的文章 Transport Layer Security。</p>
+<p>可以在 RFC 2246 中找到关于 Transport Layer Security 的备忘录和技术细节，RFC 2246 定义了标准，并且它被 RFC<br />
+3546 更新，后者定义了对 TLS 协议的扩展。</p>
+<p>&quot; 使用 Twisted 框架进行网络编程, 第 4 部分&quot;（ developerWorks，2003 年 9 月）中 David Mertz 讨论了使用<br />
+Python twisted 框架进行 SSL 编程。</p>
+<p>要深入学习套接字编程，请参阅 Linux Socket 编程，第一部分（ developerWorks，2003 年 10 月）和 Linux Socket<br />
+编程，第二部分，这也是 David Mertz 的一个教程系列（ developerWorks，2004 年 1 月）。对那些刚开始进行套接字编程的人来说，<br />
+Beej&rsquo;s Guide to Network Programming Using Internet Sockets 也是一个不错的参考资料。</p>
+<p>如果您是 刚刚 开始接触套接字，那么请先阅读 &quot; Understanding Sockets in Unix, NT, and Java&quot;（<br />
+developerWorks，1998 年 6 月），那篇文章提供了什么是套接字以及它们适用于何处的极好的入门级概述。</p>
+<p>此外，还可以参阅来自 Communications Programming Concepts Sockets 的关于 Sockets 的 IBM<br />
+文档，以及来自 Technical Reference: Communications, Volume 2 的 Programming sockets on<br />
+AIX。</p>
+<p>可以通过&quot; Encryption using OpenSSL&rsquo;s crypto libraries&quot; （ Linux Gazette，2003<br />
+年）初步了解加密，并通过 &quot; Introduction to Cryptography&quot; （ PGP Corporation，2003 年 5 月 &mdash;-<br />
+XPDF 格式） 或 &quot; Introduction to cryptography&quot; （ developerWorks，2001 年 3<br />
+月）获得对加密的总体上的深入理解。可以以 Postscript 和 PDF 格式在线获得 Handbook of Appplied Cryptography<br />
+（CRC Press，1996 年）（可以通过订购获得更新后的 2001 版本）。</p>
+<p>在 developerWorks Linux 专区 可以找到更多为 Linux 开发人员准备的参考资料。</p>
+<p>可以在 Developer Bookstore Linux 区中定购 打折出售的 Linux 书籍。</p>
+<p>从 developerWorks 的 Speed-start your Linux app 专区下载可以运行于 Linux 之上的精选的<br />
+developerWorks Subscription 产品免费测试版本，其中包括 WebSphere Studio Site<br />
+Developer、WebSphere SDK for Web services、WebSphere Application Server、DB2<br />
+Universal Database Personal Developers Edition、Tivoli Access Manager 和 Lotus<br />
+Domino Server。想更快地开始上手，请参阅针对各个产品的 how-to 文章和技术支持。</p>
+<p>关于作者</p>
+<p>Kenneth 是 Peru State College（位于 Peru, Nebraska）计算机科学专业的大四学生。他还是学生报 The Peru<br />
+State Times 的职业作者。他拥有 Southwestern Community College （位于 Creston,<br />
+Iowa）计算机编程专业的理学副学士（Associate of Science）学位，在这所大学里，他是一名半工半读的 PC 技术员。他的研究领域包括<br />
+Java、C++、COBOL、 Visual Basic 和网络。</p>
+<p>原出处:</p>
+<p>[www.ibm.com/developerworks/cn/linux/l-openssl.html#Resources](<a href="http://www.ibm">http://www.ibm</a>.<br />
+com/developerworks/cn/linux/l-openssl.html#Resources)</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/c/">c</a></li>
+      <li><a href="https://blog.alswl.com/tags/openssl/">openssl</a></li>
+      <li><a href="https://blog.alswl.com/tags/ssl/">ssl</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2009/03/programming-with-openssl-for-ssl/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>用openssl进行SSL编程【转载-月光】</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/">
+    <span class="title">Next »</span>
+    <br>
+    <span>用OpenSSL创建证书时用到的命令【原创】</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-alswl-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

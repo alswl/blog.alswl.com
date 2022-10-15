@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>paster on Log4D</title>
+    <link>https://blog.alswl.com/tags/paster/</link>
+    <description>Recent content in paster on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 20 Mar 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/paster/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Python中调试代码</title>
+      <link>https://blog.alswl.com/2012/03/python-debug/</link>
+      <pubDate>Tue, 20 Mar 2012 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2012/03/python-debug/</guid>
+      <description>撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons
+开发的调试技巧。
+吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程，
+绝对不是简单的复制和粘帖。
+在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。
+import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过
+h(elp) 打印出来。
+参考链接：
+用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。
+安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。
+ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core.</description>
+    </item>
+    
+    <item>
+      <title>Pylons使用小记</title>
+      <link>https://blog.alswl.com/2011/05/pylons/</link>
+      <pubDate>Mon, 16 May 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/05/pylons/</guid>
+      <description>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。
+关于Pylons Pylons是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http:
+//www.makotemplates.org/)作为Template，SQLAlchemy作为
+ORM映射。使用BSD作为授权协议。
+托WSGI的福，python的web框架超多，甚至高手5分钟可以自己手写一个web框架，这种情况也导致了Python
+web框架的纷杂。我这里选择Pylons（其实是被选择），并不是说Pylons一定最好，而是比较适合当前项目。更多的Python
+web框架对比建议看这篇[浅谈Python web框架](http://feilong.me/2011/01/talk-about-python-web-
+framework)，另外，这个Best Web-
+Framework有直观的对比。
+Pylons环境配置 因为开发机是刚到手的ThinkPad，没有冒险安装Linux，所以这里的安装环境是Win7 + Python 2.6 + MySQL5.1。
+1、安装Pylons Pylons似乎没有方便的easy_install，原因是由于Pylons在安装过程中，会生成一个目标环境。这个环境包括完整的Python环境，从而与系统自
+带Python环境独立开来，防止第三方库的相互污染。Pylons官方提供了一个Python go-
+pylons.py脚本进行安装。
+通过在shell键入命令python go-pylons.py myb_env安装，其中myb_env代表目标环境，会在当前目录下面生成一个myb_en
+v文件夹，myb_env也可以使用绝对路径代替。在生成完之后请不要随意移动这个目录，因为环境里生成的Python脚本硬编码了绝对路径。
+2、安装mysql-python驱动 我使用的是MySQL数据库，使用mysql-python驱动，windows下具体安装过程可以参见[http://fendou.org/2010/06/17
+/install-python26-mysql-python-on-windows/](http://fendou.org/2010/06/17
+/install-python26-mysql-python-on-windows/) 需要修改一下源码和加入几个dll。
+3、生成egg包，下载第三方依赖 在目标项目下面，执行python setup.py develop，这将执行项目需要的三方依赖，设定依赖可以到setup.py中install_req uires进行配置。这个步骤用到了easy_install，所以请确保python/script下面有easy_install的可执行文件。windows
+下安装easy_install可以参考这里[http://thinkhole.org/wp/2007/02/01/howto-install-
+setuptools-in-windows/](http://thinkhole.org/wp/2007/02/01/howto-install-
+setuptools-in-windows/)。
+呼啦啦一大串命令跑完之后，就ok了。
+4、安装额外的三方依赖（可选） 根据实际情况操作吧，我这里使用了easy_install python-memcached和easy_install pil，前者是memcache的python驱动，后者是python图形库。
+5、初始化数据库 托SQLAlchemy的福，我们可以让它自动给我们创建映射表。首先确保在model下面配置好model类。
+class Person(Base): __tablename__ = &amp;quot;person&amp;quot; id = Column(Integer, primary_key=True)
+name = Column(String(100))
+email = Column(String(100))
+def init(self, name=&amp;rsquo;&amp;rsquo;, email=&amp;rsquo;&amp;rsquo;):
+self.name = name</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ubuntu on Log4D</title>
+    <link>https://blog.alswl.com/tags/ubuntu/</link>
+    <description>Recent content in ubuntu on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 07 Apr 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/ubuntu/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ubuntu安装之后设定操作</title>
+      <link>https://blog.alswl.com/2011/04/ubuntu-setup/</link>
+      <pubDate>Thu, 07 Apr 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/04/ubuntu-setup/</guid>
+      <description>前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。
+这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。
+= init Linux programs and setting = :author: alswl :email: alswlx#gmail.com :toc: :numbered: == first of all ==
+.update (打补丁、升级)
+sudo apt-get update
+Update System(fix bugs for sercurity): 299.0MB
+.reset permission(谨慎使用，设定文件为644,设定文件夹为755)
+find /home/XXX -type d -exec chmod 755 {} ;
+find /home/XXX -type f -exec chmod 644 {} ;
+.nautilus (给鹦鹉螺加上open as administrator, open terminal)
+sudo apt-get install nautilus-open-terminal nautilus-gksu
+.pdf (我使用Foxit)
+@see http://www.fuxinsoftware.com.cn/downloads/
+== application ==</description>
+    </item>
+    
+    <item>
+      <title>Ubuntu桌面自动换背景</title>
+      <link>https://blog.alswl.com/2011/04/ubuntu-crebs/</link>
+      <pubDate>Sun, 03 Apr 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/04/ubuntu-crebs/</guid>
+      <description>GNOME桌面系统可以使用一系列的图片作为背景，每过一段时间能够自动更换。这个功能核Win7下面自动换背景效果一致。不过很可惜，系统自带的可自动更换图片集只
+有几张，也找不到什么按钮可以直接设定。
+下图就是系统自带的两个图片集（第二行第一组和第二组）。
+我们可以通过撰写xml自己制作图片集，xml格式模板在/usr/share/gnome-background-properties/cosmos.xml
+，实际的xml存放在类似于/usr/share/backgrounds/cosmos/background-1.xml的配置文档里面。
+除了手工撰写xml，我们还可以通过crebs小软件来自动生成xml文件。
+官方介绍如下：
+A background slideshow creator for the GNOME desktop wallpaper.
+The GNOME desktop is able to use a sequence of images for its background
+wallpaper, changing them automatically over time, but does not include an
+interface for specifying which images should constitute such a slideshow.
+Create Background Slideshow (CreBS) is a small Python/GTK application that
+provides such an interface, saving users from having to manually edit XML</description>
+    </item>
+    
+    <item>
+      <title>Ubuntu8.04的教育网源</title>
+      <link>https://blog.alswl.com/2009/05/the-education-network-ubuntu8-04-source/</link>
+      <pubDate>Wed, 27 May 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/05/the-education-network-ubuntu8-04-source/</guid>
+      <description>Google的话有很多源，北大的宣称5M，结果我都连不上，交大的宣称2M，我发现只有20kb/s，连更新语言包都超级慢。
+最后经过我的测试，是成都电子科技大学的最快，2M左右，推荐使用。
+特别注意，这是8.04的源，虽然8.10大部分能用，但会出现某些软件包找不到，请大家使用前做好备份。
+速度的话，还是得自己测试，我只是推荐，下面的内容都是我复制过来自带的，不是我增加的。（PS:晚上时候我用官方的Mirror也3M/s）
+` #北京市清华大学更新服务器（教育网，推荐校园网和网通用户使用）：
+deb http://mirror9.net9.org/ubuntu/ hardy main multiverse restricted universe
+deb http://mirror9.net9.org/ubuntu/ hardy-backports main multiverse restricted
+universe
+deb http://mirror9.net9.org/ubuntu/ hardy-proposed main multiverse restricted
+universe
+deb http://mirror9.net9.org/ubuntu/ hardy-security main multiverse restricted
+universe
+deb http://mirror9.net9.org/ubuntu/ hardy-updates main multiverse restricted
+universe
+deb-src http://mirror9.net9.org/ubuntu/ hardy main multiverse restricted
+universe
+deb-src http://mirror9.net9.org/ubuntu/ hardy-backports main multiverse
+restricted universe
+deb-src http://mirror9.net9.org/ubuntu/ hardy-proposed main multiverse
+restricted universe
+deb-src http://mirror9.net9.org/ubuntu/ hardy-security main multiverse
+restricted universe
+deb-src http://mirror9.</description>
+    </item>
+    
+    <item>
+      <title>Ubuntu8.10下MySQL的安装</title>
+      <link>https://blog.alswl.com/2009/05/ubuntu8-10-under-the-mysql-installation/</link>
+      <pubDate>Wed, 27 May 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/05/ubuntu8-10-under-the-mysql-installation/</guid>
+      <description>Ubuntu下的MySQL安装本应该很简单，但是如果因为修改了软件源的话，反而变得麻烦起来。
+为了加快更新一些组件的速度，我加入了清华的、交大等大学的源，是8.04下Ubuntu版本的，这个直接导致了之后安装MySQL的问题。
+当选择Mysql-server之后，需要一堆组建，要手动安装，基本上出现这种提示，就没戏了，硬着头皮查找软件包，最后到一个perl-
+api的软件包这里就再也进行不下去了。
+Google了好一会，才有一个人的答案正确，说是8.10下用8.04的源就会有这种问题，我换成原始的备份了的源
+下面就是原始的源，使用这个找到MySQL之后就一次成功了 ` # deb cdrom:[Ubuntu 8.10 Intrepid Ibex -
+Release i386 (20081029.5)]/ intrepid main restricted
+See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to newer versions of the distribution.` deb http://mirror.rootguide.org/ubuntu/ intrepid main restricted
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid main restricted
+Major bug fix updates produced after the final release of the distribution. deb http://mirror.rootguide.org/ubuntu/ intrepid-updates main restricted
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid-updates main restricted
+N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu team.</description>
+    </item>
+    
+  </channel>
+</rss>

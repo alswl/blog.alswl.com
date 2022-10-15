@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ckeditor on Log4D</title>
+    <link>https://blog.alswl.com/tags/ckeditor/</link>
+    <description>Recent content in ckeditor on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 24 Mar 2010 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/ckeditor/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Dean&#39;s FCKEditor上传目录修改</title>
+      <link>https://blog.alswl.com/2010/03/dean-s-fckeditor-upload-directory-modify/</link>
+      <pubDate>Wed, 24 Mar 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/03/dean-s-fckeditor-upload-directory-modify/</guid>
+      <description>一直喜欢WorePress默认的上传文件方法，通过WP-content/uploads/年/月分组。
+网站改版时候果断的把[Dean&amp;rsquo;s FCKEditor With pwwang&amp;rsquo;s Code Plugin For Wordpress](http://wordpress.org/extend/plugins/deans-fckeditor-with-pwwangs-
+code-plugin-for-wordpress/)换成了[Dean&amp;rsquo;s FCKEditor For Wordpress](http://wordpress.org/extend/plugins/deans-fckeditor-for-wordpress- plugin/)，Dean&amp;rsquo;s FCKEditor With pwwang&amp;rsquo;s Code Plugin For
+Wordpress是带一个代码编辑器的CKEditor插件，和WP-Syntax配合很好用，而Dean&amp;rsquo;s FCKEditor For
+Wordpress是常规的CKEditor。
+PS:为神马要用两款插件呢，其实都是为了代码高亮，现在我发现Dean&amp;rsquo;s FCKEditor For
+Wordpress+SyntaxHL才是王道啊～
+这两款插件都会把文件上传到/wp- content/uploads/image(file/flash子文件夹)。这点让我很不喜欢，我还是喜欢默认的WordPress上传路径。
+修改wp-contentpluginsfckeditor-for-wordpress- pluginfilemanagerconnectorsphpconfig.php如下。其实就是声明一个变量，然后替换掉文件路径。
+$Config[&#39;Enabled&#39;] = $deans_fckeditor-&amp;gt;can_upload(); $dateMonth = date(&#39;Y/m/&#39;); $Config[&#39;UserFilesPath&#39;] = $deans_fckeditor-&amp;gt;user_files_url . $dateMonth; $Config[&#39;UserFilesAbsolutePath&#39;] = $deans_fckeditor-&amp;gt;user_files_absolute_path . $dateMonth; $Config[&#39;AllowedExtensions&#39;][&#39;File&#39;]	= array(&#39;7z&#39;, &#39;aiff&#39;, &#39;asf&#39;, &#39;avi&#39;, &#39;bmp&#39;, &#39;csv&#39;, &#39;doc&#39;, &#39;fla&#39;, &#39;flv&#39;, &#39;gif&#39;, &#39;gz&#39;, &#39;gzip&#39;, &#39;jpeg&#39;, &#39;jpg&#39;, &#39;mid&#39;, &#39;mov&#39;, &#39;mp3&#39;, &#39;mp4&#39;, &#39;mpc&#39;, &#39;mpeg&#39;, &#39;mpg&#39;, &#39;ods&#39;, &#39;odt&#39;, &#39;pdf&#39;, &#39;png&#39;, &#39;ppt&#39;, &#39;pxd&#39;, &#39;qt&#39;, &#39;ram&#39;, &#39;rar&#39;, &#39;rm&#39;, &#39;rmi&#39;, &#39;rmvb&#39;, &#39;rtf&#39;, &#39;sdc&#39;, &#39;sitd&#39;, &#39;swf&#39;, &#39;sxc&#39;, &#39;sxw&#39;, &#39;tar&#39;, &#39;tgz&#39;, &#39;tif&#39;, &#39;tiff&#39;, &#39;txt&#39;, &#39;vsd&#39;, &#39;wav&#39;, &#39;wma&#39;, &#39;wmv&#39;, &#39;xls&#39;, &#39;xml&#39;, &#39;zip&#39;) ; $Config[&#39;DeniedExtensions&#39;][&#39;File&#39;]	= array() ; $Config[&#39;FileTypesPath&#39;][&#39;File&#39;]	= $Config[&#39;UserFilesPath&#39;] ; $Config[&#39;FileTypesAbsolutePath&#39;][&#39;File&#39;]= ($Config[&#39;UserFilesAbsolutePath&#39;] == &#39;&#39;) ?</description>
+    </item>
+    
+    <item>
+      <title>禁用FCKeditor浏览服务器功能</title>
+      <link>https://blog.alswl.com/2009/05/fckeditor-browse-server-function-is-disabled/</link>
+      <pubDate>Sun, 24 May 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/05/fckeditor-browse-server-function-is-disabled/</guid>
+      <description>FCKeditor应该是功能最强大的网页编辑器了，提供js版本和java版本，而且功能特别丰富。
+猛击这里打开FCKeditor的主页
+正是因为功能太丰富，所以往往带来安全原因，用这个可以随意上传图片和文件，还能浏览服务器？！
+不行不行，这一定得禁用，否则就是给脚本小子提供工具了嘛。
+配置fckconfig.js 118行左右，修改Basic模板，加入图片和表情功能
+FCKConfig.ToolbarSets[&amp;quot;Basic&amp;quot;] = [ [&#39;Bold&#39;,&#39;Italic&#39;,&#39;-&#39;,&#39;OrderedList&#39;,&#39;UnorderedList&#39;,&#39;-&#39;,&#39;Link&#39;,&#39;Unlink&#39;,&#39;-&#39;,&#39;Image&#39;,&#39;Smiley&#39;] ] ; 继续修改tckconfig.js 284左右，去除一些浏览功能，修改为false
+FCKConfig.LinkBrowser = false ;//关闭增加连接中浏览服务器功能 FCKConfig.LinkBrowserURL = FCKConfig.BasePath + &#39;filemanager/browser/default/browser.html?Connector=&#39; + encodeURIComponent( FCKConfig.BasePath + &#39;filemanager/connectors/&#39; + _FileBrowserLanguage + &#39;/connector.&#39; + _FileBrowserExtension ) ; FCKConfig.LinkBrowserWindowWidth = FCKConfig.ScreenWidth * 0.7 ; // 70% FCKConfig.LinkBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ; // 70% FCKConfig.ImageBrowser = false ;//关闭增加图片中浏览服务器功能 FCKConfig.ImageBrowserURL = FCKConfig.BasePath + &#39;filemanager/browser/default/browser.html?Type=Image&amp;amp;amp;Connector=&#39; + encodeURIComponent( FCKConfig.BasePath + &#39;filemanager/connectors/&#39; + _FileBrowserLanguage + &#39;/connector.&#39; + _FileBrowserExtension ) ; FCKConfig.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>efficiency | Log4D</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/categories/efficiency/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/categories/efficiency/atom.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="efficiency" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://blog.alswl.com/categories/efficiency/" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="efficiency"/>
+<meta name="twitter:description" content=""/>
+
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/categories/">Categories</a></div>
+  <h1>
+    efficiency
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Gource-可视化你的代码历史
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>昨天我在sunng
+那里看到一个非常好玩的东西Gource。
+Gource可以将代码版本控制系统里面的日志全部可视化， 所谓可视化就是可以看见每个成员在系统里面提交代码的行为。
+Gource目前支持git/hg/svn，cvs通过一个简单的脚本也可以被Gource支持。
+官方视频在这里[Gource - Software Version Control Visualization Tool](http://www.youtu
+be.com/watch?v=E5xPMW5fg48&amp;feature=player_embedded)，里面有Moodle/Git/Drupal/Postg
+reSQL/Ruby on Rails/Linux/VLC Player这几个非常漂亮的开源软件视频。Ruby on Rails那一段特别帅有没有。
+使用下列命令可以将视频录制下来(via wiki)：
+pacman -S x264 #在archlinux下安装H264支持 gource -1280x720 -o gource.ppm #在项目目录下运行，生成ppm文件 #生成mp4文件，官方文档里面有-vpre slow项，会报错，去掉即可 ffmpeg -y -b 10000K -r 60 -f image2pipe -vcodec ppm -i gource.ppm -vcodec libx264 -threads 0 -bf 0 gource.x264.mp4 使用cvs2cl来支持CVS （via
+wiki)：
+cd my-cvs-project cvs2cl --chrono --stdout --xml -g-q &gt; my-cvs-project.xml gource my-cvs-project.xml Gource里面有几个快捷键，我常用的有[放大，]缩小，方向键移动，&#43;加速，-减速。
+我本来想把我的dbevent2gc拿来凑了一个热闹，结果h264编码传到要哭土豆似乎一直有问题，只能作罢。ps：3分钟的视频，生成的ppm有1.2个G，转换
+成mp4是1.2M。</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-11-26 00:00:00 +0800 CST'>2011-11-26</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Gource-可视化你的代码历史" href="https://blog.alswl.com/2011/11/gource/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Vimperator的Pass through
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>作为 vim 的拥护者，我同时也喜欢使用 Vimperator 这款 Firefox 下面的插件，这款插件可以帮助实现 Firefox 的纯键盘操作。
+我同时也是 GMail / Google Reader 的深度用户，他们在网页端也支持纯键盘操作，这样就和 Vimperator 产生了冲突。键盘按键事件被
+Vimperator 拦截了，导致键盘操作在这些应用上面不起作用。
+还好，Vimperator 提供了一种名为 Pass through 的模式，按 CTRL&#43;Z 进入这种模式，在这种模式下面，Vimperator
+将不响应键盘操作，全部放行到 Web 页面。
+在某一次版本更新之后， Pass through 的快捷键 CTRL&#43;Z 似乎不起作用了，我翻遍了用户手册也没有找到解决办法。
+就在昨天，我无意中不知道按了什么键，命令栏里面出现了 IGNORE ALL KEYS (Press &lt;S-Esc&gt; or &lt;INSERT&gt; to exit) 这行提示信息。在这种状态下面，我测试了 GMail 的快捷键，果然又起作用了。
+好吧，我终于找回了丢失的 CTRL&#43;Z ，新版的 Vimperator 使用 Shift&#43;Esc 或者 INSERT 键来进入原来的 Pass
+through 模式。
+——残念的分割线—–
+之前按 &lt;- 键时候，按成了 ThinkPad 的回退键，导致文章没有保存，纠结啊。</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-07-19 00:00:00 +0800 CST'>2011-07-19</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Vimperator的Pass through" href="https://blog.alswl.com/2011/07/vimperator-pass-through/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>CodeSmith使用心得
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst
+）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。
+一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码&#43;脚本的方式，大致代码如下（官方的sample2）。
+&lt;%@ CodeTemplate Language=&#34;C#&#34; TargetLanguage=&#34;Text&#34; Description=&#34;This template demonstrates using properties in your template.&#34; %&gt; &lt;%@ Property Name=&#34;Person&#34; Type=&#34;System.String&#34; Description=&#34;This will show up at the bottom of the property grid when the property is selected.&#34; %&gt; &lt;%-- This template demonstrates using properties in your template. --%&gt; This is some static content (just like the static HTML in a ASP page). &lt;%= &#34;Hello &#34; &#43; this....</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-02-26 00:00:00 +0800 CST'>2011-02-26</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to CodeSmith使用心得" href="https://blog.alswl.com/2011/02/codesmith/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>LavaVPN推广链接
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>以前一直使用SSH进行翻墙，后来在人人看到一位朋友推荐LavaVPN，就过去试用一下，效果的确不错。
+LavaVPN支持各种系统，在Windows下面有专用的客户端接入程序，通过这个客户端可以实现选择性加速，而不需要全局加速。在Android和Linux上面
+测试都可以。
+官方的介绍如下：
+LAVAVPN网络加速器是专为各类网游玩家、软件发烧友、网络办公、影音冲浪网虫等个人用户提供网络加速服务的新型产品，能有效减少网络延时，使网络互访再无拥
+挤的感觉，让您在任何情况下都能体验上网加速的快乐！多地服务器节点可以选择，一个账号即可使用全部节点，随时任意切换，软件自带服务器测速工具，自动选择最快的节点
+。
+服务器目前有大陆、台湾、香港和美国，我个人比较喜欢香港的服务器，速度快，畅游无限。根据我的实际使用，速度都不错，几乎都可无延迟的看Youtube。国内的服务
+器则是我在上班时候听音乐用的。
+由于VPN的全局性，导致连接上VPN后无法连接上内网数据库等服务器，我的解决方案是在虚拟机上跑VPN，采用Bridge桥接接入网络。
+目前LavaVPN在推广阶段，包月是16元，包3月是44元，半年80元，还是很超值的。
+最后分享3个推广链接，使用邀请码注册可以获得额外1天的免费使用时间。首次充值（30天及以上）可获额外3天时间赠送。（普通用户注册只能使用6小时）。Lava也
+推出了免费的VPN，限制是30分钟使用一次，偶尔翻墙也能接受。
+http://www.lavavpn.com/index-invite-ykfFcKHAIVXkfKOO
+http://www.lavavpn.com/index-invite-8xCUQDst8cShyBGe
+http://www.lavavpn.com/index-invite-xGHJB0OHCJnUxsPu
+请拿走的兄弟在下面留言说明一下，谢谢~
+Update 2011-02-18 (新的邀请码，请随意~):
+http://www.lavavpn.com/index-invite-rCSCF5jer7wUAcUP
+http://www.lavavpn.com/index-invite-0BGjgZYa0m5BSA0o
+http://www.lavavpn.com/index-invite-QhMy38ZqbOBoSMCp
+http://www.lavavpn.com/index-invite-9rVRbK0YSiTwJXeA
+http://www.lavavpn.com/index-invite-rI4qGK62NbNwXv8n
+http://www.lavavpn.com/index-invite-wp7dktqK2qHwNBCQ
+http://www.lavavpn.com/index-invite-ehgmFX4tgwiZ36E9
+http://www.lavavpn.com/index-invite-3Na6QkvzRjJ9xry2
+http://www.lavavpn.com/index-invite-jMysmc5HDNz9qZcA
+http://www.lavavpn.com/index-invite-PZzyCEJYOF2ZBqoG
+http://www.lavavpn.com/index-invite-JuvEgCJKizwKj6ho</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-12-23 00:00:00 +0800 CST'>2010-12-23</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to LavaVPN推广链接" href="https://blog.alswl.com/2010/12/lavavpn/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>在Win7上面使用Standalone Network Extender
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>用Win7大概1个月了，的确很不错，本来试用的心态变成了完全不想回到XP时代了。
+Win7的UAC比Vista已有很大的进步，至少不是那么烦心了，但是仍然很多场合都不能与以前旧版本的一些软件配合默契。
+比如公司用的这款VPN软件-Standalone Network Extender。
+这款软件是Billion BiGuard公司推出的SSL产品，通过IE载入一个Active插件来连接公司内网。我在以前XP时候很轻松连入，先在却死活无法连接
+成功。我看了一下版本：build:Sep 7 2009-14:06:08，在Billion
+BiGuard公司的主页也没有找到适合Win7的新版本。
+我猜测VPN软件需要修改系统底层参数，可能需要管理员权限，就试用管理员权限打开IE，果然，顺利连接成功。
+嗯，以后使用古董遇到一些比较怪异的问题，如果它是安全可靠的，就可以试试管理员权限了。我是不推荐关闭UAC的，权限机制虽然烦，但是可以保证一些系统权限不被开放
+。</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-10-22 00:00:00 +0800 CST'>2010-10-22</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 在Win7上面使用Standalone Network Extender" href="https://blog.alswl.com/2010/10/win7-standalone-network-extender/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>我所使用的知识管理系统
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>最近工作比较忙，自由上网的时间被大幅度减少，加上在啃.net的书，所以能够分享的东西就不多了。公司所在的部门需要将PMS和KMS整合在一起，正在对KMS进行
+选型，我就趁这个机会把我使用知识管理系统的经验分享一下。
+一、知识管理系统（KMS） 简单说一下知识管理的定义：指个人或团体通过工具建立知识体系并不断完善，进行知识的收集、消化吸收和创新的过程，这其中使用的工具也就是KMS。KMS应该帮助我们
+队只是进行采集、精炼、索引、分类、检阅、检索、搜索的功能。
+不多解释KMS了，省的看大段文字心烦，想做理论深入的去最下面的相关链接查找吧。
+二、我想要的KMS 我理想中的KMS应该能够满足一下几点要求。
+1、数据保存格式 数据的保存格式关系到知识的完整性和呈现方式，这是我最看重的一条。我理想中的保存格式是能够内嵌媒体信息，可以自定义内容的样式，最好是用大家比较习惯的文档体系，
+比如h1/h2/h3/p/br/ol/li。在内嵌媒体内容的同时也要能够在知识点外挂其他类型文件，比如Excel、知识导图，甚至exe可执行文件。
+数据保存格式也要考虑数据的移植性，因为一旦我们的KMS需要换一个系统，就会带来大量个工作，这个极其讨厌。使用xml/doc/excel/mm这些通用数据类型
+存储信息可以在一定条件下解决这个问题。
+数据存储的形式最好使用文件形式，尽量不要使用数据库，什么MySQL/MSSQL/SQLite，一旦知识数量到了一个规模，这反而会成为限制（我可不想为了一个小
+小KSM而开一个后台服务器进程）。
+2、数据采集方式 数据采集方式关系到采集是否顺手。所谓顺手，就是说我看到某个资源（文字 / 图片 /
+网页），都可以通过尽可能少的步骤保存到我自己的KMS，比如通过常驻后台的托盘程序，又或者监视剪贴板指定格式内容。
+相应的解决办法有从源获取，比如说可以直接读取我Google
+Reader中打上星号的内容，从某个Feed获取内容，从我当前正在浏览的网页获取我所需要的内容（不保存那些广告和垃圾信息）。
+3、数据索引 能够对所有的信息进行无限制分类和打标签，支持1-&gt;N分类和1-&gt;N标签即可，没有太多的花样了。
+能够根据分类、标签、标题、正文多层次搜索，支持高级查找，比如说AND条件和OR条件。
+4、数据同步和安全 能够将KMS的数据同步到网上，哦~换一个流行的说法，支持云同步。考虑到在家庭和工作电脑之间进行切换，这点还是需要的。
+有一个剑走偏锋的办法，使用现在很多的同步软件，比如说DropBox、DBank和快盘，就可以把那些以文件形式保存数据的KMS信息进行同步。
+KMS可能涉及到很多安全和隐私信息，所以必须建立对应帐户和安全机制。允许用户对分享、二次分享、隐私、禁止同步等选项进行详细设置。
+5、协同工作 能够针对于部门小组进行知识管理，这属于企业级产品，不在今天讨论范围之内。其实对于团队来说，Wiki也是一个不错的选择，KMS太过于个性化了。
+三、我使用的KMS-WizKnowledge 废话了这么多，终于进入重点了，我现在使用的KMS系统-WizKnowledge。
+这款Wiz是我最早在Louis那里看到这篇文章《[Wiz(为知个人知识管理)正式版发布- Louis Han
+Life Log](http://louishan.com/articles/wiz-personal-knowledge-
+management.html)》，当时没有立即试用。之后在看到同步控也发布了相关的一篇日志《WizKnowledge -
+支持同步的个人知识整理工具 |
+同步控》，最后又看到xDash的一篇《我的个人知识管理工具
+[PKM] | 同步控》，终于忍不住诱惑去下了试用。
+现在用Wiz也大概一个多月了，我对应我上面的要求对Wiz进行一下品评一下。
+1、优点 Wiz使用.ziw格式保存文件，其实这就是zip wiz的缩写，其内质是zip压缩的html文档。这种保存方式可以妥善的保存上文提到的内嵌式媒体，而且内部使
+用html&#43;css，能够方便数据展现和迁移。对于大部分选用KMS的朋友来说，使用html&#43;css也不会带来学习曲线。
+Wiz使用树形目录保存文件，这样就无法做到任意指定分类，但是带来好处是以文件夹方式保存知识内容，所以总体来说这算是优点。
+Wiz的每个文档都支持外接任意类型附件，并将其保存到.ziw中，这对于mm/doc/xls这些特殊类型来说特别有用。
+Wiz支持多平台，其中有WM平台，还有Android版本。我试用过Android版本，很弱，问题很多。对我来说，移动手持上面的软体不需要太多功能，可以方便的
+查看即可。
+Wiz还支持第三方插件，目前官方发布版本集成的有导入文件、导入Google
+Docs/日历、博客下载器、发布到博客。其中导入文件支持&#34;.htm;.html; .mht;.nws; .eml; .txt;.ini;
+.bat;.inf; .swf;.bmp; .jpg;.jpeg; .gif;.png; .doc;.docx;
+.rtf;.ppt;.pptx; .xls;.xlsx;.ziw; .zip;.cpp;.hpp; .cxx;.c;.h;...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-09-24 00:00:00 +0800 CST'>2010-09-24</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 我所使用的知识管理系统" href="https://blog.alswl.com/2010/09/my-kms/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>将VisualStudio打造成Vim
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>背景：Vim in VisualStudio? 最近痴迷于Vim，尝试着在.net环境中（70%C#&#43;20%ASPX&#43;10%JS）使用Vim进行开发。但是似乎现成的Vim插件不太适应.net开发平台，在进
+行调试、编译以及ASPX页面调整时候还是需要切换到VS。
+内事不决问老婆，外事不决问Google，我以关键词&#34;Vim C#“向G神询问，很可惜一圈一圈找下来，都没有什么有价值的答案。在StackOverlow上找到
+了一些相关资源，其中几位资深人士（使用Vi/Vim大约20年）提到了一款叫做ViEmu的软件，就好奇的跑去看看。
+ViEmu 让我们来见识一下ViEmu的厉害吧。ViEmu支持模式切换、移动、宏、高亮搜索，键盘映射、增强命令、正则表达、可视模式等等。反正常用的Vim功能都具备。它自
+己也敢宣称支持Vim大部分功能（Vim太强大，不敢说完全模拟~）。下面是一张ViEmu的官方示意图。
+ViEmu不但有支持VS的版本，还有支持Word &amp; Outlook &amp; SQL Server Management
+Studio（SQL解析器），确实是相当强大。
+ViEmu的收费标准是Only $99，唉，真是残酷&#43;万恶的资本主义啊。囊中羞涩，不得不去求破解版本。功夫不负有心人，终于找到了当前最新版本ViEmu.v.
+2.5.4的破解版”ViEmu.v.2.5.4.for.VS.Classic.CracKed-LCG - 『LCG Area』 - 吾爱破解论坛【 LCG
+】 破解论坛|破解软件|加密解密|逆向工程|软件安全|病毒分析|精品软件|破解补丁|注册机|序列号|QQ|下载|Crack|Patch|Key|SN -
+Powered by Discuz!&#34;。（这标题真TMD长
+，不过论坛够意思，不用注册即可下载）。网上还有一种破解方法（我没有试过，感兴趣可以尝试）。
+1.删除目录 C:Documents and Settings用户名Local SettingsApplication DataIdentities
+{17582A9E-740A-47F2-8256-D09F1378E7FA}
+2.删除注册表项HKEY_CURRENT_USERSoftwareClassesCLSID{D31F31E1-B08F-46FF-
+92C5-CA111A2053DF}
+安装失败 在公司电脑安装ViEmu没有问题，在我的机器上面（XP Sp3&#43;VS2008&#43;ReSharper
+v4.1）却出现了重大错误。启动VS之后立刻提示&#34;ViEmu incorrectly installed, please
+reinstall&#34;，卸载重装之后不起任何作用。
+我在官方支持论坛上面找到了相关讨论ViEmu forums / ViEmu incorrectly installed message under VS
+2008。作者会给所有遇到问题的人发一封邮件，包含一个
+Tool，能够解决这个问题并且将时间恢复至30天，下载点击[这里](http://www.viemu.com/for-
+ajsd8/XtendTest.exe)（作者发送给我时候，该链接已失效）。
+好在我有十全大补丸，就是上文提到的那个破解包，破解之后，连带着这个莫名的问题也莫名的解决了~
+主题 厌倦了VisualStudio那种白底黑字加上几个蓝色函数的主题了么，想回到Geek Feel的Vim主题嘛，这里就要向你隆重推荐一个网站：Studio
+Styles - Visual Studio color...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-09-03 00:00:00 +0800 CST'>2010-09-03</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 将VisualStudio打造成Vim" href="https://blog.alswl.com/2010/09/vs-vim/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>SQL格式化工具-SQL Pretty Printer
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>背景 最近写了一些SQL，数据库用的是MS-SQL，而SQL Server Management
+Studio是不自带代码格式化功能的，这让我用起来很郁闷，PL/SQL Developer格式起来多爽啊。
+在网上找了一下SQL格式化工具，只有一个用起来还不错的在线版本，我测试
+了一下，功能强大，可惜不支持中文，注释的中文会被打上？？
+SQL Pretty Printer 我在那个在线网站看到了Desktop Version的菜单，进去一看，哦，原来这个网站本身就在做一款SQL格式化工具的产品，叫做 SQL Pretty
+Printer。
+SQL Pretty Printer 的桌面版本
+格式化好之后的代码
+功能 SQL Pretty Printer目前提供4种使用方式，桌面版本，SSMS(SQL Server Management
+Studio)插件，VS插件，和提供API接口。
+SSMS(SQL Server Management Studio)插件版本
+可以将SQL转化成代码格式，支持数种语言
+可以将SQL转化成HTML格式
+获取 使用版本只能提供30次，而且桌面版本的无法将代码复制出来，我使用的是SSMS插件版本，可以直接在查询器里面格式化，试用版的限制比较多。
+翻遍SQL Pretty Printer的网站，终于发现了Get SQL Pretty Printer Desktop Version For
+Free信息，作者说可以通过4种途径获取免费的授权码。
+1.If you are a technical/software blogger or journalist willing to write
+us up (honest reviews are the most useful to us) [email us](mailto:support@dpr
+iver.com?subject=I%20want%20to%20review%20sql%20pretty%20printer%20on%20my%20s...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-07-28 00:00:00 +0800 CST'>2010-07-28</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to SQL格式化工具-SQL Pretty Printer" href="https://blog.alswl.com/2010/07/sql-format-tool-sql-pretty-printer/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>SMS Backup 备份手机短信
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>alswl的一个癖好就是不喜欢删除信息，无论是QQ上面的还是手机短信，因此找一个信息备份工具就比较重要了。
+以前小6一直用的是MessageStorer，在Android上一直没有找到非常适用的。今天偶然看到一个软件，颇为好玩，与大家分享。
+ps：试用之后，发现只能备份不能还原，而且并不是我喜欢的那种MessageStorer备份为文本模式，甚是遗憾，仅供大家把玩。
+Update: 试了一下一款叫SMS Backup &amp; Restore的软件，非常理想，可以备份短信为XML格式的文件，看了一下统计，Cindere
+lla你的短信是600&#43;条。。。如果纯粹是为了保存短信，推荐这一款SMS Backup &amp; Restore。
+原文出自：[Android小軟體] SMS Backup 備份手機簡訊（定期自動儲存到Gmail信箱）****
+手機裡經年累月的傳送、接收了一堆簡訊之後，如果怕手機遺失而造成寶貴資料一起消失的話，該怎麼把它備份出來呢？
+如果你是使用Google Android系統的手機的話，可以試試看下面這個免費的「SMS Backup」
+手機簡訊備份軟體，將手機中的簡訊定期自動備份到Gmail信箱中，讓我們不用擔心手機遺失或毀損，造 成簡訊通通不見的遺憾事情再度發生。
+SMS Backup軟體是透過IMAP協定連線到Gmail信箱並執行訊息備份工作，所以在開始使用之前，必須先到Gmail信箱的設定頁面中開啟IMAP存取
+權限。備份過程中我們可以設定自己喜歡的名稱當做Gmail郵件的標籤，透過「標籤」的標示讓我們可以輕易的在Gmail信箱中搜尋、管理你的簡訊內容。
+此外，如果你的簡訊數量太龐大，也可以先在SMS Backup軟體中設定每次執行備份時的訊息數量，避免一次處理太多訊息而卡住。
+▇ 軟體小檔案
+▇
+(錯誤、版本更新回報)
+軟體名稱：SMS Backup
+軟體版本：1.10
+軟體語言：英文
+軟體性質：免費軟體
+檔案大小：223KB
+系統支援：Android手機
+官方網站：[http://code.google.com/p/android-sms/](http://code.google.com/p
+/android-sms/)
+軟體下載：請直接在手機中的 Market搜尋「SMS Backup」或「[按這裡](http://android-
+sms.googlecode.com/files/SmsBackup-1.1.0.apk)」下載到手機裡安裝
+一、到Gmail信箱開啟IMAP郵件存取權限 因為SMS Backup軟體需透過IMAP的方式存取你的Gmail帳戶來執行備份工作，所以請先開啟你的Gmail信箱頁面，按一下右上角的「設
+定」，在「轉寄和 POP/IMAP」中勾選「啟用IMAP」 再按「儲存變更」按鈕，即可完成設定。
+二、安裝SMS Backup軟體並設定帳號密碼 第1步 在Android手機安裝SMS
+Backup軟體的方法很簡單，請按「所有程式」清單再開啟「Market」，在Andorid Market選單裡面按搜尋，找到「SMS
+Backup」這軟體再按「安裝」按 鈕即可。
+裝好軟體並開啟程式之後，請分別按一下「Username」跟「Password」 兩個項目，並依序輸入你的Gmail帳號、密碼。
+第2步
+設定好Gmail帳號、密碼之後，第一次啟用時會問你是否要馬上執行簡訊備份工作，請按「確定」按鈕，然後再按「Backup」
+按鈕，開始簡訊備份工作。
+第3步
+此時，視窗上方會顯示目前的簡訊備份進度，原本儲存在你手機裡面的簡訊都會被備份到Gmail信箱中。
+第4步 另外，我們也可以在頁面最下方的「Advanced settings」按一下，我們可以分別設定簡訊備份到
+Gmail後所使用的郵件「標籤」（用來分類郵件用），或者可以在這邊設定簡訊備份工作的每次處理數量，一般來說都不用特別做調整，除非你有特別的使用需
+求的話。...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-07-09 00:00:00 +0800 CST'>2010-07-09</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to SMS Backup 备份手机短信" href="https://blog.alswl.com/2010/07/sms-backup-for-android/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Web开发利器-Aptana
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>闲逛时候意外发现了一款开发利器Aptana，介绍说是JavaScript编辑利器，我冲着试一试的心理去官网溜达了一圈，发现那篇介绍问完完全全错了，Aptan
+a哪里只是JavaScript编辑器啊，完全是Web开发18般武艺样样精通啊。
+废话不多说，来自open-open的介绍（alswl懒得翻译官方文字了 ^_^）
+Aptana是一个非常强大,开源,专注于JavaScript的Ajax开发IDE。它的特性包括：
+*JavaScript,JavaScript函数,HTML,CSS语言的Code Assist功能。
+*Outliner(大纲)：显示JavaScript,HTML和CSS的代码结构。
+*支持JavaScript，HTML，CSS代码提示，包括JavaScript 自定函数
+*代码语法错误提示。
+*支持Aptana UI自定义和扩展。
+*支持跨平台。
+支持FTP/SFTP
+*调试JavaScript
+*支持流行AJAX框架的Code Assist 功能：AFLAX, Dojo, JQuery, MochiKit, Prototype, Rico, script.aculo.us, Yahoo UI, Ext
+*Adobe AIR与iPhone开发工具 其主页上还提供如何使用该开发工具的视频。
+看得你心动心痒痒了么，我也恨没有早认识Aptana几年，马上下载下来试用吧，友情提示一下，Aptana其实是Eclipse的插件，需要Eclipse支持哦。
+官方链接 Aptana 官方网站
+Aptana Studio 下载地址
+简单教程 其实我个人觉得Aptana装上去就可以用的很溜了，只要你用过Eclipse JavaEE模块或者DreamWeaver之类的IDE。
+唯一一个问题可能是编码，参考[qop’s blog: Aptana Studio 1.0 設定 UTF-8 編碼](http://qops.blogspot.com/2007/11/aptana-
+studio-10-utf-8.html)可以搞定（发布后发现这个链接是BlogSpot的，为了照顾墙内看客，我把原文转载过来）
+不可多得的Javascript(AJAX)开发工具 － Aptana - BLACK JACK - 博客园
+Aptana使用入门一：Code Assist - BLACK JACK - 博客园
+在Eclipse安装Aptana插件-开发工具- 编程环境
+Aptana Studio 1.0 设定 UTF-8编码 下面是转载过来的文章，在修改全局编码为UTF-...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-04-07 00:00:00 +0800 CST'>2010-04-07</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Web开发利器-Aptana" href="https://blog.alswl.com/2010/04/web-development-tool-aptana/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://blog.alswl.com/categories/efficiency/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="https://blog.alswl.com/categories/efficiency/page/3/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

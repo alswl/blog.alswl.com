@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>comet on Log4D</title>
+    <link>https://blog.alswl.com/tags/comet/</link>
+    <description>Recent content in comet on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 30 May 2012 10:40:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/comet/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>服务器 Push 技术</title>
+      <link>https://blog.alswl.com/2012/05/comet/</link>
+      <pubDate>Wed, 30 May 2012 10:40:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2012/05/comet/</guid>
+      <description>服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。
+实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。
+在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。
+ps：「长连接」在一些场景下，是另外一种意义「HTTP: Keep alive」。不在本文讨论的范围中。
+参考链接：
+Comet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持，
+Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。
+参考连接：
+HTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket，
+否则 FireBug 是无法监测的，WebSocket 可以双向通讯。
+新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api&amp;amp;_pid=10001&amp;amp;count=2&amp;amp;source=3818214747&amp;amp;callback=STK_133834300664875
+未读信息大约每20秒触发一次，像是 Ajax 轮询。</description>
+    </item>
+    
+    <item>
+      <title>AzaAjaxChat笔记-实现</title>
+      <link>https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/</link>
+      <pubDate>Sun, 22 Aug 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/</guid>
+      <description>唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
+一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co
+met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile
+的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的&amp;quot;服务器推&amp;quot;技术。
+我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询
+（long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。
+这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&amp;quot;查询-&amp;gt;返回-&amp;gt;再查询&amp;quot;中间的一段断开时间进行重连接。最后因为技术
+实现和开发时间，我决定放弃了Comet的实现。
+PS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。
+相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet&amp;ndash;&amp;ldquo;服务器推&amp;quot;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：&amp;ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。&amp;ldquo;按照一般设计思路，这个动作应该由后台每
+过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的
+解决办法。
+我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。
+这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所
+有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。
+如果有PHP达人看到这个，望不惜赐教。
+三、RTMP RTPM是一个流媒体传输的协议，我在AzaAjaxChat中用它进行视频聊天画面和音频传输。这块内容可以洋洋洒洒的写一大篇日志，我在这里只是简单罗列一下我用
+到的相关内容。
+Real Time Messaging Protocol（实时消息传送协议协议)概述，实时消息传送协议是Adobe
+Systems公司为Flash播放器和服务器之间音频、视频和数据传输开发的私有协议。它有三种变种： 1)工作在TCP之上的明文协议，使用端口1935；
+2)RTMPT封装在HTTP请求之中，可穿越防火墙； 3)RTMPS类似RTMPT，但使用的是HTTPS连接；
+RTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP协议或者轮询 HTTP协议之上。
+RTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。
+这些通道中的包都是按照固定大小的包传输的。
+我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash
+Video流媒体播放功能的服务器软件。
+FMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司
+跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。
+四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a
+dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支</description>
+    </item>
+    
+  </channel>
+</rss>

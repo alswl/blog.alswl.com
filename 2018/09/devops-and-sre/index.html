@@ -1,44 +1,725 @@
-<!DOCTYPE html><html lang=en> <head><title>DevOps 和 SRE - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2018/09/devops-and-sre/ rel=canonical><meta name=author content=alswl><meta name=keywords content=DevOps,SRE><meta name=description content="最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。 我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。 现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。 于是我给了一些见解并整理成文章以饕大众。 最常见的误区： DevOps 新概念，好高级哦 SRE 是高级版 DevOps 运维可以轻松转身 DevOps 工程师 让我一一给你讲解吧。 image via YouTube"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2018/09/devops-and-sre/ rel=bookmark title="Permalink to DevOps 和 SRE"> DevOps 和 SRE </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#devops-和-sre-定义 title="DevOps 和 SRE 定义">DevOps 和 SRE 定义</a></li><li><a class=toc-href href=#两者产生背景和历史 title=两者产生背景和历史>两者产生背景和历史</a></li><li><a class=toc-href href=#两者的职能不同 title=两者的职能不同>两者的职能不同</a></li><li><a class=toc-href href=#工作内容不同 title=工作内容不同>工作内容不同</a></li><li><a class=toc-href href=#devops-和-sre-关系 title="DevOps 和 SRE 关系">DevOps 和 SRE 关系</a></li><li><a class=toc-href href=#附录技能点 title=附录：技能点>附录：技能点</a></li><li><a class=toc-href href=#ref title=Ref>Ref</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2018-09-09T23:21:40+08:00> 2018-09-09</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/devops/ >DevOps</a> / <a href=https://blog.alswl.com/tag/sre/ >SRE</a> </footer><!-- /.post-info --> </div> </div> <p>最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。 我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。 现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。 于是我给了一些见解并整理成文章以饕大众。</p> <p>最常见的误区：</p> <ul> <li>DevOps 新概念，好高级哦</li> <li>SRE 是高级版 DevOps</li> <li>运维可以轻松转身 DevOps 工程师</li> </ul> <p>让我一一给你讲解吧。</p> <p><img alt=sre-and-devops.png src=https://4ocf5n.dijingchao.com/upload_dropbox/201809/sre-and-devops.png> <small><a href="https://www.youtube.com/watch?v=uTEL8Ff1Zvk">image via YouTube</a></small></p> <!-- more --> <h2 id=devops-和-sre-定义>DevOps 和 SRE 定义</h2> <p>DevOps 是字面上 Dev 开发 / Ops 运维两者组合， 严格意义上 DevOps 如下（via <a href=https://en.wikipedia.org/wiki/DevOps>DevOps - Wikipedia</a>）：</p> <blockquote> <p>DevOps（Development 和 Operations 的组合词）是一种重视&ldquo;软件开发人员（Dev）&rdquo;和&ldquo;IT 运维技术人员（Ops）&rdquo;之间沟通合作的文化、运动或惯例。</p> </blockquote> <p>SRE 全称是 Site Reliability Engineering，最早是由 Google 提出，并且在其工程实践中发扬光大。 他们还出了一本同名书籍「<a href=https://landing.google.com/sre/book.html>Site Reliability Engineering</a>」， 让这个理念在互联网工程师圈子里广泛传播。</p> <p>Google 对 SRE 解释是（via <a href=https://en.wikipedia.org/wiki/Site_Reliability_Engineering>Site Reliability Engineering - Wikipedia</a>）：</p> <blockquote> <p>Site reliability engineering (SRE) is a discipline that incorporates aspects of software engineering and applies that to operations whose goals are to create ultra-scalable and highly reliable software systems.</p> </blockquote> <p>我将其翻译翻译为中文：</p> <blockquote> <p>网站稳定性工程师是致力于打造「高扩展、高可用系统」，并将其贯彻为原则的软件工程师。</p> </blockquote> <p>从定义来看，DevOps 是文化、运动和惯例，而 SRE 是有严格任职要求的职位。 文化是软性定义，文化有更多概念可以捏造，而 SRE 定义精准，就少了想象空间（也可能 SRE 门槛高 😄）。 按 Google 给出的说法是，SRE 工程师实践了 DevOps 文化。这个观点没错，但是国内的 DevOps 逐步独立出 DevOps 工程师， 所以在本文，我着重讨论的是 DevOps 工程师和 SRE 工程师两种职位对比。</p> <h2 id=两者产生背景和历史>两者产生背景和历史</h2> <p>互联网需求催生了 DevOps 。在最传统软件企业中，是只有 Dev 没有 Ops， 那时 Ops 可能还是只是技术支持人员。开发按照瀑布流：需求分析、系统设计、开发、测试、交付、运行， 传统软件发布是一个重量级操作。一旦发布，Dev 几乎不再直接操作。 80 后可能会记得 QQ 每年都会有一个大版本发布吧，QQ 2000 / 2003 / 2004 等等。 此时 Ops 不用和 Dev 直接高频接触，甚至针对一些纯离线业务，压根没有设立 Ops 这个岗位。</p> <figure> <img alt=qq-2004.png src=https://4ocf5n.dijingchao.com/upload_dropbox/201809/qq-2004.png><figcaption>qq-2004.png</figcaption> </figure> <p>互联网浪潮之后，软件由传统意义上桌面软件演变为面向网站、手机应用。 这时候业务核心逻辑，比如交易，社交行为都不在用户桌面完成，而是在服务器后端完成。 这给互联网企业给予了极大操作空间：随时可以改变业务逻辑，这促进了业务快速迭代变更。 但即便这样，Dev 和 Ops 是极其分裂的两个环节。Ops 不关心代码是如何运作的，Dev 不知道代码如何运行在服务器上。</p> <p>当业界还沉浸在可以每周发布版本喜悦中时，2009 年，Flicker 提出了每天发布 10+ 次概念，大大震撼了业界。 Flicker 提出了几个核心理念：</p> <ul> <li>业务快速发展，需要拥抱变更，小步快跑</li> <li>Ops 目标不是为了网站稳定和快速，而是推动业务快速发展</li> <li>基于自动化工具提高 Dev / Ops 联接：代码版本管理、监控</li> <li>高效沟通：IRC / IM Robot（现在那些 ChatBot 套路，10 年前就被 Flicker 玩过了）</li> <li>信任、透明、高效、互助的沟通文化</li> </ul> <figure> <img alt=flicker.png src=https://4ocf5n.dijingchao.com/upload_dropbox/201809/flicker.png><figcaption>flicker.png</figcaption> </figure> <p>原文 SlideShare 在这 <a href=https://www.slideshare.net/jallspaw/10-deploys-per-day-dev-and-ops-cooperation-at-flickr>10+ Deploys Per Day: Dev and Ops Cooperation at Flickr</a></p> <p>真是让人难以想象，今天各种培训公司和一些知名大 V 在呼唤这些 DevOps 理念， 竟然在 2009 年一份幻灯片中就展现淋漓尽致。经典总是不过时，在尘封下闪耀着智慧光芒。 有些人将 DevOps 和运维自动化等同，这是只看到表象。 DevOps 目标是提高业务系统交付速度，并为之提供相关工具、制度和服务。 一些个人或培训机构添油加醋和衍生含义，都是围绕这 DevOps 本质而发散。</p> <p>接下来聊聊 SRE 历史， SRE 出现要晚一些。在 2003 年时候 Google 的 Ben Treynor 招募了几个软件工程师，这个团队设立目的是帮助 Google 生产环境服务运行更稳定、健壮、可靠。 不同于中小型规模公司，Google 服务于十几亿用户服务，短暂服务不可用会带来致命后果。 因此 Google 走在了时代最前面，SRE 产生了。</p> <p>这个职位为大规模集群服务，小型团队不需要这样职位设定（可能也招不起真正 SRE 😊）。 Google 在探索若干年之后，SRE 团队开始将自己心得体会写在线上，并在 2016 年将此书出版。</p> <h2 id=两者的职能不同>两者的职能不同</h2> <p>DevOps 文化，那么就没有一个具象职能要求。现在不少公司将 DevOps 职能单独抽取出来，称之为 DevOps 工程师。 那让我们看看 DevOps 工程师关心什么：DevOps 文化目的是提交交付速度， DevOps 工程师就自然会关心软件 / 服务的整个生命周期。</p> <p>一个简单的公式：<code>速度 = 总量 / 时间</code>，添上工程行业术语，即 <code>交付速度 = （（功能特性 * 工程质量） / 交付时间） * 交付风险</code>。</p> <p>功能特性交给产品经理和项目经理管理，DevOps 工程师需要关心剩下几个因素：工程质量 / 交付时间 / 交付风险。 DevOps 工程师职能如下：</p> <ul> <li>管理应用全生命周期（需求、设计、开发、QA、发布、运行）</li> <li>关注全流程效率提升，挖掘瓶颈点并将其解决</li> <li>自动化运维平台设计和研发工作（标准化、自动化、平台化）</li> <li>支持运维系统，包括 虚拟化技术、资源管理技术、监控技术、网络技术</li> </ul> <p>SRE 关键词是「高扩展性」「高可用性」。高扩展性是指当服务用户数量暴增时， 应用系统以及支撑其服务（服务器资源、网络系统、数据库资源）可以在不调整系统结构，不强化机器本身性能 ，仅仅增加实例数量方式进行扩容。高可用性是指，应用架构中任何环节出现不可用时，比如应用服务、网关、数据库 等系统挂掉，整个系统可以在可预见时间内恢复并重新提供服务。当然，既然是「高」可用， 那么这个时间一般期望在分钟级别。SRE 职能可以概括为以下：</p> <ul> <li>为 应用、中间件、基础设施等提供 选型、设计、开发、容量规划、调优、故障处理</li> <li>为业务系统提供基于可用性、可扩展性考虑决策，参与业务系统设计和实施</li> <li>定位、处理、管理故障，优化导致故障发生相关部件</li> <li>提高各部件资源利用率</li> </ul> <h2 id=工作内容不同>工作内容不同</h2> <p>职责不同导致两个职位工作内容也不尽相同，我将 DevOps 工程师和 SRE 工程师职能列举如下：</p> <ul> <li>DevOps <ul> <li>设定应用生命管理周期制度，扭转流程</li> <li>开发、管理 开发工程师 /QA 工程师使用 开发平台系统</li> <li>开发、管理 发布系统</li> <li>开发、选型、管理 监控、报警系统</li> <li>开发、管理 权限系统</li> <li>开发、选型、管理 CMBD</li> <li>管理变更</li> <li>管理故障</li> </ul></li> <li>SRE <ul> <li>管理变更</li> <li>管理故障</li> <li>制定 SLA 服务标准</li> <li>开发、选型、管理 各类中间件</li> <li>开发、管理 分布式监控系统</li> <li>开发、管理 分布式追踪系统</li> <li>开发、管理 性能监控、探测系统（dtrace、火焰图）</li> <li>开发、选型、培训 性能调优工具</li> </ul></li> </ul> <p>很有趣的对比，DevOps 和 SRE 都会关心应用生命周期，特别是生命周期里面中变更和故障。 但是 DevOps 工作内容是主要为开发链路服务，一个 DevOps Team 通常会提供一串工具链， 这其中会包括：开发工具、版本管理工具、CI 持续交付工具、CD 持续发布工具、报警工具、故障处理。 而 SRE Team 则关注更为关注变更、故障、性能、容量相关问题，会涉及具体业务，产出工具链会有： 容量测量工具、Logging 日志工具、Tracing 调用链路跟踪工具、Metrics 性能度量工具、监控报警工具等。</p> <h2 id=devops-和-sre-关系>DevOps 和 SRE 关系</h2> <p>DevOps 首先是一种文化，后期逐渐独立成一个职位；SRE 一开始就明确是一个职位； 不少同学把 DevOps 和 SRE 搞混，是被两者表象锁迷惑，看上去这两者都有的工具属性、自动化要求也相似。 甚至有一些开发同学把这类运维工作都统一理解为：服务器 + 工具 + 自动化。这是盲人摸象，管中窥豹。</p> <p>从技能上来说，两者都需要较强的运维技能。 在职业发展天花板上，DevOps 可能缺乏 SRE 在一些专业领域的技能： 计算机体系结构能力；高吞吐高并发优化能力；可扩展系统设计能力；复杂系统设计能力；业务系统排查能力。 两者都需要软实力，但是 SRE 面临复杂度更高，挑战更大，要求也更高：</p> <ul> <li>分析问题、解决问题能力</li> <li>对业务系统更了解</li> <li>具备高并发、高可用系统设计实施经验</li> <li>对整个系统链路有更全面认识</li> </ul> <p>DevOps 具有普遍意义，现代互联网公司都需要 DevOps，但是并非所有团队对高可用性、高扩展性存在需求，它们不需要 SRE。 DevOps 工程师掌握相关技能之后，也有机会可以发展为 SRE 工程师。 而一位合格 SRE 工程师，在有选择情况下面，我相信不会去转型为 DevOps 工程师。</p> <p>从专业背景来看，无论是 DevOps 还是 SRE 工程师，都需要研发背景，前者需要开发工具链，后者需要有较强架构设计经验。 如果有运维工程师想转型成为 DevOps 或者 SRE，那么需要补上相关技术知识。 毕竟，不是会搭建一套 Jenkins + Kubernetes 就可以自称为 DevOps / SRE 工程师。</p> <p>怎么样，有没有解开这几个常见误区呢？希望你看到这里可以豁然开朗，最后附上两个工程师的技能点， 期望有志成为这两种工程师的同学，加油努力。</p> <h2 id=附录技能点>附录：技能点</h2> <p>DevOps：</p> <ul> <li>Operator 技能 <ul> <li>Linux Basis <ul> <li>基本命令操作</li> <li>Linux FHS（Filesystem Hierarchy Standard 文件系统层次结构标准）</li> <li>Linux 系统（差异、历史、标准、发展）</li> </ul></li> <li>脚本 <ul> <li>Bash / Python</li> </ul></li> <li>基础服务 <ul> <li>DHCP / NTP / DNS / SSH / iptables / LDAP / CMDB</li> </ul></li> <li>自动化工具 <ul> <li>Fabric / Saltstack / Chef / Ansible</li> </ul></li> <li>基础监控工具 <ul> <li>Zabbix / Nagios / Cacti</li> </ul></li> <li>虚拟化 <ul> <li>KVM 管理 / XEN 管理 / vSphere 管理 / Docker</li> <li>容器编排 / Mesos / Kubernetes</li> </ul></li> <li>服务 <ul> <li>Nginx / F5 / HAProxy / LVS 负载均衡</li> <li>常见中间件 Operate（启动、关闭、重启、扩容）</li> </ul></li> </ul></li> <li>Dev <ul> <li>语言 <ul> <li>Python</li> <li>Go（可选）</li> <li>Java（了解部署）</li> </ul></li> <li>流程和理论 <ul> <li>Application Life Cycle</li> <li>12 Factor</li> <li>微服务概念、部署、生命周期</li> <li>CI 持续集成 / Jenkins / Pipeline / Git Repo Web Hook</li> <li>CD 持续发布系统</li> </ul></li> <li>基础设施 <ul> <li>Git Repo / Gitlab / Github</li> <li>Logstash / Flume 日志收集</li> <li>配置文件管理（应用、中间件等）</li> <li>Nexus / JFrog / Pypi 包依赖管理</li> <li>面向 开发 / QA 开发环境管理系统</li> <li>线上权限分配系统</li> <li>监控报警系统</li> <li>基于 Fabric / Saltstack / Chef / Ansible 自动化工具开发</li> </ul></li> </ul></li> </ul> <p>SRE：</p> <ul> <li>语言和工程实现 <ul> <li>深入理解开发语言（假设是 Java） <ul> <li>业务部门使用开发框架</li> <li>并发、多线程和锁</li> <li>资源模型理解：网络、内存、CPU</li> <li>故障处理能力（分析瓶颈、熟悉相关工具、还原现场、提供方案）</li> </ul></li> <li>常见业务设计方案和陷阱（比如 Business Modeling，N+1、远程调用、不合理 DB 结构）</li> <li>MySQL / Mongo OLTP 类型查询优化</li> <li>多种并发模型，以及相关 Scalable 设计</li> </ul></li> <li>问题定位工具 <ul> <li>容量管理</li> <li>Tracing 链路追踪</li> <li>Metrics 度量工具</li> <li>Logging 日志系统</li> </ul></li> <li>运维架构能力 <ul> <li>Linux 精通，理解 Linux 负载模型，资源模型</li> <li>熟悉常规中间件（MySQL Nginx Redis Mongo ZooKeeper 等），能够调优</li> <li>Linux 网络调优，网络 IO 模型以及在语言里面实现</li> <li>资源编排系统（Mesos / Kubernetes）</li> </ul></li> <li>理论 <ul> <li>容量规划方案</li> <li>熟悉分布式理论（Paxos / Raft / BigTable / MapReduce / Spanner 等），能够为场景决策合适方案</li> <li>性能模型（比如 Pxx 理解、Metrics、Dapper）</li> <li>资源模型（比如 Queuing Theory、负载方案、雪崩问题）</li> <li>资源编排系统（Mesos / Kurbernetes）</li> </ul></li> </ul> <h2 id=ref>Ref</h2> <ul> <li><a href=https://zh.wikipedia.org/wiki/DevOps>DevOps - 维基百科，自由的百科全书</a></li> <li><a href=https://en.wikipedia.org/wiki/Site_reliability_engineering>Site reliability engineering - Wikipedia</a></li> <li><a href=http://skill-map.stuq.org/ >StuQ 技能图谱</a></li> <li><a href=https://12factor.net/zh_cn/ >The Twelve-Factor App （简体中文）</a></li> <li><a href=https://landing.google.com/sre/book/chapters/communication-and-collaboration.html>Google - Site Reliability Engineering</a></li> <li><a href="https://www.youtube.com/watch?v=uTEL8Ff1Zvk">What&rsquo;s the Difference Between DevOps and SRE? - YouTube</a></li> </ul> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2018/09/devops-and-sre/ >https://blog.alswl.com/2018/09/devops-and-sre/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+<!DOCTYPE html>
+<html lang="en" dir="auto">
 
-                    var disqus_identifier = 'devops-and-sre';
-                var disqus_url = 'https://blog.alswl.com/2018/09/devops-and-sre/';
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>DevOps 和 SRE | Log4D</title>
+<meta name="keywords" content="devops, sre">
+<meta name="description" content="最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。
+我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。
+现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。
+于是我给了一些见解并整理成文章以饕大众。
+最常见的误区：
+DevOps 新概念，好高级哦 SRE 是高级版 DevOps 运维可以轻松转身 DevOps 工程师 让我一一给你讲解吧。
+image via YouTube
+DevOps 和 SRE 定义 DevOps 是字面上 Dev 开发 / Ops 运维两者组合，
+严格意义上 DevOps 如下（via DevOps - Wikipedia）：
+DevOps（Development 和 Operations 的组合词）是一种重视“软件开发人员（Dev）
+”和“IT 运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。
+SRE 全称是 Site Reliability Engineering，最早是由 Google 提出，并且在其工程实践中发扬光大。
+他们还出了一本同名书籍「Site Reliability Engineering」，
+让这个理念在互联网工程师圈子里广泛传播。
+Google 对 SRE 解释是（via Site Reliability Engineering - Wikipedia）：
+Site reliability engineering (SRE) is a discipline that incorporates aspects of">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2018/09/devops-and-sre/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-            var disqus_config = function () {
-                this.language = "en";
-            };
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+            .list {
+                background: var(--theme);
+            }
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="DevOps 和 SRE" />
+<meta property="og:description" content="最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。
+我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。
+现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。
+于是我给了一些见解并整理成文章以饕大众。
+最常见的误区：
+DevOps 新概念，好高级哦 SRE 是高级版 DevOps 运维可以轻松转身 DevOps 工程师 让我一一给你讲解吧。
+image via YouTube
+DevOps 和 SRE 定义 DevOps 是字面上 Dev 开发 / Ops 运维两者组合，
+严格意义上 DevOps 如下（via DevOps - Wikipedia）：
+DevOps（Development 和 Operations 的组合词）是一种重视“软件开发人员（Dev）
+”和“IT 运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。
+SRE 全称是 Site Reliability Engineering，最早是由 Google 提出，并且在其工程实践中发扬光大。
+他们还出了一本同名书籍「Site Reliability Engineering」，
+让这个理念在互联网工程师圈子里广泛传播。
+Google 对 SRE 解释是（via Site Reliability Engineering - Wikipedia）：
+Site reliability engineering (SRE) is a discipline that incorporates aspects of" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2018/09/devops-and-sre/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2018-09-09T23:21:40+08:00" />
+<meta property="article:modified_time" content="2018-09-09T23:21:40+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="DevOps 和 SRE"/>
+<meta name="twitter:description" content="最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。
+我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。
+现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。
+于是我给了一些见解并整理成文章以饕大众。
+最常见的误区：
+DevOps 新概念，好高级哦 SRE 是高级版 DevOps 运维可以轻松转身 DevOps 工程师 让我一一给你讲解吧。
+image via YouTube
+DevOps 和 SRE 定义 DevOps 是字面上 Dev 开发 / Ops 运维两者组合，
+严格意义上 DevOps 如下（via DevOps - Wikipedia）：
+DevOps（Development 和 Operations 的组合词）是一种重视“软件开发人员（Dev）
+”和“IT 运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。
+SRE 全称是 Site Reliability Engineering，最早是由 Google 提出，并且在其工程实践中发扬光大。
+他们还出了一本同名书籍「Site Reliability Engineering」，
+让这个理念在互联网工程师圈子里广泛传播。
+Google 对 SRE 解释是（via Site Reliability Engineering - Wikipedia）：
+Site reliability engineering (SRE) is a discipline that incorporates aspects of"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "DevOps 和 SRE",
+      "item": "https://blog.alswl.com/2018/09/devops-and-sre/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "DevOps 和 SRE",
+  "name": "DevOps 和 SRE",
+  "description": "最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。\n我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。\n现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。\n于是我给了一些见解并整理成文章以饕大众。\n最常见的误区：\nDevOps 新概念，好高级哦 SRE 是高级版 DevOps 运维可以轻松转身 DevOps 工程师 让我一一给你讲解吧。\nimage via YouTube\nDevOps 和 SRE 定义 DevOps 是字面上 Dev 开发 / Ops 运维两者组合，\n严格意义上 DevOps 如下（via DevOps - Wikipedia）：\nDevOps（Development 和 Operations 的组合词）是一种重视“软件开发人员（Dev）\n”和“IT 运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。\nSRE 全称是 Site Reliability Engineering，最早是由 Google 提出，并且在其工程实践中发扬光大。\n他们还出了一本同名书籍「Site Reliability Engineering」，\n让这个理念在互联网工程师圈子里广泛传播。\nGoogle 对 SRE 解释是（via Site Reliability Engineering - Wikipedia）：\nSite reliability engineering (SRE) is a discipline that incorporates aspects of",
+  "keywords": [
+    "devops", "sre"
+  ],
+  "articleBody": "最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。\n我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。\n现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。\n于是我给了一些见解并整理成文章以饕大众。\n最常见的误区：\nDevOps 新概念，好高级哦 SRE 是高级版 DevOps 运维可以轻松转身 DevOps 工程师 让我一一给你讲解吧。\nimage via YouTube\nDevOps 和 SRE 定义 DevOps 是字面上 Dev 开发 / Ops 运维两者组合，\n严格意义上 DevOps 如下（via DevOps - Wikipedia）：\nDevOps（Development 和 Operations 的组合词）是一种重视“软件开发人员（Dev）\n”和“IT 运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。\nSRE 全称是 Site Reliability Engineering，最早是由 Google 提出，并且在其工程实践中发扬光大。\n他们还出了一本同名书籍「Site Reliability Engineering」，\n让这个理念在互联网工程师圈子里广泛传播。\nGoogle 对 SRE 解释是（via Site Reliability Engineering - Wikipedia）：\nSite reliability engineering (SRE) is a discipline that incorporates aspects of\nsoftware engineering and applies that to operations whose goals are to\ncreate ultra-scalable and highly reliable software systems.\n我将其翻译翻译为中文：\n网站稳定性工程师是致力于打造「高扩展、高可用系统」，并将其贯彻为原则的软件工程师。\n从定义来看，DevOps 是文化、运动和惯例，而 SRE 是有严格任职要求的职位。\n文化是软性定义，文化有更多概念可以捏造，而 SRE 定义精准，就少了想象空间（也可能 SRE 门槛高 😄）。\n按 Google 给出的说法是，SRE 工程师实践了 DevOps 文化。这个观点没错，但是国内的 DevOps 逐步独立出 DevOps 工程师，\n所以在本文，我着重讨论的是 DevOps 工程师和 SRE 工程师两种职位对比。\n两者产生背景和历史 互联网需求催生了 DevOps 。在最传统软件企业中，是只有 Dev 没有 Ops，\n那时 Ops 可能还是只是技术支持人员。开发按照瀑布流：需求分析、系统设计、开发、测试、交付、运行，\n传统软件发布是一个重量级操作。一旦发布，Dev 几乎不再直接操作。\n80 后可能会记得 QQ 每年都会有一个大版本发布吧，QQ 2000 / 2003 / 2004 等等。\n此时 Ops 不用和 Dev 直接高频接触，甚至针对一些纯离线业务，压根没有设立 Ops 这个岗位。\n互联网浪潮之后，软件由传统意义上桌面软件演变为面向网站、手机应用。\n这时候业务核心逻辑，比如交易，社交行为都不在用户桌面完成，而是在服务器后端完成。\n这给互联网企业给予了极大操作空间：随时可以改变业务逻辑，这促进了业务快速迭代变更。\n但即便这样，Dev 和 Ops 是极其分裂的两个环节。Ops 不关心代码是如何运作的，Dev 不知道代码如何运行在服务器上。\n当业界还沉浸在可以每周发布版本喜悦中时，2009 年，Flicker 提出了每天发布 10+ 次概念，大大震撼了业界。\nFlicker 提出了几个核心理念：\n业务快速发展，需要拥抱变更，小步快跑 Ops 目标不是为了网站稳定和快速，而是推动业务快速发展 基于自动化工具提高 Dev / Ops 联接：代码版本管理、监控 高效沟通：IRC / IM Robot（现在那些 ChatBot 套路，10 年前就被 Flicker 玩过了） 信任、透明、高效、互助的沟通文化 原文 SlideShare 在这\n10+ Deploys Per Day: Dev and Ops Cooperation at Flickr\n真是让人难以想象，今天各种培训公司和一些知名大 V 在呼唤这些 DevOps 理念，\n竟然在 2009 年一份幻灯片中就展现淋漓尽致。经典总是不过时，在尘封下闪耀着智慧光芒。\n有些人将 DevOps 和运维自动化等同，这是只看到表象。\nDevOps 目标是提高业务系统交付速度，并为之提供相关工具、制度和服务。\n一些个人或培训机构添油加醋和衍生含义，都是围绕这 DevOps 本质而发散。\n接下来聊聊 SRE 历史， SRE 出现要晚一些。在 2003 年时候 Google 的 Ben Treynor\n招募了几个软件工程师，这个团队设立目的是帮助 Google 生产环境服务运行更稳定、健壮、可靠。\n不同于中小型规模公司，Google 服务于十几亿用户服务，短暂服务不可用会带来致命后果。\n因此 Google 走在了时代最前面，SRE 产生了。\n这个职位为大规模集群服务，小型团队不需要这样职位设定（可能也招不起真正 SRE 😊）。\nGoogle 在探索若干年之后，SRE 团队开始将自己心得体会写在线上，并在 2016 年将此书出版。\n两者的职能不同 DevOps 文化，那么就没有一个具象职能要求。现在不少公司将 DevOps 职能单独抽取出来，称之为 DevOps 工程师。\n那让我们看看 DevOps 工程师关心什么：DevOps 文化目的是提交交付速度， DevOps 工程师就自然会关心软件 / 服务的整个生命周期。\n一个简单的公式：速度 = 总量 / 时间，添上工程行业术语，即 交付速度 = （（功能特性 * 工程质量） / 交付时间） * 交付风险。\n功能特性交给产品经理和项目经理管理，DevOps 工程师需要关心剩下几个因素：工程质量 / 交付时间 / 交付风险。\nDevOps 工程师职能如下：\n管理应用全生命周期（需求、设计、开发、QA、发布、运行） 关注全流程效率提升，挖掘瓶颈点并将其解决 自动化运维平台设计和研发工作（标准化、自动化、平台化） 支持运维系统，包括 虚拟化技术、资源管理技术、监控技术、网络技术 SRE 关键词是「高扩展性」「高可用性」。高扩展性是指当服务用户数量暴增时，\n应用系统以及支撑其服务（服务器资源、网络系统、数据库资源）可以在不调整系统结构，不强化机器本身性能\n，仅仅增加实例数量方式进行扩容。高可用性是指，应用架构中任何环节出现不可用时，比如应用服务、网关、数据库\n等系统挂掉，整个系统可以在可预见时间内恢复并重新提供服务。当然，既然是「高」可用，\n那么这个时间一般期望在分钟级别。SRE 职能可以概括为以下：\n为 应用、中间件、基础设施等提供 选型、设计、开发、容量规划、调优、故障处理 为业务系统提供基于可用性、可扩展性考虑决策，参与业务系统设计和实施 定位、处理、管理故障，优化导致故障发生相关部件 提高各部件资源利用率 工作内容不同 职责不同导致两个职位工作内容也不尽相同，我将 DevOps 工程师和 SRE 工程师职能列举如下：\nDevOps 设定应用生命管理周期制度，扭转流程 开发、管理 开发工程师 /QA 工程师使用 开发平台系统 开发、管理 发布系统 开发、选型、管理 监控、报警系统 开发、管理 权限系统 开发、选型、管理 CMBD 管理变更 管理故障 SRE 管理变更 管理故障 制定 SLA 服务标准 开发、选型、管理 各类中间件 开发、管理 分布式监控系统 开发、管理 分布式追踪系统 开发、管理 性能监控、探测系统（dtrace、火焰图） 开发、选型、培训 性能调优工具 很有趣的对比，DevOps 和 SRE 都会关心应用生命周期，特别是生命周期里面中变更和故障。\n但是 DevOps 工作内容是主要为开发链路服务，一个 DevOps Team 通常会提供一串工具链，\n这其中会包括：开发工具、版本管理工具、CI 持续交付工具、CD 持续发布工具、报警工具、故障处理。\n而 SRE Team 则关注更为关注变更、故障、性能、容量相关问题，会涉及具体业务，产出工具链会有：\n容量测量工具、Logging 日志工具、Tracing 调用链路跟踪工具、Metrics 性能度量工具、监控报警工具等。\nDevOps 和 SRE 关系 DevOps 首先是一种文化，后期逐渐独立成一个职位；SRE 一开始就明确是一个职位；\n不少同学把 DevOps 和 SRE 搞混，是被两者表象锁迷惑，看上去这两者都有的工具属性、自动化要求也相似。\n甚至有一些开发同学把这类运维工作都统一理解为：服务器 + 工具 + 自动化。这是盲人摸象，管中窥豹。\n从技能上来说，两者都需要较强的运维技能。\n在职业发展天花板上，DevOps 可能缺乏 SRE 在一些专业领域的技能：\n计算机体系结构能力；高吞吐高并发优化能力；可扩展系统设计能力；复杂系统设计能力；业务系统排查能力。\n两者都需要软实力，但是 SRE 面临复杂度更高，挑战更大，要求也更高：\n分析问题、解决问题能力 对业务系统更了解 具备高并发、高可用系统设计实施经验 对整个系统链路有更全面认识 DevOps 具有普遍意义，现代互联网公司都需要 DevOps，但是并非所有团队对高可用性、高扩展性存在需求，它们不需要 SRE。\nDevOps 工程师掌握相关技能之后，也有机会可以发展为 SRE 工程师。\n而一位合格 SRE 工程师，在有选择情况下面，我相信不会去转型为 DevOps 工程师。\n从专业背景来看，无论是 DevOps 还是 SRE 工程师，都需要研发背景，前者需要开发工具链，后者需要有较强架构设计经验。\n如果有运维工程师想转型成为 DevOps 或者 SRE，那么需要补上相关技术知识。\n毕竟，不是会搭建一套 Jenkins + Kubernetes 就可以自称为 DevOps / SRE 工程师。\n怎么样，有没有解开这几个常见误区呢？希望你看到这里可以豁然开朗，最后附上两个工程师的技能点，\n期望有志成为这两种工程师的同学，加油努力。\n附录：技能点 DevOps：\nOperator 技能 Linux Basis 基本命令操作 Linux FHS（Filesystem Hierarchy Standard 文件系统层次结构标准） Linux 系统（差异、历史、标准、发展） 脚本 Bash / Python 基础服务 DHCP / NTP / DNS / SSH / iptables / LDAP / CMDB 自动化工具 Fabric / Saltstack / Chef / Ansible 基础监控工具 Zabbix / Nagios / Cacti 虚拟化 KVM 管理 / XEN 管理 / vSphere 管理 / Docker 容器编排 / Mesos / Kubernetes 服务 Nginx / F5 / HAProxy / LVS 负载均衡 常见中间件 Operate（启动、关闭、重启、扩容） Dev 语言 Python Go（可选） Java（了解部署） 流程和理论 Application Life Cycle 12 Factor 微服务概念、部署、生命周期 CI 持续集成 / Jenkins / Pipeline / Git Repo Web Hook CD 持续发布系统 基础设施 Git Repo / Gitlab / Github Logstash / Flume 日志收集 配置文件管理（应用、中间件等） Nexus / JFrog / Pypi 包依赖管理 面向 开发 / QA 开发环境管理系统 线上权限分配系统 监控报警系统 基于 Fabric / Saltstack / Chef / Ansible 自动化工具开发 SRE：\n语言和工程实现 深入理解开发语言（假设是 Java） 业务部门使用开发框架 并发、多线程和锁 资源模型理解：网络、内存、CPU 故障处理能力（分析瓶颈、熟悉相关工具、还原现场、提供方案） 常见业务设计方案和陷阱（比如 Business Modeling，N+1、远程调用、不合理 DB 结构） MySQL / Mongo OLTP 类型查询优化 多种并发模型，以及相关 Scalable 设计 问题定位工具 容量管理 Tracing 链路追踪 Metrics 度量工具 Logging 日志系统 运维架构能力 Linux 精通，理解 Linux 负载模型，资源模型 熟悉常规中间件（MySQL Nginx Redis Mongo ZooKeeper 等），能够调优 Linux 网络调优，网络 IO 模型以及在语言里面实现 资源编排系统（Mesos / Kubernetes） 理论 容量规划方案 熟悉分布式理论（Paxos / Raft / BigTable / MapReduce / Spanner 等），能够为场景决策合适方案 性能模型（比如 Pxx 理解、Metrics、Dapper） 资源模型（比如 Queuing Theory、负载方案、雪崩问题） 资源编排系统（Mesos / Kurbernetes） Ref DevOps - 维基百科，自由的百科全书 Site reliability engineering - Wikipedia StuQ 技能图谱 The Twelve-Factor App （简体中文） Google - Site Reliability Engineering What’s the Difference Between DevOps and SRE? - YouTube ",
+  "wordCount" : "647",
+  "inLanguage": "en",
+  "datePublished": "2018-09-09T23:21:40+08:00",
+  "dateModified": "2018-09-09T23:21:40+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2018/09/devops-and-sre/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      DevOps 和 SRE
+    </h1>
+    <div class="post-meta"><span title='2018-09-09 23:21:40 +0800 CST'>2018-09-09</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#devops-和-sre-定义">DevOps 和 SRE 定义</a></li>
+    <li><a href="#两者产生背景和历史">两者产生背景和历史</a></li>
+    <li><a href="#两者的职能不同">两者的职能不同</a></li>
+    <li><a href="#工作内容不同">工作内容不同</a></li>
+    <li><a href="#devops-和-sre-关系">DevOps 和 SRE 关系</a></li>
+    <li><a href="#附录技能点">附录：技能点</a></li>
+    <li><a href="#ref">Ref</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。<br />
+我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。<br />
+现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。<br />
+于是我给了一些见解并整理成文章以饕大众。</p>
+<p>最常见的误区：</p>
+<ul>
+<li>DevOps 新概念，好高级哦</li>
+<li>SRE 是高级版 DevOps</li>
+<li>运维可以轻松转身 DevOps 工程师</li>
+</ul>
+<p>让我一一给你讲解吧。</p>
+<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201809/sre-and-devops.png" alt="sre-and-devops.png"  />
+<br />
+<small><a href="https://www.youtube.com/watch?v=uTEL8Ff1Zvk">image via YouTube</a></small></p>
+<!-- more -->
+<h2 id="devops-和-sre-定义">DevOps 和 SRE 定义<a hidden class="anchor" aria-hidden="true" href="#devops-和-sre-定义">#</a></h2>
+<p>DevOps 是字面上 Dev 开发 / Ops 运维两者组合，<br />
+严格意义上 DevOps 如下（via <a href="https://en.wikipedia.org/wiki/DevOps">DevOps - Wikipedia</a>）：</p>
+<blockquote>
+<p>DevOps（Development 和 Operations 的组合词）是一种重视“软件开发人员（Dev）<br />
+”和“IT 运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。</p>
+</blockquote>
+<p>SRE 全称是 Site Reliability Engineering，最早是由 Google 提出，并且在其工程实践中发扬光大。<br />
+他们还出了一本同名书籍「<a href="https://landing.google.com/sre/book.html">Site Reliability Engineering</a>」，<br />
+让这个理念在互联网工程师圈子里广泛传播。</p>
+<p>Google 对 SRE 解释是（via <a href="https://en.wikipedia.org/wiki/Site_Reliability_Engineering">Site Reliability Engineering - Wikipedia</a>）：</p>
+<blockquote>
+<p>Site reliability engineering (SRE) is a discipline that incorporates aspects of<br />
+software engineering and applies that to operations whose goals are to<br />
+create ultra-scalable and highly reliable software systems.</p>
+</blockquote>
+<p>我将其翻译翻译为中文：</p>
+<blockquote>
+<p>网站稳定性工程师是致力于打造「高扩展、高可用系统」，并将其贯彻为原则的软件工程师。</p>
+</blockquote>
+<p>从定义来看，DevOps 是文化、运动和惯例，而 SRE 是有严格任职要求的职位。<br />
+文化是软性定义，文化有更多概念可以捏造，而 SRE 定义精准，就少了想象空间（也可能 SRE 门槛高 😄）。<br />
+按 Google 给出的说法是，SRE 工程师实践了 DevOps 文化。这个观点没错，但是国内的 DevOps 逐步独立出 DevOps 工程师，<br />
+所以在本文，我着重讨论的是 DevOps 工程师和 SRE 工程师两种职位对比。</p>
+<h2 id="两者产生背景和历史">两者产生背景和历史<a hidden class="anchor" aria-hidden="true" href="#两者产生背景和历史">#</a></h2>
+<p>互联网需求催生了 DevOps 。在最传统软件企业中，是只有 Dev 没有 Ops，<br />
+那时 Ops 可能还是只是技术支持人员。开发按照瀑布流：需求分析、系统设计、开发、测试、交付、运行，<br />
+传统软件发布是一个重量级操作。一旦发布，Dev 几乎不再直接操作。<br />
+80 后可能会记得 QQ 每年都会有一个大版本发布吧，QQ 2000 / 2003 / 2004 等等。<br />
+此时 Ops 不用和 Dev 直接高频接触，甚至针对一些纯离线业务，压根没有设立 Ops 这个岗位。</p>
+<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201809/qq-2004.png" alt="qq-2004.png"  />
+</p>
+<p>互联网浪潮之后，软件由传统意义上桌面软件演变为面向网站、手机应用。<br />
+这时候业务核心逻辑，比如交易，社交行为都不在用户桌面完成，而是在服务器后端完成。<br />
+这给互联网企业给予了极大操作空间：随时可以改变业务逻辑，这促进了业务快速迭代变更。<br />
+但即便这样，Dev 和 Ops 是极其分裂的两个环节。Ops 不关心代码是如何运作的，Dev 不知道代码如何运行在服务器上。</p>
+<p>当业界还沉浸在可以每周发布版本喜悦中时，2009 年，Flicker 提出了每天发布 10+ 次概念，大大震撼了业界。<br />
+Flicker 提出了几个核心理念：</p>
+<ul>
+<li>业务快速发展，需要拥抱变更，小步快跑</li>
+<li>Ops 目标不是为了网站稳定和快速，而是推动业务快速发展</li>
+<li>基于自动化工具提高 Dev / Ops 联接：代码版本管理、监控</li>
+<li>高效沟通：IRC / IM Robot（现在那些 ChatBot 套路，10 年前就被 Flicker 玩过了）</li>
+<li>信任、透明、高效、互助的沟通文化</li>
+</ul>
+<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201809/flicker.png" alt="flicker.png"  />
+</p>
+<p>原文 SlideShare 在这<br />
+<a href="https://www.slideshare.net/jallspaw/10-deploys-per-day-dev-and-ops-cooperation-at-flickr">10+ Deploys Per Day: Dev and Ops Cooperation at Flickr</a></p>
+<p>真是让人难以想象，今天各种培训公司和一些知名大 V 在呼唤这些 DevOps 理念，<br />
+竟然在 2009 年一份幻灯片中就展现淋漓尽致。经典总是不过时，在尘封下闪耀着智慧光芒。<br />
+有些人将 DevOps 和运维自动化等同，这是只看到表象。<br />
+DevOps 目标是提高业务系统交付速度，并为之提供相关工具、制度和服务。<br />
+一些个人或培训机构添油加醋和衍生含义，都是围绕这 DevOps 本质而发散。</p>
+<p>接下来聊聊 SRE 历史， SRE 出现要晚一些。在 2003 年时候 Google 的 Ben Treynor<br />
+招募了几个软件工程师，这个团队设立目的是帮助 Google 生产环境服务运行更稳定、健壮、可靠。<br />
+不同于中小型规模公司，Google 服务于十几亿用户服务，短暂服务不可用会带来致命后果。<br />
+因此 Google 走在了时代最前面，SRE 产生了。</p>
+<p>这个职位为大规模集群服务，小型团队不需要这样职位设定（可能也招不起真正 SRE 😊）。<br />
+Google 在探索若干年之后，SRE 团队开始将自己心得体会写在线上，并在 2016 年将此书出版。</p>
+<h2 id="两者的职能不同">两者的职能不同<a hidden class="anchor" aria-hidden="true" href="#两者的职能不同">#</a></h2>
+<p>DevOps 文化，那么就没有一个具象职能要求。现在不少公司将 DevOps 职能单独抽取出来，称之为 DevOps 工程师。<br />
+那让我们看看 DevOps 工程师关心什么：DevOps 文化目的是提交交付速度， DevOps 工程师就自然会关心软件 / 服务的整个生命周期。</p>
+<p>一个简单的公式：<code>速度 = 总量 / 时间</code>，添上工程行业术语，即 <code>交付速度 = （（功能特性 * 工程质量） / 交付时间） * 交付风险</code>。</p>
+<p>功能特性交给产品经理和项目经理管理，DevOps 工程师需要关心剩下几个因素：工程质量 / 交付时间 / 交付风险。<br />
+DevOps 工程师职能如下：</p>
+<ul>
+<li>管理应用全生命周期（需求、设计、开发、QA、发布、运行）</li>
+<li>关注全流程效率提升，挖掘瓶颈点并将其解决</li>
+<li>自动化运维平台设计和研发工作（标准化、自动化、平台化）</li>
+<li>支持运维系统，包括 虚拟化技术、资源管理技术、监控技术、网络技术</li>
+</ul>
+<p>SRE 关键词是「高扩展性」「高可用性」。高扩展性是指当服务用户数量暴增时，<br />
+应用系统以及支撑其服务（服务器资源、网络系统、数据库资源）可以在不调整系统结构，不强化机器本身性能<br />
+，仅仅增加实例数量方式进行扩容。高可用性是指，应用架构中任何环节出现不可用时，比如应用服务、网关、数据库<br />
+等系统挂掉，整个系统可以在可预见时间内恢复并重新提供服务。当然，既然是「高」可用，<br />
+那么这个时间一般期望在分钟级别。SRE 职能可以概括为以下：</p>
+<ul>
+<li>为 应用、中间件、基础设施等提供 选型、设计、开发、容量规划、调优、故障处理</li>
+<li>为业务系统提供基于可用性、可扩展性考虑决策，参与业务系统设计和实施</li>
+<li>定位、处理、管理故障，优化导致故障发生相关部件</li>
+<li>提高各部件资源利用率</li>
+</ul>
+<h2 id="工作内容不同">工作内容不同<a hidden class="anchor" aria-hidden="true" href="#工作内容不同">#</a></h2>
+<p>职责不同导致两个职位工作内容也不尽相同，我将 DevOps 工程师和 SRE 工程师职能列举如下：</p>
+<ul>
+<li>DevOps
+<ul>
+<li>设定应用生命管理周期制度，扭转流程</li>
+<li>开发、管理 开发工程师 /QA 工程师使用 开发平台系统</li>
+<li>开发、管理 发布系统</li>
+<li>开发、选型、管理 监控、报警系统</li>
+<li>开发、管理 权限系统</li>
+<li>开发、选型、管理 CMBD</li>
+<li>管理变更</li>
+<li>管理故障</li>
+</ul>
+</li>
+<li>SRE
+<ul>
+<li>管理变更</li>
+<li>管理故障</li>
+<li>制定 SLA 服务标准</li>
+<li>开发、选型、管理 各类中间件</li>
+<li>开发、管理 分布式监控系统</li>
+<li>开发、管理 分布式追踪系统</li>
+<li>开发、管理 性能监控、探测系统（dtrace、火焰图）</li>
+<li>开发、选型、培训 性能调优工具</li>
+</ul>
+</li>
+</ul>
+<p>很有趣的对比，DevOps 和 SRE 都会关心应用生命周期，特别是生命周期里面中变更和故障。<br />
+但是 DevOps 工作内容是主要为开发链路服务，一个 DevOps Team 通常会提供一串工具链，<br />
+这其中会包括：开发工具、版本管理工具、CI 持续交付工具、CD 持续发布工具、报警工具、故障处理。<br />
+而 SRE Team 则关注更为关注变更、故障、性能、容量相关问题，会涉及具体业务，产出工具链会有：<br />
+容量测量工具、Logging 日志工具、Tracing 调用链路跟踪工具、Metrics 性能度量工具、监控报警工具等。</p>
+<h2 id="devops-和-sre-关系">DevOps 和 SRE 关系<a hidden class="anchor" aria-hidden="true" href="#devops-和-sre-关系">#</a></h2>
+<p>DevOps 首先是一种文化，后期逐渐独立成一个职位；SRE 一开始就明确是一个职位；<br />
+不少同学把 DevOps 和 SRE 搞混，是被两者表象锁迷惑，看上去这两者都有的工具属性、自动化要求也相似。<br />
+甚至有一些开发同学把这类运维工作都统一理解为：服务器 + 工具 + 自动化。这是盲人摸象，管中窥豹。</p>
+<p>从技能上来说，两者都需要较强的运维技能。<br />
+在职业发展天花板上，DevOps 可能缺乏 SRE 在一些专业领域的技能：<br />
+计算机体系结构能力；高吞吐高并发优化能力；可扩展系统设计能力；复杂系统设计能力；业务系统排查能力。<br />
+两者都需要软实力，但是 SRE 面临复杂度更高，挑战更大，要求也更高：</p>
+<ul>
+<li>分析问题、解决问题能力</li>
+<li>对业务系统更了解</li>
+<li>具备高并发、高可用系统设计实施经验</li>
+<li>对整个系统链路有更全面认识</li>
+</ul>
+<p>DevOps 具有普遍意义，现代互联网公司都需要 DevOps，但是并非所有团队对高可用性、高扩展性存在需求，它们不需要 SRE。<br />
+DevOps 工程师掌握相关技能之后，也有机会可以发展为 SRE 工程师。<br />
+而一位合格 SRE 工程师，在有选择情况下面，我相信不会去转型为 DevOps 工程师。</p>
+<p>从专业背景来看，无论是 DevOps 还是 SRE 工程师，都需要研发背景，前者需要开发工具链，后者需要有较强架构设计经验。<br />
+如果有运维工程师想转型成为 DevOps 或者 SRE，那么需要补上相关技术知识。<br />
+毕竟，不是会搭建一套 Jenkins + Kubernetes 就可以自称为 DevOps / SRE 工程师。</p>
+<p>怎么样，有没有解开这几个常见误区呢？希望你看到这里可以豁然开朗，最后附上两个工程师的技能点，<br />
+期望有志成为这两种工程师的同学，加油努力。</p>
+<h2 id="附录技能点">附录：技能点<a hidden class="anchor" aria-hidden="true" href="#附录技能点">#</a></h2>
+<p>DevOps：</p>
+<ul>
+<li>Operator 技能
+<ul>
+<li>Linux Basis
+<ul>
+<li>基本命令操作</li>
+<li>Linux FHS（Filesystem Hierarchy Standard 文件系统层次结构标准）</li>
+<li>Linux 系统（差异、历史、标准、发展）</li>
+</ul>
+</li>
+<li>脚本
+<ul>
+<li>Bash / Python</li>
+</ul>
+</li>
+<li>基础服务
+<ul>
+<li>DHCP / NTP / DNS / SSH / iptables / LDAP / CMDB</li>
+</ul>
+</li>
+<li>自动化工具
+<ul>
+<li>Fabric / Saltstack / Chef / Ansible</li>
+</ul>
+</li>
+<li>基础监控工具
+<ul>
+<li>Zabbix / Nagios / Cacti</li>
+</ul>
+</li>
+<li>虚拟化
+<ul>
+<li>KVM 管理 / XEN 管理 / vSphere 管理 / Docker</li>
+<li>容器编排 / Mesos / Kubernetes</li>
+</ul>
+</li>
+<li>服务
+<ul>
+<li>Nginx / F5 / HAProxy / LVS 负载均衡</li>
+<li>常见中间件 Operate（启动、关闭、重启、扩容）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Dev
+<ul>
+<li>语言
+<ul>
+<li>Python</li>
+<li>Go（可选）</li>
+<li>Java（了解部署）</li>
+</ul>
+</li>
+<li>流程和理论
+<ul>
+<li>Application Life Cycle</li>
+<li>12 Factor</li>
+<li>微服务概念、部署、生命周期</li>
+<li>CI 持续集成 / Jenkins / Pipeline / Git Repo Web Hook</li>
+<li>CD 持续发布系统</li>
+</ul>
+</li>
+<li>基础设施
+<ul>
+<li>Git Repo / Gitlab / Github</li>
+<li>Logstash / Flume 日志收集</li>
+<li>配置文件管理（应用、中间件等）</li>
+<li>Nexus / JFrog / Pypi 包依赖管理</li>
+<li>面向 开发 / QA 开发环境管理系统</li>
+<li>线上权限分配系统</li>
+<li>监控报警系统</li>
+<li>基于 Fabric / Saltstack / Chef / Ansible 自动化工具开发</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>SRE：</p>
+<ul>
+<li>语言和工程实现
+<ul>
+<li>深入理解开发语言（假设是 Java）
+<ul>
+<li>业务部门使用开发框架</li>
+<li>并发、多线程和锁</li>
+<li>资源模型理解：网络、内存、CPU</li>
+<li>故障处理能力（分析瓶颈、熟悉相关工具、还原现场、提供方案）</li>
+</ul>
+</li>
+<li>常见业务设计方案和陷阱（比如 Business Modeling，N+1、远程调用、不合理 DB 结构）</li>
+<li>MySQL / Mongo OLTP 类型查询优化</li>
+<li>多种并发模型，以及相关 Scalable 设计</li>
+</ul>
+</li>
+<li>问题定位工具
+<ul>
+<li>容量管理</li>
+<li>Tracing 链路追踪</li>
+<li>Metrics 度量工具</li>
+<li>Logging 日志系统</li>
+</ul>
+</li>
+<li>运维架构能力
+<ul>
+<li>Linux 精通，理解 Linux 负载模型，资源模型</li>
+<li>熟悉常规中间件（MySQL Nginx Redis Mongo ZooKeeper 等），能够调优</li>
+<li>Linux 网络调优，网络 IO 模型以及在语言里面实现</li>
+<li>资源编排系统（Mesos / Kubernetes）</li>
+</ul>
+</li>
+<li>理论
+<ul>
+<li>容量规划方案</li>
+<li>熟悉分布式理论（Paxos / Raft / BigTable / MapReduce / Spanner 等），能够为场景决策合适方案</li>
+<li>性能模型（比如 Pxx 理解、Metrics、Dapper）</li>
+<li>资源模型（比如 Queuing Theory、负载方案、雪崩问题）</li>
+<li>资源编排系统（Mesos / Kurbernetes）</li>
+</ul>
+</li>
+</ul>
+<h2 id="ref">Ref<a hidden class="anchor" aria-hidden="true" href="#ref">#</a></h2>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/DevOps">DevOps - 维基百科，自由的百科全书</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Site_reliability_engineering">Site reliability engineering - Wikipedia</a></li>
+<li><a href="http://skill-map.stuq.org/">StuQ 技能图谱</a></li>
+<li><a href="https://12factor.net/zh_cn/">The Twelve-Factor App （简体中文）</a></li>
+<li><a href="https://landing.google.com/sre/book/chapters/communication-and-collaboration.html">Google - Site Reliability Engineering</a></li>
+<li><a href="https://www.youtube.com/watch?v=uTEL8Ff1Zvk">What&rsquo;s the Difference Between DevOps and SRE? - YouTube</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/devops/">devops</a></li>
+      <li><a href="https://blog.alswl.com/tags/sre/">sre</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2019/04/2018/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>从 2018 到 2019</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2018/07/naming-algorithem/">
+    <span class="title">Next »</span>
+    <br>
+    <span>破解三才五格姓名测试</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-alswl-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

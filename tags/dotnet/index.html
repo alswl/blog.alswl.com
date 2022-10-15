@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>dotnet | Log4D</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/tags/dotnet/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/tags/dotnet/atom.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="dotnet" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://blog.alswl.com/tags/dotnet/" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="dotnet"/>
+<meta name="twitter:description" content=""/>
+
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/tags/">Tags</a></div>
+  <h1>
+    dotnet
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>使用DataConnectionDialog来获取连接字符串
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方
+法来动态生成连接字符串，这种方法充满了Bad Smell。
+昨天用CodeSmith时候，看到它的数据连接配置界面，如此的眼熟，如下图。
+Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命名空间为Microsoft.VisualStudio.Data。
+使用的方法也很简单，引用Microsoft.Data.ConnectionUI.dll和Microsoft.Data.ConnectionUI.Dialog
+.dll，这两个文件位于Microsoft Visual Studio 9.0Common7IDE下面。
+这两个dll并没有其他依赖关系，可以放心的放到自己的程序中使用。
+使用代码如下
+DataConnectionDialog dataConnectionDialog = new DataConnectionDialog(); DataSource.AddStandardDataSources(dataConnectionDialog); if (DataConnectionDialog.Show(dataConnectionDialog) == DialogResult.OK) { targetDBConnectionString = dataConnectionDialog.ConnectionString; } dataConnectionDialog.ConnectionString是完整的连接字符串，这样就可以比较优美的动态获取连接字符串了。
+参考文章
+DataConnectionDialog 旧事重提 - 名牌热狗 - 博客园 C#–WinForm系统平台之登录界面及数据连接 - 天高行健，地厚载物 - 51CTO技术博客 DataConnectionDialog Class (Microsoft.VisualStudio.Data) 最后给大家拜个晚年，祝大家新年新气象。。。（此处省略1000字）</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-02-15 00:00:00 +0800 CST'>2011-02-15</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 使用DataConnectionDialog来获取连接字符串" href="https://blog.alswl.com/2011/02/dataconnectiondialog/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>在.net中使用GAC
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>GAC GAC是什么？是用来干嘛的？GAC的全称叫做全局程序集缓存，通俗的理解就是存放各种.net平台下面需要使用的dll的地方。GAC的具体目录在windows/
+assembly。
+喜欢使用破解软件的朋友可能会经常使用替换DLL这招，这个DLL虽然和.net下面的DLL有所不同，但大致起的作用还是一样的：使用共同的动态链接库来提高库复用
+，减少文件体积。在.net平台之前，程序们都把可能用到的公共DLL存放到system32文件夹下。由于版本的不一致及其他原因（将控制信息存放到注册表），造成
+了很有名的DLL Hell。
+最近在读俞甲子的《程序员的自我修养》，中间花了很大的篇幅描述程序编译中
+的链接这个过程。而比较巧合的是，我的《C#与.NET 3.5高级程序设计》也正好读到程序集这一块。微软使用了GAC来避免DLL重蹈覆辙。现在，我就来部署一个简单的通用类库到GAC中。
+获取强名称（签名） 并不是随便一个DLL都可以放到GAC中，如果这样的话，和之前的DLL Hell也没什么区别了。GAC使用一个强名称（签名）的方式来区分不同的DLL。每个签名
+都是独一无二的公钥私钥对。现在我们使用SDK的sn工具为我的DUtil库生成一个snk签名。
+打开SDK中的Visual Studio 2008 命令提示，键入sn -k DUtil.snk，结果如下：
+F:WorkSpace.netDUtilbinDebug&gt;sn -k DUtil.snk Microsoft (R) .NET Framework 强名称实用工具 版本 3.5.21022.8
+Copyright (c) Microsoft Corporation. All rights reserved.
+密钥对被写入 DUtil.snk
+这样我们就得到了一个snk签名文件。
+为程序集设置签名 现在我们得到了一个签名文件，但是还没有把这个签名应用到程序中，在程序的assembly.cs文件中加入[assembly:
+AssemblyKeyFile(“dutil.snk”)]，这个dutil.snk可以是绝对路径，我使用的是主目录中的snk文件。
+编译解决方案，生成的.dll文件就包含了签名。
+此时编译器会出现一个警告：
+警告 1 使用命令行选项&#34;/keyfile&#34;或适当的项目设置代替&#34;AssemblyKeyFile&#34;
+F:WorkSpace.netDUtilPropertiesAssemblyInfo.cs 38 12 DUtil
+既然VS建议我们用选项设定，那我们就用项目选项页设定key。如下图所示：
+PS：我测试过，生成DLL之后，就算删除签名使用的snk文件，依然可以正常使用。即snk文件只有在编译时候使用。
+安装到GAC 安装到GAC有两种办法，一种是把DLL拖入windows/assembly目录下（不是复制粘贴，是拖动），另外一种是使用gacutil。
+在Win7下，拖动的话会遇到权限问题，如下图所示
+在gacutil下面也会遇到如下错误
+F:WorkSpace.netDUtilbinDebug&gt;gacutil -i DUtil.dll Microsoft (R) .NET Global Assembly Cache Utility. Version 3.5.21022.8 Copyright (c) Microsoft Corporation....</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-01-23 00:00:00 +0800 CST'>2011-01-23</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 在.net中使用GAC" href="https://blog.alswl.com/2011/01/gac/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>C#&#43;VBA操作Excel总结
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Excel在日常办公中应用非常广泛，这次我接到一个案子，需要往Excel中写入数据并能够打印出固定格式，前前后后大概花了将近2星期才搞定，现在做一些分享。
+一、关于操作Excel的几种方式 我们导出Excel，大抵是有两种方法，一种是在服务器端用一些类库或者COM组件直接生成Excel成品，其二是在后台只写入数据，而不写入具体格式，等用户下载完
+Excel之后再在客户端上利用vba生成Excel成品。
+1.1使用&#34;自动化&#34;功能-后台生成成品 微软把后台使用COM组件称之为&#34;自动化&#34;，其实它本身是不建议这种用法，在257757 号文章（服务器端 Office
+自动化注意事项）也明文标出&#34;Microsoft
+目前建议不要从任何无人参与的、非交互式客户端应用程序或组件（包括 ASP、DCOM 和 NT Service）中进行 Microsoft Office
+应用程序的&#34;自动化&#34;，也不为此提供支持，因为 Office 在这种环境中运行时可能会出现不稳定的现象并且/或者会死锁。&#34;
+这种方法的优点是给用户更简洁的展现，毕竟原生的Excel成品比半成品来更容易接受，而且可以避免宏安全问题，万一客户端禁止了宏，就只能看到丑陋的模板界面&#43;一坨
+数据。
+缺点是需要服务端支持，编写成本也比较高（VBA有时候可以直接录制）。服务端支持体现在需要安装一些微软或者第三方的类库。我当时采用的是Office类库，也就是
+在安装有Office的机器上面使用Interop.Excel.dll这个中间动态链接库进行操作，需要麻烦的安全设置，效率低不说还会扯出Excel无法关闭的B
+ug。
+关于效率低我深有体会，我使用这种方法生成5页数据大约2m，客户等的急死，其根本原因是由于COM组件在调用时候，每一个Range这种对象都会产生一个借口请求。
+1.2、使用ADO.net传输数据&#43;VBA控制模板和数据 这方法的优缺点正好与上文相反，由于只是写入数据，即通过ADO.net的连接方式INSERT一堆数据到Excel文件的隐藏Sheet里面去（别跟我说你不知道E
+xcel可以隐藏某个Sheet），所以速度后台速度极快。前台Excel文件虽然需要VBA编程支持，但是在理解Excel模型之后也不是很难的事情。
+1.3 选择哪种方式，取决于你的需求，如果你在Java平台下面并且输出文件页面格式不复杂，我推荐第一种，如果是.net平台又或者要处理复杂的页面样式，就选用第二种吧
+（我前期使用第一种，后来因为效率问题和无法关闭Excel的问题，重写逻辑，选用第二种）。
+关于Excel导出方案的选择，微软官方也是不建议使用第一种方案，甚至不提供技术支持。它推荐了一些方案，包括使用报表导出Excel或者ADO.net方式导出（
+即第二种），具体文章见如何使用 Visual C# 2005 或 Visual C# .NET 向 Excel
+工作簿传输数据。
+二、Office Excel文档模型 在写操作Excel代码之前，需要了解一下Excel的文档模型，才能想当然的把代码写出来。
+简单说来，我们只要了解Application 、Workbook 、Worksheet
+、Range这四种类型，如果需要操作图像的话，还需要多了解一种Chart。
+Application就是Excel实例，不仅仅是一个Excel文件，而是整体的Excel程序（Office都是MDI文档体系）。
+WorkBook就是实质意义上的某个Excel文件，你可以进行保存操作等等。
+Worksheet是某个工作簿类型。
+Range是我们打交道最多的，可以理解成一个区域快，也就是常见的&#34;A2:B5&#34;这种表示方式。
+了解这几种之后，我们就可以下手操作了。更详细的微软官方文档，可以在Excel 对象模型概述找到。
+三、使用C#操作Excel 我虽然不推荐第一种，但是毕竟是一种解决方案。
+需要使用的命名空间为using Excel = Microsoft.Office.Interop.Excel;（使用别名简化一下）
+另外需要项目引用Office的类库，如果不是项目形式而是网站形式，则需要手动编译对应Interop.Excel.dll到网站bin目录下面，我使用Excel
+2007编译出这个链接库，版本为1.6.0.0，需要的可以点击Interop.Excel.dll下载。
+3.1 编译Interop.Excel.dll 编译的方法出自于&#34;[使用Office组件读取Excel，引用Microsoft.Office.Interop.Excel出现的问题](http://www.
+cnblogs.com/Mainz/archive/2009/11/11/Microsoft_Office_Interop_Excel.html)&#34;&amp;nbs
+p_place_holder;
+进入你的visual studio的sdk下的bin目录，找到TlbImp....</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-12-14 00:00:00 +0800 CST'>2010-12-14</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to C#&#43;VBA操作Excel总结" href="https://blog.alswl.com/2010/12/csharp-vba-excel/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>PDA&#34;未能建立与网络的连接&#34;的解决办法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>遇到这个问题大凡是因为模拟器或者真机无法连接网络，所以需要先测试网络是否畅通，在真机或者模拟器的IE中打开需要的WebService地址，看看是否能够正常获
+取。
+确定是网络原因后，可以采用多种方式连接网络，比如使用虚拟网卡来实现，又或者使用ActiveSync来实现。
+使用本地网卡 在模拟器的文件-配置中的网卡中，选择本地网卡，可能会需要提示安装Virtual PC
+2007，我不愿意装这么一个大家伙，也就没有尝试这种方法，需要的朋友可以在[Download details: Virtual PC 2007](http://www.microsoft.com/downloads/details.aspx?FamilyID=04d26402-3199-48a3-afa2-2d
+c0b40a73b6&amp;DisplayLang=en)来下载Virtual PC 2007进而连接互联网。
+使用ActiveSync ActiveSync是一个连接Win系列手持到电脑的同步软件，通过它可以使真机或者模拟机连接网络，步骤如下。
+1、打开ActiveSync ，点击文件-连接设置，在&#34;允许连接到以下其中一个端口&#34;下选择&#34;DMA&#34;。
+2、打开 VS2005，点击菜单工具-设备仿真管理器，选择一个windows mobile 5.0 PocketPC
+模拟器。在右键菜单中点击&#34;连接&#34;。等模拟器启动后，再点击&#34;插入底座&#34;，此时，通过ActiveSync来连接到模拟器，并进行数据同步。
+3、测试一下能不能连上网络，比如说Baidu（现在G.cn已经不能作为能否上网的标志了）或者WebService地址。
+参考连接 PDA智能程序访问WebService，报告&#34;未能建立与网络的连接&#34;? 请问PDA智能程序访问WebService，报告&#34;未能建立与网络的连接&#34;? </p>
+  </div>
+  <footer class="entry-footer"><span title='2010-03-31 00:00:00 +0800 CST'>2010-03-31</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to PDA&#34;未能建立与网络的连接&#34;的解决办法" href="https://blog.alswl.com/2010/03/solution-of-pda-failed-to-establish-a-network-connection/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>VS2005无法创建或打开&#34;智能设备&#34;项目的一个问题的解决方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>状况 在VS2005中创建或打开&#34;智能设备&#34;项目时，提示以下错误： “从用户数据存储中检索信息时出错。系统未找到指定的对象。” 和
+“由于数据存储中不存在项目引用的设备平台，因此无法打开项目。”
+在打开VS2005的&#34;工具&#34;－“设备仿真器管理器&#34;时，提示以下错误： “未能正确加载包&#34;Smart Device Configuration
+Package”( GUID = {D245F354-3F45-4516-B1E6-04608DA126CC}
+)。请与包供应商联系以获得帮助。由于可能会发生环境损坏，建议重新启动应用程序。要禁止将来加载此包吗? 可以使用&#34;devenv
+/resetskippkgs&#34;重新启用包加载。”
+不成功的解决办法 有说把.csproj文件中的&lt;PlatformID&gt;4118C335-430C-497f- BE48-11C3316B135E&lt;/PlatformID&gt;改成&lt;PlatformID&gt;3C41C503-53EF-4c2a- 8DD4-A8217CAD115E&lt;/PlatformID&gt;，原因说是&#34;3C41C503-53EF-4c2a-
+8DD4-A8217CAD115E&#34;来自任意一个能运行的.net
+cf2.0项目的.csproj文件，目标平台是ppc2003或wm5.0都可以&#34;，但是很可惜，这个办法在我电脑上没有起作用。
+成功的解决方法 关闭VS2005。
+重命名文件夹c:Documents and Settings&lt;user&gt;Local SettingsApplication DataMicrosoftCoreCon1.0，这将删除所有关于设备配置属性的定制。
+重启VS2005，VS2005会自动重建上述配置。
+原文链接：VS2005 无法创建或打开&#34;智能设备&#34;项目的一个问题的解决方法 - bingrrx的专栏 -
+CSDN博客
+原文的原文链接：http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=140668&amp;
+SiteID=1链接已失效</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-03-29 00:00:00 +0800 CST'>2010-03-29</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to VS2005无法创建或打开&#34;智能设备&#34;项目的一个问题的解决方法" href="https://blog.alswl.com/2010/03/a-solution-of-can-not-create-or-open-the-smart-device-project-in-vs2005/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>MemberShip使用心得
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>花了很大一段时间在学习MemberShip，总是要留下一些纪念文章的。
+我之前的日志提到过一个简单的用户权限设计：User&#43;Role&#43;UserInRole([http://log4d.com/2009/06/design-of-user-rights](http://log4d.com/2009/06/design-of-user-
+rights))，但是这样还是不够灵活，最好需要能够对每一个功能模块进行权限控制，而且需要符合开闭原则。 MemberShip呢，是微软推出的一套很强大的用
+户权限管理系统。就我使用的两大部分，主要包括MemberShip和roleManager这两个模块，分别是对用户和角色进行管理。
+MemberShip对系统进行管理大致分为两个办法 1.可以通过&#34;登录&#34;系列用户控件的任务窗口中的&#34;管理网站&#34;打开&#34;ASP.Net Web 应用程序管理&#34;。 可以控制用户、角色、权限三个主要属性，另外还能选择
+“提供程序”（这个provider分为MemberShip和RoleManager两种，如果同名的话，可以选择同一提供程序）
+2.使用Web.config进行配置
+其实上面的可视化界面在配置提供程序和访问规则（权限设定）时候，本质上修改的是根目录web.config和各个文件夹下对应的web.config
+我的根Web.config
+&lt;authentication mode=&#34;Forms&#34;&gt; &lt;forms name=&#34;ThisHouse&#34; defaultUrl=&#34;Default.aspx&#34; loginUrl=&#34;Signin.aspx&#34; protection=&#34;All&#34; timeout=&#34;30&#34;/&gt; &lt;/authentication&gt; &lt;membership defaultProvider=&#34;SqlProvider&#34;&gt; &lt;providers&gt; &lt;add connectionStringName=&#34;thisHouseConnectionString&#34; enablePasswordRetrieval=&#34;false&#34; enablePasswordReset=&#34;true&#34; requiresQuestionAndAnswer=&#34;true&#34; applicationName=&#34;ThisHouse&#34; requiresUniqueEmail=&#34;false&#34; passwordFormat=&#34;Clear&#34; maxInvalidPasswordAttempts=&#34;255&#34; minRequiredPasswordLength=&#34;1&#34; minRequiredNonalphanumericCharacters=&#34;1&#34; passwordAttemptWindow=&#34;10&#34; passwordStrengthRegularExpression=&#34;&#34; name=&#34;SqlProvider&#34; type=&#34;System.Web.Security.SqlMembershipProvider&#34;/&gt; &lt;/providers&gt; &lt;/membership&gt; &lt;roleManager enabled=&#34;true&#34; cacheRolesInCookie=&#34;true&#34; defaultProvider=&#34;SqlProvider&#34;&gt; &lt;providers&gt; &lt;add connectionStringName=&#34;thisHouseConnectionString&#34; applicationName=&#34;ThisHouse&#34; name=&#34;SqlProvider&#34; type=&#34;System.Web.Security.SqlRoleProvider&#34;/&gt; &lt;/providers&gt; &lt;/roleManager&gt; 我禁止User角色进入Admin文件夹，配置完&#34;访问规则&#34;后，会在Admin文件夹下生成相应web.config
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt; &lt;configuration&gt; &lt;system.web&gt; &lt;authorization&gt; &lt;allow roles=&#34;User&#34; /&gt; &lt;allow roles=&#34;Admin&#34; /&gt; &lt;deny users=&#34;?&#34; /&gt; &lt;/authorization&gt; &lt;/system....</p>
+  </div>
+  <footer class="entry-footer"><span title='2009-11-05 00:00:00 +0800 CST'>2009-11-05</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to MemberShip使用心得" href="https://blog.alswl.com/2009/11/membership-the-use-of-experience/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>ThisHouse房屋销售系统
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>呃，这是我在一个星期内搞鼓的一个Asp.NET课程设计，没有什么太多的内容，把它发布到了Csdn了，开了5分，嗯，对得起我一个星期拼命码代码。（哦，我很无耻
+的使用了MG12的iNove主题……）
+readme.txt内容： This House房屋销售系统 本人大四一个课程设计，大概花费1周时间，构架2天，编码3天，零碎程序1天，论文1天。
+程序写的不好不坏，是DAL&#43;BLL&#43;Model&#43;Web三层架构，使用的动软生成器生成的简单三层框架。压缩包包括源码，数据库，一个star
+uml简单设计图，数据库文档，需求分析和论文。
+系统关键词是： Asp.NET; MemberShip;
+iBatisNet; AjaxControlToolkit; **房屋销售系统 **
+数据库使用的是一个完整的MemberShip 权限管理系统，而不是我自己写的简单User in Role，所以建议对这个MemberShip有一定了解。
+整个系统关注的是框架的使用，对于业务逻辑关注很少，实在是我时间有限，没有更多的精力搞.NET。（我学Asp.Net 3个月了，之前是搞Java的）
+如果有问题可以到http://log4d.com留言，本人大四，会在有时间前提下回答，毕竟现在我正在找工作。
+我写代码时候总结的一些资料 [AjaxControlToolKit控件介绍[转载]](http://log4d.com/2009/10/ajaxcontroltoolkit-
+controls-introduced-reproduced)
+[MemberShip在动软生成器下UserId的问题](http://log4d.com/2009/10/membership-moving-soft-
+issue-of-builder-under-the-userid)
+源码下载 点击这里到CSDN下载[5分]</p>
+  </div>
+  <footer class="entry-footer"><span title='2009-11-05 00:00:00 +0800 CST'>2009-11-05</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to ThisHouse房屋销售系统" href="https://blog.alswl.com/2009/11/thishouse-housing-sales-system/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>MemberShip在动软生成器下UserId的问题
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N
+ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)&#43;Member
+Ship(微软推出的一个Asp.NET的权限系统)。
+我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是比较冒险的。呃```呵呵，这也比较符合我的风格，总是要学点东
+西的嘛。
+问题 MemberShip本身是一个很强大的权限管理系统，其中UserId使用的是uniqueidentifier这种值类型，对应到微软提出的一种标示类型GUID
+(System.GUID)。这是一种类似「9498ea1f-ce4e-4e6d-b636-1bbbe3db9bde」的非字符串。
+动软.NET代码生成器会根据建好的数据库生成相应的代码，可以选择三层模式（BLL&#43;DAL&#43;Model&#43;Web），他会自动生成每层代码。一般来说，生成的项目可
+以编译完成，但是如果在其中存在uniqueidentifier这种类型的表，就会产生错误，无法通过编译，错误「找不到类型或命名空间名称「uniqueiden
+tifier」（是否缺少 using 指令或程序集引用？）」
+解决 资料非常少，否则我就不会写日志了，直接转载了。
+参考一些零星的帖子&#43;自己尝试，我把解决方法总结如下。
+1.修改Model中uniqueidentifier类型，因为C#中根本不存在这种类型，将相应的变量类型定义为Guid。
+private Guid _userid; public Guid userId
+{ set{ _userid=value;}
+get{return _userid;}
+} 2.修改相应的Guid&lt;-&gt;string之间的转换，这个根据错误列表一一修改即可。
+this.lbluserId.Text=model.userId.ToString();//Guid拥有.ToString()方法 model.userId = new Guid(userId)//new Guid(string) 3.修改DAL中数据读取/写入部分，其实这一部分还是Guid&lt;-&gt;string转换
+//model.userId=ds.Tables[0].Rows[0][&#34;userId&#34;].ToString(); //原始的加上了注释 model.userId=new Guid(ds.Tables[0].Rows[0][&#34;userId&#34;].ToString()); //使用new Guid(string)进行转换 经过上面3个部分，代码应该基本没有问题了，其实关键的还是Guid&lt;-&gt;string转换，跟着错误列表走一边就基本没有问题了。
+新的问题 发现用动软生成的Web层中的Add.aspx文件中，如果相对应数据库表有DataTime字段，就会运行时错误「基类包括字段「txtdatetime」，但其类
+型(System.Web.UI.WebControls.TextBox)与控件(System.Web.UI.HtmlControls.HtmlInputTe
+xt)的类型不兼容。」。
+我将中id修改后，能够运行Add.aspx，但是还是无法post提交，我正在尝试解决这个问题。这个问题与MemberShip无关，放在这里只
+是希望如果有过客了解Asp.NET，那么就提出一些建议。
+相关链接 GUID_百度百科：http://baike.baidu.com/view/185358.htm
+SQL中的uniqueidentifier类型在c#中用什么类型表示：http://topic.csdn.net/t/20060918/17/5030341.html
+关于ASP.NET中C#处理uniqueidentifier数据类型的问题：http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html</p>
+  </div>
+  <footer class="entry-footer"><span title='2009-10-23 00:00:00 +0800 CST'>2009-10-23</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to MemberShip在动软生成器下UserId的问题" href="https://blog.alswl.com/2009/10/membership-moving-soft-issue-of-builder-under-the-userid/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>jQuery图片圈人功能在ASP.NET下的改进
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网&#34;图片圈人 “功能效果》（强烈推荐这篇
+文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。
+原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》
+）
+样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer....</p>
+  </div>
+  <footer class="entry-footer"><span title='2009-09-02 00:00:00 +0800 CST'>2009-09-02</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to jQuery图片圈人功能在ASP.NET下的改进" href="https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>AjaxControlToolkit中CalendarExtender样式修正
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在The Official Microsoft ASP.NET Site上有一个很强大的控件[AJAX Control Toolkit](http://ajaxcontroltoolkit.codeplex.com/Release/ProjectRelease
+s.aspx?ReleaseId=27326)，其功能非常完整，几乎涵盖了表现层方面各种应用，使用也很方便，有中文详细支持，能给程序员很大帮助。
+我现在使用的其中一款控件叫做CalendarExtender，其实是一个DatePicker（日期选择器），这个控件可以直接在Input控件上添加「扩展程序
+」，就完成了所有工作。
+让我意外的是，这个控件在我的页面上工作时候样式似乎有些不正常。
+页面漂移了！我仔细检查了FireBug，发现下面的样式中的padding影响了其td。(页面可不是我设计的```)
+如果修改CSS，就带来了大量的页面需要修改class/id，所以我只能修正CalendarExtender。（话说人家jQuery在这儿丝毫不受影响，全部元
+素都覆盖了样式，AJAX Control Toolkit在样式上还是不如jQuery）
+我在CalendarExtender外面包了一层div，再覆盖CalendarExtender的td属性。
+Html代码：
+&lt;div&gt; &lt;asp:TextBox ID=&#34;TbBirthday&#34; runat=&#34;server&#34;&gt;&lt;/asp:TextBox&gt; &lt;cc1:CalendarExtender ID=&#34;TbBirthday_CldEx&#34; runat=&#34;server&#34; Enabled=&#34;True&#34; TargetControlID=&#34;TbBirthday&#34; FirstDayOfWeek=&#34;Monday&#34; Format=&#34;yyyy-MM-dd&#34; PopupPosition=&#34;BottomRight&#34;&gt; &lt;/cc1:CalendarExtender&gt;&lt;/div&gt; CSS代码：
+/*bugs for CalendarExtends*/ .content .table .calendar td {/*.calender td 前的类是我网页中的上层元素*/ margin: 0px; padding: 0px; } 这样一来，就可以解决这个问题了。
+最后，附送一个汉化控件的技巧：其实下载后，已经有语言包在下载包里面，之所以没有启用中文，是因为没有打开ScriptManager的全球化控制，把Script
+Manager的EnableScriptGlobalization改为true即可。
+Asp.NET代码：
+&lt;asp:ScriptManager ID=&#34;ScriptManager1&#34; runat=&#34;server&#34; EnableScriptGlobalization=&#34;True&#34;&gt; &lt;/asp:ScriptManager&gt; </p>
+  </div>
+  <footer class="entry-footer"><span title='2009-08-28 00:00:00 +0800 CST'>2009-08-28</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to AjaxControlToolkit中CalendarExtender样式修正" href="https://blog.alswl.com/2009/08/ajaxcontroltoolkit-amendment-in-calendarextender-styles/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="https://blog.alswl.com/tags/dotnet/page/2/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

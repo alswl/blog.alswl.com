@@ -1,44 +1,429 @@
-<!DOCTYPE html><html lang=en> <head><title>在Eclipse3.5下使用Flex Builder 3 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/ rel=canonical><meta name=author content=alswl><meta name=keywords content="工欲善其事必先利其器,AIR,Eclipse,Flex,Flex Builder"><meta name=description content="这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。 我将系统命名为PylexChat，是一个基于Python+Flex的聊天系统，架构在GAE+AIR环境，支持多平台（Wi ndows+Linux+Web+手机）客户端登录。开发IDE为Eclipse+Flex Builder3插件，我的Eclipse Gelileo(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。 安装之后出现了问题，Eclipse插件根本没有加载，我在Getting Flex Builder 3 plugin to survive a new Eclipse Version找到了相应解决方案 …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/ rel=bookmark title="Permalink to 在Eclipse3.5下使用Flex Builder 3"> 在Eclipse3.5下使用Flex Builder 3 </a> </h1> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2009-11-18T00:00:00+08:00> 2009-11-18</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/gong-yu-shan-qi-shi-bi-xian-li-qi-qi/ >工欲善其事必先利其器</a> / <a href=https://blog.alswl.com/tag/air/ >AIR</a> / <a href=https://blog.alswl.com/tag/eclipse/ >Eclipse</a> / <a href=https://blog.alswl.com/tag/flex/ >Flex</a> / <a href=https://blog.alswl.com/tag/flex-builder/ >Flex Builder</a> </footer><!-- /.post-info --> </div> </div> <p>这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。</p> <p>我将系统命名为PylexChat，是一个基于<strong>Python</strong>+<strong>Flex</strong>的聊天系统，架构在<strong>GAE</strong>+<strong>AIR</strong>环境，支持多平台（<strong>Wi ndows+Linux+Web+手机</strong>）客户端登录。开发IDE为<strong>Eclipse</strong>+<strong>Flex Builder3</strong>插件，我的<strong>Eclipse Gelileo</strong>(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。</p> <p>安装之后出现了问题，Eclipse插件根本没有加载，我在<a href=http://greylurk.com/index.php/2009/06/getting-flex-builder-3%20-plugin-to-survive-a-new-eclipse-version/ >Getting Flex Builder 3 plugin to survive a new Eclipse Version</a>找到了相应解决方案。</p> <p>在<code>Eclipselinks</code>目录下面建立<code>com.adobe.flexbuilder.feature.core.link</code>文件，编辑内容为<code>d:/Stud y/Flex Builder 3 Plug-in</code>（记得修改目录），这样就可以正常加载并编写项目了。</p> <p>在使用过程中，如果代码没有写好，会出现<code>An internal error occurred during: "Removing compiler problem markers...".</code>这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将 项目删除重新建立，没有其他的办法彻底解决这个问题。</p> <p>这里有一个Adobe 官方论坛的讨论帖<a href=http://forums.adobe.%20com/thread/90415>http://forums.adobe.com/thread/90415</a>，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 + Flex Builder 3下面。</p> <p>看来得等Flex Builder3之后的版本发布才能修复这个Bug，否则的话，还是得换回Eclpse 3.4&hellip;&hellip;</p> <p>悲剧了，我刚使用Galileo一周时间&hellip;&hellip;</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/ >https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+<!DOCTYPE html>
+<html lang="en" dir="auto">
 
-                    var disqus_identifier = 'the-eclipse3-5-using-flex-builder-3';
-                var disqus_url = 'https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/';
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>在Eclipse3.5下使用Flex Builder 3 | Log4D</title>
+<meta name="keywords" content="工欲善其事必先利其器, air, eclipse, flex, flex builder">
+<meta name="description" content="这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。
+我将系统命名为PylexChat，是一个基于Python&#43;Flex的聊天系统，架构在GAE&#43;AIR环境，支持多平台（Wi
+ndows&#43;Linux&#43;Web&#43;手机）客户端登录。开发IDE为Eclipse&#43;Flex Builder3插件，我的Eclipse
+Gelileo(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。
+安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new Eclipse Version](http://greylurk.com/index.php/2009/06/getting-flex-builder-3
+-plugin-to-survive-a-new-eclipse-version/)找到了相应解决方案。
+在Eclipselinks目录下面建立com.adobe.flexbuilder.feature.core.link文件，编辑内容为d:/Stud y/Flex Builder 3 Plug-in（记得修改目录），这样就可以正常加载并编写项目了。
+在使用过程中，如果代码没有写好，会出现An internal error occurred during: &quot;Removing compiler problem markers...&quot;.这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将
+项目删除重新建立，没有其他的办法彻底解决这个问题。
+这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](http://forums.adobe. com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 &#43; Flex Builder
+3下面。
+看来得等Flex Builder3之后的版本发布才能修复这个Bug，否则的话，还是得换回Eclpse 3.4……
+悲剧了，我刚使用Galileo一周时间……">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-            var disqus_config = function () {
-                this.language = "en";
-            };
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+            .list {
+                background: var(--theme);
+            }
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="在Eclipse3.5下使用Flex Builder 3" />
+<meta property="og:description" content="这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。
+我将系统命名为PylexChat，是一个基于Python&#43;Flex的聊天系统，架构在GAE&#43;AIR环境，支持多平台（Wi
+ndows&#43;Linux&#43;Web&#43;手机）客户端登录。开发IDE为Eclipse&#43;Flex Builder3插件，我的Eclipse
+Gelileo(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。
+安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new Eclipse Version](http://greylurk.com/index.php/2009/06/getting-flex-builder-3
+-plugin-to-survive-a-new-eclipse-version/)找到了相应解决方案。
+在Eclipselinks目录下面建立com.adobe.flexbuilder.feature.core.link文件，编辑内容为d:/Stud y/Flex Builder 3 Plug-in（记得修改目录），这样就可以正常加载并编写项目了。
+在使用过程中，如果代码没有写好，会出现An internal error occurred during: &quot;Removing compiler problem markers...&quot;.这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将
+项目删除重新建立，没有其他的办法彻底解决这个问题。
+这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](http://forums.adobe. com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 &#43; Flex Builder
+3下面。
+看来得等Flex Builder3之后的版本发布才能修复这个Bug，否则的话，还是得换回Eclpse 3.4……
+悲剧了，我刚使用Galileo一周时间……" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2009-11-18T00:00:00+08:00" />
+<meta property="article:modified_time" content="2009-11-18T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在Eclipse3.5下使用Flex Builder 3"/>
+<meta name="twitter:description" content="这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。
+我将系统命名为PylexChat，是一个基于Python&#43;Flex的聊天系统，架构在GAE&#43;AIR环境，支持多平台（Wi
+ndows&#43;Linux&#43;Web&#43;手机）客户端登录。开发IDE为Eclipse&#43;Flex Builder3插件，我的Eclipse
+Gelileo(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。
+安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new Eclipse Version](http://greylurk.com/index.php/2009/06/getting-flex-builder-3
+-plugin-to-survive-a-new-eclipse-version/)找到了相应解决方案。
+在Eclipselinks目录下面建立com.adobe.flexbuilder.feature.core.link文件，编辑内容为d:/Stud y/Flex Builder 3 Plug-in（记得修改目录），这样就可以正常加载并编写项目了。
+在使用过程中，如果代码没有写好，会出现An internal error occurred during: &quot;Removing compiler problem markers...&quot;.这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将
+项目删除重新建立，没有其他的办法彻底解决这个问题。
+这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](http://forums.adobe. com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 &#43; Flex Builder
+3下面。
+看来得等Flex Builder3之后的版本发布才能修复这个Bug，否则的话，还是得换回Eclpse 3.4……
+悲剧了，我刚使用Galileo一周时间……"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "在Eclipse3.5下使用Flex Builder 3",
+      "item": "https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "在Eclipse3.5下使用Flex Builder 3",
+  "name": "在Eclipse3.5下使用Flex Builder 3",
+  "description": "这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。\n我将系统命名为PylexChat，是一个基于Python+Flex的聊天系统，架构在GAE+AIR环境，支持多平台（Wi\nndows+Linux+Web+手机）客户端登录。开发IDE为Eclipse+Flex Builder3插件，我的Eclipse\nGelileo(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。\n安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new Eclipse Version](http://greylurk.com/index.php/2009/06/getting-flex-builder-3\n-plugin-to-survive-a-new-eclipse-version/)找到了相应解决方案。\n在Eclipselinks目录下面建立com.adobe.flexbuilder.feature.core.link文件，编辑内容为d:/Stud y/Flex Builder 3 Plug-in（记得修改目录），这样就可以正常加载并编写项目了。\n在使用过程中，如果代码没有写好，会出现An internal error occurred during: \u0026quot;Removing compiler problem markers...\u0026quot;.这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将\n项目删除重新建立，没有其他的办法彻底解决这个问题。\n这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](http://forums.adobe. com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 + Flex Builder\n3下面。\n看来得等Flex Builder3之后的版本发布才能修复这个Bug，否则的话，还是得换回Eclpse 3.4……\n悲剧了，我刚使用Galileo一周时间……",
+  "keywords": [
+    "工欲善其事必先利其器", "air", "eclipse", "flex", "flex builder"
+  ],
+  "articleBody": "这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。\n我将系统命名为PylexChat，是一个基于Python+Flex的聊天系统，架构在GAE+AIR环境，支持多平台（Wi\nndows+Linux+Web+手机）客户端登录。开发IDE为Eclipse+Flex Builder3插件，我的Eclipse\nGelileo(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。\n安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new Eclipse Version](http://greylurk.com/index.php/2009/06/getting-flex-builder-3\n-plugin-to-survive-a-new-eclipse-version/)找到了相应解决方案。\n在Eclipselinks目录下面建立com.adobe.flexbuilder.feature.core.link文件，编辑内容为d:/Stud y/Flex Builder 3 Plug-in（记得修改目录），这样就可以正常加载并编写项目了。\n在使用过程中，如果代码没有写好，会出现An internal error occurred during: \"Removing compiler problem markers...\".这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将\n项目删除重新建立，没有其他的办法彻底解决这个问题。\n这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](http://forums.adobe. com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 + Flex Builder\n3下面。\n看来得等Flex Builder3之后的版本发布才能修复这个Bug，否则的话，还是得换回Eclpse 3.4……\n悲剧了，我刚使用Galileo一周时间……\n",
+  "wordCount" : "48",
+  "inLanguage": "en",
+  "datePublished": "2009-11-18T00:00:00+08:00",
+  "dateModified": "2009-11-18T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      在Eclipse3.5下使用Flex Builder 3
+    </h1>
+    <div class="post-meta"><span title='2009-11-18 00:00:00 +0800 CST'>2009-11-18</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。</p>
+<p>我将系统命名为PylexChat，是一个基于<strong>Python</strong>+<strong>Flex</strong>的聊天系统，架构在<strong>GAE</strong>+<strong>AIR</strong>环境，支持多平台（<strong>Wi<br />
+ndows+Linux+Web+手机</strong>）客户端登录。开发IDE为<strong>Eclipse</strong>+<strong>Flex Builder3</strong>插件，我的<strong>Eclipse<br />
+Gelileo</strong>(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。</p>
+<p>安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new Eclipse Version](<a href="http://greylurk.com/index.php/2009/06/getting-flex-builder-3">http://greylurk.com/index.php/2009/06/getting-flex-builder-3</a><br />
+-plugin-to-survive-a-new-eclipse-version/)找到了相应解决方案。</p>
+<p>在<code>Eclipselinks</code>目录下面建立<code>com.adobe.flexbuilder.feature.core.link</code>文件，编辑内容为<code>d:/Stud y/Flex Builder 3 Plug-in</code>（记得修改目录），这样就可以正常加载并编写项目了。</p>
+<p>在使用过程中，如果代码没有写好，会出现<code>An internal error occurred during: &quot;Removing compiler problem markers...&quot;.</code>这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将<br />
+项目删除重新建立，没有其他的办法彻底解决这个问题。</p>
+<p>这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](<a href="http://forums.adobe">http://forums.adobe</a>.  com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 + Flex Builder<br />
+3下面。</p>
+<p>看来得等Flex Builder3之后的版本发布才能修复这个Bug，否则的话，还是得换回Eclpse 3.4……</p>
+<p>悲剧了，我刚使用Galileo一周时间……</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8/">工欲善其事必先利其器</a></li>
+      <li><a href="https://blog.alswl.com/tags/air/">air</a></li>
+      <li><a href="https://blog.alswl.com/tags/eclipse/">eclipse</a></li>
+      <li><a href="https://blog.alswl.com/tags/flex/">flex</a></li>
+      <li><a href="https://blog.alswl.com/tags/flex-builder/">flex builder</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2009/11/09_11_21update/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>09_11_21Update</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Java笔记 使用反射来改进BaseDao</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-alswl-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

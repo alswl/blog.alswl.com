@@ -1,169 +1,690 @@
-<!DOCTYPE html><html lang=en> <head><title>128M内存VPS LNMP安装优化小记 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2011/11/vps-lnmp-setup-config/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Linuxer,CentOS,MySQL,nginx,php,VPS><meta name=description content="重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化） 这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。 现在使用的 VPS 是 PhotonVPS 。 月付5.95美元，使用优惠码 TENOFF 或 PHOTONLEB 可以打7折， 换算汇率之后是26人民币每月。 这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨， 我终于配置的可用率比较高，使用 siege -c 100 -t 100 时候可以保持 100% 可用率。 （其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2011/11/vps-lnmp-setup-config/ rel=bookmark title="Permalink to 128M内存VPS LNMP安装优化小记"> 128M内存VPS LNMP安装优化小记 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#linux-发行版选用 title="Linux 发行版选用">Linux 发行版选用</a><ul><li><a class=toc-href href=#nginx-安装 title="Nginx 安装">Nginx 安装</a></li><li><a class=toc-href href=#mysql安装 title=MySQL安装>MySQL安装</a></li><li><a class=toc-href href=#php安装 title=PHP安装>PHP安装</a></li></ul></li><li><a class=toc-href href=#运行lamp_1 title=运行LAMP>运行LAMP</a></li><li><a class=toc-href href=#小内存主机配置 title=小内存主机配置>小内存主机配置</a><ul><li><a class=toc-href href=#nginx配置 title=Nginx配置>Nginx配置</a></li><li><a class=toc-href href=#mysql配置 title=MySQL配置>MySQL配置</a></li><li><a class=toc-href href=#php配置 title=PHP配置>PHP配置</a></li></ul></li><li><a class=toc-href href=#运行结果_1 title=运行结果>运行结果</a></li><li><a class=toc-href href=#参考链接 title=参考链接>参考链接</a></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2011-11-06T00:00:00+08:00> 2011-11-06</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/linuxer/ >Linuxer</a> / <a href=https://blog.alswl.com/tag/centos/ >CentOS</a> / <a href=https://blog.alswl.com/tag/mysql/ >MySQL</a> / <a href=https://blog.alswl.com/tag/nginx/ >nginx</a> / <a href=https://blog.alswl.com/tag/php/ >php</a> / <a href=https://blog.alswl.com/tag/vps/ >VPS</a> </footer><!-- /.post-info --> </div> </div> <blockquote> <p>重要通知：Log4D 的域名由 <a href=http://dddspace.com>http://dddspace.com</a> 迁移到 <a href=http://log4d.com>http://log4d.com</a> 。 订阅地址现在改为 <a href=http://log4d.com/feed>http://log4d.com/feed</a> 和 <a href=http://feeds.feedburner.com/dddspace>http://feeds.feedburner.com/dddspace</a> 。（FeedBurner 的地址未发生变化）</p> </blockquote> <p>这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。 现在使用的 VPS 是 <a href="http://www.photonvps.com/billing/aff.php?aff=2188">PhotonVPS</a> 。</p> <p>月付5.95美元，使用优惠码 <code>TENOFF</code> 或 <code>PHOTONLEB</code> 可以打7折， 换算汇率之后是26人民币每月。</p> <p>这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨， 我终于配置的可用率比较高，使用 <code>siege -c 100 -t 100</code> 时候可以保持 100% 可用率。 （其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。</p> <!-- more --> <h1 id=安装-lnmp>安装 LNMP</h1> <h2 id=linux-发行版选用>Linux 发行版选用</h2> <p>CentOS 据说有较好的安全性和性能，我个人更喜欢 Arch。查询了相关资料， 在生产环境使用 Arch 的似乎不多。</p> <p>CentOS 里面的包比较旧，不像 Arch 里面，滚动最新。 所以这里需要用到的LNMP大部分都需要自行编译。</p> <h3 id=nginx-安装>Nginx 安装</h3> <p>Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。</p> <p>目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。</p> <p>准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。</p> <div class=sourceCode id=cb1><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb1-1 title=1><span class=ex>yum</span> -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers</a></code></pre></div> <p>下载Nginx</p> <div class=sourceCode id=cb2><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb2-1 title=1><span class=bu>cd</span> /tmp</a>
-<a class=sourceLine id=cb2-2 title=2><span class=fu>wget</span> http://nginx.org/download/nginx-1.0.9.tar.gz</a></code></pre></div> <p>因为我们需要安装使用https，所以需要SSL模块支持，我们需要OpenSSL源码。</p> <div class=sourceCode id=cb3><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb3-1 title=1><span class=fu>wget</span> http://openssl.org/source/openssl-1.0.0c.tar.gz</a>
-<a class=sourceLine id=cb3-2 title=2><span class=fu>tar</span> zxvf openssl-1.0.0c.tar.gz</a></code></pre></div> <p>编译Nginx，使用www作为用户和用户组，同时加入http ssl模块支持。</p> <div class=sourceCode id=cb4><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb4-1 title=1><span class=ex>./configure</span> --user=www --group=www --prefix=/usr/local/nginx --with-http_ssl_module --with-openssl=/tmp/openssl-1.0.0c/</a>
-<a class=sourceLine id=cb4-2 title=2><span class=fu>make</span></a>
-<a class=sourceLine id=cb4-3 title=3><span class=fu>make</span> install</a></code></pre></div> <p>这样nginx就安装完了，执行 <code>/usr/local/ngxin/bin/nginx -V</code> 可以查看nginx信息。</p> <blockquote> <p>nginx: nginx version: nginx/1.0.9 nginx: built by gcc 4.4.4 20100726 (Red Hat 4.4.4-13) (GCC) nginx: TLS SNI support enabled nginx: configure arguments: &ndash;user=www &ndash;group=www &ndash;prefix=/usr/local/nginx &ndash;with-http_ssl_module &ndash;with-openssl=/tmp/openssl-1.0.0c/</p> </blockquote> <p>为nginx 创建软链接</p> <div class=sourceCode id=cb5><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb5-1 title=1><span class=fu>ln</span> -s /usr/local/nginx/sbin/nginx /usr/bin/nginx</a></code></pre></div> <p>ngxin 启动关闭</p> <div class=sourceCode id=cb6><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb6-1 title=1><span class=ex>nginx</span> <span class=co>#启动</span></a>
-<a class=sourceLine id=cb6-2 title=2><span class=ex>nginx</span> -s stop <span class=co>#关闭</span></a>
-<a class=sourceLine id=cb6-3 title=3><span class=ex>nginx</span> -s reload <span class=co>#重启</span></a></code></pre></div> <p>运行 <code>nginx</code> 就可以启动服务器了，在浏览器输入服务器ip， 能够看见 <code>nginx</code> 的字样。</p> <h3 id=mysql安装>MySQL安装</h3> <p>MySQL我没有自行编译，使用CentOS官方源里面的Mysql。</p> <div class=sourceCode id=cb7><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb7-1 title=1><span class=ex>yum</span> install -y mysql-server</a></code></pre></div> <h3 id=php安装>PHP安装</h3> <p>PHP需要自行编译，原因是Nginx使用Fast-CGI调用PHP服务。 我们需要php-cgi常驻后台。在PHP 5.3.3之后， 一个名为php-fpm的小东西被php核心加入。这个php-fpm可以常驻后台响应Fast-CGI请求。</p> <p>悲剧的是，截至目前位置，CentOS官方源里面PHP版本是5.3.2， 好死不死的差一个小数点。只能自行编译了。</p> <p>安装libmcrypt，这是某个依赖包，另外phpmyadmin也需要这个模块。</p> <div class=sourceCode id=cb8><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb8-1 title=1><span class=fu>wget</span> http://pkgs.repoforge.org/libmcrypt/libmcrypt-2.5.71.2.el6.rf.i686.rpm</a>
-<a class=sourceLine id=cb8-2 title=2><span class=fu>ls</span></a>
-<a class=sourceLine id=cb8-3 title=3><span class=ex>rpm</span> -i libmcrypt-2.5.7-1.2.el6.rf.i686.rpm</a>
-<a class=sourceLine id=cb8-4 title=4><span class=ex>rpm</span> -i --force libmcrypt-2.5.7-1.2.el6.rf.i686.rpm</a></code></pre></div> <p>安装php 5.3.8</p> <div class=sourceCode id=cb9><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb9-1 title=1><span class=ex>./configure</span> --prefix=/usr/local/php --with-config-file-path=/usr/local/php/etc --with-mysql=/usr/bin/ --with-mysqli=/usr/bin/mysql_config --with-iconv-dir=/usr/local/libiconv --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --with-curl --with-curlwrappers --with-mhash --with-mcrypt --with-gd --enable-gd-native-ttf --with-xsl --with-openssl --with-ldap --with-ldap-sasl --with-xmlrpc --without-pear --enable-zip --enable-soap --enable-mbstring --enable-ftp --enable-sockets --enable-pcntl --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --disable-rpath --enable-mbregex --enable-safe-mode --enable-fpm --with-fpm-user=www --with-fpm-group=www</a>
-<a class=sourceLine id=cb9-2 title=2><span class=fu>make</span></a>
-<a class=sourceLine id=cb9-3 title=3><span class=fu>make</span> test</a>
-<a class=sourceLine id=cb9-4 title=4><span class=fu>make</span> install</a></code></pre></div> <h2 id=运行lamp_1>运行LAMP</h2> <p>现在环境已经安装好了，我们稍作配置，然后启动系统。</p> <p>在nginx的 <code>/usr/local/nginx/html/</code> 下创建 <code>info.php</code>。</p> <div class=sourceCode id=cb10><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb10-1 title=1><span class=op>&lt;</span><span class=ex>?php</span> info() <span class=ex>?</span><span class=op>&gt;</span></a></code></pre></div> <p>配置nginx，编辑 <code>/usr/local/nginx/conf/nginx.conf</code> 其中的 <code>server</code> 段。</p> <div class=sourceCode id=cb11><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb11-1 title=1><span class=ex>location</span> ~ \.php$ {</a>
-<a class=sourceLine id=cb11-2 title=2>        <span class=ex>root</span>           html<span class=kw>;</span></a>
-<a class=sourceLine id=cb11-3 title=3>        <span class=ex>fastcgi_pass</span>   unix:/var/run/php-cgi.sock<span class=kw>;</span></a>
-<a class=sourceLine id=cb11-4 title=4>        <span class=ex>fastcgi_index</span>  index.php<span class=kw>;</span></a>
-<a class=sourceLine id=cb11-5 title=5>        <span class=ex>fastcgi_param</span>  SCRIPT_FILENAME  /usr/local/nginx/html/<span class=va>$fastcgi_script_name</span><span class=kw>;</span></a>
-<a class=sourceLine id=cb11-6 title=6>        <span class=ex>include</span>        fastcgi_params<span class=kw>;</span></a>
-<a class=sourceLine id=cb11-7 title=7>}</a></code></pre></div> <p>配置php-fpm，编辑 <code>/usr/local/php/etc/php-fpm.conf</code></p> <div class=sourceCode id=cb12><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb12-1 title=1><span class=ex>listen</span> = /var/run/php-cgi.sock</a></code></pre></div> <p>运行 <code>nginx -s reload</code> 重新启动nginx服务器。运行 <code>/etc/init.d/php-fpm start</code> 启动php-cgi监听。</p> <p>在浏览器输入 <code>your.domain/info.php</code> 会出现php信息，成功的话， 就说明LNMP配置成功了。</p> <h2 id=小内存主机配置>小内存主机配置</h2> <p>经过上面的步骤，已经可以成功的配置完LNMP系统，但是默认的配置情况下面， 内存会相当吃紧。一会会就系统内存爆掉，Nginx会频繁报出 <code>The page you are looking for is temporarily unavailable. Please try again later.</code> ，不配置就不能用啊。</p> <h3 id=nginx配置>Nginx配置</h3> <p>我的nginx优化配置如下，主要是配置 <code>worker_processes</code> 数量和 <code>fastcgi</code> 、 <code>gzip</code> 缓存。</p> <div class=sourceCode id=cb13><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb13-1 title=1><span class=ex>user</span>  www www</a>
-<a class=sourceLine id=cb13-2 title=2></a>
-<a class=sourceLine id=cb13-3 title=3><span class=ex>worker_processes</span> 1<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-4 title=4></a>
-<a class=sourceLine id=cb13-5 title=5><span class=ex>events</span> {</a>
-<a class=sourceLine id=cb13-6 title=6>    <span class=ex>worker_connections</span> 1024<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-7 title=7>    <span class=ex>use</span> epoll<span class=kw>;</span> <span class=co>#使用高效率的epool模式</span></a>
-<a class=sourceLine id=cb13-8 title=8>}</a>
-<a class=sourceLine id=cb13-9 title=9></a>
-<a class=sourceLine id=cb13-10 title=10><span class=ex>http</span> {</a>
-<a class=sourceLine id=cb13-11 title=11>    <span class=ex>include</span> mime.types<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-12 title=12>    <span class=ex>default_type</span> application/octet-stream<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-13 title=13></a>
-<a class=sourceLine id=cb13-14 title=14>    <span class=ex>sendfile</span> on<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-15 title=15>    <span class=ex>keepalive_timeout</span> 65</a>
-<a class=sourceLine id=cb13-16 title=16></a>
-<a class=sourceLine id=cb13-17 title=17>    <span class=co># 下面是配置缓存</span></a>
-<a class=sourceLine id=cb13-18 title=18>    <span class=ex>client_header_buffer_size</span> 32k<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-19 title=19>    <span class=ex>large_client_header_buffers</span> 4 32k<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-20 title=20></a>
-<a class=sourceLine id=cb13-21 title=21>    <span class=ex>fastcgi_connect_timeout</span> 300<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-22 title=22>    <span class=ex>fastcgi_send_timeout</span> 300<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-23 title=23>    <span class=ex>fastcgi_read_timeout</span> 300<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-24 title=24>    <span class=ex>fastcgi_buffer_size</span> 32k<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-25 title=25>    <span class=ex>fastcgi_buffers</span> 4 32k<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-26 title=26>    <span class=ex>fastcgi_busy_buffers_size</span> 32k<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-27 title=27>    <span class=ex>fastcgi_temp_file_write_size</span> 32k<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-28 title=28></a>
-<a class=sourceLine id=cb13-29 title=29>    <span class=co># 下面是弃用gzip压缩缓存</span></a>
-<a class=sourceLine id=cb13-30 title=30>    <span class=fu>gzip</span> on<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-31 title=31>    <span class=ex>gzip_min_length</span> 1k<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-32 title=32>    <span class=ex>gzip_buffers</span> 4 16k<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-33 title=33>    <span class=ex>gzip_http_version</span> 1.0<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-34 title=34>    <span class=ex>gzip_comp_level</span> 2<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-35 title=35>    <span class=ex>gzip_types</span> text/plain application/x-javascript text/css application/xml<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-36 title=36>    <span class=ex>gzip_vary</span> on<span class=kw>;</span></a>
-<a class=sourceLine id=cb13-37 title=37></a>
-<a class=sourceLine id=cb13-38 title=38>    <span class=co>#server 的内容我就不列出了</span></a>
-<a class=sourceLine id=cb13-39 title=39>    <span class=co>#&hellip;.</span></a>
-<a class=sourceLine id=cb13-40 title=40>} </a></code></pre></div> <h3 id=mysql配置>MySQL配置</h3> <p>mysql的配置文件在 <code>/etc/my.cnf</code> ，我们需要配置两样东西， 一个是禁用innodb，因为innodb比较消耗内存；另外是配置mysql缓存。</p> <div class=sourceCode id=cb14><pre class="sourceCode ini"><code class="sourceCode ini"><a class=sourceLine id=cb14-1 title=1><span class=kw>[mysql]</span></a>
-<a class=sourceLine id=cb14-2 title=2><span class=dt>no-auto-rehash</span></a>
-<a class=sourceLine id=cb14-3 title=3></a>
-<a class=sourceLine id=cb14-4 title=4><span class=kw>[mysqld]</span></a>
-<a class=sourceLine id=cb14-5 title=5><span class=dt>datadir</span><span class=ot>=</span><span class=st>/var/lib/mysql</span></a>
-<a class=sourceLine id=cb14-6 title=6><span class=dt>socket</span><span class=ot>=</span><span class=st>/var/lib/mysql/mysql.sock</span></a>
-<a class=sourceLine id=cb14-7 title=7><span class=dt>user</span><span class=ot>=</span><span class=st>mysql</span></a>
-<a class=sourceLine id=cb14-8 title=8><span class=co># Disabling symbolic-links is recommended to prevent assorted security risks</span></a>
-<a class=sourceLine id=cb14-9 title=9><span class=dt>symbolic-links</span><span class=ot>=</span><span class=dv>0</span></a>
-<a class=sourceLine id=cb14-10 title=10></a>
-<a class=sourceLine id=cb14-11 title=11><span class=dt>open_files_limit </span><span class=ot>=</span><span class=st> </span><span class=dv>600</span></a>
-<a class=sourceLine id=cb14-12 title=12><span class=dt>back_log </span><span class=ot>=</span><span class=st> </span><span class=dv>20</span></a>
-<a class=sourceLine id=cb14-13 title=13><span class=dt>max_connections </span><span class=ot>=</span><span class=st> </span><span class=dv>100</span></a>
-<a class=sourceLine id=cb14-14 title=14><span class=dt>max_connect_errors </span><span class=ot>=</span><span class=st> </span><span class=dv>200</span></a>
-<a class=sourceLine id=cb14-15 title=15><span class=dt>table_cache </span><span class=ot>=</span><span class=st> </span><span class=dv>60</span></a>
-<a class=sourceLine id=cb14-16 title=16><span class=dt>external-locking </span><span class=ot>=</span><span class=st> </span><span class=kw>FALSE</span></a>
-<a class=sourceLine id=cb14-17 title=17><span class=dt>max_allowed_packet </span><span class=ot>=</span><span class=st> 16M</span></a>
-<a class=sourceLine id=cb14-18 title=18><span class=dt>sort_buffer_size </span><span class=ot>=</span><span class=st> 128K</span></a>
-<a class=sourceLine id=cb14-19 title=19><span class=dt>join_buffer_size </span><span class=ot>=</span><span class=st> 128K</span></a>
-<a class=sourceLine id=cb14-20 title=20><span class=dt>thread_cache_size </span><span class=ot>=</span><span class=st> </span><span class=dv>10</span></a>
-<a class=sourceLine id=cb14-21 title=21><span class=dt>thread_concurrency </span><span class=ot>=</span><span class=st> </span><span class=dv>8</span></a>
-<a class=sourceLine id=cb14-22 title=22><span class=dt>query_cache_size </span><span class=ot>=</span><span class=st> 0M</span></a>
-<a class=sourceLine id=cb14-23 title=23><span class=dt>query_cache_limit </span><span class=ot>=</span><span class=st> 2M</span></a>
-<a class=sourceLine id=cb14-24 title=24><span class=dt>query_cache_min_res_unit </span><span class=ot>=</span><span class=st> 2k</span></a>
-<a class=sourceLine id=cb14-25 title=25><span class=dt>default_table_type </span><span class=ot>=</span><span class=st> MyISAM</span></a>
-<a class=sourceLine id=cb14-26 title=26><span class=dt>thread_stack </span><span class=ot>=</span><span class=st> 192K</span></a>
-<a class=sourceLine id=cb14-27 title=27><span class=dt>transaction_isolation </span><span class=ot>=</span><span class=st> READ-UNCOMMITTED</span></a>
-<a class=sourceLine id=cb14-28 title=28><span class=dt>tmp_table_size </span><span class=ot>=</span><span class=st> 512K</span></a>
-<a class=sourceLine id=cb14-29 title=29><span class=dt>max_heap_table_size </span><span class=ot>=</span><span class=st> 32M</span></a>
-<a class=sourceLine id=cb14-30 title=30><span class=dt>long_query_time </span><span class=ot>=</span><span class=st> </span><span class=dv>1</span></a>
-<a class=sourceLine id=cb14-31 title=31><span class=dt>log_long_format</span></a>
-<a class=sourceLine id=cb14-32 title=32><span class=dt>server-id </span><span class=ot>=</span><span class=st> </span><span class=dv>1</span></a>
-<a class=sourceLine id=cb14-33 title=33><span class=dt>binlog_cache_size </span><span class=ot>=</span><span class=st> 2M</span></a>
-<a class=sourceLine id=cb14-34 title=34><span class=dt>max_binlog_cache_size </span><span class=ot>=</span><span class=st> 4M</span></a>
-<a class=sourceLine id=cb14-35 title=35><span class=dt>max_binlog_size </span><span class=ot>=</span><span class=st> 512M</span></a>
-<a class=sourceLine id=cb14-36 title=36><span class=dt>expire_logs_days </span><span class=ot>=</span><span class=st> </span><span class=dv>7</span></a>
-<a class=sourceLine id=cb14-37 title=37><span class=dt>key_buffer_size </span><span class=ot>=</span><span class=st> 4M</span></a>
-<a class=sourceLine id=cb14-38 title=38><span class=dt>read_buffer_size </span><span class=ot>=</span><span class=st> 1M</span></a>
-<a class=sourceLine id=cb14-39 title=39><span class=dt>read_rnd_buffer_size </span><span class=ot>=</span><span class=st> 2M</span></a>
-<a class=sourceLine id=cb14-40 title=40><span class=dt>bulk_insert_buffer_size </span><span class=ot>=</span><span class=st> 2M</span></a>
-<a class=sourceLine id=cb14-41 title=41><span class=dt>myisam_sort_buffer_size </span><span class=ot>=</span><span class=st> 4M</span></a>
-<a class=sourceLine id=cb14-42 title=42><span class=dt>myisam_max_sort_file_size </span><span class=ot>=</span><span class=st> 10G</span></a>
-<a class=sourceLine id=cb14-43 title=43><span class=dt>myisam_max_extra_sort_file_size </span><span class=ot>=</span><span class=st> 10G</span></a>
-<a class=sourceLine id=cb14-44 title=44><span class=dt>myisam_repair_threads </span><span class=ot>=</span><span class=st> </span><span class=dv>1</span></a>
-<a class=sourceLine id=cb14-45 title=45><span class=dt>myisam_recover</span></a>
-<a class=sourceLine id=cb14-46 title=46></a>
-<a class=sourceLine id=cb14-47 title=47><span class=dt>skip-innodb #禁用innodb数据库引擎</span></a>
-<a class=sourceLine id=cb14-48 title=48></a>
-<a class=sourceLine id=cb14-49 title=49><span class=kw>[mysqld_safe]</span></a>
-<a class=sourceLine id=cb14-50 title=50><span class=dt>log-error</span><span class=ot>=</span><span class=st>/var/log/mysqld.log</span></a>
-<a class=sourceLine id=cb14-51 title=51><span class=dt>pid-file</span><span class=ot>=</span><span class=st>/var/run/mysqld/mysqld.pid</span></a>
-<a class=sourceLine id=cb14-52 title=52></a>
-<a class=sourceLine id=cb14-53 title=53><span class=kw>[mysqldump]</span></a>
-<a class=sourceLine id=cb14-54 title=54><span class=dt>quick</span></a>
-<a class=sourceLine id=cb14-55 title=55><span class=dt>max_allowed_packet </span><span class=ot>=</span><span class=st> 16M </span></a></code></pre></div> <h3 id=php配置>PHP配置</h3> <p>我们使用php-fpm来作为后台daemon响应FastCGI请求。 默认的php-fpm会启动比较多的子进程，很容易耗光内存。</p> <div class=sourceCode id=cb15><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb15-1 title=1><span class=ex>listen</span> = /var/run/php-cgi.sock <span class=co>#使用socket监听，不用端口监听</span></a></code></pre></div> <div class=sourceCode id=cb16><pre class="sourceCode bash"><code class="sourceCode bash"><a class=sourceLine id=cb16-1 title=1><span class=ex>pm.max_children</span> = 2 <span class=co>#默认是50  </span></a>
-<a class=sourceLine id=cb16-2 title=2><span class=ex>pm.start_servers</span> = 2 <span class=co>#默认是20  </span></a>
-<a class=sourceLine id=cb16-3 title=3><span class=ex>pm.min_spare_servers</span> = 2 <span class=co>#默认是5  </span></a>
-<a class=sourceLine id=cb16-4 title=4><span class=ex>pm.max_spare_servers</span> = 2 <span class=co>#默认是35 </span></a></code></pre></div> <p>有的配置手记是建议把上面几个数字改为5，我经过多次调试之后， 发现使用最小/最大连接数为2的时候，可用率比较高，内存消耗也比较小。</p> <h2 id=运行结果_1>运行结果</h2> <p>经过一番折腾之后，我的 <a href=http://log4d.com>Log4D</a> 终于配置完成了。 打开速度还算凑合，用WebKaka测试截图如下。</p> <p>原来的虚拟主机 dddspace.com 的响应情况：</p> <figure> <img alt=dddspace src=https://4ocf5n.dijingchao.com/upload_dropbox/201111/dddspace.png><figcaption>dddspace</figcaption> </figure> <p>现在 log4d.com VPS 的响应情况：</p> <figure> <img alt=log4d src=https://4ocf5n.dijingchao.com/upload_dropbox/201111/log4d.png><figcaption>log4d</figcaption> </figure> <p>内存使用情况：</p> <figure> <img alt=free src=https://4ocf5n.dijingchao.com/upload_dropbox/201111/free.png><figcaption>free</figcaption> </figure> <p><code>siege -c 100 -t 100 log4d.com</code> 的测试结果：</p> <pre><code>Transactions:               1711 hits
-Availability:              96.61 %
-Elapsed time:             416.72 secs
-Data transferred:          18.20 MB
-Response time:             22.12 secs
-Transaction rate:           4.11 trans/sec
-Throughput:             0.04 MB/sec
-Concurrency:               90.84
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>128M内存VPS LNMP安装优化小记 | Log4D</title>
+<meta name="keywords" content="linuxer, centos, mysql, nginx, php, vps">
+<meta name="description" content="重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。
+订阅地址现在改为 http://log4d.com/feed 和
+http://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化）
+这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。
+现在使用的 VPS 是 PhotonVPS 。
+月付5.95美元，使用优惠码 TENOFF 或 PHOTONLEB 可以打7折，
+换算汇率之后是26人民币每月。
+这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨，
+我终于配置的可用率比较高，使用 siege -c 100 -t 100 时候可以保持 100% 可用率。
+（其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。
+安装 LNMP Linux 发行版选用 CentOS 据说有较好的安全性和性能，我个人更喜欢 Arch。查询了相关资料，
+在生产环境使用 Arch 的似乎不多。
+CentOS 里面的包比较旧，不像 Arch 里面，滚动最新。
+所以这里需要用到的LNMP大部分都需要自行编译。
+Nginx 安装 Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。
+目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。
+准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。
+yum -y install gcc gcc-c&#43;&#43; autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers 下载Nginx">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2011/11/vps-lnmp-setup-config/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="128M内存VPS LNMP安装优化小记" />
+<meta property="og:description" content="重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。
+订阅地址现在改为 http://log4d.com/feed 和
+http://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化）
+这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。
+现在使用的 VPS 是 PhotonVPS 。
+月付5.95美元，使用优惠码 TENOFF 或 PHOTONLEB 可以打7折，
+换算汇率之后是26人民币每月。
+这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨，
+我终于配置的可用率比较高，使用 siege -c 100 -t 100 时候可以保持 100% 可用率。
+（其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。
+安装 LNMP Linux 发行版选用 CentOS 据说有较好的安全性和性能，我个人更喜欢 Arch。查询了相关资料，
+在生产环境使用 Arch 的似乎不多。
+CentOS 里面的包比较旧，不像 Arch 里面，滚动最新。
+所以这里需要用到的LNMP大部分都需要自行编译。
+Nginx 安装 Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。
+目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。
+准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。
+yum -y install gcc gcc-c&#43;&#43; autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers 下载Nginx" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2011/11/vps-lnmp-setup-config/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2011-11-06T00:00:00+08:00" />
+<meta property="article:modified_time" content="2011-11-06T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="128M内存VPS LNMP安装优化小记"/>
+<meta name="twitter:description" content="重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。
+订阅地址现在改为 http://log4d.com/feed 和
+http://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化）
+这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。
+现在使用的 VPS 是 PhotonVPS 。
+月付5.95美元，使用优惠码 TENOFF 或 PHOTONLEB 可以打7折，
+换算汇率之后是26人民币每月。
+这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨，
+我终于配置的可用率比较高，使用 siege -c 100 -t 100 时候可以保持 100% 可用率。
+（其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。
+安装 LNMP Linux 发行版选用 CentOS 据说有较好的安全性和性能，我个人更喜欢 Arch。查询了相关资料，
+在生产环境使用 Arch 的似乎不多。
+CentOS 里面的包比较旧，不像 Arch 里面，滚动最新。
+所以这里需要用到的LNMP大部分都需要自行编译。
+Nginx 安装 Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。
+目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。
+准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。
+yum -y install gcc gcc-c&#43;&#43; autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers 下载Nginx"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "128M内存VPS LNMP安装优化小记",
+      "item": "https://blog.alswl.com/2011/11/vps-lnmp-setup-config/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "128M内存VPS LNMP安装优化小记",
+  "name": "128M内存VPS LNMP安装优化小记",
+  "description": "重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。\n订阅地址现在改为 http://log4d.com/feed 和\nhttp://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化）\n这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。\n现在使用的 VPS 是 PhotonVPS 。\n月付5.95美元，使用优惠码 TENOFF 或 PHOTONLEB 可以打7折，\n换算汇率之后是26人民币每月。\n这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨，\n我终于配置的可用率比较高，使用 siege -c 100 -t 100 时候可以保持 100% 可用率。\n（其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。\n安装 LNMP Linux 发行版选用 CentOS 据说有较好的安全性和性能，我个人更喜欢 Arch。查询了相关资料，\n在生产环境使用 Arch 的似乎不多。\nCentOS 里面的包比较旧，不像 Arch 里面，滚动最新。\n所以这里需要用到的LNMP大部分都需要自行编译。\nNginx 安装 Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。\n目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。\n准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。\nyum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers 下载Nginx",
+  "keywords": [
+    "linuxer", "centos", "mysql", "nginx", "php", "vps"
+  ],
+  "articleBody": " 重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。\n订阅地址现在改为 http://log4d.com/feed 和\nhttp://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化）\n这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。\n现在使用的 VPS 是 PhotonVPS 。\n月付5.95美元，使用优惠码 TENOFF 或 PHOTONLEB 可以打7折，\n换算汇率之后是26人民币每月。\n这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨，\n我终于配置的可用率比较高，使用 siege -c 100 -t 100 时候可以保持 100% 可用率。\n（其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。\n安装 LNMP Linux 发行版选用 CentOS 据说有较好的安全性和性能，我个人更喜欢 Arch。查询了相关资料，\n在生产环境使用 Arch 的似乎不多。\nCentOS 里面的包比较旧，不像 Arch 里面，滚动最新。\n所以这里需要用到的LNMP大部分都需要自行编译。\nNginx 安装 Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。\n目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。\n准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。\nyum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers 下载Nginx\ncd /tmp wget http://nginx.org/download/nginx-1.0.9.tar.gz 因为我们需要安装使用https，所以需要SSL模块支持，我们需要OpenSSL源码。\nwget http://openssl.org/source/openssl-1.0.0c.tar.gz tar zxvf openssl-1.0.0c.tar.gz 编译Nginx，使用www作为用户和用户组，同时加入http ssl模块支持。\n./configure --user=www --group=www --prefix=/usr/local/nginx --with-http_ssl_module --with-openssl=/tmp/openssl-1.0.0c/ make make install 这样nginx就安装完了，执行 /usr/local/ngxin/bin/nginx -V 可以查看nginx信息。\nnginx: nginx version: nginx/1.0.9 nginx: built by gcc 4.4.4 20100726 (Red Hat 4.4.4-13) (GCC) nginx: TLS SNI support enabled nginx: configure arguments: –user=www –group=www –prefix=/usr/local/nginx –with-http_ssl_module –with-openssl=/tmp/openssl-1.0.0c/\n为nginx 创建软链接\nln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx ngxin 启动关闭\nnginx #启动 nginx -s stop #关闭 nginx -s reload #重启 运行 nginx 就可以启动服务器了，在浏览器输入服务器ip， 能够看见 nginx 的字样。\nMySQL安装 MySQL我没有自行编译，使用CentOS官方源里面的Mysql。\nyum install -y mysql-server PHP安装 PHP需要自行编译，原因是Nginx使用Fast-CGI调用PHP服务。\n我们需要php-cgi常驻后台。在PHP 5.3.3之后，\n一个名为php-fpm的小东西被php核心加入。这个php-fpm可以常驻后台响应Fast-CGI请求。\n悲剧的是，截至目前位置，CentOS官方源里面PHP版本是5.3.2，\n好死不死的差一个小数点。只能自行编译了。\n安装libmcrypt，这是某个依赖包，另外phpmyadmin也需要这个模块。\nwget http://pkgs.repoforge.org/libmcrypt/libmcrypt-2.5.71.2.el6.rf.i686.rpm ls rpm -i libmcrypt-2.5.7-1.2.el6.rf.i686.rpm rpm -i --force libmcrypt-2.5.7-1.2.el6.rf.i686.rpm 安装php 5.3.8\n./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php/etc --with-mysql=/usr/bin/ --with-mysqli=/usr/bin/mysql_config --with-iconv-dir=/usr/local/libiconv --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --with-curl --with-curlwrappers --with-mhash --with-mcrypt --with-gd --enable-gd-native-ttf --with-xsl --with-openssl --with-ldap --with-ldap-sasl --with-xmlrpc --without-pear --enable-zip --enable-soap --enable-mbstring --enable-ftp --enable-sockets --enable-pcntl --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --disable-rpath --enable-mbregex --enable-safe-mode --enable-fpm --with-fpm-user=www --with-fpm-group=www make make test make install 运行LAMP 现在环境已经安装好了，我们稍作配置，然后启动系统。\n在nginx的 /usr/local/nginx/html/ 下创建 info.php。\n\u003c?php info() ?\u003e 配置nginx，编辑 /usr/local/nginx/conf/nginx.conf 其中的 server 段。\nlocation ~ \\.php$ { root html; fastcgi_pass unix:/var/run/php-cgi.sock; fastcgi_index index.php; fastcgi_param SCRIPT_FILENAME /usr/local/nginx/html/$fastcgi_script_name; include fastcgi_params; } 配置php-fpm，编辑 /usr/local/php/etc/php-fpm.conf\nlisten = /var/run/php-cgi.sock 运行 nginx -s reload 重新启动nginx服务器。运行 /etc/init.d/php-fpm start\n启动php-cgi监听。\n在浏览器输入 your.domain/info.php 会出现php信息，成功的话，\n就说明LNMP配置成功了。\n小内存主机配置 经过上面的步骤，已经可以成功的配置完LNMP系统，但是默认的配置情况下面，\n内存会相当吃紧。一会会就系统内存爆掉，Nginx会频繁报出\nThe page you are looking for is temporarily unavailable. Please try again later.\n，不配置就不能用啊。\nNginx配置 我的nginx优化配置如下，主要是配置 worker_processes 数量和\nfastcgi 、 gzip 缓存。\nuser www www worker_processes 1; events { worker_connections 1024; use epoll; #使用高效率的epool模式 } http { include mime.types; default_type application/octet-stream; sendfile on; keepalive_timeout 65 # 下面是配置缓存 client_header_buffer_size 32k; large_client_header_buffers 4 32k; fastcgi_connect_timeout 300; fastcgi_send_timeout 300; fastcgi_read_timeout 300; fastcgi_buffer_size 32k; fastcgi_buffers 4 32k; fastcgi_busy_buffers_size 32k; fastcgi_temp_file_write_size 32k; # 下面是弃用gzip压缩缓存 gzip on; gzip_min_length 1k; gzip_buffers 4 16k; gzip_http_version 1.0; gzip_comp_level 2; gzip_types text/plain application/x-javascript text/css application/xml; gzip_vary on; #server 的内容我就不列出了 #…. } MySQL配置 mysql的配置文件在 /etc/my.cnf ，我们需要配置两样东西，\n一个是禁用innodb，因为innodb比较消耗内存；另外是配置mysql缓存。\n[mysql] no-auto-rehash [mysqld] datadir=/var/lib/mysql socket=/var/lib/mysql/mysql.sock user=mysql # Disabling symbolic-links is recommended to prevent assorted security risks symbolic-links=0 open_files_limit = 600 back_log = 20 max_connections = 100 max_connect_errors = 200 table_cache = 60 external-locking = FALSE max_allowed_packet = 16M sort_buffer_size = 128K join_buffer_size = 128K thread_cache_size = 10 thread_concurrency = 8 query_cache_size = 0M query_cache_limit = 2M query_cache_min_res_unit = 2k default_table_type = MyISAM thread_stack = 192K transaction_isolation = READ-UNCOMMITTED tmp_table_size = 512K max_heap_table_size = 32M long_query_time = 1 log_long_format server-id = 1 binlog_cache_size = 2M max_binlog_cache_size = 4M max_binlog_size = 512M expire_logs_days = 7 key_buffer_size = 4M read_buffer_size = 1M read_rnd_buffer_size = 2M bulk_insert_buffer_size = 2M myisam_sort_buffer_size = 4M myisam_max_sort_file_size = 10G myisam_max_extra_sort_file_size = 10G myisam_repair_threads = 1 myisam_recover skip-innodb #禁用innodb数据库引擎 [mysqld_safe] log-error=/var/log/mysqld.log pid-file=/var/run/mysqld/mysqld.pid [mysqldump] quick max_allowed_packet = 16M PHP配置 我们使用php-fpm来作为后台daemon响应FastCGI请求。\n默认的php-fpm会启动比较多的子进程，很容易耗光内存。\nlisten = /var/run/php-cgi.sock #使用socket监听，不用端口监听 pm.max_children = 2 #默认是50 pm.start_servers = 2 #默认是20 pm.min_spare_servers = 2 #默认是5 pm.max_spare_servers = 2 #默认是35 有的配置手记是建议把上面几个数字改为5，我经过多次调试之后，\n发现使用最小/最大连接数为2的时候，可用率比较高，内存消耗也比较小。\n运行结果 经过一番折腾之后，我的 Log4D 终于配置完成了。\n打开速度还算凑合，用WebKaka测试截图如下。\n原来的虚拟主机 dddspace.com 的响应情况：\n现在 log4d.com VPS 的响应情况：\n内存使用情况：\nsiege -c 100 -t 100 log4d.com 的测试结果：\nTransactions:\t1711 hits Availability:\t96.61 % Elapsed time:\t416.72 secs Data transferred:\t18.20 MB Response time:\t22.12 secs Transaction rate:\t4.11 trans/sec Throughput:\t0.04 MB/sec Concurrency:\t90.84 Successful transactions: 1711 Failed transactions:\t60 Longest transaction:\t30.31 Shortest transaction:\t1.06 参考链接 wordpress nginx php-cgi mysql在128m内存下的vps安装和优化手记原创 centos LANMP之三（编译安装 php 5.3.6） 编译包含 SSL 模块的 Nginx 时使用新版本的 OpenSSL 避免已知的 SSL/TLS 协议弱点 ",
+  "wordCount" : "629",
+  "inLanguage": "en",
+  "datePublished": "2011-11-06T00:00:00+08:00",
+  "dateModified": "2011-11-06T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2011/11/vps-lnmp-setup-config/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      128M内存VPS LNMP安装优化小记
+    </h1>
+    <div class="post-meta"><span title='2011-11-06 00:00:00 +0800 CST'>2011-11-06</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#linux-发行版选用">Linux 发行版选用</a>
+      <ul>
+        <li><a href="#nginx-安装">Nginx 安装</a></li>
+        <li><a href="#mysql安装">MySQL安装</a></li>
+        <li><a href="#php安装">PHP安装</a></li>
+      </ul>
+    </li>
+    <li><a href="#运行lamp">运行LAMP</a></li>
+    <li><a href="#小内存主机配置">小内存主机配置</a>
+      <ul>
+        <li><a href="#nginx配置">Nginx配置</a></li>
+        <li><a href="#mysql配置">MySQL配置</a></li>
+        <li><a href="#php配置">PHP配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#运行结果">运行结果</a></li>
+    <li><a href="#参考链接">参考链接</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><blockquote>
+<p>重要通知：Log4D 的域名由 <a href="http://dddspace.com">http://dddspace.com</a> 迁移到 <a href="http://log4d.com">http://log4d.com</a> 。<br />
+订阅地址现在改为 <a href="http://log4d.com/feed">http://log4d.com/feed</a> 和<br />
+<a href="http://feeds.feedburner.com/dddspace">http://feeds.feedburner.com/dddspace</a> 。（FeedBurner 的地址未发生变化）</p>
+</blockquote>
+<p>这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。<br />
+现在使用的 VPS 是 <a href="http://www.photonvps.com/billing/aff.php?aff=2188">PhotonVPS</a> 。</p>
+<p>月付5.95美元，使用优惠码 <code>TENOFF</code> 或 <code>PHOTONLEB</code> 可以打7折，<br />
+换算汇率之后是26人民币每月。</p>
+<p>这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨，<br />
+我终于配置的可用率比较高，使用 <code>siege -c 100 -t 100</code> 时候可以保持 100% 可用率。<br />
+（其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。</p>
+<!-- more -->
+<h1 id="安装-lnmp">安装 LNMP<a hidden class="anchor" aria-hidden="true" href="#安装-lnmp">#</a></h1>
+<h2 id="linux-发行版选用">Linux 发行版选用<a hidden class="anchor" aria-hidden="true" href="#linux-发行版选用">#</a></h2>
+<p>CentOS 据说有较好的安全性和性能，我个人更喜欢 Arch。查询了相关资料，<br />
+在生产环境使用 Arch 的似乎不多。</p>
+<p>CentOS 里面的包比较旧，不像 Arch 里面，滚动最新。<br />
+所以这里需要用到的LNMP大部分都需要自行编译。</p>
+<h3 id="nginx-安装">Nginx 安装<a hidden class="anchor" aria-hidden="true" href="#nginx-安装">#</a></h3>
+<p>Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。</p>
+<p>目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。</p>
+<p>准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers
+</span></span></code></pre></div><p>下载Nginx</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /tmp
+</span></span><span class="line"><span class="cl">wget http://nginx.org/download/nginx-1.0.9.tar.gz
+</span></span></code></pre></div><p>因为我们需要安装使用https，所以需要SSL模块支持，我们需要OpenSSL源码。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://openssl.org/source/openssl-1.0.0c.tar.gz
+</span></span><span class="line"><span class="cl">tar zxvf openssl-1.0.0c.tar.gz
+</span></span></code></pre></div><p>编译Nginx，使用www作为用户和用户组，同时加入http ssl模块支持。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./configure --user<span class="o">=</span>www --group<span class="o">=</span>www --prefix<span class="o">=</span>/usr/local/nginx --with-http_ssl_module --with-openssl<span class="o">=</span>/tmp/openssl-1.0.0c/
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">make install
+</span></span></code></pre></div><p>这样nginx就安装完了，执行 <code>/usr/local/ngxin/bin/nginx -V</code> 可以查看nginx信息。</p>
+<blockquote>
+<p>nginx: nginx version: nginx/1.0.9 nginx: built by gcc 4.4.4 20100726 (Red Hat 4.4.4-13) (GCC) nginx: TLS SNI support enabled nginx: configure arguments: &ndash;user=www &ndash;group=www &ndash;prefix=/usr/local/nginx &ndash;with-http_ssl_module &ndash;with-openssl=/tmp/openssl-1.0.0c/</p>
+</blockquote>
+<p>为nginx 创建软链接</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
+</span></span></code></pre></div><p>ngxin 启动关闭</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nginx <span class="c1">#启动</span>
+</span></span><span class="line"><span class="cl">nginx -s stop <span class="c1">#关闭</span>
+</span></span><span class="line"><span class="cl">nginx -s reload <span class="c1">#重启</span>
+</span></span></code></pre></div><p>运行 <code>nginx</code> 就可以启动服务器了，在浏览器输入服务器ip， 能够看见 <code>nginx</code> 的字样。</p>
+<h3 id="mysql安装">MySQL安装<a hidden class="anchor" aria-hidden="true" href="#mysql安装">#</a></h3>
+<p>MySQL我没有自行编译，使用CentOS官方源里面的Mysql。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install -y mysql-server
+</span></span></code></pre></div><h3 id="php安装">PHP安装<a hidden class="anchor" aria-hidden="true" href="#php安装">#</a></h3>
+<p>PHP需要自行编译，原因是Nginx使用Fast-CGI调用PHP服务。<br />
+我们需要php-cgi常驻后台。在PHP 5.3.3之后，<br />
+一个名为php-fpm的小东西被php核心加入。这个php-fpm可以常驻后台响应Fast-CGI请求。</p>
+<p>悲剧的是，截至目前位置，CentOS官方源里面PHP版本是5.3.2，<br />
+好死不死的差一个小数点。只能自行编译了。</p>
+<p>安装libmcrypt，这是某个依赖包，另外phpmyadmin也需要这个模块。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://pkgs.repoforge.org/libmcrypt/libmcrypt-2.5.71.2.el6.rf.i686.rpm
+</span></span><span class="line"><span class="cl">ls
+</span></span><span class="line"><span class="cl">rpm -i libmcrypt-2.5.7-1.2.el6.rf.i686.rpm
+</span></span><span class="line"><span class="cl">rpm -i --force libmcrypt-2.5.7-1.2.el6.rf.i686.rpm
+</span></span></code></pre></div><p>安装php 5.3.8</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./configure --prefix<span class="o">=</span>/usr/local/php --with-config-file-path<span class="o">=</span>/usr/local/php/etc --with-mysql<span class="o">=</span>/usr/bin/ --with-mysqli<span class="o">=</span>/usr/bin/mysql_config --with-iconv-dir<span class="o">=</span>/usr/local/libiconv --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir<span class="o">=</span>/usr --enable-xml --with-curl --with-curlwrappers --with-mhash --with-mcrypt --with-gd --enable-gd-native-ttf --with-xsl --with-openssl --with-ldap --with-ldap-sasl --with-xmlrpc --without-pear --enable-zip --enable-soap --enable-mbstring --enable-ftp --enable-sockets --enable-pcntl --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --disable-rpath --enable-mbregex --enable-safe-mode --enable-fpm --with-fpm-user<span class="o">=</span>www --with-fpm-group<span class="o">=</span>www
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">make <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">make install
+</span></span></code></pre></div><h2 id="运行lamp">运行LAMP<a hidden class="anchor" aria-hidden="true" href="#运行lamp">#</a></h2>
+<p>现在环境已经安装好了，我们稍作配置，然后启动系统。</p>
+<p>在nginx的 <code>/usr/local/nginx/html/</code> 下创建 <code>info.php</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&lt;?php info<span class="o">()</span> ?&gt;
+</span></span></code></pre></div><p>配置nginx，编辑 <code>/usr/local/nginx/conf/nginx.conf</code> 其中的 <code>server</code> 段。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">location ~ <span class="se">\.</span>php$ <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        root           html<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_pass   unix:/var/run/php-cgi.sock<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_index  index.php<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_param  SCRIPT_FILENAME  /usr/local/nginx/html/<span class="nv">$fastcgi_script_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        include        fastcgi_params<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>配置php-fpm，编辑 <code>/usr/local/php/etc/php-fpm.conf</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">listen</span> <span class="o">=</span> /var/run/php-cgi.sock
+</span></span></code></pre></div><p>运行 <code>nginx -s reload</code> 重新启动nginx服务器。运行 <code>/etc/init.d/php-fpm start</code><br />
+启动php-cgi监听。</p>
+<p>在浏览器输入 <code>your.domain/info.php</code> 会出现php信息，成功的话，<br />
+就说明LNMP配置成功了。</p>
+<h2 id="小内存主机配置">小内存主机配置<a hidden class="anchor" aria-hidden="true" href="#小内存主机配置">#</a></h2>
+<p>经过上面的步骤，已经可以成功的配置完LNMP系统，但是默认的配置情况下面，<br />
+内存会相当吃紧。一会会就系统内存爆掉，Nginx会频繁报出<br />
+<code>The page you are looking for is temporarily unavailable. Please try again later.</code><br />
+，不配置就不能用啊。</p>
+<h3 id="nginx配置">Nginx配置<a hidden class="anchor" aria-hidden="true" href="#nginx配置">#</a></h3>
+<p>我的nginx优化配置如下，主要是配置 <code>worker_processes</code> 数量和<br />
+<code>fastcgi</code> 、 <code>gzip</code> 缓存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user  www www
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">worker_processes 1<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">events <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	worker_connections 1024<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	use epoll<span class="p">;</span> <span class="c1">#使用高效率的epool模式</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">http <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	include mime.types<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	default_type application/octet-stream<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	sendfile on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	keepalive_timeout <span class="m">65</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 下面是配置缓存</span>
+</span></span><span class="line"><span class="cl">	client_header_buffer_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	large_client_header_buffers <span class="m">4</span> 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	fastcgi_connect_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_send_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_read_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_buffer_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_buffers <span class="m">4</span> 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_busy_buffers_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_temp_file_write_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 下面是弃用gzip压缩缓存</span>
+</span></span><span class="line"><span class="cl">	gzip on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_min_length 1k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_buffers <span class="m">4</span> 16k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_http_version 1.0<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_comp_level 2<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_types text/plain application/x-javascript text/css application/xml<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_vary on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">#server 的内容我就不列出了</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#….</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span> 
+</span></span></code></pre></div><h3 id="mysql配置">MySQL配置<a hidden class="anchor" aria-hidden="true" href="#mysql配置">#</a></h3>
+<p>mysql的配置文件在 <code>/etc/my.cnf</code> ，我们需要配置两样东西，<br />
+一个是禁用innodb，因为innodb比较消耗内存；另外是配置mysql缓存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[mysql]</span>
+</span></span><span class="line"><span class="cl"><span class="na">no-auto-rehash</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqld]</span>
+</span></span><span class="line"><span class="cl"><span class="na">datadir</span><span class="o">=</span><span class="s">/var/lib/mysql</span>
+</span></span><span class="line"><span class="cl"><span class="na">socket</span><span class="o">=</span><span class="s">/var/lib/mysql/mysql.sock</span>
+</span></span><span class="line"><span class="cl"><span class="na">user</span><span class="o">=</span><span class="s">mysql</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Disabling symbolic-links is recommended to prevent assorted security risks</span>
+</span></span><span class="line"><span class="cl"><span class="na">symbolic-links</span><span class="o">=</span><span class="s">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">open_files_limit</span> <span class="o">=</span> <span class="s">600</span>
+</span></span><span class="line"><span class="cl"><span class="na">back_log</span> <span class="o">=</span> <span class="s">20</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_connections</span> <span class="o">=</span> <span class="s">100</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_connect_errors</span> <span class="o">=</span> <span class="s">200</span>
+</span></span><span class="line"><span class="cl"><span class="na">table_cache</span> <span class="o">=</span> <span class="s">60</span>
+</span></span><span class="line"><span class="cl"><span class="na">external-locking</span> <span class="o">=</span> <span class="s">FALSE</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_allowed_packet</span> <span class="o">=</span> <span class="s">16M</span>
+</span></span><span class="line"><span class="cl"><span class="na">sort_buffer_size</span> <span class="o">=</span> <span class="s">128K</span>
+</span></span><span class="line"><span class="cl"><span class="na">join_buffer_size</span> <span class="o">=</span> <span class="s">128K</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_cache_size</span> <span class="o">=</span> <span class="s">10</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_concurrency</span> <span class="o">=</span> <span class="s">8</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_size</span> <span class="o">=</span> <span class="s">0M</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_limit</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_min_res_unit</span> <span class="o">=</span> <span class="s">2k</span>
+</span></span><span class="line"><span class="cl"><span class="na">default_table_type</span> <span class="o">=</span> <span class="s">MyISAM</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_stack</span> <span class="o">=</span> <span class="s">192K</span>
+</span></span><span class="line"><span class="cl"><span class="na">transaction_isolation</span> <span class="o">=</span> <span class="s">READ-UNCOMMITTED</span>
+</span></span><span class="line"><span class="cl"><span class="na">tmp_table_size</span> <span class="o">=</span> <span class="s">512K</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_heap_table_size</span> <span class="o">=</span> <span class="s">32M</span>
+</span></span><span class="line"><span class="cl"><span class="na">long_query_time</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">log_long_format</span>
+</span></span><span class="line"><span class="cl"><span class="na">server-id</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">binlog_cache_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_binlog_cache_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_binlog_size</span> <span class="o">=</span> <span class="s">512M</span>
+</span></span><span class="line"><span class="cl"><span class="na">expire_logs_days</span> <span class="o">=</span> <span class="s">7</span>
+</span></span><span class="line"><span class="cl"><span class="na">key_buffer_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">read_buffer_size</span> <span class="o">=</span> <span class="s">1M</span>
+</span></span><span class="line"><span class="cl"><span class="na">read_rnd_buffer_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">bulk_insert_buffer_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_sort_buffer_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_max_sort_file_size</span> <span class="o">=</span> <span class="s">10G</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_max_extra_sort_file_size</span> <span class="o">=</span> <span class="s">10G</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_repair_threads</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_recover</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">skip-innodb #禁用innodb数据库引擎</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqld_safe]</span>
+</span></span><span class="line"><span class="cl"><span class="na">log-error</span><span class="o">=</span><span class="s">/var/log/mysqld.log</span>
+</span></span><span class="line"><span class="cl"><span class="na">pid-file</span><span class="o">=</span><span class="s">/var/run/mysqld/mysqld.pid</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqldump]</span>
+</span></span><span class="line"><span class="cl"><span class="na">quick</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_allowed_packet</span> <span class="o">=</span> <span class="s">16M </span>
+</span></span></code></pre></div><h3 id="php配置">PHP配置<a hidden class="anchor" aria-hidden="true" href="#php配置">#</a></h3>
+<p>我们使用php-fpm来作为后台daemon响应FastCGI请求。<br />
+默认的php-fpm会启动比较多的子进程，很容易耗光内存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">listen</span> <span class="o">=</span> /var/run/php-cgi.sock <span class="c1">#使用socket监听，不用端口监听</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pm.max_children <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是50  </span>
+</span></span><span class="line"><span class="cl">pm.start_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是20  </span>
+</span></span><span class="line"><span class="cl">pm.min_spare_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是5  </span>
+</span></span><span class="line"><span class="cl">pm.max_spare_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是35 </span>
+</span></span></code></pre></div><p>有的配置手记是建议把上面几个数字改为5，我经过多次调试之后，<br />
+发现使用最小/最大连接数为2的时候，可用率比较高，内存消耗也比较小。</p>
+<h2 id="运行结果">运行结果<a hidden class="anchor" aria-hidden="true" href="#运行结果">#</a></h2>
+<p>经过一番折腾之后，我的 <a href="http://log4d.com">Log4D</a> 终于配置完成了。<br />
+打开速度还算凑合，用WebKaka测试截图如下。</p>
+<p>原来的虚拟主机 dddspace.com 的响应情况：</p>
+<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201111/dddspace.png" alt="dddspace"  />
+</p>
+<p>现在 log4d.com VPS 的响应情况：</p>
+<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201111/log4d.png" alt="log4d"  />
+</p>
+<p>内存使用情况：</p>
+<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201111/free.png" alt="free"  />
+</p>
+<p><code>siege -c 100 -t 100 log4d.com</code> 的测试结果：</p>
+<pre tabindex="0"><code>Transactions:		        1711 hits
+Availability:		       96.61 %
+Elapsed time:		      416.72 secs
+Data transferred:	       18.20 MB
+Response time:		       22.12 secs
+Transaction rate:	        4.11 trans/sec
+Throughput:		        0.04 MB/sec
+Concurrency:		       90.84
 Successful transactions:        1711
-Failed transactions:              60
-Longest transaction:           30.31
-Shortest transaction:           1.06</code></pre> <h2 id=参考链接>参考链接</h2> <ul> <li><a href=http://www.54chen.com/architecture/wordpress-nginx-php-cgi-mysql-memory-in-the-128m-to-install-and-optimize-the-vps-notes.html>wordpress nginx php-cgi mysql在128m内存下的vps安装和优化手记原创</a></li> <li><a href=http://www.xtgly.com/2011/05/17/centos-lanmp%E4%B9%8B%E4%B8%89%EF%BC%88%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-php-5-3-6%EF%BC%89.htm>centos LANMP之三（编译安装 php 5.3.6）</a></li> <li><a href=http://hi.baidu.com/xxjjyy2008/blog/item/b52d07943e4d1d02d21b70da.html>编译包含 SSL 模块的 Nginx 时使用新版本的 OpenSSL 避免已知的 SSL/TLS 协议弱点</a></li> </ul> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2011/11/vps-lnmp-setup-config/ >https://blog.alswl.com/2011/11/vps-lnmp-setup-config/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+Failed transactions:	          60
+Longest transaction:	       30.31
+Shortest transaction:	        1.06
+</code></pre><h2 id="参考链接">参考链接<a hidden class="anchor" aria-hidden="true" href="#参考链接">#</a></h2>
+<ul>
+<li><a href="http://www.54chen.com/architecture/wordpress-nginx-php-cgi-mysql-memory-in-the-128m-to-install-and-optimize-the-vps-notes.html">wordpress nginx php-cgi mysql在128m内存下的vps安装和优化手记原创</a></li>
+<li><a href="http://www.xtgly.com/2011/05/17/centos-lanmp%E4%B9%8B%E4%B8%89%EF%BC%88%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-php-5-3-6%EF%BC%89.htm">centos LANMP之三（编译安装 php 5.3.6）</a></li>
+<li><a href="http://hi.baidu.com/xxjjyy2008/blog/item/b52d07943e4d1d02d21b70da.html">编译包含 SSL 模块的 Nginx 时使用新版本的 OpenSSL 避免已知的 SSL/TLS 协议弱点</a></li>
+</ul>
 
-                    var disqus_identifier = 'vps-lnmp-setup-config';
-                var disqus_url = 'https://blog.alswl.com/2011/11/vps-lnmp-setup-config/';
 
-            var disqus_config = function () {
-                this.language = "en";
-            };
+  </div>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/linuxer/">linuxer</a></li>
+      <li><a href="https://blog.alswl.com/tags/centos/">centos</a></li>
+      <li><a href="https://blog.alswl.com/tags/mysql/">mysql</a></li>
+      <li><a href="https://blog.alswl.com/tags/nginx/">nginx</a></li>
+      <li><a href="https://blog.alswl.com/tags/php/">php</a></li>
+      <li><a href="https://blog.alswl.com/tags/vps/">vps</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2011/11/jquery-html-in-ie6/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>jQuery.html()在IE下面错误解决办法</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2011/11/jemotion/">
+    <span class="title">Next »</span>
+    <br>
+    <span>jEmotion</span>
+  </a>
+</nav>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-alswl-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

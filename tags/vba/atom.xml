@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>vba on Log4D</title>
+    <link>https://blog.alswl.com/tags/vba/</link>
+    <description>Recent content in vba on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 14 Dec 2010 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/vba/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C#&#43;VBA操作Excel总结</title>
+      <link>https://blog.alswl.com/2010/12/csharp-vba-excel/</link>
+      <pubDate>Tue, 14 Dec 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/12/csharp-vba-excel/</guid>
+      <description>Excel在日常办公中应用非常广泛，这次我接到一个案子，需要往Excel中写入数据并能够打印出固定格式，前前后后大概花了将近2星期才搞定，现在做一些分享。
+一、关于操作Excel的几种方式 我们导出Excel，大抵是有两种方法，一种是在服务器端用一些类库或者COM组件直接生成Excel成品，其二是在后台只写入数据，而不写入具体格式，等用户下载完
+Excel之后再在客户端上利用vba生成Excel成品。
+1.1使用&amp;quot;自动化&amp;quot;功能-后台生成成品 微软把后台使用COM组件称之为&amp;quot;自动化&amp;quot;，其实它本身是不建议这种用法，在257757 号文章（服务器端 Office
+自动化注意事项）也明文标出&amp;quot;Microsoft
+目前建议不要从任何无人参与的、非交互式客户端应用程序或组件（包括 ASP、DCOM 和 NT Service）中进行 Microsoft Office
+应用程序的&amp;quot;自动化&amp;quot;，也不为此提供支持，因为 Office 在这种环境中运行时可能会出现不稳定的现象并且/或者会死锁。&amp;quot;
+这种方法的优点是给用户更简洁的展现，毕竟原生的Excel成品比半成品来更容易接受，而且可以避免宏安全问题，万一客户端禁止了宏，就只能看到丑陋的模板界面+一坨
+数据。
+缺点是需要服务端支持，编写成本也比较高（VBA有时候可以直接录制）。服务端支持体现在需要安装一些微软或者第三方的类库。我当时采用的是Office类库，也就是
+在安装有Office的机器上面使用Interop.Excel.dll这个中间动态链接库进行操作，需要麻烦的安全设置，效率低不说还会扯出Excel无法关闭的B
+ug。
+关于效率低我深有体会，我使用这种方法生成5页数据大约2m，客户等的急死，其根本原因是由于COM组件在调用时候，每一个Range这种对象都会产生一个借口请求。
+1.2、使用ADO.net传输数据+VBA控制模板和数据 这方法的优缺点正好与上文相反，由于只是写入数据，即通过ADO.net的连接方式INSERT一堆数据到Excel文件的隐藏Sheet里面去（别跟我说你不知道E
+xcel可以隐藏某个Sheet），所以速度后台速度极快。前台Excel文件虽然需要VBA编程支持，但是在理解Excel模型之后也不是很难的事情。
+1.3 选择哪种方式，取决于你的需求，如果你在Java平台下面并且输出文件页面格式不复杂，我推荐第一种，如果是.net平台又或者要处理复杂的页面样式，就选用第二种吧
+（我前期使用第一种，后来因为效率问题和无法关闭Excel的问题，重写逻辑，选用第二种）。
+关于Excel导出方案的选择，微软官方也是不建议使用第一种方案，甚至不提供技术支持。它推荐了一些方案，包括使用报表导出Excel或者ADO.net方式导出（
+即第二种），具体文章见如何使用 Visual C# 2005 或 Visual C# .NET 向 Excel
+工作簿传输数据。
+二、Office Excel文档模型 在写操作Excel代码之前，需要了解一下Excel的文档模型，才能想当然的把代码写出来。
+简单说来，我们只要了解Application 、Workbook 、Worksheet
+、Range这四种类型，如果需要操作图像的话，还需要多了解一种Chart。
+Application就是Excel实例，不仅仅是一个Excel文件，而是整体的Excel程序（Office都是MDI文档体系）。
+WorkBook就是实质意义上的某个Excel文件，你可以进行保存操作等等。
+Worksheet是某个工作簿类型。
+Range是我们打交道最多的，可以理解成一个区域快，也就是常见的&amp;quot;A2:B5&amp;quot;这种表示方式。
+了解这几种之后，我们就可以下手操作了。更详细的微软官方文档，可以在Excel 对象模型概述找到。
+三、使用C#操作Excel 我虽然不推荐第一种，但是毕竟是一种解决方案。
+需要使用的命名空间为using Excel = Microsoft.Office.Interop.Excel;（使用别名简化一下）
+另外需要项目引用Office的类库，如果不是项目形式而是网站形式，则需要手动编译对应Interop.Excel.dll到网站bin目录下面，我使用Excel
+2007编译出这个链接库，版本为1.6.0.0，需要的可以点击Interop.Excel.dll下载。
+3.1 编译Interop.Excel.dll 编译的方法出自于&amp;quot;[使用Office组件读取Excel，引用Microsoft.Office.Interop.Excel出现的问题](http://www.
+cnblogs.com/Mainz/archive/2009/11/11/Microsoft_Office_Interop_Excel.html)&amp;quot;&amp;amp;nbs
+p_place_holder;
+进入你的visual studio的sdk下的bin目录，找到TlbImp.</description>
+    </item>
+    
+  </channel>
+</rss>

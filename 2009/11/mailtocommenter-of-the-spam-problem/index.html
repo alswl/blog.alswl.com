@@ -1,61 +1,501 @@
-<!DOCTYPE html><html lang=en> <head><title>MailToCommenter的垃圾邮件问题 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/ rel=canonical><meta name=author content=alswl><meta name=keywords content=建站心得,WordPress><meta name=description content="Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。 于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。 代码部分分别参考修改 mail to commenter,让邮件通知更加友好 | Simple happiness和邪罗刹的菠萝阁 » 如何修改MailToCommenter插件的发件人，html部分代码是模仿邪 罗刹的回复修改。 修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php function mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option('home' …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/ rel=bookmark title="Permalink to MailToCommenter的垃圾邮件问题"> MailToCommenter的垃圾邮件问题 </a> </h1> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2009-11-17T00:00:00+08:00> 2009-11-17</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/jian-zhan-xin-de/ >建站心得</a> / <a href=https://blog.alswl.com/tag/wordpress/ >WordPress</a> </footer><!-- /.post-info --> </div> </div> <p>Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到<a href=http://www.derekblog.cn/ >derek</a>同学提出来。</p> <p>于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查<code>Mail To Commenter的</code>mailtocommenter_send_email<code>函数，终于修改如下代码。</code></p> <p><code>代码部分分别参考</code><a href=http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-%20user-friendly-e-mail-notification.html>修改 mail to commenter,让邮件通知更加友好 | Simple happiness</a>和<a href=http://www.evlos.org/2009/11/03/edit-the-poster-of-%20mailtocomments/#comment-1278>邪罗刹的菠萝阁 &raquo; 如何修改MailToCommenter插件的发件人</a>，html部分代码是模仿<a href=http://www.evlos.org/ >邪 罗刹</a>的回复修改。</p> <p>修改<code>wp-content/plugins/mailtocommenter</code>下面的<code>mailtocommenter_functions.php</code></p> <pre><code>function mailtocommenter_send_email($to,$subject,$message){
-    $hostname = get_option('home');
-    preg_match("/^(http://)?([^/]+)/i",$hostname, $matches);
-    $blogname = get_option('blogname');
-    $blognameO = $blogname;
-    $blogname .= " &lt;no-reply@";
-    $blogname .= $matches[2];
-    $blogname .= "&gt;";</code></pre> <p>$charset = get_option(&lsquo;blog_charset&rsquo;);</p> <p>$headers = &ldquo;From: <span class="math inline">\(blognameO &lt;no-reply@\)</span>matches[2]&gt; n&rdquo; ;</p> <p>$headers .= &ldquo;MIME-Version: 1.0n&rdquo;;</p> <p><span class="math inline">\(headers .= "Content-Type: text/html;charset="\)</span>charset&ldquo;n&rdquo;;</p> <p><span class="math inline">\(to = strtolower(\)</span>to);</p> <p>return <span class=citation data-cites=wp_mail>@wp_mail</span>($to, $subject, $message, $headers);</p> <p>}</p> <p>修改Mail To Commenter的邮件代码，我的如下</p> <pre><code>&lt;div style="border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 0pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);"&gt;
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>MailToCommenter的垃圾邮件问题 | Log4D</title>
+<meta name="keywords" content="建站心得, wordpress">
+<meta name="description" content="Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样
+，别人都是完好的，直到derek同学提出来。
+于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。
+代码部分分别参考[修改 mail to commenter,让邮件通知更加友好 | Simple
+happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-
+user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 »
+如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of-
+mailtocomments/#comment-1278)，html部分代码是模仿邪 罗刹的回复修改。
+修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php
+function mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option(&#39;home&#39;); preg_match(&quot;/^(http://)?([^/]&#43;)/i&quot;,$hostname, $matches); $blogname = get_option(&#39;blogname&#39;); $blognameO = $blogname; $blogname .= &quot; &lt;no-reply@&quot;; $blogname .= $matches[2]; $blogname .= &quot;&gt;&quot;; $charset = get_option(&lsquo;blog_charset&rsquo;);
+$headers = &ldquo;From: $blognameO &lt;no-reply@$matches[2]&gt; n&rdquo; ;
+$headers .= &ldquo;MIME-Version: 1.0n&rdquo;;
+$headers .= &ldquo;Content-Type: text/html;charset=&quot;$charset&quot;n&rdquo;;
+$to = strtolower($to);
+return @wp_mail($to, $subject, $message, $headers);
+}">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="MailToCommenter的垃圾邮件问题" />
+<meta property="og:description" content="Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样
+，别人都是完好的，直到derek同学提出来。
+于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。
+代码部分分别参考[修改 mail to commenter,让邮件通知更加友好 | Simple
+happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-
+user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 »
+如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of-
+mailtocomments/#comment-1278)，html部分代码是模仿邪 罗刹的回复修改。
+修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php
+function mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option(&#39;home&#39;); preg_match(&quot;/^(http://)?([^/]&#43;)/i&quot;,$hostname, $matches); $blogname = get_option(&#39;blogname&#39;); $blognameO = $blogname; $blogname .= &quot; &lt;no-reply@&quot;; $blogname .= $matches[2]; $blogname .= &quot;&gt;&quot;; $charset = get_option(&lsquo;blog_charset&rsquo;);
+$headers = &ldquo;From: $blognameO &lt;no-reply@$matches[2]&gt; n&rdquo; ;
+$headers .= &ldquo;MIME-Version: 1.0n&rdquo;;
+$headers .= &ldquo;Content-Type: text/html;charset=&quot;$charset&quot;n&rdquo;;
+$to = strtolower($to);
+return @wp_mail($to, $subject, $message, $headers);
+}" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2009-11-17T00:00:00+08:00" />
+<meta property="article:modified_time" content="2009-11-17T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MailToCommenter的垃圾邮件问题"/>
+<meta name="twitter:description" content="Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样
+，别人都是完好的，直到derek同学提出来。
+于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。
+代码部分分别参考[修改 mail to commenter,让邮件通知更加友好 | Simple
+happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-
+user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 »
+如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of-
+mailtocomments/#comment-1278)，html部分代码是模仿邪 罗刹的回复修改。
+修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php
+function mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option(&#39;home&#39;); preg_match(&quot;/^(http://)?([^/]&#43;)/i&quot;,$hostname, $matches); $blogname = get_option(&#39;blogname&#39;); $blognameO = $blogname; $blogname .= &quot; &lt;no-reply@&quot;; $blogname .= $matches[2]; $blogname .= &quot;&gt;&quot;; $charset = get_option(&lsquo;blog_charset&rsquo;);
+$headers = &ldquo;From: $blognameO &lt;no-reply@$matches[2]&gt; n&rdquo; ;
+$headers .= &ldquo;MIME-Version: 1.0n&rdquo;;
+$headers .= &ldquo;Content-Type: text/html;charset=&quot;$charset&quot;n&rdquo;;
+$to = strtolower($to);
+return @wp_mail($to, $subject, $message, $headers);
+}"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "MailToCommenter的垃圾邮件问题",
+      "item": "https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "MailToCommenter的垃圾邮件问题",
+  "name": "MailToCommenter的垃圾邮件问题",
+  "description": "Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样\n，别人都是完好的，直到derek同学提出来。\n于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。\n代码部分分别参考[修改 mail to commenter,让邮件通知更加友好 | Simple\nhappiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-\nuser-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 »\n如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of-\nmailtocomments/#comment-1278)，html部分代码是模仿邪 罗刹的回复修改。\n修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php\nfunction mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option('home'); preg_match(\u0026quot;/^(http://)?([^/]+)/i\u0026quot;,$hostname, $matches); $blogname = get_option('blogname'); $blognameO = $blogname; $blogname .= \u0026quot; \u0026lt;no-reply@\u0026quot;; $blogname .= $matches[2]; $blogname .= \u0026quot;\u0026gt;\u0026quot;; $charset = get_option(\u0026lsquo;blog_charset\u0026rsquo;);\n$headers = \u0026ldquo;From: $blognameO \u0026lt;no-reply@$matches[2]\u0026gt; n\u0026rdquo; ;\n$headers .= \u0026ldquo;MIME-Version: 1.0n\u0026rdquo;;\n$headers .= \u0026ldquo;Content-Type: text/html;charset=\u0026quot;$charset\u0026quot;n\u0026rdquo;;\n$to = strtolower($to);\nreturn @wp_mail($to, $subject, $message, $headers);\n}",
+  "keywords": [
+    "建站心得", "wordpress"
+  ],
+  "articleBody": "Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样\n，别人都是完好的，直到derek同学提出来。\n于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。\n代码部分分别参考[修改 mail to commenter,让邮件通知更加友好 | Simple\nhappiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-\nuser-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 »\n如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of-\nmailtocomments/#comment-1278)，html部分代码是模仿邪 罗刹的回复修改。\n修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php\nfunction mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option('home'); preg_match(\"/^(http://)?([^/]+)/i\",$hostname, $matches); $blogname = get_option('blogname'); $blognameO = $blogname; $blogname .= \" ",
+  "wordCount" : "155",
+  "inLanguage": "en",
+  "datePublished": "2009-11-17T00:00:00+08:00",
+  "dateModified": "2009-11-17T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      MailToCommenter的垃圾邮件问题
+    </h1>
+    <div class="post-meta"><span title='2009-11-17 00:00:00 +0800 CST'>2009-11-17</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样<br />
+，别人都是完好的，直到<a href="http://www.derekblog.cn/">derek</a>同学提出来。</p>
+<p>于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查<code>Mail To Commenter的</code>mailtocommenter_send_email<code>函数，终于修改如下代码。</code></p>
+<p><code>代码部分分别参考</code>[修改 mail to commenter,让邮件通知更加友好 | Simple<br />
+happiness](<a href="http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-">http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-</a><br />
+user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 »<br />
+如何修改MailToCommenter插件的发件人](<a href="http://www.evlos.org/2009/11/03/edit-the-poster-of-">http://www.evlos.org/2009/11/03/edit-the-poster-of-</a><br />
+mailtocomments/#comment-1278)，html部分代码是模仿<a href="http://www.evlos.org/">邪 罗刹</a>的回复修改。</p>
+<p>修改<code>wp-content/plugins/mailtocommenter</code>下面的<code>mailtocommenter_functions.php</code></p>
+<pre><code>function mailtocommenter_send_email($to,$subject,$message){
+	$hostname = get_option('home');
+	preg_match(&quot;/^(http://)?([^/]+)/i&quot;,$hostname, $matches);
+	$blogname = get_option('blogname');
+	$blognameO = $blogname;
+	$blogname .= &quot; &lt;no-reply@&quot;;
+	$blogname .= $matches[2];
+	$blogname .= &quot;&gt;&quot;;
+</code></pre>
+<p>$charset = get_option(&lsquo;blog_charset&rsquo;);</p>
+<p>$headers = &ldquo;From: $blognameO &lt;no-reply@$matches[2]&gt; n&rdquo; ;</p>
+<p>$headers .= &ldquo;MIME-Version: 1.0n&rdquo;;</p>
+<p>$headers .= &ldquo;Content-Type: text/html;charset=&quot;$charset&quot;n&rdquo;;</p>
+<p>$to = strtolower($to);</p>
+<p>return @wp_mail($to, $subject, $message, $headers);</p>
+<p>}</p>
+<p>修改Mail To Commenter的邮件代码，我的如下</p>
+<pre><code>&lt;div style=&quot;border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 0pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);&quot;&gt;
   &lt;p&gt;Hi！&lt;strong&gt;%user%&lt;/strong&gt;，你在 &lt;strong&gt;%post_title%&lt;/strong&gt; 上的评论有了新回复&lt;/p&gt;
 &lt;/div&gt;
-&lt;div style="border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 0pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);"&gt;
+&lt;div style=&quot;border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 0pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);&quot;&gt;
   &lt;p&gt;&gt;&gt;&lt;strong&gt;你&lt;/strong&gt; 说：&lt;br/&gt;
     %your_comment%
   &lt;p&gt;&gt;&gt; &lt;strong&gt;%comment_author%&lt;/strong&gt; 回复说： &lt;br/&gt;
     %reply_comment%
-  &lt;p&gt;&gt;&gt; 查看原文，请至： &lt;a href="%comment_link%" target="_blank"&gt;%comment_link%&lt;/a&gt;&lt;/p&gt;
-  &lt;p style="float: right;"&gt; ---- From &lt;a target="_blank" href="%blog_link%/"&gt;&lt;strong&gt;%blog_name%&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;</code></pre> <p>收到邮件的效果如下</p> <blockquote> <p>Hi！<strong>alswlx</strong>，你在 <strong>紧急声明-关于回复通知是垃圾邮件</strong> 上的评论有了新回复</p> </blockquote> <blockquote> </blockquote> <blockquote> <blockquote> <blockquote> <p><strong>你</strong> 说：</p> </blockquote> </blockquote> </blockquote> <p>测试GMail是否通过</p> <blockquote> </blockquote> <blockquote> <blockquote> <blockquote> <p><strong>alswl</strong> 回复说：</p> </blockquote> </blockquote> </blockquote> <p><span class=citation data-cites=alswlx>@alswlx</span></p> <p>第7次测试成功，修改内容</p> <blockquote> </blockquote> <blockquote> <blockquote> <blockquote> <p>查看原文，请至： <a href=http://log4d.com/2009/11/emergency-%20declaration-on-the-reply-notification-is-spam#comment-6766>http://log4d.com/2009/11/emergency-declaration-on-the-reply- notification-is-spam#comment-6766</a></p> </blockquote> </blockquote> </blockquote> <blockquote> </blockquote> <blockquote> <p>&mdash;- From <a href=http://log4d.com/ ><strong>DDD的一亩三分地</strong></a></p> </blockquote> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/ >https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+  &lt;p&gt;&gt;&gt; 查看原文，请至： &lt;a href=&quot;%comment_link%&quot; target=&quot;_blank&quot;&gt;%comment_link%&lt;/a&gt;&lt;/p&gt;
+  &lt;p style=&quot;float: right;&quot;&gt; ---- From &lt;a target=&quot;_blank&quot; href=&quot;%blog_link%/&quot;&gt;&lt;strong&gt;%blog_name%&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<p>收到邮件的效果如下</p>
+<blockquote>
+<p>Hi！<strong>alswlx</strong>，你在 <strong>紧急声明-关于回复通知是垃圾邮件</strong> 上的评论有了新回复</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p><strong>你</strong> 说：</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>测试GMail是否通过</p>
+<blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p><strong>alswl</strong> 回复说：</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>@alswlx</p>
+<p>第7次测试成功，修改内容</p>
+<blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>查看原文，请至： [http://log4d.com/2009/11/emergency-declaration-on-the-reply-<br />
+notification-is-spam#comment-6766](<a href="http://log4d.com/2009/11/emergency-">http://log4d.com/2009/11/emergency-</a><br />
+declaration-on-the-reply-notification-is-spam#comment-6766)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>&mdash;- From <a href="http://log4d.com/"><strong>DDD的一亩三分地</strong></a></p>
+</blockquote>
 
-                    var disqus_identifier = 'mailtocommenter-of-the-spam-problem';
-                var disqus_url = 'https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/';
 
-            var disqus_config = function () {
-                this.language = "en";
-            };
+  </div>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/%E5%BB%BA%E7%AB%99%E5%BF%83%E5%BE%97/">建站心得</a></li>
+      <li><a href="https://blog.alswl.com/tags/wordpress/">wordpress</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Java笔记 使用反射来改进BaseDao</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2009/11/emergency-declaration-on-the-reply-notification-is-spam/">
+    <span class="title">Next »</span>
+    <br>
+    <span>紧急声明-关于回复通知是垃圾邮件</span>
+  </a>
+</nav>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-alswl-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

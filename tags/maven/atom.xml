@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>maven on Log4D</title>
+    <link>https://blog.alswl.com/tags/maven/</link>
+    <description>Recent content in maven on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Mar 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/maven/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Eclipse中使用Maven</title>
+      <link>https://blog.alswl.com/2011/03/maven-eclipse/</link>
+      <pubDate>Fri, 18 Mar 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/03/maven-eclipse/</guid>
+      <description>一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli
+pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。
+3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides
+/getting-started/maven-in-five-minutes.html)和[Getting Started in 30
+Minutes](http://maven.apache.org/guides/getting-
+started/index.html)两种教程，我这里再简化一下，记录一下常用命令。
+#建立一个空项目，包含一个HelloWorld，可以通过 #-DarchetypeGroupId=&amp;lt;archetype-groupId&amp;gt; -DarchetypeArtifactId=&amp;lt;archetype-artifactId&amp;gt; #命令创建更多类型项目 mvn archetype:create -DgroupId=com.dddspace.java -DartifactId=helloworld #编译打包到jar或者war，根据pom中定义
+maven package
+#jUnit跑跑
+mvn test
+#神奇的命令，帮助创建Eclipse项目，配置path，默认使用M2_REPO这个变量作为目录
+mvn eclipse:eclipse
+大约跑完花费3分钟~嗯，有这几个命令，Maven简单操作就OK了，更多的话，去Maven文档溜溜吧。
+PS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MAVEN_OPTS=-Dfile.encoding=UTF-8
+这样强制Maven使用UTF-8进行编码。
+配置Eclipse环境 加入M2_REPO 进入Eclipse-&amp;gt;preferences-&amp;gt;java-&amp;gt;build path-&amp;gt;classpath
+variables，添加M2_REPO这个变量，指向C:/Documents and Settings/userName/.m2/repository，这个
+路径是默认的Maven仓库，如果你想搬到其他地方，需要修改mavenconfsetting.xml里面的localRepository。
+配置String Substitution 通过配置String
+Subsitution我们就可以使用Eclipse的lanuch来启动Maven，而不是Eclipse插件启动。首先我们要告诉Eclipse
+Maven在哪里。配置Eclipse-&amp;gt;preferences-&amp;gt;Run/Debug-&amp;gt;String Subsitution，加入mvn
+=D:/dotj_dev/tools/apache-maven-2.2.1/bin/mvn.bat。
+建立Launch文件 Launch其实是Eclipse的Launcher框架的配置文件，可以定义Application的启动方式。新建一个mvn-war.launch如下：
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot; standalone=&amp;quot;no&amp;quot;?&amp;gt; &amp;lt;launchConfiguration type=&amp;quot;org.eclipse.ui.externaltools.ProgramLaunchConfigurationType&amp;quot;&amp;gt; &amp;lt;stringAttribute key=&amp;quot;bad_container_name&amp;quot; value=&amp;quot;helloworldmvn-war.launch&amp;quot;/&amp;gt; &amp;lt;stringAttribute key=&amp;quot;org.eclipse.ui.externaltools.ATTR_LOCATION&amp;quot; value=&amp;quot;${mvn}&amp;quot;/&amp;gt; &amp;lt;stringAttribute key=&amp;quot;org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS&amp;quot; value=&amp;quot;clean compile war:war -U&amp;quot;/&amp;gt; &amp;lt;stringAttribute key=&amp;quot;org.</description>
+    </item>
+    
+  </channel>
+</rss>

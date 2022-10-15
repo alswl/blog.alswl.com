@@ -1,54 +1,595 @@
-<!DOCTYPE html><html lang=en> <head><title>给MoinMoin写插件 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Python,image2attach,MoinMoin><meta name=description content="1. 使用 MoinMoin 前些日子，我写了一篇使用MoinMoin作为个人KMS 大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源， 我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。 MoinMoin开发者wiki地址 MoinMoin开发API文档（这个官方wiki居然很少提及） MoinMoin的多国语翻译组wiki地址 我在使用MoinMoin过程中，有一个急迫需要的功能： 保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。 这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供， 我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。 MoinMoin插件库 image2attach在MoinMoin官方Wiki的地址 现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。 以下内容需要Python编程基础～ 2. MoinMoin 系统结构 MoinMoin的UML图： MoinMoin 3. MoinMoin 常用对象 3.1. request 这个request和普通jsp/asp中request很类似（实际上这个request就是继承 werkzeug的Request）。 除了正常的web request功能 …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/ rel=bookmark title="Permalink to 给MoinMoin写插件"> 给MoinMoin写插件 </a> </h1> <nav class="toc col-lg-2"> <div id=toc><ul><li><a class=toc-href href=#使用-moinmoin title="1. 使用 MoinMoin">1. 使用 MoinMoin</a></li><li><a class=toc-href href=#moinmoin-系统结构 title="2. MoinMoin 系统结构">2. MoinMoin 系统结构</a></li><li><a class=toc-href href=#moinmoin-常用对象 title="3. MoinMoin 常用对象">3. MoinMoin 常用对象</a><ul><li><a class=toc-href href=#request title="3.1. request">3.1. request</a></li><li><a class=toc-href href=#page title="3.2. Page">3.2. Page</a></li><li><a class=toc-href href=#pageeditor title="3.3. PageEditor">3.3. PageEditor</a></li><li><a class=toc-href href=#attachfile title="3.4. AttachFile">3.4. AttachFile</a></li><li><a class=toc-href href=#wikiutil title="3.5. wikiutil">3.5. wikiutil</a></li><li><a class=toc-href href=#user title="3.6. user">3.6. user</a></li><li><a class=toc-href href=#formatter title="3.7. formatter">3.7. formatter</a></li><li><a class=toc-href href=#parser title="3.8. parser">3.8. parser</a></li></ul></li><li><a class=toc-href href=#moinmoin-运行流程_1 title="4. MoinMoin 运行流程">4. MoinMoin 运行流程</a></li><li><a class=toc-href href=#moinmoin-开发配置 title="5. MoinMoin 开发配置">5. MoinMoin 开发配置</a><ul><li><a class=toc-href href=#禁用pyc缓存 title="5.1. 禁用pyc缓存">5.1. 禁用pyc缓存</a></li></ul></li><li><a class=toc-href href=#image2attach-范例_1 title="6. image2attach 范例">6. image2attach 范例</a><ul><li><a class=toc-href href=#创建插件文件 title="6.1. 创建插件文件">6.1. 创建插件文件</a></li><li><a class=toc-href href=#基本框架 title="6.2. 基本框架">6.2. 基本框架</a></li></ul></li></ul></div> </nav> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2012-02-10T00:00:00+08:00> 2012-02-10</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/python/ >Python</a> / <a href=https://blog.alswl.com/tag/image2attach/ >image2attach</a> / <a href=https://blog.alswl.com/tag/moinmoin/ >MoinMoin</a> </footer><!-- /.post-info --> </div> </div> <h2 id=使用-moinmoin>1. 使用 MoinMoin</h2> <p>前些日子，我写了一篇<a href=../2011/12/moinmoin-kms>使用MoinMoin作为个人KMS</a> 大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源， 我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。</p> <ul> <li><a href=http://moinmo.in/MoinDev>MoinMoin开发者wiki地址</a></li> <li><a href=http://docs.moinmo.in/ >MoinMoin开发API文档（这个官方wiki居然很少提及）</a></li> <li><a href=http://moinmo.in/MoinDev/Translation>MoinMoin的多国语翻译组wiki地址</a></li> </ul> <p>我在使用MoinMoin过程中，有一个急迫需要的功能：</p> <blockquote> <p>保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。</p> </blockquote> <p>这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供， 我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。</p> <ul> <li><a href=http://moinmo.in/MoinMoinExtensions>MoinMoin插件库</a></li> <li><a href=http://moinmo.in/ActionMarket/Image2Attach>image2attach在MoinMoin官方Wiki的地址</a></li> </ul> <p>现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。</p> <p>以下内容需要Python编程基础～</p> <h2 id=moinmoin-系统结构>2. MoinMoin 系统结构</h2> <p>MoinMoin的UML图：</p> <figure> <img alt=MoinMoin src=https://4ocf5n.dijingchao.com/upload_dropbox/201202/MoinMoinArchitecture.png><figcaption>MoinMoin</figcaption> </figure> <h2 id=moinmoin-常用对象>3. MoinMoin 常用对象</h2> <h3 id=request>3.1. request</h3> <p>这个request和普通jsp/asp中request很类似（实际上这个request就是继承 <a href=http://werkzeug.pocoo.org/ >werkzeug</a>的Request）。</p> <p>除了正常的web request功能，Moin的request还带了Wiki自身的信息。</p> <ul> <li>request.getText # 多国语函数，经常使用 <code>_ = request.getText</code> 来简化代码</li> <li>request.dicts # 获取定义在页面中的Dict，参见http://moinmo.in/HelpOnDictionaries</li> <li>request.groups # 获取权限管理中的组别</li> <li>request.user.may # 检查用户权限</li> </ul> <h3 id=page>3.2. Page</h3> <p>Page是最常见的类，它代表某个Wiki页面，通过它可以获取某个页面所有信息。 age本身是只读的，如果需要编辑需要使用PageEditor。</p> <ul> <li>Page.exists() # 是否存在</li> <li>Page.getRevList() # 版本列表</li> <li>Page.current_rev() # 当前版本</li> <li>Page.getPagePath() # 存储路径</li> <li>Page.get_raw_body() # 获取存储的数据</li> <li>Page.send_page() # 发送格式化好页面</li> </ul> <h3 id=pageeditor>3.3. PageEditor</h3> <p>上面说到Page是只读的，那当我们需要编辑页面时候，就要用到PageEditor类了。</p> <ul> <li>PageEditor.saveText() # 保存内容</li> <li>PageEditor.deletePage() # 删除页面</li> </ul> <h3 id=attachfile>3.4. AttachFile</h3> <p>顾名思义，AttachFile用来管理页面附件。</p> <ul> <li>AttachFile.exists() # 检查附件是否存在</li> <li>AttachFile.getAttachDir() # 获取附件存放的本地目录</li> <li>AttachFile.getAttachUrl() # 获取附件url</li> </ul> <h3 id=wikiutil>3.5. wikiutil</h3> <p>wikiutil 是MoinMoin提供的一个帮助类，包含一些常用的小功能。</p> <ul> <li>wikiutil.escape() # html转义</li> <li>wikiutil.createTicket() # 生成一串唯一key，用来页面验证</li> <li>wikiutil.checkTicket() # 检查ticket</li> <li>wikiutil.invoke_extension_function() # 注入脚本类插件</li> <li>wikiutil.version2timestamp() # 将MoinMoin时间转换成UNIX时间戳</li> <li>wikiutil.timestamp2version() # 参考楼上</li> <li>wikiutil.renderText() # 将wiki text转换成html来展现</li> </ul> <h3 id=user>3.6. user</h3> <p>用户类，CRUD操作，不解释。</p> <h3 id=formatter>3.7. formatter</h3> <p>formatter将输出展现类，将wiki text转换为各种预定义的格式。 需要和parser配合使用（两者关系看上去像抽象工厂模式）。</p> <ul> <li>formatter.text() # 格式化为普通文本</li> <li>formatter.img() # 格式化为图片</li> <li>formatter.number_list() # 格式化为有序列表</li> <li>formatter.bullet_list() # 格式化为无序列表</li> <li>formatter.listitem() # 格式化为列表项</li> </ul> <h3 id=parser>3.8. parser</h3> <p>formatter完成的工作是展现解析后的wiki内容，而负责解析的就是parser了。</p> <p>流程是这样的：</p> <pre><code>wiki -&gt; parser -&gt; formatter</code></pre> <p>每一个parser都对应一个或者多个formatter。系统内置的 parser/formatter 有：</p> <ul> <li>docbook</li> <li>html</li> <li>plain</li> <li>python</li> <li>rst</li> <li>cvs</li> </ul> <h2 id=moinmoin-运行流程_1>4. MoinMoin 运行流程</h2> <ol type=1> <li>cgi.py</li> <li>通过url获取pagename和action，然后调用对应的Page方法和Action对象</li> </ol> <pre><code>1. Page().send_page()创建普通页面
-2. MoinMoin.action.getHandler()用来获取对应action</code></pre> <h2 id=moinmoin-开发配置>5. MoinMoin 开发配置</h2> <h3 id=禁用pyc缓存>5.1. 禁用pyc缓存</h3> <p>MoinMoin 为了提高系统效率，会为 python 文件生成pyc缓存，如果放任它们的话。 每次修改python源码效果都得不到立即体现。所以我们要在开发阶段禁用系统缓存。</p> <p>在文件 <code>/usr/lib/python2.7/site-packages/MoinMoin/config/multiconfig.py</code> 的第815行左右，修改 <code>options_no_group_name</code> 中的 <code>cache</code> 时间。</p> <p>当改为0时候，就不使用 <code>pyc</code> 缓存，这样就不用重启服务器来清楚缓存了。</p> <pre><code>options_no_group_name = {
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>给MoinMoin写插件 | Log4D</title>
+<meta name="keywords" content="python, image2attach, moinmoin">
+<meta name="description" content="1. 使用 MoinMoin 前些日子，我写了一篇使用MoinMoin作为个人KMS
+大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源，
+我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。
+MoinMoin开发者wiki地址 MoinMoin开发API文档（这个官方wiki居然很少提及） MoinMoin的多国语翻译组wiki地址 我在使用MoinMoin过程中，有一个急迫需要的功能：
+保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。
+这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供，
+我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。
+MoinMoin插件库 image2attach在MoinMoin官方Wiki的地址 现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。
+以下内容需要Python编程基础～
+2. MoinMoin 系统结构 MoinMoin的UML图：
+3. MoinMoin 常用对象 3.1. request 这个request和普通jsp/asp中request很类似（实际上这个request就是继承
+werkzeug的Request）。
+除了正常的web request功能，Moin的request还带了Wiki自身的信息。
+request.getText # 多国语函数，经常使用 _ = request.getText 来简化代码 request.dicts # 获取定义在页面中的Dict，参见http://moinmo.in/HelpOnDictionaries request.groups # 获取权限管理中的组别 request.user.may # 检查用户权限 3.2. Page Page是最常见的类，它代表某个Wiki页面，通过它可以获取某个页面所有信息。 age本身是只读的，如果需要编辑需要使用PageEditor。
+Page.exists() # 是否存在 Page.getRevList() # 版本列表 Page.current_rev() # 当前版本 Page.getPagePath() # 存储路径 Page.get_raw_body() # 获取存储的数据 Page.send_page() # 发送格式化好页面 3.">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="给MoinMoin写插件" />
+<meta property="og:description" content="1. 使用 MoinMoin 前些日子，我写了一篇使用MoinMoin作为个人KMS
+大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源，
+我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。
+MoinMoin开发者wiki地址 MoinMoin开发API文档（这个官方wiki居然很少提及） MoinMoin的多国语翻译组wiki地址 我在使用MoinMoin过程中，有一个急迫需要的功能：
+保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。
+这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供，
+我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。
+MoinMoin插件库 image2attach在MoinMoin官方Wiki的地址 现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。
+以下内容需要Python编程基础～
+2. MoinMoin 系统结构 MoinMoin的UML图：
+3. MoinMoin 常用对象 3.1. request 这个request和普通jsp/asp中request很类似（实际上这个request就是继承
+werkzeug的Request）。
+除了正常的web request功能，Moin的request还带了Wiki自身的信息。
+request.getText # 多国语函数，经常使用 _ = request.getText 来简化代码 request.dicts # 获取定义在页面中的Dict，参见http://moinmo.in/HelpOnDictionaries request.groups # 获取权限管理中的组别 request.user.may # 检查用户权限 3.2. Page Page是最常见的类，它代表某个Wiki页面，通过它可以获取某个页面所有信息。 age本身是只读的，如果需要编辑需要使用PageEditor。
+Page.exists() # 是否存在 Page.getRevList() # 版本列表 Page.current_rev() # 当前版本 Page.getPagePath() # 存储路径 Page.get_raw_body() # 获取存储的数据 Page.send_page() # 发送格式化好页面 3." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2012-02-10T00:00:00+08:00" />
+<meta property="article:modified_time" content="2012-02-10T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="给MoinMoin写插件"/>
+<meta name="twitter:description" content="1. 使用 MoinMoin 前些日子，我写了一篇使用MoinMoin作为个人KMS
+大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源，
+我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。
+MoinMoin开发者wiki地址 MoinMoin开发API文档（这个官方wiki居然很少提及） MoinMoin的多国语翻译组wiki地址 我在使用MoinMoin过程中，有一个急迫需要的功能：
+保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。
+这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供，
+我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。
+MoinMoin插件库 image2attach在MoinMoin官方Wiki的地址 现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。
+以下内容需要Python编程基础～
+2. MoinMoin 系统结构 MoinMoin的UML图：
+3. MoinMoin 常用对象 3.1. request 这个request和普通jsp/asp中request很类似（实际上这个request就是继承
+werkzeug的Request）。
+除了正常的web request功能，Moin的request还带了Wiki自身的信息。
+request.getText # 多国语函数，经常使用 _ = request.getText 来简化代码 request.dicts # 获取定义在页面中的Dict，参见http://moinmo.in/HelpOnDictionaries request.groups # 获取权限管理中的组别 request.user.may # 检查用户权限 3.2. Page Page是最常见的类，它代表某个Wiki页面，通过它可以获取某个页面所有信息。 age本身是只读的，如果需要编辑需要使用PageEditor。
+Page.exists() # 是否存在 Page.getRevList() # 版本列表 Page.current_rev() # 当前版本 Page.getPagePath() # 存储路径 Page.get_raw_body() # 获取存储的数据 Page.send_page() # 发送格式化好页面 3."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "给MoinMoin写插件",
+      "item": "https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "给MoinMoin写插件",
+  "name": "给MoinMoin写插件",
+  "description": "1. 使用 MoinMoin 前些日子，我写了一篇使用MoinMoin作为个人KMS\n大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源，\n我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。\nMoinMoin开发者wiki地址 MoinMoin开发API文档（这个官方wiki居然很少提及） MoinMoin的多国语翻译组wiki地址 我在使用MoinMoin过程中，有一个急迫需要的功能：\n保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。\n这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供，\n我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。\nMoinMoin插件库 image2attach在MoinMoin官方Wiki的地址 现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。\n以下内容需要Python编程基础～\n2. MoinMoin 系统结构 MoinMoin的UML图：\n3. MoinMoin 常用对象 3.1. request 这个request和普通jsp/asp中request很类似（实际上这个request就是继承\nwerkzeug的Request）。\n除了正常的web request功能，Moin的request还带了Wiki自身的信息。\nrequest.getText # 多国语函数，经常使用 _ = request.getText 来简化代码 request.dicts # 获取定义在页面中的Dict，参见http://moinmo.in/HelpOnDictionaries request.groups # 获取权限管理中的组别 request.user.may # 检查用户权限 3.2. Page Page是最常见的类，它代表某个Wiki页面，通过它可以获取某个页面所有信息。 age本身是只读的，如果需要编辑需要使用PageEditor。\nPage.exists() # 是否存在 Page.getRevList() # 版本列表 Page.current_rev() # 当前版本 Page.getPagePath() # 存储路径 Page.get_raw_body() # 获取存储的数据 Page.send_page() # 发送格式化好页面 3.",
+  "keywords": [
+    "python", "image2attach", "moinmoin"
+  ],
+  "articleBody": "1. 使用 MoinMoin 前些日子，我写了一篇使用MoinMoin作为个人KMS\n大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源，\n我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。\nMoinMoin开发者wiki地址 MoinMoin开发API文档（这个官方wiki居然很少提及） MoinMoin的多国语翻译组wiki地址 我在使用MoinMoin过程中，有一个急迫需要的功能：\n保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。\n这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供，\n我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。\nMoinMoin插件库 image2attach在MoinMoin官方Wiki的地址 现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。\n以下内容需要Python编程基础～\n2. MoinMoin 系统结构 MoinMoin的UML图：\n3. MoinMoin 常用对象 3.1. request 这个request和普通jsp/asp中request很类似（实际上这个request就是继承\nwerkzeug的Request）。\n除了正常的web request功能，Moin的request还带了Wiki自身的信息。\nrequest.getText # 多国语函数，经常使用 _ = request.getText 来简化代码 request.dicts # 获取定义在页面中的Dict，参见http://moinmo.in/HelpOnDictionaries request.groups # 获取权限管理中的组别 request.user.may # 检查用户权限 3.2. Page Page是最常见的类，它代表某个Wiki页面，通过它可以获取某个页面所有信息。 age本身是只读的，如果需要编辑需要使用PageEditor。\nPage.exists() # 是否存在 Page.getRevList() # 版本列表 Page.current_rev() # 当前版本 Page.getPagePath() # 存储路径 Page.get_raw_body() # 获取存储的数据 Page.send_page() # 发送格式化好页面 3.3. PageEditor 上面说到Page是只读的，那当我们需要编辑页面时候，就要用到PageEditor类了。\nPageEditor.saveText() # 保存内容 PageEditor.deletePage() # 删除页面 3.4. AttachFile 顾名思义，AttachFile用来管理页面附件。\nAttachFile.exists() # 检查附件是否存在 AttachFile.getAttachDir() # 获取附件存放的本地目录 AttachFile.getAttachUrl() # 获取附件url 3.5. wikiutil wikiutil 是MoinMoin提供的一个帮助类，包含一些常用的小功能。\nwikiutil.escape() # html转义 wikiutil.createTicket() # 生成一串唯一key，用来页面验证 wikiutil.checkTicket() # 检查ticket wikiutil.invoke_extension_function() # 注入脚本类插件 wikiutil.version2timestamp() # 将MoinMoin时间转换成UNIX时间戳 wikiutil.timestamp2version() # 参考楼上 wikiutil.renderText() # 将wiki text转换成html来展现 3.6. user 用户类，CRUD操作，不解释。\n3.7. formatter formatter将输出展现类，将wiki text转换为各种预定义的格式。 需要和parser配合使用（两者关系看上去像抽象工厂模式）。\nformatter.text() # 格式化为普通文本 formatter.img() # 格式化为图片 formatter.number_list() # 格式化为有序列表 formatter.bullet_list() # 格式化为无序列表 formatter.listitem() # 格式化为列表项 3.8. parser formatter完成的工作是展现解析后的wiki内容，而负责解析的就是parser了。\n流程是这样的：\nwiki -\u003e parser -\u003e formatter 每一个parser都对应一个或者多个formatter。系统内置的 parser/formatter 有：\ndocbook html plain python rst cvs 4. MoinMoin 运行流程 cgi.py 通过url获取pagename和action，然后调用对应的Page方法和Action对象 1. Page().send_page()创建普通页面 2. MoinMoin.action.getHandler()用来获取对应action 5. MoinMoin 开发配置 5.1. 禁用pyc缓存 MoinMoin 为了提高系统效率，会为 python 文件生成pyc缓存，如果放任它们的话。\n每次修改python源码效果都得不到立即体现。所以我们要在开发阶段禁用系统缓存。\n在文件 /usr/lib/python2.7/site-packages/MoinMoin/config/multiconfig.py\n的第815行左右，修改 options_no_group_name 中的 cache 时间。\n当改为0时候，就不使用 pyc 缓存，这样就不用重启服务器来清楚缓存了。\noptions_no_group_name = { # ... #'cache': (600, 30), # cache action is very cheap/efficient 'cache': (0, 0), # cache action is very cheap/efficient #XXX alswl # ... } 6. image2attach 范例 image2attach这个插件功能很简单，就是读取wiki文本内容，找出所有图片，\n然会将这些图片从互联网上下载到本地，并将文中的图片链接改为MoinMoin的附件链接。\n6.1. 创建插件文件 在 data/plugin/action/ 目录下创建文件Image2Attach.py。\n（请使用大写文件，Moin会自动识别大写开头的Python文件为插件）\n6.2. 基本框架 execute() ：hook函数，用来给上层调用，签名必须是 def execute(pagename, request) Class Image2Attach ：主要类，处理逻辑。 1. `process() / process_line()` ：处理每行wiki text，会抓取和 2. `process_transclude() / process_link()` ：分别处理 / 3. `fetch_image()` ：下载图片 4. `add_attachment()` ：将图片作为附件加入到wiki 5. `write_file()` ：写入wiki text 总的来说，开发Moin插件还是比较方便的，官方提供了详尽（但不够顺畅）的教程和\nAPI文档。 我大部分时间在看Moin的API文档，\nMoin作为一款久经考研的Wiki系统，开放的代码也有很多地方可以学习。\n",
+  "wordCount" : "263",
+  "inLanguage": "en",
+  "datePublished": "2012-02-10T00:00:00+08:00",
+  "dateModified": "2012-02-10T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      给MoinMoin写插件
+    </h1>
+    <div class="post-meta"><span title='2012-02-10 00:00:00 +0800 CST'>2012-02-10</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-使用-moinmoin">1. 使用 MoinMoin</a></li>
+    <li><a href="#2-moinmoin-系统结构">2. MoinMoin 系统结构</a></li>
+    <li><a href="#3-moinmoin-常用对象">3. MoinMoin 常用对象</a>
+      <ul>
+        <li><a href="#31-request">3.1. request</a></li>
+        <li><a href="#32-page">3.2. Page</a></li>
+        <li><a href="#33-pageeditor">3.3. PageEditor</a></li>
+        <li><a href="#34-attachfile">3.4. AttachFile</a></li>
+        <li><a href="#35-wikiutil">3.5. wikiutil</a></li>
+        <li><a href="#36-user">3.6. user</a></li>
+        <li><a href="#37-formatter">3.7. formatter</a></li>
+        <li><a href="#38-parser">3.8. parser</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-moinmoin-运行流程">4. MoinMoin 运行流程</a></li>
+    <li><a href="#5-moinmoin-开发配置">5. MoinMoin 开发配置</a>
+      <ul>
+        <li><a href="#51-禁用pyc缓存">5.1. 禁用pyc缓存</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-image2attach-范例">6. image2attach 范例</a>
+      <ul>
+        <li><a href="#61-创建插件文件">6.1. 创建插件文件</a></li>
+        <li><a href="#62-基本框架">6.2. 基本框架</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="1-使用-moinmoin">1. 使用 MoinMoin<a hidden class="anchor" aria-hidden="true" href="#1-使用-moinmoin">#</a></h2>
+<p>前些日子，我写了一篇<a href="../2011/12/moinmoin-kms">使用MoinMoin作为个人KMS</a><br />
+大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源，<br />
+我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。</p>
+<ul>
+<li><a href="http://moinmo.in/MoinDev">MoinMoin开发者wiki地址</a></li>
+<li><a href="http://docs.moinmo.in/">MoinMoin开发API文档（这个官方wiki居然很少提及）</a></li>
+<li><a href="http://moinmo.in/MoinDev/Translation">MoinMoin的多国语翻译组wiki地址</a></li>
+</ul>
+<p>我在使用MoinMoin过程中，有一个急迫需要的功能：</p>
+<blockquote>
+<p>保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。</p>
+</blockquote>
+<p>这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供，<br />
+我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。</p>
+<ul>
+<li><a href="http://moinmo.in/MoinMoinExtensions">MoinMoin插件库</a></li>
+<li><a href="http://moinmo.in/ActionMarket/Image2Attach">image2attach在MoinMoin官方Wiki的地址</a></li>
+</ul>
+<p>现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。</p>
+<p>以下内容需要Python编程基础～</p>
+<h2 id="2-moinmoin-系统结构">2. MoinMoin 系统结构<a hidden class="anchor" aria-hidden="true" href="#2-moinmoin-系统结构">#</a></h2>
+<p>MoinMoin的UML图：</p>
+<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201202/MoinMoinArchitecture.png" alt="MoinMoin"  />
+</p>
+<h2 id="3-moinmoin-常用对象">3. MoinMoin 常用对象<a hidden class="anchor" aria-hidden="true" href="#3-moinmoin-常用对象">#</a></h2>
+<h3 id="31-request">3.1. request<a hidden class="anchor" aria-hidden="true" href="#31-request">#</a></h3>
+<p>这个request和普通jsp/asp中request很类似（实际上这个request就是继承<br />
+<a href="http://werkzeug.pocoo.org/">werkzeug</a>的Request）。</p>
+<p>除了正常的web request功能，Moin的request还带了Wiki自身的信息。</p>
+<ul>
+<li>request.getText # 多国语函数，经常使用 <code>_ = request.getText</code> 来简化代码</li>
+<li>request.dicts # 获取定义在页面中的Dict，参见http://moinmo.in/HelpOnDictionaries</li>
+<li>request.groups # 获取权限管理中的组别</li>
+<li>request.user.may # 检查用户权限</li>
+</ul>
+<h3 id="32-page">3.2. Page<a hidden class="anchor" aria-hidden="true" href="#32-page">#</a></h3>
+<p>Page是最常见的类，它代表某个Wiki页面，通过它可以获取某个页面所有信息。 age本身是只读的，如果需要编辑需要使用PageEditor。</p>
+<ul>
+<li>Page.exists() # 是否存在</li>
+<li>Page.getRevList() # 版本列表</li>
+<li>Page.current_rev() # 当前版本</li>
+<li>Page.getPagePath() # 存储路径</li>
+<li>Page.get_raw_body() # 获取存储的数据</li>
+<li>Page.send_page() # 发送格式化好页面</li>
+</ul>
+<h3 id="33-pageeditor">3.3. PageEditor<a hidden class="anchor" aria-hidden="true" href="#33-pageeditor">#</a></h3>
+<p>上面说到Page是只读的，那当我们需要编辑页面时候，就要用到PageEditor类了。</p>
+<ul>
+<li>PageEditor.saveText() # 保存内容</li>
+<li>PageEditor.deletePage() # 删除页面</li>
+</ul>
+<h3 id="34-attachfile">3.4. AttachFile<a hidden class="anchor" aria-hidden="true" href="#34-attachfile">#</a></h3>
+<p>顾名思义，AttachFile用来管理页面附件。</p>
+<ul>
+<li>AttachFile.exists() # 检查附件是否存在</li>
+<li>AttachFile.getAttachDir() # 获取附件存放的本地目录</li>
+<li>AttachFile.getAttachUrl() # 获取附件url</li>
+</ul>
+<h3 id="35-wikiutil">3.5. wikiutil<a hidden class="anchor" aria-hidden="true" href="#35-wikiutil">#</a></h3>
+<p>wikiutil 是MoinMoin提供的一个帮助类，包含一些常用的小功能。</p>
+<ul>
+<li>wikiutil.escape() # html转义</li>
+<li>wikiutil.createTicket() # 生成一串唯一key，用来页面验证</li>
+<li>wikiutil.checkTicket() # 检查ticket</li>
+<li>wikiutil.invoke_extension_function() # 注入脚本类插件</li>
+<li>wikiutil.version2timestamp() # 将MoinMoin时间转换成UNIX时间戳</li>
+<li>wikiutil.timestamp2version() # 参考楼上</li>
+<li>wikiutil.renderText() # 将wiki text转换成html来展现</li>
+</ul>
+<h3 id="36-user">3.6. user<a hidden class="anchor" aria-hidden="true" href="#36-user">#</a></h3>
+<p>用户类，CRUD操作，不解释。</p>
+<h3 id="37-formatter">3.7. formatter<a hidden class="anchor" aria-hidden="true" href="#37-formatter">#</a></h3>
+<p>formatter将输出展现类，将wiki text转换为各种预定义的格式。 需要和parser配合使用（两者关系看上去像抽象工厂模式）。</p>
+<ul>
+<li>formatter.text() # 格式化为普通文本</li>
+<li>formatter.img() # 格式化为图片</li>
+<li>formatter.number_list() # 格式化为有序列表</li>
+<li>formatter.bullet_list() # 格式化为无序列表</li>
+<li>formatter.listitem() # 格式化为列表项</li>
+</ul>
+<h3 id="38-parser">3.8. parser<a hidden class="anchor" aria-hidden="true" href="#38-parser">#</a></h3>
+<p>formatter完成的工作是展现解析后的wiki内容，而负责解析的就是parser了。</p>
+<p>流程是这样的：</p>
+<pre><code>wiki -&gt; parser -&gt; formatter
+</code></pre>
+<p>每一个parser都对应一个或者多个formatter。系统内置的 parser/formatter 有：</p>
+<ul>
+<li>docbook</li>
+<li>html</li>
+<li>plain</li>
+<li>python</li>
+<li>rst</li>
+<li>cvs</li>
+</ul>
+<h2 id="4-moinmoin-运行流程">4. MoinMoin 运行流程<a hidden class="anchor" aria-hidden="true" href="#4-moinmoin-运行流程">#</a></h2>
+<ol>
+<li>cgi.py</li>
+<li>通过url获取pagename和action，然后调用对应的Page方法和Action对象</li>
+</ol>
+<pre><code>1. Page().send_page()创建普通页面
+2. MoinMoin.action.getHandler()用来获取对应action
+</code></pre>
+<h2 id="5-moinmoin-开发配置">5. MoinMoin 开发配置<a hidden class="anchor" aria-hidden="true" href="#5-moinmoin-开发配置">#</a></h2>
+<h3 id="51-禁用pyc缓存">5.1. 禁用pyc缓存<a hidden class="anchor" aria-hidden="true" href="#51-禁用pyc缓存">#</a></h3>
+<p>MoinMoin 为了提高系统效率，会为 python 文件生成pyc缓存，如果放任它们的话。<br />
+每次修改python源码效果都得不到立即体现。所以我们要在开发阶段禁用系统缓存。</p>
+<p>在文件 <code>/usr/lib/python2.7/site-packages/MoinMoin/config/multiconfig.py</code><br />
+的第815行左右，修改 <code>options_no_group_name</code> 中的 <code>cache</code> 时间。</p>
+<p>当改为0时候，就不使用 <code>pyc</code> 缓存，这样就不用重启服务器来清楚缓存了。</p>
+<pre><code>options_no_group_name = {
         # ...
         #'cache': (600, 30), # cache action is very cheap/efficient
         'cache': (0, 0), # cache action is very cheap/efficient #XXX alswl
         # ...
-}</code></pre> <h2 id=image2attach-范例_1>6. image2attach 范例</h2> <p>image2attach这个插件功能很简单，就是读取wiki文本内容，找出所有图片， 然会将这些图片从互联网上下载到本地，并将文中的图片链接改为MoinMoin的附件链接。</p> <h3 id=创建插件文件>6.1. 创建插件文件</h3> <p>在 <code>data/plugin/action/</code> 目录下创建文件Image2Attach.py。 （请使用大写文件，Moin会自动识别大写开头的Python文件为插件）</p> <h3 id=基本框架>6.2. 基本框架</h3> <ol type=1> <li><code>execute()</code> ：hook函数，用来给上层调用，签名必须是 <code>def execute(pagename, request)</code></li> <li><code>Class Image2Attach</code> ：主要类，处理逻辑。</li> </ol> <pre><code>1. `process() / process_line()` ：处理每行wiki text，会抓取&lt;a&gt;和&lt;img&gt;
+}
+</code></pre>
+<h2 id="6-image2attach-范例">6. image2attach 范例<a hidden class="anchor" aria-hidden="true" href="#6-image2attach-范例">#</a></h2>
+<p>image2attach这个插件功能很简单，就是读取wiki文本内容，找出所有图片，<br />
+然会将这些图片从互联网上下载到本地，并将文中的图片链接改为MoinMoin的附件链接。</p>
+<h3 id="61-创建插件文件">6.1. 创建插件文件<a hidden class="anchor" aria-hidden="true" href="#61-创建插件文件">#</a></h3>
+<p>在 <code>data/plugin/action/</code> 目录下创建文件Image2Attach.py。<br />
+（请使用大写文件，Moin会自动识别大写开头的Python文件为插件）</p>
+<h3 id="62-基本框架">6.2. 基本框架<a hidden class="anchor" aria-hidden="true" href="#62-基本框架">#</a></h3>
+<ol>
+<li><code>execute()</code> ：hook函数，用来给上层调用，签名必须是 <code>def execute(pagename, request)</code></li>
+<li><code>Class Image2Attach</code> ：主要类，处理逻辑。</li>
+</ol>
+<pre><code>1. `process() / process_line()` ：处理每行wiki text，会抓取&lt;a&gt;和&lt;img&gt;
 2. `process_transclude() / process_link()` ：分别处理&lt;a&gt; / &lt;img&gt;
 3. `fetch_image()` ：下载图片
 4. `add_attachment()` ：将图片作为附件加入到wiki
-5. `write_file()` ：写入wiki text</code></pre> <p>总的来说，开发Moin插件还是比较方便的，官方提供了详尽（但不够顺畅）的教程和 <a href=http://docs.moinmo.in/moin/1.9/ >API文档</a>。 我大部分时间在看Moin的API文档， Moin作为一款久经考研的Wiki系统，开放的代码也有很多地方可以学习。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/ >https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+5. `write_file()` ：写入wiki text
+</code></pre>
+<p>总的来说，开发Moin插件还是比较方便的，官方提供了详尽（但不够顺畅）的教程和<br />
+<a href="http://docs.moinmo.in/moin/1.9/">API文档</a>。 我大部分时间在看Moin的API文档，<br />
+Moin作为一款久经考研的Wiki系统，开放的代码也有很多地方可以学习。</p>
 
-                    var disqus_identifier = 'the-write-the-plugins-for-moinmoin';
-                var disqus_url = 'https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/';
 
-            var disqus_config = function () {
-                this.language = "en";
-            };
+  </div>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/python/">python</a></li>
+      <li><a href="https://blog.alswl.com/tags/image2attach/">image2attach</a></li>
+      <li><a href="https://blog.alswl.com/tags/moinmoin/">moinmoin</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2012/03/influence/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>影响力读书笔记</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2012/02/refactory/">
+    <span class="title">Next »</span>
+    <br>
+    <span>再读《重构》</span>
+  </a>
+</nav>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-alswl-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

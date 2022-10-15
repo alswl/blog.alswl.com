@@ -1,48 +1,537 @@
-<!DOCTYPE html><html lang=en> <head><title>Ubuntu安装之后设定操作 - Log4D</title><!-- Using the latest rendering mode for IE --><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=utf-8><meta name=viewport content="width=device-width, initial-scale=1.0"><meta http-equiv=Content-Security-Policy content=block-all-mixed-content><link rel="shortcut icon" href=/favicon.ico type=image/x-icon><link href=https://blog.alswl.com/2011/04/ubuntu-setup/ rel=canonical><meta name=author content=alswl><meta name=keywords content=Linuxer,Ubuntu><meta name=description content="前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。 这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。 = init Linux programs and setting = :author: alswl :email: alswlx#gmail.com :toc: :numbered: == first of all == .update (打补丁、升级) sudo apt-get update Update System(fix bugs for sercurity): 299.0MB .reset permission(谨慎使用，设定文件为644,设定文件夹为755) find /home …"><!-- Bootstrap --><link rel=stylesheet href=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css type=text/css><link href=https://cdn.staticfile.org/font-awesome/4.1.0/css/font-awesome.min.css rel=stylesheet><link href=https://blog.alswl.com/theme/css/pygments/native.css rel=stylesheet><link rel=stylesheet href=https://blog.alswl.com/theme/css/style.css type=text/css><link href=https://blog.alswl.com/atom.xml type=application/atom+xml rel=alternate title="Log4D Atom Feed"><link href=https://blog.alswl.com/rss.xml type=application/rss+xml rel=alternate title="Log4D RSS Feed"></head> <body> <div class="navbar navbar-default" role=navigation> <div class="container  col-lg-8 col-lg-offset-2"> <div class=navbar-header> <button type=button class=navbar-toggle data-toggle=collapse data-target=.navbar-ex1-collapse> <span class=sr-only>Toggle navigation</span> <span class=icon-bar></span> <span class=icon-bar></span> <span class=icon-bar></span> </button> <a href=https://blog.alswl.com/ class=navbar-brand> Log4D </a> </div> <div class="collapse navbar-collapse navbar-ex1-collapse"> <ul class="nav navbar-nav"> <li><a href=/tags/ >Tags</a></li> <li><a href=/links/ >Links</a></li> <li><a href=/about/ >About</a></li> </ul> <ul class="nav navbar-nav navbar-right"> <li><a href=https://blog.alswl.com/archives/ ><i class="fa fa-th-list"></i><span class=icon-label>Archives</span></a></li> </ul> </div> <!-- /.navbar-collapse --> </div> </div> <!-- /.navbar --> <div class=container> <div class=row> <div class="col-lg-8 col-lg-offset-2"> <section id=content> <article class=article-detail> <header class=page-header> <h1 class=title> <a href=https://blog.alswl.com/2011/04/ubuntu-setup/ rel=bookmark title="Permalink to Ubuntu安装之后设定操作"> Ubuntu安装之后设定操作 </a> </h1> </header> <div class=entry-content> <div class=panel> <div class=panel-body> <footer class=post-info> <span class="label label-default">Date</span> <span class=published> <i class="fa fa-calendar"></i><time datetime=2011-04-07T00:00:00+08:00> 2011-04-07</time> </span> <span class="label label-default">Tags</span> <a href=https://blog.alswl.com/tag/linuxer/ >Linuxer</a> / <a href=https://blog.alswl.com/tag/ubuntu/ >Ubuntu</a> </footer><!-- /.post-info --> </div> </div> <p>前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。</p> <p>这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。</p> <pre><code>= init Linux programs and setting =
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Ubuntu安装之后设定操作 | Log4D</title>
+<meta name="keywords" content="linuxer, ubuntu">
+<meta name="description" content="前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。
+这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。
+= init Linux programs and setting = :author: alswl :email: alswlx#gmail.com :toc: :numbered: == first of all ==
+.update (打补丁、升级)
+sudo apt-get update
+Update System(fix bugs for sercurity): 299.0MB
+.reset permission(谨慎使用，设定文件为644,设定文件夹为755)
+find /home/XXX -type d -exec chmod 755 {} ;
+find /home/XXX -type f -exec chmod 644 {} ;
+.nautilus (给鹦鹉螺加上open as administrator, open terminal)
+sudo apt-get install nautilus-open-terminal nautilus-gksu
+.pdf (我使用Foxit)
+@see http://www.fuxinsoftware.com.cn/downloads/
+== application ==">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2011/04/ubuntu-setup/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="Ubuntu安装之后设定操作" />
+<meta property="og:description" content="前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。
+这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。
+= init Linux programs and setting = :author: alswl :email: alswlx#gmail.com :toc: :numbered: == first of all ==
+.update (打补丁、升级)
+sudo apt-get update
+Update System(fix bugs for sercurity): 299.0MB
+.reset permission(谨慎使用，设定文件为644,设定文件夹为755)
+find /home/XXX -type d -exec chmod 755 {} ;
+find /home/XXX -type f -exec chmod 644 {} ;
+.nautilus (给鹦鹉螺加上open as administrator, open terminal)
+sudo apt-get install nautilus-open-terminal nautilus-gksu
+.pdf (我使用Foxit)
+@see http://www.fuxinsoftware.com.cn/downloads/
+== application ==" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2011/04/ubuntu-setup/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2011-04-07T00:00:00+08:00" />
+<meta property="article:modified_time" content="2011-04-07T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Ubuntu安装之后设定操作"/>
+<meta name="twitter:description" content="前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。
+这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。
+= init Linux programs and setting = :author: alswl :email: alswlx#gmail.com :toc: :numbered: == first of all ==
+.update (打补丁、升级)
+sudo apt-get update
+Update System(fix bugs for sercurity): 299.0MB
+.reset permission(谨慎使用，设定文件为644,设定文件夹为755)
+find /home/XXX -type d -exec chmod 755 {} ;
+find /home/XXX -type f -exec chmod 644 {} ;
+.nautilus (给鹦鹉螺加上open as administrator, open terminal)
+sudo apt-get install nautilus-open-terminal nautilus-gksu
+.pdf (我使用Foxit)
+@see http://www.fuxinsoftware.com.cn/downloads/
+== application =="/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Ubuntu安装之后设定操作",
+      "item": "https://blog.alswl.com/2011/04/ubuntu-setup/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Ubuntu安装之后设定操作",
+  "name": "Ubuntu安装之后设定操作",
+  "description": "前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。\n这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。\n= init Linux programs and setting = :author: alswl :email: alswlx#gmail.com :toc: :numbered: == first of all ==\n.update (打补丁、升级)\nsudo apt-get update\nUpdate System(fix bugs for sercurity): 299.0MB\n.reset permission(谨慎使用，设定文件为644,设定文件夹为755)\nfind /home/XXX -type d -exec chmod 755 {} ;\nfind /home/XXX -type f -exec chmod 644 {} ;\n.nautilus (给鹦鹉螺加上open as administrator, open terminal)\nsudo apt-get install nautilus-open-terminal nautilus-gksu\n.pdf (我使用Foxit)\n@see http://www.fuxinsoftware.com.cn/downloads/\n== application ==",
+  "keywords": [
+    "linuxer", "ubuntu"
+  ],
+  "articleBody": "前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。\n这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。\n= init Linux programs and setting = :author: alswl :email: alswlx#gmail.com :toc: :numbered: == first of all ==\n.update (打补丁、升级)\nsudo apt-get update\nUpdate System(fix bugs for sercurity): 299.0MB\n.reset permission(谨慎使用，设定文件为644,设定文件夹为755)\nfind /home/XXX -type d -exec chmod 755 {} ;\nfind /home/XXX -type f -exec chmod 644 {} ;\n.nautilus (给鹦鹉螺加上open as administrator, open terminal)\nsudo apt-get install nautilus-open-terminal nautilus-gksu\n.pdf (我使用Foxit)\n@see http://www.fuxinsoftware.com.cn/downloads/\n== application ==\n.fcitx (好用的中文输入法)\nsudo apt-get remove ibus\nsudo add-apt-repository ppa:wengxt/fcitx-nightly\nsudo apt-get update\nsudo apt-get install fcitx fcitx-config-gtk fcitx-sunpinyin\nim-switch -s fcitx -z default\n.crebs(auto change desktop wallpaper)\nsudo add-apt-repository ppa:crebs/ppa\nsudo apt-get update\nsudo apt-get install crebs\n.MÃ(C)tamorphose(rename tool)\nhttp://file-folder-ren.sourceforge.net/\n== programing ==\n.vim\nsudo apt-get install vim\nsudo apt-get install vim-gnome\n.jdk\nsudo add-apt-repository “deb http://archive.canonical.com/ubuntu maverick\npartner”\nsudo apt-get update\nsudo apt-get install sun-java6-jre sun-java6-plugin sun-java6-source\nsudo vi /etc/environment\nCLASSPATH=\"/usr/lib/jvm/java-6-sun-1.6.0.24/lib\"\nJAVA_HOME=\"/usr/lib/jvm/java-6-sun-1.6.0.24\"\nsudo update-alternatives –config java\n.eclipse\n@see http://blogold.chinaunix.net/u/21684/showart_367508.html\n.idle(Python)\nsudo apt-get install idle\n.lamp(安装过程中，使用Tab选定按钮来接受许可协议)\nsudo apt-get install apache2 php5-mysql libapache2-mod-php5 mysql-server\nsudo apt-get install phpmyadmin\n.maven\nsudo apt-get install maven2\n.asciidoc(453MB)\nsudo apt-get install asciidoc\n== media ==\n.player\nsudo apt-get install smplayer\n.gimp\nsudo apt-get install gimp\nsudo apt-get install gimp-gap gimp-helpbrowser gimp-help-common gimp-help-zh-\ncn gimp-manual libgimp-perl\n.flash\nsudo apt-get install flashplugin-installer\n.easytag(mp3 id3修改器)\nsudo apt-get install easytag exfalso\n.picasa\n@see http://picasa.google.com/linux/\n== net ==\n.chrome\nsudo apt-get install chromium-browser\n.firefox4\nsudo add-apt-repository ppa:mozillateam/firefox-stable\nsudo apt-get update\nsudo apt-get install firefox\n另外，可以参见Ubuntu cn wiki里面的Ubuntu 10.04\n速配指南。\n最后，请大家使用sudo运行命令时候小心阿，别少了/或者~，惨痛教训呀。\n",
+  "wordCount" : "242",
+  "inLanguage": "en",
+  "datePublished": "2011-04-07T00:00:00+08:00",
+  "dateModified": "2011-04-07T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2011/04/ubuntu-setup/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      Ubuntu安装之后设定操作
+    </h1>
+    <div class="post-meta"><span title='2011-04-07 00:00:00 +0800 CST'>2011-04-07</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。</p>
+<p>这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。</p>
+<pre><code>= init Linux programs and setting =
 :author: alswl
 :email: alswlx#gmail.com
 :toc:
-:numbered:</code></pre> <p>== first of all ==</p> <p>.update (打补丁、升级)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get update</td> </tr> <tr class=even> <td>Update System(fix bugs for sercurity): 299.0MB</td> </tr> </tbody> </table></div> <p>.reset permission(谨慎使用，设定文件为644,设定文件夹为755)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>find /home/XXX -type d -exec chmod 755 {} ;</td> </tr> <tr class=even> <td>find /home/XXX -type f -exec chmod 644 {} ;</td> </tr> </tbody> </table></div> <p>.nautilus (给鹦鹉螺加上open as administrator, open terminal)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install nautilus-open-terminal nautilus-gksu</td> </tr> </tbody> </table></div> <p>.pdf (我使用Foxit)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td><span class=citation data-cites=see>@see</span> http://www.fuxinsoftware.com.cn/downloads/</td> </tr> </tbody> </table></div> <p>== application ==</p> <p>.fcitx (好用的中文输入法)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get remove ibus</td> </tr> <tr class=even> <td>sudo add-apt-repository ppa:wengxt/fcitx-nightly</td> </tr> <tr class=odd> <td>sudo apt-get update</td> </tr> <tr class=even> <td>sudo apt-get install fcitx fcitx-config-gtk fcitx-sunpinyin</td> </tr> <tr class=odd> <td>im-switch -s fcitx -z default</td> </tr> </tbody> </table></div> <p>.crebs(auto change desktop wallpaper)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo add-apt-repository ppa:crebs/ppa</td> </tr> <tr class=even> <td>sudo apt-get update</td> </tr> <tr class=odd> <td>sudo apt-get install crebs</td> </tr> </tbody> </table></div> <p>.MÃ(C)tamorphose(rename tool)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>http://file-folder-ren.sourceforge.net/</td> </tr> </tbody> </table></div> <p>== programing ==</p> <p>.vim</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install vim</td> </tr> <tr class=even> <td>sudo apt-get install vim-gnome</td> </tr> </tbody> </table></div> <p>.jdk</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo add-apt-repository “deb http://archive.canonical.com/ubuntu maverick partner”</td> </tr> <tr class=even> <td>sudo apt-get update</td> </tr> <tr class=odd> <td>sudo apt-get install sun-java6-jre sun-java6-plugin sun-java6-source</td> </tr> <tr class=even> <td>sudo vi /etc/environment</td> </tr> <tr class=odd> <td>CLASSPATH=“/usr/lib/jvm/java-6-sun-1.6.0.24/lib”</td> </tr> <tr class=even> <td>JAVA_HOME=“/usr/lib/jvm/java-6-sun-1.6.0.24”</td> </tr> <tr class=odd> <td>sudo update-alternatives –config java</td> </tr> </tbody> </table></div> <p>.eclipse</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td><span class=citation data-cites=see>@see</span> http://blogold.chinaunix.net/u/21684/showart_367508.html</td> </tr> </tbody> </table></div> <p>.idle(Python)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install idle</td> </tr> </tbody> </table></div> <p>.lamp(安装过程中，使用Tab选定按钮来接受许可协议)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install apache2 php5-mysql libapache2-mod-php5 mysql-server</td> </tr> <tr class=even> <td>sudo apt-get install phpmyadmin</td> </tr> </tbody> </table></div> <p>.maven</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install maven2</td> </tr> </tbody> </table></div> <p>.asciidoc(453MB)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install asciidoc</td> </tr> </tbody> </table></div> <p>== media ==</p> <p>.player</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install smplayer</td> </tr> </tbody> </table></div> <p>.gimp</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install gimp</td> </tr> <tr class=even> <td>sudo apt-get install gimp-gap gimp-helpbrowser gimp-help-common gimp-help-zh- cn gimp-manual libgimp-perl</td> </tr> </tbody> </table></div> <p>.flash</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install flashplugin-installer</td> </tr> </tbody> </table></div> <p>.easytag(mp3 id3修改器)</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install easytag exfalso</td> </tr> </tbody> </table></div> <p>.picasa</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td><span class=citation data-cites=see>@see</span> http://picasa.google.com/linux/</td> </tr> </tbody> </table></div> <p>== net ==</p> <p>.chrome</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo apt-get install chromium-browser</td> </tr> </tbody> </table></div> <p>.firefox4</p> <div style="overflow-x: auto;"><table style=width:10%;> <colgroup> <col style="width: 9%"> </colgroup> <tbody> <tr class=odd> <td>sudo add-apt-repository ppa:mozillateam/firefox-stable</td> </tr> <tr class=even> <td>sudo apt-get update</td> </tr> <tr class=odd> <td>sudo apt-get install firefox</td> </tr> </tbody> </table></div> <p>另外，可以参见<a href=http://wiki.ubuntu.org.cn/ >Ubuntu cn wiki</a>里面的<a href=http://wiki.ubuntu.org.cn/Qref/Lucid>Ubuntu 10.04 速配指南</a>。</p> <p>最后，请大家使用sudo运行命令时候小心阿，别少了/或者~，惨痛教训呀。</p> </div> <!-- /.entry-content --> <hr> <div class=panel> <div class=panel-body> <small>原文链接: <a href=https://blog.alswl.com/2011/04/ubuntu-setup/ >https://blog.alswl.com/2011/04/ubuntu-setup/</a></small><br> <small>3a1ff193cee606bd1e2ea554a16353ee</small><br> <small>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></small><br> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg></small> <small><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png></small> </div> </div> <hr> <section class=comments id=comments> <h2>Comments</h2> <div id=disqus_thread></div> <script type=text/javascript>
-            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-            var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+:numbered:
+</code></pre>
+<p>== first of all ==</p>
+<p>.update (打补丁、升级)</p>
+<hr />
+<p>sudo apt-get update</p>
+<p>Update System(fix bugs for sercurity): 299.0MB</p>
+<hr />
+<p>.reset permission(谨慎使用，设定文件为644,设定文件夹为755)</p>
+<hr />
+<p>find /home/XXX -type d -exec chmod 755 {} ;</p>
+<p>find /home/XXX -type f -exec chmod 644 {} ;</p>
+<hr />
+<p>.nautilus (给鹦鹉螺加上open as administrator, open terminal)</p>
+<hr />
+<p>sudo apt-get install nautilus-open-terminal nautilus-gksu</p>
+<hr />
+<p>.pdf (我使用Foxit)</p>
+<hr />
+<p>@see <a href="http://www.fuxinsoftware.com.cn/downloads/">http://www.fuxinsoftware.com.cn/downloads/</a></p>
+<hr />
+<p>== application ==</p>
+<p>.fcitx (好用的中文输入法)</p>
+<hr />
+<p>sudo apt-get remove ibus</p>
+<p>sudo add-apt-repository ppa:wengxt/fcitx-nightly</p>
+<p>sudo apt-get update</p>
+<p>sudo apt-get install fcitx fcitx-config-gtk fcitx-sunpinyin</p>
+<p>im-switch -s fcitx -z default</p>
+<hr />
+<p>.crebs(auto change desktop wallpaper)</p>
+<hr />
+<p>sudo add-apt-repository ppa:crebs/ppa</p>
+<p>sudo apt-get update</p>
+<p>sudo apt-get install crebs</p>
+<hr />
+<p>.MÃ(C)tamorphose(rename tool)</p>
+<hr />
+<p><a href="http://file-folder-ren.sourceforge.net/">http://file-folder-ren.sourceforge.net/</a></p>
+<hr />
+<p>== programing ==</p>
+<p>.vim</p>
+<hr />
+<p>sudo apt-get install vim</p>
+<p>sudo apt-get install vim-gnome</p>
+<hr />
+<p>.jdk</p>
+<hr />
+<p>sudo add-apt-repository &ldquo;deb <a href="http://archive.canonical.com/ubuntu">http://archive.canonical.com/ubuntu</a> maverick<br />
+partner&rdquo;</p>
+<p>sudo apt-get update</p>
+<p>sudo apt-get install sun-java6-jre sun-java6-plugin sun-java6-source</p>
+<p>sudo vi /etc/environment</p>
+<p>CLASSPATH=&quot;/usr/lib/jvm/java-6-sun-1.6.0.24/lib&quot;</p>
+<p>JAVA_HOME=&quot;/usr/lib/jvm/java-6-sun-1.6.0.24&quot;</p>
+<p>sudo update-alternatives &ndash;config java</p>
+<hr />
+<p>.eclipse</p>
+<hr />
+<p>@see <a href="http://blogold.chinaunix.net/u/21684/showart_367508.html">http://blogold.chinaunix.net/u/21684/showart_367508.html</a></p>
+<hr />
+<p>.idle(Python)</p>
+<hr />
+<p>sudo apt-get install idle</p>
+<hr />
+<p>.lamp(安装过程中，使用Tab选定按钮来接受许可协议)</p>
+<hr />
+<p>sudo apt-get install apache2 php5-mysql libapache2-mod-php5 mysql-server</p>
+<p>sudo apt-get install phpmyadmin</p>
+<hr />
+<p>.maven</p>
+<hr />
+<p>sudo apt-get install maven2</p>
+<hr />
+<p>.asciidoc(453MB)</p>
+<hr />
+<p>sudo apt-get install asciidoc</p>
+<hr />
+<p>== media ==</p>
+<p>.player</p>
+<hr />
+<p>sudo apt-get install smplayer</p>
+<hr />
+<p>.gimp</p>
+<hr />
+<p>sudo apt-get install gimp</p>
+<p>sudo apt-get install gimp-gap gimp-helpbrowser gimp-help-common gimp-help-zh-<br />
+cn gimp-manual libgimp-perl</p>
+<hr />
+<p>.flash</p>
+<hr />
+<p>sudo apt-get install flashplugin-installer</p>
+<hr />
+<p>.easytag(mp3 id3修改器)</p>
+<hr />
+<p>sudo apt-get install easytag exfalso</p>
+<hr />
+<p>.picasa</p>
+<hr />
+<p>@see <a href="http://picasa.google.com/linux/">http://picasa.google.com/linux/</a></p>
+<hr />
+<p>== net ==</p>
+<p>.chrome</p>
+<hr />
+<p>sudo apt-get install chromium-browser</p>
+<hr />
+<p>.firefox4</p>
+<hr />
+<p>sudo add-apt-repository ppa:mozillateam/firefox-stable</p>
+<p>sudo apt-get update</p>
+<p>sudo apt-get install firefox</p>
+<hr />
+<p>另外，可以参见<a href="http://wiki.ubuntu.org.cn/">Ubuntu cn wiki</a>里面的<a href="http://wiki.ubuntu.org.cn/Qref/Lucid">Ubuntu 10.04<br />
+速配指南</a>。</p>
+<p>最后，请大家使用sudo运行命令时候小心阿，别少了/或者~，惨痛教训呀。</p>
 
-                    var disqus_identifier = 'ubuntu-setup';
-                var disqus_url = 'https://blog.alswl.com/2011/04/ubuntu-setup/';
 
-            var disqus_config = function () {
-                this.language = "en";
-            };
+  </div>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-        </script> <noscript>Please enable JavaScript to view the <a href=http://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript> <a href=http://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a> </section> </article> </section> </div> <div class="col-lg-3 col-lg-offset-2" id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Social</span></h4> <ul class=list-group id=social> <li class=list-group-item><a href=https://blog.alswl.com/atom.xml><i class="fa fa-rss-square fa-lg"></i> RSS</a></li> <li class=list-group-item><a href=https://twitter.com/alswl><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li> <li class=list-group-item><a href=https://github.com/alswl><i class="fa fa-github-square fa-lg"></i> Github</a></li> <li class=list-group-item><a href=http://weibo.com/alswlx><i class="fa fa-weibo fa-lg"></i> Weibo</a></li> </ul> </li> </ul> </section> </aside> </div> <div class=col-lg-3 id=sidebar> <aside> <section> <ul class="list-group list-group-flush"> <li class=list-group-item><a href=https://blog.alswl.com/ ><h4><i class="fa fa-home fa-lg"></i><span class=icon-label>Categories</span></h4></a> <ul class=list-group id=categories> <li class=list-group-item> <a href=https://blog.alswl.com/category/coding/ > <i class="fa fa-folder-open fa-lg"></i> Coding </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/efficiency/ > <i class="fa fa-folder-open fa-lg"></i> Efficiency </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/fun/ > <i class="fa fa-folder-open fa-lg"></i> Fun </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/internet/ > <i class="fa fa-folder-open fa-lg"></i> Internet </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/life/ > <i class="fa fa-folder-open fa-lg"></i> Life </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/managment/ > <i class="fa fa-folder-open fa-lg"></i> Managment </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/sre/ > <i class="fa fa-folder-open fa-lg"></i> SRE </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/thinking/ > <i class="fa fa-folder-open fa-lg"></i> Thinking </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/ui/ > <i class="fa fa-folder-open fa-lg"></i> UI </a> </li> <li class=list-group-item> <a href=https://blog.alswl.com/category/viewpoint/ > <i class="fa fa-folder-open fa-lg"></i> Viewpoint </a> </li> </ul> </li> </ul> </section> </aside> </div> </div> </div> <footer> <div class=container> <hr> <div class=row> <div class=col-xs-10>&copy; 2005-2022 alswl &middot; Powered by <a href=https://github.com/alswl/pelican-bootstrap3 target=_blank style="font-weight: bold">pelican-bootstrap3</a>, <a href=http://docs.getpelican.com/ target=_blank style="font-weight: bold">Pelican</a>, <a href=http://getbootstrap.com target=_blank style="font-weight: bold">Bootstrap</a>, <p> <small> <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license><img alt="Creative Commons License" style=border-width:0 src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/by-nc-nd_4-0_80x15.png></a> Content licensed under a <a href=http://creativecommons.org/licenses/by-nc-nd/4.0/ rel=license>Creative Commons Attribution 4.0 International-NonCommercial-NoDerivatives License</a>, except where indicated otherwise. </small> </p> </div> <div class=col-xs-2><p class=pull-right><i class="fa fa-arrow-up"></i> <a href=#>Back to top</a></p></div> </div> </div> </footer> <script src=https://cdn.staticfile.org/jquery/1.11.0/jquery.min.js></script> <!-- Include all compiled plugins (below), or include individual files as needed --> <script src=https://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js></script> <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) --> <!-- Disqus --> <script type=text/javascript>
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'log4d'; // required: replace example with your forum shortname
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/linuxer/">linuxer</a></li>
+      <li><a href="https://blog.alswl.com/tags/ubuntu/">ubuntu</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2011/04/erp-defectors/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>ERP叛逃者</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2011/04/run-jetty-in-maven/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Maven 下 Jetty 启动</span>
+  </a>
+</nav>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script');
-            s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script> <!-- End Disqus Code --> <!-- Google Analytics --> <script type=text/javascript>
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "blog-alswl-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-8822123-3']);
-        _gaq.push(['_trackPageview']);
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com/">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> <!-- End Google Analytics Code --> </body> </html>
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
