@@ -5,7 +5,7 @@ slug: "sad-all-of-a-sudden-on-the-up"
 date: "2008-08-10T00:00:00+08:00"
 tags: ["青春的彩虹"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 今天做心理测试，有一道题目就是问情绪会不会波动。

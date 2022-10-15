@@ -5,7 +5,7 @@ slug: "dan-moore-s-blog"
 date: "2009-01-24T00:00:00+08:00"
 tags: ["关注互联网"]
 categories: ["internet"]
-Status: draft
+draft: true
 ---
 
 偶尔看到的一个博客，感觉研究的范围很广，应该是一个大牛

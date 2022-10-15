@@ -5,7 +5,7 @@ slug: "back-to-school"
 date: "2009-07-25T00:00:00+08:00"
 tags: ["日记"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 这篇日志是24号晚上9点写了，设定在25号早晨7点发布的，此时我已经坐上了去南京的汽车了~

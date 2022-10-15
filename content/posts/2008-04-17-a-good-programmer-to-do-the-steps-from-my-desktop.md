@@ -5,7 +5,7 @@ slug: "a-good-programmer-to-do-the-steps-from-my-desktop"
 date: "2008-04-17T00:00:00+08:00"
 tags: ["程序人生"]
 categories: ["viewpoint"]
-Status: draft
+draft: true
 ---
 
 本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉```

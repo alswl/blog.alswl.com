@@ -5,7 +5,7 @@ slug: "could-not-afford-to-go-on"
 date: "2008-08-11T00:00:00+08:00"
 tags: ["日记"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 开始在ACM混日子了。

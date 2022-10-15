@@ -5,7 +5,7 @@ slug: "i-love-you-but-do-not-lose-self"
 date: "2011-12-03T00:00:00+08:00"
 tags: ["青春的彩虹"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 自从上大学以后，我越来越清晰的知道自己想要什么东西。

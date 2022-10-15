@@ -5,7 +5,7 @@ slug: "jsp-written-to-standardize-the"
 date: "2008-10-23T00:00:00+08:00"
 tags: ["java"]
 categories: ["coding"]
-Status: draft
+draft: true
 ---
 
 注册和查询的界面是写完了，界面还马虎凑合，也学到不一样的B/S开发经验

@@ -5,7 +5,7 @@ slug: "recently-kazakhstan"
 date: "2008-11-05T00:00:00+08:00"
 tags: ["日记"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 今个儿操作系统时候，坐在阿娇旁边，阿娇似乎感情也不顺利，两人互相开导了一会儿，倒发现她对感情挺有认识的。

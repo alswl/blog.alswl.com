@@ -5,7 +5,7 @@ slug: "a-bit-tired"
 date: "2009-03-07T00:00:00+08:00"
 tags: ["日记"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 其实最近也没做什么事情，可是就是觉得好累

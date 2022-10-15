@@ -5,7 +5,7 @@ slug: "i-want-to-write-a-diary"
 date: "2008-07-28T00:00:00+08:00"
 tags: ["日记"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 

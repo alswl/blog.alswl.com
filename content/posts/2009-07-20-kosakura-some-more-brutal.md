@@ -5,7 +5,7 @@ slug: "kosakura-some-more-brutal"
 date: "2009-07-20T00:00:00+08:00"
 tags: ["娱乐", "动漫"]
 categories: ["fun"]
-Status: draft
+draft: true
 ---
 
 最近在复习火影，删去了所有枝节任务，看主线动画。

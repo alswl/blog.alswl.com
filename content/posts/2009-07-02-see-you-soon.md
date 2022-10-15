@@ -5,7 +5,7 @@ slug: "see-you-soon"
 date: "2009-07-02T00:00:00+08:00"
 tags: ["日记", "cinderella"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 再见，再见面。

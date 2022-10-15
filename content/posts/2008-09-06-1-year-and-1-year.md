@@ -5,7 +5,7 @@ slug: "1-year-and-1-year"
 date: "2008-09-06T00:00:00+08:00"
 tags: ["青春的彩虹"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 大学已经过去两年了。

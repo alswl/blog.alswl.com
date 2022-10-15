@@ -5,7 +5,7 @@ slug: "statistics-note"
 date: "2019-08-23T08:20:09+08:00"
 tags: [""]
 categories: [""]
-Status: draft
+draft: true
 ---
 
 读书目的：

@@ -5,7 +5,7 @@ slug: "went-to-the-winter-vacation"
 date: "2009-01-10T00:00:00+08:00"
 tags: ["日记"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 以前回家都不带书，现在感觉到自己欠缺，回家时候，包里多了两本书：《UML和模式应用》Larman的，《The art of computer

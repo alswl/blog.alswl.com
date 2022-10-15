@@ -5,7 +5,7 @@ slug: "ds-the-art-of-cooking-2-potato-wire-have-been-strongly-recommended-prince
 date: "2008-01-22T00:00:00+08:00"
 tags: ["美食|烹饪"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉```

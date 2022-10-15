@@ -5,7 +5,7 @@ slug: "hava-a-rest"
 date: "2009-09-06T00:00:00+08:00"
 tags: ["日记"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 呃，终于辞职了```

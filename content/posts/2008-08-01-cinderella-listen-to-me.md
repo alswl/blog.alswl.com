@@ -5,7 +5,7 @@ slug: "cinderella-listen-to-me"
 date: "2008-08-01T00:00:00+08:00"
 tags: ["青春的彩虹"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 以前一直觉得自己做了很多，今天和同学一聊，才发现自己这么不足，真的很容易情绪化。

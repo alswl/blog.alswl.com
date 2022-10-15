@@ -5,7 +5,7 @@ slug: "natural-feeling"
 date: "2008-08-13T00:00:00+08:00"
 tags: ["青春的彩虹"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 今个儿在00的点名里，问及追求

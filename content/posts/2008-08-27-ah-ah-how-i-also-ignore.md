@@ -5,7 +5,7 @@ slug: "ah-ah-how-i-also-ignore"
 date: "2008-08-27T00:00:00+08:00"
 tags: ["青春的彩虹", "cinderella"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 啊~~~~受不了了~~~~

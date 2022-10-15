@@ -5,7 +5,7 @@ slug: "compromise"
 date: "2008-08-19T00:00:00+08:00"
 tags: ["青春的彩虹", "cinderella"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 好奇怪的人呢，如果你给了我希望，我就会越来越贪婪，想去拥有你，而如果你不搭理我，对我冷冷的，我又退缩了，只守着自己小小的希冀。

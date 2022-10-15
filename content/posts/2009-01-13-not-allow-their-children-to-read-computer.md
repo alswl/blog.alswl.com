@@ -5,7 +5,7 @@ slug: "not-allow-their-children-to-read-computer"
 date: "2009-01-13T00:00:00+08:00"
 tags: ["日记"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 记得自己刚读计算机时候，一位亲戚说道，他的某位计算机专业同学一直很忙，忙着学习，忙着充电，我当时不以为然

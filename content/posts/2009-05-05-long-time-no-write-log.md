@@ -5,7 +5,7 @@ slug: "long-time-no-write-log"
 date: "2009-05-05T00:00:00+08:00"
 tags: ["日记"]
 categories: ["life"]
-Status: draft
+draft: true
 ---
 
 好久没写东西了
