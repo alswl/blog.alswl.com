@@ -4,7 +4,6 @@ slug: "microlog"
 author: "alswl"
 date: "2012-05-14T21:21:00+08:00"
 type: "page"
-menu: "main"
 ---
 
 ## 2011-07 ##
