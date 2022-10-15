@@ -7,7 +7,7 @@ tags: ["综合技术", "正则表达式"]
 categories: ["coding"]
 ---
 
-这文是上个月开始写的，本来想深入的分析一下零宽断言，可惜工作一直忙，现在又要去转战**DWR**...OMG~~
+这文是上个月开始写的，本来想深入的分析一下零宽断言，可惜工作一直忙，现在又要去转战**DWR**...OMG\~\~
 
 ## 起因
 
@@ -54,7 +54,8 @@ img/#comment-5968)
 ### Python下的实现和测试代码
 
     
-    import re
+```
+import re
 
 def fun(p, datas):
 
@@ -73,24 +74,17 @@ datas = ['asss13336644ss', 'aas15151515ss', 'aa15151515sss',
 'aa15151511ssss']
 
 fun(p, datas)
+```
 
 恩，问题解决了，不过，如果想把零宽断言彻底搞清楚，还需要深入学习一下～
 
 ## 深入零宽断言
 
-[正则表达式的零宽断言的一个小应用 - 楼兰之风... - 博客园
+[正则表达式的零宽断言的一个小应用 - 楼兰之风... - 博客园](http://www.cnblogs.com/xiehuiqi220/archive/2009/02/06/1385481.html)
 
-](http://www.cnblogs.com/xiehuiqi220/archive/2009/02/06/1385481.html)
+[正则表达式--零宽断言 - panhf2003的专栏 - CSDN博客](http://blog.csdn.net/panhf2003/archive/2008/11/19/3337163.aspx)
 
-[正则表达式--零宽断言 - panhf2003的专栏 - CSDN博客
+[正则表达式30分钟入门教程](http://deerchao.net/tutorials/regex/regex.htm)
 
-](http://blog.csdn.net/panhf2003/archive/2008/11/19/3337163.aspx)
-
-[正则表达式30分钟入门教程
-
-](http://deerchao.net/tutorials/regex/regex.htm)
-
-[Python正则表达式操作指南 - Ubuntu中文](http://wiki.ubuntu.org.cn/Python%E6%AD%A3%E5%88%9
-9%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97#.E5.8F.8D.E6.
-96.9C.E6.9D.A0.E7.9A.84.E9.BA.BB.E7.83.A6)
+[Python正则表达式操作指南 - Ubuntu中文](http://wiki.ubuntu.org.cn/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97#.E5.8F.8D.E6.96.9C.E6.9D.A0.E7.9A.84.E9.BA.BB.E7.83.A6)
 

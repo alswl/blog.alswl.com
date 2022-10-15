@@ -12,15 +12,17 @@ categories: ["coding"]
 
 增加圆角的部分如下：
 
-    
+```    
     -moz-border-radius: 10px;
     -khtml-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+```    
 
 修改之后的Mail To Commenter 模板如下
 
     
+```    
     <div style="border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 5pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);-moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; border-radius: 10px;">
       <p>Hi！<strong>%user%</strong>，你在 <strong>%post_title%</strong> 上的评论有了新回复</p>
     </div>
@@ -32,10 +34,12 @@ categories: ["coding"]
       <p>>> 查看原文，请至： <a href="%comment_link%" target="_blank">%comment_link%</a></p>
       <p style="float: right;"> ---- From <a target="_blank" href="%blog_link%/"><strong>%blog_name%</strong></a></p>
     </div>
+```    
     
 
 效果演示如下
 
+```    
 Hi！**%user%**，你在 **%post_title%** 上的评论有了新回复
 
 >>**你** 说：
@@ -49,7 +53,7 @@ Hi！**%user%**，你在 **%post_title%** 上的评论有了新回复
 >> 查看原文，请至： [%comment_link%](%comment_link%)
 
 ---- From [**%blog_name%**](%blog_link%/)
-
+```    
 
 
 一下是转载自胡戈戈的"[ CSS3圆角属性在Firefox,Chrome,Safari的实现 |
@@ -80,31 +84,30 @@ bottomleft`来设置。
 如果是单独设置四个角的话，需要采取这种方式
 
     
+```    
     -webkit-border-top-left-radius:5px 10px;
     -webkit-border-top-right-radius:5px 10px;
     -webkit-border-bottom-right-radius:5px 10px;
     -webkit-border-bottom-left-radius:5px 10px;
+```    
 
 如果是要合并的话，只支持`-webkit-border-radius:3px;`或者是这样子`-webkit-border-radius:3px
 4px;`**使用`-webkit-border-radius:5px 0 5px 0;`将不会有任何效果。**
 
 **著名皮肤制作人[utom](http://utombox.com/new-lastfm/)总结了圆角属性不同浏览器下的运用**
     
+```    
     -moz-border-radius: 5px;
     -khtml-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
+```    
 
 更多详细的请大家自己查看以下链接：
 
-[mozilla 和webkit的 CSS圆角](http://weibin.org/html/moz-border-radius-webkit-
-border-radius_28.html)
+[mozilla 和webkit的 CSS圆角](http://weibin.org/html/moz-border-radius-webkit-border-radius_28.html)
 
-[ https://developer.mozilla.org/en/CSS/-moz-border-
-radius](https://developer.mozilla.org/en/CSS/-moz-border-radius)
+[ https://developer.mozilla.org/en/CSS/-moz-border-radius](https://developer.mozilla.org/en/CSS/-moz-border-radius)
 
-[ apple_ref/doc/uid/TP30001266-webkit-border-bottom-left-radius](http://develo
-per.apple.com/documentation/AppleApplications/Reference/SafariCSSRef/Articles/
-StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266--webkit-border-
-bottom-left-radius)
+[ apple_ref/doc/uid/TP30001266-webkit-border-bottom-left-radius](http://developer.apple.com/documentation/AppleApplications/Reference/SafariCSSRef/Articles/StandardCSSProperties.html#//apple_ref/doc/uid/TP30001266--webkit-border-bottom-left-radius)
 
