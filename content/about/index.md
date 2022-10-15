@@ -3,6 +3,8 @@ title: "About"
 slug: "about"
 author: "alswl"
 date: "2012-05-14T21:21:00+08:00"
+type: "page"
+menu: "main"
 ---
 
 我是 alswl ，alswl 这个词来源于我小时候写的一部小说的主人公。

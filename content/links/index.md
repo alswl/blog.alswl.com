@@ -3,6 +3,8 @@ title: "友情链接"
 author: "alswl"
 date: "2012-05-15T17:33:00+08:00"
 slug: "links"
+type: "page"
+menu: "main"
 ---
 
 
