@@ -133,7 +133,7 @@ Excalidraw 是 SaaS 服务的免费版，<mark><b> Excalidraw+ 是付费版 </b>
 macOS 支持的中文手写体：
 
 -   [https://support.apple.com/zh-cn/HT212587](https://support.apple.com/zh-cn/HT212587)
--   [**macOS Monterey 附带的字体 - 官方 Apple 支持 (中国)**](https://support.apple.com/zh-cn/HT212587)
+-   [macOS Monterey 附带的字体 - 官方 Apple 支持 (中国)](https://support.apple.com/zh-cn/HT212587)
 
 cursive 家族
 
@@ -147,7 +147,7 @@ windows 中文支持手写体比较差劲，必须安装 Office 才有更多选�
 华文行楷；方正舒体；（Office）
 
 -   [https://www.zhihu.com/question/22703287](https://www.zhihu.com/question/22703287)
--   [**Windows 系统内置的中文字体为什么只有那几种？不多内置几种字体呢？ - 知乎 (zhihu.com)**](https://www.zhihu.com/question/22703287)
+-   [Windows 系统内置的中文字体为什么只有那几种？不多内置几种字体呢？ - 知乎 (zhihu.com)](https://www.zhihu.com/question/22703287)
 -   [https://zh.m.wikipedia.org/zh-hans/Microsoft_Windows字型列表](https://zh.m.wikipedia.org/zh-hans/Microsoft_Windows%E5%AD%97%E5%9E%8B%E5%88%97%E8%A1%A8)
 
 不行的话，只有系统自带的楷体 KaiTi 可以工作。
