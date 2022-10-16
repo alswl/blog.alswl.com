@@ -13,7 +13,7 @@ SITEMAP_URL = https://blog.alswl.com/sitemap.xml
 
 .PHONY: build-production
 build-production:
-	HUGO_ENV=production $(HUGO) --minify
+	HUGO_ENV=production $(HUGO)
 
 
 .PHONY: sync-images
