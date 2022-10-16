@@ -13,7 +13,7 @@ categories: ["life"]
 
 最后一次疯狂～
 
-![image](/images/upload_dropbox/201006/cinderella.JPG)
+![image](../../static/images/upload_dropbox/201006/cinderella.JPG)
 
 The Happy Ending
 

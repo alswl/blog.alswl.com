@@ -35,7 +35,7 @@ otype整合使用，作为低层库的角色出现，以提供处理各种核心
 
 Ext从2.x开始收费，这给他的应用前景带来一些问题。不过对国内开发人员的影响不大，毕竟是客户付款。
 
-> [![深入浅出 ExtJS](/images/upload_dropbox/200903/zcover.jpg)](http://www.china-pub.com/195152)
+> [![深入浅出 ExtJS](../../static/images/upload_dropbox/200903/zcover.jpg)](http://www.china-pub.com/195152)
 
 >
 

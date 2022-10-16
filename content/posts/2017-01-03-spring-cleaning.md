@@ -16,7 +16,7 @@ categories: ["coding"]
 
 大扫除需要做些什么呢，且听我一一道来。
 
-![201701/saber.jpeg](/images/upload_dropbox/201701/saber.jpeg)
+![201701/saber.jpeg](../../static/images/upload_dropbox/201701/saber.jpeg)
 
 PS: 冷知识，大扫除英文是 spring cleaning，所以春节大扫除是 Spring Festival spring cleaning。
 
@@ -82,7 +82,7 @@ TPS 、Latency 和 Capacity。
 这个按钮会清空内存数据，在飞行过程中被宇航员按了。幸亏美女工程师（下图）写了相关的救命手册，
 专门写了针对这种情况的操作，救了这些宇航员的命。
 
-![201701/sre.jpeg](/images/upload_dropbox/201701/sre.jpeg)
+![201701/sre.jpeg](../../static/images/upload_dropbox/201701/sre.jpeg)
 
 图片来自 「Google SRE」
 

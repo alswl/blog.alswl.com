@@ -17,9 +17,9 @@ replicator-mp3)。
 
 如果非要定义以下这个工具的作用，就是从某个固定文件夹（歌词文件夹）复制对应Mp3播放器中歌曲的lrc文件到目标文件夹，从而让Mp3播放器可以正常显示歌词。
 
-下载点击这里，[PLrcMatch4D.zip](/images/upload_dropbox/201103/PLrcMatch4D.zip)
+下载点击这里，[PLrcMatch4D.zip](../../static/images/upload_dropbox/201103/PLrcMatch4D.zip)
 
 界面比较实在，大致是这样：
 
-![image](/images/upload_dropbox/201103/plrcmatch4d.jpg)
+![image](../../static/images/upload_dropbox/201103/plrcmatch4d.jpg)
 

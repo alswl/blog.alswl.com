@@ -8,7 +8,7 @@ categories: ["coding"]
 ---
 
 
-![MoinMoin](/images/upload_dropbox/201112/moinmoin.png)
+![MoinMoin](../../static/images/upload_dropbox/201112/moinmoin.png)
 
 ## What's this ##
 

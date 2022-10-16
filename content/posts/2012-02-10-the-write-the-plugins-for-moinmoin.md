@@ -35,7 +35,7 @@ categories: ["coding"]
 
 MoinMoin的UML图：
 
-![MoinMoin](/images/upload_dropbox/201202/MoinMoinArchitecture.png)
+![MoinMoin](../../static/images/upload_dropbox/201202/MoinMoinArchitecture.png)
 
 ## 3. MoinMoin 常用对象
 

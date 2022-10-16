@@ -39,7 +39,7 @@ pluginfilemanagerconnectorsphpconfig.php`如下。其实就是声明一个变量
 
 呃，懒孩子们我就直接提供下载了。
 
-config.php文件下载：[fckeditor-for-wordpress-plugin_config.zip](/images/upload_dropbox/201003/fckeditor-for-wordpress-plugin_config.zip)
+config.php文件下载：[fckeditor-for-wordpress-plugin_config.zip](../../static/images/upload_dropbox/201003/fckeditor-for-wordpress-plugin_config.zip)
 
 看不懂的就算了～
 

@@ -15,7 +15,7 @@ categories: ["coding"]
 
 ----
 
-![201711/performance.jpg](/images/upload_dropbox/201711/performance_900.jpg)
+![201711/performance.jpg](../../static/images/upload_dropbox/201711/performance_900.jpg)
 
 USE 方法是一种能分析任何系统性能的方法论。
 我们可以根据能帮助系统分析的结构化清单，来迅速的定位资源的瓶颈和错误所在。
@@ -119,7 +119,7 @@ USE 方法对于在高利用率或高饱和度下，遭受性能退化、导致�
 这些显示了模块关系的图，在你查找数据流的瓶颈的时候是非常有用的，这里有一张Sun
 Fire V480 Guide(page 82)的例图：
 
-![201711/v480.png](/images/upload_dropbox/201711/v480.png)
+![201711/v480.png](../../static/images/upload_dropbox/201711/v480.png)
 
 我喜欢这些图表，尽管制作出它很难。
 不过，由硬件工程师来画这张图是最适合的-他们最善于做这类事。如果不信的话你可以自己试试。
@@ -243,7 +243,7 @@ CPU 限制和存储I / O限制。 所有这些资源限制，都可以使用USE 
 下面是用流程图 的方式画了 USE 方法的示意图。
 请注意，错误检查优先于利用率和饱和度检查（因为通常错误更快的表现出来，并更容易解释）。
 
-![201711/usemethod_flow.png](/images/upload_dropbox/201711/usemethod_flow.png)
+![201711/usemethod_flow.png](../../static/images/upload_dropbox/201711/usemethod_flow.png)
 
 USE 方法定位到的问题，可能是系统瓶颈。
 不幸的是，系统可能会遇到多个性能问题，因此您发现的第一个可能的问题最终却不是个问题。
@@ -262,7 +262,7 @@ USE 方法定位到的问题，可能是系统瓶颈。
 USE 方法提供了一个简单的流程来尝试第一步是寻找一个资源列表，或者更理想的话，找到一个功能模块图表。我在
 【Lunar Module - LM10 Through LM14 Familiarization Manual】中发现了以下内容：
 
-![201711/apollo_LM_guidance.png](/images/upload_dropbox/201711/apollo_LM_guidance.png)
+![201711/apollo_LM_guidance.png](../../static/images/upload_dropbox/201711/apollo_LM_guidance.png)
 
 这些组件中的一部分可能未表现出利用率或饱和度特性。在迭代后，
 就可以重新绘制只包含相关组件的图表（还可以包括："可擦除存储"部分的内存，"核心区域"和 "vac区域 "寄存器）。

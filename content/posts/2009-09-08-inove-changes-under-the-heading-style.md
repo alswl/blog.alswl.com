@@ -14,12 +14,12 @@ categories: ["coding"]
 看看一般的heading，下图是LightWord的
 
 [caption id="attachment_12635" align="alignnone" width="250"
-caption="lightWord的heading"][![7color的heading](/images/upload_dropbox/200909/7colorHeading.jpg)](/images/upload_dropbox/200909/7colorHeading.jpg)[/caption]
+caption="lightWord的heading"][![7color的heading](../../static/images/upload_dropbox/200909/7colorHeading.jpg)](../../static/images/upload_dropbox/200909/7colorHeading.jpg)[/caption]
 
 再看看iNove的
 
 [caption id="attachment_12636" align="alignnone" width="200"
-caption="iNove的Heading"][![iNove的Heading](/images/upload_dropbox/200909/iNoveHeading.jpg)](/images/upload_dropbox/200909/iNoveHeading.jpg)[/caption]
+caption="iNove的Heading"][![iNove的Heading](../../static/images/upload_dropbox/200909/iNoveHeading.jpg)](../../static/images/upload_dropbox/200909/iNoveHeading.jpg)[/caption]
 
 iNove的文章内容Heading CSS和主题的Heading混合在一起，非常不雅观。我稍作修改，在iNove的style.css最后加上一些样式。
 

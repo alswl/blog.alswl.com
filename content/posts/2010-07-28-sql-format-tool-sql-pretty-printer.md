@@ -20,11 +20,11 @@ Studio是不自带代码格式化功能的，这让我用起来很郁闷，PL/SQ
 我在那个在线网站看到了Desktop Version的菜单，进去一看，哦，原来这个网站本身就在做一款SQL格式化工具的产品，叫做 SQL Pretty
 Printer。
 
-[![image](/images/upload_dropbox/201007/spp_app.jpg)](/images/upload_dropbox/201007/spp_app.jpg)
+[![image](../../static/images/upload_dropbox/201007/spp_app.jpg)](../../static/images/upload_dropbox/201007/spp_app.jpg)
 
 SQL Pretty Printer 的桌面版本
 
-![image](/images/upload_dropbox/201007/spp_code.jpg)
+![image](../../static/images/upload_dropbox/201007/spp_code.jpg)
 
 格式化好之后的代码
 
@@ -33,15 +33,15 @@ SQL Pretty Printer 的桌面版本
 SQL Pretty Printer目前提供4种使用方式，桌面版本，SSMS(SQL Server Management
 Studio)插件，VS插件，和提供API接口。
 
-[![image](/images/upload_dropbox/201007/spp_ssms.jpg)](/images/upload_dropbox/201007/spp_ssms.jpg)
+[![image](../../static/images/upload_dropbox/201007/spp_ssms.jpg)](../../static/images/upload_dropbox/201007/spp_ssms.jpg)
 
 SSMS(SQL Server Management Studio)插件版本
 
-![image](/images/upload_dropbox/201007/spp2code.jpg)
+![image](../../static/images/upload_dropbox/201007/spp2code.jpg)
 
 可以将SQL转化成代码格式，支持数种语言
 
-![image](/images/upload_dropbox/201007/spp2html.jpg)
+![image](../../static/images/upload_dropbox/201007/spp2html.jpg)
 
 可以将SQL转化成HTML格式
 

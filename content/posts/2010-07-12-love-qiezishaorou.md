@@ -19,7 +19,7 @@ categories: ["life"]
 
 红烧肉是昨天在老妈指导下完成的，等下次我亲手实施时候再上详细流程。若没有红烧肉，素炒茄子一样可口。
 
-![image](/images/upload_dropbox/201007/qiezirou1.jpg)
+![image](../../static/images/upload_dropbox/201007/qiezirou1.jpg)
 
 ## 2.流程
 
@@ -35,7 +35,7 @@ categories: ["life"]
 
 我只用了一根茄子，量太少了，蔬菜是会缩水的~~~
 
-![image](/images/upload_dropbox/201007/qiezirou2.jpg)
+![image](../../static/images/upload_dropbox/201007/qiezirou2.jpg)
 
 ## 4.推介一道夏日主食
 
@@ -43,9 +43,9 @@ categories: ["life"]
 
 虽然叫白米粥，但其实是黄色的，做法是把生米放到锅里抄，至金黄色起锅。食用时候直接用煮粥方式煮一会。早晨煮一锅，多盛几碗，可以吃一天哦。方便又好吃。
 
-![image](/images/upload_dropbox/201007/mi1.jpg)
+![image](../../static/images/upload_dropbox/201007/mi1.jpg)
 
 我妈给我带来一大罐子，可以吃好久呢~
 
-![image](/images/upload_dropbox/201007/mi2.jpg)
+![image](../../static/images/upload_dropbox/201007/mi2.jpg)
 

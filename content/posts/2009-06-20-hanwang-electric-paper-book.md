@@ -9,7 +9,7 @@ categories: ["internet"]
 
 偶尔看到一个广告，汉王电纸书，好奇心驱使之下点到汉王主页查看该产品。
 
-![image](/images/upload_dropbox/201612/404.png)
+![image](../../static/images/upload_dropbox/201612/404.png)
 
 看了它的介绍：无非是可以看看书，浏览一下图片和MP3，内置内存320MB，使用E-Ink公司的电子油墨技术，耗电量很小。
 

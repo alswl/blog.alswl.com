@@ -14,7 +14,7 @@ draft: true
 
 无图无真相，上图：
 
-[![naruto_xiaoyin_cubao](/images/upload_dropbox/200907/snapshot20090720180858.jpg)](/images/upload_dropbox/200907/snapshot20090720180858.jpg)
+[![naruto_xiaoyin_cubao](../../static/images/upload_dropbox/200907/snapshot20090720180858.jpg)](../../static/images/upload_dropbox/200907/snapshot20090720180858.jpg)
 
 好，我承认，我邪恶了……
 

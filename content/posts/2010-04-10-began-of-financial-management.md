@@ -7,7 +7,7 @@ tags: ["学海无涯", "理财"]
 categories: ["thinking"]
 ---
 
-![image](/images/upload_dropbox/201612/404.png)
+![image](../../static/images/upload_dropbox/201612/404.png)
 
 人的一生对应着各种理财周期，青年单身期 -> 家庭形成期 -> 家庭成长期 -> 子女教育期 -> 家庭成熟期 -> 退休养老期。我现在处在第一个阶段青年单
 身期，拥有了自己第一份工作，需要对自己的财富进行管理，掌握自己的经济状况（至少知道有没有欠一屁股债）。这几天也学习了一些理财的理念，下面简单总结一下理财的基
@@ -50,7 +50,7 @@ categories: ["thinking"]
 
 同事王大人推荐了一款理财软件-家财通，可以精细的对家庭理财进行管理。试用之后，赞不绝口，平时甚少喜欢单机程序的我也用的很喜欢。
 
-[![image](/images/upload_dropbox/201004/m3homepage.jpg)](/images/upload_dropbox/201004/m3homepage.jpg)
+[![image](../../static/images/upload_dropbox/201004/m3homepage.jpg)](../../static/images/upload_dropbox/201004/m3homepage.jpg)
 
 以上大部分理财理念内容来自软件附带的一个《理财宝典》，里面还有很多更详细的内容，大家可以试用一下。
 

@@ -7,7 +7,7 @@ tags: ["dotnet", "asp.net"]
 categories: ["coding"]
 ---
 
-![image](/images/upload_dropbox/201612/404.png)
+![image](../../static/images/upload_dropbox/201612/404.png)
 
 某个系统，检查用户照片，如果发现用户并没有设定照片就返回一张No Photo的图片。
 

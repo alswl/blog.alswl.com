@@ -86,12 +86,12 @@ echo -n 'H4sIAMLFCF4AA4VTQY7DMAi85xW8YB+QU79iRVETKdk9pGp75MDBL+gD9yW7rQ0MTqpKdhR
 
 欢迎关注我的微信公众号：窥豹
 
-![Wechat](/images/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg)
+![Wechat](../../static/images/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg)
 
 
 ## 文章版权声明
 
-[![Creative Commons License](/images/upload_dropbox/temp/cc-by-nc-nd.png)](http://creativecommons.org/licenses/by-nc-nd/4.0/)
+[![Creative Commons License](../../static/images/upload_dropbox/temp/cc-by-nc-nd.png)](http://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 This work is licensed under a [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License](http://creativecommons.org/licenses/by-nc-nd/4.0/).
 

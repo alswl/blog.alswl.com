@@ -7,7 +7,7 @@ tags: ["java", "book", "javase"]
 categories: ["coding"]
 ---
 
-[![Java JDK6学习笔记](/images/upload_dropbox/200911/s2518833.jpg)](http://img3.doubanio.com/lpic/s2518833.jpg)
+[![Java JDK6学习笔记](../../static/images/upload_dropbox/200911/s2518833.jpg)](http://img3.doubanio.com/lpic/s2518833.jpg)
 
 《Java JDK6学习笔记》(via [豆瓣](http://www.douban.com/subject/2057790/)，via
 [ChinaPub](http://www.china-pub.com/34512&ref=ps))是我最近在看的一本书。虽然名为Java学习笔记，其实**

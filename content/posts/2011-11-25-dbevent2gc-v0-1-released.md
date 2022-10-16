@@ -18,7 +18,7 @@ categories: ["coding"]
 
 请订阅我博客的朋友更新一下订阅地址。
 
-![dbevent2gc](/images/upload_dropbox/201111/dbevent2gc.png)
+![dbevent2gc](../../static/images/upload_dropbox/201111/dbevent2gc.png)
 
 ## 关于dbevent2gc
 

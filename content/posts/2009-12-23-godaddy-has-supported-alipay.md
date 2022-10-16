@@ -17,7 +17,7 @@ categories: ["coding"]
 
 有图有真像
 
-![image](/images/upload_dropbox/200912/godaddy_alipay.jpg)
+![image](../../static/images/upload_dropbox/200912/godaddy_alipay.jpg)
 
 我犀利了，应该是今天下午开始支持的。
 

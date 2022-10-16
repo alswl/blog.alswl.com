@@ -95,7 +95,7 @@ end.
 
 从上面的代码可以看出，XUnit系列风格都比较类似，很容易操作。
 
-[![image](/images/upload_dropbox/201001/dunit.jpg)](/images/upload_dropbox/201001/dunit.jpg)
+[![image](../../static/images/upload_dropbox/201001/dunit.jpg)](../../static/images/upload_dropbox/201001/dunit.jpg)
 
 DUnit还有一些更高阶的操作，比如在控制台输出/在独立线程中运行测试/Exception测试等等，详细操作可以参考下列文档。目前我用到的就是简单的单元测试
 。

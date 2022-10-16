@@ -12,12 +12,12 @@ d.com/2009/07/chinese-theme-wordpress)》
 
 ### Fusion:
 
-![Fusion](/images/upload_dropbox/200908/screenshot.png)
+![Fusion](../../static/images/upload_dropbox/200908/screenshot.png)
 汉化了82%，其他一些文字我不知道怎么表达，而且似乎界面上用的不多，基本上已经可以用了。
 
 ### 汉化文件：
 
-[Fusion汉化文件](/images/upload_dropbox/200908/lang.rar)
+[Fusion汉化文件](../../static/images/upload_dropbox/200908/lang.rar)
 
 ### 使用方法：
 

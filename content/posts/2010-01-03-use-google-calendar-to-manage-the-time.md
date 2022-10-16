@@ -33,14 +33,14 @@ Calendar。（实现GTD其实也不一定需要这么复杂的工具，有时候
 [http://www.google.com/calendar](http://www.google.com/calendar)
 ，刚进入可以看到月视图。Google的产品一向简洁大方，从这张图之中就可以看到大部分的功能了。
 
-[![Google日历的月视图](/images/2009/11/google_calendar_m.jpg) ](/images/upload_dropbox/200911/google_calendar_m.jpg)
+[![Google日历的月视图](../../static/images/2009/11/google_calendar_m.jpg) ](../../static/images/upload_dropbox/200911/google_calendar_m.jpg)
 
 Google日历的月视图
 
 点击右上角的视图切换可以切换**日**、**周**、**月**、**四天**、**日程**，我比较喜欢在月视图使用，如果日程过多，周视图也是一个不错的选择。
 切换到日程视图，可以看到最近时间段的主要事件。
 
-[![Google日历的周视图，日视图与这个类似](/images/upload_dropbox/200911/google_calendar_w.jpg) ](/images/2009/11/google_calendar_w.jpg)
+[![Google日历的周视图，日视图与这个类似](../../static/images/upload_dropbox/200911/google_calendar_w.jpg) ](../../static/images/2009/11/google_calendar_w.jpg)
 
 Google日历的周视图，日视图与这个类似
 
@@ -49,7 +49,7 @@ Out**三种提醒方式（我没用过Popout这个功能，不太明白什么意
 
 点击某一个事件，会出来详细的内容，包括名称、时间、地点（地点提供Google Map查询呢）。
 
-[![某个项目详情（为什么不在这里显示备注呢？！）](/images/2009/11/google_calendar_detail.jpg) ](/images/upload_dropbox/200911/google_calendar_detail.jpg)
+[![某个项目详情（为什么不在这里显示备注呢？！）](../../static/images/2009/11/google_calendar_detail.jpg) ](../../static/images/upload_dropbox/200911/google_calendar_detail.jpg)
 
 某个项目详情（为什么不在这里显示说明呢？！）
 

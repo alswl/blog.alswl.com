@@ -16,7 +16,7 @@ categories: ["efficiency"]
 
 上图：
 
-[![firefoxinsogou](/images/upload_dropbox/200911/firefoxinsogou.jpg)](/images/upload_dropbox/200911/firefoxinsogou.jpg)
+[![firefoxinsogou](../../static/images/upload_dropbox/200911/firefoxinsogou.jpg)](../../static/images/upload_dropbox/200911/firefoxinsogou.jpg)
 
 *********************************正文终于开始拉**********************************
 

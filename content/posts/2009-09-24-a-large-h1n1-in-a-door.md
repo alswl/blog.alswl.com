@@ -16,13 +16,13 @@ categories: ["viewpoint"]
 
 下面上几张图片。
 
-[![20090924(002)](/images/upload_dropbox/200909/20090924002.jpg)](/images/upload_dropbox/200909/20090924002.jpg)
+[![20090924(002)](../../static/images/upload_dropbox/200909/20090924002.jpg)](../../static/images/upload_dropbox/200909/20090924002.jpg)
 隐约能看到外面很多移动饭店，现在卖饭的只能派专员在门口蹲点服务。机灵的已经把「菜单」挂到小门上了。
 
-[![20090924](/images/upload_dropbox/200909/20090924.jpg)](/images/upload_dropbox/200909/20090924.jpg)
+[![20090924](../../static/images/upload_dropbox/200909/20090924.jpg)](../../static/images/upload_dropbox/200909/20090924.jpg)
 现在刚下课，还不是最高峰，很多人看了一眼，感觉人太多就犹豫了。
 
-[![20090924(001)](/images/upload_dropbox/200909/20090924001.jpg)](/images/upload_dropbox/200909/20090924001.jpg) 横幅是：台湾小吃：XX肉扣夹膜
+[![20090924(001)](../../static/images/upload_dropbox/200909/20090924001.jpg)](../../static/images/upload_dropbox/200909/20090924001.jpg) 横幅是：台湾小吃：XX肉扣夹膜
 
-[![20090924(003)](/images/upload_dropbox/200909/20090924003.jpg)](/images/upload_dropbox/200909/20090924003.jpg) 门口的告示，门卫在预防同学翻墙。
+[![20090924(003)](../../static/images/upload_dropbox/200909/20090924003.jpg)](../../static/images/upload_dropbox/200909/20090924003.jpg) 门口的告示，门卫在预防同学翻墙。
 
