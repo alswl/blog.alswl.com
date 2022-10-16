@@ -1,45 +1,18 @@
 # blog.alswl.com
 
-https://blog.alswl.com/
-https://www.zhihu.com/column/alswl
-https://www.jianshu.com/u/90d9cec0f932
+- https://blog.alswl.com/
+- https://www.zhihu.com/column/alswl
+- https://www.jianshu.com/u/90d9cec0f932
 
 This is my blog.
 
-*   pelicanconf.py for preview
-*   publishconf.py for product
-
 ## Command
 
-Init:
-
 ```
-mkvirtualenv -p /usr/local/bin/python3 blog.alswl.com
-pip install -r requirements.txt
-pelican-themes -U $HOME/dev/myproject/pelican-bootstrap3
+hugo serve -D
+hugo
+hugo new posts/new.md
 ```
-
-
-- `fab new_post:'new post name'`  # new post
-- `fab build`  # build for local
-- `fab server`  # run in localhost
-- `fab publish`  # deploy to remote
-
-
-```
-make name="your post name" new_post
-
-make regenerate
-make devserver
-open http://127.0.0.1:8000/
-
-make coding
-```
-
-## TODO
-
-- Fix indent of pelican must use four space.
-
 
 ## Tips
 
@@ -69,6 +42,7 @@ cat content/some-md.md | pandoc -f markdown_mmd -t gfm --wrap=none | pbcopy
 ```
 
 <del>Wechat mp link process</del>
+using
 [微信 Markdown 编辑器 | Doocs 开源社区](https://doocs.gitee.io/md/):
 
 
