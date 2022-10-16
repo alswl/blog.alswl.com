@@ -1,44 +1,515 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>在Python中调试代码 | Log4D</title><meta name=keywords content="python,ipdb,paster,pdb,pylons"><meta name=description content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>在Python中调试代码 | Log4D</title>
+<meta name="keywords" content="python, ipdb, paster, pdb, pylons">
+<meta name="description" content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。
 吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。
 在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。
 import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。
 参考链接：
 用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。
 安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。
-ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core."><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2012/03/python-debug/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
-<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="在Python中调试代码"><meta property="og:description" content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。
+ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core.">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2012/03/python-debug/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="在Python中调试代码" />
+<meta property="og:description" content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。
 吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。
 在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。
 import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。
 参考链接：
 用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。
 安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。
-ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2012/03/python-debug/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2012-03-20T00:00:00+08:00"><meta property="article:modified_time" content="2012-03-20T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="在Python中调试代码"><meta name=twitter:description content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。
+ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2012/03/python-debug/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2012-03-20T00:00:00+08:00" />
+<meta property="article:modified_time" content="2012-03-20T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在Python中调试代码"/>
+<meta name="twitter:description" content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。
 吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。
 在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。
 import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。
 参考链接：
 用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。
 安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。
-ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"在Python中调试代码","item":"https://blog.alswl.com/2012/03/python-debug/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"在Python中调试代码","name":"在Python中调试代码","description":"撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。\n吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。\n在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。\nimport pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。\n参考链接：\n用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。\n安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。\nps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core.","keywords":["python","ipdb","paster","pdb","pylons"],"articleBody":"撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。\n吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。\n在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。\nimport pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。\n参考链接：\n用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。\n安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。\nps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core.debugger 错误，请尝试使用 ipython 0.10 或者更新版本。这个错误在 ipdb 官网有 issue 描述 （link）。\n使用 embed python shell 除了特定代码的调试，有时候我们还需要在开发一个功能之前进行尝试性代码撰写， 这点在 web 开发时候尤其有用。托 Python 动态语言特性的福，我们可以很方便的使用 Interactivate Shell 进行开发。\n在项目的根目录建立一个 Python 脚本，比如 shell.py ，其中代码如下：\n#!/usr/bin/env python #coding=utf-8 desc: 这个shell提供Python上下文环境，方便调试 author: alswl date: 2012-03-20 def main():\nDo something for init here. try:\nfrom IPython.frontend.terminal.embed import InteractiveShellEmbed\nipshell = InteractiveShellEmbed()\nipshell()\nexcept ImportError:\nimport code\npyshell = code.InteractiveConsole(locals=locals())\npyshell.interact()\nif name == ‘main’:\nmain()\n这段代码先尝试使用 IPython 作为交互 shell，如果没有安装就使用原生 Python 作为 交互 Shell。(强烈建议使用 IPython)。\n请在 main() 方法开始时候做一些初始化动作，比如载入 webapp 的实例并初始化各路config， 这样就能实现即时代码测试功能，提高开发效率，不用一遍遍地跑流程。\n参考链接\nhttp://qixinglu.com/archives/embed_python_shell_in_code （注意， 这篇文章是2011年的，其中引入 IPython 的 InteractiveShellEmbed 的方法已经过期，请参考上面的代码） GAE 中的 pdb 有一些特定系统，比如 GAE 和 nosetests，他们会重定向 std:in 和 std:out ， 造成 pdb 无法正确输入和输出，在使用的使用，需要用以下代码做个 hack。\nimport sys import pdb for attr in ('stdin', 'stdout', 'stderr'): setattr(sys, attr, getattr(sys, '__%s__' % attr)) pdb.set_trace() Pylons 调试 Paster 的 Shell 交互式调试更显犀利（官方所称杀手级功能）， 可以直接使用 paster shell dev.ini 命令启用交互界面，默认会先尝试载入 IPython，不存在就载入原生 Shell。\n我当前使用的 Paster 版本为 1.7.5,无法正确识 IPython 0.11及以上版本， 请使用0.9.1或者0.10。\n参考链接：\nHow can I use “paster shell” to develop doctest tests? stackoverflow 上关于 IPython 版本的问题 ","wordCount":"230","inLanguage":"en","datePublished":"2012-03-20T00:00:00+08:00","dateModified":"2012-03-20T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2012/03/python-debug/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>在Python中调试代码</h1><div class=post-meta><span title='2012-03-20 00:00:00 +0800 +0800'>2012-03-20</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#在-python-中调试>在 Python 中调试</a><ul><li><a href=#pdb>pdb</a></li><li><a href=#ipdb>ipdb</a></li><li><a href=#使用-embed-python-shell>使用 embed python shell</a></li></ul></li></ul><ul><li><ul><li><a href=#gae-中的-pdb>GAE 中的 pdb</a></li></ul></li><li><a href=#pylons-调试>Pylons 调试</a></li></ul></nav></div></details></div><div class=post-content><p>撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons
-开发的调试技巧。</p><p>吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程，
-绝对不是简单的复制和粘帖。</p><h2 id=在-python-中调试>在 Python 中调试<a hidden class=anchor aria-hidden=true href=#在-python-中调试>#</a></h2><h3 id=pdb>pdb<a hidden class=anchor aria-hidden=true href=#pdb>#</a></h3><p>在代码中加入下列语句即可启用交互式调试。</p><pre><code>import pdb;pdb.set_trace()
-</code></pre><p>在 pdb 中，可以使用 <code>h / l / b / n / s / c / j / a / p / ! / q</code> 这些命令所代表的含义可以通过
-<code>h(elp)</code> 打印出来。</p><p>参考链接：</p><ul><li><a href=http://magustest.com/blog/python/use-pdb-debug-python/comment-page-1>用PDB库调试Python程序</a></li></ul><h3 id=ipdb>ipdb<a hidden class=anchor aria-hidden=true href=#ipdb>#</a></h3><p>比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。</p><p>安装 ipdb: <code>easy_install ipdb</code> ， 使用方法依然是 <code>import ipdb;ipdb.set_trace()</code> 。</p><p>ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 <code>ImportError: No module named core.debugger</code> 错误，请尝试使用 ipython 0.10 或者更新版本。这个错误在 ipdb 官网有 issue 描述
-（<a href=https://github.com/gotcha/ipdb/issues/9>link</a>）。</p><h3 id=使用-embed-python-shell>使用 embed python shell<a hidden class=anchor aria-hidden=true href=#使用-embed-python-shell>#</a></h3><p>除了特定代码的调试，有时候我们还需要在开发一个功能之前进行尝试性代码撰写， 这点在 web 开发时候尤其有用。托 Python
-动态语言特性的福，我们可以很方便的使用 Interactivate Shell 进行开发。</p><p>在项目的根目录建立一个 Python 脚本，比如 <code>shell.py</code> ，其中代码如下：</p><pre><code>#!/usr/bin/env python
+ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "在Python中调试代码",
+      "item": "https://blog.alswl.com/2012/03/python-debug/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "在Python中调试代码",
+  "name": "在Python中调试代码",
+  "description": "撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。\n吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。\n在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。\nimport pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。\n参考链接：\n用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。\n安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。\nps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core.",
+  "keywords": [
+    "python", "ipdb", "paster", "pdb", "pylons"
+  ],
+  "articleBody": "撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。\n吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。\n在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。\nimport pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。\n参考链接：\n用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。\n安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。\nps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core.debugger 错误，请尝试使用 ipython 0.10 或者更新版本。这个错误在 ipdb 官网有 issue 描述 （link）。\n使用 embed python shell 除了特定代码的调试，有时候我们还需要在开发一个功能之前进行尝试性代码撰写， 这点在 web 开发时候尤其有用。托 Python 动态语言特性的福，我们可以很方便的使用 Interactivate Shell 进行开发。\n在项目的根目录建立一个 Python 脚本，比如 shell.py ，其中代码如下：\n#!/usr/bin/env python #coding=utf-8 desc: 这个shell提供Python上下文环境，方便调试 author: alswl date: 2012-03-20 def main():\nDo something for init here. try:\nfrom IPython.frontend.terminal.embed import InteractiveShellEmbed\nipshell = InteractiveShellEmbed()\nipshell()\nexcept ImportError:\nimport code\npyshell = code.InteractiveConsole(locals=locals())\npyshell.interact()\nif name == ‘main’:\nmain()\n这段代码先尝试使用 IPython 作为交互 shell，如果没有安装就使用原生 Python 作为 交互 Shell。(强烈建议使用 IPython)。\n请在 main() 方法开始时候做一些初始化动作，比如载入 webapp 的实例并初始化各路config， 这样就能实现即时代码测试功能，提高开发效率，不用一遍遍地跑流程。\n参考链接\nhttp://qixinglu.com/archives/embed_python_shell_in_code （注意， 这篇文章是2011年的，其中引入 IPython 的 InteractiveShellEmbed 的方法已经过期，请参考上面的代码） GAE 中的 pdb 有一些特定系统，比如 GAE 和 nosetests，他们会重定向 std:in 和 std:out ， 造成 pdb 无法正确输入和输出，在使用的使用，需要用以下代码做个 hack。\nimport sys import pdb for attr in ('stdin', 'stdout', 'stderr'): setattr(sys, attr, getattr(sys, '__%s__' % attr)) pdb.set_trace() Pylons 调试 Paster 的 Shell 交互式调试更显犀利（官方所称杀手级功能）， 可以直接使用 paster shell dev.ini 命令启用交互界面，默认会先尝试载入 IPython，不存在就载入原生 Shell。\n我当前使用的 Paster 版本为 1.7.5,无法正确识 IPython 0.11及以上版本， 请使用0.9.1或者0.10。\n参考链接：\nHow can I use “paster shell” to develop doctest tests? stackoverflow 上关于 IPython 版本的问题 ",
+  "wordCount" : "230",
+  "inLanguage": "en",
+  "datePublished": "2012-03-20T00:00:00+08:00",
+  "dateModified": "2012-03-20T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2012/03/python-debug/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      在Python中调试代码
+    </h1>
+    <div class="post-meta"><span title='2012-03-20 00:00:00 +0800 +0800'>2012-03-20</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#在-python-中调试">在 Python 中调试</a>
+      <ul>
+        <li><a href="#pdb">pdb</a></li>
+        <li><a href="#ipdb">ipdb</a></li>
+        <li><a href="#使用-embed-python-shell">使用 embed python shell</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#gae-中的-pdb">GAE 中的 pdb</a></li>
+      </ul>
+    </li>
+    <li><a href="#pylons-调试">Pylons 调试</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons
+开发的调试技巧。</p>
+<p>吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程，
+绝对不是简单的复制和粘帖。</p>
+<h2 id="在-python-中调试">在 Python 中调试<a hidden class="anchor" aria-hidden="true" href="#在-python-中调试">#</a></h2>
+<h3 id="pdb">pdb<a hidden class="anchor" aria-hidden="true" href="#pdb">#</a></h3>
+<p>在代码中加入下列语句即可启用交互式调试。</p>
+<pre><code>import pdb;pdb.set_trace()
+</code></pre>
+<p>在 pdb 中，可以使用 <code>h / l / b / n / s / c / j / a / p / ! / q</code> 这些命令所代表的含义可以通过
+<code>h(elp)</code> 打印出来。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="http://magustest.com/blog/python/use-pdb-debug-python/comment-page-1">用PDB库调试Python程序</a></li>
+</ul>
+<h3 id="ipdb">ipdb<a hidden class="anchor" aria-hidden="true" href="#ipdb">#</a></h3>
+<p>比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。</p>
+<p>安装 ipdb: <code>easy_install ipdb</code> ， 使用方法依然是 <code>import ipdb;ipdb.set_trace()</code> 。</p>
+<p>ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 <code>ImportError: No module named core.debugger</code> 错误，请尝试使用 ipython 0.10 或者更新版本。这个错误在 ipdb 官网有 issue 描述
+（<a href="https://github.com/gotcha/ipdb/issues/9">link</a>）。</p>
+<h3 id="使用-embed-python-shell">使用 embed python shell<a hidden class="anchor" aria-hidden="true" href="#使用-embed-python-shell">#</a></h3>
+<p>除了特定代码的调试，有时候我们还需要在开发一个功能之前进行尝试性代码撰写， 这点在 web 开发时候尤其有用。托 Python
+动态语言特性的福，我们可以很方便的使用 Interactivate Shell 进行开发。</p>
+<p>在项目的根目录建立一个 Python 脚本，比如 <code>shell.py</code> ，其中代码如下：</p>
+<pre><code>#!/usr/bin/env python
 #coding=utf-8
-</code></pre><h1 id=desc-这个shell提供python上下文环境方便调试>desc: 这个shell提供Python上下文环境，方便调试<a hidden class=anchor aria-hidden=true href=#desc-这个shell提供python上下文环境方便调试>#</a></h1><h1 id=author-alswl>author: alswl<a hidden class=anchor aria-hidden=true href=#author-alswl>#</a></h1><h1 id=date-2012-03-20>date: 2012-03-20<a hidden class=anchor aria-hidden=true href=#date-2012-03-20>#</a></h1><p>def main():</p><h1 id=do-something-for-init-here>Do something for init here.<a hidden class=anchor aria-hidden=true href=#do-something-for-init-here>#</a></h1><p>try:</p><p>from IPython.frontend.terminal.embed import InteractiveShellEmbed</p><p>ipshell = InteractiveShellEmbed()</p><p>ipshell()</p><p>except ImportError:</p><p>import code</p><p>pyshell = code.InteractiveConsole(locals=locals())</p><p>pyshell.interact()</p><p>if <strong>name</strong> == &lsquo;<strong>main</strong>&rsquo;:</p><p>main()</p><p>这段代码先尝试使用 IPython 作为交互 shell，如果没有安装就使用原生 Python 作为 交互 Shell。(强烈建议使用 IPython)。</p><p>请在 <code>main()</code> 方法开始时候做一些初始化动作，比如载入 webapp 的实例并初始化各路config，
-这样就能实现即时代码测试功能，提高开发效率，不用一遍遍地跑流程。</p><p>参考链接</p><ul><li><a href=http://qixinglu.com/archives/embed_python_shell_in_code>http://qixinglu.com/archives/embed_python_shell_in_code</a> （注意， 这篇文章是2011年的，其中引入 IPython 的 <code>InteractiveShellEmbed</code> 的方法已经过期，请参考上面的代码）</li></ul><h3 id=gae-中的-pdb>GAE 中的 pdb<a hidden class=anchor aria-hidden=true href=#gae-中的-pdb>#</a></h3><p>有一些特定系统，比如 GAE 和 nosetests，他们会重定向 <code>std:in</code> 和 <code>std:out</code> ， 造成 pdb
-无法正确输入和输出，在使用的使用，需要用以下代码做个 hack。</p><pre><code>import sys
+</code></pre>
+<h1 id="desc-这个shell提供python上下文环境方便调试">desc: 这个shell提供Python上下文环境，方便调试<a hidden class="anchor" aria-hidden="true" href="#desc-这个shell提供python上下文环境方便调试">#</a></h1>
+<h1 id="author-alswl">author: alswl<a hidden class="anchor" aria-hidden="true" href="#author-alswl">#</a></h1>
+<h1 id="date-2012-03-20">date: 2012-03-20<a hidden class="anchor" aria-hidden="true" href="#date-2012-03-20">#</a></h1>
+<p>def main():</p>
+<h1 id="do-something-for-init-here">Do something for init here.<a hidden class="anchor" aria-hidden="true" href="#do-something-for-init-here">#</a></h1>
+<p>try:</p>
+<p>from IPython.frontend.terminal.embed import InteractiveShellEmbed</p>
+<p>ipshell = InteractiveShellEmbed()</p>
+<p>ipshell()</p>
+<p>except ImportError:</p>
+<p>import code</p>
+<p>pyshell = code.InteractiveConsole(locals=locals())</p>
+<p>pyshell.interact()</p>
+<p>if <strong>name</strong> == &lsquo;<strong>main</strong>&rsquo;:</p>
+<p>main()</p>
+<p>这段代码先尝试使用 IPython 作为交互 shell，如果没有安装就使用原生 Python 作为 交互 Shell。(强烈建议使用 IPython)。</p>
+<p>请在 <code>main()</code> 方法开始时候做一些初始化动作，比如载入 webapp 的实例并初始化各路config，
+这样就能实现即时代码测试功能，提高开发效率，不用一遍遍地跑流程。</p>
+<p>参考链接</p>
+<ul>
+<li><a href="http://qixinglu.com/archives/embed_python_shell_in_code">http://qixinglu.com/archives/embed_python_shell_in_code</a> （注意， 这篇文章是2011年的，其中引入 IPython 的 <code>InteractiveShellEmbed</code> 的方法已经过期，请参考上面的代码）</li>
+</ul>
+<h3 id="gae-中的-pdb">GAE 中的 pdb<a hidden class="anchor" aria-hidden="true" href="#gae-中的-pdb">#</a></h3>
+<p>有一些特定系统，比如 GAE 和 nosetests，他们会重定向 <code>std:in</code> 和 <code>std:out</code> ， 造成 pdb
+无法正确输入和输出，在使用的使用，需要用以下代码做个 hack。</p>
+<pre><code>import sys
 import pdb
 for attr in ('stdin', 'stdout', 'stderr'):
     setattr(sys, attr, getattr(sys, '__%s__' % attr))
 pdb.set_trace()
-</code></pre><h2 id=pylons-调试>Pylons 调试<a hidden class=anchor aria-hidden=true href=#pylons-调试>#</a></h2><p>Paster 的 Shell 交互式调试更显犀利（官方所称杀手级功能）， 可以直接使用 <code>paster shell dev.ini</code>
-命令启用交互界面，默认会先尝试载入 IPython，不存在就载入原生 Shell。</p><p>我当前使用的 Paster 版本为 1.7.5,无法正确识 IPython 0.11及以上版本， 请使用0.9.1或者0.10。</p><p>参考链接：</p><ul><li><a href="http://wiki.pylonshq.com/pages/viewpage.action?pageId=9011323">How can I use &ldquo;paster shell&rdquo; to develop doctest tests?</a></li><li><a href=http://stackoverflow.com/questions/7389388/pylons-paster-shell-does-not-run-in-ipython>stackoverflow 上关于 IPython 版本的问题</a></li></ul><hr><p>原文链接: <a href=https://blog.alswl.com/2012/03/python-debug/>在Python中调试代码 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/python/>python</a></li><li><a href=https://blog.alswl.com/tags/ipdb/>ipdb</a></li><li><a href=https://blog.alswl.com/tags/paster/>paster</a></li><li><a href=https://blog.alswl.com/tags/pdb/>pdb</a></li><li><a href=https://blog.alswl.com/tags/pylons/>pylons</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2012/03/gae/><span class=title>« Prev</span><br><span>GAE 编程指南读书笔记</span></a>
-<a class=next href=https://blog.alswl.com/2012/03/chrome-proxy/><span class=title>Next »</span><br><span>Chrome 独立代理设置</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
+</code></pre>
+<h2 id="pylons-调试">Pylons 调试<a hidden class="anchor" aria-hidden="true" href="#pylons-调试">#</a></h2>
+<p>Paster 的 Shell 交互式调试更显犀利（官方所称杀手级功能）， 可以直接使用 <code>paster shell dev.ini</code>
+命令启用交互界面，默认会先尝试载入 IPython，不存在就载入原生 Shell。</p>
+<p>我当前使用的 Paster 版本为 1.7.5,无法正确识 IPython 0.11及以上版本， 请使用0.9.1或者0.10。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="http://wiki.pylonshq.com/pages/viewpage.action?pageId=9011323">How can I use &ldquo;paster shell&rdquo; to develop doctest tests?</a></li>
+<li><a href="http://stackoverflow.com/questions/7389388/pylons-paster-shell-does-not-run-in-ipython">stackoverflow 上关于 IPython 版本的问题</a></li>
+</ul>
+
+<hr />
+<p>原文链接: <a href="https://blog.alswl.com/2012/03/python-debug/">在Python中调试代码 | Log4D</a></p>
+<p>3a1ff193cee606bd1e2ea554a16353ee</p>
+<p>欢迎关注我的微信公众号：<a
+href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
+alt="窥豹" />
+<figcaption aria-hidden="true">窥豹</figcaption>
+</figure>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
+alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
+<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption>
+</figure>
+
+    
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/python/">python</a></li>
+      <li><a href="https://blog.alswl.com/tags/ipdb/">ipdb</a></li>
+      <li><a href="https://blog.alswl.com/tags/paster/">paster</a></li>
+      <li><a href="https://blog.alswl.com/tags/pdb/">pdb</a></li>
+      <li><a href="https://blog.alswl.com/tags/pylons/">pylons</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2012/03/gae/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>GAE 编程指南读书笔记</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2012/03/chrome-proxy/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Chrome 独立代理设置</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "log4d" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

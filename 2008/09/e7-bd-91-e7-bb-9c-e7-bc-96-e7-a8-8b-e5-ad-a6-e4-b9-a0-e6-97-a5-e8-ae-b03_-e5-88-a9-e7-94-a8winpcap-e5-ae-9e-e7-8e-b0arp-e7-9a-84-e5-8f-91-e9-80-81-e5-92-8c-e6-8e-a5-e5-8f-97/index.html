@@ -1,12 +1,21 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受 | Log4D</title><meta name=keywords content="c,winpcap,网络编程"><meta name=description content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受 | Log4D</title>
+<meta name="keywords" content="c, winpcap, 网络编程">
+<meta name="description" content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义
 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的
 首先是ARP的接收，来看一下程序的流程
 获取网络设备列表
-pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &alldevs, errbuf)
+pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)
 然后人机交互一下，获得需要工作的网卡
 打开需要的网卡
-(adhandle= pcap_open(d->name, // 设备名
+(adhandle= pcap_open(d-&gt;name, // 设备名
 65536, // 要捕捉的数据包的部分
 // 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
 PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式
@@ -17,9 +26,9 @@ errbuf // 错误缓冲池
 检查数据链路层，我们只考虑以太网
 pcap_datalink(adhandle) != DLT_EN10MB
 编译过滤器
-pcap_compile(adhandle, &fcode, packet_filter, 1, netmask)
+pcap_compile(adhandle, &amp;fcode, packet_filter, 1, netmask)
 设置过滤器
-pcap_setfilter(adhandle, &fcode)
+pcap_setfilter(adhandle, &amp;fcode)
 开始捕捉数据包
 pcap_loop(adhandle, 0, packet_handler, NULL)
 packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数
@@ -28,16 +37,77 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
 这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束
 我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点
 源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的
-整个程序的注意点"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
-<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受"><meta property="og:description" content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
+整个程序的注意点">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受" />
+<meta property="og:description" content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义
 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的
 首先是ARP的接收，来看一下程序的流程
 获取网络设备列表
-pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &alldevs, errbuf)
+pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)
 然后人机交互一下，获得需要工作的网卡
 打开需要的网卡
-(adhandle= pcap_open(d->name, // 设备名
+(adhandle= pcap_open(d-&gt;name, // 设备名
 65536, // 要捕捉的数据包的部分
 // 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
 PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式
@@ -48,9 +118,9 @@ errbuf // 错误缓冲池
 检查数据链路层，我们只考虑以太网
 pcap_datalink(adhandle) != DLT_EN10MB
 编译过滤器
-pcap_compile(adhandle, &fcode, packet_filter, 1, netmask)
+pcap_compile(adhandle, &amp;fcode, packet_filter, 1, netmask)
 设置过滤器
-pcap_setfilter(adhandle, &fcode)
+pcap_setfilter(adhandle, &amp;fcode)
 开始捕捉数据包
 pcap_loop(adhandle, 0, packet_handler, NULL)
 packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数
@@ -59,15 +129,23 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
 这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束
 我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点
 源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的
-整个程序的注意点"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2008-09-25T00:00:00+08:00"><meta property="article:modified_time" content="2008-09-25T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受"><meta name=twitter:description content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
+整个程序的注意点" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2008-09-25T00:00:00+08:00" />
+<meta property="article:modified_time" content="2008-09-25T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受"/>
+<meta name="twitter:description" content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义
 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的
 首先是ARP的接收，来看一下程序的流程
 获取网络设备列表
-pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &alldevs, errbuf)
+pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)
 然后人机交互一下，获得需要工作的网卡
 打开需要的网卡
-(adhandle= pcap_open(d->name, // 设备名
+(adhandle= pcap_open(d-&gt;name, // 设备名
 65536, // 要捕捉的数据包的部分
 // 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
 PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式
@@ -78,9 +156,9 @@ errbuf // 错误缓冲池
 检查数据链路层，我们只考虑以太网
 pcap_datalink(adhandle) != DLT_EN10MB
 编译过滤器
-pcap_compile(adhandle, &fcode, packet_filter, 1, netmask)
+pcap_compile(adhandle, &amp;fcode, packet_filter, 1, netmask)
 设置过滤器
-pcap_setfilter(adhandle, &fcode)
+pcap_setfilter(adhandle, &amp;fcode)
 开始捕捉数据包
 pcap_loop(adhandle, 0, packet_handler, NULL)
 packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数
@@ -89,20 +167,391 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
 这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束
 我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点
 源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的
-整个程序的注意点"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受","item":"https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受","name":"网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受","description":"网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受\n网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义\n玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的\n首先是ARP的接收，来看一下程序的流程\n获取网络设备列表\npcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, \u0026amp;alldevs, errbuf)\n然后人机交互一下，获得需要工作的网卡\n打开需要的网卡\n(adhandle= pcap_open(d-\u0026gt;name, // 设备名\n65536, // 要捕捉的数据包的部分\n// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容\nPCAP_OPENFLAG_PROMISCUOUS, // 混杂模式\n1000, // 读取超时时间\nNULL, // 远程机器验证\nerrbuf // 错误缓冲池\n)\n检查数据链路层，我们只考虑以太网\npcap_datalink(adhandle) != DLT_EN10MB\n编译过滤器\npcap_compile(adhandle, \u0026amp;fcode, packet_filter, 1, netmask)\n设置过滤器\npcap_setfilter(adhandle, \u0026amp;fcode)\n开始捕捉数据包\npcap_loop(adhandle, 0, packet_handler, NULL)\npacket_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数\n/* 回调函数，当收到每一个数据包时会被libpcap所调用 */\nvoid packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data)\n这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束\n我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点\n源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的\n整个程序的注意点","keywords":["c","winpcap","网络编程"],"articleBody":"网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受\n网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义\n玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的\n首先是ARP的接收，来看一下程序的流程\n获取网络设备列表\npcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, \u0026alldevs, errbuf)\n然后人机交互一下，获得需要工作的网卡\n打开需要的网卡\n(adhandle= pcap_open(d-\u003ename, // 设备名\n65536, // 要捕捉的数据包的部分\n// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容\nPCAP_OPENFLAG_PROMISCUOUS, // 混杂模式\n1000, // 读取超时时间\nNULL, // 远程机器验证\nerrbuf // 错误缓冲池\n)\n检查数据链路层，我们只考虑以太网\npcap_datalink(adhandle) != DLT_EN10MB\n编译过滤器\npcap_compile(adhandle, \u0026fcode, packet_filter, 1, netmask)\n设置过滤器\npcap_setfilter(adhandle, \u0026fcode)\n开始捕捉数据包\npcap_loop(adhandle, 0, packet_handler, NULL)\npacket_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数\n/* 回调函数，当收到每一个数据包时会被libpcap所调用 */\nvoid packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data)\n这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束\n我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点\n源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的\n整个程序的注意点\n结构的定义，写完整个程序，包括ARP接受，发送，欺骗，我最大的感觉就是关于数据长度的重要性，以前不以为意，只是觉得可以省空间，也不觉得64位和32位有 什么区别，不过写完网络数据包的分析，就觉得数据长度控制很重要，所以就算有指针，也是需要定义被指向目标的长度。因为指针的出现，数据的转换实在是变得太方便了。可 以直接把WinPcap捕捉到的数据直接往后移动14个单位长度，获得ip头，而忽略前面14字节的以太网头部。\nunsigned char, unsigned short, unsigned int等非负数据的使用和转换必须非常小心，因为插入断电看到的数据未必就 是真实的数据，压根看不出真实数据，我后来使用Ethereal来进行数据包的监控，非常有效，Ethereal是一款GUI界面的网络数据包监控软件，非常好用，他 本身也是基于WinPcap的。\n安全性的控制，程序的框架，其实我是使用的WinPcap自带代码的框架，安全控制几乎是步步为营，刚开始我认为有点大题小做，后来把程序移植到别的机子上运行 ，真的发现安全控制做的真好，每一步都可以知道问题出在哪里，防止更多错误出现。\n有一个MacToStr()的函数写的非常巧妙，是课本上面的事例程序，使用了位运算，本来还有一个IpToStr()，不过似乎出现了一些问题，于是我的Ma c地址存储在u_char[6]里面，而Ip地址存储在ip_address里面，自定义了一个结构，这个也是学习WinPcap示例代码的。我觉得自定义结构使用更 方便高效。\n网络存储字节高地位和本地存储高地位是相反的，有几个函数专门用来转换的,我直接使用的自己人工把那几个自己转换的\nprintf使用很方便，这点要感谢暑假Acm训练…\n接受数据包其实非常简单，几乎就是简单的把WinPcap使用了一下\n本程序源代码的下载地址（[http://download.csdn.net/source/647852](http://download.csdn.net/ source/647852)）其实很简单，如果有WinPcap开发文档，自己写也差不多\n我现在已经写完了欺骗了，会逐渐把自己的心的经验拿上来分享一下\n这几天看MFC图形界面，网络编程方面在看使用WinAPI来发送数据包，这样就可以不用装WinPcap了\n想不适用WinPcap就直接使用WinPcap的函数，我正在尝试，光考出几个dll还不够，还要一个npf.sys支持，我也是今天刚看到资料，待会儿在机房做完 测试会写个帖子的。\n呼呼，就写这么点了，晚上图形实验课在机房做ARP欺骗，老师的防火墙一直叫，嘿嘿，不过大家都有360防火墙，倒没什么事故。\n系统重装了，打好多补丁啊，还有好多软件重装…郁闷…\n老系统用了2年没重装了，也到寿命了…\n","wordCount":"98","inLanguage":"en","datePublished":"2008-09-25T00:00:00+08:00","dateModified":"2008-09-25T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受</h1><div class=post-meta><span title='2008-09-25 00:00:00 +0800 +0800'>2008-09-25</span>&nbsp;·&nbsp;alswl</div></header><div class=post-content><p>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受</p><p>网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节
-的含义</p><p>玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的</p><p>首先是ARP的接收，来看一下程序的流程</p><p>获取网络设备列表</p><p>pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &alldevs, errbuf)</p><p>然后人机交互一下，获得需要工作的网卡</p><p>打开需要的网卡</p><p>(adhandle= pcap_open(d->name, // 设备名</p><p>65536, // 要捕捉的数据包的部分</p><p>// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容</p><p>PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式</p><p>1000, // 读取超时时间</p><p>NULL, // 远程机器验证</p><p>errbuf // 错误缓冲池</p><p>)</p><p>检查数据链路层，我们只考虑以太网</p><p>pcap_datalink(adhandle) != DLT_EN10MB</p><p>编译过滤器</p><p>pcap_compile(adhandle, &fcode, packet_filter, 1, netmask)</p><p>设置过滤器</p><p>pcap_setfilter(adhandle, &fcode)</p><p>开始捕捉数据包</p><p>pcap_loop(adhandle, 0, packet_handler, NULL)</p><p>packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数</p><p>/* 回调函数，当收到每一个数据包时会被libpcap所调用 */</p><p>void packet_handler(u_char *param, const struct pcap_pkthdr *header, const
-u_char *pkt_data)</p><p>这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束</p><p>我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点</p><p>源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的</p><p>整个程序的注意点</p><ol><li><p>结构的定义，写完整个程序，包括ARP接受，发送，欺骗，我最大的感觉就是关于数据长度的重要性，以前不以为意，只是觉得可以省空间，也不觉得64位和32位有
+整个程序的注意点"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受",
+      "item": "https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受",
+  "name": "网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受",
+  "description": "网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受\n网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义\n玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的\n首先是ARP的接收，来看一下程序的流程\n获取网络设备列表\npcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, \u0026amp;alldevs, errbuf)\n然后人机交互一下，获得需要工作的网卡\n打开需要的网卡\n(adhandle= pcap_open(d-\u0026gt;name, // 设备名\n65536, // 要捕捉的数据包的部分\n// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容\nPCAP_OPENFLAG_PROMISCUOUS, // 混杂模式\n1000, // 读取超时时间\nNULL, // 远程机器验证\nerrbuf // 错误缓冲池\n)\n检查数据链路层，我们只考虑以太网\npcap_datalink(adhandle) != DLT_EN10MB\n编译过滤器\npcap_compile(adhandle, \u0026amp;fcode, packet_filter, 1, netmask)\n设置过滤器\npcap_setfilter(adhandle, \u0026amp;fcode)\n开始捕捉数据包\npcap_loop(adhandle, 0, packet_handler, NULL)\npacket_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数\n/* 回调函数，当收到每一个数据包时会被libpcap所调用 */\nvoid packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data)\n这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束\n我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点\n源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的\n整个程序的注意点",
+  "keywords": [
+    "c", "winpcap", "网络编程"
+  ],
+  "articleBody": "网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受\n网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义\n玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的\n首先是ARP的接收，来看一下程序的流程\n获取网络设备列表\npcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, \u0026alldevs, errbuf)\n然后人机交互一下，获得需要工作的网卡\n打开需要的网卡\n(adhandle= pcap_open(d-\u003ename, // 设备名\n65536, // 要捕捉的数据包的部分\n// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容\nPCAP_OPENFLAG_PROMISCUOUS, // 混杂模式\n1000, // 读取超时时间\nNULL, // 远程机器验证\nerrbuf // 错误缓冲池\n)\n检查数据链路层，我们只考虑以太网\npcap_datalink(adhandle) != DLT_EN10MB\n编译过滤器\npcap_compile(adhandle, \u0026fcode, packet_filter, 1, netmask)\n设置过滤器\npcap_setfilter(adhandle, \u0026fcode)\n开始捕捉数据包\npcap_loop(adhandle, 0, packet_handler, NULL)\npacket_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数\n/* 回调函数，当收到每一个数据包时会被libpcap所调用 */\nvoid packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data)\n这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束\n我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点\n源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的\n整个程序的注意点\n结构的定义，写完整个程序，包括ARP接受，发送，欺骗，我最大的感觉就是关于数据长度的重要性，以前不以为意，只是觉得可以省空间，也不觉得64位和32位有 什么区别，不过写完网络数据包的分析，就觉得数据长度控制很重要，所以就算有指针，也是需要定义被指向目标的长度。因为指针的出现，数据的转换实在是变得太方便了。可 以直接把WinPcap捕捉到的数据直接往后移动14个单位长度，获得ip头，而忽略前面14字节的以太网头部。\nunsigned char, unsigned short, unsigned int等非负数据的使用和转换必须非常小心，因为插入断电看到的数据未必就 是真实的数据，压根看不出真实数据，我后来使用Ethereal来进行数据包的监控，非常有效，Ethereal是一款GUI界面的网络数据包监控软件，非常好用，他 本身也是基于WinPcap的。\n安全性的控制，程序的框架，其实我是使用的WinPcap自带代码的框架，安全控制几乎是步步为营，刚开始我认为有点大题小做，后来把程序移植到别的机子上运行 ，真的发现安全控制做的真好，每一步都可以知道问题出在哪里，防止更多错误出现。\n有一个MacToStr()的函数写的非常巧妙，是课本上面的事例程序，使用了位运算，本来还有一个IpToStr()，不过似乎出现了一些问题，于是我的Ma c地址存储在u_char[6]里面，而Ip地址存储在ip_address里面，自定义了一个结构，这个也是学习WinPcap示例代码的。我觉得自定义结构使用更 方便高效。\n网络存储字节高地位和本地存储高地位是相反的，有几个函数专门用来转换的,我直接使用的自己人工把那几个自己转换的\nprintf使用很方便，这点要感谢暑假Acm训练…\n接受数据包其实非常简单，几乎就是简单的把WinPcap使用了一下\n本程序源代码的下载地址（[http://download.csdn.net/source/647852](http://download.csdn.net/ source/647852)）其实很简单，如果有WinPcap开发文档，自己写也差不多\n我现在已经写完了欺骗了，会逐渐把自己的心的经验拿上来分享一下\n这几天看MFC图形界面，网络编程方面在看使用WinAPI来发送数据包，这样就可以不用装WinPcap了\n想不适用WinPcap就直接使用WinPcap的函数，我正在尝试，光考出几个dll还不够，还要一个npf.sys支持，我也是今天刚看到资料，待会儿在机房做完 测试会写个帖子的。\n呼呼，就写这么点了，晚上图形实验课在机房做ARP欺骗，老师的防火墙一直叫，嘿嘿，不过大家都有360防火墙，倒没什么事故。\n系统重装了，打好多补丁啊，还有好多软件重装…郁闷…\n老系统用了2年没重装了，也到寿命了…\n",
+  "wordCount" : "98",
+  "inLanguage": "en",
+  "datePublished": "2008-09-25T00:00:00+08:00",
+  "dateModified": "2008-09-25T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受
+    </h1>
+    <div class="post-meta"><span title='2008-09-25 00:00:00 +0800 +0800'>2008-09-25</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受</p>
+<p>网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节
+的含义</p>
+<p>玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的</p>
+<p>首先是ARP的接收，来看一下程序的流程</p>
+<p>获取网络设备列表</p>
+<p>pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)</p>
+<p>然后人机交互一下，获得需要工作的网卡</p>
+<p>打开需要的网卡</p>
+<p>(adhandle= pcap_open(d-&gt;name, // 设备名</p>
+<p>65536, // 要捕捉的数据包的部分</p>
+<p>// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容</p>
+<p>PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式</p>
+<p>1000, // 读取超时时间</p>
+<p>NULL, // 远程机器验证</p>
+<p>errbuf // 错误缓冲池</p>
+<p>)</p>
+<p>检查数据链路层，我们只考虑以太网</p>
+<p>pcap_datalink(adhandle) != DLT_EN10MB</p>
+<p>编译过滤器</p>
+<p>pcap_compile(adhandle, &amp;fcode, packet_filter, 1, netmask)</p>
+<p>设置过滤器</p>
+<p>pcap_setfilter(adhandle, &amp;fcode)</p>
+<p>开始捕捉数据包</p>
+<p>pcap_loop(adhandle, 0, packet_handler, NULL)</p>
+<p>packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数</p>
+<p>/* 回调函数，当收到每一个数据包时会被libpcap所调用 */</p>
+<p>void packet_handler(u_char *param, const struct pcap_pkthdr *header, const
+u_char *pkt_data)</p>
+<p>这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束</p>
+<p>我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点</p>
+<p>源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的</p>
+<p>整个程序的注意点</p>
+<ol>
+<li>
+<p>结构的定义，写完整个程序，包括ARP接受，发送，欺骗，我最大的感觉就是关于数据长度的重要性，以前不以为意，只是觉得可以省空间，也不觉得64位和32位有
 什么区别，不过写完网络数据包的分析，就觉得数据长度控制很重要，所以就算有指针，也是需要定义被指向目标的长度。因为指针的出现，数据的转换实在是变得太方便了。可
-以直接把WinPcap捕捉到的数据直接往后移动14个单位长度，获得ip头，而忽略前面14字节的以太网头部。</p></li><li><p>unsigned char, unsigned short, unsigned int等非负数据的使用和转换必须非常小心，因为插入断电看到的数据未必就
+以直接把WinPcap捕捉到的数据直接往后移动14个单位长度，获得ip头，而忽略前面14字节的以太网头部。</p>
+</li>
+<li>
+<p>unsigned char, unsigned short, unsigned int等非负数据的使用和转换必须非常小心，因为插入断电看到的数据未必就
 是真实的数据，压根看不出真实数据，我后来使用Ethereal来进行数据包的监控，非常有效，Ethereal是一款GUI界面的网络数据包监控软件，非常好用，他
-本身也是基于WinPcap的。</p></li><li><p>安全性的控制，程序的框架，其实我是使用的WinPcap自带代码的框架，安全控制几乎是步步为营，刚开始我认为有点大题小做，后来把程序移植到别的机子上运行
-，真的发现安全控制做的真好，每一步都可以知道问题出在哪里，防止更多错误出现。</p></li><li><p>有一个MacToStr()的函数写的非常巧妙，是课本上面的事例程序，使用了位运算，本来还有一个IpToStr()，不过似乎出现了一些问题，于是我的Ma
+本身也是基于WinPcap的。</p>
+</li>
+<li>
+<p>安全性的控制，程序的框架，其实我是使用的WinPcap自带代码的框架，安全控制几乎是步步为营，刚开始我认为有点大题小做，后来把程序移植到别的机子上运行
+，真的发现安全控制做的真好，每一步都可以知道问题出在哪里，防止更多错误出现。</p>
+</li>
+<li>
+<p>有一个MacToStr()的函数写的非常巧妙，是课本上面的事例程序，使用了位运算，本来还有一个IpToStr()，不过似乎出现了一些问题，于是我的Ma
 c地址存储在u_char[6]里面，而Ip地址存储在ip_address里面，自定义了一个结构，这个也是学习WinPcap示例代码的。我觉得自定义结构使用更
-方便高效。</p></li><li><p>网络存储字节高地位和本地存储高地位是相反的，有几个函数专门用来转换的,我直接使用的自己人工把那几个自己转换的</p></li><li><p>printf使用很方便，这点要感谢暑假Acm训练…</p></li></ol><p>接受数据包其实非常简单，几乎就是简单的把WinPcap使用了一下</p><p>本程序源代码的下载地址（[http://download.csdn.net/source/647852](<a href=http://download.csdn.net/>http://download.csdn.net/</a>
-source/647852)）其实很简单，如果有WinPcap开发文档，自己写也差不多</p><p>我现在已经写完了欺骗了，会逐渐把自己的心的经验拿上来分享一下</p><p>这几天看MFC图形界面，网络编程方面在看使用WinAPI来发送数据包，这样就可以不用装WinPcap了</p><p>想不适用WinPcap就直接使用WinPcap的函数，我正在尝试，光考出几个dll还不够，还要一个npf.sys支持，我也是今天刚看到资料，待会儿在机房做完
-测试会写个帖子的。</p><p>呼呼，就写这么点了，晚上图形实验课在机房做ARP欺骗，老师的防火墙一直叫，嘿嘿，不过大家都有360防火墙，倒没什么事故。</p><p>系统重装了，打好多补丁啊，还有好多软件重装…郁闷…</p><p>老系统用了2年没重装了，也到寿命了…</p><hr><p>原文链接: <a href=https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/>网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/c/>c</a></li><li><a href=https://blog.alswl.com/tags/winpcap/>winpcap</a></li><li><a href=https://blog.alswl.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/>网络编程</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2008/10/mysql-database-export-import/><span class=title>« Prev</span><br><span>mysql 数据库导出/导入</span></a>
-<a class=next href=https://blog.alswl.com/2008/09/arp/><span class=title>Next »</span><br><span>ARP</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
+方便高效。</p>
+</li>
+<li>
+<p>网络存储字节高地位和本地存储高地位是相反的，有几个函数专门用来转换的,我直接使用的自己人工把那几个自己转换的</p>
+</li>
+<li>
+<p>printf使用很方便，这点要感谢暑假Acm训练…</p>
+</li>
+</ol>
+<p>接受数据包其实非常简单，几乎就是简单的把WinPcap使用了一下</p>
+<p>本程序源代码的下载地址（[http://download.csdn.net/source/647852](<a href="http://download.csdn.net/">http://download.csdn.net/</a>
+source/647852)）其实很简单，如果有WinPcap开发文档，自己写也差不多</p>
+<p>我现在已经写完了欺骗了，会逐渐把自己的心的经验拿上来分享一下</p>
+<p>这几天看MFC图形界面，网络编程方面在看使用WinAPI来发送数据包，这样就可以不用装WinPcap了</p>
+<p>想不适用WinPcap就直接使用WinPcap的函数，我正在尝试，光考出几个dll还不够，还要一个npf.sys支持，我也是今天刚看到资料，待会儿在机房做完
+测试会写个帖子的。</p>
+<p>呼呼，就写这么点了，晚上图形实验课在机房做ARP欺骗，老师的防火墙一直叫，嘿嘿，不过大家都有360防火墙，倒没什么事故。</p>
+<p>系统重装了，打好多补丁啊，还有好多软件重装…郁闷…</p>
+<p>老系统用了2年没重装了，也到寿命了…</p>
+
+<hr />
+<p>原文链接: <a href="https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/">网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受 | Log4D</a></p>
+<p>3a1ff193cee606bd1e2ea554a16353ee</p>
+<p>欢迎关注我的微信公众号：<a
+href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
+alt="窥豹" />
+<figcaption aria-hidden="true">窥豹</figcaption>
+</figure>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
+alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
+<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption>
+</figure>
+
+    
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/c/">c</a></li>
+      <li><a href="https://blog.alswl.com/tags/winpcap/">winpcap</a></li>
+      <li><a href="https://blog.alswl.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2008/10/mysql-database-export-import/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>mysql 数据库导出/导入</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2008/09/arp/">
+    <span class="title">Next »</span>
+    <br>
+    <span>ARP</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "log4d" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>vps on Log4D</title><link>https://blog.alswl.com/tags/vps/</link><description>Recent content in vps on Log4D</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 14 Dec 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/vps/atom.xml" rel="self" type="application/rss+xml"/><item><title>更换VPS</title><link>https://blog.alswl.com/2011/12/transfer-vps/</link><pubDate>Wed, 14 Dec 2011 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2011/12/transfer-vps/</guid><description>Log4D挂了整整一天，原因是因为VPS扩容导致系统无法启动。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>vps on Log4D</title>
+    <link>https://blog.alswl.com/tags/vps/</link>
+    <description>Recent content in vps on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 14 Dec 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/vps/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>更换VPS</title>
+      <link>https://blog.alswl.com/2011/12/transfer-vps/</link>
+      <pubDate>Wed, 14 Dec 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/12/transfer-vps/</guid>
+      <description>Log4D挂了整整一天，原因是因为VPS扩容导致系统无法启动。
 我使用的VPS是PhotonVPS的WARP.25 套餐。买时候套餐里面硬盘空间是2个G，前几天朋友告诉我新套餐变成了10G。我就发了ticket给客服，他们很快答应帮我升级VPS。我就将数据备份出来，静候升 级。
 等了半天没反应，又咨询过后才知道新加入的硬盘空间需要重装系统才能启用。好吧，正好我想将CentOS 6换成Arch（Arch用的太顺手了）。
 吭次吭次一阵捣鼓（其实重装系统就按一个按钮而已 ^_^），Arch装好了，然后发现系统无法启动了，悲剧鸟。
@@ -9,7 +24,16 @@
 先升级一下系统apt-get update upgrade，然后创建用户，养成不使用root的好习惯。顺带装一些顺手工具vim/git/screen。
 Ubuntu 11.04下面官方源里面带nginx/php5/php-fpm/php-mysql/mysql- server，所以不用自己编译可以节省很多时间。
 最后装上pptpd，不解释。
-最近的装机事件频发，同志们阿，做好备份，备份才是王道阿。</description></item><item><title>128M内存VPS LNMP安装优化小记</title><link>https://blog.alswl.com/2011/11/vps-lnmp-setup-config/</link><pubDate>Sun, 06 Nov 2011 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2011/11/vps-lnmp-setup-config/</guid><description>重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化）
+最近的装机事件频发，同志们阿，做好备份，备份才是王道阿。</description>
+    </item>
+    
+    <item>
+      <title>128M内存VPS LNMP安装优化小记</title>
+      <link>https://blog.alswl.com/2011/11/vps-lnmp-setup-config/</link>
+      <pubDate>Sun, 06 Nov 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/11/vps-lnmp-setup-config/</guid>
+      <description>重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化）
 这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。 现在使用的 VPS 是 PhotonVPS 。
 月付5.95美元，使用优惠码 TENOFF 或 PHOTONLEB 可以打7折， 换算汇率之后是26人民币每月。
 这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨， 我终于配置的可用率比较高，使用 siege -c 100 -t 100 时候可以保持 100% 可用率。 （其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。
@@ -18,4 +42,8 @@ CentOS 里面的包比较旧，不像 Arch 里面，滚动最新。 所以这里
 Nginx 安装 Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。
 目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。
 准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。
-yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers 下载Nginx</description></item></channel></rss>
+yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers 下载Nginx</description>
+    </item>
+    
+  </channel>
+</rss>

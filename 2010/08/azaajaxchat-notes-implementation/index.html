@@ -1,9 +1,18 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>AzaAjaxChat笔记-实现 | Log4D</title><meta name=keywords content="php,azaajaxchat,comet,flex,fms,javascript,rtmp"><meta name=description content="唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
-一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的&#34;服务器推&#34;技术。
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>AzaAjaxChat笔记-实现 | Log4D</title>
+<meta name="keywords" content="php, azaajaxchat, comet, flex, fms, javascript, rtmp">
+<meta name="description" content="唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
+一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的&quot;服务器推&quot;技术。
 我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询 （long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。
-这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&#34;查询->返回->再查询&#34;中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。
+这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&quot;查询-&gt;返回-&gt;再查询&quot;中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。
 PS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。
-相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet&ndash;&ldquo;服务器推&#34;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：&ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。&ldquo;按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。
+相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet&ndash;&ldquo;服务器推&quot;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：&ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。&ldquo;按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。
 我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。
 这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所 有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。
 如果有PHP达人看到这个，望不惜赐教。
@@ -13,13 +22,74 @@ RTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP
 RTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。 这些通道中的包都是按照固定大小的包传输的。
 我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash Video流媒体播放功能的服务器软件。
 FMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司 跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。
-四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
-<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="AzaAjaxChat笔记-实现"><meta property="og:description" content="唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
-一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的&#34;服务器推&#34;技术。
+四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="AzaAjaxChat笔记-实现" />
+<meta property="og:description" content="唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
+一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的&quot;服务器推&quot;技术。
 我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询 （long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。
-这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&#34;查询->返回->再查询&#34;中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。
+这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&quot;查询-&gt;返回-&gt;再查询&quot;中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。
 PS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。
-相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet&ndash;&ldquo;服务器推&#34;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：&ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。&ldquo;按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。
+相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet&ndash;&ldquo;服务器推&quot;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：&ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。&ldquo;按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。
 我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。
 这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所 有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。
 如果有PHP达人看到这个，望不惜赐教。
@@ -29,12 +99,20 @@ RTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP
 RTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。 这些通道中的包都是按照固定大小的包传输的。
 我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash Video流媒体播放功能的服务器软件。
 FMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司 跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。
-四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2010-08-22T00:00:00+08:00"><meta property="article:modified_time" content="2010-08-22T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="AzaAjaxChat笔记-实现"><meta name=twitter:description content="唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
-一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的&#34;服务器推&#34;技术。
+四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2010-08-22T00:00:00+08:00" />
+<meta property="article:modified_time" content="2010-08-22T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AzaAjaxChat笔记-实现"/>
+<meta name="twitter:description" content="唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
+一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的&quot;服务器推&quot;技术。
 我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询 （long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。
-这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&#34;查询->返回->再查询&#34;中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。
+这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&quot;查询-&gt;返回-&gt;再查询&quot;中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。
 PS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。
-相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet&ndash;&ldquo;服务器推&#34;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：&ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。&ldquo;按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。
+相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet&ndash;&ldquo;服务器推&quot;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：&ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。&ldquo;按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。
 我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。
 这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所 有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。
 如果有PHP达人看到这个，望不惜赐教。
@@ -44,91 +122,296 @@ RTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP
 RTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。 这些通道中的包都是按照固定大小的包传输的。
 我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash Video流媒体播放功能的服务器软件。
 FMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司 跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。
-四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"AzaAjaxChat笔记-实现","item":"https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"AzaAjaxChat笔记-实现","name":"AzaAjaxChat笔记-实现","description":"唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~\n一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的\u0026quot;服务器推\u0026quot;技术。\n我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询 （long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。\n这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将\u0026quot;查询-\u0026gt;返回-\u0026gt;再查询\u0026quot;中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。\nPS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。\n相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet\u0026ndash;\u0026ldquo;服务器推\u0026quot;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：\u0026ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。\u0026ldquo;按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。\n我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。\n这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所 有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。\n如果有PHP达人看到这个，望不惜赐教。\n三、RTMP RTPM是一个流媒体传输的协议，我在AzaAjaxChat中用它进行视频聊天画面和音频传输。这块内容可以洋洋洒洒的写一大篇日志，我在这里只是简单罗列一下我用 到的相关内容。\nReal Time Messaging Protocol（实时消息传送协议协议)概述，实时消息传送协议是Adobe Systems公司为Flash播放器和服务器之间音频、视频和数据传输开发的私有协议。它有三种变种： 1)工作在TCP之上的明文协议，使用端口1935； 2)RTMPT封装在HTTP请求之中，可穿越防火墙； 3)RTMPS类似RTMPT，但使用的是HTTPS连接；\nRTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP协议或者轮询 HTTP协议之上。\nRTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。 这些通道中的包都是按照固定大小的包传输的。\n我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash Video流媒体播放功能的服务器软件。\nFMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司 跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。\n四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。","keywords":["php","azaajaxchat","comet","flex","fms","javascript","rtmp"],"articleBody":"唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~\n一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的\"服务器推\"技术。\n我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询 （long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。\n这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将\"查询-\u003e返回-\u003e再查询\"中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。\nPS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。\n相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet–“服务器推\"技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：“一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。“按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。\n我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。\n这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所 有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。\n如果有PHP达人看到这个，望不惜赐教。\n三、RTMP RTPM是一个流媒体传输的协议，我在AzaAjaxChat中用它进行视频聊天画面和音频传输。这块内容可以洋洋洒洒的写一大篇日志，我在这里只是简单罗列一下我用 到的相关内容。\nReal Time Messaging Protocol（实时消息传送协议协议)概述，实时消息传送协议是Adobe Systems公司为Flash播放器和服务器之间音频、视频和数据传输开发的私有协议。它有三种变种： 1)工作在TCP之上的明文协议，使用端口1935； 2)RTMPT封装在HTTP请求之中，可穿越防火墙； 3)RTMPS类似RTMPT，但使用的是HTTPS连接；\nRTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP协议或者轮询 HTTP协议之上。\nRTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。 这些通道中的包都是按照固定大小的包传输的。\n我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash Video流媒体播放功能的服务器软件。\nFMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司 跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。\n四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。\nAdobe的某个专家博客还针对Stratus有一篇相当详细的讲解，原文在此Stratus service for developing end-to- end applications using RTMFP in Flash Player 10 | Adobe Developer Connection，文中分析了 RTMFP（比RTMP更高阶的流媒体传输协议，支持P2P）和Stratus的相关核心代码。我本想把这篇文章翻译，完成10%之后，意外发现已经有人翻译了，地址 在此[通过Stratus 服务器在Flash Player中使用RTMFP 开发 点对点应用(一) – Windows Live](http://snowyrock.spaces.live.com/Blog/cns!B8CBEB7169880B1D!1279.entry?wa=wsignin1.0\u0026sa=18 3740112)，通过Stratus 服务器在Flash Player中使用RTMFP 开发 点对点应用（二） – Windows Live 。\n同时可以参考其他例子FMS3系列(五)：通过FMS实现时时视频聊天（Flash|Flex） - Bēniaǒ成长笔记 - 博客园。\n4.2 AzaAjaxChat视频语音核心代码 下面是核心代码。\n\u003c?php protected function starChat(event:MouseEvent):void { //同时开始监听 doReceive(); //初始化一个网络连接 publicNc = new NetConnection(); //开始连接 publicNc.connect(rtmpUrl); //为这个连接添加事件,这个事件有返回连接状态 publicNc.addEventListener(NetStatusEvent.NET_STATUS,onPublishNetStatusHandler); microphone = Microphone.getMicrophone(); camera = Camera.getCamera(); if(!camera) { Alert.show('没有开启摄像头或者没有安装摄像头'); } else { this.videoPublish.attachCamera(camera); } } private function onPublishNetStatusHandler(event:NetStatusEvent):void { //根据连接返回的状态信息判断是滞连接成功 if(event.info.code==\"NetConnection.Connect.Success\"){ appMessage.text += \"n发布连接建立成功\"; publicNs = new NetStream(publicNc); publicNs.attachAudio(microphone); publicNs.attachCamera(camera); publicNs.client = this; publicNs.publish(publicName,\"live\"); } } private function doReceive():void { receiveNc = new NetConnection(); //开始连接 receiveNc.connect(rtmpUrl); //为这个连接添加事件,这个事件有返回连接状态 receiveNc.addEventListener(NetStatusEvent.NET_STATUS,onReceiveNetStatusHandler); } private function onReceiveNetStatusHandler(event:NetStatusEvent):void { //根据连接返回的状态信息判断是滞连接成功 if(event.info.code==\"NetConnection.Connect.Success\"){ appMessage.text += \"n接受连接建立成功\"; receiveNs = new NetStream(publicNc); video = new Video(); video.width = 230; video.height = 173; video.attachNetStream(receiveNs); this.videoReceive.addChild(video); receiveNs.play(receiveName,\"live\"); } else { appMessage.text += \"n\" +　event.info.code; } } ?\u003e 4.3 管道NetConnection.connect() Flex流媒体传输通过通道传输，在NetConnection之上建立连接，由于RTMP和FMS的存在，我们可以很方便的在网络流上写入和读取流媒体信息。Net Connection.connect()支持FMS流媒体和本地文件，官方解释如下。\n在 Flash Player 或 AIR AIR 应用程序和 Flash Media Server 应用程序之间创建双向连接,NetConnection 对象如同客户端与服务器之间的管道。\n如果未使用 Flash Media Server，请调用 NetConnection.connect()，以便从本地文件系统或 Web\n服务器中播放视频和 MP3 文件。有关支持的编解码器和文件格式的信息，请参阅 http://www.adobe.com/go/hardware_scali ng_cn。\n4.4 flash.net.NetConnection 上找不到属性 onBWDone 这个问题参考在 flash.net.NetConnection 上找不到属性 onBWDone，且没有默认值。解决办法。 - Xiang - CSDN博客，解决如下。\n在 flash.net.NetConnection 上找不到属性 onBWDone，且没有默认值。\n_nc = new NetConnection(); c.addEventListener(NetStatusEvent.NET_STATUS,netStatusHandler); c.client = this; c.objectEncoding = ObjectEncoding.AMF0; c.connect(\"rtmp://localhost/oflaDemo\"); 首先添加_nc.client = this.\n然后新建一个方法：public function onBWDone():void{}\n问题解决。\n五、JavaScript和Flex的交互 页面上的Flex必须响应页面JavaScript的触发事件，Adboe在设计Flex时候，预留了相互调用的端口ExternalInterface，详情可以Google之，类似代码如下。\nif (ExternalInterface.available) { ExternalInterface.addCallback(\"initParams\", initParams); ExternalInterface.addCallback(\"playSound\", playSound); } else { this.appMessage.text += \"nJS无法调用Flash，请检查Flash环境\"; } 但是这种调用方法存在着一个致命的问题：创建一个swf的Object，当对这个swf做隐藏/显示的时候(display:none,display:block) 的时候，swf的所有的注册的javascritp函数都会被干掉(ExternalInterface.addCall方法)。这个是Flex的一个BUG，现在也 还没有解决。\n相关讨论可以参见Javascript无法访问Flex问题~ - rwl6813021 - JavaEye技术网站，文中详细讨论了这个问题，并给出一个解决方案。\n有一个折中的方案：即通过LocationConnection(本地通讯,利用两个swf来进行交互)来处理，初始化一个调用的client swf，负责调用被隐藏的swf中的方法，这样就避开了直接通过javascript调用被隐藏的swf中的方法。\n//1：client 发送端: private var ucallswfconn:LocalConnection; public function init():void { ucallswfconn = new LocalConnection(); //注册Javascritp方法，网页调用该flex的方法，通过该方法中转，调用另外一个flex的方法 ExternalInterface.addCallback(\"selectCallControl\",flexSelectCallControl); } public function flexSelectCallControl(method:String,param:String):void { //Alert.show(method+param); //调用另外一端swf中的方法，参数：1:receiver端监听的服务名称 2:方法名称 3:参数 ucallswfconn.send(\"ucallexternconn\",\"\"+method,\"\"+param); } //2：receiver 接收端： //add by polarbear, 2008.09.04, 本地通讯 this.ucallexternConn = new LocalConnection(); this.ucallexternConn.allowDomain(\"*\"); ucallexternConn.client = this; try { this.ucallexternConn.connect(\"ucallexternconn\"); } catch (error:ArgumentError) { trace(\"连接失败\"); } 注意被调用的函数必须是public的。\n我使用这个方法并没有成功，最后我采用的是将视频画面直接放在界面上（很丑，不得已为之）。上文的解决方案只是给出一个思路，感兴趣的话可以自己试试。\n六、Last 其实还有很多细节地方可以讲讲，我就不一一展开了。整理的文章就是这样，也没什么花样和娱乐，我都懒得加图片了~\n祝大家周末愉快，最近我睡眠很不好，每天6点就醒了，中午补个觉去……\n","wordCount":"359","inLanguage":"en","datePublished":"2010-08-22T00:00:00+08:00","dateModified":"2010-08-22T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>AzaAjaxChat笔记-实现</h1><div class=post-meta><span title='2010-08-22 00:00:00 +0800 +0800'>2010-08-22</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><ul><li><a href=#一comet服务器推技术>一、Comet服务器推技术</a></li><li><a href=#二用户状态的处理>二、用户状态的处理</a></li><li><a href=#三rtmp>三、RTMP</a></li><li><a href=#四基于flex的流媒体传输>四、基于Flex的流媒体传输</a></li><li><a href=#五javascript和flex的交互>五、JavaScript和Flex的交互</a></li><li><a href=#六last>六、Last</a></li></ul></li></ul></nav></div></details></div><div class=post-content><p>唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~</p><h3 id=一comet服务器推技术>一、Comet服务器推技术<a hidden class=anchor aria-hidden=true href=#一comet服务器推技术>#</a></h3><p>Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co
+四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "AzaAjaxChat笔记-实现",
+      "item": "https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AzaAjaxChat笔记-实现",
+  "name": "AzaAjaxChat笔记-实现",
+  "description": "唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~\n一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的\u0026quot;服务器推\u0026quot;技术。\n我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询 （long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。\n这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将\u0026quot;查询-\u0026gt;返回-\u0026gt;再查询\u0026quot;中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。\nPS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。\n相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet\u0026ndash;\u0026ldquo;服务器推\u0026quot;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：\u0026ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。\u0026ldquo;按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。\n我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。\n这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所 有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。\n如果有PHP达人看到这个，望不惜赐教。\n三、RTMP RTPM是一个流媒体传输的协议，我在AzaAjaxChat中用它进行视频聊天画面和音频传输。这块内容可以洋洋洒洒的写一大篇日志，我在这里只是简单罗列一下我用 到的相关内容。\nReal Time Messaging Protocol（实时消息传送协议协议)概述，实时消息传送协议是Adobe Systems公司为Flash播放器和服务器之间音频、视频和数据传输开发的私有协议。它有三种变种： 1)工作在TCP之上的明文协议，使用端口1935； 2)RTMPT封装在HTTP请求之中，可穿越防火墙； 3)RTMPS类似RTMPT，但使用的是HTTPS连接；\nRTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP协议或者轮询 HTTP协议之上。\nRTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。 这些通道中的包都是按照固定大小的包传输的。\n我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash Video流媒体播放功能的服务器软件。\nFMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司 跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。\n四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。",
+  "keywords": [
+    "php", "azaajaxchat", "comet", "flex", "fms", "javascript", "rtmp"
+  ],
+  "articleBody": "唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~\n一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的\"服务器推\"技术。\n我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询 （long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。\n这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将\"查询-\u003e返回-\u003e再查询\"中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。\nPS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。\n相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet–“服务器推\"技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：“一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。“按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。\n我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。\n这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所 有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。\n如果有PHP达人看到这个，望不惜赐教。\n三、RTMP RTPM是一个流媒体传输的协议，我在AzaAjaxChat中用它进行视频聊天画面和音频传输。这块内容可以洋洋洒洒的写一大篇日志，我在这里只是简单罗列一下我用 到的相关内容。\nReal Time Messaging Protocol（实时消息传送协议协议)概述，实时消息传送协议是Adobe Systems公司为Flash播放器和服务器之间音频、视频和数据传输开发的私有协议。它有三种变种： 1)工作在TCP之上的明文协议，使用端口1935； 2)RTMPT封装在HTTP请求之中，可穿越防火墙； 3)RTMPS类似RTMPT，但使用的是HTTPS连接；\nRTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP协议或者轮询 HTTP协议之上。\nRTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。 这些通道中的包都是按照固定大小的包传输的。\n我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash Video流媒体播放功能的服务器软件。\nFMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司 跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。\n四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。\nAdobe的某个专家博客还针对Stratus有一篇相当详细的讲解，原文在此Stratus service for developing end-to- end applications using RTMFP in Flash Player 10 | Adobe Developer Connection，文中分析了 RTMFP（比RTMP更高阶的流媒体传输协议，支持P2P）和Stratus的相关核心代码。我本想把这篇文章翻译，完成10%之后，意外发现已经有人翻译了，地址 在此[通过Stratus 服务器在Flash Player中使用RTMFP 开发 点对点应用(一) – Windows Live](http://snowyrock.spaces.live.com/Blog/cns!B8CBEB7169880B1D!1279.entry?wa=wsignin1.0\u0026sa=18 3740112)，通过Stratus 服务器在Flash Player中使用RTMFP 开发 点对点应用（二） – Windows Live 。\n同时可以参考其他例子FMS3系列(五)：通过FMS实现时时视频聊天（Flash|Flex） - Bēniaǒ成长笔记 - 博客园。\n4.2 AzaAjaxChat视频语音核心代码 下面是核心代码。\n\u003c?php protected function starChat(event:MouseEvent):void { //同时开始监听 doReceive(); //初始化一个网络连接 publicNc = new NetConnection(); //开始连接 publicNc.connect(rtmpUrl); //为这个连接添加事件,这个事件有返回连接状态 publicNc.addEventListener(NetStatusEvent.NET_STATUS,onPublishNetStatusHandler); microphone = Microphone.getMicrophone(); camera = Camera.getCamera(); if(!camera) { Alert.show('没有开启摄像头或者没有安装摄像头'); } else { this.videoPublish.attachCamera(camera); } } private function onPublishNetStatusHandler(event:NetStatusEvent):void { //根据连接返回的状态信息判断是滞连接成功 if(event.info.code==\"NetConnection.Connect.Success\"){ appMessage.text += \"n发布连接建立成功\"; publicNs = new NetStream(publicNc); publicNs.attachAudio(microphone); publicNs.attachCamera(camera); publicNs.client = this; publicNs.publish(publicName,\"live\"); } } private function doReceive():void { receiveNc = new NetConnection(); //开始连接 receiveNc.connect(rtmpUrl); //为这个连接添加事件,这个事件有返回连接状态 receiveNc.addEventListener(NetStatusEvent.NET_STATUS,onReceiveNetStatusHandler); } private function onReceiveNetStatusHandler(event:NetStatusEvent):void { //根据连接返回的状态信息判断是滞连接成功 if(event.info.code==\"NetConnection.Connect.Success\"){ appMessage.text += \"n接受连接建立成功\"; receiveNs = new NetStream(publicNc); video = new Video(); video.width = 230; video.height = 173; video.attachNetStream(receiveNs); this.videoReceive.addChild(video); receiveNs.play(receiveName,\"live\"); } else { appMessage.text += \"n\" +　event.info.code; } } ?\u003e 4.3 管道NetConnection.connect() Flex流媒体传输通过通道传输，在NetConnection之上建立连接，由于RTMP和FMS的存在，我们可以很方便的在网络流上写入和读取流媒体信息。Net Connection.connect()支持FMS流媒体和本地文件，官方解释如下。\n在 Flash Player 或 AIR AIR 应用程序和 Flash Media Server 应用程序之间创建双向连接,NetConnection 对象如同客户端与服务器之间的管道。\n如果未使用 Flash Media Server，请调用 NetConnection.connect()，以便从本地文件系统或 Web\n服务器中播放视频和 MP3 文件。有关支持的编解码器和文件格式的信息，请参阅 http://www.adobe.com/go/hardware_scali ng_cn。\n4.4 flash.net.NetConnection 上找不到属性 onBWDone 这个问题参考在 flash.net.NetConnection 上找不到属性 onBWDone，且没有默认值。解决办法。 - Xiang - CSDN博客，解决如下。\n在 flash.net.NetConnection 上找不到属性 onBWDone，且没有默认值。\n_nc = new NetConnection(); c.addEventListener(NetStatusEvent.NET_STATUS,netStatusHandler); c.client = this; c.objectEncoding = ObjectEncoding.AMF0; c.connect(\"rtmp://localhost/oflaDemo\"); 首先添加_nc.client = this.\n然后新建一个方法：public function onBWDone():void{}\n问题解决。\n五、JavaScript和Flex的交互 页面上的Flex必须响应页面JavaScript的触发事件，Adboe在设计Flex时候，预留了相互调用的端口ExternalInterface，详情可以Google之，类似代码如下。\nif (ExternalInterface.available) { ExternalInterface.addCallback(\"initParams\", initParams); ExternalInterface.addCallback(\"playSound\", playSound); } else { this.appMessage.text += \"nJS无法调用Flash，请检查Flash环境\"; } 但是这种调用方法存在着一个致命的问题：创建一个swf的Object，当对这个swf做隐藏/显示的时候(display:none,display:block) 的时候，swf的所有的注册的javascritp函数都会被干掉(ExternalInterface.addCall方法)。这个是Flex的一个BUG，现在也 还没有解决。\n相关讨论可以参见Javascript无法访问Flex问题~ - rwl6813021 - JavaEye技术网站，文中详细讨论了这个问题，并给出一个解决方案。\n有一个折中的方案：即通过LocationConnection(本地通讯,利用两个swf来进行交互)来处理，初始化一个调用的client swf，负责调用被隐藏的swf中的方法，这样就避开了直接通过javascript调用被隐藏的swf中的方法。\n//1：client 发送端: private var ucallswfconn:LocalConnection; public function init():void { ucallswfconn = new LocalConnection(); //注册Javascritp方法，网页调用该flex的方法，通过该方法中转，调用另外一个flex的方法 ExternalInterface.addCallback(\"selectCallControl\",flexSelectCallControl); } public function flexSelectCallControl(method:String,param:String):void { //Alert.show(method+param); //调用另外一端swf中的方法，参数：1:receiver端监听的服务名称 2:方法名称 3:参数 ucallswfconn.send(\"ucallexternconn\",\"\"+method,\"\"+param); } //2：receiver 接收端： //add by polarbear, 2008.09.04, 本地通讯 this.ucallexternConn = new LocalConnection(); this.ucallexternConn.allowDomain(\"*\"); ucallexternConn.client = this; try { this.ucallexternConn.connect(\"ucallexternconn\"); } catch (error:ArgumentError) { trace(\"连接失败\"); } 注意被调用的函数必须是public的。\n我使用这个方法并没有成功，最后我采用的是将视频画面直接放在界面上（很丑，不得已为之）。上文的解决方案只是给出一个思路，感兴趣的话可以自己试试。\n六、Last 其实还有很多细节地方可以讲讲，我就不一一展开了。整理的文章就是这样，也没什么花样和娱乐，我都懒得加图片了~\n祝大家周末愉快，最近我睡眠很不好，每天6点就醒了，中午补个觉去……\n",
+  "wordCount" : "359",
+  "inLanguage": "en",
+  "datePublished": "2010-08-22T00:00:00+08:00",
+  "dateModified": "2010-08-22T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      AzaAjaxChat笔记-实现
+    </h1>
+    <div class="post-meta"><span title='2010-08-22 00:00:00 +0800 +0800'>2010-08-22</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一comet服务器推技术">一、Comet服务器推技术</a></li>
+        <li><a href="#二用户状态的处理">二、用户状态的处理</a></li>
+        <li><a href="#三rtmp">三、RTMP</a></li>
+        <li><a href="#四基于flex的流媒体传输">四、基于Flex的流媒体传输</a></li>
+        <li><a href="#五javascript和flex的交互">五、JavaScript和Flex的交互</a></li>
+        <li><a href="#六last">六、Last</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~</p>
+<h3 id="一comet服务器推技术">一、Comet服务器推技术<a hidden class="anchor" aria-hidden="true" href="#一comet服务器推技术">#</a></h3>
+<p>Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co
 met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile
-的流（streaming）方式，具体两种实现方式可以参考<a href=http://www.ibm.com/developerworks/cn/web/wa-lo-comet/>Comet：基于 HTTP 长连接的"服务器推"技术</a>。</p><p>我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询
-（long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。</p><p>这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将"查询->返回->再查询"中间的一段断开时间进行重连接。最后因为技术
-实现和开发时间，我决定放弃了Comet的实现。</p><p>PS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。</p><h4 id=相关链接>相关链接：<a hidden class=anchor aria-hidden=true href=#相关链接>#</a></h4><ul><li><a href=http://www.javaeye.com/topic/652949>一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 </a>（.net使用IHttpAsyncHandler的实现）</li><li><a href=http://ued.sohu.com/article/118/comment-page-1>Comet&ndash;&ldquo;服务器推"技术 - 搜狐UED</a>（搜狐UED团队的一个小介绍）</li></ul><h3 id=二用户状态的处理>二、用户状态的处理<a hidden class=anchor aria-hidden=true href=#二用户状态的处理>#</a></h3><p>开发时候遇到一个逻辑问题，具体描述如下：&ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。&ldquo;按照一般设计思路，这个动作应该由后台每
+的流（streaming）方式，具体两种实现方式可以参考<a href="http://www.ibm.com/developerworks/cn/web/wa-lo-comet/">Comet：基于 HTTP 长连接的&quot;服务器推&quot;技术</a>。</p>
+<p>我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询
+（long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。</p>
+<p>这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&quot;查询-&gt;返回-&gt;再查询&quot;中间的一段断开时间进行重连接。最后因为技术
+实现和开发时间，我决定放弃了Comet的实现。</p>
+<p>PS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。</p>
+<h4 id="相关链接">相关链接：<a hidden class="anchor" aria-hidden="true" href="#相关链接">#</a></h4>
+<ul>
+<li><a href="http://www.javaeye.com/topic/652949">一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 </a>（.net使用IHttpAsyncHandler的实现）</li>
+<li><a href="http://ued.sohu.com/article/118/comment-page-1">Comet&ndash;&ldquo;服务器推&quot;技术 - 搜狐UED</a>（搜狐UED团队的一个小介绍）</li>
+</ul>
+<h3 id="二用户状态的处理">二、用户状态的处理<a hidden class="anchor" aria-hidden="true" href="#二用户状态的处理">#</a></h3>
+<p>开发时候遇到一个逻辑问题，具体描述如下：&ldquo;一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。&ldquo;按照一般设计思路，这个动作应该由后台每
 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的
-解决办法。</p><p>我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。</p><p>这个问题困惑我很久，最后参考了<a href=https://blueimp.net/ajax/>AJAX Chat</a>的源码，它的思路是在一个新用户上线时候，进行检测所
-有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。</p><p>如果有PHP达人看到这个，望不惜赐教。</p><h3 id=三rtmp>三、RTMP<a hidden class=anchor aria-hidden=true href=#三rtmp>#</a></h3><p>RTPM是一个流媒体传输的协议，我在AzaAjaxChat中用它进行视频聊天画面和音频传输。这块内容可以洋洋洒洒的写一大篇日志，我在这里只是简单罗列一下我用
-到的相关内容。</p><blockquote><p>Real Time Messaging Protocol（实时消息传送协议协议)概述，实时消息传送协议是Adobe
+解决办法。</p>
+<p>我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。</p>
+<p>这个问题困惑我很久，最后参考了<a href="https://blueimp.net/ajax/">AJAX Chat</a>的源码，它的思路是在一个新用户上线时候，进行检测所
+有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。</p>
+<p>如果有PHP达人看到这个，望不惜赐教。</p>
+<h3 id="三rtmp">三、RTMP<a hidden class="anchor" aria-hidden="true" href="#三rtmp">#</a></h3>
+<p>RTPM是一个流媒体传输的协议，我在AzaAjaxChat中用它进行视频聊天画面和音频传输。这块内容可以洋洋洒洒的写一大篇日志，我在这里只是简单罗列一下我用
+到的相关内容。</p>
+<blockquote>
+<p>Real Time Messaging Protocol（实时消息传送协议协议)概述，实时消息传送协议是Adobe
 Systems公司为Flash播放器和服务器之间音频、视频和数据传输开发的私有协议。它有三种变种： 1)工作在TCP之上的明文协议，使用端口1935；
-2)RTMPT封装在HTTP请求之中，可穿越防火墙； 3)RTMPS类似RTMPT，但使用的是HTTPS连接；</p><p>RTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP协议或者轮询 HTTP协议之上。</p><p>RTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。
-这些通道中的包都是按照固定大小的包传输的。</p></blockquote><p>我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash
-Video流媒体播放功能的服务器软件。</p><p>FMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司
-跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。</p><h3 id=四基于flex的流媒体传输>四、基于Flex的流媒体传输<a hidden class=anchor aria-hidden=true href=#四基于flex的流媒体传输>#</a></h3><h4 id=41-官方sample-stratus>4.1 官方Sample-Stratus<a hidden class=anchor aria-hidden=true href=#41-官方sample-stratus>#</a></h4><p>AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](<a href=http://labs.a>http://labs.a</a>
+2)RTMPT封装在HTTP请求之中，可穿越防火墙； 3)RTMPS类似RTMPT，但使用的是HTTPS连接；</p>
+<p>RTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP协议或者轮询 HTTP协议之上。</p>
+<p>RTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。
+这些通道中的包都是按照固定大小的包传输的。</p>
+</blockquote>
+<p>我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash
+Video流媒体播放功能的服务器软件。</p>
+<p>FMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司
+跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。</p>
+<h3 id="四基于flex的流媒体传输">四、基于Flex的流媒体传输<a hidden class="anchor" aria-hidden="true" href="#四基于flex的流媒体传输">#</a></h3>
+<h4 id="41-官方sample-stratus">4.1 官方Sample-Stratus<a hidden class="anchor" aria-hidden="true" href="#41-官方sample-stratus">#</a></h4>
+<p>AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](<a href="http://labs.a">http://labs.a</a>
 dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支
-持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。</p><p>Adobe的某个专家博客还针对Stratus有一篇相当详细的讲解，原文在此<a href=http://www.adobe.com/devnet/flashplayer/articles/rtmfp_stratus_app.html>Stratus service for developing end-to- end applications using RTMFP in Flash Player 10 | Adobe Developer Connection</a>，文中分析了
+持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。</p>
+<p>Adobe的某个专家博客还针对Stratus有一篇相当详细的讲解，原文在此<a href="http://www.adobe.com/devnet/flashplayer/articles/rtmfp_stratus_app.html">Stratus service for developing end-to- end applications using RTMFP in Flash Player 10 | Adobe Developer Connection</a>，文中分析了
 RTMFP（比RTMP更高阶的流媒体传输协议，支持P2P）和Stratus的相关核心代码。我本想把这篇文章翻译，完成10%之后，意外发现已经有人翻译了，地址
-在此[通过Stratus 服务器在Flash Player中使用RTMFP 开发 点对点应用(一) &ndash; Windows Live](<a href="http://snowyrock.spaces.live.com/Blog/cns!B8CBEB7169880B1D!1279.entry?wa=wsignin1.0&sa=18">http://snowyrock.spaces.live.com/Blog/cns!B8CBEB7169880B1D!1279.entry?wa=wsignin1.0&sa=18</a>
+在此[通过Stratus 服务器在Flash Player中使用RTMFP 开发 点对点应用(一) &ndash; Windows Live](<a href="http://snowyrock.spaces.live.com/Blog/cns!B8CBEB7169880B1D!1279.entry?wa=wsignin1.0&amp;sa=18">http://snowyrock.spaces.live.com/Blog/cns!B8CBEB7169880B1D!1279.entry?wa=wsignin1.0&amp;sa=18</a>
 3740112)，<a href="http://snowyrock.spaces.live.com/blog/cns!B8CBEB7169880B1D!1278.entry?_c=BlogPart">通过Stratus 服务器在Flash Player中使用RTMFP 开发 点对点应用（二） &ndash; Windows Live</a>
-。</p><p>同时可以参考其他例子<a href=http://www.cnblogs.com/beniao/archive/2009/04/28/1444159.html>FMS3系列(五)：通过FMS实现时时视频聊天（Flash|Flex） - Bēniaǒ成长笔记 - 博客园</a>。</p><h4 id=42-azaajaxchat视频语音核心代码>4.2 AzaAjaxChat视频语音核心代码<a hidden class=anchor aria-hidden=true href=#42-azaajaxchat视频语音核心代码>#</a></h4><p>下面是核心代码。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=o>&lt;?</span><span class=nx>php</span>
-</span></span><span class=line><span class=cl><span class=k>protected</span> <span class=k>function</span> <span class=nf>starChat</span><span class=p>(</span><span class=nx>event</span><span class=o>:</span><span class=nx>MouseEvent</span><span class=p>)</span><span class=o>:</span><span class=nx>void</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>	<span class=c1>//同时开始监听
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nx>doReceive</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>	<span class=c1>//初始化一个网络连接 
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nx>publicNc</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>NetConnection</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>	<span class=c1>//开始连接 
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nx>publicNc</span><span class=o>.</span><span class=nx>connect</span><span class=p>(</span><span class=nx>rtmpUrl</span><span class=p>);</span> 
-</span></span><span class=line><span class=cl>	<span class=c1>//为这个连接添加事件,这个事件有返回连接状态 
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nx>publicNc</span><span class=o>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=nx>NetStatusEvent</span><span class=o>.</span><span class=nx>NET_STATUS</span><span class=p>,</span><span class=nx>onPublishNetStatusHandler</span><span class=p>);</span> 
-</span></span><span class=line><span class=cl>	<span class=nx>microphone</span> <span class=o>=</span> <span class=nx>Microphone</span><span class=o>.</span><span class=nx>getMicrophone</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>	<span class=nx>camera</span> <span class=o>=</span> <span class=nx>Camera</span><span class=o>.</span><span class=nx>getCamera</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>	<span class=k>if</span><span class=p>(</span><span class=o>!</span><span class=nx>camera</span><span class=p>)</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>		<span class=nx>Alert</span><span class=o>.</span><span class=nx>show</span><span class=p>(</span><span class=s1>&#39;没有开启摄像头或者没有安装摄像头&#39;</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>	<span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>		<span class=k>this</span><span class=o>.</span><span class=nx>videoPublish</span><span class=o>.</span><span class=nx>attachCamera</span><span class=p>(</span><span class=nx>camera</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>	<span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=k>private</span> <span class=k>function</span> <span class=nf>onPublishNetStatusHandler</span><span class=p>(</span><span class=nx>event</span><span class=o>:</span><span class=nx>NetStatusEvent</span><span class=p>)</span><span class=o>:</span><span class=nx>void</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl>	<span class=c1>//根据连接返回的状态信息判断是滞连接成功
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=k>if</span><span class=p>(</span><span class=nx>event</span><span class=o>.</span><span class=nx>info</span><span class=o>.</span><span class=nx>code</span><span class=o>==</span><span class=s2>&#34;NetConnection.Connect.Success&#34;</span><span class=p>){</span>
-</span></span><span class=line><span class=cl>		<span class=nx>appMessage</span><span class=o>.</span><span class=nx>text</span> <span class=o>+=</span> <span class=s2>&#34;n发布连接建立成功&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>		<span class=nx>publicNs</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>NetStream</span><span class=p>(</span><span class=nx>publicNc</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>		<span class=nx>publicNs</span><span class=o>.</span><span class=nx>attachAudio</span><span class=p>(</span><span class=nx>microphone</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>		<span class=nx>publicNs</span><span class=o>.</span><span class=nx>attachCamera</span><span class=p>(</span><span class=nx>camera</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>		<span class=nx>publicNs</span><span class=o>.</span><span class=nx>client</span> <span class=o>=</span> <span class=k>this</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>		<span class=nx>publicNs</span><span class=o>.</span><span class=nx>publish</span><span class=p>(</span><span class=nx>publicName</span><span class=p>,</span><span class=s2>&#34;live&#34;</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>	<span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=k>private</span> <span class=k>function</span> <span class=nf>doReceive</span><span class=p>()</span><span class=o>:</span><span class=nx>void</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>	<span class=nx>receiveNc</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>NetConnection</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>	<span class=c1>//开始连接
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nx>receiveNc</span><span class=o>.</span><span class=nx>connect</span><span class=p>(</span><span class=nx>rtmpUrl</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>	<span class=c1>//为这个连接添加事件,这个事件有返回连接状态
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=nx>receiveNc</span><span class=o>.</span><span class=nx>addEventListener</span><span class=p>(</span><span class=nx>NetStatusEvent</span><span class=o>.</span><span class=nx>NET_STATUS</span><span class=p>,</span><span class=nx>onReceiveNetStatusHandler</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=k>private</span> <span class=k>function</span> <span class=nf>onReceiveNetStatusHandler</span><span class=p>(</span><span class=nx>event</span><span class=o>:</span><span class=nx>NetStatusEvent</span><span class=p>)</span><span class=o>:</span><span class=nx>void</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>	<span class=c1>//根据连接返回的状态信息判断是滞连接成功
-</span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=k>if</span><span class=p>(</span><span class=nx>event</span><span class=o>.</span><span class=nx>info</span><span class=o>.</span><span class=nx>code</span><span class=o>==</span><span class=s2>&#34;NetConnection.Connect.Success&#34;</span><span class=p>){</span>
-</span></span><span class=line><span class=cl>		<span class=nx>appMessage</span><span class=o>.</span><span class=nx>text</span> <span class=o>+=</span> <span class=s2>&#34;n接受连接建立成功&#34;</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>		<span class=nx>receiveNs</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>NetStream</span><span class=p>(</span><span class=nx>publicNc</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>		<span class=nx>video</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Video</span><span class=p>();</span>
-</span></span><span class=line><span class=cl>		<span class=nx>video</span><span class=o>.</span><span class=nx>width</span> <span class=o>=</span> <span class=mi>230</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>		<span class=nx>video</span><span class=o>.</span><span class=nx>height</span> <span class=o>=</span> <span class=mi>173</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>		<span class=nx>video</span><span class=o>.</span><span class=nx>attachNetStream</span><span class=p>(</span><span class=nx>receiveNs</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>		<span class=k>this</span><span class=o>.</span><span class=nx>videoReceive</span><span class=o>.</span><span class=nx>addChild</span><span class=p>(</span><span class=nx>video</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>		<span class=nx>receiveNs</span><span class=o>.</span><span class=nx>play</span><span class=p>(</span><span class=nx>receiveName</span><span class=p>,</span><span class=s2>&#34;live&#34;</span><span class=p>);</span>
-</span></span><span class=line><span class=cl>	<span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
-</span></span><span class=line><span class=cl>		<span class=nx>appMessage</span><span class=o>.</span><span class=nx>text</span> <span class=o>+=</span> <span class=s2>&#34;n&#34;</span> <span class=o>+</span>　<span class=nx>event</span><span class=o>.</span><span class=nx>info</span><span class=o>.</span><span class=nx>code</span><span class=p>;</span>
-</span></span><span class=line><span class=cl>	<span class=p>}</span>
-</span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=cp>?&gt;</span><span class=err>
-</span></span></span></code></pre></div><h4 id=43-管道netconnectionconnect>4.3 管道NetConnection.connect()<a hidden class=anchor aria-hidden=true href=#43-管道netconnectionconnect>#</a></h4><p>Flex流媒体传输通过通道传输，在NetConnection之上建立连接，由于RTMP和FMS的存在，我们可以很方便的在网络流上写入和读取流媒体信息。Net
-Connection.connect()支持FMS流媒体和本地文件，官方解释如下。</p><blockquote><p>在 Flash Player 或 AIR AIR 应用程序和 Flash Media Server 应用程序之间创建双向连接,NetConnection
-对象如同客户端与服务器之间的管道。</p><p>如果未使用 Flash Media Server，请调用 NetConnection.connect()，以便从本地文件系统或 Web</p></blockquote><p>服务器中播放视频和 MP3 文件。有关支持的编解码器和文件格式的信息，请参阅 <a href=http://www.adobe.com/go/hardware_scaling_cn>http://www.adobe.com/go/hardware_scali ng_cn</a>。</p><h4 id=44-flashnetnetconnection-上找不到属性-onbwdone>4.4 flash.net.NetConnection 上找不到属性 onBWDone<a hidden class=anchor aria-hidden=true href=#44-flashnetnetconnection-上找不到属性-onbwdone>#</a></h4><p>这个问题参考<a href=http://blog.csdn.net/xiang08/archive/2009/07/13/4343551.aspx>在 flash.net.NetConnection 上找不到属性 onBWDone，且没有默认值。解决办法。 - Xiang - CSDN博客</a>，解决如下。</p><blockquote><p>在 flash.net.NetConnection 上找不到属性 onBWDone，且没有默认值。</p><pre tabindex=0><code>_nc = new NetConnection();
+。</p>
+<p>同时可以参考其他例子<a href="http://www.cnblogs.com/beniao/archive/2009/04/28/1444159.html">FMS3系列(五)：通过FMS实现时时视频聊天（Flash|Flex） - Bēniaǒ成长笔记 - 博客园</a>。</p>
+<h4 id="42-azaajaxchat视频语音核心代码">4.2 AzaAjaxChat视频语音核心代码<a hidden class="anchor" aria-hidden="true" href="#42-azaajaxchat视频语音核心代码">#</a></h4>
+<p>下面是核心代码。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="k">protected</span> <span class="k">function</span> <span class="nf">starChat</span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="nx">MouseEvent</span><span class="p">)</span><span class="o">:</span><span class="nx">void</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//同时开始监听
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">doReceive</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//初始化一个网络连接 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">publicNc</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NetConnection</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//开始连接 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">publicNc</span><span class="o">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">rtmpUrl</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">	<span class="c1">//为这个连接添加事件,这个事件有返回连接状态 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">publicNc</span><span class="o">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">NetStatusEvent</span><span class="o">.</span><span class="nx">NET_STATUS</span><span class="p">,</span><span class="nx">onPublishNetStatusHandler</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">	<span class="nx">microphone</span> <span class="o">=</span> <span class="nx">Microphone</span><span class="o">.</span><span class="nx">getMicrophone</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">camera</span> <span class="o">=</span> <span class="nx">Camera</span><span class="o">.</span><span class="nx">getCamera</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">camera</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">Alert</span><span class="o">.</span><span class="nx">show</span><span class="p">(</span><span class="s1">&#39;没有开启摄像头或者没有安装摄像头&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">this</span><span class="o">.</span><span class="nx">videoPublish</span><span class="o">.</span><span class="nx">attachCamera</span><span class="p">(</span><span class="nx">camera</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">function</span> <span class="nf">onPublishNetStatusHandler</span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="nx">NetStatusEvent</span><span class="p">)</span><span class="o">:</span><span class="nx">void</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//根据连接返回的状态信息判断是滞连接成功
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="o">.</span><span class="nx">info</span><span class="o">.</span><span class="nx">code</span><span class="o">==</span><span class="s2">&#34;NetConnection.Connect.Success&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">appMessage</span><span class="o">.</span><span class="nx">text</span> <span class="o">+=</span> <span class="s2">&#34;n发布连接建立成功&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">publicNs</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NetStream</span><span class="p">(</span><span class="nx">publicNc</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">publicNs</span><span class="o">.</span><span class="nx">attachAudio</span><span class="p">(</span><span class="nx">microphone</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">publicNs</span><span class="o">.</span><span class="nx">attachCamera</span><span class="p">(</span><span class="nx">camera</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">publicNs</span><span class="o">.</span><span class="nx">client</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">publicNs</span><span class="o">.</span><span class="nx">publish</span><span class="p">(</span><span class="nx">publicName</span><span class="p">,</span><span class="s2">&#34;live&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">function</span> <span class="nf">doReceive</span><span class="p">()</span><span class="o">:</span><span class="nx">void</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="nx">receiveNc</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NetConnection</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//开始连接
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">receiveNc</span><span class="o">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">rtmpUrl</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//为这个连接添加事件,这个事件有返回连接状态
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nx">receiveNc</span><span class="o">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">NetStatusEvent</span><span class="o">.</span><span class="nx">NET_STATUS</span><span class="p">,</span><span class="nx">onReceiveNetStatusHandler</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">private</span> <span class="k">function</span> <span class="nf">onReceiveNetStatusHandler</span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="nx">NetStatusEvent</span><span class="p">)</span><span class="o">:</span><span class="nx">void</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//根据连接返回的状态信息判断是滞连接成功
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="o">.</span><span class="nx">info</span><span class="o">.</span><span class="nx">code</span><span class="o">==</span><span class="s2">&#34;NetConnection.Connect.Success&#34;</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">appMessage</span><span class="o">.</span><span class="nx">text</span> <span class="o">+=</span> <span class="s2">&#34;n接受连接建立成功&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">receiveNs</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NetStream</span><span class="p">(</span><span class="nx">publicNc</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">video</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Video</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">video</span><span class="o">.</span><span class="nx">width</span> <span class="o">=</span> <span class="mi">230</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">video</span><span class="o">.</span><span class="nx">height</span> <span class="o">=</span> <span class="mi">173</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">video</span><span class="o">.</span><span class="nx">attachNetStream</span><span class="p">(</span><span class="nx">receiveNs</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">this</span><span class="o">.</span><span class="nx">videoReceive</span><span class="o">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">video</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">receiveNs</span><span class="o">.</span><span class="nx">play</span><span class="p">(</span><span class="nx">receiveName</span><span class="p">,</span><span class="s2">&#34;live&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nx">appMessage</span><span class="o">.</span><span class="nx">text</span> <span class="o">+=</span> <span class="s2">&#34;n&#34;</span> <span class="o">+</span>　<span class="nx">event</span><span class="o">.</span><span class="nx">info</span><span class="o">.</span><span class="nx">code</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></div><h4 id="43-管道netconnectionconnect">4.3 管道NetConnection.connect()<a hidden class="anchor" aria-hidden="true" href="#43-管道netconnectionconnect">#</a></h4>
+<p>Flex流媒体传输通过通道传输，在NetConnection之上建立连接，由于RTMP和FMS的存在，我们可以很方便的在网络流上写入和读取流媒体信息。Net
+Connection.connect()支持FMS流媒体和本地文件，官方解释如下。</p>
+<blockquote>
+<p>在 Flash Player 或 AIR AIR 应用程序和 Flash Media Server 应用程序之间创建双向连接,NetConnection
+对象如同客户端与服务器之间的管道。</p>
+<p>如果未使用 Flash Media Server，请调用 NetConnection.connect()，以便从本地文件系统或 Web</p>
+</blockquote>
+<p>服务器中播放视频和 MP3 文件。有关支持的编解码器和文件格式的信息，请参阅 <a href="http://www.adobe.com/go/hardware_scaling_cn">http://www.adobe.com/go/hardware_scali ng_cn</a>。</p>
+<h4 id="44-flashnetnetconnection-上找不到属性-onbwdone">4.4 flash.net.NetConnection 上找不到属性 onBWDone<a hidden class="anchor" aria-hidden="true" href="#44-flashnetnetconnection-上找不到属性-onbwdone">#</a></h4>
+<p>这个问题参考<a href="http://blog.csdn.net/xiang08/archive/2009/07/13/4343551.aspx">在 flash.net.NetConnection 上找不到属性 onBWDone，且没有默认值。解决办法。 - Xiang - CSDN博客</a>，解决如下。</p>
+<blockquote>
+<p>在 flash.net.NetConnection 上找不到属性 onBWDone，且没有默认值。</p>
+<pre tabindex="0"><code>_nc = new NetConnection();
 c.addEventListener(NetStatusEvent.NET_STATUS,netStatusHandler);
 c.client = this;
 c.objectEncoding = ObjectEncoding.AMF0;
 c.connect(&#34;rtmp://localhost/oflaDemo&#34;);
-</code></pre><p>首先添加_nc.client = this.</p><p>然后新建一个方法：public function onBWDone():void{}</p><p>问题解决。</p></blockquote><h3 id=五javascript和flex的交互>五、JavaScript和Flex的交互<a hidden class=anchor aria-hidden=true href=#五javascript和flex的交互>#</a></h3><p>页面上的Flex必须响应页面JavaScript的触发事件，Adboe在设计Flex时候，预留了相互调用的端口ExternalInterface，详情可以Google之，类似代码如下。</p><pre tabindex=0><code>if (ExternalInterface.available) {
+</code></pre><p>首先添加_nc.client = this.</p>
+<p>然后新建一个方法：public function onBWDone():void{}</p>
+<p>问题解决。</p>
+</blockquote>
+<h3 id="五javascript和flex的交互">五、JavaScript和Flex的交互<a hidden class="anchor" aria-hidden="true" href="#五javascript和flex的交互">#</a></h3>
+<p>页面上的Flex必须响应页面JavaScript的触发事件，Adboe在设计Flex时候，预留了相互调用的端口ExternalInterface，详情可以Google之，类似代码如下。</p>
+<pre tabindex="0"><code>if (ExternalInterface.available) {
     ExternalInterface.addCallback(&#34;initParams&#34;, initParams);
     ExternalInterface.addCallback(&#34;playSound&#34;, playSound);
 } else {
@@ -136,36 +419,226 @@ c.connect(&#34;rtmp://localhost/oflaDemo&#34;);
 }
 </code></pre><p>但是这种调用方法存在着一个致命的问题：创建一个swf的Object，当对这个swf做隐藏/显示的时候(display:none,display:block)
 的时候，swf的所有的注册的javascritp函数都会被干掉(ExternalInterface.addCall方法)。这个是Flex的一个BUG，现在也
-还没有解决。</p><p>相关讨论可以参见<a href=http://rwl6813021.javaeye.com/blog/236344>Javascript无法访问Flex问题~ - rwl6813021 - JavaEye技术网站</a>，文中详细讨论了这个问题，并给出一个解决方案。</p><p>有一个折中的方案：即通过LocationConnection(本地通讯,利用两个swf来进行交互)来处理，初始化一个调用的client
-swf，负责调用被隐藏的swf中的方法，这样就避开了直接通过javascript调用被隐藏的swf中的方法。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-java data-lang=java><span class=line><span class=cl><span class=c1>//1：client 发送端:
-</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>private</span> <span class=n>var</span> <span class=n>ucallswfconn</span><span class=o>:</span><span class=n>LocalConnection</span><span class=o>;</span>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=n>function</span> <span class=nf>init</span><span class=o>():</span><span class=kt>void</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=n>ucallswfconn</span> <span class=o>=</span> <span class=k>new</span> <span class=n>LocalConnection</span><span class=o>();</span>
-</span></span><span class=line><span class=cl>    <span class=c1>//注册Javascritp方法，网页调用该flex的方法，通过该方法中转，调用另外一个flex的方法
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>ExternalInterface</span><span class=o>.</span><span class=na>addCallback</span><span class=o>(</span><span class=s>&#34;selectCallControl&#34;</span><span class=o>,</span><span class=n>flexSelectCallControl</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=n>function</span> <span class=nf>flexSelectCallControl</span><span class=o>(</span><span class=n>method</span><span class=o>:</span><span class=n>String</span><span class=o>,</span><span class=n>param</span><span class=o>:</span><span class=n>String</span><span class=o>):</span><span class=kt>void</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=c1>//Alert.show(method+param);
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>//调用另外一端swf中的方法，参数：1:receiver端监听的服务名称 2:方法名称 3:参数
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=n>ucallswfconn</span><span class=o>.</span><span class=na>send</span><span class=o>(</span><span class=s>&#34;ucallexternconn&#34;</span><span class=o>,</span><span class=s>&#34;&#34;</span><span class=o>+</span><span class=n>method</span><span class=o>,</span><span class=s>&#34;&#34;</span><span class=o>+</span><span class=n>param</span><span class=o>);</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span><span class=line><span class=cl>
-</span></span><span class=line><span class=cl><span class=c1>//2：receiver 接收端：
-</span></span></span><span class=line><span class=cl><span class=c1>//add by polarbear, 2008.09.04, 本地通讯
-</span></span></span><span class=line><span class=cl><span class=c1></span>
-</span></span><span class=line><span class=cl><span class=k>this</span><span class=o>.</span><span class=na>ucallexternConn</span> <span class=o>=</span> <span class=k>new</span> <span class=n>LocalConnection</span><span class=o>();</span>
-</span></span><span class=line><span class=cl><span class=k>this</span><span class=o>.</span><span class=na>ucallexternConn</span><span class=o>.</span><span class=na>allowDomain</span><span class=o>(</span><span class=s>&#34;*&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=n>ucallexternConn</span><span class=o>.</span><span class=na>client</span> <span class=o>=</span> <span class=k>this</span><span class=o>;</span>
-</span></span><span class=line><span class=cl><span class=k>try</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=o>.</span><span class=na>ucallexternConn</span><span class=o>.</span><span class=na>connect</span><span class=o>(</span><span class=s>&#34;ucallexternconn&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=o>}</span> <span class=k>catch</span> <span class=o>(</span><span class=n>error</span><span class=o>:</span><span class=n>ArgumentError</span><span class=o>)</span> <span class=o>{</span>
-</span></span><span class=line><span class=cl>    <span class=n>trace</span><span class=o>(</span><span class=s>&#34;连接失败&#34;</span><span class=o>);</span>
-</span></span><span class=line><span class=cl><span class=o>}</span>
-</span></span></code></pre></div><p>注意被调用的函数必须是public的。</p><p>我使用这个方法并没有成功，最后我采用的是将视频画面直接放在界面上（很丑，不得已为之）。上文的解决方案只是给出一个思路，感兴趣的话可以自己试试。</p><h3 id=六last>六、Last<a hidden class=anchor aria-hidden=true href=#六last>#</a></h3><p>其实还有很多细节地方可以讲讲，我就不一一展开了。整理的文章就是这样，也没什么花样和娱乐，我都懒得加图片了~</p><p>祝大家周末愉快，最近我睡眠很不好，每天6点就醒了，中午补个觉去……</p><hr><p>原文链接: <a href=https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/>AzaAjaxChat笔记-实现 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/php/>php</a></li><li><a href=https://blog.alswl.com/tags/azaajaxchat/>azaajaxchat</a></li><li><a href=https://blog.alswl.com/tags/comet/>comet</a></li><li><a href=https://blog.alswl.com/tags/flex/>flex</a></li><li><a href=https://blog.alswl.com/tags/fms/>fms</a></li><li><a href=https://blog.alswl.com/tags/javascript/>javascript</a></li><li><a href=https://blog.alswl.com/tags/rtmp/>rtmp</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2010/08/taishan/><span class=title>« Prev</span><br><span>泰山顶上挨过冻</span></a>
-<a class=next href=https://blog.alswl.com/2010/08/cook-book/><span class=title>Next »</span><br><span>新手入厨好书-《从零开始学下厨》</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
+还没有解决。</p>
+<p>相关讨论可以参见<a href="http://rwl6813021.javaeye.com/blog/236344">Javascript无法访问Flex问题~ - rwl6813021 - JavaEye技术网站</a>，文中详细讨论了这个问题，并给出一个解决方案。</p>
+<p>有一个折中的方案：即通过LocationConnection(本地通讯,利用两个swf来进行交互)来处理，初始化一个调用的client
+swf，负责调用被隐藏的swf中的方法，这样就避开了直接通过javascript调用被隐藏的swf中的方法。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">//1：client 发送端:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">private</span> <span class="n">var</span> <span class="n">ucallswfconn</span><span class="o">:</span><span class="n">LocalConnection</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="n">function</span> <span class="nf">init</span><span class="o">():</span><span class="kt">void</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ucallswfconn</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocalConnection</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//注册Javascritp方法，网页调用该flex的方法，通过该方法中转，调用另外一个flex的方法
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ExternalInterface</span><span class="o">.</span><span class="na">addCallback</span><span class="o">(</span><span class="s">&#34;selectCallControl&#34;</span><span class="o">,</span><span class="n">flexSelectCallControl</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="n">function</span> <span class="nf">flexSelectCallControl</span><span class="o">(</span><span class="n">method</span><span class="o">:</span><span class="n">String</span><span class="o">,</span><span class="n">param</span><span class="o">:</span><span class="n">String</span><span class="o">):</span><span class="kt">void</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//Alert.show(method+param);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">//调用另外一端swf中的方法，参数：1:receiver端监听的服务名称 2:方法名称 3:参数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ucallswfconn</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="s">&#34;ucallexternconn&#34;</span><span class="o">,</span><span class="s">&#34;&#34;</span><span class="o">+</span><span class="n">method</span><span class="o">,</span><span class="s">&#34;&#34;</span><span class="o">+</span><span class="n">param</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//2：receiver 接收端：
+</span></span></span><span class="line"><span class="cl"><span class="c1">//add by polarbear, 2008.09.04, 本地通讯
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">this</span><span class="o">.</span><span class="na">ucallexternConn</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocalConnection</span><span class="o">();</span>
+</span></span><span class="line"><span class="cl"><span class="k">this</span><span class="o">.</span><span class="na">ucallexternConn</span><span class="o">.</span><span class="na">allowDomain</span><span class="o">(</span><span class="s">&#34;*&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="n">ucallexternConn</span><span class="o">.</span><span class="na">client</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">try</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="o">.</span><span class="na">ucallexternConn</span><span class="o">.</span><span class="na">connect</span><span class="o">(</span><span class="s">&#34;ucallexternconn&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">error</span><span class="o">:</span><span class="n">ArgumentError</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">trace</span><span class="o">(</span><span class="s">&#34;连接失败&#34;</span><span class="o">);</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>注意被调用的函数必须是public的。</p>
+<p>我使用这个方法并没有成功，最后我采用的是将视频画面直接放在界面上（很丑，不得已为之）。上文的解决方案只是给出一个思路，感兴趣的话可以自己试试。</p>
+<h3 id="六last">六、Last<a hidden class="anchor" aria-hidden="true" href="#六last">#</a></h3>
+<p>其实还有很多细节地方可以讲讲，我就不一一展开了。整理的文章就是这样，也没什么花样和娱乐，我都懒得加图片了~</p>
+<p>祝大家周末愉快，最近我睡眠很不好，每天6点就醒了，中午补个觉去……</p>
+
+<hr />
+<p>原文链接: <a href="https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/">AzaAjaxChat笔记-实现 | Log4D</a></p>
+<p>3a1ff193cee606bd1e2ea554a16353ee</p>
+<p>欢迎关注我的微信公众号：<a
+href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
+alt="窥豹" />
+<figcaption aria-hidden="true">窥豹</figcaption>
+</figure>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
+alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
+<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption>
+</figure>
+
+    
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/php/">php</a></li>
+      <li><a href="https://blog.alswl.com/tags/azaajaxchat/">azaajaxchat</a></li>
+      <li><a href="https://blog.alswl.com/tags/comet/">comet</a></li>
+      <li><a href="https://blog.alswl.com/tags/flex/">flex</a></li>
+      <li><a href="https://blog.alswl.com/tags/fms/">fms</a></li>
+      <li><a href="https://blog.alswl.com/tags/javascript/">javascript</a></li>
+      <li><a href="https://blog.alswl.com/tags/rtmp/">rtmp</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2010/08/taishan/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>泰山顶上挨过冻</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2010/08/cook-book/">
+    <span class="title">Next »</span>
+    <br>
+    <span>新手入厨好书-《从零开始学下厨》</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "log4d" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,4 +1,160 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>coding | Log4D</title><meta name=keywords content><meta name=description content><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/categories/coding/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.alswl.com/categories/coding/atom.xml><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="coding"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://blog.alswl.com/categories/coding/"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="coding"><meta name=twitter:description content></head><body class=list id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><header class=page-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/categories/>Categories</a></div><h1>coding</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2>最简陋的GAE代理</h2></header><div class=entry-content><p>年前换了一次服务器，之后发现Lifestream的Errors飙升到1000+错误，检查一下，发现是获 取不了豆瓣的rss链接。正好这台主机支持SSH，连入之后CURL了一下豆瓣服务器，发现Time out。
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>coding | Log4D</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/categories/coding/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/categories/coding/atom.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="coding" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://blog.alswl.com/categories/coding/" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="coding"/>
+<meta name="twitter:description" content=""/>
+
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/categories/">Categories</a></div>
+  <h1>
+    coding
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>最简陋的GAE代理
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>年前换了一次服务器，之后发现Lifestream的Errors飙升到1000&#43;错误，检查一下，发现是获 取不了豆瓣的rss链接。正好这台主机支持SSH，连入之后CURL了一下豆瓣服务器，发现Time out。
 紧接着发现中国内的所有域名都无法使用CURL获取，联系小张之后，得知该主机曾经被入侵过，于是屏蔽了中国大陆的ip段（囧~入侵和中国ip有毛关系）
 遂想用GAE做个代理服务器，反正获取RSS也只要Get一下，代码没几句。把这项任务放入Toodledo之后，就一直没去弄，今天发现GAE Laucher升级了，就部署到自己GAE上了。
 地址格式如http://jasontiproxy.appspot.com/proxy?url=www.douban. com/feed/people/alswl/interests，url参数名后面跟着具体的url。
@@ -10,7 +166,7 @@ class MainHandler(webapp.RequestHandler):
 def get(self):
 url = self.request.get(‘url’)
 if url.find(‘http://’) &lt; 0:
-url = ‘http://’ + url
+url = ‘http://’ &#43; url
 conn = urllib2.urlopen(url)
 html = conn.read()
 encoding = conn.headers[‘content-type’].split(‘charset=’)[-1]
@@ -22,13 +178,25 @@ debug=True)
 util.run_wsgi_app(application)
 if name == ‘main’:
 main()
-申请一个空间，部署上去就行了，这个小应用可以临时获取一下网页内容，不支持Post和替换url，所以称之为"最简陋的GAE代理"。</p></div><footer class=entry-footer><span title='2011-01-11 00:00:00 +0800 +0800'>2011-01-11</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 最简陋的GAE代理" href=https://blog.alswl.com/2011/01/a-simple-gae-proxy/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>C#+VBA操作Excel总结</h2></header><div class=entry-content><p>Excel在日常办公中应用非常广泛，这次我接到一个案子，需要往Excel中写入数据并能够打印出固定格式，前前后后大概花了将近2星期才搞定，现在做一些分享。
+申请一个空间，部署上去就行了，这个小应用可以临时获取一下网页内容，不支持Post和替换url，所以称之为&#34;最简陋的GAE代理&#34;。</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-01-11 00:00:00 +0800 +0800'>2011-01-11</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 最简陋的GAE代理" href="https://blog.alswl.com/2011/01/a-simple-gae-proxy/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>C#&#43;VBA操作Excel总结
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Excel在日常办公中应用非常广泛，这次我接到一个案子，需要往Excel中写入数据并能够打印出固定格式，前前后后大概花了将近2星期才搞定，现在做一些分享。
 一、关于操作Excel的几种方式 我们导出Excel，大抵是有两种方法，一种是在服务器端用一些类库或者COM组件直接生成Excel成品，其二是在后台只写入数据，而不写入具体格式，等用户下载完 Excel之后再在客户端上利用vba生成Excel成品。
-1.1使用"自动化"功能-后台生成成品 微软把后台使用COM组件称之为"自动化"，其实它本身是不建议这种用法，在257757 号文章（服务器端 Office 自动化注意事项）也明文标出"Microsoft 目前建议不要从任何无人参与的、非交互式客户端应用程序或组件（包括 ASP、DCOM 和 NT Service）中进行 Microsoft Office 应用程序的"自动化"，也不为此提供支持，因为 Office 在这种环境中运行时可能会出现不稳定的现象并且/或者会死锁。"
-这种方法的优点是给用户更简洁的展现，毕竟原生的Excel成品比半成品来更容易接受，而且可以避免宏安全问题，万一客户端禁止了宏，就只能看到丑陋的模板界面+一坨 数据。
+1.1使用&#34;自动化&#34;功能-后台生成成品 微软把后台使用COM组件称之为&#34;自动化&#34;，其实它本身是不建议这种用法，在257757 号文章（服务器端 Office 自动化注意事项）也明文标出&#34;Microsoft 目前建议不要从任何无人参与的、非交互式客户端应用程序或组件（包括 ASP、DCOM 和 NT Service）中进行 Microsoft Office 应用程序的&#34;自动化&#34;，也不为此提供支持，因为 Office 在这种环境中运行时可能会出现不稳定的现象并且/或者会死锁。&#34;
+这种方法的优点是给用户更简洁的展现，毕竟原生的Excel成品比半成品来更容易接受，而且可以避免宏安全问题，万一客户端禁止了宏，就只能看到丑陋的模板界面&#43;一坨 数据。
 缺点是需要服务端支持，编写成本也比较高（VBA有时候可以直接录制）。服务端支持体现在需要安装一些微软或者第三方的类库。我当时采用的是Office类库，也就是 在安装有Office的机器上面使用Interop.Excel.dll这个中间动态链接库进行操作，需要麻烦的安全设置，效率低不说还会扯出Excel无法关闭的B ug。
 关于效率低我深有体会，我使用这种方法生成5页数据大约2m，客户等的急死，其根本原因是由于COM组件在调用时候，每一个Range这种对象都会产生一个借口请求。
-1.2、使用ADO.net传输数据+VBA控制模板和数据 这方法的优缺点正好与上文相反，由于只是写入数据，即通过ADO.net的连接方式INSERT一堆数据到Excel文件的隐藏Sheet里面去（别跟我说你不知道E xcel可以隐藏某个Sheet），所以速度后台速度极快。前台Excel文件虽然需要VBA编程支持，但是在理解Excel模型之后也不是很难的事情。
+1.2、使用ADO.net传输数据&#43;VBA控制模板和数据 这方法的优缺点正好与上文相反，由于只是写入数据，即通过ADO.net的连接方式INSERT一堆数据到Excel文件的隐藏Sheet里面去（别跟我说你不知道E xcel可以隐藏某个Sheet），所以速度后台速度极快。前台Excel文件虽然需要VBA编程支持，但是在理解Excel模型之后也不是很难的事情。
 1.3 选择哪种方式，取决于你的需求，如果你在Java平台下面并且输出文件页面格式不复杂，我推荐第一种，如果是.net平台又或者要处理复杂的页面样式，就选用第二种吧 （我前期使用第一种，后来因为效率问题和无法关闭Excel的问题，重写逻辑，选用第二种）。
 关于Excel导出方案的选择，微软官方也是不建议使用第一种方案，甚至不提供技术支持。它推荐了一些方案，包括使用报表导出Excel或者ADO.net方式导出（ 即第二种），具体文章见如何使用 Visual C# 2005 或 Visual C# .NET 向 Excel 工作簿传输数据。
 二、Office Excel文档模型 在写操作Excel代码之前，需要了解一下Excel的文档模型，才能想当然的把代码写出来。
@@ -36,13 +204,25 @@ main()
 Application就是Excel实例，不仅仅是一个Excel文件，而是整体的Excel程序（Office都是MDI文档体系）。
 WorkBook就是实质意义上的某个Excel文件，你可以进行保存操作等等。
 Worksheet是某个工作簿类型。
-Range是我们打交道最多的，可以理解成一个区域快，也就是常见的"A2:B5"这种表示方式。
+Range是我们打交道最多的，可以理解成一个区域快，也就是常见的&#34;A2:B5&#34;这种表示方式。
 了解这几种之后，我们就可以下手操作了。更详细的微软官方文档，可以在Excel 对象模型概述找到。
 三、使用C#操作Excel 我虽然不推荐第一种，但是毕竟是一种解决方案。
 需要使用的命名空间为using Excel = Microsoft.Office.Interop.Excel;（使用别名简化一下）
 另外需要项目引用Office的类库，如果不是项目形式而是网站形式，则需要手动编译对应Interop.Excel.dll到网站bin目录下面，我使用Excel 2007编译出这个链接库，版本为1.6.0.0，需要的可以点击Interop.Excel.dll下载。
-3.1 编译Interop.Excel.dll 编译的方法出自于"[使用Office组件读取Excel，引用Microsoft.Office.Interop.Excel出现的问题](http://www. cnblogs.com/Mainz/archive/2009/11/11/Microsoft_Office_Interop_Excel.html)"&nbs p_place_holder;
-进入你的visual studio的sdk下的bin目录，找到TlbImp....</p></div><footer class=entry-footer><span title='2010-12-14 00:00:00 +0800 +0800'>2010-12-14</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to C#+VBA操作Excel总结" href=https://blog.alswl.com/2010/12/csharp-vba-excel/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>一周Python小记</h2></header><div class=entry-content><p>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。
+3.1 编译Interop.Excel.dll 编译的方法出自于&#34;[使用Office组件读取Excel，引用Microsoft.Office.Interop.Excel出现的问题](http://www. cnblogs.com/Mainz/archive/2009/11/11/Microsoft_Office_Interop_Excel.html)&#34;&amp;nbs p_place_holder;
+进入你的visual studio的sdk下的bin目录，找到TlbImp....</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-12-14 00:00:00 +0800 +0800'>2010-12-14</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to C#&#43;VBA操作Excel总结" href="https://blog.alswl.com/2010/12/csharp-vba-excel/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>一周Python小记
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。
 一、配置文件 1、YAML格式 数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。
 YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成对应的格式变量。
 之所以选择YAML，是看中它对语言的亲和性和可读性，GAE的配置文件就是YAML格式。YAML的语法相当简单，用:来分隔key: value，用 - 来分隔列表，注意点是缩进需要用空格，关键符号和内容之间要加上一个空格。我的配置文件如下：
@@ -61,26 +241,62 @@ user: sa
 dbpassword: 518518
 databaseSys: ebChainSys30_0
 databaseSyn: ebChainSyn30_0
-YAML可以用VIM或者notepad++进行编辑，两者都对YAML提供语法高亮支持（博客的SyantaxHighLighter不支持~）。
+YAML可以用VIM或者notepad&#43;&#43;进行编辑，两者都对YAML提供语法高亮支持（博客的SyantaxHighLighter不支持~）。
 相关链接：YAML的官方网站（网站的分隔就是YAML格式，相当有趣） YAML简介（来自IBM）
 2、PyYAML
 Python有几种YAML的实现，我这里推荐使用PyYAML，比较流行的模块，毕竟我这里只需要简单的读写操作。
 PyYAML通过官方宣称的神奇的yaml.load()方法载入YAML文件，可以将列表识别为list和dictionary，通过key可以直接读取对应的值。
 我的Demo代码如下：
-#coding=utf-8 ''' 全局配置文件 alswl 20101026 ''' import os import yaml rootPath = os.path.normpath(os.path.dirname(file) + ‘..’)
-configFile = open(rootPath + ‘‘‘inconfig.yaml’’’)...</p></div><footer class=entry-footer><span title='2010-11-09 00:00:00 +0800 +0800'>2010-11-09</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 一周Python小记" href=https://blog.alswl.com/2010/11/a-week-python/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>Python读写剪贴板</h2></header><div class=entry-content><p>最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。
+#coding=utf-8 &#39;&#39;&#39; 全局配置文件 alswl 20101026 &#39;&#39;&#39; import os import yaml rootPath = os.path.normpath(os.path.dirname(file) &#43; ‘..’)
+configFile = open(rootPath &#43; ‘‘‘inconfig.yaml’’’)...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-11-09 00:00:00 +0800 +0800'>2010-11-09</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 一周Python小记" href="https://blog.alswl.com/2010/11/a-week-python/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>Python读写剪贴板
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。
 由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。
-#coding=utf-8 ''' 读写剪贴板 ''' import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。
+#coding=utf-8 &#39;&#39;&#39; 读写剪贴板 &#39;&#39;&#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。
 如果双击 .py 文件调用可能产生无效的情况，测试发现在IDE环境下有效，如果想完成一键转换，就需要一个bat执行一下。
 @echo off python sql2.py 通过执行双击这个脚本，就可以完成读写剪贴板了（记得在系统Path路径加入python所在目录，否则又要报错）。
 友情提示，这个脚本需要 win32clipboard 这个模块，这个模块装完 pywin 就可以加载了。
-我使用的环境是Python2.6 + PyWin， 因为我的Python2.7+pywin32-214.win32-py2.7会出现一个"Still can’t get my hands on win32ui"。 托上篇文章的福，我安装PyWin时候选择"管理员身份安装"即可。
-PS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个flag参数，让我搞鼓了好一会。</p></div><footer class=entry-footer><span title='2010-10-23 00:00:00 +0800 +0800'>2010-10-23</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Python读写剪贴板" href=https://blog.alswl.com/2010/10/python-clipboard/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>小脚本mm->html</h2></header><div class=entry-content><p>我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote & 我所使用的知识管理系统。 我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。 BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。 BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。 #coding=utf-8 from xml.dom import minidom import sys import os class MM2Html: ‘转换MM->Html类’ def init(self): self.html = ‘’’&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> ''' self.level = 0 self.pos = [0 for x in range(0, 10)] def procRoot(self, root): ‘处理root节点’ for i in root.childNodes: if i.nodeName == ’node’: self.procNode(i) self.html += “” def procNode(self, node): ‘处理Node节点’ if node.nodeName == ’node':...</p></div><footer class=entry-footer><span title='2010-09-27 00:00:00 +0800 +0800'>2010-09-27</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 小脚本mm->html" href=https://blog.alswl.com/2010/09/script-mm2html/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>AzaAjaxChat笔记-实现</h2></header><div class=entry-content><p>唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
-一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的"服务器推"技术。
+我使用的环境是Python2.6 &#43; PyWin， 因为我的Python2.7&#43;pywin32-214.win32-py2.7会出现一个&#34;Still can’t get my hands on win32ui&#34;。 托上篇文章的福，我安装PyWin时候选择&#34;管理员身份安装&#34;即可。
+PS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个flag参数，让我搞鼓了好一会。</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-10-23 00:00:00 +0800 +0800'>2010-10-23</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Python读写剪贴板" href="https://blog.alswl.com/2010/10/python-clipboard/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>小脚本mm-&gt;html
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>我同时在使用两套信息记录工具，知识收集记录工具BooguNote &#43; KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote &amp; 我所使用的知识管理系统。 我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。 BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入&#43;，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。 BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。 #coding=utf-8 from xml.dom import minidom import sys import os class MM2Html: ‘转换MM-&gt;Html类’ def init(self): self.html = ‘’’&lt;!DOCTYPE html PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; &#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34;&gt; &#39;&#39;&#39; self.level = 0 self.pos = [0 for x in range(0, 10)] def procRoot(self, root): ‘处理root节点’ for i in root.childNodes: if i.nodeName == ’node’: self.procNode(i) self.html &#43;= “” def procNode(self, node): ‘处理Node节点’ if node.nodeName == ’node&#39;:...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-09-27 00:00:00 +0800 +0800'>2010-09-27</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 小脚本mm-&gt;html" href="https://blog.alswl.com/2010/09/script-mm2html/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>AzaAjaxChat笔记-实现
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
+一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的&#34;服务器推&#34;技术。
 我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询 （long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。
-这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将"查询->返回->再查询"中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。
+这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&#34;查询-&gt;返回-&gt;再查询&#34;中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。
 PS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。
-相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet–“服务器推"技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：“一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。“按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。
+相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet–“服务器推&#34;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：“一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。“按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。
 我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。
 这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所 有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。
 如果有PHP达人看到这个，望不惜赐教。
@@ -90,28 +306,64 @@ RTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP
 RTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。 这些通道中的包都是按照固定大小的包传输的。
 我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash Video流媒体播放功能的服务器软件。
 FMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司 跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。
-四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。...</p></div><footer class=entry-footer><span title='2010-08-22 00:00:00 +0800 +0800'>2010-08-22</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to AzaAjaxChat笔记-实现" href=https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>AzaAjaxChat笔记-框架</h2></header><div class=entry-content><p>1个月没有动PHP了，新装的系统甚至还没有配置PHP环境，今天看到BooguNote上有一个boo是专门记录AzaAjaxChat开发时候遇到的问题和解决办 法。于是把一些东西整理记录一下。
+四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-08-22 00:00:00 +0800 +0800'>2010-08-22</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to AzaAjaxChat笔记-实现" href="https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>AzaAjaxChat笔记-框架
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1个月没有动PHP了，新装的系统甚至还没有配置PHP环境，今天看到BooguNote上有一个boo是专门记录AzaAjaxChat开发时候遇到的问题和解决办 法。于是把一些东西整理记录一下。
 1. 从ThinkPHP开始 最早的AzaAjaxChat是基于ThinkPHP的，我当时在OpenSouce上看到ThinkPHP的介绍，有很多优点，看的我很心动：MVC模型，Ajax 支持，详细的文档和案例，国人开发的框架。我作为一个PHP新人一下子就被他吸引住了，决定用ThinkPHP做框架。
 随着系统开发的推进，我却感觉到一些不自在，遇到一些问题却找不好太好的解决办法。比如ThinkPHP的模块和分组两个概念，让我比较疑惑，花费了大量时间重组目录 结构，两种方法各有优劣，让我很难选择（有选择了反而难办了 ^_^）。
 最让我恼火的是相对目录带来的路径混乱，在JSP开发中，静态内容习惯性放在webcontent文件夹中，而ThinkPHP的CSS、图片、JS引用让我很疑惑， 要区分App的和Model的静态文件。
-在开发过程中，我也遇到过框架本身的Bug，让我对这个框架失去信心。在这里我没有贬低ThinkPHP或者ThinkPHP开发者的意思，他们的"大道至简、开发由 我"的理念很值得欣赏。只是作为初学者因为遇到的一些问题，带来了一定的开发难度，不得已放弃。
+在开发过程中，我也遇到过框架本身的Bug，让我对这个框架失去信心。在这里我没有贬低ThinkPHP或者ThinkPHP开发者的意思，他们的&#34;大道至简、开发由 我&#34;的理念很值得欣赏。只是作为初学者因为遇到的一些问题，带来了一定的开发难度，不得已放弃。
 2. 选择CakePHP 在遇到数次挫折之后，我终于下定决心换框架。工作室之前有过一个项目是用CakePHP开发的，保存着一些资料，阿贵强烈推荐CakePHP。我Google了几篇框 架的评测文章后，考虑了一下AzaAjaxChat的规模，决定选择CakePHP。
 CakePHP的脚手架(Scaffold)功能让我眼前一亮，让我脱离了大量CRUD繁琐的操作。而Cake Bake可以方便的根据数据库生成php代码，减少那 些没有逻辑意义的代码。AzaAjaxChat的定位是毕业设计，不是强健的产品，不会苛求太高的用户体验和安全特性，所以这个功能帮了我很多忙。
 CakePHP能够处理关系型数据库之间的m-n关系，由于我的系统逻辑简单，并没复杂的多表操作，所以这里没有深究。从Cake Baker的生成代码菜单上应该能够看出CakePHP还是能够处理一定的多表关联问题。
 CakePHP也不是那么十全十美，最麻烦的是文档少，我指的是中文文档，英文资源还是比较丰富的。其次是对Ajax的支持不如ThinkPHP那么原生，我一开始使 用JSON方案，后来使用XML方案实现Ajax数据序列化。
-3. CakePHP & ThinkPHP 使用的框架最大的目的是提高效率，大幅度缩短工作时间，这两个框架都是为此而诞生的。我这里不说孰优孰劣，如果感兴趣，可以Google查看相关比较。这两个框架都使 用Ruby On Rails的Active Record理念进行开发，CakePHP更是被称为PHP版的RuR，我在编码中期还特意去图书馆查阅了RuR的相关资料，的确是高效的Web开发模型。
+3. CakePHP &amp; ThinkPHP 使用的框架最大的目的是提高效率，大幅度缩短工作时间，这两个框架都是为此而诞生的。我这里不说孰优孰劣，如果感兴趣，可以Google查看相关比较。这两个框架都使 用Ruby On Rails的Active Record理念进行开发，CakePHP更是被称为PHP版的RuR，我在编码中期还特意去图书馆查阅了RuR的相关资料，的确是高效的Web开发模型。
 Active Record释义
 ActiveRecord也属于ORM层，由Rails最早提出，遵循标准的ORM模型：表映射到记录，记录映射到对象，字段映射到对象属性。配合遵循的命名和配 置惯例，能够很大程度的快速实现模型的操作，而且简洁易懂。
 我在答辩的PPT中写选择CakePHP的原因有三：一站式的MVC框架、约定优于配置、更少的代码，其实这也是RuR的优势。
-4. 相关连接 Plod: [翻译]十款PHP开发框架横向比较 ChinaUnix一位网友写的CakePHP入门（我觉得比官方教材好上手） cakephp jquery ajax json_天知道_百度空间（CakePHP的Ajax操作方法） 老王的技术手册_博客_cakephp / zendframework_百度空间（挺多CakePHP相关资料） IBM developerWorks 中国 : 使用 CakePHP 快速打造 Web 站点（IBM的CakePHP教程）</p></div><footer class=entry-footer><span title='2010-08-12 00:00:00 +0800 +0800'>2010-08-12</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to AzaAjaxChat笔记-框架" href=https://blog.alswl.com/2010/08/azaajaxchat-notes-frame/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>获取每日Bing图片</h2></header><div class=entry-content><p>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。
+4. 相关连接 Plod: [翻译]十款PHP开发框架横向比较 ChinaUnix一位网友写的CakePHP入门（我觉得比官方教材好上手） cakephp jquery ajax json_天知道_百度空间（CakePHP的Ajax操作方法） 老王的技术手册_博客_cakephp / zendframework_百度空间（挺多CakePHP相关资料） IBM developerWorks 中国 : 使用 CakePHP 快速打造 Web 站点（IBM的CakePHP教程） </p>
+  </div>
+  <footer class="entry-footer"><span title='2010-08-12 00:00:00 +0800 +0800'>2010-08-12</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to AzaAjaxChat笔记-框架" href="https://blog.alswl.com/2010/08/azaajaxchat-notes-frame/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>获取每日Bing图片
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。
 放狗搜索，发现一篇文章 抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客，文中提供了抓取程式的Python代码，我摘录如下。
-import urllib import time def main(): url = 'http://www.bing.com' f = urllib.urlopen(url) html = f.read() f.close() a = html[html.index('/fd/hpk2'):] data = a[:a.index('',id:')] url = data.replace('\', '') url = 'http://www.bing.com'+url name=time.strftime("%Y%m%d", time.localtime()) name=name+".jpg" urllib.urlretrieve(url,name) if __name__ == "__main__": main() 关键的步骤是MS修改了jpg的url方式，用g_img={url:’/fd/hpk2/BambooBoat_ZH- CN1057817945.jpg’这样的字符串躲避机器人的抓取。简单的替换即可完成。
+import urllib import time def main(): url = &#39;http://www.bing.com&#39; f = urllib.urlopen(url) html = f.read() f.close() a = html[html.index(&#39;/fd/hpk2&#39;):] data = a[:a.index(&#39;&#39;,id:&#39;)] url = data.replace(&#39;\&#39;, &#39;&#39;) url = &#39;http://www.bing.com&#39;&#43;url name=time.strftime(&#34;%Y%m%d&#34;, time.localtime()) name=name&#43;&#34;.jpg&#34; urllib.urlretrieve(url,name) if __name__ == &#34;__main__&#34;: main() 关键的步骤是MS修改了jpg的url方式，用g_img={url:’/fd/hpk2/BambooBoat_ZH- CN1057817945.jpg’这样的字符串躲避机器人的抓取。简单的替换即可完成。
 我用C#重写了代码实现，如下所示。
 using System; using System.Collections.Generic; using System.Text; using System.Net; using System.IO; namespace com.dddspace.GetBingImg
 { #region 获取Bing图片
 class GetBingImg
 {
-static void Main(string[] args)...</p></div><footer class=entry-footer><span title='2010-07-19 00:00:00 +0800 +0800'>2010-07-19</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 获取每日Bing图片" href=https://blog.alswl.com/2010/07/get-daily-bing-picture/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>7条大型网站设计和维护的关键技巧[译文]</h2></header><div class=entry-content><p>原文出处：[7 Crucial Tips for Designing and Maintaining a Large Site | Nettuts+](http://net.tutsplus.com/articles/general/7-crucial-tips-for- designing-and-maintaining-a-large-site/)
+static void Main(string[] args)...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-07-19 00:00:00 +0800 +0800'>2010-07-19</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 获取每日Bing图片" href="https://blog.alswl.com/2010/07/get-daily-bing-picture/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>7条大型网站设计和维护的关键技巧[译文]
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>原文出处：[7 Crucial Tips for Designing and Maintaining a Large Site | Nettuts&#43;](http://net.tutsplus.com/articles/general/7-crucial-tips-for- designing-and-maintaining-a-large-site/)
 译者：alswl
 以下为译文
 项目范围和规模各不相同，他们带来的挑战各不相同一样。作为一个独立的网页设计师，我最大的职责就是负责FlashDen。随着成千上万的活动用户聊天，上传和购物， 网站处理着大额的金钱和巨大的流量。
@@ -126,8 +378,20 @@ static void Main(string[] args)...</p></div><footer class=entry-footer><span tit
 买家 - 在FlashDen上购买文件的人 浏览项目，搜索，访问他们的个人主页，存款，学习使用网站（新买家） 作者 - 在FlashDen上卖商品的人 与其他会员聊天，在主页上展示他们项目的功能，了解网站的新闻，快速的获取他们的投资搭配和收益 新访客 - 潜在的买家/作者/会员，刚到站点的人 快速了解到站点是干嘛的，起步教程，查看不同类别的文件和价格 会员 - 不是真正的买家或作者，而是在社区中活跃 和其他会员聊天，查看站点新闻，浏览文件 管理员/审稿人 - 我们的工作人员，管理文件的批准，主持论坛，参与大部分活动 快速批准文件，查看最新论坛主题，添加站点新闻 当你知道不同的用户群体想要做什么，那么你可以设计一个网页，解决了他们所有的需要。不用说，这是随着用户组和任务数量指数级增加的困难的任务。在该网站的其他网页， 你会经常为部分用户组而苦恼，而在主页上，他们却又都集中在一起。不用怀疑，主页是你设计一个网站时候最重要的一项工作。
 在你解决不同需求之前，你需要先考虑用户群。为了做到这个，你需要了解该网站是要实现的目标。
 3. 了解网站目标 虽然每个用户组会很自然地认为他们是最重要的，但是你应该根据他们的优先度来判别站点要实现的目标。比如在FlashDen上，我们给候补人员列出下面几条结论：
-该网站的首要任务是为买家服务。为买家服务可以带来不断的收入，同时也可以为作者群服务。 让游客更快的了解网站进而成为会员也是至关重要的。FlashDen还处在一个比较新兴的市场，不断有新竞争对手出现，如何将注册会员变成买家或者作者是相当重要的。 创作者是FlashDen的核心部分，他们也是非常重要，和其他用户群不同的是，他们是网站坚定的拥护者。 注册会员虽然没有创作者或者买家这么重要，但是他们也在为周边的社群作出贡献。 作为雇员，管理员/审稿人是相对最不重要的。 因此，从以上所说可以得出结论，网站服务的的用户需求优先顺序：访客>买家>作者>成员">管理员。
-认识你的网站正在努力实现的却是最终用户线程的缝制任务一起，并告诉你什么你应该尝试把页面上。...</p></div><footer class=entry-footer><span title='2010-07-17 00:00:00 +0800 +0800'>2010-07-17</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 7条大型网站设计和维护的关键技巧[译文]" href=https://blog.alswl.com/2010/07/7-crucial-tips-for-designing-and-maintaining-a-large-site/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>char nchar varchar nvarchar 区别</h2></header><div class=entry-content><p>在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。
+该网站的首要任务是为买家服务。为买家服务可以带来不断的收入，同时也可以为作者群服务。 让游客更快的了解网站进而成为会员也是至关重要的。FlashDen还处在一个比较新兴的市场，不断有新竞争对手出现，如何将注册会员变成买家或者作者是相当重要的。 创作者是FlashDen的核心部分，他们也是非常重要，和其他用户群不同的是，他们是网站坚定的拥护者。 注册会员虽然没有创作者或者买家这么重要，但是他们也在为周边的社群作出贡献。 作为雇员，管理员/审稿人是相对最不重要的。 因此，从以上所说可以得出结论，网站服务的的用户需求优先顺序：访客&gt;买家&gt;作者&gt;成员&#34;&gt;管理员。
+认识你的网站正在努力实现的却是最终用户线程的缝制任务一起，并告诉你什么你应该尝试把页面上。...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-07-17 00:00:00 +0800 +0800'>2010-07-17</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 7条大型网站设计和维护的关键技巧[译文]" href="https://blog.alswl.com/2010/07/7-crucial-tips-for-designing-and-maintaining-a-large-site/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>char nchar varchar nvarchar 区别
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。
 私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。
 原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园
 联机帮助上的：
@@ -154,8 +418,90 @@ ntext(n)
 变长
 处理unicode数据类型(所有的字符使用两个字节表示)
 1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足 的自动用空格填充，所以在读取的时候可能要多次用到trim（）。
-2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。 VARCHAR类型的实际长度是它的值的实际长度+1。为什么"+1"呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考 虑，用char合适，关键是根据实际情况找到权衡点。...</p></div><footer class=entry-footer><span title='2010-07-16 00:00:00 +0800 +0800'>2010-07-16</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to char nchar varchar nvarchar 区别" href=https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.alswl.com/categories/coding/page/8/>«&nbsp;Prev&nbsp;</a>
-<a class=next href=https://blog.alswl.com/categories/coding/page/10/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。 VARCHAR类型的实际长度是它的值的实际长度&#43;1。为什么&#34;&#43;1&#34;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考 虑，用char合适，关键是根据实际情况找到权衡点。...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-07-16 00:00:00 +0800 +0800'>2010-07-16</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to char nchar varchar nvarchar 区别" href="https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://blog.alswl.com/categories/coding/page/8/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="https://blog.alswl.com/categories/coding/page/10/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

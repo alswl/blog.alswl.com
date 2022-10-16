@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>security on Log4D</title><link>https://blog.alswl.com/tags/security/</link><description>Recent content in security on Log4D</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 31 May 2017 22:04:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/security/atom.xml" rel="self" type="application/rss+xml"/><item><title>XSS 攻击的处理</title><link>https://blog.alswl.com/2017/05/xss/</link><pubDate>Wed, 31 May 2017 22:04:00 +0800</pubDate><guid>https://blog.alswl.com/2017/05/xss/</guid><description>这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。 谨以此文怀念 乌云。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>security on Log4D</title>
+    <link>https://blog.alswl.com/tags/security/</link>
+    <description>Recent content in security on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 31 May 2017 22:04:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/security/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>XSS 攻击的处理</title>
+      <link>https://blog.alswl.com/2017/05/xss/</link>
+      <pubDate>Wed, 31 May 2017 22:04:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2017/05/xss/</guid>
+      <description>这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。 谨以此文怀念 乌云。
 事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件， 告知我厂网站上出现一例 XSS 漏洞。 因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞， 后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。
 这里简单科普一下 XSS 跨网站脚本 -维基百科，自由的百科全书 中介绍到：
 跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。 它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。
@@ -8,7 +23,16 @@ XSS 实现手段 在解决问题之前，需要对这个问题有必要的基础
 XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式， 让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。
 检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。
 常见的检测方法（来自 跨网站脚本 - 维基百科，自由的百科全书：
-&amp;gt;&amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt; =&amp;#39;&amp;gt;&amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt; &amp;#34;&amp;gt;&amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt; &amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt; &amp;lt;script&amp;gt;alert (vulnerable)&amp;lt;/script&amp;gt; %3Cscript%3Ealert(&amp;#39;XSS&amp;#39;)%3C/script%3E &amp;lt;script&amp;gt;alert(&amp;#39;XSS&amp;#39;)&amp;lt;/script&amp;gt; &amp;lt;img src=&amp;#34;javascript:alert(&amp;#39;XSS&amp;#39;)&amp;#34;&amp;gt; &amp;lt;img src=&amp;#34;http://xxx.</description></item><item><title>几步拥有一个安全密码</title><link>https://blog.alswl.com/2015/10/a-security-password/</link><pubDate>Wed, 28 Oct 2015 00:17:44 +0800</pubDate><guid>https://blog.alswl.com/2015/10/a-security-password/</guid><description>给团队非开发同学写的邮件，对其他人也有些意义，遂贴出来。
+&amp;gt;&amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt; =&amp;#39;&amp;gt;&amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt; &amp;#34;&amp;gt;&amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt; &amp;lt;script&amp;gt;alert(document.cookie)&amp;lt;/script&amp;gt; &amp;lt;script&amp;gt;alert (vulnerable)&amp;lt;/script&amp;gt; %3Cscript%3Ealert(&amp;#39;XSS&amp;#39;)%3C/script%3E &amp;lt;script&amp;gt;alert(&amp;#39;XSS&amp;#39;)&amp;lt;/script&amp;gt; &amp;lt;img src=&amp;#34;javascript:alert(&amp;#39;XSS&amp;#39;)&amp;#34;&amp;gt; &amp;lt;img src=&amp;#34;http://xxx.</description>
+    </item>
+    
+    <item>
+      <title>几步拥有一个安全密码</title>
+      <link>https://blog.alswl.com/2015/10/a-security-password/</link>
+      <pubDate>Wed, 28 Oct 2015 00:17:44 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2015/10/a-security-password/</guid>
+      <description>给团队非开发同学写的邮件，对其他人也有些意义，遂贴出来。
 这个互联网越来越不安全 https://www.baidu.com/s?wd=%E5%AF%86%E7%A0%81%E6%B3%84%E9%9C%B2%E4%BA%8B%E4%BB%B6。密码数据库泄露，黑客暴库攻击，社会工程学攻击层出不穷。我给大家介绍几个小方法，轻松提高自己各类密码的安全等级。
 先给个地址，大家可以测试一下自己常用密码的复杂度：https://howsecureismypassword.net/
 认为自己电脑水平还可以的，请直接翻到文章最后。
@@ -18,4 +42,8 @@ XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存�
 &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash; 高手的分界线 &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;
 给高水平选手推荐的方案：
 核心思想：密码分级，分离普通密码、重要密码（财务相关等）。 普通密码使用大小写英文和数字混合 重要密码和财务相关密码，独立生成密码，保存到 1Password / KeePass 等工具中，每个应用软件独立开来。 推荐 KeePass，免费，参考 http://www.iplaysoft.com/keepass.html 常见弱密码和暴力破解需要时间 123456 / 不需要 duitang / 2s huhela1993 / 10天 huhela_1993 / 48年 CqmygYsdssqq / 3千年 ]W?852HCMHFUYzrz,F / 10000^5 年（Keepass 生成的密码） 最后 针对任何在邮箱中向大家索取：
-密码、员工信息、通讯录、组织架构等的邮件，请大家注意确认对方的真实身份，不要轻易透露重要信息。</description></item></channel></rss>
+密码、员工信息、通讯录、组织架构等的邮件，请大家注意确认对方的真实身份，不要轻易透露重要信息。</description>
+    </item>
+    
+  </channel>
+</rss>

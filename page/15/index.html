@@ -1,4 +1,169 @@
-<!doctype html><html lang=en dir=auto><head><meta name=generator content="Hugo 0.104.3"><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Log4D</title><meta name=description content><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.alswl.com/atom.xml><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="Log4D"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://blog.alswl.com/"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="Log4D"><meta name=twitter:description content><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"Log4D","url":"https://blog.alswl.com","description":"","thumbnailUrl":"https://blog.alswl.com/favicon.ico","sameAs":["https://twitter.com/alswl","https://github.com/alswl","https://www.zhihu.com/people/alswl","https://www.douban.com/people/alswl/","/atom.xml"]}</script></head><body class=list id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-entry><header class=entry-header><h2>使用DataConnectionDialog来获取连接字符串</h2></header><div class=entry-content><p>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方 法来动态生成连接字符串，这种方法充满了Bad Smell。
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.104.3" /><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Log4D</title>
+
+<meta name="description" content="">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/atom.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="Log4D" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://blog.alswl.com/" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Log4D"/>
+<meta name="twitter:description" content=""/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Log4D",
+  "url": "https://blog.alswl.com",
+  "description": "",
+  "thumbnailUrl": "https://blog.alswl.com/favicon.ico",
+  "sameAs": [
+      "https://twitter.com/alswl", "https://github.com/alswl", "https://www.zhihu.com/people/alswl", "https://www.douban.com/people/alswl/", "/atom.xml"
+  ]
+}
+</script>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>使用DataConnectionDialog来获取连接字符串
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方 法来动态生成连接字符串，这种方法充满了Bad Smell。
 昨天用CodeSmith时候，看到它的数据连接配置界面，如此的眼熟，如下图。
 Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命名空间为Microsoft.VisualStudio.Data。
 使用的方法也很简单，引用Microsoft.Data.ConnectionUI.dll和Microsoft.Data.ConnectionUI.Dialog .dll，这两个文件位于Microsoft Visual Studio 9.0Common7IDE下面。
@@ -6,48 +171,96 @@ Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命
 使用代码如下
 DataConnectionDialog dataConnectionDialog = new DataConnectionDialog(); DataSource.AddStandardDataSources(dataConnectionDialog); if (DataConnectionDialog.Show(dataConnectionDialog) == DialogResult.OK) { targetDBConnectionString = dataConnectionDialog.ConnectionString; } dataConnectionDialog.ConnectionString是完整的连接字符串，这样就可以比较优美的动态获取连接字符串了。
 参考文章
-DataConnectionDialog 旧事重提 - 名牌热狗 - 博客园 C#–WinForm系统平台之登录界面及数据连接 - 天高行健，地厚载物 - 51CTO技术博客 DataConnectionDialog Class (Microsoft.VisualStudio.Data) 最后给大家拜个晚年，祝大家新年新气象。。。（此处省略1000字）</p></div><footer class=entry-footer><span title='2011-02-15 00:00:00 +0800 +0800'>2011-02-15</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 使用DataConnectionDialog来获取连接字符串" href=https://blog.alswl.com/2011/02/dataconnectiondialog/></a></article><article class=post-entry><header class=entry-header><h2>在.net中使用GAC</h2></header><div class=entry-content><p>GAC GAC是什么？是用来干嘛的？GAC的全称叫做全局程序集缓存，通俗的理解就是存放各种.net平台下面需要使用的dll的地方。GAC的具体目录在windows/ assembly。
+DataConnectionDialog 旧事重提 - 名牌热狗 - 博客园 C#–WinForm系统平台之登录界面及数据连接 - 天高行健，地厚载物 - 51CTO技术博客 DataConnectionDialog Class (Microsoft.VisualStudio.Data) 最后给大家拜个晚年，祝大家新年新气象。。。（此处省略1000字）</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-02-15 00:00:00 +0800 +0800'>2011-02-15</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 使用DataConnectionDialog来获取连接字符串" href="https://blog.alswl.com/2011/02/dataconnectiondialog/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>在.net中使用GAC
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>GAC GAC是什么？是用来干嘛的？GAC的全称叫做全局程序集缓存，通俗的理解就是存放各种.net平台下面需要使用的dll的地方。GAC的具体目录在windows/ assembly。
 喜欢使用破解软件的朋友可能会经常使用替换DLL这招，这个DLL虽然和.net下面的DLL有所不同，但大致起的作用还是一样的：使用共同的动态链接库来提高库复用 ，减少文件体积。在.net平台之前，程序们都把可能用到的公共DLL存放到system32文件夹下。由于版本的不一致及其他原因（将控制信息存放到注册表），造成 了很有名的DLL Hell。
 最近在读俞甲子的《程序员的自我修养》，中间花了很大的篇幅描述程序编译中 的链接这个过程。而比较巧合的是，我的《C#与.NET 3.5高级程序设计》也正好读到程序集这一块。微软使用了GAC来避免DLL重蹈覆辙。现在，我就来部署一个简单的通用类库到GAC中。
 获取强名称（签名） 并不是随便一个DLL都可以放到GAC中，如果这样的话，和之前的DLL Hell也没什么区别了。GAC使用一个强名称（签名）的方式来区分不同的DLL。每个签名 都是独一无二的公钥私钥对。现在我们使用SDK的sn工具为我的DUtil库生成一个snk签名。
 打开SDK中的Visual Studio 2008 命令提示，键入sn -k DUtil.snk，结果如下：
-F:WorkSpace.netDUtilbinDebug>sn -k DUtil.snk Microsoft (R) .NET Framework 强名称实用工具 版本 3.5.21022.8
+F:WorkSpace.netDUtilbinDebug&gt;sn -k DUtil.snk Microsoft (R) .NET Framework 强名称实用工具 版本 3.5.21022.8
 Copyright (c) Microsoft Corporation. All rights reserved.
 密钥对被写入 DUtil.snk
 这样我们就得到了一个snk签名文件。
 为程序集设置签名 现在我们得到了一个签名文件，但是还没有把这个签名应用到程序中，在程序的assembly.cs文件中加入[assembly: AssemblyKeyFile(“dutil.snk”)]，这个dutil.snk可以是绝对路径，我使用的是主目录中的snk文件。
 编译解决方案，生成的.dll文件就包含了签名。
 此时编译器会出现一个警告：
-警告 1 使用命令行选项"/keyfile"或适当的项目设置代替"AssemblyKeyFile" F:WorkSpace.netDUtilPropertiesAssemblyInfo.cs 38 12 DUtil
+警告 1 使用命令行选项&#34;/keyfile&#34;或适当的项目设置代替&#34;AssemblyKeyFile&#34; F:WorkSpace.netDUtilPropertiesAssemblyInfo.cs 38 12 DUtil
 既然VS建议我们用选项设定，那我们就用项目选项页设定key。如下图所示：
 PS：我测试过，生成DLL之后，就算删除签名使用的snk文件，依然可以正常使用。即snk文件只有在编译时候使用。
 安装到GAC 安装到GAC有两种办法，一种是把DLL拖入windows/assembly目录下（不是复制粘贴，是拖动），另外一种是使用gacutil。
 在Win7下，拖动的话会遇到权限问题，如下图所示
 在gacutil下面也会遇到如下错误
-F:WorkSpace.netDUtilbinDebug>gacutil -i DUtil.dll Microsoft (R) .NET Global Assembly Cache Utility. Version 3.5.21022.8 Copyright (c) Microsoft Corporation....</p></div><footer class=entry-footer><span title='2011-01-23 00:00:00 +0800 +0800'>2011-01-23</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 在.net中使用GAC" href=https://blog.alswl.com/2011/01/gac/></a></article><article class=post-entry><header class=entry-header><h2>正则表达式抓捕替换</h2></header><div class=entry-content><p>问题情境 需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,“total”, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,“total”, Parameters!Language.Value, “ReportConnection0107”)。
+F:WorkSpace.netDUtilbinDebug&gt;gacutil -i DUtil.dll Microsoft (R) .NET Global Assembly Cache Utility. Version 3.5.21022.8 Copyright (c) Microsoft Corporation....</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-01-23 00:00:00 +0800 +0800'>2011-01-23</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 在.net中使用GAC" href="https://blog.alswl.com/2011/01/gac/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>正则表达式抓捕替换
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>问题情境 需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,“total”, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,“total”, Parameters!Language.Value, “ReportConnection0107”)。
 思路 使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。
-Vim实现 %s/GetComment(((sw+!w+.w+s,){2}s*“w+“s*,sw+!w+.w+s))/GetCommentForReport(1 , “ReportConnection0107”)/gc
-解释：%为全局替换，s为替换。后面则是表达式，和正则表达式差不多，注意是*不需要转义，+ 和 .需要转义，最后的g代表当前行替换，c代表每次替换需要确认。
+Vim实现 %s/GetComment(((sw&#43;!w&#43;.w&#43;s,){2}s*“w&#43;“s*,sw&#43;!w&#43;.w&#43;s))/GetCommentForReport(1 , “ReportConnection0107”)/gc
+解释：%为全局替换，s为替换。后面则是表达式，和正则表达式差不多，注意是*不需要转义，&#43; 和 .需要转义，最后的g代表当前行替换，c代表每次替换需要确认。
 目标表达式中有1，代表抓获的第一个字符串，多个字符串抓获则依次往下排列。�表示原始字符串。
-NotePad++/EditPlus实现 GetComment(( *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *"[a-zA-Z0-9]+” *, *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *))
+NotePad&#43;&#43;/EditPlus实现 GetComment(( *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *, *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *, *&#34;[a-zA-Z0-9]&#43;” *, *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *))
 替换为GetCommentForReport(1, “ReportConnection0107”)
 解释：不知道为何，我无法使用ws匹配文字和空格，只能使用[a-zA-Z0-9]表示（完整的是[a-zA-Z0-9_]）w，用空格表示s。
 VisualStudio 由于RDL开发必然使用VisualStudio，所以用VS替换更方便。
-GetComment({ *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *"[a-zA-Z0-9]+” *, *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *})
+GetComment({ *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *, *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *, *&#34;[a-zA-Z0-9]&#43;” *, *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *})
 依旧替换为GetCommentForReport(1, “ReportConnection0107”)
-解释：VS除了NotePad++/EditPlus的问题外，还有一个严重的问题就是他抓取的不是分组()，而是抓获的花括号{}抓捕的字符串，官方的称呼叫做"带 标记的表达式"，详情可以参考MSDN正则表达式 (Visual Studio)。
-PS 所以咯，Vimer，你懂的~</p></div><footer class=entry-footer><span title='2011-01-19 00:00:00 +0800 +0800'>2011-01-19</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 正则表达式抓捕替换" href=https://blog.alswl.com/2011/01/regex-group-catch/></a></article><article class=post-entry><header class=entry-header><h2>男人袜1元体验活动</h2></header><div class=entry-content><p>从Louis Han那里看到一篇文章介绍了一个适合宅男的网站，想想我自己宅属性日益增加，就抄文推广一下。
+解释：VS除了NotePad&#43;&#43;/EditPlus的问题外，还有一个严重的问题就是他抓取的不是分组()，而是抓获的花括号{}抓捕的字符串，官方的称呼叫做&#34;带 标记的表达式&#34;，详情可以参考MSDN正则表达式 (Visual Studio)。
+PS 所以咯，Vimer，你懂的~</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-01-19 00:00:00 +0800 +0800'>2011-01-19</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 正则表达式抓捕替换" href="https://blog.alswl.com/2011/01/regex-group-catch/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>男人袜1元体验活动
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>从Louis Han那里看到一篇文章介绍了一个适合宅男的网站，想想我自己宅属性日益增加，就抄文推广一下。
 -Update 20110113
-收到男人袜客服的来信，说我文章"我们发现您的文章基本上是引用的网站内容，建议您用自己的文字来评价一下我们的网站或服务。"，我郁闷了一下，回了一封信说我还没体 验到，怎么来评价。何况下面文章那些文字虽然是Louis Han整理发文，但源头其实来自男人袜网站的介绍内容。
+收到男人袜客服的来信，说我文章&#34;我们发现您的文章基本上是引用的网站内容，建议您用自己的文字来评价一下我们的网站或服务。&#34;，我郁闷了一下，回了一封信说我还没体 验到，怎么来评价。何况下面文章那些文字虽然是Louis Han整理发文，但源头其实来自男人袜网站的介绍内容。
 怪就怪我偷懒了吧，男人袜建议我修改文章再发，算了~拉不下这个脸~
-看来我是无福享受送货上门的男人袜服务了，还是乖乖去超市买吧。好吧，我承认，这个活动让我很郁闷。我最后回复客服"算了，那我就不要体验码了。按照你们的要求来看， 我的博文的确不合格，我也能够理解。不过，作为顾客，这真是一次糟糕的体验。"
+看来我是无福享受送货上门的男人袜服务了，还是乖乖去超市买吧。好吧，我承认，这个活动让我很郁闷。我最后回复客服&#34;算了，那我就不要体验码了。按照你们的要求来看， 我的博文的确不合格，我也能够理解。不过，作为顾客，这真是一次糟糕的体验。&#34;
 男人袜是一个专业的男袜寄送服务，专门给那些不喜欢穿有洞的袜子，而又没时间去买新袜子的男人们准备。您下单后，将 会定期收到寄送的新袜子，新袜子会根据您所在的季节和天气情况自动调整。
 男人袜标准套装是每 3 个月寄送一次。如果您希望更灵活的寄送方式，可以选择我们的自选套装，来自由的 选择寄送周期及每次寄送的数量。这个就是男人袜非常有意思的地方了，网上购物都是一次送达，而男人袜却是分批次寄送，是不是能给人惊喜呢？
 看看男人袜采购的袜子品牌，还是很给力的：
 网上看到男人袜推出了1元体验活动：如果您有网站或博客（成立一年即可），愿意写一篇原创的文章来介绍男人袜 ，请将链接发送到 xxxx。为表示感谢，我们会为您送出体验码一枚。
 还等什么，有独立博客的朋友赶紧拿起你的键盘介绍吧！
 1元体验活动地址：http://nanrenwa.com/try
-男人袜包年套装：http://nanrenwa.com/plans</p></div><footer class=entry-footer><span title='2011-01-12 00:00:00 +0800 +0800'>2011-01-12</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 男人袜1元体验活动" href=https://blog.alswl.com/2011/01/nanrenwa-try/></a></article><article class=post-entry><header class=entry-header><h2>最简陋的GAE代理</h2></header><div class=entry-content><p>年前换了一次服务器，之后发现Lifestream的Errors飙升到1000+错误，检查一下，发现是获 取不了豆瓣的rss链接。正好这台主机支持SSH，连入之后CURL了一下豆瓣服务器，发现Time out。
+男人袜包年套装：http://nanrenwa.com/plans</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-01-12 00:00:00 +0800 +0800'>2011-01-12</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 男人袜1元体验活动" href="https://blog.alswl.com/2011/01/nanrenwa-try/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>最简陋的GAE代理
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>年前换了一次服务器，之后发现Lifestream的Errors飙升到1000&#43;错误，检查一下，发现是获 取不了豆瓣的rss链接。正好这台主机支持SSH，连入之后CURL了一下豆瓣服务器，发现Time out。
 紧接着发现中国内的所有域名都无法使用CURL获取，联系小张之后，得知该主机曾经被入侵过，于是屏蔽了中国大陆的ip段（囧~入侵和中国ip有毛关系）
 遂想用GAE做个代理服务器，反正获取RSS也只要Get一下，代码没几句。把这项任务放入Toodledo之后，就一直没去弄，今天发现GAE Laucher升级了，就部署到自己GAE上了。
 地址格式如http://jasontiproxy.appspot.com/proxy?url=www.douban. com/feed/people/alswl/interests，url参数名后面跟着具体的url。
@@ -59,7 +272,7 @@ class MainHandler(webapp.RequestHandler):
 def get(self):
 url = self.request.get(‘url’)
 if url.find(‘http://’) &lt; 0:
-url = ‘http://’ + url
+url = ‘http://’ &#43; url
 conn = urllib2.urlopen(url)
 html = conn.read()
 encoding = conn.headers[‘content-type’].split(‘charset=’)[-1]
@@ -71,7 +284,19 @@ debug=True)
 util.run_wsgi_app(application)
 if name == ‘main’:
 main()
-申请一个空间，部署上去就行了，这个小应用可以临时获取一下网页内容，不支持Post和替换url，所以称之为"最简陋的GAE代理"。</p></div><footer class=entry-footer><span title='2011-01-11 00:00:00 +0800 +0800'>2011-01-11</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 最简陋的GAE代理" href=https://blog.alswl.com/2011/01/a-simple-gae-proxy/></a></article><article class=post-entry><header class=entry-header><h2>LavaVPN推广链接</h2></header><div class=entry-content><p>以前一直使用SSH进行翻墙，后来在人人看到一位朋友推荐LavaVPN，就过去试用一下，效果的确不错。
+申请一个空间，部署上去就行了，这个小应用可以临时获取一下网页内容，不支持Post和替换url，所以称之为&#34;最简陋的GAE代理&#34;。</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-01-11 00:00:00 +0800 +0800'>2011-01-11</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 最简陋的GAE代理" href="https://blog.alswl.com/2011/01/a-simple-gae-proxy/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>LavaVPN推广链接
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>以前一直使用SSH进行翻墙，后来在人人看到一位朋友推荐LavaVPN，就过去试用一下，效果的确不错。
 LavaVPN支持各种系统，在Windows下面有专用的客户端接入程序，通过这个客户端可以实现选择性加速，而不需要全局加速。在Android和Linux上面 测试都可以。
 官方的介绍如下：
 LAVAVPN网络加速器是专为各类网游玩家、软件发烧友、网络办公、影音冲浪网虫等个人用户提供网络加速服务的新型产品，能有效减少网络延时，使网络互访再无拥 挤的感觉，让您在任何情况下都能体验上网加速的快乐！多地服务器节点可以选择，一个账号即可使用全部节点，随时任意切换，软件自带服务器测速工具，自动选择最快的节点 。
@@ -94,23 +319,47 @@ http://www.lavavpn.com/index-invite-ehgmFX4tgwiZ36E9
 http://www.lavavpn.com/index-invite-3Na6QkvzRjJ9xry2
 http://www.lavavpn.com/index-invite-jMysmc5HDNz9qZcA
 http://www.lavavpn.com/index-invite-PZzyCEJYOF2ZBqoG
-http://www.lavavpn.com/index-invite-JuvEgCJKizwKj6ho</p></div><footer class=entry-footer><span title='2010-12-23 00:00:00 +0800 +0800'>2010-12-23</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to LavaVPN推广链接" href=https://blog.alswl.com/2010/12/lavavpn/></a></article><article class=post-entry><header class=entry-header><h2>半年</h2></header><div class=entry-content><p>去年10月份时候，进入了一家做信息化的上市公司，带着对未来的憧憬奔向了广州，半年中，历经数个小项目，发现其实是小作坊开发模式。虽说能学到一些编程之外的东西， 但毕竟不是系统的开发模式，今年5月回了学校就辞职了。
+http://www.lavavpn.com/index-invite-JuvEgCJKizwKj6ho</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-12-23 00:00:00 +0800 +0800'>2010-12-23</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to LavaVPN推广链接" href="https://blog.alswl.com/2010/12/lavavpn/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>半年
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>去年10月份时候，进入了一家做信息化的上市公司，带着对未来的憧憬奔向了广州，半年中，历经数个小项目，发现其实是小作坊开发模式。虽说能学到一些编程之外的东西， 但毕竟不是系统的开发模式，今年5月回了学校就辞职了。
 7月份时候，工作机会似乎已经趋向饱和，我急急忙忙拿了一份Offer，从事.net的企业信息化开发。虽然我志在Web 2.0方面的开发，但是权衡再三，还是到南京的研发中心。
 新岗位是.net Web开发，我由Java开发人员转为.net开发人员。我对语言的选择本身不是很在意，甚至那时候认为语言其实是工具，思想和设计才是核心。我所 就职的部门负责产品之外的特殊需求专案开发，基于.net平台开发ERPII产品，包括工作流、CRM等等。
-从事.net开发之后，才感觉到Java开发的各种好处：各种开放的框架提供了自由选择发挥的平台，实现一种需求的方法有N+1种方式，并且能够跟进较新的技术，满足 自己学习的渴望。.net虽然也很强大，但我总觉得微软提供的工具想让开发人员傻瓜化（在ASP.NET MVC出来之前，Web Form的开发模式让我很不爽）。
+从事.net开发之后，才感觉到Java开发的各种好处：各种开放的框架提供了自由选择发挥的平台，实现一种需求的方法有N&#43;1种方式，并且能够跟进较新的技术，满足 自己学习的渴望。.net虽然也很强大，但我总觉得微软提供的工具想让开发人员傻瓜化（在ASP.NET MVC出来之前，Web Form的开发模式让我很不爽）。
 公司的Web产品只能在IE6下运行，甚至IE8下面都需要改为兼容模式，底层的平台里面的JS很杂乱，每一支作业都有独立的JS文件，没有使用任何JS框架。偌大的 产品线居然没有自动化测试工具。逻辑、显示、数据接入都在同一个CS中完成，几乎没有ORM和分层。
 我曾经想优化一些东西，但是尝试后发现，底层平台封装好的东西，想做改变真的很难。
 有一段时间居然敲起代码没有感觉，才发现自己很久没有写出有创造性或者说有价值的东西了，遂开始做一个CodeGenX的代码生成器，使用Python开发，持续了一 个月。
 这半年时间博客更新频率降得很低，是因为我学到的东西很多都是基于公司平台，没有太大的分享价值。我也不是文青，虽然期间看了一些书，但是技术方面的书~嗯哼，看完之 后实在很难总结出什么中心思想~
 现在其实挺迷惘的，我很向往Web 前端开发，可惜自身一直从事后端的编程，Web前端的经验太少，下一步的发展很不明确。
 既然未来不明确，我只能把握把握现在，积攒积攒力量，现阶段是准备再熟悉.net 、Java 和Python 的核心，再加强一下Linux 和SQL 的学习，唔，还要花时间理一理计算机编程的一些基础理论。
-The End</p></div><footer class=entry-footer><span title='2010-12-18 00:00:00 +0800 +0800'>2010-12-18</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 半年" href=https://blog.alswl.com/2010/12/half-year/></a></article><article class=post-entry><header class=entry-header><h2>C#+VBA操作Excel总结</h2></header><div class=entry-content><p>Excel在日常办公中应用非常广泛，这次我接到一个案子，需要往Excel中写入数据并能够打印出固定格式，前前后后大概花了将近2星期才搞定，现在做一些分享。
+The End</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-12-18 00:00:00 +0800 +0800'>2010-12-18</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 半年" href="https://blog.alswl.com/2010/12/half-year/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>C#&#43;VBA操作Excel总结
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Excel在日常办公中应用非常广泛，这次我接到一个案子，需要往Excel中写入数据并能够打印出固定格式，前前后后大概花了将近2星期才搞定，现在做一些分享。
 一、关于操作Excel的几种方式 我们导出Excel，大抵是有两种方法，一种是在服务器端用一些类库或者COM组件直接生成Excel成品，其二是在后台只写入数据，而不写入具体格式，等用户下载完 Excel之后再在客户端上利用vba生成Excel成品。
-1.1使用"自动化"功能-后台生成成品 微软把后台使用COM组件称之为"自动化"，其实它本身是不建议这种用法，在257757 号文章（服务器端 Office 自动化注意事项）也明文标出"Microsoft 目前建议不要从任何无人参与的、非交互式客户端应用程序或组件（包括 ASP、DCOM 和 NT Service）中进行 Microsoft Office 应用程序的"自动化"，也不为此提供支持，因为 Office 在这种环境中运行时可能会出现不稳定的现象并且/或者会死锁。"
-这种方法的优点是给用户更简洁的展现，毕竟原生的Excel成品比半成品来更容易接受，而且可以避免宏安全问题，万一客户端禁止了宏，就只能看到丑陋的模板界面+一坨 数据。
+1.1使用&#34;自动化&#34;功能-后台生成成品 微软把后台使用COM组件称之为&#34;自动化&#34;，其实它本身是不建议这种用法，在257757 号文章（服务器端 Office 自动化注意事项）也明文标出&#34;Microsoft 目前建议不要从任何无人参与的、非交互式客户端应用程序或组件（包括 ASP、DCOM 和 NT Service）中进行 Microsoft Office 应用程序的&#34;自动化&#34;，也不为此提供支持，因为 Office 在这种环境中运行时可能会出现不稳定的现象并且/或者会死锁。&#34;
+这种方法的优点是给用户更简洁的展现，毕竟原生的Excel成品比半成品来更容易接受，而且可以避免宏安全问题，万一客户端禁止了宏，就只能看到丑陋的模板界面&#43;一坨 数据。
 缺点是需要服务端支持，编写成本也比较高（VBA有时候可以直接录制）。服务端支持体现在需要安装一些微软或者第三方的类库。我当时采用的是Office类库，也就是 在安装有Office的机器上面使用Interop.Excel.dll这个中间动态链接库进行操作，需要麻烦的安全设置，效率低不说还会扯出Excel无法关闭的B ug。
 关于效率低我深有体会，我使用这种方法生成5页数据大约2m，客户等的急死，其根本原因是由于COM组件在调用时候，每一个Range这种对象都会产生一个借口请求。
-1.2、使用ADO.net传输数据+VBA控制模板和数据 这方法的优缺点正好与上文相反，由于只是写入数据，即通过ADO.net的连接方式INSERT一堆数据到Excel文件的隐藏Sheet里面去（别跟我说你不知道E xcel可以隐藏某个Sheet），所以速度后台速度极快。前台Excel文件虽然需要VBA编程支持，但是在理解Excel模型之后也不是很难的事情。
+1.2、使用ADO.net传输数据&#43;VBA控制模板和数据 这方法的优缺点正好与上文相反，由于只是写入数据，即通过ADO.net的连接方式INSERT一堆数据到Excel文件的隐藏Sheet里面去（别跟我说你不知道E xcel可以隐藏某个Sheet），所以速度后台速度极快。前台Excel文件虽然需要VBA编程支持，但是在理解Excel模型之后也不是很难的事情。
 1.3 选择哪种方式，取决于你的需求，如果你在Java平台下面并且输出文件页面格式不复杂，我推荐第一种，如果是.net平台又或者要处理复杂的页面样式，就选用第二种吧 （我前期使用第一种，后来因为效率问题和无法关闭Excel的问题，重写逻辑，选用第二种）。
 关于Excel导出方案的选择，微软官方也是不建议使用第一种方案，甚至不提供技术支持。它推荐了一些方案，包括使用报表导出Excel或者ADO.net方式导出（ 即第二种），具体文章见如何使用 Visual C# 2005 或 Visual C# .NET 向 Excel 工作簿传输数据。
 二、Office Excel文档模型 在写操作Excel代码之前，需要了解一下Excel的文档模型，才能想当然的把代码写出来。
@@ -118,16 +367,40 @@ The End</p></div><footer class=entry-footer><span title='2010-12-18 00:00:00 +08
 Application就是Excel实例，不仅仅是一个Excel文件，而是整体的Excel程序（Office都是MDI文档体系）。
 WorkBook就是实质意义上的某个Excel文件，你可以进行保存操作等等。
 Worksheet是某个工作簿类型。
-Range是我们打交道最多的，可以理解成一个区域快，也就是常见的"A2:B5"这种表示方式。
+Range是我们打交道最多的，可以理解成一个区域快，也就是常见的&#34;A2:B5&#34;这种表示方式。
 了解这几种之后，我们就可以下手操作了。更详细的微软官方文档，可以在Excel 对象模型概述找到。
 三、使用C#操作Excel 我虽然不推荐第一种，但是毕竟是一种解决方案。
 需要使用的命名空间为using Excel = Microsoft.Office.Interop.Excel;（使用别名简化一下）
 另外需要项目引用Office的类库，如果不是项目形式而是网站形式，则需要手动编译对应Interop.Excel.dll到网站bin目录下面，我使用Excel 2007编译出这个链接库，版本为1.6.0.0，需要的可以点击Interop.Excel.dll下载。
-3.1 编译Interop.Excel.dll 编译的方法出自于"[使用Office组件读取Excel，引用Microsoft.Office.Interop.Excel出现的问题](http://www. cnblogs.com/Mainz/archive/2009/11/11/Microsoft_Office_Interop_Excel.html)"&nbs p_place_holder;
-进入你的visual studio的sdk下的bin目录，找到TlbImp....</p></div><footer class=entry-footer><span title='2010-12-14 00:00:00 +0800 +0800'>2010-12-14</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to C#+VBA操作Excel总结" href=https://blog.alswl.com/2010/12/csharp-vba-excel/></a></article><article class=post-entry><header class=entry-header><h2>脑袋大，脖子粗~</h2></header><div class=entry-content><p>不是大款就伙夫~
+3.1 编译Interop.Excel.dll 编译的方法出自于&#34;[使用Office组件读取Excel，引用Microsoft.Office.Interop.Excel出现的问题](http://www. cnblogs.com/Mainz/archive/2009/11/11/Microsoft_Office_Interop_Excel.html)&#34;&amp;nbs p_place_holder;
+进入你的visual studio的sdk下的bin目录，找到TlbImp....</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-12-14 00:00:00 +0800 +0800'>2010-12-14</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to C#&#43;VBA操作Excel总结" href="https://blog.alswl.com/2010/12/csharp-vba-excel/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>脑袋大，脖子粗~
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>不是大款就伙夫~
 昨天几个同事过来玩，我就下厨做菜了，哈哈，上两张图。
 依次为：油面筋掐肉、番茄鸡蛋、韭黄鸡蛋、地三鲜、红烧鱼、番茄酱黄瓜，还有一个煨的排骨汤没端上来~累死我了~从来没烧过这么多菜~
-话说地三鲜原来这么麻烦，在文静童鞋指导下面，依次食材过油，费了将近半小时才弄好~</p></div><footer class=entry-footer><span title='2010-12-05 00:00:00 +0800 +0800'>2010-12-05</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 脑袋大，脖子粗~" href=https://blog.alswl.com/2010/12/cook/></a></article><article class=post-entry><header class=entry-header><h2>一周Python小记</h2></header><div class=entry-content><p>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。
+话说地三鲜原来这么麻烦，在文静童鞋指导下面，依次食材过油，费了将近半小时才弄好~</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-12-05 00:00:00 +0800 +0800'>2010-12-05</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 脑袋大，脖子粗~" href="https://blog.alswl.com/2010/12/cook/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>一周Python小记
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。
 一、配置文件 1、YAML格式 数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。
 YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成对应的格式变量。
 之所以选择YAML，是看中它对语言的亲和性和可读性，GAE的配置文件就是YAML格式。YAML的语法相当简单，用:来分隔key: value，用 - 来分隔列表，注意点是缩进需要用空格，关键符号和内容之间要加上一个空格。我的配置文件如下：
@@ -146,15 +419,97 @@ user: sa
 dbpassword: 518518
 databaseSys: ebChainSys30_0
 databaseSyn: ebChainSyn30_0
-YAML可以用VIM或者notepad++进行编辑，两者都对YAML提供语法高亮支持（博客的SyantaxHighLighter不支持~）。
+YAML可以用VIM或者notepad&#43;&#43;进行编辑，两者都对YAML提供语法高亮支持（博客的SyantaxHighLighter不支持~）。
 相关链接：YAML的官方网站（网站的分隔就是YAML格式，相当有趣） YAML简介（来自IBM）
 2、PyYAML
 Python有几种YAML的实现，我这里推荐使用PyYAML，比较流行的模块，毕竟我这里只需要简单的读写操作。
 PyYAML通过官方宣称的神奇的yaml.load()方法载入YAML文件，可以将列表识别为list和dictionary，通过key可以直接读取对应的值。
 我的Demo代码如下：
-#coding=utf-8 ''' 全局配置文件 alswl 20101026 ''' import os import yaml rootPath = os.path.normpath(os.path.dirname(file) + ‘..’)
-configFile = open(rootPath + ‘‘‘inconfig.yaml’’’)...</p></div><footer class=entry-footer><span title='2010-11-09 00:00:00 +0800 +0800'>2010-11-09</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 一周Python小记" href=https://blog.alswl.com/2010/11/a-week-python/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.alswl.com/page/14/>«&nbsp;Prev&nbsp;</a>
-<a class=next href=https://blog.alswl.com/page/16/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+#coding=utf-8 &#39;&#39;&#39; 全局配置文件 alswl 20101026 &#39;&#39;&#39; import os import yaml rootPath = os.path.normpath(os.path.dirname(file) &#43; ‘..’)
+configFile = open(rootPath &#43; ‘‘‘inconfig.yaml’’’)...</p>
+  </div>
+  <footer class="entry-footer"><span title='2010-11-09 00:00:00 +0800 +0800'>2010-11-09</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 一周Python小记" href="https://blog.alswl.com/2010/11/a-week-python/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://blog.alswl.com/page/14/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="https://blog.alswl.com/page/16/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

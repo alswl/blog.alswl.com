@@ -1,12 +1,168 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>winpcap | Log4D</title><meta name=keywords content><meta name=description content><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/tags/winpcap/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.alswl.com/tags/winpcap/atom.xml><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="winpcap"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://blog.alswl.com/tags/winpcap/"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="winpcap"><meta name=twitter:description content></head><body class=list id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><header class=page-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/tags/>Tags</a></div><h1>winpcap</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2>网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受</h2></header><div class=entry-content><p>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>winpcap | Log4D</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/tags/winpcap/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/tags/winpcap/atom.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="winpcap" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://blog.alswl.com/tags/winpcap/" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="winpcap"/>
+<meta name="twitter:description" content=""/>
+
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/tags/">Tags</a></div>
+  <h1>
+    winpcap
+  </h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义
 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的
 首先是ARP的接收，来看一下程序的流程
 获取网络设备列表
-pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &alldevs, errbuf)
+pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)
 然后人机交互一下，获得需要工作的网卡
 打开需要的网卡
-(adhandle= pcap_open(d->name, // 设备名
+(adhandle= pcap_open(d-&gt;name, // 设备名
 65536, // 要捕捉的数据包的部分
 // 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
 PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式
@@ -17,9 +173,9 @@ errbuf // 错误缓冲池
 检查数据链路层，我们只考虑以太网
 pcap_datalink(adhandle) != DLT_EN10MB
 编译过滤器
-pcap_compile(adhandle, &fcode, packet_filter, 1, netmask)
+pcap_compile(adhandle, &amp;fcode, packet_filter, 1, netmask)
 设置过滤器
-pcap_setfilter(adhandle, &fcode)
+pcap_setfilter(adhandle, &amp;fcode)
 开始捕捉数据包
 pcap_loop(adhandle, 0, packet_handler, NULL)
 packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数
@@ -28,17 +184,41 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
 这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束
 我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点
 源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的
-整个程序的注意点...</p></div><footer class=entry-footer><span title='2008-09-25 00:00:00 +0800 +0800'>2008-09-25</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受" href=https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>ARP</h2></header><div class=entry-content><p>挺累的，连续两天忙到3点睡觉，早上9点起来继续做
+整个程序的注意点...</p>
+  </div>
+  <footer class="entry-footer"><span title='2008-09-25 00:00:00 +0800 +0800'>2008-09-25</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受" href="https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>ARP
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>挺累的，连续两天忙到3点睡觉，早上9点起来继续做
 开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。
 这是网络编程，也就是我的专业方向课的第一份作业，我特别看中这次，当初分方向时候，鑫爷和大妈都去了软件，我留在网络了。似乎都觉得网络好学，简单，不要写程序
 那么我就写
-第一次将c++与系统底层结合起来，去操作网络上的数据包，感觉真是，太perfect了，不再是呆板的代码，而是真实的数据，真实的操作，甚至我感觉通过键盘，我能 控制一切的感觉
+第一次将c&#43;&#43;与系统底层结合起来，去操作网络上的数据包，感觉真是，太perfect了，不再是呆板的代码，而是真实的数据，真实的操作，甚至我感觉通过键盘，我能 控制一切的感觉
 从连接网卡，获取数据，过滤数据包，容错纠正，类型匹配，发送数据，匹配数据包，发送伪装数据攻击，我甚至写出了一套简单的ARP病毒…
 其实说起来也不难，只要稍微组合一下几个函数而已
 呵呵，挺开心的，自己做东西真好，真实在
 唔…睡觉了…
 手机打字还是挺累的…
-待会儿放上详细流程</p></div><footer class=entry-footer><span title='2008-09-23 00:00:00 +0800 +0800'>2008-09-23</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to ARP" href=https://blog.alswl.com/2008/09/arp/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>网络编程学习日记(2)_WinPcap自带教程的一些例子的学习</h2></header><div class=entry-content><p>1.编译时候会出现函数问题
+待会儿放上详细流程</p>
+  </div>
+  <footer class="entry-footer"><span title='2008-09-23 00:00:00 +0800 +0800'>2008-09-23</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to ARP" href="https://blog.alswl.com/2008/09/arp/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>网络编程学习日记(2)_WinPcap自带教程的一些例子的学习
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1.编译时候会出现函数问题
 ‘pcap_findalldevs_ex’ : undeclared identifier
 ‘PCAP_SRC_IF_STRING’ : undeclared identifier
 ‘pcap_open’ : undeclared identifier
@@ -46,7 +226,7 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
 ‘=’ : cannot convert from ‘int’ to ‘struct pcap *’
 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个
 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在
-#include “pcap.h"后面加上
+#include “pcap.h&#34;后面加上
 #include “remote-ext.h”
 就可以编译通过了。
 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了
@@ -62,14 +242,26 @@ Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals
 4.暑假一直看的是英文说明文档，很吃力，最近在搜狗随便一搜，居然发现了有现成翻译好的
 中文说明文档，翻译挺不错的，可以去搜索下一下。
 终于开始开网络编程课，感叹一下WinPcap的强大，还是停留在用户层的编程，完全没能力看
-核心的源代码。。。</p></div><footer class=entry-footer><span title='2008-09-14 00:00:00 +0800 +0800'>2008-09-14</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 网络编程学习日记(2)_WinPcap自带教程的一些例子的学习" href=https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>网络编程学习日记(1)_WinPcap和VC的配置</h2></header><div class=entry-content><p>下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这 种书，叹一个。
+核心的源代码。。。</p>
+  </div>
+  <footer class="entry-footer"><span title='2008-09-14 00:00:00 +0800 +0800'>2008-09-14</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 网络编程学习日记(2)_WinPcap自带教程的一些例子的学习" href="https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2>网络编程学习日记(1)_WinPcap和VC的配置
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这 种书，叹一个。
 直接导致了我很多东西都得一点一点去网上查找。
 很多函数都是用的WinPcap的，所以我又抓紧时间看WinPcap的入门知识。
 WinPcap开发包下载：[http://www.winpcap.org/install/default.htm](http://www.winpcap.o rg/install/default.htm)
 里面有开发者包Developer’s Pack和普通使用的安装程序，宽带上网助手就是普通的安装包，而开发要使用的则是Developer’s Pack。
-下来之后，安装到某个目录，然后配置VC，把那个目录的include和lib两个目录放到VC的选项->目录里面。
+下来之后，安装到某个目录，然后配置VC，把那个目录的include和lib两个目录放到VC的选项-&gt;目录里面。
 WinPcap目录下有doc文档，里面的东西相当全面。我运行了两个，都不能直接运行。
-第一个简单程序是获取网卡适配器信息，里面一个函数pcap_findalldevs_ex找不到，网上资料说是因为这个函数属于远程网卡获取，它的声明在#incl ude “remote-ext.h"里面，加上去就可以运行了。
+第一个简单程序是获取网卡适配器信息，里面一个函数pcap_findalldevs_ex找不到，网上资料说是因为这个函数属于远程网卡获取，它的声明在#incl ude “remote-ext.h&#34;里面，加上去就可以运行了。
 第二个程序错误更多，
 F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: ‘socklen_t’ : undeclared identifier
 F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2146: syntax error : missing ‘;’ before identifier ‘sockaddrlen’
@@ -82,7 +274,81 @@ _vsnprintf属性与生命不匹配，网上没有合适的解决方案，我感�
 有人说PSDK只有Windows2003的版本，我在微软里面找到了WinXPSP2的PSDK。
 网址如下
 [http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.ht m](http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall. htm)
-里面好几个Cab，网页里面有完整的安装说明。...</p></div><footer class=entry-footer><span title='2008-08-21 00:00:00 +0800 +0800'>2008-08-21</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 网络编程学习日记(1)_WinPcap和VC的配置" href=https://blog.alswl.com/2008/08/learning-network-programming-diary-1-_winpcap-and-vc-configuration/></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+里面好几个Cab，网页里面有完整的安装说明。...</p>
+  </div>
+  <footer class="entry-footer"><span title='2008-08-21 00:00:00 +0800 +0800'>2008-08-21</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 网络编程学习日记(1)_WinPcap和VC的配置" href="https://blog.alswl.com/2008/08/learning-network-programming-diary-1-_winpcap-and-vc-configuration/"></a>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

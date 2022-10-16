@@ -1,9 +1,18 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Servlet JSP 的 Java类的最简单MVC模型 | Log4D</title><meta name=keywords content="java,mvc"><meta name=description content="来自Head First Servlet and JSP
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Servlet JSP 的 Java类的最简单MVC模型 | Log4D</title>
+<meta name="keywords" content="java, mvc">
+<meta name="description" content="来自Head First Servlet and JSP
 XML语言: web.xml
-<?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?> <web-app xmlns=&ldquo;http://java.sun.com/xml/ns/j2ee&#34;
-xmlns:xsi=&ldquo;http://www.w3.org/2001/XMLSchema-instance&#34;
-xsi:schemaLocation=&ldquo;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34;
-version=&ldquo;2.4&rdquo;> &ndash;>
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app xmlns=&ldquo;http://java.sun.com/xml/ns/j2ee&quot;
+xmlns:xsi=&ldquo;http://www.w3.org/2001/XMLSchema-instance&quot;
+xsi:schemaLocation=&ldquo;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot;
+version=&ldquo;2.4&rdquo;&gt; &ndash;&gt;
 Ch3 Beer
 com.example.web.BeerSelect
 Ch3 Beer
@@ -24,13 +33,74 @@ public void doPost(HttpServletRequest request,
 HttpServletResponse response)
 throws IOException, ServletException
 {
-// response."><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
-<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="Servlet JSP 的 Java类的最简单MVC模型"><meta property="og:description" content="来自Head First Servlet and JSP
+// response.">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="Servlet JSP 的 Java类的最简单MVC模型" />
+<meta property="og:description" content="来自Head First Servlet and JSP
 XML语言: web.xml
-<?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?> <web-app xmlns=&ldquo;http://java.sun.com/xml/ns/j2ee&#34;
-xmlns:xsi=&ldquo;http://www.w3.org/2001/XMLSchema-instance&#34;
-xsi:schemaLocation=&ldquo;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34;
-version=&ldquo;2.4&rdquo;> &ndash;>
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app xmlns=&ldquo;http://java.sun.com/xml/ns/j2ee&quot;
+xmlns:xsi=&ldquo;http://www.w3.org/2001/XMLSchema-instance&quot;
+xsi:schemaLocation=&ldquo;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot;
+version=&ldquo;2.4&rdquo;&gt; &ndash;&gt;
 Ch3 Beer
 com.example.web.BeerSelect
 Ch3 Beer
@@ -51,12 +121,20 @@ public void doPost(HttpServletRequest request,
 HttpServletResponse response)
 throws IOException, ServletException
 {
-// response."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2009-02-18T00:00:00+08:00"><meta property="article:modified_time" content="2009-02-18T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="Servlet JSP 的 Java类的最简单MVC模型"><meta name=twitter:description content="来自Head First Servlet and JSP
+// response." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2009-02-18T00:00:00+08:00" />
+<meta property="article:modified_time" content="2009-02-18T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Servlet JSP 的 Java类的最简单MVC模型"/>
+<meta name="twitter:description" content="来自Head First Servlet and JSP
 XML语言: web.xml
-<?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?> <web-app xmlns=&ldquo;http://java.sun.com/xml/ns/j2ee&#34;
-xmlns:xsi=&ldquo;http://www.w3.org/2001/XMLSchema-instance&#34;
-xsi:schemaLocation=&ldquo;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34;
-version=&ldquo;2.4&rdquo;> &ndash;>
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app xmlns=&ldquo;http://java.sun.com/xml/ns/j2ee&quot;
+xmlns:xsi=&ldquo;http://www.w3.org/2001/XMLSchema-instance&quot;
+xsi:schemaLocation=&ldquo;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot;
+version=&ldquo;2.4&rdquo;&gt; &ndash;&gt;
 Ch3 Beer
 com.example.web.BeerSelect
 Ch3 Beer
@@ -77,13 +155,440 @@ public void doPost(HttpServletRequest request,
 HttpServletResponse response)
 throws IOException, ServletException
 {
-// response."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"Servlet JSP 的 Java类的最简单MVC模型","item":"https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Servlet JSP 的 Java类的最简单MVC模型","name":"Servlet JSP 的 Java类的最简单MVC模型","description":"来自Head First Servlet and JSP XML语言: web.xml \u003c?xml version=\"1.0\" encoding=\"UTF-8\"?\u003e \u0026lt;web-app xmlns=\u0026ldquo;http://java.sun.com/xml/ns/j2ee\u0026quot; xmlns:xsi=\u0026ldquo;http://www.w3.org/2001/XMLSchema-instance\u0026quot; xsi:schemaLocation=\u0026ldquo;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd\u0026quot; version=\u0026ldquo;2.4\u0026rdquo;\u0026gt; \u0026ndash;\u0026gt; Ch3 Beer com.example.web.BeerSelect Ch3 Beer /SelectBeer.do HTML语言: form.html Beer Selection Page Beer Selection Page select beer characteristics Color: light amber brown dark Java语言: BeerSelect package com.example.web; import com.example.model.*; import javax.servlet.*; import javax.servlet.http.*; import java.io.*; import java.util.*; public class BeerSelect extends HttpServlet { public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException { // response.","keywords":["java","mvc"],"articleBody":"来自Head First Servlet and JSP\nXML语言: web.xml\n\u003c?xml version=\"1.0\" encoding=\"UTF-8\"?\u003e http://java.sun.com/xml/ns/j2ee\"\nxmlns:xsi=“http://www.w3.org/2001/XMLSchema-instance\"\nxsi:schemaLocation=“http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd\"\nversion=“2.4”\u003e –\u003e\nCh3 Beer\ncom.example.web.BeerSelect\nCh3 Beer\n/SelectBeer.do\nHTML语言: form.html\nBeer Selection Page Beer Selection Page select beer characteristics\nColor:\nlight amber brown dark Java语言: BeerSelect\npackage com.example.web;\nimport com.example.model.*;\nimport javax.servlet.*;\nimport javax.servlet.http.*;\nimport java.io.*;\nimport java.util.*;\npublic class BeerSelect extends HttpServlet\n{\npublic void doPost(HttpServletRequest request,\nHttpServletResponse response)\nthrows IOException, ServletException\n{\n// response.setContentType(“text/html”);\n// PrintWriter out = response.getWriter();\n// out.println(“Beer Selection Advice\n”);\nString c = request.getParameter(“color”);\n// out.println(\"\nGot beer color \" + c);\nBeerExpert be = new BeerExpert();\nList result = be.getBrands(c);\n// Iterator it = result.iterator();\n// while (it.hasNext())\n// {\n// out.print(\"\ntry: \" + it.next());\n// }\nrequest.setAttribute(“styles”, result);\nRequestDispatcher view = request.getRequestDispatcher(“result.jsp”);\nview.forward(request, response);\n}\n}\nJava语言: BeerExpert\npackage com.example.model;\nimport java.util.*;\npublic class BeerExpert\n{\npublic List getBrands (String color)\n{\nList brands = new ArrayList();\nif (color.equals(“amber”))\n{\nbrands.add(“Jack Amber”);\nbrands.add(“Red Moose”);\n}\nelse\n{\nbrands.add(“Jail Pale Ale”);\nbrands.add(“Gout Stout”);\n}\nreturn brands;\n}\n}\nJava Server Page语言: result.jsp\n\u003c%@ page import=“java.util.*”%\u003e\nBeer Recommendations JSP Beer Recommendations JSP \u003c% List sytles = (List)request.getAttribute(“styles”);\nIterator it = sytles.iterator();\nwhile (it.hasNext())\n{\nout.print(\"\ntry: \" + it.next());\n}\n%\u003e\n","wordCount":"203","inLanguage":"en","datePublished":"2009-02-18T00:00:00+08:00","dateModified":"2009-02-18T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>Servlet JSP 的 Java类的最简单MVC模型</h1><div class=post-meta><span title='2009-02-18 00:00:00 +0800 +0800'>2009-02-18</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents></nav></div></details></div><div class=post-content><p>来自Head First Servlet and JSP</p><p><em>XML语言</em>: <a href=http://www.fayaa.com/code/view//>web.xml</a></p><p>&lt;web-app xmlns=&ldquo;<a href=http://java.sun.com/xml/ns/j2ee%22>http://java.sun.com/xml/ns/j2ee"</a></p><p>xmlns:xsi=&ldquo;<a href=http://www.w3.org/2001/XMLSchema-instance%22>http://www.w3.org/2001/XMLSchema-instance"</a></p><p>xsi:schemaLocation=&ldquo;<a href=http://java.sun.com/xml/ns/javaee>http://java.sun.com/xml/ns/javaee</a>
-<a href=http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd%22>http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"</a></p><p>version=&ldquo;2.4&rdquo;> &ndash;></p><servlet><p><servlet-name>Ch3 Beer</servlet-name></p><p><servlet-class>com.example.web.BeerSelect</servlet-class></p></servlet><servlet-mapping><p><servlet-name>Ch3 Beer</servlet-name></p><p><url-pattern>/SelectBeer.do</url-pattern></p></servlet-mapping></web-app><p><em>HTML语言</em>: <a href=http://www.fayaa.com/code/view//>form.html</a></p><html><head><meta charset=utf-8><title>Beer Selection Page</title></head><body><h1 align=center>Beer Selection Page</h1><form method=post action=SelectBeer.do><p>select beer characteristics<p></p><p>Color:</p><select name=color size=1><option>light
+// response."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "Servlet JSP 的 Java类的最简单MVC模型",
+      "item": "https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Servlet JSP 的 Java类的最简单MVC模型",
+  "name": "Servlet JSP 的 Java类的最简单MVC模型",
+  "description": "来自Head First Servlet and JSP XML语言: web.xml \u003c?xml version=\"1.0\" encoding=\"UTF-8\"?\u003e \u0026lt;web-app xmlns=\u0026ldquo;http://java.sun.com/xml/ns/j2ee\u0026quot; xmlns:xsi=\u0026ldquo;http://www.w3.org/2001/XMLSchema-instance\u0026quot; xsi:schemaLocation=\u0026ldquo;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd\u0026quot; version=\u0026ldquo;2.4\u0026rdquo;\u0026gt; \u0026ndash;\u0026gt; Ch3 Beer com.example.web.BeerSelect Ch3 Beer /SelectBeer.do HTML语言: form.html Beer Selection Page Beer Selection Page select beer characteristics Color: light amber brown dark Java语言: BeerSelect package com.example.web; import com.example.model.*; import javax.servlet.*; import javax.servlet.http.*; import java.io.*; import java.util.*; public class BeerSelect extends HttpServlet { public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException { // response.",
+  "keywords": [
+    "java", "mvc"
+  ],
+  "articleBody": "来自Head First Servlet and JSP\nXML语言: web.xml\n\u003c?xml version=\"1.0\" encoding=\"UTF-8\"?\u003e http://java.sun.com/xml/ns/j2ee\"\nxmlns:xsi=“http://www.w3.org/2001/XMLSchema-instance\"\nxsi:schemaLocation=“http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd\"\nversion=“2.4”\u003e –\u003e\nCh3 Beer\ncom.example.web.BeerSelect\nCh3 Beer\n/SelectBeer.do\nHTML语言: form.html\nBeer Selection Page Beer Selection Page select beer characteristics\nColor:\nlight amber brown dark Java语言: BeerSelect\npackage com.example.web;\nimport com.example.model.*;\nimport javax.servlet.*;\nimport javax.servlet.http.*;\nimport java.io.*;\nimport java.util.*;\npublic class BeerSelect extends HttpServlet\n{\npublic void doPost(HttpServletRequest request,\nHttpServletResponse response)\nthrows IOException, ServletException\n{\n// response.setContentType(“text/html”);\n// PrintWriter out = response.getWriter();\n// out.println(“Beer Selection Advice\n”);\nString c = request.getParameter(“color”);\n// out.println(\"\nGot beer color \" + c);\nBeerExpert be = new BeerExpert();\nList result = be.getBrands(c);\n// Iterator it = result.iterator();\n// while (it.hasNext())\n// {\n// out.print(\"\ntry: \" + it.next());\n// }\nrequest.setAttribute(“styles”, result);\nRequestDispatcher view = request.getRequestDispatcher(“result.jsp”);\nview.forward(request, response);\n}\n}\nJava语言: BeerExpert\npackage com.example.model;\nimport java.util.*;\npublic class BeerExpert\n{\npublic List getBrands (String color)\n{\nList brands = new ArrayList();\nif (color.equals(“amber”))\n{\nbrands.add(“Jack Amber”);\nbrands.add(“Red Moose”);\n}\nelse\n{\nbrands.add(“Jail Pale Ale”);\nbrands.add(“Gout Stout”);\n}\nreturn brands;\n}\n}\nJava Server Page语言: result.jsp\n\u003c%@ page import=“java.util.*”%\u003e\nBeer Recommendations JSP Beer Recommendations JSP \u003c% List sytles = (List)request.getAttribute(“styles”);\nIterator it = sytles.iterator();\nwhile (it.hasNext())\n{\nout.print(\"\ntry: \" + it.next());\n}\n%\u003e\n",
+  "wordCount" : "203",
+  "inLanguage": "en",
+  "datePublished": "2009-02-18T00:00:00+08:00",
+  "dateModified": "2009-02-18T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      Servlet JSP 的 Java类的最简单MVC模型
+    </h1>
+    <div class="post-meta"><span title='2009-02-18 00:00:00 +0800 +0800'>2009-02-18</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents"></nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>来自Head First Servlet and JSP</p>
+<p><em>XML语言</em>: <a href="http://www.fayaa.com/code/view//">web.xml</a></p>
+<?xml version="1.0" encoding="UTF-8"?>
+<p>&lt;web-app xmlns=&ldquo;<a href="http://java.sun.com/xml/ns/j2ee%22">http://java.sun.com/xml/ns/j2ee&quot;</a></p>
+<p>xmlns:xsi=&ldquo;<a href="http://www.w3.org/2001/XMLSchema-instance%22">http://www.w3.org/2001/XMLSchema-instance&quot;</a></p>
+<p>xsi:schemaLocation=&ldquo;<a href="http://java.sun.com/xml/ns/javaee">http://java.sun.com/xml/ns/javaee</a>
+<a href="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd%22">http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot;</a></p>
+<p>version=&ldquo;2.4&rdquo;&gt; &ndash;&gt;</p>
+<servlet>
+<p><servlet-name>Ch3 Beer</servlet-name></p>
+<p><servlet-class>com.example.web.BeerSelect</servlet-class></p>
+</servlet>
+<servlet-mapping>
+<p><servlet-name>Ch3 Beer</servlet-name></p>
+<p><url-pattern>/SelectBeer.do</url-pattern></p>
+</servlet-mapping>
+</web-app>
+<p><em>HTML语言</em>: <a href="http://www.fayaa.com/code/view//">form.html</a></p>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Beer Selection Page</title>
+</head>
+<body>
+<h1 align="center">Beer Selection Page</h1>
+<form method="post" action="SelectBeer.do">
+<p>select beer characteristics<p></p>
+<p>Color:</p>
+<select name="color" size="1">
+<option>light
 <option>amber
 <option>brown
-<option>dark</select><br><br><center><input type=submit></center></form></body></html><p><em>Java语言</em>: <a href=http://www.fayaa.com/code/view//>BeerSelect</a></p><p>package com.example.web;</p><p>import com.example.model.*;</p><p>import javax.servlet.*;</p><p>import javax.servlet.http.*;</p><p>import java.io.*;</p><p>import java.util.*;</p><p>public class BeerSelect extends HttpServlet</p><p>{</p><p>public void doPost(HttpServletRequest request,</p><p>HttpServletResponse response)</p><p>throws IOException, ServletException</p><p>{</p><p>// response.setContentType(&ldquo;text/html&rdquo;);</p><p>// PrintWriter out = response.getWriter();</p><p>// out.println(&ldquo;Beer Selection Advice<br>&rdquo;);</p><p>String c = request.getParameter(&ldquo;color&rdquo;);</p><p>// out.println("<br>Got beer color " + c);</p><p>BeerExpert be = new BeerExpert();</p><p>List result = be.getBrands(c);</p><p>// Iterator it = result.iterator();</p><p>// while (it.hasNext())</p><p>// {</p><p>// out.print("<br>try: " + it.next());</p><p>// }</p><p>request.setAttribute(&ldquo;styles&rdquo;, result);</p><p>RequestDispatcher view = request.getRequestDispatcher(&ldquo;result.jsp&rdquo;);</p><p>view.forward(request, response);</p><p>}</p><p>}</p><p><em>Java语言</em>: <a href=http://www.fayaa.com/code/view//>BeerExpert</a></p><p>package com.example.model;</p><p>import java.util.*;</p><p>public class BeerExpert</p><p>{</p><p>public List getBrands (String color)</p><p>{</p><p>List brands = new ArrayList();</p><p>if (color.equals(&ldquo;amber&rdquo;))</p><p>{</p><p>brands.add(&ldquo;Jack Amber&rdquo;);</p><p>brands.add(&ldquo;Red Moose&rdquo;);</p><p>}</p><p>else</p><p>{</p><p>brands.add(&ldquo;Jail Pale Ale&rdquo;);</p><p>brands.add(&ldquo;Gout Stout&rdquo;);</p><p>}</p><p>return brands;</p><p>}</p><p>}</p><p><em>Java Server Page语言</em>: <a href=http://www.fayaa.com/code/view//>result.jsp</a></p><p>&lt;%@ page import=&ldquo;java.util.*&rdquo;%></p><html><head><title>Beer Recommendations JSP</title></head><body><h1 align=center>Beer Recommendations JSP</h1><p><%<p>List sytles = (List)request.getAttribute(&ldquo;styles&rdquo;);</p><p>Iterator it = sytles.iterator();</p><p>while (it.hasNext())</p><p>{</p><p>out.print("<br>try: " + it.next());</p><p>}</p><p>%></p></body></html><hr><p>原文链接: <a href=https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/>Servlet JSP 的 Java类的最简单MVC模型 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/java/>java</a></li><li><a href=https://blog.alswl.com/tags/mvc/>mvc</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2009/02/eclipse-in-the-jsp-file-s-encoding-settings/><span class=title>« Prev</span><br><span>Eclipse中JSP文件的编码设置</span></a>
-<a class=next href=https://blog.alswl.com/2009/02/was-defeated/><span class=title>Next »</span><br><span>被击败了</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
+<option>dark
+</select>
+<br>
+<br>
+<center>
+<input type="submit">
+</center>
+</form>
+</body>
+</html>
+<p><em>Java语言</em>: <a href="http://www.fayaa.com/code/view//">BeerSelect</a></p>
+<p>package com.example.web;</p>
+<p>import com.example.model.*;</p>
+<p>import javax.servlet.*;</p>
+<p>import javax.servlet.http.*;</p>
+<p>import java.io.*;</p>
+<p>import java.util.*;</p>
+<p>public class BeerSelect extends HttpServlet</p>
+<p>{</p>
+<p>public void doPost(HttpServletRequest request,</p>
+<p>HttpServletResponse response)</p>
+<p>throws IOException, ServletException</p>
+<p>{</p>
+<p>// response.setContentType(&ldquo;text/html&rdquo;);</p>
+<p>// PrintWriter out = response.getWriter();</p>
+<p>// out.println(&ldquo;Beer Selection Advice<br>&rdquo;);</p>
+<p>String c = request.getParameter(&ldquo;color&rdquo;);</p>
+<p>// out.println(&quot;<br>Got beer color &quot; + c);</p>
+<p>BeerExpert be = new BeerExpert();</p>
+<p>List result = be.getBrands(c);</p>
+<p>// Iterator it = result.iterator();</p>
+<p>// while (it.hasNext())</p>
+<p>// {</p>
+<p>// out.print(&quot;<br>try: &quot; + it.next());</p>
+<p>// }</p>
+<p>request.setAttribute(&ldquo;styles&rdquo;, result);</p>
+<p>RequestDispatcher view = request.getRequestDispatcher(&ldquo;result.jsp&rdquo;);</p>
+<p>view.forward(request, response);</p>
+<p>}</p>
+<p>}</p>
+<p><em>Java语言</em>: <a href="http://www.fayaa.com/code/view//">BeerExpert</a></p>
+<p>package com.example.model;</p>
+<p>import java.util.*;</p>
+<p>public class BeerExpert</p>
+<p>{</p>
+<p>public List getBrands (String color)</p>
+<p>{</p>
+<p>List brands = new ArrayList();</p>
+<p>if (color.equals(&ldquo;amber&rdquo;))</p>
+<p>{</p>
+<p>brands.add(&ldquo;Jack Amber&rdquo;);</p>
+<p>brands.add(&ldquo;Red Moose&rdquo;);</p>
+<p>}</p>
+<p>else</p>
+<p>{</p>
+<p>brands.add(&ldquo;Jail Pale Ale&rdquo;);</p>
+<p>brands.add(&ldquo;Gout Stout&rdquo;);</p>
+<p>}</p>
+<p>return brands;</p>
+<p>}</p>
+<p>}</p>
+<p><em>Java Server Page语言</em>: <a href="http://www.fayaa.com/code/view//">result.jsp</a></p>
+<p>&lt;%@ page import=&ldquo;java.util.*&rdquo;%&gt;</p>
+<html>
+<head>
+<title>Beer Recommendations JSP</title>
+</head>
+<body>
+<h1 align="center">Beer Recommendations JSP</h1>
+<p><%
+<p>List sytles = (List)request.getAttribute(&ldquo;styles&rdquo;);</p>
+<p>Iterator it = sytles.iterator();</p>
+<p>while (it.hasNext())</p>
+<p>{</p>
+<p>out.print(&quot;<br>try: &quot; + it.next());</p>
+<p>}</p>
+<p>%&gt;</p>
+</body>
+</html>
+
+<hr />
+<p>原文链接: <a href="https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/">Servlet JSP 的 Java类的最简单MVC模型 | Log4D</a></p>
+<p>3a1ff193cee606bd1e2ea554a16353ee</p>
+<p>欢迎关注我的微信公众号：<a
+href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
+alt="窥豹" />
+<figcaption aria-hidden="true">窥豹</figcaption>
+</figure>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
+alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
+<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption>
+</figure>
+
+    
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/java/">java</a></li>
+      <li><a href="https://blog.alswl.com/tags/mvc/">mvc</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2009/02/eclipse-in-the-jsp-file-s-encoding-settings/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Eclipse中JSP文件的编码设置</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2009/02/was-defeated/">
+    <span class="title">Next »</span>
+    <br>
+    <span>被击败了</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "log4d" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

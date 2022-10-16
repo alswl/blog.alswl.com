@@ -1,5 +1,14 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>用OpenSSL创建证书时用到的命令【原创】 | Log4D</title><meta name=keywords content="c,openssl,ssl"><meta name=description content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
-这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&#34;利用OpenSSL实现安全的Web Server&#34;中找到自己需要的内容，现在分享一下。
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>用OpenSSL创建证书时用到的命令【原创】 | Log4D</title>
+<meta name="keywords" content="c, openssl, ssl">
+<meta name="description" content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
+这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。
 1.生成CA中心的私钥
 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
 2.生成CA中心的自签证书
@@ -10,9 +19,70 @@ PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的�
 那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf
 注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。
 4.由CA中心为A分支机构签发证书
-openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert."><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
-<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="用OpenSSL创建证书时用到的命令【原创】"><meta property="og:description" content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
-这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&#34;利用OpenSSL实现安全的Web Server&#34;中找到自己需要的内容，现在分享一下。
+openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="用OpenSSL创建证书时用到的命令【原创】" />
+<meta property="og:description" content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
+这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。
 1.生成CA中心的私钥
 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
 2.生成CA中心的自签证书
@@ -23,8 +93,16 @@ PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的�
 那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf
 注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。
 4.由CA中心为A分支机构签发证书
-openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2009-03-17T00:00:00+08:00"><meta property="article:modified_time" content="2009-03-17T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="用OpenSSL创建证书时用到的命令【原创】"><meta name=twitter:description content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
-这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&#34;利用OpenSSL实现安全的Web Server&#34;中找到自己需要的内容，现在分享一下。
+openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2009-03-17T00:00:00+08:00" />
+<meta property="article:modified_time" content="2009-03-17T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="用OpenSSL创建证书时用到的命令【原创】"/>
+<meta name="twitter:description" content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
+这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。
 1.生成CA中心的私钥
 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
 2.生成CA中心的自签证书
@@ -35,14 +113,353 @@ PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的�
 那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf
 注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。
 4.由CA中心为A分支机构签发证书
-openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"用OpenSSL创建证书时用到的命令【原创】","item":"https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"用OpenSSL创建证书时用到的命令【原创】","name":"用OpenSSL创建证书时用到的命令【原创】","description":"这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。\n这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章\u0026quot;利用OpenSSL实现安全的Web Server\u0026quot;中找到自己需要的内容，现在分享一下。\n1.生成CA中心的私钥\nopenssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem\n2.生成CA中心的自签证书\nopenssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem\n3.生成A分支机构的私钥和认证请求\nopenssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem\nPS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件\n那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf\n注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。\n4.由CA中心为A分支机构签发证书\nopenssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.","keywords":["c","openssl","ssl"],"articleBody":"这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。\n这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章\"利用OpenSSL实现安全的Web Server\"中找到自己需要的内容，现在分享一下。\n1.生成CA中心的私钥\nopenssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem\n2.生成CA中心的自签证书\nopenssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem\n3.生成A分支机构的私钥和认证请求\nopenssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem\nPS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件\n那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf\n注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。\n4.由CA中心为A分支机构签发证书\nopenssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.pem -CAkey rootkey.pem -CAcreateserial -out Acert.pem\n5.用x509命令查看生成的证书\nopenssl x509 -subject -issuer -noout -in rootcert.pem\n这样之后，Acert.pem就是所要使用的证书文件，Akey.pem是私钥文件，rootcert.pem是信任CA\n供朋友们参考\n","wordCount":"89","inLanguage":"en","datePublished":"2009-03-17T00:00:00+08:00","dateModified":"2009-03-17T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>用OpenSSL创建证书时用到的命令【原创】</h1><div class=post-meta><span title='2009-03-17 00:00:00 +0800 +0800'>2009-03-17</span>&nbsp;·&nbsp;alswl</div></header><div class=post-content><p>这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全-
-基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。</p><p>这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章"利用OpenSSL实现安全的Web Server"中找到自己需要的内容，现在分享一下。</p><p>1.生成CA中心的私钥</p><blockquote><p>openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem</p></blockquote><p>2.生成CA中心的自签证书</p><blockquote><p>openssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey
-rootkey.pem -out rootcert.pem</p></blockquote><p>3.生成A分支机构的私钥和认证请求</p><blockquote><p>openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem</p></blockquote><p>PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf
-的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件</p><p>那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out
-Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf</p><p>注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。</p><p>4.由CA中心为A分支机构签发证书</p><blockquote><p>openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.pem
--CAkey rootkey.pem -CAcreateserial -out Acert.pem</p></blockquote><p>5.用x509命令查看生成的证书</p><blockquote><p>openssl x509 -subject -issuer -noout -in rootcert.pem</p></blockquote><p>这样之后，Acert.pem就是所要使用的证书文件，Akey.pem是私钥文件，rootcert.pem是信任CA</p><p>供朋友们参考</p><hr><p>原文链接: <a href=https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/>用OpenSSL创建证书时用到的命令【原创】 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/c/>c</a></li><li><a href=https://blog.alswl.com/tags/openssl/>openssl</a></li><li><a href=https://blog.alswl.com/tags/ssl/>ssl</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/><span class=title>« Prev</span><br><span>使用 OpenSSL API 进行安全编程【转载】</span></a>
-<a class=next href=https://blog.alswl.com/2009/03/common-certificate-format-and-conversion/><span class=title>Next »</span><br><span>常见证书格式和转换【转载】</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
+openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert."/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "用OpenSSL创建证书时用到的命令【原创】",
+      "item": "https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "用OpenSSL创建证书时用到的命令【原创】",
+  "name": "用OpenSSL创建证书时用到的命令【原创】",
+  "description": "这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。\n这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章\u0026quot;利用OpenSSL实现安全的Web Server\u0026quot;中找到自己需要的内容，现在分享一下。\n1.生成CA中心的私钥\nopenssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem\n2.生成CA中心的自签证书\nopenssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem\n3.生成A分支机构的私钥和认证请求\nopenssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem\nPS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件\n那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf\n注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。\n4.由CA中心为A分支机构签发证书\nopenssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.",
+  "keywords": [
+    "c", "openssl", "ssl"
+  ],
+  "articleBody": "这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。\n这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章\"利用OpenSSL实现安全的Web Server\"中找到自己需要的内容，现在分享一下。\n1.生成CA中心的私钥\nopenssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem\n2.生成CA中心的自签证书\nopenssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem\n3.生成A分支机构的私钥和认证请求\nopenssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem\nPS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件\n那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf\n注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。\n4.由CA中心为A分支机构签发证书\nopenssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.pem -CAkey rootkey.pem -CAcreateserial -out Acert.pem\n5.用x509命令查看生成的证书\nopenssl x509 -subject -issuer -noout -in rootcert.pem\n这样之后，Acert.pem就是所要使用的证书文件，Akey.pem是私钥文件，rootcert.pem是信任CA\n供朋友们参考\n",
+  "wordCount" : "89",
+  "inLanguage": "en",
+  "datePublished": "2009-03-17T00:00:00+08:00",
+  "dateModified": "2009-03-17T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      用OpenSSL创建证书时用到的命令【原创】
+    </h1>
+    <div class="post-meta"><span title='2009-03-17 00:00:00 +0800 +0800'>2009-03-17</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全-
+基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。</p>
+<p>这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。</p>
+<p>1.生成CA中心的私钥</p>
+<blockquote>
+<p>openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem</p>
+</blockquote>
+<p>2.生成CA中心的自签证书</p>
+<blockquote>
+<p>openssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey
+rootkey.pem -out rootcert.pem</p>
+</blockquote>
+<p>3.生成A分支机构的私钥和认证请求</p>
+<blockquote>
+<p>openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem</p>
+</blockquote>
+<p>PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf
+的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件</p>
+<p>那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out
+Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf</p>
+<p>注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。</p>
+<p>4.由CA中心为A分支机构签发证书</p>
+<blockquote>
+<p>openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.pem
+-CAkey rootkey.pem -CAcreateserial -out Acert.pem</p>
+</blockquote>
+<p>5.用x509命令查看生成的证书</p>
+<blockquote>
+<p>openssl x509 -subject -issuer -noout -in rootcert.pem</p>
+</blockquote>
+<p>这样之后，Acert.pem就是所要使用的证书文件，Akey.pem是私钥文件，rootcert.pem是信任CA</p>
+<p>供朋友们参考</p>
+
+<hr />
+<p>原文链接: <a href="https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/">用OpenSSL创建证书时用到的命令【原创】 | Log4D</a></p>
+<p>3a1ff193cee606bd1e2ea554a16353ee</p>
+<p>欢迎关注我的微信公众号：<a
+href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
+alt="窥豹" />
+<figcaption aria-hidden="true">窥豹</figcaption>
+</figure>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
+alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
+<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption>
+</figure>
+
+    
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/c/">c</a></li>
+      <li><a href="https://blog.alswl.com/tags/openssl/">openssl</a></li>
+      <li><a href="https://blog.alswl.com/tags/ssl/">ssl</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>使用 OpenSSL API 进行安全编程【转载】</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2009/03/common-certificate-format-and-conversion/">
+    <span class="title">Next »</span>
+    <br>
+    <span>常见证书格式和转换【转载】</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "log4d" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

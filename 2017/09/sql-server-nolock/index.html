@@ -1,154 +1,728 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>一个关于 nolock 的故事：深入理解数据库隔离级别 | Log4D</title><meta name=keywords content="sql server,mysql"><meta name=description content="加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>一个关于 nolock 的故事：深入理解数据库隔离级别 | Log4D</title>
+<meta name="keywords" content="sql server, mysql">
+<meta name="description" content="加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？
 我找了一个范例如下：
 SELECT [id] FROM [dbo].[foos] WITH(nolock) WHERE aField = 42 AND bField = 1 作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server 迁移到 MySQL，我们编码中还需要使用 nolock 么？ MySQL 里面对应的写法是什么？」。 我并没有 SQL Server 的生产环境使用经验，一时间无法回答。 于是课后做相关知识学习，这里就是这次学习的一点成果。
 这个问题将被拆解成三个小问题进行回答：
 nolock 是什么？ 为什么会需要在每个 Query 语句使用 nolock？ MySQL 的对应写法是什么？ 让我们一个一个来看。
-第一个问题：nolock 是什么？ nolock 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 WITH 开头。除了 WITH(nolock)， 还有 TABLOCK / INDEX / ROWLOCK 等常见的 Hints。"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2017/09/sql-server-nolock/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
-<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="一个关于 nolock 的故事：深入理解数据库隔离级别"><meta property="og:description" content="加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？
+第一个问题：nolock 是什么？ nolock 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 WITH 开头。除了 WITH(nolock)， 还有 TABLOCK / INDEX / ROWLOCK 等常见的 Hints。">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2017/09/sql-server-nolock/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="一个关于 nolock 的故事：深入理解数据库隔离级别" />
+<meta property="og:description" content="加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？
 我找了一个范例如下：
 SELECT [id] FROM [dbo].[foos] WITH(nolock) WHERE aField = 42 AND bField = 1 作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server 迁移到 MySQL，我们编码中还需要使用 nolock 么？ MySQL 里面对应的写法是什么？」。 我并没有 SQL Server 的生产环境使用经验，一时间无法回答。 于是课后做相关知识学习，这里就是这次学习的一点成果。
 这个问题将被拆解成三个小问题进行回答：
 nolock 是什么？ 为什么会需要在每个 Query 语句使用 nolock？ MySQL 的对应写法是什么？ 让我们一个一个来看。
-第一个问题：nolock 是什么？ nolock 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 WITH 开头。除了 WITH(nolock)， 还有 TABLOCK / INDEX / ROWLOCK 等常见的 Hints。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2017/09/sql-server-nolock/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-09-19T16:43:45+08:00"><meta property="article:modified_time" content="2017-09-19T16:43:45+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="一个关于 nolock 的故事：深入理解数据库隔离级别"><meta name=twitter:description content="加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？
+第一个问题：nolock 是什么？ nolock 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 WITH 开头。除了 WITH(nolock)， 还有 TABLOCK / INDEX / ROWLOCK 等常见的 Hints。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2017/09/sql-server-nolock/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2017-09-19T16:43:45+08:00" />
+<meta property="article:modified_time" content="2017-09-19T16:43:45+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="一个关于 nolock 的故事：深入理解数据库隔离级别"/>
+<meta name="twitter:description" content="加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？
 我找了一个范例如下：
 SELECT [id] FROM [dbo].[foos] WITH(nolock) WHERE aField = 42 AND bField = 1 作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server 迁移到 MySQL，我们编码中还需要使用 nolock 么？ MySQL 里面对应的写法是什么？」。 我并没有 SQL Server 的生产环境使用经验，一时间无法回答。 于是课后做相关知识学习，这里就是这次学习的一点成果。
 这个问题将被拆解成三个小问题进行回答：
 nolock 是什么？ 为什么会需要在每个 Query 语句使用 nolock？ MySQL 的对应写法是什么？ 让我们一个一个来看。
-第一个问题：nolock 是什么？ nolock 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 WITH 开头。除了 WITH(nolock)， 还有 TABLOCK / INDEX / ROWLOCK 等常见的 Hints。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"一个关于 nolock 的故事：深入理解数据库隔离级别","item":"https://blog.alswl.com/2017/09/sql-server-nolock/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"一个关于 nolock 的故事：深入理解数据库隔离级别","name":"一个关于 nolock 的故事：深入理解数据库隔离级别","description":"加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？\n我找了一个范例如下：\nSELECT [id] FROM [dbo].[foos] WITH(nolock) WHERE aField = 42 AND bField = 1 作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server 迁移到 MySQL，我们编码中还需要使用 nolock 么？ MySQL 里面对应的写法是什么？」。 我并没有 SQL Server 的生产环境使用经验，一时间无法回答。 于是课后做相关知识学习，这里就是这次学习的一点成果。\n这个问题将被拆解成三个小问题进行回答：\nnolock 是什么？ 为什么会需要在每个 Query 语句使用 nolock？ MySQL 的对应写法是什么？ 让我们一个一个来看。\n第一个问题：nolock 是什么？ nolock 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 WITH 开头。除了 WITH(nolock)， 还有 TABLOCK / INDEX / ROWLOCK 等常见的 Hints。","keywords":["sql server","mysql"],"articleBody":" 加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？\n我找了一个范例如下：\nSELECT [id] FROM [dbo].[foos] WITH(nolock) WHERE aField = 42 AND bField = 1 作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server 迁移到 MySQL，我们编码中还需要使用 nolock 么？ MySQL 里面对应的写法是什么？」。 我并没有 SQL Server 的生产环境使用经验，一时间无法回答。 于是课后做相关知识学习，这里就是这次学习的一点成果。\n这个问题将被拆解成三个小问题进行回答：\nnolock 是什么？ 为什么会需要在每个 Query 语句使用 nolock？ MySQL 的对应写法是什么？ 让我们一个一个来看。\n第一个问题：nolock 是什么？ nolock 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 WITH 开头。除了 WITH(nolock)， 还有 TABLOCK / INDEX / ROWLOCK 等常见的 Hints。\n让我们仔细看看 MSDN 文档上的解释：\nnolock 的作用等同于 READUNCOMMITTED\nREADUNCOMMITTED 这是一种 RDBMS 隔离级别。 使用 nolock 这个关键词，可以将当前查询语句隔离级别调整为 READ UNCOMMITTED。\n计算机基础好的同学，应该对 READUNCOMMITTED 这个关键词还有印象。 而基础不扎实的同学，也许只是觉得这个关键词眼熟，但是讲不清楚这是什么。 如果阅读这句话完全没有理解困难，那恭喜你，你可以直接跳到下一节了。 其他朋友就跟随我继续探索一下 RDMBS 的世界，复习一下隔离级别相关的知识。\n隔离级别 SQL 92 定义了四个隔离级别 （Isolation (database systems) - Wikipedia）， 其隔离程度由高到低是：\n可序列化（Serializable） 可重复读（Repeatable reads） 提交读（Read committed） 未提交读（Read uncommitted） 单单将这几个技术名词简单地罗列出来并没有什么意义，还有这几个问题需要搞清楚：\n隔离级别解决什么问题？ 为什么存在多种隔离级别？ 我们所谓的隔离级别从高到低，是什么含义，如何逐层降低的？ 首先是「隔离级别解决什么问题？」， 用通俗的语言描述就是：加一个针对数据资源的锁，从而保证数据操作过程中的一致性。\n这是最简单的实现方式，过于粗暴的隔离性将大幅降低性能， 多种隔离级别就是是为了取得两者的平衡。\n接下来我们来回答第二个问题「为什么存在多种粒度的隔离级别？」 这其实是一个需求和性能逐步平衡的过程，\n我们逐层递进，将隔离级别由低到高逐层面临进行分析。\nRead Uncommitted Read Uncommitted 这个隔离级别是最低粒度的隔离级别， 如同它的名字一般，它允许在操作过程中不会锁，从而让当前事务读取到其他事务的数据。\n如上图所示，在 Transaction 2 查询时候，Transaction 1 未提交的数据就已经对外暴露。 如果 Transaction 1 最后 Rollback 了，那么 Transaction 读取的数据就是错误的。\n「读到了其他事务修改了但是未提交的数据」即是脏读。\nRead Committed 想要避免脏读，最简单的方式就是在事务更新操作上加一把写锁， 其他事务需要读取数据时候，需要等待这把写锁释放。\n如上图所示，Transaction 1 在写操作时候，对数据 A 加了写锁， 那么 Transaction 2 想要读取 A，就必须等待这把锁释放。 这样就避免当前事务读取其他事务的未提交数据。\n但是除了脏读，一致性的要求还需要「可重复读」，即 「在一个事务内，多次读取的特定数据都必须是一致的 （即便在这过程中该数据被其他事务修改）」。\n上图就是没能保证「可重复度」，Transaction 2 第一次读取到了数据 A， 然后 Transaction 1 对数据 A 更新到 A’，那么当 Tranction 2 再次读取 A 时候， 它本来期望读到 A，但是却读到了 A’，这和它的预期不相符了。 解决这个问题，就需要提升隔离级别到「Repeatable Read」。\nRepeatable Read 这个名字非常容易理解，即保障在一个事务内重复读取时， 始终能够读取到相同的内容。来看图：\n如上所示，当 Transation 2 读取 A 时候，会同时加上一把 Read Lock， 这把锁会阻止 Transaction 1 将 A 更新为 A’，Transaction 1 要么选择等待， 要么就选择结束。\n当我们将隔离级别升到这里是，似乎已经完美无缺了。 不管是写入还是读取，我们都可以保证数据的一致性不被破坏。 但是其实还有漏洞：新增数据的一致性！\n上述的三个隔离级别，都是对特定的一行数据进行加锁， 那假如将要更新的数据还没有写入数据库，如何进行加锁呢？ 比如自增表的新键，或者现有数据内的空缺 Key？\n如图所示，在上述操作中，Transaction 2 查询了一个范围 Range 之后，Transaction 1 在这个范围内插入了一条新的数据。此时 Transaction 2 再次进行范围查询时候， 会发现查询到的 Range 和上次已经不一样了，多了一个 newA。\n这就是最高隔离级别才能解决的「幻影读」： 当两个完全相同的查询语句执行得到不同的结果集， 这常常在范围查询中出现。\nSerializable 从字面意思看，该隔离级别需要将被操作的数据加锁加一把锁。 任何读写操作都需要先获得这把锁才能进行。如果操作中带 WHERE 条件， 还需要将 WHERE 条件相关的范围全部加锁。\n如图所示，在 Transaction 2 操作过程中，会对 Range 进行加锁， 此时其他事务无法操作其中的数据，只能等待或者放弃。\nDB 的默认隔离级别 现在我们已经理解了隔离级别，那么「SQL Server 默认使用的隔离级别是什么呢？」 根据 Customizing Transaction Isolation Level 这个文档描述，SQL Server 默认隔离级别是 READ COMMITTED。\nMySQL InnoDB 的默认隔离级别可以在 MySQL :: MySQL 5.7 Reference Manual :: 14.5.2.1 Transaction Isolation Levels 查询到，是 Read-Repeatable。\n隔离级别并没有最好之说，越高隔离级别会导致性能降低。 隔离级别的设定需要考虑业务场景。\n第二个问题：为什么要使用 nolock？ 我们已经知道 nolock 的作用是动态调整隔离级别。 那为什么在 SQL Server 的 Query 操作中，需要启用 nolock 呢？ 我问了几个工程师，他们都语焉不详，或者是很泛泛地说：禁用读写锁，可以提升查询性能。\n此时我产生了困惑：「那么此时的数据一致性就不需要考虑了么？ 我们的数据库，已经到了需要禁用锁的程度来进行优化了么？」 我于是自己去探索，想知道为何广泛使用 nolock 会成为一个「最佳实践」？\n由于时代久远，我只能追述到一些相关信息，比如 Top 10 SQL Server Integration Services Best Practices | SQL Server Customer Advisory Team 中提到 「Use the NOLOCK or TABLOCK hints to remove locking overhead.」 但这个是针对于 SSIS 查询器，并不是针对业务内部使用。 反而能找到一大堆的文档，在反对使用 nolock 这个关键字。\n继续追查下去，还从蛛丝马迹中寻找到一个使用 nolock 的理由， SQL Server 默认是 Read Committed， 更新操作会产生排它锁，会 block 这个资源的查询操作， 已插入但未提交的数据主键也会产生一个共享锁， 而此时则会 block 这张表的全表查询和 Insert 操作。 为了避免 Insert 被 Block，就会推荐使用 nolock。\n为了验证这是原因，我做一些 nolock 测试。\nnolock 测试 检查当前 SQL Server 隔离级别，确认隔离级别是默认的 Read Committed：\nSELECT CASE transaction_isolation_level WHEN 0 THEN 'Unspecified' WHEN 1 THEN 'ReadUncommitted' WHEN 2 THEN 'ReadCommitted' WHEN 3 THEN 'Repeatable' WHEN 4 THEN 'Serializable' WHEN 5 THEN 'Snapshot' END AS TRANSACTION_ISOLATION_LEVEL FROM sys.dm_exec_sessions WHERE session_id = @@SPID -- ReadCommitted 创建表，初始化数据：\nCREATE TABLE foos ( id BIGINT NOT NULL, value NCHAR(10) NULL, CONSTRAINT pk PRIMARY KEY clustered (id) ); INSERT INTO foos (id, value) VALUES (1, '1'), (2, '2'); 在 Transaction 1 中发起 Update 操作（INSERT / DELETE 同理），但是并不做 Commit 提交：\nBEGIN TRANSACTION; INSERT INTO foos (id, value) VALUES (3, '3'); 开启一个新的 Session，发起全表查询和新增 PK 查询操作：\nSELECT * FROM foos; SELECT * FROM foos WHERE id = 4; 不出所料，此时查询果然会被 Block 住。\nMVCC 并发控制的手段有这些：封锁、时间戳、乐观并发控制、悲观并发控制。 SQL Server 在 2005 后，引入了 MVCC（多版本控制）。 如果最终数据是一致，会允许数据写入，否则其他事务会被阻止写入。 那么 MVCC 引入是否可以解决 Insert 数据的锁问题？ 同样，我做了以下测试：\n查询 SQL Server 使用启用 MVCC ALLOW_SNAPSHOT_ISOLATION：\nSELECT name, snapshot_isolation_state FROM sys.databases; 使用 T-SQL 启用测试表的 SNAPSHOT_ISOLATION：\nALTER DATABASE HJ_Test3D SET ALLOW_SNAPSHOT_ISOLATION ON; 接着重复上面里面的 Insert 试验，依然被 Block 住。 看来 MVCC 并不能解决 Insert 锁的问题。\nSQL Server 2005 之后还需要使用 nolock 么？ 从官方文档和上文测试可以看到，在 Insert 时候，由于排它锁的存在， 会导致 SELECT ALL 以及 SELECT 新插入数据的相关信息被锁住。 在这两种情景下面是需要使用 nolock 的。\n除此之外，有这么几类场景可以使用 nolock：\n在 SSIS 查询器中进行数据分析，不需要精准数据 历史数据进行查询，没有数据更新操作，也不会产生脏数据 我们需要思考一下，性能和数据一致性上的权衡上， 我们是否愿意放弃数据一致性而为了提高一丝丝性能？ 以及我们有多少场景，会频繁使用 SELECT ALL 操作而没有查询条件？\n微软官方在 2008 的特性列表里面，明确地指出 nolock 特性未来会在某个版本被废除：\nSpecifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.\n而改为推荐：\nRemove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.\n事实上，我听过不少团队会禁止在生产环境使用不带 WHERE 条件的 SQL。 那在这种模式下，产生相关的问题的几率也就更小了。 如果有很高的并发需求，那需要考虑一下是否需要其他优化策略：比如使用主从分离、 Snapshot 导出、流式分析等技术。\n第三个问题：MySQL 的对应写法是什么？ 终于轮到 MySQL 的讨论了。MySQL，InnoDB 天生支持 MVCC， 并且支持 innodb_autoinc_lock_mode AUTO_INCREMENT Handling in InnoDB。 这样可以避免 Insert 操作锁住全局 Select 操作。 只有在同时 Insert 时候，才会被 Block 住。\ninnodb_autoinc_lock_mode 支持几种模式：\ninnodb_autoinc_lock_mode = 0 (“traditional” lock mode) 涉及auto-increment列的插入语句加的表级AUTO-INC锁，只有插入执行结束后才会释放锁 innodb_autoinc_lock_mode = 1 (“consecutive” lock mode) 可以事先确定插入行数的语句，分配连续的确定的 auto-increment 值 对于插入行数不确定的插入语句，仍加表锁 这种模式下，事务回滚，auto-increment 值不会回滚，换句话说，自增列内容会不连续 innodb_autoinc_lock_mode = 2 (“interleaved” lock mode) 同一时刻多条 SQL 语句产生交错的 auto-increment 值 这里也做了相应的测试。首先检查数据库隔离级别和 innodb_autoinc_lock_mode 模式：\nSELECT @@global.tx_isolation, @@session.tx_isolation, @@tx_isolation; SHOW variables LIKE 'innodb_autoinc_lock_mode'; 检查后发现都是 Repeatable Read，innodb_autoinc_lock_mode 模式是 1。 然后创建测试表：\nCREATE TABLE `foos` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `name` varchar(20) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8; 在 Transaction 1 中 Insert 数据：\nSTART TRANSACTION; INSERT INTO foos (name) VALUES (\"a\"); 在 Transaction 2 中 Select 数据，可以正常查询：\nSELECT * FROM foos; 在 Transaction 2 中 Insert 数据，会被 Block 住：\nSTART TRANSACTION; INSERT INTO foos (name) VALUES (\"a\"); 这个测试可以证明 MySQL 可以在 innodb_autoinc_lock_mode=1 下， Insert 同时 Query 不会被 Block， 但是在另外一个事务中 Insert 会被 Block。 结论是，由于 innodb_autoinc_lock_mode 的存在，MySQL 中可以不需要使用 nolock 关键词进行查询。\n回顾一下 本文着重去回答这么几个问题：\n为什么要用 noloc？ 为什么要改变隔离级别？ 为什么 MySQL 不需要做类似的事情？ 虽然只凑足了三个 「为什么」 的排比， 但是聪明的读者仍然会发现，我是使用了著名的 五个为什么 方法思考问题。 通过使用这个方法，我们最后不但打破了老旧的最佳实践，还了解了本质原理， 并找到了新的最佳实践。\n希望读者朋友在遇到困难时候，多问几个为什么，多抱着打破砂锅问到底的精神， 这样才能让每个困难成为我们成长的垫脚石。\n相关资料 事务隔离 - 维基百科，自由的百科全书 Table Hints (Transact-SQL) | Microsoft Docs Snapshot Isolation in SQL Server | Microsoft Docs sys.databases (Transact-SQL) | Microsoft Docs MySQL :: MySQL 5.7 Reference Manual :: 15.3 InnoDB Multi-Versioning ","wordCount":"798","inLanguage":"en","datePublished":"2017-09-19T16:43:45+08:00","dateModified":"2017-09-19T16:43:45+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2017/09/sql-server-nolock/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>一个关于 nolock 的故事：深入理解数据库隔离级别</h1><div class=post-meta><span title='2017-09-19 16:43:45 +0800 +0800'>2017-09-19</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#第一个问题nolock-是什么>第一个问题：nolock 是什么？</a><ul><li><a href=#隔离级别>隔离级别</a></li><li><a href=#read-uncommitted>Read Uncommitted</a></li><li><a href=#read-committed>Read Committed</a></li><li><a href=#repeatable-read>Repeatable Read</a></li><li><a href=#serializable>Serializable</a></li><li><a href=#db-的默认隔离级别>DB 的默认隔离级别</a></li></ul></li><li><a href=#第二个问题为什么要使用-nolock>第二个问题：为什么要使用 nolock？</a><ul><li><a href=#nolock-测试>nolock 测试</a></li><li><a href=#mvcc>MVCC</a></li><li><a href=#sql-server-2005-之后还需要使用-nolock-么>SQL Server 2005 之后还需要使用 nolock 么？</a></li></ul></li><li><a href=#第三个问题mysql-的对应写法是什么>第三个问题：MySQL 的对应写法是什么？</a></li><li><a href=#回顾一下>回顾一下</a></li><li><a href=#相关资料>相关资料</a></li></ul></nav></div></details></div><div class=post-content><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201709/sql-server.png alt=sql-server.png></p><p>加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里，
+第一个问题：nolock 是什么？ nolock 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 WITH 开头。除了 WITH(nolock)， 还有 TABLOCK / INDEX / ROWLOCK 等常见的 Hints。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "一个关于 nolock 的故事：深入理解数据库隔离级别",
+      "item": "https://blog.alswl.com/2017/09/sql-server-nolock/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "一个关于 nolock 的故事：深入理解数据库隔离级别",
+  "name": "一个关于 nolock 的故事：深入理解数据库隔离级别",
+  "description": "加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？\n我找了一个范例如下：\nSELECT [id] FROM [dbo].[foos] WITH(nolock) WHERE aField = 42 AND bField = 1 作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server 迁移到 MySQL，我们编码中还需要使用 nolock 么？ MySQL 里面对应的写法是什么？」。 我并没有 SQL Server 的生产环境使用经验，一时间无法回答。 于是课后做相关知识学习，这里就是这次学习的一点成果。\n这个问题将被拆解成三个小问题进行回答：\nnolock 是什么？ 为什么会需要在每个 Query 语句使用 nolock？ MySQL 的对应写法是什么？ 让我们一个一个来看。\n第一个问题：nolock 是什么？ nolock 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 WITH 开头。除了 WITH(nolock)， 还有 TABLOCK / INDEX / ROWLOCK 等常见的 Hints。",
+  "keywords": [
+    "sql server", "mysql"
+  ],
+  "articleBody": " 加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？\n我找了一个范例如下：\nSELECT [id] FROM [dbo].[foos] WITH(nolock) WHERE aField = 42 AND bField = 1 作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server 迁移到 MySQL，我们编码中还需要使用 nolock 么？ MySQL 里面对应的写法是什么？」。 我并没有 SQL Server 的生产环境使用经验，一时间无法回答。 于是课后做相关知识学习，这里就是这次学习的一点成果。\n这个问题将被拆解成三个小问题进行回答：\nnolock 是什么？ 为什么会需要在每个 Query 语句使用 nolock？ MySQL 的对应写法是什么？ 让我们一个一个来看。\n第一个问题：nolock 是什么？ nolock 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。 在语法上，Hints 以 WITH 开头。除了 WITH(nolock)， 还有 TABLOCK / INDEX / ROWLOCK 等常见的 Hints。\n让我们仔细看看 MSDN 文档上的解释：\nnolock 的作用等同于 READUNCOMMITTED\nREADUNCOMMITTED 这是一种 RDBMS 隔离级别。 使用 nolock 这个关键词，可以将当前查询语句隔离级别调整为 READ UNCOMMITTED。\n计算机基础好的同学，应该对 READUNCOMMITTED 这个关键词还有印象。 而基础不扎实的同学，也许只是觉得这个关键词眼熟，但是讲不清楚这是什么。 如果阅读这句话完全没有理解困难，那恭喜你，你可以直接跳到下一节了。 其他朋友就跟随我继续探索一下 RDMBS 的世界，复习一下隔离级别相关的知识。\n隔离级别 SQL 92 定义了四个隔离级别 （Isolation (database systems) - Wikipedia）， 其隔离程度由高到低是：\n可序列化（Serializable） 可重复读（Repeatable reads） 提交读（Read committed） 未提交读（Read uncommitted） 单单将这几个技术名词简单地罗列出来并没有什么意义，还有这几个问题需要搞清楚：\n隔离级别解决什么问题？ 为什么存在多种隔离级别？ 我们所谓的隔离级别从高到低，是什么含义，如何逐层降低的？ 首先是「隔离级别解决什么问题？」， 用通俗的语言描述就是：加一个针对数据资源的锁，从而保证数据操作过程中的一致性。\n这是最简单的实现方式，过于粗暴的隔离性将大幅降低性能， 多种隔离级别就是是为了取得两者的平衡。\n接下来我们来回答第二个问题「为什么存在多种粒度的隔离级别？」 这其实是一个需求和性能逐步平衡的过程，\n我们逐层递进，将隔离级别由低到高逐层面临进行分析。\nRead Uncommitted Read Uncommitted 这个隔离级别是最低粒度的隔离级别， 如同它的名字一般，它允许在操作过程中不会锁，从而让当前事务读取到其他事务的数据。\n如上图所示，在 Transaction 2 查询时候，Transaction 1 未提交的数据就已经对外暴露。 如果 Transaction 1 最后 Rollback 了，那么 Transaction 读取的数据就是错误的。\n「读到了其他事务修改了但是未提交的数据」即是脏读。\nRead Committed 想要避免脏读，最简单的方式就是在事务更新操作上加一把写锁， 其他事务需要读取数据时候，需要等待这把写锁释放。\n如上图所示，Transaction 1 在写操作时候，对数据 A 加了写锁， 那么 Transaction 2 想要读取 A，就必须等待这把锁释放。 这样就避免当前事务读取其他事务的未提交数据。\n但是除了脏读，一致性的要求还需要「可重复读」，即 「在一个事务内，多次读取的特定数据都必须是一致的 （即便在这过程中该数据被其他事务修改）」。\n上图就是没能保证「可重复度」，Transaction 2 第一次读取到了数据 A， 然后 Transaction 1 对数据 A 更新到 A’，那么当 Tranction 2 再次读取 A 时候， 它本来期望读到 A，但是却读到了 A’，这和它的预期不相符了。 解决这个问题，就需要提升隔离级别到「Repeatable Read」。\nRepeatable Read 这个名字非常容易理解，即保障在一个事务内重复读取时， 始终能够读取到相同的内容。来看图：\n如上所示，当 Transation 2 读取 A 时候，会同时加上一把 Read Lock， 这把锁会阻止 Transaction 1 将 A 更新为 A’，Transaction 1 要么选择等待， 要么就选择结束。\n当我们将隔离级别升到这里是，似乎已经完美无缺了。 不管是写入还是读取，我们都可以保证数据的一致性不被破坏。 但是其实还有漏洞：新增数据的一致性！\n上述的三个隔离级别，都是对特定的一行数据进行加锁， 那假如将要更新的数据还没有写入数据库，如何进行加锁呢？ 比如自增表的新键，或者现有数据内的空缺 Key？\n如图所示，在上述操作中，Transaction 2 查询了一个范围 Range 之后，Transaction 1 在这个范围内插入了一条新的数据。此时 Transaction 2 再次进行范围查询时候， 会发现查询到的 Range 和上次已经不一样了，多了一个 newA。\n这就是最高隔离级别才能解决的「幻影读」： 当两个完全相同的查询语句执行得到不同的结果集， 这常常在范围查询中出现。\nSerializable 从字面意思看，该隔离级别需要将被操作的数据加锁加一把锁。 任何读写操作都需要先获得这把锁才能进行。如果操作中带 WHERE 条件， 还需要将 WHERE 条件相关的范围全部加锁。\n如图所示，在 Transaction 2 操作过程中，会对 Range 进行加锁， 此时其他事务无法操作其中的数据，只能等待或者放弃。\nDB 的默认隔离级别 现在我们已经理解了隔离级别，那么「SQL Server 默认使用的隔离级别是什么呢？」 根据 Customizing Transaction Isolation Level 这个文档描述，SQL Server 默认隔离级别是 READ COMMITTED。\nMySQL InnoDB 的默认隔离级别可以在 MySQL :: MySQL 5.7 Reference Manual :: 14.5.2.1 Transaction Isolation Levels 查询到，是 Read-Repeatable。\n隔离级别并没有最好之说，越高隔离级别会导致性能降低。 隔离级别的设定需要考虑业务场景。\n第二个问题：为什么要使用 nolock？ 我们已经知道 nolock 的作用是动态调整隔离级别。 那为什么在 SQL Server 的 Query 操作中，需要启用 nolock 呢？ 我问了几个工程师，他们都语焉不详，或者是很泛泛地说：禁用读写锁，可以提升查询性能。\n此时我产生了困惑：「那么此时的数据一致性就不需要考虑了么？ 我们的数据库，已经到了需要禁用锁的程度来进行优化了么？」 我于是自己去探索，想知道为何广泛使用 nolock 会成为一个「最佳实践」？\n由于时代久远，我只能追述到一些相关信息，比如 Top 10 SQL Server Integration Services Best Practices | SQL Server Customer Advisory Team 中提到 「Use the NOLOCK or TABLOCK hints to remove locking overhead.」 但这个是针对于 SSIS 查询器，并不是针对业务内部使用。 反而能找到一大堆的文档，在反对使用 nolock 这个关键字。\n继续追查下去，还从蛛丝马迹中寻找到一个使用 nolock 的理由， SQL Server 默认是 Read Committed， 更新操作会产生排它锁，会 block 这个资源的查询操作， 已插入但未提交的数据主键也会产生一个共享锁， 而此时则会 block 这张表的全表查询和 Insert 操作。 为了避免 Insert 被 Block，就会推荐使用 nolock。\n为了验证这是原因，我做一些 nolock 测试。\nnolock 测试 检查当前 SQL Server 隔离级别，确认隔离级别是默认的 Read Committed：\nSELECT CASE transaction_isolation_level WHEN 0 THEN 'Unspecified' WHEN 1 THEN 'ReadUncommitted' WHEN 2 THEN 'ReadCommitted' WHEN 3 THEN 'Repeatable' WHEN 4 THEN 'Serializable' WHEN 5 THEN 'Snapshot' END AS TRANSACTION_ISOLATION_LEVEL FROM sys.dm_exec_sessions WHERE session_id = @@SPID -- ReadCommitted 创建表，初始化数据：\nCREATE TABLE foos ( id BIGINT NOT NULL, value NCHAR(10) NULL, CONSTRAINT pk PRIMARY KEY clustered (id) ); INSERT INTO foos (id, value) VALUES (1, '1'), (2, '2'); 在 Transaction 1 中发起 Update 操作（INSERT / DELETE 同理），但是并不做 Commit 提交：\nBEGIN TRANSACTION; INSERT INTO foos (id, value) VALUES (3, '3'); 开启一个新的 Session，发起全表查询和新增 PK 查询操作：\nSELECT * FROM foos; SELECT * FROM foos WHERE id = 4; 不出所料，此时查询果然会被 Block 住。\nMVCC 并发控制的手段有这些：封锁、时间戳、乐观并发控制、悲观并发控制。 SQL Server 在 2005 后，引入了 MVCC（多版本控制）。 如果最终数据是一致，会允许数据写入，否则其他事务会被阻止写入。 那么 MVCC 引入是否可以解决 Insert 数据的锁问题？ 同样，我做了以下测试：\n查询 SQL Server 使用启用 MVCC ALLOW_SNAPSHOT_ISOLATION：\nSELECT name, snapshot_isolation_state FROM sys.databases; 使用 T-SQL 启用测试表的 SNAPSHOT_ISOLATION：\nALTER DATABASE HJ_Test3D SET ALLOW_SNAPSHOT_ISOLATION ON; 接着重复上面里面的 Insert 试验，依然被 Block 住。 看来 MVCC 并不能解决 Insert 锁的问题。\nSQL Server 2005 之后还需要使用 nolock 么？ 从官方文档和上文测试可以看到，在 Insert 时候，由于排它锁的存在， 会导致 SELECT ALL 以及 SELECT 新插入数据的相关信息被锁住。 在这两种情景下面是需要使用 nolock 的。\n除此之外，有这么几类场景可以使用 nolock：\n在 SSIS 查询器中进行数据分析，不需要精准数据 历史数据进行查询，没有数据更新操作，也不会产生脏数据 我们需要思考一下，性能和数据一致性上的权衡上， 我们是否愿意放弃数据一致性而为了提高一丝丝性能？ 以及我们有多少场景，会频繁使用 SELECT ALL 操作而没有查询条件？\n微软官方在 2008 的特性列表里面，明确地指出 nolock 特性未来会在某个版本被废除：\nSpecifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.\n而改为推荐：\nRemove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.\n事实上，我听过不少团队会禁止在生产环境使用不带 WHERE 条件的 SQL。 那在这种模式下，产生相关的问题的几率也就更小了。 如果有很高的并发需求，那需要考虑一下是否需要其他优化策略：比如使用主从分离、 Snapshot 导出、流式分析等技术。\n第三个问题：MySQL 的对应写法是什么？ 终于轮到 MySQL 的讨论了。MySQL，InnoDB 天生支持 MVCC， 并且支持 innodb_autoinc_lock_mode AUTO_INCREMENT Handling in InnoDB。 这样可以避免 Insert 操作锁住全局 Select 操作。 只有在同时 Insert 时候，才会被 Block 住。\ninnodb_autoinc_lock_mode 支持几种模式：\ninnodb_autoinc_lock_mode = 0 (“traditional” lock mode) 涉及auto-increment列的插入语句加的表级AUTO-INC锁，只有插入执行结束后才会释放锁 innodb_autoinc_lock_mode = 1 (“consecutive” lock mode) 可以事先确定插入行数的语句，分配连续的确定的 auto-increment 值 对于插入行数不确定的插入语句，仍加表锁 这种模式下，事务回滚，auto-increment 值不会回滚，换句话说，自增列内容会不连续 innodb_autoinc_lock_mode = 2 (“interleaved” lock mode) 同一时刻多条 SQL 语句产生交错的 auto-increment 值 这里也做了相应的测试。首先检查数据库隔离级别和 innodb_autoinc_lock_mode 模式：\nSELECT @@global.tx_isolation, @@session.tx_isolation, @@tx_isolation; SHOW variables LIKE 'innodb_autoinc_lock_mode'; 检查后发现都是 Repeatable Read，innodb_autoinc_lock_mode 模式是 1。 然后创建测试表：\nCREATE TABLE `foos` ( `id` int(11) unsigned NOT NULL AUTO_INCREMENT, `name` varchar(20) DEFAULT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8; 在 Transaction 1 中 Insert 数据：\nSTART TRANSACTION; INSERT INTO foos (name) VALUES (\"a\"); 在 Transaction 2 中 Select 数据，可以正常查询：\nSELECT * FROM foos; 在 Transaction 2 中 Insert 数据，会被 Block 住：\nSTART TRANSACTION; INSERT INTO foos (name) VALUES (\"a\"); 这个测试可以证明 MySQL 可以在 innodb_autoinc_lock_mode=1 下， Insert 同时 Query 不会被 Block， 但是在另外一个事务中 Insert 会被 Block。 结论是，由于 innodb_autoinc_lock_mode 的存在，MySQL 中可以不需要使用 nolock 关键词进行查询。\n回顾一下 本文着重去回答这么几个问题：\n为什么要用 noloc？ 为什么要改变隔离级别？ 为什么 MySQL 不需要做类似的事情？ 虽然只凑足了三个 「为什么」 的排比， 但是聪明的读者仍然会发现，我是使用了著名的 五个为什么 方法思考问题。 通过使用这个方法，我们最后不但打破了老旧的最佳实践，还了解了本质原理， 并找到了新的最佳实践。\n希望读者朋友在遇到困难时候，多问几个为什么，多抱着打破砂锅问到底的精神， 这样才能让每个困难成为我们成长的垫脚石。\n相关资料 事务隔离 - 维基百科，自由的百科全书 Table Hints (Transact-SQL) | Microsoft Docs Snapshot Isolation in SQL Server | Microsoft Docs sys.databases (Transact-SQL) | Microsoft Docs MySQL :: MySQL 5.7 Reference Manual :: 15.3 InnoDB Multi-Versioning ",
+  "wordCount" : "798",
+  "inLanguage": "en",
+  "datePublished": "2017-09-19T16:43:45+08:00",
+  "dateModified": "2017-09-19T16:43:45+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2017/09/sql-server-nolock/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      一个关于 nolock 的故事：深入理解数据库隔离级别
+    </h1>
+    <div class="post-meta"><span title='2017-09-19 16:43:45 +0800 +0800'>2017-09-19</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#第一个问题nolock-是什么">第一个问题：nolock 是什么？</a>
+      <ul>
+        <li><a href="#隔离级别">隔离级别</a></li>
+        <li><a href="#read-uncommitted">Read Uncommitted</a></li>
+        <li><a href="#read-committed">Read Committed</a></li>
+        <li><a href="#repeatable-read">Repeatable Read</a></li>
+        <li><a href="#serializable">Serializable</a></li>
+        <li><a href="#db-的默认隔离级别">DB 的默认隔离级别</a></li>
+      </ul>
+    </li>
+    <li><a href="#第二个问题为什么要使用-nolock">第二个问题：为什么要使用 nolock？</a>
+      <ul>
+        <li><a href="#nolock-测试">nolock 测试</a></li>
+        <li><a href="#mvcc">MVCC</a></li>
+        <li><a href="#sql-server-2005-之后还需要使用-nolock-么">SQL Server 2005 之后还需要使用 nolock 么？</a></li>
+      </ul>
+    </li>
+    <li><a href="#第三个问题mysql-的对应写法是什么">第三个问题：MySQL 的对应写法是什么？</a></li>
+    <li><a href="#回顾一下">回顾一下</a></li>
+    <li><a href="#相关资料">相关资料</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p><img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/sql-server.png" alt="sql-server.png"  />
+</p>
+<p>加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里，
 同时伴随进行的还有 .net 系统迁移到 Java 系统。
 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中，
 几乎所有的 SQL 中都会使用一个关键字：<code>nolock</code>。
-这让我很困惑，<code>nolock</code> 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？</p><p>我找了一个范例如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>SELECT</span><span class=w> </span><span class=p>[</span><span class=n>id</span><span class=p>]</span><span class=w> 
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>FROM</span><span class=w>   </span><span class=p>[</span><span class=n>dbo</span><span class=p>].[</span><span class=n>foos</span><span class=p>]</span><span class=w> </span><span class=k>WITH</span><span class=p>(</span><span class=n>nolock</span><span class=p>)</span><span class=w> 
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>WHERE</span><span class=w>  </span><span class=n>aField</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>42</span><span class=w> 
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>AND</span><span class=w> </span><span class=n>bField</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>1</span><span class=w> 
+这让我很困惑，<code>nolock</code> 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？</p>
+<!-- more -->
+<p>我找了一个范例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w">   </span><span class="p">[</span><span class="n">dbo</span><span class="p">].[</span><span class="n">foos</span><span class="p">]</span><span class="w"> </span><span class="k">WITH</span><span class="p">(</span><span class="n">nolock</span><span class="p">)</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w">  </span><span class="n">aField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">AND</span><span class="w"> </span><span class="n">bField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> 
 </span></span></span></code></pre></div><p>作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server
 迁移到 MySQL，我们编码中还需要使用 <code>nolock</code> 么？
 MySQL 里面对应的写法是什么？」。
 我并没有 SQL Server 的生产环境使用经验，一时间无法回答。
-于是课后做相关知识学习，这里就是这次学习的一点成果。</p><p>这个问题将被拆解成三个小问题进行回答：</p><ul><li><code>nolock</code> 是什么？</li><li>为什么会需要在每个 Query 语句使用 <code>nolock</code>？</li><li>MySQL 的对应写法是什么？</li></ul><p>让我们一个一个来看。</p><h2 id=第一个问题nolock-是什么>第一个问题：nolock 是什么？<a hidden class=anchor aria-hidden=true href=#第一个问题nolock-是什么>#</a></h2><p><code>nolock</code> 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。
+于是课后做相关知识学习，这里就是这次学习的一点成果。</p>
+<p>这个问题将被拆解成三个小问题进行回答：</p>
+<ul>
+<li><code>nolock</code> 是什么？</li>
+<li>为什么会需要在每个 Query 语句使用 <code>nolock</code>？</li>
+<li>MySQL 的对应写法是什么？</li>
+</ul>
+<p>让我们一个一个来看。</p>
+<h2 id="第一个问题nolock-是什么">第一个问题：nolock 是什么？<a hidden class="anchor" aria-hidden="true" href="#第一个问题nolock-是什么">#</a></h2>
+<p><code>nolock</code> 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。
 Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。
 在语法上，Hints 以 <code>WITH</code> 开头。除了 <code>WITH(nolock)</code>，
-还有 <code>TABLOCK</code> / <code>INDEX</code> / <code>ROWLOCK</code> 等常见的 Hints。</p><p>让我们仔细看看 MSDN 文档上的解释：</p><blockquote><p><code>nolock</code> 的作用等同于 <code>READUNCOMMITTED</code></p></blockquote><p><code>READUNCOMMITTED</code> 这是一种 RDBMS 隔离级别。
-使用 <code>nolock</code> 这个关键词，可以将当前查询语句隔离级别调整为 <code>READ UNCOMMITTED</code>。</p><p>计算机基础好的同学，应该对 <code>READUNCOMMITTED</code> 这个关键词还有印象。
+还有 <code>TABLOCK</code> / <code>INDEX</code> / <code>ROWLOCK</code> 等常见的 Hints。</p>
+<p>让我们仔细看看 MSDN 文档上的解释：</p>
+<blockquote>
+<p><code>nolock</code> 的作用等同于 <code>READUNCOMMITTED</code></p>
+</blockquote>
+<p><code>READUNCOMMITTED</code> 这是一种 RDBMS 隔离级别。
+使用 <code>nolock</code> 这个关键词，可以将当前查询语句隔离级别调整为 <code>READ UNCOMMITTED</code>。</p>
+<p>计算机基础好的同学，应该对 <code>READUNCOMMITTED</code> 这个关键词还有印象。
 而基础不扎实的同学，也许只是觉得这个关键词眼熟，但是讲不清楚这是什么。
 如果阅读这句话完全没有理解困难，那恭喜你，你可以直接跳到下一节了。
-其他朋友就跟随我继续探索一下 RDMBS 的世界，复习一下隔离级别相关的知识。</p><h3 id=隔离级别>隔离级别<a hidden class=anchor aria-hidden=true href=#隔离级别>#</a></h3><p>SQL 92 定义了四个隔离级别
-（<a href=https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels>Isolation (database systems) - Wikipedia</a>），
-其隔离程度由高到低是：</p><ul><li>可序列化（Serializable）</li><li>可重复读（Repeatable reads）</li><li>提交读（Read committed）</li><li>未提交读（Read uncommitted）</li></ul><p>单单将这几个技术名词简单地罗列出来并没有什么意义，还有这几个问题需要搞清楚：</p><ul><li>隔离级别解决什么问题？</li><li>为什么存在多种隔离级别？</li><li>我们所谓的隔离级别从高到低，是什么含义，如何逐层降低的？</li></ul><p>首先是「隔离级别解决什么问题？」，
-用通俗的语言描述就是：加一个针对数据资源的锁，从而保证数据操作过程中的一致性。</p><p>这是最简单的实现方式，过于粗暴的隔离性将大幅降低性能，
-多种隔离级别就是是为了取得两者的平衡。</p><p>接下来我们来回答第二个问题「为什么存在多种粒度的隔离级别？」
-这其实是一个需求和性能逐步平衡的过程，</p><p>我们逐层递进，将隔离级别由低到高逐层面临进行分析。</p><h3 id=read-uncommitted>Read Uncommitted<a hidden class=anchor aria-hidden=true href=#read-uncommitted>#</a></h3><p>Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
-如同它的名字一般，它允许在操作过程中不会锁，从而让当前事务读取到其他事务的数据。</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201709/read-uncommitted.png alt=read-uncommitted.png></p><p>如上图所示，在 Transaction 2 查询时候，Transaction 1 未提交的数据就已经对外暴露。
-如果 Transaction 1 最后 Rollback 了，那么 Transaction 读取的数据就是错误的。</p><p>「读到了其他事务修改了但是未提交的数据」即是<strong>脏读</strong>。</p><h3 id=read-committed>Read Committed<a hidden class=anchor aria-hidden=true href=#read-committed>#</a></h3><p>想要避免脏读，最简单的方式就是在事务更新操作上加一把写锁，
-其他事务需要读取数据时候，需要等待这把写锁释放。</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201709/read-committed-1.png alt=read-committed-1.png></p><p>如上图所示，Transaction 1 在写操作时候，对数据 A 加了写锁，
+其他朋友就跟随我继续探索一下 RDMBS 的世界，复习一下隔离级别相关的知识。</p>
+<h3 id="隔离级别">隔离级别<a hidden class="anchor" aria-hidden="true" href="#隔离级别">#</a></h3>
+<p>SQL 92 定义了四个隔离级别
+（<a href="https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels">Isolation (database systems) - Wikipedia</a>），
+其隔离程度由高到低是：</p>
+<ul>
+<li>可序列化（Serializable）</li>
+<li>可重复读（Repeatable reads）</li>
+<li>提交读（Read committed）</li>
+<li>未提交读（Read uncommitted）</li>
+</ul>
+<p>单单将这几个技术名词简单地罗列出来并没有什么意义，还有这几个问题需要搞清楚：</p>
+<ul>
+<li>隔离级别解决什么问题？</li>
+<li>为什么存在多种隔离级别？</li>
+<li>我们所谓的隔离级别从高到低，是什么含义，如何逐层降低的？</li>
+</ul>
+<p>首先是「隔离级别解决什么问题？」，
+用通俗的语言描述就是：加一个针对数据资源的锁，从而保证数据操作过程中的一致性。</p>
+<p>这是最简单的实现方式，过于粗暴的隔离性将大幅降低性能，
+多种隔离级别就是是为了取得两者的平衡。</p>
+<p>接下来我们来回答第二个问题「为什么存在多种粒度的隔离级别？」
+这其实是一个需求和性能逐步平衡的过程，</p>
+<p>我们逐层递进，将隔离级别由低到高逐层面临进行分析。</p>
+<h3 id="read-uncommitted">Read Uncommitted<a hidden class="anchor" aria-hidden="true" href="#read-uncommitted">#</a></h3>
+<p>Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
+如同它的名字一般，它允许在操作过程中不会锁，从而让当前事务读取到其他事务的数据。</p>
+<p><img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-uncommitted.png" alt="read-uncommitted.png"  />
+</p>
+<p>如上图所示，在 Transaction 2 查询时候，Transaction 1 未提交的数据就已经对外暴露。
+如果 Transaction 1 最后 Rollback 了，那么 Transaction 读取的数据就是错误的。</p>
+<p>「读到了其他事务修改了但是未提交的数据」即是<strong>脏读</strong>。</p>
+<h3 id="read-committed">Read Committed<a hidden class="anchor" aria-hidden="true" href="#read-committed">#</a></h3>
+<p>想要避免脏读，最简单的方式就是在事务更新操作上加一把写锁，
+其他事务需要读取数据时候，需要等待这把写锁释放。</p>
+<p><img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-committed-1.png" alt="read-committed-1.png"  />
+</p>
+<p>如上图所示，Transaction 1 在写操作时候，对数据 A 加了写锁，
 那么 Transaction 2 想要读取 A，就必须等待这把锁释放。
-这样就避免当前事务读取其他事务的未提交数据。</p><p>但是除了脏读，一致性的要求还需要「可重复读」，即
+这样就避免当前事务读取其他事务的未提交数据。</p>
+<p>但是除了脏读，一致性的要求还需要「可重复读」，即
 「在一个事务内，多次读取的特定数据都必须是一致的
-（即便在这过程中该数据被其他事务修改）」。</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201709/read-committed-2.png alt=read-committed-2.png></p><p>上图就是没能保证「可重复度」，Transaction 2 第一次读取到了数据 A，
+（即便在这过程中该数据被其他事务修改）」。</p>
+<p><img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-committed-2.png" alt="read-committed-2.png"  />
+</p>
+<p>上图就是没能保证「可重复度」，Transaction 2 第一次读取到了数据 A，
 然后 Transaction 1 对数据 A 更新到 A&rsquo;，那么当 Tranction 2 再次读取 A 时候，
 它本来期望读到 A，但是却读到了 A&rsquo;，这和它的预期不相符了。
-解决这个问题，就需要提升隔离级别到「Repeatable Read」。</p><h3 id=repeatable-read>Repeatable Read<a hidden class=anchor aria-hidden=true href=#repeatable-read>#</a></h3><p>这个名字非常容易理解，即保障在一个事务内重复读取时，
-始终能够读取到相同的内容。来看图：</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201709/repeatable-read.png alt=repeatable-read.png></p><p>如上所示，当 Transation 2 读取 A 时候，会同时加上一把 Read Lock，
+解决这个问题，就需要提升隔离级别到「Repeatable Read」。</p>
+<h3 id="repeatable-read">Repeatable Read<a hidden class="anchor" aria-hidden="true" href="#repeatable-read">#</a></h3>
+<p>这个名字非常容易理解，即保障在一个事务内重复读取时，
+始终能够读取到相同的内容。来看图：</p>
+<p><img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/repeatable-read.png" alt="repeatable-read.png"  />
+</p>
+<p>如上所示，当 Transation 2 读取 A 时候，会同时加上一把 Read Lock，
 这把锁会阻止 Transaction 1 将 A 更新为 A&rsquo;，Transaction 1 要么选择等待，
-要么就选择结束。</p><p>当我们将隔离级别升到这里是，似乎已经完美无缺了。
+要么就选择结束。</p>
+<p>当我们将隔离级别升到这里是，似乎已经完美无缺了。
 不管是写入还是读取，我们都可以保证数据的一致性不被破坏。
-但是其实还有漏洞：新增数据的一致性！</p><p>上述的三个隔离级别，都是对特定的一行数据进行加锁，
+但是其实还有漏洞：新增数据的一致性！</p>
+<p>上述的三个隔离级别，都是对特定的一行数据进行加锁，
 那假如将要更新的数据还没有写入数据库，如何进行加锁呢？
-比如自增表的新键，或者现有数据内的空缺 Key？</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201709/repeatable-read-2.png alt=repeatable-read-2.png></p><p>如图所示，在上述操作中，Transaction 2 查询了一个范围 Range 之后，Transaction 1
+比如自增表的新键，或者现有数据内的空缺 Key？</p>
+<p><img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/repeatable-read-2.png" alt="repeatable-read-2.png"  />
+</p>
+<p>如图所示，在上述操作中，Transaction 2 查询了一个范围 Range 之后，Transaction 1
 在这个范围内插入了一条新的数据。此时 Transaction 2 再次进行范围查询时候，
-会发现查询到的 Range 和上次已经不一样了，多了一个 newA。</p><p>这就是最高隔离级别才能解决的「幻影读」：
+会发现查询到的 Range 和上次已经不一样了，多了一个 newA。</p>
+<p>这就是最高隔离级别才能解决的「幻影读」：
 当两个完全相同的查询语句执行得到不同的结果集，
-这常常在范围查询中出现。</p><h3 id=serializable>Serializable<a hidden class=anchor aria-hidden=true href=#serializable>#</a></h3><p>从字面意思看，该隔离级别需要将被操作的数据加锁加一把锁。
+这常常在范围查询中出现。</p>
+<h3 id="serializable">Serializable<a hidden class="anchor" aria-hidden="true" href="#serializable">#</a></h3>
+<p>从字面意思看，该隔离级别需要将被操作的数据加锁加一把锁。
 任何读写操作都需要先获得这把锁才能进行。如果操作中带 WHERE 条件，
-还需要将 WHERE 条件相关的范围全部加锁。</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201709/serializable.png alt=serializable.png></p><p>如图所示，在 Transaction 2 操作过程中，会对 Range 进行加锁，
-此时其他事务无法操作其中的数据，只能等待或者放弃。</p><h3 id=db-的默认隔离级别>DB 的默认隔离级别<a hidden class=anchor aria-hidden=true href=#db-的默认隔离级别>#</a></h3><p>现在我们已经理解了隔离级别，那么「SQL Server 默认使用的隔离级别是什么呢？」
-根据 <a href=https://msdn.microsoft.com/en-us/library/ms175909.aspx>Customizing Transaction Isolation Level</a>
-这个文档描述，SQL Server 默认隔离级别是 READ COMMITTED。</p><p>MySQL InnoDB 的默认隔离级别可以在 <a href=https://dev.mysql.com/doc/refman/5.7/en/innodb-transaction-isolation-levels.html>MySQL :: MySQL 5.7 Reference Manual :: 14.5.2.1 Transaction Isolation Levels</a>
-查询到，是 Read-Repeatable。</p><p>隔离级别并没有最好之说，越高隔离级别会导致性能降低。
-隔离级别的设定需要考虑业务场景。</p><h2 id=第二个问题为什么要使用-nolock>第二个问题：为什么要使用 nolock？<a hidden class=anchor aria-hidden=true href=#第二个问题为什么要使用-nolock>#</a></h2><p>我们已经知道 <code>nolock</code> 的作用是动态调整隔离级别。
+还需要将 WHERE 条件相关的范围全部加锁。</p>
+<p><img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/serializable.png" alt="serializable.png"  />
+</p>
+<p>如图所示，在 Transaction 2 操作过程中，会对 Range 进行加锁，
+此时其他事务无法操作其中的数据，只能等待或者放弃。</p>
+<h3 id="db-的默认隔离级别">DB 的默认隔离级别<a hidden class="anchor" aria-hidden="true" href="#db-的默认隔离级别">#</a></h3>
+<p>现在我们已经理解了隔离级别，那么「SQL Server 默认使用的隔离级别是什么呢？」
+根据 <a href="https://msdn.microsoft.com/en-us/library/ms175909.aspx">Customizing Transaction Isolation Level</a>
+这个文档描述，SQL Server 默认隔离级别是 READ COMMITTED。</p>
+<p>MySQL InnoDB 的默认隔离级别可以在 <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-transaction-isolation-levels.html">MySQL :: MySQL 5.7 Reference Manual :: 14.5.2.1 Transaction Isolation Levels</a>
+查询到，是 Read-Repeatable。</p>
+<p>隔离级别并没有最好之说，越高隔离级别会导致性能降低。
+隔离级别的设定需要考虑业务场景。</p>
+<h2 id="第二个问题为什么要使用-nolock">第二个问题：为什么要使用 nolock？<a hidden class="anchor" aria-hidden="true" href="#第二个问题为什么要使用-nolock">#</a></h2>
+<p>我们已经知道 <code>nolock</code> 的作用是动态调整隔离级别。
 那为什么在 SQL Server 的 Query 操作中，需要启用 <code>nolock</code> 呢？
-我问了几个工程师，他们都语焉不详，或者是很泛泛地说：禁用读写锁，可以提升查询性能。</p><p>此时我产生了困惑：「那么此时的数据一致性就不需要考虑了么？
+我问了几个工程师，他们都语焉不详，或者是很泛泛地说：禁用读写锁，可以提升查询性能。</p>
+<p>此时我产生了困惑：「那么此时的数据一致性就不需要考虑了么？
 我们的数据库，已经到了需要禁用锁的程度来进行优化了么？」
-我于是自己去探索，想知道为何广泛使用 <code>nolock</code> 会成为一个「最佳实践」？</p><p>由于时代久远，我只能追述到一些相关信息，比如
-<a href=https://blogs.msdn.microsoft.com/sqlcat/2013/09/16/top-10-sql-server-integration-services-best-practices/>Top 10 SQL Server Integration Services Best Practices | SQL Server Customer Advisory Team</a>
+我于是自己去探索，想知道为何广泛使用 <code>nolock</code> 会成为一个「最佳实践」？</p>
+<p>由于时代久远，我只能追述到一些相关信息，比如
+<a href="https://blogs.msdn.microsoft.com/sqlcat/2013/09/16/top-10-sql-server-integration-services-best-practices/">Top 10 SQL Server Integration Services Best Practices | SQL Server Customer Advisory Team</a>
 中提到 「Use the NOLOCK or TABLOCK hints to remove locking overhead.」
 但这个是针对于 SSIS 查询器，并不是针对业务内部使用。
-反而能找到一大堆的文档，在反对使用 <code>nolock</code> 这个关键字。</p><p>继续追查下去，还从蛛丝马迹中寻找到一个使用 <code>nolock</code> 的理由，
+反而能找到一大堆的文档，在反对使用 <code>nolock</code> 这个关键字。</p>
+<p>继续追查下去，还从蛛丝马迹中寻找到一个使用 <code>nolock</code> 的理由，
 SQL Server 默认是 Read Committed，
 更新操作会产生排它锁，会 block 这个资源的查询操作，
 已插入但未提交的数据主键也会产生一个共享锁，
 而此时则会 block 这张表的全表查询和 Insert 操作。
-为了避免 Insert 被 Block，就会推荐使用 <code>nolock</code>。</p><p>为了验证这是原因，我做一些 <code>nolock</code> 测试。</p><h3 id=nolock-测试>nolock 测试<a hidden class=anchor aria-hidden=true href=#nolock-测试>#</a></h3><p>检查当前 SQL Server 隔离级别，确认隔离级别是默认的 Read Committed：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>SELECT</span><span class=w> </span><span class=k>CASE</span><span class=w> </span><span class=n>transaction_isolation_level</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>WHEN</span><span class=w> </span><span class=mi>0</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>THEN</span><span class=w> </span><span class=s1>&#39;Unspecified&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>WHEN</span><span class=w> </span><span class=mi>1</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>THEN</span><span class=w> </span><span class=s1>&#39;ReadUncommitted&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>WHEN</span><span class=w> </span><span class=mi>2</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>THEN</span><span class=w> </span><span class=s1>&#39;ReadCommitted&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>WHEN</span><span class=w> </span><span class=mi>3</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>THEN</span><span class=w> </span><span class=s1>&#39;Repeatable&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>WHEN</span><span class=w> </span><span class=mi>4</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>THEN</span><span class=w> </span><span class=s1>&#39;Serializable&#39;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>       </span><span class=k>WHEN</span><span class=w> </span><span class=mi>5</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>         </span><span class=k>THEN</span><span class=w> </span><span class=s1>&#39;Snapshot&#39;</span><span class=w> </span><span class=k>END</span><span class=w> </span><span class=k>AS</span><span class=w> </span><span class=n>TRANSACTION_ISOLATION_LEVEL</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>FROM</span><span class=w> </span><span class=n>sys</span><span class=p>.</span><span class=n>dm_exec_sessions</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>WHERE</span><span class=w> </span><span class=n>session_id</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=o>@@</span><span class=n>SPID</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c1>-- ReadCommitted
-</span></span></span></code></pre></div><p>创建表，初始化数据：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>CREATE</span><span class=w> </span><span class=k>TABLE</span><span class=w> </span><span class=n>foos</span><span class=w> </span><span class=p>(</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=n>id</span><span class=w>    </span><span class=nb>BIGINT</span><span class=w>    </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=n>value</span><span class=w> </span><span class=k>NCHAR</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span><span class=w> </span><span class=k>NULL</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=k>CONSTRAINT</span><span class=w> </span><span class=n>pk</span><span class=w> </span><span class=k>PRIMARY</span><span class=w> </span><span class=k>KEY</span><span class=w> </span><span class=n>clustered</span><span class=w> </span><span class=p>(</span><span class=n>id</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>);</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>INSERT</span><span class=w> </span><span class=k>INTO</span><span class=w> </span><span class=n>foos</span><span class=w> </span><span class=p>(</span><span class=n>id</span><span class=p>,</span><span class=w> </span><span class=n>value</span><span class=p>)</span><span class=w> </span><span class=k>VALUES</span><span class=w> </span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;1&#39;</span><span class=p>),</span><span class=w> </span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;2&#39;</span><span class=p>);</span><span class=w>
-</span></span></span></code></pre></div><p>在 Transaction 1 中发起 Update 操作（INSERT / DELETE 同理），但是并不做 Commit 提交：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>BEGIN</span><span class=w> </span><span class=k>TRANSACTION</span><span class=p>;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>INSERT</span><span class=w> </span><span class=k>INTO</span><span class=w> </span><span class=n>foos</span><span class=w> </span><span class=p>(</span><span class=n>id</span><span class=p>,</span><span class=w> </span><span class=n>value</span><span class=p>)</span><span class=w> </span><span class=k>VALUES</span><span class=w> </span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=w> </span><span class=s1>&#39;3&#39;</span><span class=p>);</span><span class=w>
-</span></span></span></code></pre></div><p>开启一个新的 Session，发起全表查询和新增 PK 查询操作：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>SELECT</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=k>FROM</span><span class=w> </span><span class=n>foos</span><span class=p>;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>SELECT</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=k>FROM</span><span class=w> </span><span class=n>foos</span><span class=w> </span><span class=k>WHERE</span><span class=w> </span><span class=n>id</span><span class=w> </span><span class=o>=</span><span class=w> </span><span class=mi>4</span><span class=p>;</span><span class=w>
-</span></span></span></code></pre></div><p>不出所料，此时查询果然会被 Block 住。</p><h3 id=mvcc>MVCC<a hidden class=anchor aria-hidden=true href=#mvcc>#</a></h3><p>并发控制的手段有这些：封锁、时间戳、乐观并发控制、悲观并发控制。
+为了避免 Insert 被 Block，就会推荐使用 <code>nolock</code>。</p>
+<p>为了验证这是原因，我做一些 <code>nolock</code> 测试。</p>
+<h3 id="nolock-测试">nolock 测试<a hidden class="anchor" aria-hidden="true" href="#nolock-测试">#</a></h3>
+<p>检查当前 SQL Server 隔离级别，确认隔离级别是默认的 Read Committed：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="k">CASE</span><span class="w"> </span><span class="n">transaction_isolation_level</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Unspecified&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;ReadUncommitted&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;ReadCommitted&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Repeatable&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Serializable&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">5</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Snapshot&#39;</span><span class="w"> </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">TRANSACTION_ISOLATION_LEVEL</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">dm_exec_sessions</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w"> </span><span class="n">session_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">@@</span><span class="n">SPID</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- ReadCommitted
+</span></span></span></code></pre></div><p>创建表，初始化数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">id</span><span class="w">    </span><span class="nb">BIGINT</span><span class="w">    </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">value</span><span class="w"> </span><span class="k">NCHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">clustered</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2&#39;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>在 Transaction 1 中发起 Update 操作（INSERT / DELETE 同理），但是并不做 Commit 提交：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">BEGIN</span><span class="w"> </span><span class="k">TRANSACTION</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;3&#39;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>开启一个新的 Session，发起全表查询和新增 PK 查询操作：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">foos</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>不出所料，此时查询果然会被 Block 住。</p>
+<h3 id="mvcc">MVCC<a hidden class="anchor" aria-hidden="true" href="#mvcc">#</a></h3>
+<p>并发控制的手段有这些：封锁、时间戳、乐观并发控制、悲观并发控制。
 SQL Server 在 2005 后，引入了 MVCC（多版本控制）。
 如果最终数据是一致，会允许数据写入，否则其他事务会被阻止写入。
 那么 MVCC 引入是否可以解决 Insert 数据的锁问题？
-同样，我做了以下测试：</p><p>查询 SQL Server 使用启用 MVCC ALLOW_SNAPSHOT_ISOLATION：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>SELECT</span><span class=w> </span><span class=n>name</span><span class=p>,</span><span class=w> </span><span class=n>snapshot_isolation_state</span><span class=w> </span><span class=k>FROM</span><span class=w> </span><span class=n>sys</span><span class=p>.</span><span class=n>databases</span><span class=p>;</span><span class=w>
-</span></span></span></code></pre></div><p>使用 T-SQL 启用测试表的 SNAPSHOT_ISOLATION：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>ALTER</span><span class=w> </span><span class=k>DATABASE</span><span class=w> </span><span class=n>HJ_Test3D</span><span class=w> </span><span class=k>SET</span><span class=w> </span><span class=n>ALLOW_SNAPSHOT_ISOLATION</span><span class=w> </span><span class=k>ON</span><span class=p>;</span><span class=w>
+同样，我做了以下测试：</p>
+<p>查询 SQL Server 使用启用 MVCC ALLOW_SNAPSHOT_ISOLATION：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">snapshot_isolation_state</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">databases</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>使用 T-SQL 启用测试表的 SNAPSHOT_ISOLATION：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">HJ_Test3D</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">ALLOW_SNAPSHOT_ISOLATION</span><span class="w"> </span><span class="k">ON</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>接着重复上面里面的 Insert 试验，依然被 Block 住。
-看来 MVCC 并不能解决 Insert 锁的问题。</p><h3 id=sql-server-2005-之后还需要使用-nolock-么>SQL Server 2005 之后还需要使用 nolock 么？<a hidden class=anchor aria-hidden=true href=#sql-server-2005-之后还需要使用-nolock-么>#</a></h3><p>从官方文档和上文测试可以看到，在 Insert 时候，由于排它锁的存在，
+看来 MVCC 并不能解决 Insert 锁的问题。</p>
+<h3 id="sql-server-2005-之后还需要使用-nolock-么">SQL Server 2005 之后还需要使用 nolock 么？<a hidden class="anchor" aria-hidden="true" href="#sql-server-2005-之后还需要使用-nolock-么">#</a></h3>
+<p>从官方文档和上文测试可以看到，在 Insert 时候，由于排它锁的存在，
 会导致 <code>SELECT ALL</code> 以及 <code>SELECT</code> 新插入数据的相关信息被锁住。
-在这两种情景下面是需要使用 <code>nolock</code> 的。</p><p>除此之外，有这么几类场景可以使用 <code>nolock</code>：</p><ul><li>在 SSIS 查询器中进行数据分析，不需要精准数据</li><li>历史数据进行查询，没有数据更新操作，也不会产生脏数据</li></ul><p>我们需要思考一下，性能和数据一致性上的权衡上，
+在这两种情景下面是需要使用 <code>nolock</code> 的。</p>
+<p>除此之外，有这么几类场景可以使用 <code>nolock</code>：</p>
+<ul>
+<li>在 SSIS 查询器中进行数据分析，不需要精准数据</li>
+<li>历史数据进行查询，没有数据更新操作，也不会产生脏数据</li>
+</ul>
+<p>我们需要思考一下，性能和数据一致性上的权衡上，
 我们是否愿意放弃数据一致性而为了提高一丝丝性能？
-以及我们有多少场景，会频繁使用 <code>SELECT ALL</code> 操作而没有查询条件？</p><p><del>微软官方在 2008 的特性列表里面，明确地指出 <code>nolock</code> 特性未来会在某个版本被废除：</del></p><blockquote><p><del>Specifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.</del></p></blockquote><p><del>而改为推荐：</del></p><blockquote><p><del>Remove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.</del></p></blockquote><p>事实上，我听过不少团队会禁止在生产环境使用不带 WHERE 条件的 SQL。
+以及我们有多少场景，会频繁使用 <code>SELECT ALL</code> 操作而没有查询条件？</p>
+<p><del>微软官方在 2008 的特性列表里面，明确地指出 <code>nolock</code> 特性未来会在某个版本被废除：</del></p>
+<blockquote>
+<p><del>Specifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.</del></p>
+</blockquote>
+<p><del>而改为推荐：</del></p>
+<blockquote>
+<p><del>Remove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.</del></p>
+</blockquote>
+<p>事实上，我听过不少团队会禁止在生产环境使用不带 WHERE 条件的 SQL。
 那在这种模式下，产生相关的问题的几率也就更小了。
 如果有很高的并发需求，那需要考虑一下是否需要其他优化策略：比如使用主从分离、
-Snapshot 导出、流式分析等技术。</p><h2 id=第三个问题mysql-的对应写法是什么>第三个问题：MySQL 的对应写法是什么？<a hidden class=anchor aria-hidden=true href=#第三个问题mysql-的对应写法是什么>#</a></h2><p>终于轮到 MySQL 的讨论了。MySQL，InnoDB 天生支持 MVCC，
-并且支持 <code>innodb_autoinc_lock_mode</code> <a href=https://dev.mysql.com/doc/refman/5.7/en/innodb-auto-increment-handling.html>AUTO_INCREMENT Handling in InnoDB</a>。
+Snapshot 导出、流式分析等技术。</p>
+<h2 id="第三个问题mysql-的对应写法是什么">第三个问题：MySQL 的对应写法是什么？<a hidden class="anchor" aria-hidden="true" href="#第三个问题mysql-的对应写法是什么">#</a></h2>
+<p>终于轮到 MySQL 的讨论了。MySQL，InnoDB 天生支持 MVCC，
+并且支持 <code>innodb_autoinc_lock_mode</code> <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-auto-increment-handling.html">AUTO_INCREMENT Handling in InnoDB</a>。
 这样可以避免 Insert 操作锁住全局 Select 操作。
-只有在同时 Insert 时候，才会被 Block 住。</p><p><code>innodb_autoinc_lock_mode</code> 支持几种模式：</p><ul><li>innodb_autoinc_lock_mode = 0 (“traditional” lock mode)<ul><li>涉及auto-increment列的插入语句加的表级AUTO-INC锁，只有插入执行结束后才会释放锁</li></ul></li><li>innodb_autoinc_lock_mode = 1 (“consecutive” lock mode)<ul><li>可以事先确定插入行数的语句，分配连续的确定的 auto-increment 值</li><li>对于插入行数不确定的插入语句，仍加表锁</li><li>这种模式下，事务回滚，auto-increment 值不会回滚，换句话说，自增列内容会不连续</li></ul></li><li>innodb_autoinc_lock_mode = 2 (“interleaved” lock mode)<ul><li>同一时刻多条 SQL 语句产生交错的 auto-increment 值</li></ul></li></ul><p>这里也做了相应的测试。首先检查数据库隔离级别和 <code>innodb_autoinc_lock_mode</code> 模式：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>SELECT</span><span class=w> </span><span class=o>@@</span><span class=k>global</span><span class=p>.</span><span class=n>tx_isolation</span><span class=p>,</span><span class=w> </span><span class=o>@@</span><span class=k>session</span><span class=p>.</span><span class=n>tx_isolation</span><span class=p>,</span><span class=w> </span><span class=o>@@</span><span class=n>tx_isolation</span><span class=p>;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>SHOW</span><span class=w> </span><span class=n>variables</span><span class=w> </span><span class=k>LIKE</span><span class=w> </span><span class=s1>&#39;innodb_autoinc_lock_mode&#39;</span><span class=p>;</span><span class=w>
+只有在同时 Insert 时候，才会被 Block 住。</p>
+<p><code>innodb_autoinc_lock_mode</code> 支持几种模式：</p>
+<ul>
+<li>innodb_autoinc_lock_mode = 0 (“traditional” lock mode)
+<ul>
+<li>涉及auto-increment列的插入语句加的表级AUTO-INC锁，只有插入执行结束后才会释放锁</li>
+</ul>
+</li>
+<li>innodb_autoinc_lock_mode = 1 (“consecutive” lock mode)
+<ul>
+<li>可以事先确定插入行数的语句，分配连续的确定的 auto-increment 值</li>
+<li>对于插入行数不确定的插入语句，仍加表锁</li>
+<li>这种模式下，事务回滚，auto-increment 值不会回滚，换句话说，自增列内容会不连续</li>
+</ul>
+</li>
+<li>innodb_autoinc_lock_mode = 2 (“interleaved” lock mode)
+<ul>
+<li>同一时刻多条 SQL 语句产生交错的 auto-increment 值</li>
+</ul>
+</li>
+</ul>
+<p>这里也做了相应的测试。首先检查数据库隔离级别和 <code>innodb_autoinc_lock_mode</code> 模式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">@@</span><span class="k">global</span><span class="p">.</span><span class="n">tx_isolation</span><span class="p">,</span><span class="w"> </span><span class="o">@@</span><span class="k">session</span><span class="p">.</span><span class="n">tx_isolation</span><span class="p">,</span><span class="w"> </span><span class="o">@@</span><span class="n">tx_isolation</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SHOW</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;innodb_autoinc_lock_mode&#39;</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>检查后发现都是 Repeatable Read，<code>innodb_autoinc_lock_mode</code> 模式是 1。
-然后创建测试表：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>CREATE</span><span class=w> </span><span class=k>TABLE</span><span class=w> </span><span class=o>`</span><span class=n>foos</span><span class=o>`</span><span class=w> </span><span class=p>(</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=o>`</span><span class=n>id</span><span class=o>`</span><span class=w> </span><span class=nb>int</span><span class=p>(</span><span class=mi>11</span><span class=p>)</span><span class=w> </span><span class=n>unsigned</span><span class=w> </span><span class=k>NOT</span><span class=w> </span><span class=k>NULL</span><span class=w> </span><span class=n>AUTO_INCREMENT</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=o>`</span><span class=n>name</span><span class=o>`</span><span class=w> </span><span class=nb>varchar</span><span class=p>(</span><span class=mi>20</span><span class=p>)</span><span class=w> </span><span class=k>DEFAULT</span><span class=w> </span><span class=k>NULL</span><span class=p>,</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=k>PRIMARY</span><span class=w> </span><span class=k>KEY</span><span class=w> </span><span class=p>(</span><span class=o>`</span><span class=n>id</span><span class=o>`</span><span class=p>)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=p>)</span><span class=w> </span><span class=n>ENGINE</span><span class=o>=</span><span class=n>InnoDB</span><span class=w> </span><span class=n>AUTO_INCREMENT</span><span class=o>=</span><span class=mi>18</span><span class=w> </span><span class=k>DEFAULT</span><span class=w> </span><span class=n>CHARSET</span><span class=o>=</span><span class=n>utf8</span><span class=p>;</span><span class=w>
-</span></span></span></code></pre></div><p>在 Transaction 1 中 Insert 数据：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>START</span><span class=w> </span><span class=k>TRANSACTION</span><span class=p>;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>INSERT</span><span class=w> </span><span class=k>INTO</span><span class=w> </span><span class=n>foos</span><span class=w> </span><span class=p>(</span><span class=n>name</span><span class=p>)</span><span class=w> </span><span class=k>VALUES</span><span class=w> </span><span class=p>(</span><span class=s2>&#34;a&#34;</span><span class=p>);</span><span class=w>
-</span></span></span></code></pre></div><p>在 Transaction 2 中 Select 数据，可以正常查询：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>SELECT</span><span class=w> </span><span class=o>*</span><span class=w> </span><span class=k>FROM</span><span class=w>   </span><span class=n>foos</span><span class=p>;</span><span class=w>
-</span></span></span></code></pre></div><p>在 Transaction 2 中 Insert 数据，会被 Block 住：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-sql data-lang=sql><span class=line><span class=cl><span class=k>START</span><span class=w> </span><span class=k>TRANSACTION</span><span class=p>;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=k>INSERT</span><span class=w> </span><span class=k>INTO</span><span class=w> </span><span class=n>foos</span><span class=w> </span><span class=p>(</span><span class=n>name</span><span class=p>)</span><span class=w> </span><span class=k>VALUES</span><span class=w> </span><span class=p>(</span><span class=s2>&#34;a&#34;</span><span class=p>);</span><span class=w>
+然后创建测试表：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">foos</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="o">=</span><span class="mi">18</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>在 Transaction 1 中 Insert 数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">START</span><span class="w"> </span><span class="k">TRANSACTION</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s2">&#34;a&#34;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>在 Transaction 2 中 Select 数据，可以正常查询：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w">   </span><span class="n">foos</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>在 Transaction 2 中 Insert 数据，会被 Block 住：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">START</span><span class="w"> </span><span class="k">TRANSACTION</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s2">&#34;a&#34;</span><span class="p">);</span><span class="w">
 </span></span></span></code></pre></div><p>这个测试可以证明 MySQL 可以在 <code>innodb_autoinc_lock_mode</code>=1 下，
 Insert 同时 Query 不会被 Block，
 但是在另外一个事务中 Insert 会被 Block。
 结论是，由于 <code>innodb_autoinc_lock_mode</code> 的存在，MySQL 中可以不需要使用 <code>nolock</code>
-关键词进行查询。</p><h2 id=回顾一下>回顾一下<a hidden class=anchor aria-hidden=true href=#回顾一下>#</a></h2><p>本文着重去回答这么几个问题：</p><ul><li>为什么要用 <code>noloc</code>？</li><li>为什么要改变隔离级别？</li><li>为什么 MySQL 不需要做类似的事情？</li></ul><p>虽然只凑足了三个 「为什么」 的排比，
+关键词进行查询。</p>
+<h2 id="回顾一下">回顾一下<a hidden class="anchor" aria-hidden="true" href="#回顾一下">#</a></h2>
+<p>本文着重去回答这么几个问题：</p>
+<ul>
+<li>为什么要用 <code>noloc</code>？</li>
+<li>为什么要改变隔离级别？</li>
+<li>为什么 MySQL 不需要做类似的事情？</li>
+</ul>
+<p>虽然只凑足了三个 「为什么」 的排比，
 但是聪明的读者仍然会发现，我是使用了著名的
-<a href=https://zh.wikipedia.org/wiki/%E4%BA%94%E4%B8%AA%E4%B8%BA%E4%BB%80%E4%B9%88>五个为什么</a>
+<a href="https://zh.wikipedia.org/wiki/%E4%BA%94%E4%B8%AA%E4%B8%BA%E4%BB%80%E4%B9%88">五个为什么</a>
 方法思考问题。
 通过使用这个方法，我们最后不但打破了老旧的最佳实践，还了解了本质原理，
-并找到了新的最佳实践。</p><p>希望读者朋友在遇到困难时候，多问几个为什么，多抱着打破砂锅问到底的精神，
-这样才能让每个困难成为我们成长的垫脚石。</p><h2 id=相关资料>相关资料<a hidden class=anchor aria-hidden=true href=#相关资料>#</a></h2><ul><li><a href=https://zh.wikipedia.org/zh-cn/%E4%BA%8B%E5%8B%99%E9%9A%94%E9%9B%A2>事务隔离 - 维基百科，自由的百科全书</a></li><li><a href=https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table>Table Hints (Transact-SQL) | Microsoft Docs</a></li><li><a href=https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server>Snapshot Isolation in SQL Server | Microsoft Docs</a></li><li><a href=https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-databases-transact-sql>sys.databases (Transact-SQL) | Microsoft Docs</a></li><li><a href=https://dev.mysql.com/doc/refman/5.7/en/innodb-multi-versioning.html>MySQL :: MySQL 5.7 Reference Manual :: 15.3 InnoDB Multi-Versioning</a></li></ul><hr><p>原文链接: <a href=https://blog.alswl.com/2017/09/sql-server-nolock/>一个关于 nolock 的故事：深入理解数据库隔离级别 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/sql-server/>sql server</a></li><li><a href=https://blog.alswl.com/tags/mysql/>mysql</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2017/09/https-on-stack-overflow/><span class=title>« Prev</span><br><span>Stack Overflow 的 HTTPS 化：漫漫长路的终点</span></a>
-<a class=next href=https://blog.alswl.com/2017/06/monitoring-introducing/><span class=title>Next »</span><br><span>当我们在聊监控，我们在聊什么？</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
+并找到了新的最佳实践。</p>
+<p>希望读者朋友在遇到困难时候，多问几个为什么，多抱着打破砂锅问到底的精神，
+这样才能让每个困难成为我们成长的垫脚石。</p>
+<h2 id="相关资料">相关资料<a hidden class="anchor" aria-hidden="true" href="#相关资料">#</a></h2>
+<ul>
+<li><a href="https://zh.wikipedia.org/zh-cn/%E4%BA%8B%E5%8B%99%E9%9A%94%E9%9B%A2">事务隔离 - 维基百科，自由的百科全书</a></li>
+<li><a href="https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table">Table Hints (Transact-SQL) | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server">Snapshot Isolation in SQL Server | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-databases-transact-sql">sys.databases (Transact-SQL) | Microsoft Docs</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-multi-versioning.html">MySQL :: MySQL 5.7 Reference Manual :: 15.3 InnoDB Multi-Versioning</a></li>
+</ul>
+
+<hr />
+<p>原文链接: <a href="https://blog.alswl.com/2017/09/sql-server-nolock/">一个关于 nolock 的故事：深入理解数据库隔离级别 | Log4D</a></p>
+<p>3a1ff193cee606bd1e2ea554a16353ee</p>
+<p>欢迎关注我的微信公众号：<a
+href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
+alt="窥豹" />
+<figcaption aria-hidden="true">窥豹</figcaption>
+</figure>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
+alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
+<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption>
+</figure>
+
+    
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/sql-server/">sql server</a></li>
+      <li><a href="https://blog.alswl.com/tags/mysql/">mysql</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2017/09/https-on-stack-overflow/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Stack Overflow 的 HTTPS 化：漫漫长路的终点</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2017/06/monitoring-introducing/">
+    <span class="title">Next »</span>
+    <br>
+    <span>当我们在聊监控，我们在聊什么？</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "log4d" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

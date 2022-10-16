@@ -1,68 +1,545 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>小脚本mm->html | Log4D</title><meta name=keywords content="python,boogunote,freemind"><meta name=description content="我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote & 我所使用的知识管理系统。
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>小脚本mm-&gt;html | Log4D</title>
+<meta name="keywords" content="python, boogunote, freemind">
+<meta name="description" content="我同时在使用两套信息记录工具，知识收集记录工具BooguNote &#43; KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote &amp; 我所使用的知识管理系统。
 我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。
-BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。
+BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入&#43;，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。
 BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。
 #coding=utf-8 from xml.dom import minidom import sys import os class MM2Html:
-&lsquo;转换MM->Html类&rsquo;
+&lsquo;转换MM-&gt;Html类&rsquo;
 def init(self):
-self.html = &lsquo;&rsquo;&rsquo;<!DOCTYPE html PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; &#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34;>
-''' self.level = 0
+self.html = &lsquo;&rsquo;&rsquo;&lt;!DOCTYPE html PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; &#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34;&gt;
+&#39;&#39;&#39; self.level = 0
 self.pos = [0 for x in range(0, 10)]
 def procRoot(self, root):
 &lsquo;处理root节点&rsquo;
 for i in root.childNodes:
 if i.nodeName == &rsquo;node&rsquo;:
 self.procNode(i)
-self.html += &ldquo;&rdquo;
+self.html &#43;= &ldquo;&rdquo;
 def procNode(self, node):
 &lsquo;处理Node节点&rsquo;
-if node.nodeName == &rsquo;node':"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2010/09/script-mm2html/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
-<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="小脚本mm->html"><meta property="og:description" content="我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote & 我所使用的知识管理系统。
+if node.nodeName == &rsquo;node&#39;:">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2010/09/script-mm2html/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="小脚本mm-&gt;html" />
+<meta property="og:description" content="我同时在使用两套信息记录工具，知识收集记录工具BooguNote &#43; KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote &amp; 我所使用的知识管理系统。
 我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。
-BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。
+BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入&#43;，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。
 BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。
 #coding=utf-8 from xml.dom import minidom import sys import os class MM2Html:
-&lsquo;转换MM->Html类&rsquo;
+&lsquo;转换MM-&gt;Html类&rsquo;
 def init(self):
-self.html = &lsquo;&rsquo;&rsquo;<!DOCTYPE html PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; &#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34;>
-''' self.level = 0
+self.html = &lsquo;&rsquo;&rsquo;&lt;!DOCTYPE html PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; &#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34;&gt;
+&#39;&#39;&#39; self.level = 0
 self.pos = [0 for x in range(0, 10)]
 def procRoot(self, root):
 &lsquo;处理root节点&rsquo;
 for i in root.childNodes:
 if i.nodeName == &rsquo;node&rsquo;:
 self.procNode(i)
-self.html += &ldquo;&rdquo;
+self.html &#43;= &ldquo;&rdquo;
 def procNode(self, node):
 &lsquo;处理Node节点&rsquo;
-if node.nodeName == &rsquo;node':"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2010/09/script-mm2html/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2010-09-27T00:00:00+08:00"><meta property="article:modified_time" content="2010-09-27T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="小脚本mm->html"><meta name=twitter:description content="我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote & 我所使用的知识管理系统。
+if node.nodeName == &rsquo;node&#39;:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.alswl.com/2010/09/script-mm2html/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2010-09-27T00:00:00+08:00" />
+<meta property="article:modified_time" content="2010-09-27T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="小脚本mm-&gt;html"/>
+<meta name="twitter:description" content="我同时在使用两套信息记录工具，知识收集记录工具BooguNote &#43; KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote &amp; 我所使用的知识管理系统。
 我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。
-BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。
+BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入&#43;，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。
 BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。
 #coding=utf-8 from xml.dom import minidom import sys import os class MM2Html:
-&lsquo;转换MM->Html类&rsquo;
+&lsquo;转换MM-&gt;Html类&rsquo;
 def init(self):
-self.html = &lsquo;&rsquo;&rsquo;<!DOCTYPE html PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; &#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34;>
-''' self.level = 0
+self.html = &lsquo;&rsquo;&rsquo;&lt;!DOCTYPE html PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; &#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34;&gt;
+&#39;&#39;&#39; self.level = 0
 self.pos = [0 for x in range(0, 10)]
 def procRoot(self, root):
 &lsquo;处理root节点&rsquo;
 for i in root.childNodes:
 if i.nodeName == &rsquo;node&rsquo;:
 self.procNode(i)
-self.html += &ldquo;&rdquo;
+self.html &#43;= &ldquo;&rdquo;
 def procNode(self, node):
 &lsquo;处理Node节点&rsquo;
-if node.nodeName == &rsquo;node':"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"小脚本mm-\u003ehtml","item":"https://blog.alswl.com/2010/09/script-mm2html/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"小脚本mm-\u003ehtml","name":"小脚本mm-\u003ehtml","description":"我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote \u0026amp; 我所使用的知识管理系统。 我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。 BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。 BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。 #coding=utf-8 from xml.dom import minidom import sys import os class MM2Html: \u0026lsquo;转换MM-\u0026gt;Html类\u0026rsquo; def init(self): self.html = \u0026lsquo;\u0026rsquo;\u0026rsquo;\u003c!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"\u003e ''' self.level = 0 self.pos = [0 for x in range(0, 10)] def procRoot(self, root): \u0026lsquo;处理root节点\u0026rsquo; for i in root.childNodes: if i.nodeName == \u0026rsquo;node\u0026rsquo;: self.procNode(i) self.html += \u0026ldquo;\u0026rdquo; def procNode(self, node): \u0026lsquo;处理Node节点\u0026rsquo; if node.nodeName == \u0026rsquo;node':","keywords":["python","boogunote","freemind"],"articleBody":"我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote \u0026 我所使用的知识管理系统。\n我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。\nBooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。\nBooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。\n#coding=utf-8 from xml.dom import minidom import sys import os class MM2Html:\n‘转换MM-\u003eHtml类’\ndef init(self):\nself.html = ‘’’\u003c!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"\u003e\n''' self.level = 0\nself.pos = [0 for x in range(0, 10)]\ndef procRoot(self, root):\n‘处理root节点’\nfor i in root.childNodes:\nif i.nodeName == ’node’:\nself.procNode(i)\nself.html += “”\ndef procNode(self, node):\n‘处理Node节点’\nif node.nodeName == ’node':\nself.level += 1\n#Tltle处理\nif self.isHead(node):\nself.pos[self.level - 1] += 1\nself.html += self.getHead(node.getAttribute(“TEXT”))\nfor i in node.childNodes:\nMM2Html.procNode(self, i)\n#文本节点处理\nelse:\nself.html += ‘%s’ %(str(20 * self.level) + ‘px’,node.getAttribute(“TEXT”))\nself.pos[self.level: 10] = [0 for x in range(0, 10)]\nself.level -= 1\ndef procNodex(self, node):\ndeepth = self.position\ndef isHead(self, node):\n‘判断是否是标题’\nfor i in node.parentNode.childNodes:\nfor j in i.childNodes:\nif j.nodeName == ’node’:\nreturn True\nreturn False\ndef getHead(self, text):\n‘获取标题Html格式化后内容’\ntitlePrefix = '’\nfor i in range(0, self.level):\ntitlePrefix += str(self.pos[i]) + ‘.’\nreturn “%s %s” %(self.level, titlePrefix, text, self.level)\ndef getFiles(type):\n‘获取当前目录下某类型文件’\nfiles = os.listdir(os.getcwd())\nfileList = list()\nfor file in files:\nif os.path.splitext(file)[1].lower() == type:\nfileList.append(file)\nreturn fileList\nif name == ‘main’:\ncssFileName = ‘style.css’\nxmlFileNames = getFiles(’.mm')\ntry:\ncssStr = open(cssFileName, ‘r’).read()\nexcept:\ncssStr = '’\nfor xmlFileName in xmlFileNames:\ntry:\nxmlFile = open(xmlFileName, “r”)\nxmlDoc = minidom.parse(xmlFile)\nexcept:\nprint “Unexpected error:”, sys.exc_info()[0]\nroot = xmlDoc.getElementsByTagName(’node’)[0]\nhtml = open(xmlFileName.split(’.’)[0] + ‘.html’, ‘w’)\nmm2Html = MM2Html()\nmm2Html.procRoot(root)\nhtml.write(mm2Html.html.encode(‘utf-8’))\nhtml.close()\n脚本zip档点击这里下载，里面的CSS格式我用的我博客主题的reset.css，可以自行修改。\n传送门：点击这里下载Boo2Html.zip\noh， SB了，还没说怎么用：把zip档里面的两个文件放到有mm的文件夹里面，双击运行即可（需要Python环境）。\n","wordCount":"239","inLanguage":"en","datePublished":"2010-09-27T00:00:00+08:00","dateModified":"2010-09-27T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2010/09/script-mm2html/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>小脚本mm->html</h1><div class=post-meta><span title='2010-09-27 00:00:00 +0800 +0800'>2010-09-27</span>&nbsp;·&nbsp;alswl</div></header><div class=post-content><p>我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见<a href=http://log4d.com/2010/04/desktop-recording-tool-boogunote>桌面记录神器- BooguNote</a> & <a href=http://log4d.com/2010/09/my-kms>我所使用的知识管理系统</a>。</p><p>我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然
-不能直接放入KMS。</p><p>BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht
-ml的转换脚本。</p><p>BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。</p><pre><code>#coding=utf-8
+if node.nodeName == &rsquo;node&#39;:"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "小脚本mm-\u003ehtml",
+      "item": "https://blog.alswl.com/2010/09/script-mm2html/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "小脚本mm-\u003ehtml",
+  "name": "小脚本mm-\u003ehtml",
+  "description": "我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote \u0026amp; 我所使用的知识管理系统。 我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。 BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。 BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。 #coding=utf-8 from xml.dom import minidom import sys import os class MM2Html: \u0026lsquo;转换MM-\u0026gt;Html类\u0026rsquo; def init(self): self.html = \u0026lsquo;\u0026rsquo;\u0026rsquo;\u003c!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"\u003e ''' self.level = 0 self.pos = [0 for x in range(0, 10)] def procRoot(self, root): \u0026lsquo;处理root节点\u0026rsquo; for i in root.childNodes: if i.nodeName == \u0026rsquo;node\u0026rsquo;: self.procNode(i) self.html += \u0026ldquo;\u0026rdquo; def procNode(self, node): \u0026lsquo;处理Node节点\u0026rsquo; if node.nodeName == \u0026rsquo;node':",
+  "keywords": [
+    "python", "boogunote", "freemind"
+  ],
+  "articleBody": "我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote \u0026 我所使用的知识管理系统。\n我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。\nBooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。\nBooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。\n#coding=utf-8 from xml.dom import minidom import sys import os class MM2Html:\n‘转换MM-\u003eHtml类’\ndef init(self):\nself.html = ‘’’\u003c!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"\u003e\n''' self.level = 0\nself.pos = [0 for x in range(0, 10)]\ndef procRoot(self, root):\n‘处理root节点’\nfor i in root.childNodes:\nif i.nodeName == ’node’:\nself.procNode(i)\nself.html += “”\ndef procNode(self, node):\n‘处理Node节点’\nif node.nodeName == ’node':\nself.level += 1\n#Tltle处理\nif self.isHead(node):\nself.pos[self.level - 1] += 1\nself.html += self.getHead(node.getAttribute(“TEXT”))\nfor i in node.childNodes:\nMM2Html.procNode(self, i)\n#文本节点处理\nelse:\nself.html += ‘%s’ %(str(20 * self.level) + ‘px’,node.getAttribute(“TEXT”))\nself.pos[self.level: 10] = [0 for x in range(0, 10)]\nself.level -= 1\ndef procNodex(self, node):\ndeepth = self.position\ndef isHead(self, node):\n‘判断是否是标题’\nfor i in node.parentNode.childNodes:\nfor j in i.childNodes:\nif j.nodeName == ’node’:\nreturn True\nreturn False\ndef getHead(self, text):\n‘获取标题Html格式化后内容’\ntitlePrefix = '’\nfor i in range(0, self.level):\ntitlePrefix += str(self.pos[i]) + ‘.’\nreturn “%s %s” %(self.level, titlePrefix, text, self.level)\ndef getFiles(type):\n‘获取当前目录下某类型文件’\nfiles = os.listdir(os.getcwd())\nfileList = list()\nfor file in files:\nif os.path.splitext(file)[1].lower() == type:\nfileList.append(file)\nreturn fileList\nif name == ‘main’:\ncssFileName = ‘style.css’\nxmlFileNames = getFiles(’.mm')\ntry:\ncssStr = open(cssFileName, ‘r’).read()\nexcept:\ncssStr = '’\nfor xmlFileName in xmlFileNames:\ntry:\nxmlFile = open(xmlFileName, “r”)\nxmlDoc = minidom.parse(xmlFile)\nexcept:\nprint “Unexpected error:”, sys.exc_info()[0]\nroot = xmlDoc.getElementsByTagName(’node’)[0]\nhtml = open(xmlFileName.split(’.’)[0] + ‘.html’, ‘w’)\nmm2Html = MM2Html()\nmm2Html.procRoot(root)\nhtml.write(mm2Html.html.encode(‘utf-8’))\nhtml.close()\n脚本zip档点击这里下载，里面的CSS格式我用的我博客主题的reset.css，可以自行修改。\n传送门：点击这里下载Boo2Html.zip\noh， SB了，还没说怎么用：把zip档里面的两个文件放到有mm的文件夹里面，双击运行即可（需要Python环境）。\n",
+  "wordCount" : "239",
+  "inLanguage": "en",
+  "datePublished": "2010-09-27T00:00:00+08:00",
+  "dateModified": "2010-09-27T00:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2010/09/script-mm2html/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title">
+      小脚本mm-&gt;html
+    </h1>
+    <div class="post-meta"><span title='2010-09-27 00:00:00 +0800 +0800'>2010-09-27</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> 
+
+  <div class="post-content"><p>我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见<a href="http://log4d.com/2010/04/desktop-recording-tool-boogunote">桌面记录神器- BooguNote</a> &amp; <a href="http://log4d.com/2010/09/my-kms">我所使用的知识管理系统</a>。</p>
+<p>我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然
+不能直接放入KMS。</p>
+<p>BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht
+ml的转换脚本。</p>
+<p>BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。</p>
+<pre><code>#coding=utf-8
 from xml.dom import minidom
 import sys
 import os
-</code></pre><p>class MM2Html:</p><p>&lsquo;转换MM->Html类&rsquo;</p><p>def <strong>init</strong>(self):</p><p>self.html = &lsquo;&rsquo;&rsquo;<!doctype html></p><html xmlns=http://www.w3.org/1999/xhtml><head><meta charset=utf-8><style type=text/css>''' + cssStr + '''</style></head>'''<p>self.level = 0</p><p>self.pos = [0 for x in range(0, 10)]</p><p>def procRoot(self, root):</p><p>&lsquo;处理root节点&rsquo;</p><p>for i in root.childNodes:</p><p>if i.nodeName == &rsquo;node&rsquo;:</p><p>self.procNode(i)</p><p>self.html += &ldquo;</body>&rdquo;</p><p>def procNode(self, node):</p><p>&lsquo;处理Node节点&rsquo;</p><p>if node.nodeName == &rsquo;node':</p><p>self.level += 1</p><p>#Tltle处理</p><p>if self.isHead(node):</p><p>self.pos[self.level - 1] += 1</p><p>self.html += self.getHead(node.getAttribute(&ldquo;TEXT&rdquo;))</p><p>for i in node.childNodes:</p><p>MM2Html.procNode(self, i)</p><p>#文本节点处理</p><p>else:</p><p>self.html += &lsquo;<pre style=margin-left:%s>%s</pre>&rsquo; %(str(20 * self.level) +
-&lsquo;px&rsquo;,node.getAttribute(&ldquo;TEXT&rdquo;))</p><p>self.pos[self.level: 10] = [0 for x in range(0, 10)]</p><p>self.level -= 1</p><p>def procNodex(self, node):</p><p>deepth = self.position</p><p>def isHead(self, node):</p><p>&lsquo;判断是否是标题&rsquo;</p><p>for i in node.parentNode.childNodes:</p><p>for j in i.childNodes:</p><p>if j.nodeName == &rsquo;node&rsquo;:</p><p>return True</p><p>return False</p><p>def getHead(self, text):</p><p>&lsquo;获取标题Html格式化后内容&rsquo;</p><p>titlePrefix = '&rsquo;</p><p>for i in range(0, self.level):</p><p>titlePrefix += str(self.pos[i]) + &lsquo;.&rsquo;</p><p>return &ldquo;&lt;h%s>%s %s&lt;/h%s>&rdquo; %(self.level, titlePrefix, text, self.level)</p><p>def getFiles(type):</p><p>&lsquo;获取当前目录下某类型文件&rsquo;</p><p>files = os.listdir(os.getcwd())</p><p>fileList = list()</p><p>for file in files:</p><p>if os.path.splitext(file)[1].lower() == type:</p><p>fileList.append(file)</p><p>return fileList</p><p>if <strong>name</strong> == &lsquo;<strong>main</strong>&rsquo;:</p><p>cssFileName = &lsquo;style.css&rsquo;</p><p>xmlFileNames = getFiles(&rsquo;.mm')</p><p>try:</p><p>cssStr = open(cssFileName, &lsquo;r&rsquo;).read()</p><p>except:</p><p>cssStr = '&rsquo;</p><p>for xmlFileName in xmlFileNames:</p><p>try:</p><p>xmlFile = open(xmlFileName, &ldquo;r&rdquo;)</p><p>xmlDoc = minidom.parse(xmlFile)</p><p>except:</p><p>print &ldquo;Unexpected error:&rdquo;, sys.exc_info()[0]</p><p>root = xmlDoc.getElementsByTagName(&rsquo;node&rsquo;)[0]</p><p>html = open(xmlFileName.split(&rsquo;.&rsquo;)[0] + &lsquo;.html&rsquo;, &lsquo;w&rsquo;)</p><p>mm2Html = MM2Html()</p><p>mm2Html.procRoot(root)</p><p>html.write(mm2Html.html.encode(&lsquo;utf-8&rsquo;))</p><p>html.close()</p><p>脚本zip档点击这里下载，里面的CSS格式我用的我博客主题的reset.css，可以自行修改。</p><p>传送门：点击这里<a href=https://4ocf5n.dijingchao.com/upload_dropbox/201009/Boo2Html.zip>下载Boo2Html.zip</a></p><p>oh， SB了，还没说怎么用：把zip档里面的两个文件放到有mm的文件夹里面，双击运行即可（需要Python环境）。</p><hr><p>原文链接: <a href=https://blog.alswl.com/2010/09/script-mm2html/>小脚本mm->html | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/python/>python</a></li><li><a href=https://blog.alswl.com/tags/boogunote/>boogunote</a></li><li><a href=https://blog.alswl.com/tags/freemind/>freemind</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2010/10/update_10_10_11/><span class=title>« Prev</span><br><span>Update_10_10_11</span></a>
-<a class=next href=https://blog.alswl.com/2010/09/my-kms/><span class=title>Next »</span><br><span>我所使用的知识管理系统</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>
+</code></pre>
+<p>class MM2Html:</p>
+<p>&lsquo;转换MM-&gt;Html类&rsquo;</p>
+<p>def <strong>init</strong>(self):</p>
+<p>self.html = &lsquo;&rsquo;&rsquo;<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"></p>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+
+''' + cssStr + '''
+
+</style>
+</head> '''
+<p>self.level = 0</p>
+<p>self.pos = [0 for x in range(0, 10)]</p>
+<p>def procRoot(self, root):</p>
+<p>&lsquo;处理root节点&rsquo;</p>
+<p>for i in root.childNodes:</p>
+<p>if i.nodeName == &rsquo;node&rsquo;:</p>
+<p>self.procNode(i)</p>
+<p>self.html += &ldquo;</body>&rdquo;</p>
+<p>def procNode(self, node):</p>
+<p>&lsquo;处理Node节点&rsquo;</p>
+<p>if node.nodeName == &rsquo;node':</p>
+<p>self.level += 1</p>
+<p>#Tltle处理</p>
+<p>if self.isHead(node):</p>
+<p>self.pos[self.level - 1] += 1</p>
+<p>self.html += self.getHead(node.getAttribute(&ldquo;TEXT&rdquo;))</p>
+<p>for i in node.childNodes:</p>
+<p>MM2Html.procNode(self, i)</p>
+<p>#文本节点处理</p>
+<p>else:</p>
+<p>self.html += &lsquo;<pre style="margin-left:%s;">%s</pre>&rsquo; %(str(20 * self.level) +
+&lsquo;px&rsquo;,node.getAttribute(&ldquo;TEXT&rdquo;))</p>
+<p>self.pos[self.level: 10] = [0 for x in range(0, 10)]</p>
+<p>self.level -= 1</p>
+<p>def procNodex(self, node):</p>
+<p>deepth = self.position</p>
+<p>def isHead(self, node):</p>
+<p>&lsquo;判断是否是标题&rsquo;</p>
+<p>for i in node.parentNode.childNodes:</p>
+<p>for j in i.childNodes:</p>
+<p>if j.nodeName == &rsquo;node&rsquo;:</p>
+<p>return True</p>
+<p>return False</p>
+<p>def getHead(self, text):</p>
+<p>&lsquo;获取标题Html格式化后内容&rsquo;</p>
+<p>titlePrefix = '&rsquo;</p>
+<p>for i in range(0, self.level):</p>
+<p>titlePrefix += str(self.pos[i]) + &lsquo;.&rsquo;</p>
+<p>return &ldquo;&lt;h%s&gt;%s %s&lt;/h%s&gt;&rdquo; %(self.level, titlePrefix, text, self.level)</p>
+<p>def getFiles(type):</p>
+<p>&lsquo;获取当前目录下某类型文件&rsquo;</p>
+<p>files = os.listdir(os.getcwd())</p>
+<p>fileList = list()</p>
+<p>for file in files:</p>
+<p>if os.path.splitext(file)[1].lower() == type:</p>
+<p>fileList.append(file)</p>
+<p>return fileList</p>
+<p>if <strong>name</strong> == &lsquo;<strong>main</strong>&rsquo;:</p>
+<p>cssFileName = &lsquo;style.css&rsquo;</p>
+<p>xmlFileNames = getFiles(&rsquo;.mm')</p>
+<p>try:</p>
+<p>cssStr = open(cssFileName, &lsquo;r&rsquo;).read()</p>
+<p>except:</p>
+<p>cssStr = '&rsquo;</p>
+<p>for xmlFileName in xmlFileNames:</p>
+<p>try:</p>
+<p>xmlFile = open(xmlFileName, &ldquo;r&rdquo;)</p>
+<p>xmlDoc = minidom.parse(xmlFile)</p>
+<p>except:</p>
+<p>print &ldquo;Unexpected error:&rdquo;, sys.exc_info()[0]</p>
+<p>root = xmlDoc.getElementsByTagName(&rsquo;node&rsquo;)[0]</p>
+<p>html = open(xmlFileName.split(&rsquo;.&rsquo;)[0] + &lsquo;.html&rsquo;, &lsquo;w&rsquo;)</p>
+<p>mm2Html = MM2Html()</p>
+<p>mm2Html.procRoot(root)</p>
+<p>html.write(mm2Html.html.encode(&lsquo;utf-8&rsquo;))</p>
+<p>html.close()</p>
+<p>脚本zip档点击这里下载，里面的CSS格式我用的我博客主题的reset.css，可以自行修改。</p>
+<p>传送门：点击这里<a href="https://d05fae.dijingchao.com/upload_dropbox/201009/Boo2Html.zip">下载Boo2Html.zip</a></p>
+<p>oh， SB了，还没说怎么用：把zip档里面的两个文件放到有mm的文件夹里面，双击运行即可（需要Python环境）。</p>
+
+<hr />
+<p>原文链接: <a href="https://blog.alswl.com/2010/09/script-mm2html/">小脚本mm-&gt;html | Log4D</a></p>
+<p>3a1ff193cee606bd1e2ea554a16353ee</p>
+<p>欢迎关注我的微信公众号：<a
+href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
+alt="窥豹" />
+<figcaption aria-hidden="true">窥豹</figcaption>
+</figure>
+<figure>
+<img
+src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
+alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
+<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption>
+</figure>
+
+    
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/python/">python</a></li>
+      <li><a href="https://blog.alswl.com/tags/boogunote/">boogunote</a></li>
+      <li><a href="https://blog.alswl.com/tags/freemind/">freemind</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2010/10/update_10_10_11/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Update_10_10_11</span>
+  </a>
+  <a class="next" href="https://blog.alswl.com/2010/09/my-kms/">
+    <span class="title">Next »</span>
+    <br>
+    <span>我所使用的知识管理系统</span>
+  </a>
+</nav>
+
+  </footer><div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "log4d" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

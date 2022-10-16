@@ -1,8 +1,185 @@
-<!doctype html><html lang=en dir=auto><head><meta name=generator content="Hugo 0.104.3"><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Log4D</title><meta name=description content><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.alswl.com/atom.xml><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="Log4D"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://blog.alswl.com/"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="Log4D"><meta name=twitter:description content><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"Log4D","url":"https://blog.alswl.com","description":"","thumbnailUrl":"https://blog.alswl.com/favicon.ico","sameAs":["https://twitter.com/alswl","https://github.com/alswl","https://www.zhihu.com/people/alswl","https://www.douban.com/people/alswl/","/atom.xml"]}</script></head><body class=list id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-entry><header class=entry-header><h2>从 SVN 到 Git，找回丢失的历史</h2></header><div class=entry-content><p>前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题： 有一个小伙伴使用 git-svn 做 rename 操作时候，将一个目录 svn mv 了， 导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言， 历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。
-# 找出丢失之前的版本，列出丢失目录上层的操作记录。 svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less # 将重命名之前的版本拷贝到一个临时目录 svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost # 准备现有代码到 Git git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami # 修改 .git/config 来加入丢失的历史数据 Remote [svn-remote "svn-lost"] url = svn://log4d.com fetch = trunk/apps/ios/nami_lost:refs/remotes/trunk-lost # 并抓取 Remote 内容 git svn fetch # Rebase 新代码到恢复过来的历史记录上 git checkout master git rebase --committer-date-is-author-date trunk-lost 其中注意的是手动添加一个 svn-remote 地址为历史数据副本地址。 还有就是 rebase 时候参数 --committer-date-is-author-date 可以保证 rebase 不会造成提交时间被修改，方便回溯。...</p></div><footer class=entry-footer><span title='2014-01-21 00:20:06 +0800 +0800'>2014-01-21</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 从 SVN 到 Git，找回丢失的历史" href=https://blog.alswl.com/2014/01/renamed-svn-to-git/></a></article><article class=post-entry><header class=entry-header><h2>Goodbye 2013, Hello 2014</h2></header><div class=entry-content><p>2013 年末，我给自己制定了几个年度目标：
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head>
+	<meta name="generator" content="Hugo 0.104.3" /><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Log4D</title>
+
+<meta name="description" content="">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/atom.xml">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-8822123-3', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script><meta property="og:title" content="Log4D" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://blog.alswl.com/" /><meta property="og:site_name" content="Log4D" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Log4D"/>
+<meta name="twitter:description" content=""/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Log4D",
+  "url": "https://blog.alswl.com",
+  "description": "",
+  "thumbnailUrl": "https://blog.alswl.com/favicon.ico",
+  "sameAs": [
+      "https://twitter.com/alswl", "https://github.com/alswl", "https://www.zhihu.com/people/alswl", "https://www.douban.com/people/alswl/", "/atom.xml"
+  ]
+}
+</script>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>从 SVN 到 Git，找回丢失的历史
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题： 有一个小伙伴使用 git-svn 做 rename 操作时候，将一个目录 svn mv 了， 导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言， 历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。
+# 找出丢失之前的版本，列出丢失目录上层的操作记录。 svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less # 将重命名之前的版本拷贝到一个临时目录 svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost # 准备现有代码到 Git git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami # 修改 .git/config 来加入丢失的历史数据 Remote [svn-remote &#34;svn-lost&#34;] url = svn://log4d.com fetch = trunk/apps/ios/nami_lost:refs/remotes/trunk-lost # 并抓取 Remote 内容 git svn fetch # Rebase 新代码到恢复过来的历史记录上 git checkout master git rebase --committer-date-is-author-date trunk-lost 其中注意的是手动添加一个 svn-remote 地址为历史数据副本地址。 还有就是 rebase 时候参数 --committer-date-is-author-date 可以保证 rebase 不会造成提交时间被修改，方便回溯。...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-01-21 00:20:06 +0800 +0800'>2014-01-21</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 从 SVN 到 Git，找回丢失的历史" href="https://blog.alswl.com/2014/01/renamed-svn-to-git/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Goodbye 2013, Hello 2014
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>2013 年末，我给自己制定了几个年度目标：
 离梦想更近一步
 找一个靠谱的姑娘，我感觉她需要我，我也需要她了
-成为一个为百万用户级别提供技术支撑的人物，要能独当一面 帮助网站进行性能优化 制定规则，平衡猥琐实现和优雅 继续写博客，分享积累 + 翻译文章 关于感情 先来谈谈感情，我和她在一起一年半了，虽然偶尔有小摩擦，但总体上面还是非常幸福的。 找到一个能产生共鸣，生活兴趣相近，相互欣赏的人太难了。一定会珍惜的。
+成为一个为百万用户级别提供技术支撑的人物，要能独当一面 帮助网站进行性能优化 制定规则，平衡猥琐实现和优雅 继续写博客，分享积累 &#43; 翻译文章 关于感情 先来谈谈感情，我和她在一起一年半了，虽然偶尔有小摩擦，但总体上面还是非常幸福的。 找到一个能产生共鸣，生活兴趣相近，相互欣赏的人太难了。一定会珍惜的。
 关于工作 再谈谈协作，相当艰辛的跨过了去年年末的痛苦挣扎，然后看待事物和进行平衡选择时候 就没那么痛苦了。我的一大问题就是，从小认为人或事都可以非黑即白，这种决定性的判断， 会让我在处理事情时候，失去对重心的控制，有可能花费大量时间在细枝末节的地方。 2013 年初时候，我甚至想一度放弃，而熬过来之后，工作就又变得非常开心， 现在可以包容别人的不同意见，尝试寻找相同共性（虽然处理的能力还不够）。
 也许是因为从小不够出色，所以工作之后在自己擅长的领域，反而变得异常强势和绝对， 这一点近来控制的不错，但是还可以做的更好。
 关于技术 技术方面，似乎没有学习什么特别的语言、框架、类库之类的。不过我现在对 IO 模型， 资源限制，缓存的策略，性能侦查，运维有了更多的认识。去年夸下海口，要在 2013 年做到 成为一个为百万用户级别提供技术支撑的人物，要能独当一面， 恩，觉得这个目标没那么遥不可及了（好吧，其实就是没达到）。
@@ -15,11 +192,35 @@
 对互联网产品的思考只停留在纸面了，受教于公司 PM SM，感谢。
 购入 Retina Macbook Pro，Kindle，受益匪浅。
 总的来说，2013 我很幸福，但是还不够强，2014，我要达成这些：
-让她开心、幸福 实施几个可以长期支撑堆糖核心业务的系统，让系统更健壮，产品给用户带来更多价值 把我的想法和同事交流，推动更高效的团队协作，个体都很强，所以团队应该更强 出去旅行至少一次 每个月把思考和收获写成博客</p></div><footer class=entry-footer><span title='2013-12-31 23:55:00 +0800 +0800'>2013-12-31</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Goodbye 2013, Hello 2014" href=https://blog.alswl.com/2013/12/2013/></a></article><article class=post-entry><header class=entry-header><h2>Linux 程序员的 Mac 安装记录</h2></header><div class=entry-content><p>作为一个 Linux 的老用户，我再一次验证了那句老话「Linux 用户有钱就换 Mac」。 前段时间，托朋友从香港购入一台 rMBP，下面就是我的 Mac 使用安装记录。
+让她开心、幸福 实施几个可以长期支撑堆糖核心业务的系统，让系统更健壮，产品给用户带来更多价值 把我的想法和同事交流，推动更高效的团队协作，个体都很强，所以团队应该更强 出去旅行至少一次 每个月把思考和收获写成博客 </p>
+  </div>
+  <footer class="entry-footer"><span title='2013-12-31 23:55:00 +0800 +0800'>2013-12-31</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Goodbye 2013, Hello 2014" href="https://blog.alswl.com/2013/12/2013/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Linux 程序员的 Mac 安装记录
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>作为一个 Linux 的老用户，我再一次验证了那句老话「Linux 用户有钱就换 Mac」。 前段时间，托朋友从香港购入一台 rMBP，下面就是我的 Mac 使用安装记录。
 Brew Brew 是 Mac 下面的包管理工具，通过 Github 托管适合 Mac 的编译配置以及 Patch，可以方便的安装开发工具。
 安装 Brew：
-ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)" 我安装的 Brew 包：
-brew install ack brew install adns brew install android-sdk brew install ansible brew install ansible20 brew install apple-gcc42 brew install apr brew install apr-util brew install archey brew install aria2 brew install asciidoc brew install asio brew install atk brew install augeas brew install autoconf brew install autojump brew install automake brew install avr-binutils brew install avr-gcc brew install avr-libc brew install awscli brew install axel brew install bdw-gc brew install bfg brew install boost brew install burp brew install c-ares brew install cabal-install brew install cairo brew install certbot brew install cliclick brew install cloog brew install cmake brew install cmatrix brew install colordiff brew install connect brew install coreutils brew install cowsay brew install cpp-netlib brew install cscope brew install ctags brew install curl brew install curl-ca-bundle brew install dcfldd brew install ddrescue brew install dialog brew install dirmngr brew install dnstop brew install docbook brew install docker brew install docker-compose brew install docker-machine brew install dos2unix brew install erlang brew install ettercap brew install ext4fuse brew install faac brew install fcitx-remote-for-osx brew install fd brew install fetchmail brew install ffind brew install ffmpeg brew install figlet brew install findutils brew install fontconfig brew install fortune brew install fping brew install freetype brew install fzf brew install gcc brew install gd brew install gdbm brew install gdk-pixbuf brew install gettext brew install gflags brew install gfortran brew install ghc brew install ghc@8....</p></div><footer class=entry-footer><span title='2013-12-08 15:44:00 +0800 +0800'>2013-12-08</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Linux 程序员的 Mac 安装记录" href=https://blog.alswl.com/2013/12/mac/></a></article><article class=post-entry><header class=entry-header><h2>Postfix 基本配置[译文]</h2></header><div class=entry-content><p>原文地址：Postfix Basic Configuration 。 有少许编译。
+ruby -e &#34;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&#34; 我安装的 Brew 包：
+brew install ack brew install adns brew install android-sdk brew install ansible brew install ansible20 brew install apple-gcc42 brew install apr brew install apr-util brew install archey brew install aria2 brew install asciidoc brew install asio brew install atk brew install augeas brew install autoconf brew install autojump brew install automake brew install avr-binutils brew install avr-gcc brew install avr-libc brew install awscli brew install axel brew install bdw-gc brew install bfg brew install boost brew install burp brew install c-ares brew install cabal-install brew install cairo brew install certbot brew install cliclick brew install cloog brew install cmake brew install cmatrix brew install colordiff brew install connect brew install coreutils brew install cowsay brew install cpp-netlib brew install cscope brew install ctags brew install curl brew install curl-ca-bundle brew install dcfldd brew install ddrescue brew install dialog brew install dirmngr brew install dnstop brew install docbook brew install docker brew install docker-compose brew install docker-machine brew install dos2unix brew install erlang brew install ettercap brew install ext4fuse brew install faac brew install fcitx-remote-for-osx brew install fd brew install fetchmail brew install ffind brew install ffmpeg brew install figlet brew install findutils brew install fontconfig brew install fortune brew install fping brew install freetype brew install fzf brew install gcc brew install gd brew install gdbm brew install gdk-pixbuf brew install gettext brew install gflags brew install gfortran brew install ghc brew install ghc@8....</p>
+  </div>
+  <footer class="entry-footer"><span title='2013-12-08 15:44:00 +0800 +0800'>2013-12-08</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Linux 程序员的 Mac 安装记录" href="https://blog.alswl.com/2013/12/mac/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Postfix 基本配置[译文]
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>原文地址：Postfix Basic Configuration 。 有少许编译。
 介绍 Postfix 的配置文件 main.cf 有数百个配置参数， 幸运的是，所有参数都有合理的默认配置项。 大部分时候，只需要配置两三个参数即可。
 安装 Postfix 的方法可以参见 安装方法。
 特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在 标准配置说明 里面查看。
@@ -28,35 +229,95 @@ Postfix 配置语法 Postfix 的配置文件默认在 /etc/postfix。主力配�
 # 定义一个参数 /etc/postfix/main.cf: parameter = value # 引用一个已有参数 /etc/postfix/main.cf: other_parameter = $parameter 引用参数时候，可以再定义之前先引用（Postfix 使用延迟计算技术）。
 Postfix 使用数据文件来控制接入权限。详情请看 DATABASE 介绍，一般这样配置：
 /etc/postfix/main.cf: virtual_alias_maps = hash:/etc/postfix/virtual 修改 main.cf 或者 master.cf 之后，需要 postfix reload 重新载入配置文件。
-配置对外发送域名 myorigin 参数指定邮件中显示的发送域名，默认使用当前机器名 $myhostname。 一般来说，我们会把 myorigin 设置成顶级域名 $mydomain。...</p></div><footer class=entry-footer><span title='2013-11-09 14:59:00 +0800 +0800'>2013-11-09</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Postfix 基本配置[译文]" href=https://blog.alswl.com/2013/11/postfix-basic-configuration/></a></article><article class=post-entry><header class=entry-header><h2>在 Python 中使用 GDB 来调试[译文]</h2></header><div class=entry-content><p>大约一年前，我接触了 Java 中的 Btrace 能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。 另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。
+配置对外发送域名 myorigin 参数指定邮件中显示的发送域名，默认使用当前机器名 $myhostname。 一般来说，我们会把 myorigin 设置成顶级域名 $mydomain。...</p>
+  </div>
+  <footer class="entry-footer"><span title='2013-11-09 14:59:00 +0800 +0800'>2013-11-09</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Postfix 基本配置[译文]" href="https://blog.alswl.com/2013/11/postfix-basic-configuration/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>在 Python 中使用 GDB 来调试[译文]
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>大约一年前，我接触了 Java 中的 Btrace 能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。 另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。
 当时公司技术方面也遇到了一些瓶颈，一部分原因是 CPython 本身的 IO 模型问题， 另一方面也和早期代码写的极不工整脱不了关系。万般无奈之下，我们用 Jython 推翻重做了主要业务，效果立竿见影，但同时也把真实问题给规避掉了。
 在这之后我们在 JVM 的领导下，走上了康庄大道。但我心中始终还有一个梗， 就是想对性能遇到瓶颈的 Python Process 进行线上侦测。 这篇文章就是开始的第一步。
 PS:这篇文章理论上是可行的，但是在我机器（Ubuntu 12.04 / 系统自带 Python） 无法正常执行，会爆出 unable to read python frame information 的问题。解决方法我会在下篇文章中写出。这里只是单纯翻译一下原文。
 原文可以移步 https://wiki.python.org/moin/DebuggingWithGdb。
 有一些类型的 bugs 很难使用 Python 直接进行 debug，比如
 段错误（无法被捕捉的 Python 异常） 卡住的进程（这种情况下面没法使用 pdb 来进行跟踪） 控制之外的后台处理 daemon 进程 这些情况下，你可以使用尝试使用 gdb。
-准备 需要在系统安装 gdb 和 Python debug 扩展。 Python debug 扩展包含了一些 debug 命令，并且添加了一些 Python 特定的命令到 gdb。 在主流的 Linux 发行版中，你可以轻松的安装他们：...</p></div><footer class=entry-footer><span title='2013-11-01 01:11:00 +0800 +0800'>2013-11-01</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 在 Python 中使用 GDB 来调试[译文]" href=https://blog.alswl.com/2013/11/python-gdb/></a></article><article class=post-entry><header class=entry-header><h2>15 分钟学会 R 语言[译文]</h2></header><div class=entry-content><p>仗着自己有几门语言的基础，我在学新语言时候，都会选择一些快速入门教程。 比如 Learn X in Y minuts 就是我经常光顾的站点。
+准备 需要在系统安装 gdb 和 Python debug 扩展。 Python debug 扩展包含了一些 debug 命令，并且添加了一些 Python 特定的命令到 gdb。 在主流的 Linux 发行版中，你可以轻松的安装他们：...</p>
+  </div>
+  <footer class="entry-footer"><span title='2013-11-01 01:11:00 +0800 +0800'>2013-11-01</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 在 Python 中使用 GDB 来调试[译文]" href="https://blog.alswl.com/2013/11/python-gdb/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>15 分钟学会 R 语言[译文]
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>仗着自己有几门语言的基础，我在学新语言时候，都会选择一些快速入门教程。 比如 Learn X in Y minuts 就是我经常光顾的站点。
 前段时间，小柒在用 R 写数据分析脚本，我就建议她把 Learn X in Y minuts 里面的 R 语言教程翻译出来。话说 Learn X in Y minuts 里面的中文贡献还是非常多的，赞。
 Learn X in Y minuts 的源码托管在 Github。 小柒被我逼着把这篇 R 语言教程 翻译到 R 语言教程中文版。
 下面是译文，有不妥的地方可以留言或者直接去 Github 上面 Pull request。
 R 是一门统计语言。它有很多数据分析和挖掘程序包。可以用来统计、分析和制图。 你也可以在 LaTeX 文档中运行 R 命令。
-# 评论以 # 开始 # R 语言原生不支持 多行注释 # 但是你可以像这样来多行注释 # 在窗口里按回车键可以执行一条命令 ################################################################### # 不用懂编程就可以开始动手了 ################################################################### data() # 浏览内建的数据集 data(rivers) # 北美主要河流的长度（数据集） ls() # 在工作空间中查看「河流」是否出现 head(rivers) # 撇一眼数据集 # 735 320 325 392 524 450 length(rivers) # 我们测量了多少条河流？ # 141 summary(rivers) # Min....</p></div><footer class=entry-footer><span title='2013-10-29 22:32:00 +0800 +0800'>2013-10-29</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 15 分钟学会 R 语言[译文]" href=https://blog.alswl.com/2013/10/r-tutorial/></a></article><article class=post-entry><header class=entry-header><h2>读《大规模Web服务开发技术》</h2></header><div class=entry-content><p>年前看了这本书《大规模Web服务开发技术》，当时给的评价是：
+# 评论以 # 开始 # R 语言原生不支持 多行注释 # 但是你可以像这样来多行注释 # 在窗口里按回车键可以执行一条命令 ################################################################### # 不用懂编程就可以开始动手了 ################################################################### data()	# 浏览内建的数据集 data(rivers)	# 北美主要河流的长度（数据集） ls()	# 在工作空间中查看「河流」是否出现 head(rivers)	# 撇一眼数据集 # 735 320 325 392 524 450 length(rivers)	# 我们测量了多少条河流？ # 141 summary(rivers) # Min....</p>
+  </div>
+  <footer class="entry-footer"><span title='2013-10-29 22:32:00 +0800 +0800'>2013-10-29</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 15 分钟学会 R 语言[译文]" href="https://blog.alswl.com/2013/10/r-tutorial/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>读《大规模Web服务开发技术》
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>年前看了这本书《大规模Web服务开发技术》，当时给的评价是：
 很好，让我这个渣渣看的很感动，数据翔实，经历可靠，翻译的也不错，我给 4.2 分
 现在经历过 Python / Django / 烂代码的阵痛，开始有更多的想法， 在整理这些粗糙的想法之前，我又把这本书翻了一遍，写个流水帐读书笔记。
 《大规模Web服务开发技术》@豆瓣： http://book.douban.com/subject/6758780/
 规模 小规模 / 大规模 / 超大规模的侧重点各不相同：保持扩展性/保持冗余/低成本运维/开发合作方便
 内存、磁盘、负载 内存快，磁盘慢，ＩＯ 速度的差异
-数据分布式 使用局部分布式，热数据独立出来。 Partition 分布式，按模块分割数据。 按 ID 分割，比如 a-g, h-z 按访问类型，一般请求 / feed / 图像（#毒药计划的原理） 索引 索引，B 树（是一颗平衡树，log n 速度查找，顺序读取，插入，删除） / Ｂ+ 树（节点只保存子节点指针，叶子保存数据）
+数据分布式 使用局部分布式，热数据独立出来。 Partition 分布式，按模块分割数据。 按 ID 分割，比如 a-g, h-z 按访问类型，一般请求 / feed / 图像（#毒药计划的原理） 索引 索引，B 树（是一颗平衡树，log n 速度查找，顺序读取，插入，删除） / Ｂ&#43; 树（节点只保存子节点指针，叶子保存数据）
 使用 MySQL 索引的语句：
 where order by group by 多个查询时候要使用复合索引，每次查询只会走单一一个索引。
 算法 感受算法 log n, 线性的差距。
 字符匹配 正则到 Trie
 贝叶斯匹配 全文搜索 逆向索引
-基础设施 云 / 自己构建 评估服务器性能极限 负载跟踪：平均负载 / 内存 / CPU 信息 冗余 Web 服务器冗余 DB 冗余 存储系统 维稳 功能增加 / 内存泄漏 特定 URL 的地雷，资源循环 访问暴增 数据量增加 外部 API 稳定（新浪等） 硬件故障 对策 保持余量， 在 70% 极限内运行 异常时候的自动重启 / 自动中止耗时查询 虚拟化 解除物理限制 软件层面主机控制 番外： 寻找瓶颈 调优的意义：「找出负载原因并去除」...</p></div><footer class=entry-footer><span title='2013-06-29 00:17:00 +0800 +0800'>2013-06-29</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 读《大规模Web服务开发技术》" href=https://blog.alswl.com/2013/06/web-technology/></a></article><article class=post-entry><header class=entry-header><h2>Arch，再见</h2></header><div class=entry-content><p>Arch 是我真正使用的第一款 Linux 发行版，大约使用了三年， 现在的这个 VPS 跑的系统也是 Arch。 然而随着时间变化，我从最早的天天更新狂，到一周、一个月、三个月和不主动更新。 彻底从从不折腾会死星人变成了一个尽量避免变更的老用户。
+基础设施 云 / 自己构建 评估服务器性能极限 负载跟踪：平均负载 / 内存 / CPU 信息 冗余 Web 服务器冗余 DB 冗余 存储系统 维稳 功能增加 / 内存泄漏 特定 URL 的地雷，资源循环 访问暴增 数据量增加 外部 API 稳定（新浪等） 硬件故障 对策 保持余量， 在 70% 极限内运行 异常时候的自动重启 / 自动中止耗时查询 虚拟化 解除物理限制 软件层面主机控制 番外： 寻找瓶颈 调优的意义：「找出负载原因并去除」...</p>
+  </div>
+  <footer class="entry-footer"><span title='2013-06-29 00:17:00 +0800 +0800'>2013-06-29</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 读《大规模Web服务开发技术》" href="https://blog.alswl.com/2013/06/web-technology/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>Arch，再见
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Arch 是我真正使用的第一款 Linux 发行版，大约使用了三年， 现在的这个 VPS 跑的系统也是 Arch。 然而随着时间变化，我从最早的天天更新狂，到一周、一个月、三个月和不主动更新。 彻底从从不折腾会死星人变成了一个尽量避免变更的老用户。
 Arch 很适合作为第二个（第一个是新手使用的 Ubuntu），它的哲学 KISS 非常优雅， Keep It Simple And Stupid。基于这原则，它将 Linux 内部的使用、运维细节都展现出来。 毫不夸张的说，被 Arch 折腾几年，就能胜任 Linux SA 的角色了（笑）。
 可是这种深入带来的学习成本也很高，需要不停地跟着 Arch 社区的变化而变化。 每次更新之前需要先阅读官方升级指南，搞不好就升级给挂了。 而且 Arch 社区升级激进得有些可怕。rc.d 升级 systemctl 时候，我还能撑住， MySQL 转 MariaDB 时候，我也还凑合，但是当我安装一个 privoxy 导致 pacman 崩溃，进而不能安装程序时候，我失去了耐心。
 想来也是，我已过折腾系统的年龄，不会给手机刷机 ROM， 而是安安本本的使用没越狱的 iPhone。越发觉得时间和精力是有限的， 需要把它们用到「正经」的地方。我对 Linux 宗教般的膜拜，也逐渐消失， 等下次 MBP 发布我就考虑出手，哈哈。
-我曾经的签名中鲜亮的标着「ArchLinux / Python / Vim」，现在要把 ArchLinux 改成 Linuxer 了。 昨晚装了 Ubuntu 12.10，我不喜欢 Ubuntu，只是图它简单省事，社区支持丰富。 在装完之后就卸掉了几十个系统自带的应用，然后把 Awesome 桌面迁移到 Debian 环境。...</p></div><footer class=entry-footer><span title='2013-04-13 22:04:00 +0800 +0800'>2013-04-13</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Arch，再见" href=https://blog.alswl.com/2013/04/buy-arch/></a></article><article class=post-entry><header class=entry-header><h2>读《人件》</h2></header><div class=entry-content><p>事情起源于动态语言和静态语言之争，最后争论焦点转移到：「相信人本身的能力重要， 还是通过语言/工具来约束人重要」。 我认为项目开发中最重要的是个人能力和团队协作能力，工具只是加分项。 如果代码质量差、监控难、性能难以优化，解决根本问题的关键还是在人身上。 并不是静态编译和工具检查就能搞定了。
+我曾经的签名中鲜亮的标着「ArchLinux / Python / Vim」，现在要把 ArchLinux 改成 Linuxer 了。 昨晚装了 Ubuntu 12.10，我不喜欢 Ubuntu，只是图它简单省事，社区支持丰富。 在装完之后就卸掉了几十个系统自带的应用，然后把 Awesome 桌面迁移到 Debian 环境。...</p>
+  </div>
+  <footer class="entry-footer"><span title='2013-04-13 22:04:00 +0800 +0800'>2013-04-13</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Arch，再见" href="https://blog.alswl.com/2013/04/buy-arch/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>读《人件》
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>事情起源于动态语言和静态语言之争，最后争论焦点转移到：「相信人本身的能力重要， 还是通过语言/工具来约束人重要」。 我认为项目开发中最重要的是个人能力和团队协作能力，工具只是加分项。 如果代码质量差、监控难、性能难以优化，解决根本问题的关键还是在人身上。 并不是静态编译和工具检查就能搞定了。
 我愤愤的在 QQ 对话框中写道：
 我工作第一年痛苦于开发流程，阅读了《人月神话》，就开始坚信软件工程的哲学 后来痛苦与代码质量，阅读了《重构》，开始坚信代码质量决定产品质量 现在痛苦于人和语言的冲突，动态和静态的冲突，我想读《人件》了
 人件已经绝版，只能在找线上版，我花了两个星期把它读完。 书中给了我一部分答案，另外还有一些意外的收获。
@@ -72,7 +333,19 @@ Arch 很适合作为第二个（第一个是新手使用的 Ubuntu），它的�
 最好和最坏 作者通过一个持续两年，有来自 92 个公司的 600 多名开发程序员参加的比赛， 分析出以下数据：
 成绩最好与成绩最差的人之间的绩效比率是10 : 1。 最好选手成绩大约是中等成绩选手成绩的2.5倍。 成绩中等以上的一半选手与另外一半选手的绩效比是2 : 1 外刊 IT 评论的 为什么程序员的工作效率跟他们的工资不成比例 一文中也提供一些数据支持。
 我离最好还有很长的距离，但是我相信个人能力是可以提升的， 并且在个人能力上面的投资汇报比极高。
-高效工作的秘诀 进入顺流：咦？怎么时间过得这么快？！ 邮件比电话更不容易打乱人的思绪 团队的力量 团结起来，工作的更高效更开心 有目标的团队，1 + 1 > 2 为一个共同的目标走到一起 优秀的团队里的成员，不会因为钱、阶层、晋升的问题离开团队 优秀的团队往往是带有个性的 《人人都是产品经理》中当时讲了一个愿景（Vison）问题， 我相信一个好的愿景可以吸引更多高质量人才，为赚钱而创建的团队是不会长久的。...</p></div><footer class=entry-footer><span title='2013-04-10 23:35:00 +0800 +0800'>2013-04-10</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 读《人件》" href=https://blog.alswl.com/2013/04/peopleware/></a></article><article class=post-entry><header class=entry-header><h2>读《打造 Facebook》</h2></header><div class=entry-content><p>感谢好基友 @daodao 送了我这本《打造 Facebook》， 年前一直忙，最近腾出两个晚上，把这本很火的书看完了。
+高效工作的秘诀 进入顺流：咦？怎么时间过得这么快？！ 邮件比电话更不容易打乱人的思绪 团队的力量 团结起来，工作的更高效更开心 有目标的团队，1 &#43; 1 &gt; 2 为一个共同的目标走到一起 优秀的团队里的成员，不会因为钱、阶层、晋升的问题离开团队 优秀的团队往往是带有个性的 《人人都是产品经理》中当时讲了一个愿景（Vison）问题， 我相信一个好的愿景可以吸引更多高质量人才，为赚钱而创建的团队是不会长久的。...</p>
+  </div>
+  <footer class="entry-footer"><span title='2013-04-10 23:35:00 +0800 +0800'>2013-04-10</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 读《人件》" href="https://blog.alswl.com/2013/04/peopleware/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2>读《打造 Facebook》
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>感谢好基友 @daodao 送了我这本《打造 Facebook》， 年前一直忙，最近腾出两个晚上，把这本很火的书看完了。
 第一次听见王淮这个名字，其实是在知乎上面， 当时有一个问题 Facebook 早期员工王淮在职期间有什么成就？。 之后陆陆续续看到他的几个回答，感觉他非常善于自我营销。再之后就读到他这本书。
 书中最喜欢的章节是关于 Facebook 工程师文化和产品开发流程的描述。
 ============================== 我是分割线 ==============================
@@ -81,8 +354,90 @@ Facebook 招人标准
 全局认识 / 工具和框架 / 运营商业模式 / 选组
 工程师入职不区分方向 导师 黑客文化
 学习 / 再创造 Done is better than perfect / Code wins arguments 工程师参与构思、设计、实现 很少有「这样子一定成功」，「我们来试试吧」，通过数据反馈 工程师主导产品开发 跨部门回忆，由工程师汇报进度 开发准则：迅速开发、进行监测 / 坦然对待不确定性 / 不追求极致，不断发布到达目标 工具文化 换职位，Hack a month 王淮转管理岗
-Facebook 开发流程...</p></div><footer class=entry-footer><span title='2013-02-25 00:51:00 +0800 +0800'>2013-02-25</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 读《打造 Facebook》" href=https://blog.alswl.com/2013/02/facebook/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.alswl.com/page/5/>«&nbsp;Prev&nbsp;</a>
-<a class=next href=https://blog.alswl.com/page/7/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
+Facebook 开发流程...</p>
+  </div>
+  <footer class="entry-footer"><span title='2013-02-25 00:51:00 +0800 +0800'>2013-02-25</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 读《打造 Facebook》" href="https://blog.alswl.com/2013/02/facebook/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="https://blog.alswl.com/page/5/">
+      «&nbsp;Prev&nbsp;
+    </a>
+    <a class="next" href="https://blog.alswl.com/page/7/">Next&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

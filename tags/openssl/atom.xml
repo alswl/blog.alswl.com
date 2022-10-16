@@ -1,6 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>openssl on Log4D</title><link>https://blog.alswl.com/tags/openssl/</link><description>Recent content in openssl on Log4D</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 31 Mar 2009 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/openssl/atom.xml" rel="self" type="application/rss+xml"/><item><title>使用 OpenSSL API 进行安全编程，第 2 部分: 安全握手</title><link>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming-part-2-security-handshake/</link><pubDate>Tue, 31 Mar 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming-part-2-security-handshake/</guid><description>原文链接：[http://www.ibm.com/developerworks/cn/linux/l-openssl2.html](http://www.i bm.com/developerworks/cn/linux/l-openssl2.html)
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>openssl on Log4D</title>
+    <link>https://blog.alswl.com/tags/openssl/</link>
+    <description>Recent content in openssl on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 31 Mar 2009 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/openssl/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 OpenSSL API 进行安全编程，第 2 部分: 安全握手</title>
+      <link>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming-part-2-security-handshake/</link>
+      <pubDate>Tue, 31 Mar 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming-part-2-security-handshake/</guid>
+      <description>原文链接：[http://www.ibm.com/developerworks/cn/linux/l-openssl2.html](http://www.i bm.com/developerworks/cn/linux/l-openssl2.html)
 怎么都复制不过来，提示含有敏感字眼，我晕，这是IBM文档库里的啊，崩溃了
-我都不要言论自由，只想保存一些经典的文章而已，河蟹啊````</description></item><item><title>OpenSSL 编程入门【转载-这篇很精】</title><link>https://blog.alswl.com/2009/03/introduction-to-openssl-programming/</link><pubDate>Thu, 19 Mar 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/03/introduction-to-openssl-programming/</guid><description>**OpenSSL **编程入门
+我都不要言论自由，只想保存一些经典的文章而已，河蟹啊````</description>
+    </item>
+    
+    <item>
+      <title>OpenSSL 编程入门【转载-这篇很精】</title>
+      <link>https://blog.alswl.com/2009/03/introduction-to-openssl-programming/</link>
+      <pubDate>Thu, 19 Mar 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/03/introduction-to-openssl-programming/</guid>
+      <description>**OpenSSL **编程入门
 作者:Eric Rescorla on Sat, 2001-09-01 01:0
 如果你急切的想构建一个简单的Web客户端和服务器对,这时你就需要使用SSL了..
 SSL是一种保护基于TCP协议的网络应用最快而且最简单的的方法,如果你正在用C语言做开发,那么对于你来说,最好的选择可能就是使用OpenSSL了. OpenSSL是在Eric Young的SSLeay包的基础上对TSL/SSL的一个免费的执行(类似于BSD方式的License).然而, 不幸运的事情是, 伴随OpenSSL一起发布的文档和示例代码并不是很完全, 使用它的人需要更多的东西.在OpenSSL被使用之处, man手册都相当优秀,可是这些手册失去了大的背景 因为它们只是参考资料而不是教程.
@@ -12,7 +36,16 @@ OpenSSL的API多而复杂, 因此我们在此并不会作出一个完整的讲�
 服务器端程序是一个简单的HTTPS 服务器, 它等待从客户端发出的TCP连接, 每当接收到一个连接时,它会磋商这个连接(的合法性). 一旦这个连接被确定下来, 它会读取客户端的HTTP请求, 并将HTTP请求的响应信息传输给客户端. 当响应传输完毕时它会关闭这个连接.
 我们的第一个任务就是建立一个上下文对象(一个SSL_CTX), 这个上下文对象会在每次需要建立新的SSL连接的时候被用来创建一个新的连接对象. 而这些连接对象则用于SSL的握手,读和写.
 (使用上下文对象)这种方法有两个优点: 首先, 上下文对象允许一次初始化多个结构体, 这样就提提高了性能. 在大多数应用中, 每一个SSL连接都使用相同的加密算法(keying material)和CA(certificate authority)列表等. 而采用上面这种方法, 我们就不需要在每次连接的时都去加载这些信息(加密算法和证书), 而只需要在程序启动时将它们加载进上下文对象中. 然后,当我们需要创建一个新的连接时, 只需要将新的连接简单的指向这个上下文对象就可以了. 使用一个简单的上下文对象的第二个好处就是它允许多个SSL连接之间共享数据, 比如用于SSL会话恢复的SSL缓冲(cache). 上下文初始化由主要的四个任务组成, 通过列表1所示的initialize_ctx()函数来完成.
-列表** 1 initialize_ctx()**</description></item><item><title>OpenSSL中的BIO【转载】</title><link>https://blog.alswl.com/2009/03/openssl-s-bio/</link><pubDate>Thu, 19 Mar 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/03/openssl-s-bio/</guid><description>SSL类型的BIO
+列表** 1 initialize_ctx()**</description>
+    </item>
+    
+    <item>
+      <title>OpenSSL中的BIO【转载】</title>
+      <link>https://blog.alswl.com/2009/03/openssl-s-bio/</link>
+      <pubDate>Thu, 19 Mar 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/03/openssl-s-bio/</guid>
+      <description>SSL类型的BIO
 &amp;mdash;根据openssl doccryptobio_f_ssl.pod翻译和自己的理解写成
 （作者：DragonKing, Mail: wzhah@263.net ,发布于：http://openssl.126.com 之openssl专业论坛）
 从名字就可以看出，这是一个非常重要的BI O类型，它封装了openssl里面的ssl规则和函数，相当于提供了一个使用SSL很好的有效工具，一个很好的助手。其定义（opensslbio.h,opens slssl.h）如下：
@@ -40,7 +73,16 @@ ssl_read,
 ssl_puts,
 NULL, /* ssl_gets, */
 ssl_ctrl,
-ssl_new,</description></item><item><title>用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】</title><link>https://blog.alswl.com/2009/03/openssl-prepared-using-ssl-tls-instance/</link><pubDate>Wed, 18 Mar 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/03/openssl-prepared-using-ssl-tls-instance/</guid><description>◆ 用openssl编写ssl,tls程序
+ssl_new,</description>
+    </item>
+    
+    <item>
+      <title>用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】</title>
+      <link>https://blog.alswl.com/2009/03/openssl-prepared-using-ssl-tls-instance/</link>
+      <pubDate>Wed, 18 Mar 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/03/openssl-prepared-using-ssl-tls-instance/</guid>
+      <description>◆ 用openssl编写ssl,tls程序
 作者：yawl(yawl@nsfocus.com)
 日期：2000-8-15
 一:简介:
@@ -77,7 +119,16 @@ accept();
 ssl_set_fd(ssl,fd);
 /ssl的握手过程/
 ssl_connect(ssl);
-/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/</description></item><item><title>用openssl进行SSL编程【转载-月光】</title><link>https://blog.alswl.com/2009/03/programming-with-openssl-for-ssl/</link><pubDate>Wed, 18 Mar 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/03/programming-with-openssl-for-ssl/</guid><description>主要介绍openssl进行SSL通信的一些函数以及过程，主要是初始化过程，至于数据的接收以及后续处理可以具体问题具体分析。
+/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/</description>
+    </item>
+    
+    <item>
+      <title>用openssl进行SSL编程【转载-月光】</title>
+      <link>https://blog.alswl.com/2009/03/programming-with-openssl-for-ssl/</link>
+      <pubDate>Wed, 18 Mar 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/03/programming-with-openssl-for-ssl/</guid>
+      <description>主要介绍openssl进行SSL通信的一些函数以及过程，主要是初始化过程，至于数据的接收以及后续处理可以具体问题具体分析。
 load所有的SSL算法
 OpenSSL_add_ssl_algorithms();
 建立SSL所用的method
@@ -123,7 +174,16 @@ SSL_CTX_use_certificate_file(ctx,s_cert_file,SSL_FILETYPE_PEM);
 获取私钥之前先把私钥的密码给写上
 char *pKeyPasswd=&amp;ldquo;serve&amp;rdquo;;
 SSL_CTX_set_default_passwd_cb_userdata(ctx, pKeyPasswd);
-SSL_CTX_use_PrivateKey_file(ctx,s_cert_file,SSL_FILETYPE_PEM);</description></item><item><title>使用 OpenSSL API 进行安全编程【转载】</title><link>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/</link><pubDate>Tue, 17 Mar 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/</guid><description>使用 OpenSSL API 进行安全编程
+SSL_CTX_use_PrivateKey_file(ctx,s_cert_file,SSL_FILETYPE_PEM);</description>
+    </item>
+    
+    <item>
+      <title>使用 OpenSSL API 进行安全编程【转载】</title>
+      <link>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/</link>
+      <pubDate>Tue, 17 Mar 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/</guid>
+      <description>使用 OpenSSL API 进行安全编程
 创建基本的安全连接和非安全连接
 级别： 初级
 Kenneth Ballard (kenneth.ballard@ptk.org), 自由程序员
@@ -131,7 +191,16 @@ Kenneth Ballard (kenneth.ballard@ptk.org), 自由程序员
 学习如何使用 OpenSSL &amp;mdash;- 用于安全通信的最著名的开放库 &amp;mdash;- 的 API 有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的 BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。
 OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL 使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。
 学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但 OpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？
-OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&amp;quot;SSL library&amp;quot;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于 1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General Public License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的 参考资料 ，以获得其他信息）。</description></item><item><title>用OpenSSL创建证书时用到的命令【原创】</title><link>https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/</link><pubDate>Tue, 17 Mar 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/</guid><description>这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
+OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&amp;quot;SSL library&amp;quot;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于 1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General Public License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的 参考资料 ，以获得其他信息）。</description>
+    </item>
+    
+    <item>
+      <title>用OpenSSL创建证书时用到的命令【原创】</title>
+      <link>https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/</link>
+      <pubDate>Tue, 17 Mar 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/</guid>
+      <description>这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
 这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&amp;quot;利用OpenSSL实现安全的Web Server&amp;quot;中找到自己需要的内容，现在分享一下。
 1.生成CA中心的私钥
 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
@@ -143,7 +212,16 @@ PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的�
 那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf
 注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。
 4.由CA中心为A分支机构签发证书
-openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.</description></item><item><title>用OpenSSL生成证书</title><link>https://blog.alswl.com/2009/03/using-openssl-to-generate-certificates/</link><pubDate>Sun, 15 Mar 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/03/using-openssl-to-generate-certificates/</guid><description>这些命令虽然是linux下面的，但是在windows下面也能用
+openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.</description>
+    </item>
+    
+    <item>
+      <title>用OpenSSL生成证书</title>
+      <link>https://blog.alswl.com/2009/03/using-openssl-to-generate-certificates/</link>
+      <pubDate>Sun, 15 Mar 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/03/using-openssl-to-generate-certificates/</guid>
+      <description>这些命令虽然是linux下面的，但是在windows下面也能用
 我遇到I am unable to access the ./demoCA/newcerts directory ./demoCA/newcerts: No such file or directory 然后找到这篇文章，只要用生成相应的目录就可以了。
 我遇到的第二个问题是TXT_DB error number 2 在redhat的网站[kbase.redhat.com/faq/docs/DOC-3624] (http://kbase.redhat.com/faq/docs/DOC-3624)这篇文章。
 我将原来index.txt里面的内容剪切出，然后重新签证，再把剪切出的内容粘贴到后来生成文件之前，就解决了那个问题。
@@ -155,7 +233,16 @@ openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.</descrip
 Generating RSA private key, 1024 bit long modulus &amp;hellip;.++++++ &amp;hellip;&amp;hellip;.++++++ e is 65537 (0x10001)
 2、生成带加密口令的密钥：
 [weigw@TEST src]$ openssl genrsa -des3 -out privatekey.key 1024
-Generating RSA private key, 1024 bit long modulus &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;++++++ &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;++++++ e is 65537 (0x10001) Enter pass phrase for privatekey.</description></item><item><title>OpenSSL初接触</title><link>https://blog.alswl.com/2009/03/early-contact-with-openssl/</link><pubDate>Thu, 05 Mar 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/03/early-contact-with-openssl/</guid><description>Boss昨个儿说，这两天把SSL上面的相关东西给他去看一下
+Generating RSA private key, 1024 bit long modulus &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;++++++ &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;++++++ e is 65537 (0x10001) Enter pass phrase for privatekey.</description>
+    </item>
+    
+    <item>
+      <title>OpenSSL初接触</title>
+      <link>https://blog.alswl.com/2009/03/early-contact-with-openssl/</link>
+      <pubDate>Thu, 05 Mar 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/03/early-contact-with-openssl/</guid>
+      <description>Boss昨个儿说，这两天把SSL上面的相关东西给他去看一下
 苦命啊，最近都在做Ajax，SSL几乎没有什么动静。唉，今天中午没吃饭，没睡觉，就开始做SSL
 耗费了很多时间，才正确的编译完OpenSSL
 要做的东西是基于C#的、利用OpenSSL开源代码完成的SSL分级服务器，很是麻烦，要用C#来调用C程序，而且OpenSSL本来就很难使用，唉，残念啊。
@@ -173,4 +260,8 @@ OpenSSL: The Open Source toolkit for SSL/TLS
 _openssl编译_步骤- 太郎之石的专栏- CSDNBlog
 在Windows下使用汇编方式_编译OpenSSL_方法- rabbit729的专栏- CSDNBlog
 在Windows下_编译OpenSSL_（VS2005） - shootingstars - 博客园
-之前我按照官方做法编译失败了，后来安装了VS2005之后就成功了，可能是环境配置的问题，如果VC6.0的朋友遇到和我一样的原因，可以换Visual Studio下面的&amp;quot;Visual Studio 2005 命令提示&amp;quot;试试</description></item></channel></rss>
+之前我按照官方做法编译失败了，后来安装了VS2005之后就成功了，可能是环境配置的问题，如果VC6.0的朋友遇到和我一样的原因，可以换Visual Studio下面的&amp;quot;Visual Studio 2005 命令提示&amp;quot;试试</description>
+    </item>
+    
+  </channel>
+</rss>
