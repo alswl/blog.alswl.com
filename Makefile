@@ -21,15 +21,14 @@ build-production:
 	$(QSHELL) qupload2 --thread-count=5 --check-size --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
 
 
-
-.PHONY: deploy
-deploy: build-production
+.PHONY: cdn
+cdn: build-production
 	# not works in github actions now
 	# echo "Copying files to server..."
 	# $(QSHELL) qupload2 --thread-count=5 --check-size --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
 
-	gsed -i 's#src="/images/#src="$(CDN_HOST)/#g' $(shell grep -Rl 'src="/images/' public)
-	gsed -i 's#href="/images/#href="$(CDN_HOST)/#g' $(shell grep -Rl 'href="/images/' public)
+	sed -i 's#src="/images/#src="$(CDN_HOST)/#g' $(shell grep -Rl 'src="/images/' public)
+	sed -i 's#href="/images/#href="$(CDN_HOST)/#g' $(shell grep -Rl 'href="/images/' public)
 
 
 	# curl --silent "http://www.google.com/ping?sitemap=$(SITEMAP_URL)"
