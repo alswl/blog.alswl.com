@@ -267,7 +267,7 @@ if (!doNotTrack) {
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/stack-overflow.jpg" alt="Stack Overflow"  />
+<img loading="lazy" src="https://d05fae.dijingchao.com/images/upload_dropbox/201709/stack-overflow.jpg" alt="Stack Overflow"  />
 
 </p>
 <ul>
@@ -446,7 +446,7 @@ if (!doNotTrack) {
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-MainCertificate.png" alt="Main Certificate"  />
+<img loading="lazy" src="https://d05fae.dijingchao.com/images/upload_dropbox/201709/HTTPS-MainCertificate.png" alt="Main Certificate"  />
 
 </a></p>
 <p>为什么这么做？老实说，是我们让 <a href="https://www.digicert.com/">DigiCert</a> 替我们做的。这么做会导致每次发生变化的时候都需要手动合并证书，了　我们为什么要忍受这么麻烦的事呢？首先，我们期望能够尽可能让更多用户使用我们产品。这里面包括了那些还不支持 SNI 的用户（比如在我们项目启动的时候 Android 2.3 势头正猛）。另外，也包括 HTTP/2 与一些现实问题——我们过会儿会谈到这一块。</p>
@@ -544,7 +544,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-Layout.svg" alt="Logical Architecture"  />
+<img loading="lazy" src="https://d05fae.dijingchao.com/images/upload_dropbox/201709/HTTPS-Layout.svg" alt="Logical Architecture"  />
 
 </a></p>
 <h3 id="cdn代理层通过-cloudflare-和-fastly-优化延迟">CDN/代理层：通过 Cloudflare 和 Fastly 优化延迟<a hidden class="anchor" aria-hidden="true" href="#cdn代理层通过-cloudflare-和-fastly-优化延迟">#</a></h3>
@@ -565,7 +565,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-Teststackoverflow.png" alt="teststackoverflow.com"  />
+<img loading="lazy" src="https://d05fae.dijingchao.com/images/upload_dropbox/201709/HTTPS-Teststackoverflow.png" alt="teststackoverflow.com"  />
 
 </a></p>
 <p>我们目前对 5% 的流量做性能监控。这个过程没有那么复杂，但是我们需要做的事情包括：</p>
@@ -582,7 +582,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-ClientTimings.png" alt="Client Timings Dashboard"  />
+<img loading="lazy" src="https://d05fae.dijingchao.com/images/upload_dropbox/201709/HTTPS-ClientTimings.png" alt="Client Timings Dashboard"  />
 
 </a></p>
 <p>幸好，我们有持续的流量来获取数据以供我们决策使用，目前的量级是 50 亿，并且还在增长中。这些数据概览如下：</p>
@@ -591,7 +591,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png" alt="Client Timings Database"  />
+<img loading="lazy" src="https://d05fae.dijingchao.com/images/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png" alt="Client Timings Database"  />
 
 </a></p>
 <p>OK，我们已经把基础工作准备好了，是时候来测试 CDN/代理层供应商了。</p>
@@ -853,7 +853,7 @@ END)
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-Websockets.png" alt="HAProxy Websockets"  />
+<img loading="lazy" src="https://d05fae.dijingchao.com/images/upload_dropbox/201709/HTTPS-Websockets.png" alt="HAProxy Websockets"  />
 
 </a></p>
 <p>不管是在终端、抽象命名空间套接字还是前端来说都有很多连接。由于启用了 <a href="https://tools.ietf.org/html/rfc5077">TLS 会话恢复</a>，HAProxy 本身的负载也很重。要让用户下一次重新连接更快，第一次协商之后用户会拿到一个令牌，下一次会把这个令牌发送过来。如果我们的内存足够并且没有超时，我们会恢复上次的会话而不是再开一个。这个操作可以节省 CPU，对用户来说有性能提升，但会用到到更多内存。这个多因 key 大小而异（2048，4096 或是更多？）我们现在用的是 4096 位的 key。在开了 600000 个 websocket 的情况下，我们只用掉了负载均衡器 64GB 内存里的 19GB。这里面 12GB 是 HAProxy 在用，大多数为 TLS 会话缓存。所以结果来说还不错，如果<em>我们不得不买内存的话</em>，这也会是整个 HTTPS 迁移中最便宜的东西。</p>
@@ -862,7 +862,7 @@ END)
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-WebsocketMemory.png" alt="HAProxy Websocket Memory"  />
+<img loading="lazy" src="https://d05fae.dijingchao.com/images/upload_dropbox/201709/HTTPS-WebsocketMemory.png" alt="HAProxy Websocket Memory"  />
 
 </a></p>
 <h3 id="未知">未知<a hidden class="anchor" aria-hidden="true" href="#未知">#</a></h3>
@@ -967,7 +967,7 @@ END)
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-HelpCommit.png" alt="Me being a dumbass"  />
+<img loading="lazy" src="https://d05fae.dijingchao.com/images/upload_dropbox/201709/HTTPS-HelpCommit.png" alt="Me being a dumbass"  />
 
 </a></p>
 <p>再一次将数据填充回去就能修复了。不过怎么说，这个当时算是在公共场合闹了个笑话。抱歉。</p>
