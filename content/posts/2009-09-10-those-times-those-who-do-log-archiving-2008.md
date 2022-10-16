@@ -1018,7 +1018,7 @@ lost signal...
 
 （PS:本来写生活经历，后来却基本删选出自己的情感经历了，呵呵，都想考虑是不是给这篇日志加上private了-2009-09-10-add）
 
-[![cinderella](/images/upload_dropbox/200909/65930eb701c7bdfb31add1e31.jpg)](/images/upload_dropbox/200909/65930eb701c7bdfb31add1e31.jpg)
+![cinderella](/images/upload_dropbox/200909/65930eb701c7bdfb31add1e31.jpg)
 
 这篇之后的文章就全部留在百度Hi上了，也就是被顺利的通过Yo2传到现在这个博客上了
 

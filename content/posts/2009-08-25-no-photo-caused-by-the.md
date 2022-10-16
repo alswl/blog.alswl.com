@@ -7,7 +7,7 @@ tags: ["dotnet", "asp.net"]
 categories: ["coding"]
 ---
 
-[![image](/images/upload_dropbox/201612/404.png)](http://www.chinaqiugou.com/images/detail_no_pic.gif)
+![image](/images/upload_dropbox/201612/404.png)
 
 某个系统，检查用户照片，如果发现用户并没有设定照片就返回一张No Photo的图片。
 
@@ -33,13 +33,15 @@ categories: ["coding"]
 露出来。
 
 2.我考虑在GetPhoto.aspx这个方法内写入判断，在catch中读取一个本地图片文件，再转化为BitMap，再设置content-
-type，用Response.OutputStream输出~~~
+type，用Response.OutputStream输出
 
 3.上面这个方法调试了很久，老是参数错误，最后我突然想起来一个方法。
 
     
     
-    Response.Redirect("./Images/nophot.gif");
+```
+Response.Redirect("./Images/nophot.gif");
+```
 
 这几句话就能解决上述所有问题。
 

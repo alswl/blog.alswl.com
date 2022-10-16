@@ -96,12 +96,12 @@ class 为`org.mortbay.xml.XmlConfiguration`，在 Arguments - Program arguments 
 roject_loc}/jetty.xml`，其中`${project_loc}`是动态参数，指向当前项目目录，jetty.xml 为我们随后要创建的 jett
 y 配置文件。
 
-[![image](/images/upload_dropbox/201104/run_configurations .png)](/images/upload_dropbox/201104/run_configurations .png)
+![image](/images/upload_dropbox/201104/run_configurations.png)
 
 如果想将这个应用保存成文件，可以修改 Common - Sava
 as 到当前目录，就可以保存为 jetty.launch 文件了。（没错，就是 launch 文件，Eclipse 的运行配置文件）
 
-[![image](/images/upload_dropbox/201104/eclipse_common.png)](/images/upload_dropbox/201104/eclipse_common.png)
+![image](/images/upload_dropbox/201104/eclipse_common.png)
 
 2、准备 jetty.xml 文件
 
@@ -110,7 +110,7 @@ Jetty 是一款轻量形的 Web 服务器，轻到甚至仅仅靠 Maven 插件�
 
 官方说从 `$JETTY_HOME/webapps/test/WEB-INF/jetty-web.xml` 可以取到 jetty-xml 的范例，我这里就提供下载好了。
 
-点击下载 [jetty.xml ](/images/upload_dropbox/201104/jetty.xml)，这里面写了 hard
+点击下载 [jetty.xml](/images/upload_dropbox/201104/jetty.xml)，这里面写了 hard
 code`<Set name="resourceBase">./target/study_web-1.0-SNAPSHOT</Set>`，请记得替换。
 
 配置好 Jetty 之后，就可以运行 Jetty 了，在 Run - Run

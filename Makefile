@@ -5,6 +5,7 @@ PUBLIC_FOLDER := public/
 UPDATE_FOLDER := static/images/
 BUCKET = blog-alswl-com-202210
 # CLOUDFRONT_ID := ABCDE12345678
+CDN_HOST = https://d05fae.dijingchao.com
 DOMAIN = blog.alswl.com
 SITEMAP_URL = https://blog.alswl.com/sitemap.xml
 
@@ -17,10 +18,11 @@ build-production:
 deploy: build-production
 	echo "Copying files to server..."
 	# $(QSHELL) s3 sync $(PUBLIC_FOLDER) $(BUCKET) --size-only --delete | tee -a $(DEPLOY_LOG)
-	echo $(QSHELL) qupload2 --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
+	# $(QSHELL) qupload2 --thread-count=5 --check-size --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
 
-	# filter files to invalidate cdn
-	# grep "upload\|delete" $(DEPLOY_LOG) | sed -e "s|.*upload.*to $(S3_BUCKET)|/|" | sed -e "s|.*delete: $(S3_BUCKET)|/|" | sed -e 's/index.html//' | sed -e 's/\(.*\).html/\1/' | tr '\n' ' ' | xargs aws cloudfront create-invalidation --distribution-id $(CLOUDFRONT_ID) --paths
+	gsed -i 's#src="/images/#src="$(CDN_HOST)/#g' $(shell grep -Rl 'src="/images/' public)
+	gsed -i 's#href="/images/#href="$(CDN_HOST)/#g' $(shell grep -Rl 'href="/images/' public)
+	gsed -i 's#href="/images/#alt="$(CDN_HOST)/#g' $(shell grep -Rl 'alt="/images/' public)
 
 
 	# curl --silent "http://www.google.com/ping?sitemap=$(SITEMAP_URL)"
