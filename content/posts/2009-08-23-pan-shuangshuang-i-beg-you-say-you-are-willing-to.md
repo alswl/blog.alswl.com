@@ -23,7 +23,7 @@ G「巫启贤 潘霜霜」，终于知道了事情的真相。
 的温暖和重要。在潘霜霜生日之际，John希望献上为她量身创作的一首歌，于是找到巫启贤创作并演唱了这支求爱歌曲，为潘霜霜送去生日的惊喜和一生的承诺。在歌声中，
 潘霜霜落下感动的眼泪，答应了John的求婚。
 
-[![image](https://4ocf5n.dijingchao.com/upload_dropbox/200908/u2956p28t3d2560129f326dt20090612101246.jpg)](https://4ocf5n.dijingchao.com/upload_dropbox/200908/u2956p28t3d2560129f326dt20090612101246.jpg)
+[![image](/images/upload_dropbox/200908/u2956p28t3d2560129f326dt20090612101246.jpg)](/images/upload_dropbox/200908/u2956p28t3d2560129f326dt20090612101246.jpg)
 
 （我不得不说，John你的年纪也稍微大了点吧，看上去能做潘霜霜的爹了```）
 
@@ -48,7 +48,7 @@ topgirl-shuangshuang198736/)
 
 ### 潘霜霜
 
-[![image](https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png)](http://pic.xgm8.com/16/090430/a4t6adg1.jpg)
+[![image](/images/upload_dropbox/201612/404.png)](http://pic.xgm8.com/16/090430/a4t6adg1.jpg)
 
 潘霜霜，台州人，美女模特，被称为「台州小舒淇」。潘霜霜，一位最新的依K网络爆红的美女!在当今互联网无限发展的今天，逐渐成为炙手可热的明星，性感的面孔，火爆张
 扬的身材，可以随时放电的双眸，向你展示着新新一代的魅力，BMW330i，一部城府很深的性能车，如果不是宽大的轮胎，可以敞篷的身姿，你可能会忽略的实力，当然，

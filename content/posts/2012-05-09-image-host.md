@@ -32,7 +32,7 @@ CF Image Host Script / minishowcase 等等图床软件，评测记录如下。
 
 ### [MiniGal Nano](http://www.minigal.dk/minigal-nano.html) ###
 
-![MG Nano](https://4ocf5n.dijingchao.com/upload_dropbox/201205/mg-nano.png "MiniGal Nano")
+![MG Nano](/images/upload_dropbox/201205/mg-nano.png "MiniGal Nano")
 
 * 没有上传功能
 * 没有后台管理功能
@@ -40,8 +40,8 @@ CF Image Host Script / minishowcase 等等图床软件，评测记录如下。
 
 ### [MG2](http://www.minigal.dk/mg2.html) ###
 
-![MG2 前台](https://4ocf5n.dijingchao.com/upload_dropbox/201205/mg2-front.png)
-![MG2 管理界面](https://4ocf5n.dijingchao.com/upload_dropbox/201205/mg2-admin.png)
+![MG2 前台](/images/upload_dropbox/201205/mg2-front.png)
+![MG2 管理界面](/images/upload_dropbox/201205/mg2-admin.png)
 
 * 假目录，其实所有照片在同一目录下面
 * 界面丑
@@ -54,7 +54,7 @@ CF Image Host Script / minishowcase 等等图床软件，评测记录如下。
 
 ### [CF Image Hosting Script v1.4.2](http://www.codefuture.co.uk/projects/imagehost/) ###
 
-![CF Image Hosting](https://4ocf5n.dijingchao.com/upload_dropbox/201205/cf-image-host.png)
+![CF Image Hosting](/images/upload_dropbox/201205/cf-image-host.png)
 
 * 据说煎蛋在使用
 * 无法用户控制
@@ -69,7 +69,7 @@ CF Image Host Script / minishowcase 等等图床软件，评测记录如下。
 
 ### [Qdig](http://qdig.sourceforge.net/) ###
 
-![Qdig](https://4ocf5n.dijingchao.com/upload_dropbox/201205/qdig.png)
+![Qdig](/images/upload_dropbox/201205/qdig.png)
 
 * 无法上传
 * 丑
@@ -77,7 +77,7 @@ CF Image Host Script / minishowcase 等等图床软件，评测记录如下。
 
 ### [iFoto, CSS-based GD2 photo gallery](http://sourceforge.net/projects/ifoto/) ###
 
-![iFoto](https://4ocf5n.dijingchao.com/upload_dropbox/201205/ifoto.png)
+![iFoto](/images/upload_dropbox/201205/ifoto.png)
 
 * 无法上传
 * 丑
@@ -85,7 +85,7 @@ CF Image Host Script / minishowcase 等等图床软件，评测记录如下。
 
 ### [Encode Explorer](http://encode-explorer.siineiolekala.net/) ###
 
-![Encode Explorer](https://4ocf5n.dijingchao.com/upload_dropbox/201205/encode-explorer.png)
+![Encode Explorer](/images/upload_dropbox/201205/encode-explorer.png)
 
 * 这其实是一个文件管理器
 * 支持预览

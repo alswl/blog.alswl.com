@@ -7,7 +7,7 @@ tags: ["python"]
 categories: ["coding"]
 ---
 
-![wall](https://4ocf5n.dijingchao.com/upload_dropbox/202006/wall.png)
+![wall](/images/upload_dropbox/202006/wall.png)
 <small>image from pixabay.com</small>
 
 静态类型正在逐渐成为潮流，

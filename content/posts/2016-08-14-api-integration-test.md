@@ -7,7 +7,7 @@ tags: ["test", "api"]
 categories: ["coding"]
 ---
 
-![abao.png](https://4ocf5n.dijingchao.com/upload_dropbox/201608/abao_thumbnail.png)
+![abao.png](/images/upload_dropbox/201608/abao_thumbnail.png)
 
 为了提高测试，工程师需要对自己提交的产物进行测试，一般是单元测试、集成测试。
 之后提交物流转到 QA 团队，QA 团队根据需求描述对提交物进行测试，

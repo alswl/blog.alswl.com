@@ -11,7 +11,7 @@ categories: ["thinking"]
 
 ### 改变千万人生的一堂课 [@douban](http://www.douban.com/subject/1156891/)
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201004/s1429078.jpg)
+![image](/images/upload_dropbox/201004/s1429078.jpg)
 
 说来惭愧，这本书我从09年12月份开始看，至今才看了2/3。本书是典型的美国式励志书籍风格，鼓舞人心的话语夹杂着一些成功人士的实例。虽然这本书在知名度上可能
 不如卡耐基系列，可是书中的话语娓娓道来，平淡却耐听。当心情低落时候，默读几句，心中就会生出一股被鼓舞的勇气。
@@ -19,7 +19,7 @@ categories: ["thinking"]
 ### 走出软件作坊
 [@douban](http://book.douban.com/subject/3319935/)
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201004/s4026944.jpg)
+![image](/images/upload_dropbox/201004/s4026944.jpg)
 
 这本书是一本很适合国情的项目管理类书籍。所谓国情，就是开发不正规，作坊式工作，项目管理一塌糊涂，代码质量差，不适合持续性开发。
 
@@ -43,7 +43,7 @@ aEye的月刊就几乎包含了整个IT领域的各个方面。
 
 ### 人月神话 [@douban](http://book.douban.com/subject/1102259/)
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201004/s1086045.jpg)
+![image](/images/upload_dropbox/201004/s1086045.jpg)
 
 经典中的经典，20多年前的软件工程和项目管理方案集。
 
@@ -52,7 +52,7 @@ aEye的月刊就几乎包含了整个IT领域的各个方面。
 
 ### 程序员羊皮卷 [@douban](http://book.douban.com/subject/4025390/)
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201004/s4271706.jpg)
+![image](/images/upload_dropbox/201004/s4271706.jpg)
 
 这边书更多的是讲职场，呃～个人感觉是在校大学生读一读很合适，能给自己找到一些定位和方向。
 

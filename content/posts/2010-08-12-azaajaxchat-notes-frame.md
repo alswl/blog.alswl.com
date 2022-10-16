@@ -15,7 +15,7 @@ categories: ["coding"]
 最早的AzaAjaxChat是基于ThinkPHP的，我当时在OpenSouce上看到ThinkPHP的介绍，有很多优点，看的我很心动：MVC模型，Ajax
 支持，详细的文档和案例，国人开发的框架。我作为一个PHP新人一下子就被他吸引住了，决定用ThinkPHP做框架。
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201008/thinkphp.png)
+![image](/images/upload_dropbox/201008/thinkphp.png)
 
 随着系统开发的推进，我却感觉到一些不自在，遇到一些问题却找不好太好的解决办法。比如ThinkPHP的模块和分组两个概念，让我比较疑惑，花费了大量时间重组目录
 结构，两种方法各有优劣，让我很难选择（有选择了反而难办了 ^_^）。
@@ -31,7 +31,7 @@ categories: ["coding"]
 在遇到数次挫折之后，我终于下定决心换框架。工作室之前有过一个项目是用CakePHP开发的，保存着一些资料，阿贵强烈推荐CakePHP。我Google了几篇框
 架的评测文章后，考虑了一下AzaAjaxChat的规模，决定选择CakePHP。
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201008/cakephp.png)
+![image](/images/upload_dropbox/201008/cakephp.png)
 
 CakePHP的脚手架(Scaffold)功能让我眼前一亮，让我脱离了大量CRUD繁琐的操作。而Cake Bake可以方便的根据数据库生成php代码，减少那
 些没有逻辑意义的代码。AzaAjaxChat的定位是毕业设计，不是强健的产品，不会苛求太高的用户体验和安全特性，所以这个功能帮了我很多忙。

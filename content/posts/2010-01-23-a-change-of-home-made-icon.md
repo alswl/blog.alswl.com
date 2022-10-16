@@ -15,7 +15,7 @@ categories: ["coding"]
 
 低调而华丽的放上我下午刚新鲜出炉的制作，同学们只要Ctrl+F5就可以刷新缓存看到啦。
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201001/D.png)
+![image](/images/upload_dropbox/201001/D.png)
 
 下面，砸鸡蛋和番茄吧～～～
 

@@ -52,5 +52,5 @@ REQUIRED_MODULES.extend(['sets', '__future__'])
 
 if is_pypy:
 
-懒人可以点击[go-pylons.py](https://4ocf5n.dijingchao.com/2011/08/go-pylons.py)下载。
+懒人可以点击[go-pylons.py](/images/2011/08/go-pylons.py)下载。
 

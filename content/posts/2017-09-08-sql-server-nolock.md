@@ -7,7 +7,7 @@ tags: ["sql server", "mysql"]
 categories: ["coding"]
 ---
 
-![sql-server.png](https://4ocf5n.dijingchao.com/upload_dropbox/201709/sql-server.png)
+![sql-server.png](/images/upload_dropbox/201709/sql-server.png)
 
 加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里，
 同时伴随进行的还有 .net 系统迁移到 Java 系统。
@@ -99,7 +99,7 @@ SQL 92 定义了四个隔离级别
 Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
 如同它的名字一般，它允许在操作过程中不会锁，从而让当前事务读取到其他事务的数据。
 
-![read-uncommitted.png](https://4ocf5n.dijingchao.com/upload_dropbox/201709/read-uncommitted.png)
+![read-uncommitted.png](/images/upload_dropbox/201709/read-uncommitted.png)
 
 如上图所示，在 Transaction 2 查询时候，Transaction 1 未提交的数据就已经对外暴露。
 如果 Transaction 1 最后 Rollback 了，那么 Transaction 读取的数据就是错误的。
@@ -112,7 +112,7 @@ Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
 想要避免脏读，最简单的方式就是在事务更新操作上加一把写锁，
 其他事务需要读取数据时候，需要等待这把写锁释放。
 
-![read-committed-1.png](https://4ocf5n.dijingchao.com/upload_dropbox/201709/read-committed-1.png)
+![read-committed-1.png](/images/upload_dropbox/201709/read-committed-1.png)
 
 如上图所示，Transaction 1 在写操作时候，对数据 A 加了写锁，
 那么 Transaction 2 想要读取 A，就必须等待这把锁释放。
@@ -122,7 +122,7 @@ Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
 「在一个事务内，多次读取的特定数据都必须是一致的
 （即便在这过程中该数据被其他事务修改）」。
 
-![read-committed-2.png](https://4ocf5n.dijingchao.com/upload_dropbox/201709/read-committed-2.png)
+![read-committed-2.png](/images/upload_dropbox/201709/read-committed-2.png)
 
 上图就是没能保证「可重复度」，Transaction 2 第一次读取到了数据 A，
 然后 Transaction 1 对数据 A 更新到 A'，那么当 Tranction 2 再次读取 A 时候，
@@ -135,7 +135,7 @@ Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
 这个名字非常容易理解，即保障在一个事务内重复读取时，
 始终能够读取到相同的内容。来看图：
 
-![repeatable-read.png](https://4ocf5n.dijingchao.com/upload_dropbox/201709/repeatable-read.png)
+![repeatable-read.png](/images/upload_dropbox/201709/repeatable-read.png)
 
 如上所示，当 Transation 2 读取 A 时候，会同时加上一把 Read Lock，
 这把锁会阻止 Transaction 1 将 A 更新为 A'，Transaction 1 要么选择等待，
@@ -149,7 +149,7 @@ Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
 那假如将要更新的数据还没有写入数据库，如何进行加锁呢？
 比如自增表的新键，或者现有数据内的空缺 Key？
 
-![repeatable-read-2.png](https://4ocf5n.dijingchao.com/upload_dropbox/201709/repeatable-read-2.png)
+![repeatable-read-2.png](/images/upload_dropbox/201709/repeatable-read-2.png)
 
 如图所示，在上述操作中，Transaction 2 查询了一个范围 Range 之后，Transaction 1
 在这个范围内插入了一条新的数据。此时 Transaction 2 再次进行范围查询时候，
@@ -166,7 +166,7 @@ Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
 任何读写操作都需要先获得这把锁才能进行。如果操作中带 WHERE 条件，
 还需要将 WHERE 条件相关的范围全部加锁。
 
-![serializable.png](https://4ocf5n.dijingchao.com/upload_dropbox/201709/serializable.png)
+![serializable.png](/images/upload_dropbox/201709/serializable.png)
 
 如图所示，在 Transaction 2 操作过程中，会对 Range 进行加锁，
 此时其他事务无法操作其中的数据，只能等待或者放弃。

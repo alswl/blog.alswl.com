@@ -65,5 +65,5 @@ this.categorys = categorys;
 } }
 
 测试一下图片那个插件
-[![image](https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png)](http://img9.2u.com.cn/desk_pic/big_247/246953.jpg)
+[![image](/images/upload_dropbox/201612/404.png)](http://img9.2u.com.cn/desk_pic/big_247/246953.jpg)
 

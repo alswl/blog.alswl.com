@@ -12,7 +12,7 @@ categories: ["coding"]
 Debian 的主机，提供了一个发挥自己想象的平台。13 年 [南京极客行动][]
 时候，Michael 好像还拿了一个板子参加比赛。
 
-![RaspberryPi.jpg](https://4ocf5n.dijingchao.com/upload_dropbox/201407/RaspberryPi.jpg)
+![RaspberryPi.jpg](/images/upload_dropbox/201407/RaspberryPi.jpg)
 
 我对这个东西充满了兴趣，仅售 $39 的主机，小巧的机身，
 可以充分发挥自己的想象力：离线下载，动作片播放器，家庭分享中心，
@@ -25,7 +25,7 @@ Debian 的主机，提供了一个发挥自己想象的平台。13 年 [南京�
 后来在 InnoSpae 看到 [SegmentFault][] 的姜尚用 [Arduino][]
 写了一个播放超级玛丽音乐的程序，又让我重新燃烧起使用硬件创造一些小玩意的热情。
 
-![4f42dcf03f067e12fe5c156e2af1373b.image.538x354.jpg](https://4ocf5n.dijingchao.com/upload_dropbox/201407/4f42dcf03f067e12fe5c156e2af1373b.image.538x354.jpg)
+![4f42dcf03f067e12fe5c156e2af1373b.image.538x354.jpg](/images/upload_dropbox/201407/4f42dcf03f067e12fe5c156e2af1373b.image.538x354.jpg)
 
 碰巧的是，现在有一个非常适合的场景需要这样的工具：前段时间，团队在优化发布流程，也就是将工程师写好的代码发布到正式环境的过程。其中有一个重要环节是需要需求方对提出的功能进行验证。而需求方往往验证的不及时，就需要一个方法来通知需求方。使用 QQ 群效果不好，喊又太累，就想了一个歪主意，在办公室播放音乐。
 
@@ -41,9 +41,9 @@ Debian 的主机，提供了一个发挥自己想象的平台。13 年 [南京�
 
 上图：
 
-![2014-07-15 19.43.16.jpg](https://4ocf5n.dijingchao.com/upload_dropbox/201407/2014-07-15%2019.43.16.jpg)
+![2014-07-15 19.43.16.jpg](/images/upload_dropbox/201407/2014-07-15%2019.43.16.jpg)
 
-![2014-07-16 19.25.33.png](https://4ocf5n.dijingchao.com/upload_dropbox/201407/2014-07-16%2019.25.33.png)
+![2014-07-16 19.25.33.png](/images/upload_dropbox/201407/2014-07-16%2019.25.33.png)
 
 哈哈，以后办公室开 Party，周末关怀，生日会什么的，再不不用担心放音乐问题了~
 

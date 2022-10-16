@@ -13,7 +13,7 @@ categories: ["life"]
 
 最后一次疯狂～
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201006/cinderella.JPG)
+![image](/images/upload_dropbox/201006/cinderella.JPG)
 
 The Happy Ending
 

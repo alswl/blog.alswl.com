@@ -92,7 +92,7 @@ end.
 
 上个小图
 
-[![image](https://4ocf5n.dijingchao.com/upload_dropbox/200912/delphi_editor.jpg)](https://4ocf5n.dijingchao.com/upload_dropbox/200912/delphi_editor.jpg)
+[![image](/images/upload_dropbox/200912/delphi_editor.jpg)](/images/upload_dropbox/200912/delphi_editor.jpg)
 
     
     procedure TForm1.O1Click(Sender: TObject);
@@ -225,7 +225,7 @@ end.
 
 我把这个小程序打包，如果对源码有兴趣，可以看一下。
 
-点击这里下载[delphi_editor](https://4ocf5n.dijingchao.com/upload_dropbox/200912/delphi_editor.zip)
+点击这里下载[delphi_editor](/images/upload_dropbox/200912/delphi_editor.zip)
 
 学校暖气坏了，我得跑出去洗澡，今天就先到这里吧。
 

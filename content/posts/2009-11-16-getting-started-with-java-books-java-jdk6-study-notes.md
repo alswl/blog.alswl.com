@@ -7,16 +7,13 @@ tags: ["java", "book", "javase"]
 categories: ["coding"]
 ---
 
-[![Java JDK6学习笔记](https://4ocf5n.dijingchao.com/upload_dropbox/200911/s2518833.jpg)](http://img3.doubanio.com/
-lpic/s2518833.jpg)
+[![Java JDK6学习笔记](/images/upload_dropbox/200911/s2518833.jpg)](http://img3.doubanio.com/lpic/s2518833.jpg)
 
 《Java JDK6学习笔记》(via [豆瓣](http://www.douban.com/subject/2057790/)，via
 [ChinaPub](http://www.china-pub.com/34512&ref=ps))是我最近在看的一本书。虽然名为Java学习笔记，其实**
 深入浅出**的讲解了Java这门语言。书中的语言颇有**白文风格**，适合没有语言基础的同学学习，也适合对一些概念不清楚的开发人员。
 
-我很快的翻阅了半本书，作者的范例代码简单精要(["Java笔记split/不定长度参数/泛型类型通配符"](http://log4d.com/2009/11/java-notes-_split-variable-
-length-parameter-generic-type-
-wildcard)中示例代码就是改编自本书)。我现在正在阅读线程、反射和Annotation这三块内容，看得我酣畅淋漓啊。
+我很快的翻阅了半本书，作者的范例代码简单精要(["Java笔记split/不定长度参数/泛型类型通配符"](http://log4d.com/2009/11/java-notes-_split-variable-length-parameter-generic-type-wildcard)中示例代码就是改编自本书)。我现在正在阅读线程、反射和Annotation这三块内容，看得我酣畅淋漓啊。
 
 我算是概念模糊的开发者，现在准备笔试/面试所以恶补一下平时接触比较少的概念。我虽然也有《**Think in
 Java**》这本至尊级的书，但是显然这本书研究过深，不适合快速复习。《Java JDK6学习笔记》就成了我首选了。（感谢CUMT图书馆！）
@@ -71,8 +68,5 @@ SE6的新功能，对Java lang等套件的功能加强，以及JDBC4.0、Apache 
 
 > 再多说一句吧，有一本《JAVA实例技术手册》是我买过最失败的一本书，缺点在于：1、内容不深入；2实例没有想象中的实用，或者有的根本就没有实用价值。
 
-如果你还没有学过Java却想学，我强烈推荐此书。￥59.9绝对物有所值，呃，电子书嘛，给个[Google搜索链接](h
-ttp://www.google.cn/search?hl=zh-CN&newwindow=1&q=Java+JDK6%E5%AD%A6%E4%B9%A0%
-E7%AC%94%E8%AE%B0+%E7%94%B5%E5%AD%90%E4%B9%A6&btnG=Google+%E6%90%9C%E7%B4%A2&a
-q=f&oq=)吧。
+如果你还没有学过Java却想学，我强烈推荐此书。￥59.9绝对物有所值，呃，电子书嘛，给个[Google搜索链接](http://www.google.cn/search?hl=zh-CN&newwindow=1&q=Java+JDK6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0+%E7%94%B5%E5%AD%90%E4%B9%A6&btnG=Google+%E6%90%9C%E7%B4%A2&aq=f&oq=)吧。
 

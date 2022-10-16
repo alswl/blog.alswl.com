@@ -7,8 +7,7 @@ tags: ["webfront", "ajax", "extjs"]
 categories: ["coding"]
 ---
 
-在China-pub首页上看到[深入浅出Ext JS](http://www.china-pub.com/195152)这本书，China-
-pub推荐为09年最值得期待的Ajax技术图书感觉这本书挺不错，就关注了一下Ext JS
+在China-pub首页上看到[深入浅出Ext JS](http://www.china-pub.com/195152)这本书，China-pub推荐为09年最值得期待的Ajax技术图书感觉这本书挺不错，就关注了一下Ext JS
 
 1、ExtJS可以用来开发RIA也即富客户端的AJAX应用，是一个用javascript写的，主要用于创建前端用户界面，是一个与后台技术无关的前端ajax框
 架。因此，可以把ExtJS用在.Net、Java、Php等各种开发语言开发的应用中。ExtJs最开始基于YUI技术，由开发人员JackSlocum开发，通过
@@ -36,8 +35,7 @@ otype整合使用，作为低层库的角色出现，以提供处理各种核心
 
 Ext从2.x开始收费，这给他的应用前景带来一些问题。不过对国内开发人员的影响不大，毕竟是客户付款。
 
-> [![深入浅出 ExtJS](https://4ocf5n.dijingchao.com/upload_dropbox/200903/zcover.jpg)](http://www.china-
-pub.com/195152)
+> [![深入浅出 ExtJS](/images/upload_dropbox/200903/zcover.jpg)](http://www.china-pub.com/195152)
 
 >
 
