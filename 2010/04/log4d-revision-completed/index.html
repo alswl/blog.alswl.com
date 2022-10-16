@@ -1,579 +1,76 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>Log4D改版完成 | Log4D</title>
-<meta name="keywords" content="建站心得, wordpress">
-<meta name="description" content="新主题SimpleD也运行
-了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD
-1.0版。现在缝缝补补到1.3了。
-根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在
-插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。
-一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和
-WordPress Basis Theme。
-1.Sandbox 下载地址：[sandbox-theme - Project Hosting on Google Code](http://code.google.com/p
-/sandbox-theme)
-sandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily&rsquo;s Blog](http://www.keelii.com
-/sandbox-zh-cn-package/)
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Log4D改版完成 | Log4D</title><meta name=keywords content="建站心得,wordpress"><meta name=description content="新主题SimpleD也运行 了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD 1.0版。现在缝缝补补到1.3了。
+根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在 插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。
+一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和 WordPress Basis Theme。
+1.Sandbox 下载地址：[sandbox-theme - Project Hosting on Google Code](http://code.google.com/p /sandbox-theme)
+sandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily&rsquo;s Blog](http://www.keelii.com /sandbox-zh-cn-package/)
 我使用的就是SandBox主题，模块分割比较清晰，默认是英文，可以找到第三方的中文语言包。
-2.WordPress Basis Theme 不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃
-～～～
+2.WordPress Basis Theme 不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃 ～～～
 基本上，如果只是想尝鲜，wpbasis也挺适合，小巧，而且默认的css看上去也不错。
-下载地址：wp-basis-theme - Project Hosting on Google
-Code
-除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程
-WordPress 主题教程 二、难对付的插件 1.首先要保证的插件是邮件回复 我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente
-r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。
-关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](http://www.neoease.com/wordpress-
-thread-comments/)。
+下载地址：wp-basis-theme - Project Hosting on Google Code
+除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程 WordPress 主题教程 二、难对付的插件 1.首先要保证的插件是邮件回复 我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。 关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](http://www.neoease.com/wordpress- thread-comments/)。
 经过测试SandBox 和Wordpress Thread Comment 配合没有问题。
-在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for
-Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。
+在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。
 2.代码高亮插件 这个是我需要换主题的根本原因，之前的使用了几个插件都和主题有些不适应，现在索性一步到位。
-切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean&rsquo;s FCKEditor 和 deans">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2010/04/log4d-revision-completed/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="Log4D改版完成" />
-<meta property="og:description" content="新主题SimpleD也运行
-了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD
-1.0版。现在缝缝补补到1.3了。
-根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在
-插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。
-一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和
-WordPress Basis Theme。
-1.Sandbox 下载地址：[sandbox-theme - Project Hosting on Google Code](http://code.google.com/p
-/sandbox-theme)
-sandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily&rsquo;s Blog](http://www.keelii.com
-/sandbox-zh-cn-package/)
+切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean&rsquo;s FCKEditor 和 deans fckeditor with pwwangs code plugin for wordpress，都存在和代码高亮的不兼容情况（在使用html转义时候尤其会出现问题）。"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2010/04/log4d-revision-completed/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="Log4D改版完成"><meta property="og:description" content="新主题SimpleD也运行 了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD 1.0版。现在缝缝补补到1.3了。
+根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在 插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。
+一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和 WordPress Basis Theme。
+1.Sandbox 下载地址：[sandbox-theme - Project Hosting on Google Code](http://code.google.com/p /sandbox-theme)
+sandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily&rsquo;s Blog](http://www.keelii.com /sandbox-zh-cn-package/)
 我使用的就是SandBox主题，模块分割比较清晰，默认是英文，可以找到第三方的中文语言包。
-2.WordPress Basis Theme 不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃
-～～～
+2.WordPress Basis Theme 不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃 ～～～
 基本上，如果只是想尝鲜，wpbasis也挺适合，小巧，而且默认的css看上去也不错。
-下载地址：wp-basis-theme - Project Hosting on Google
-Code
-除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程
-WordPress 主题教程 二、难对付的插件 1.首先要保证的插件是邮件回复 我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente
-r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。
-关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](http://www.neoease.com/wordpress-
-thread-comments/)。
+下载地址：wp-basis-theme - Project Hosting on Google Code
+除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程 WordPress 主题教程 二、难对付的插件 1.首先要保证的插件是邮件回复 我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。 关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](http://www.neoease.com/wordpress- thread-comments/)。
 经过测试SandBox 和Wordpress Thread Comment 配合没有问题。
-在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for
-Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。
+在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。
 2.代码高亮插件 这个是我需要换主题的根本原因，之前的使用了几个插件都和主题有些不适应，现在索性一步到位。
-切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean&rsquo;s FCKEditor 和 deans" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2010/04/log4d-revision-completed/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2010-04-14T00:00:00+08:00" />
-<meta property="article:modified_time" content="2010-04-14T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Log4D改版完成"/>
-<meta name="twitter:description" content="新主题SimpleD也运行
-了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD
-1.0版。现在缝缝补补到1.3了。
-根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在
-插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。
-一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和
-WordPress Basis Theme。
-1.Sandbox 下载地址：[sandbox-theme - Project Hosting on Google Code](http://code.google.com/p
-/sandbox-theme)
-sandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily&rsquo;s Blog](http://www.keelii.com
-/sandbox-zh-cn-package/)
+切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean&rsquo;s FCKEditor 和 deans fckeditor with pwwangs code plugin for wordpress，都存在和代码高亮的不兼容情况（在使用html转义时候尤其会出现问题）。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2010/04/log4d-revision-completed/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2010-04-14T00:00:00+08:00"><meta property="article:modified_time" content="2010-04-14T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="Log4D改版完成"><meta name=twitter:description content="新主题SimpleD也运行 了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD 1.0版。现在缝缝补补到1.3了。
+根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在 插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。
+一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和 WordPress Basis Theme。
+1.Sandbox 下载地址：[sandbox-theme - Project Hosting on Google Code](http://code.google.com/p /sandbox-theme)
+sandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily&rsquo;s Blog](http://www.keelii.com /sandbox-zh-cn-package/)
 我使用的就是SandBox主题，模块分割比较清晰，默认是英文，可以找到第三方的中文语言包。
-2.WordPress Basis Theme 不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃
-～～～
+2.WordPress Basis Theme 不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃 ～～～
 基本上，如果只是想尝鲜，wpbasis也挺适合，小巧，而且默认的css看上去也不错。
-下载地址：wp-basis-theme - Project Hosting on Google
-Code
-除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程
-WordPress 主题教程 二、难对付的插件 1.首先要保证的插件是邮件回复 我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente
-r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。
-关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](http://www.neoease.com/wordpress-
-thread-comments/)。
+下载地址：wp-basis-theme - Project Hosting on Google Code
+除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程 WordPress 主题教程 二、难对付的插件 1.首先要保证的插件是邮件回复 我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。 关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](http://www.neoease.com/wordpress- thread-comments/)。
 经过测试SandBox 和Wordpress Thread Comment 配合没有问题。
-在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for
-Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。
+在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。
 2.代码高亮插件 这个是我需要换主题的根本原因，之前的使用了几个插件都和主题有些不适应，现在索性一步到位。
-切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean&rsquo;s FCKEditor 和 deans"/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "Log4D改版完成",
-      "item": "https://blog.alswl.com/2010/04/log4d-revision-completed/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Log4D改版完成",
-  "name": "Log4D改版完成",
-  "description": "新主题SimpleD也运行\n了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD\n1.0版。现在缝缝补补到1.3了。\n根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在\n插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。\n一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和\nWordPress Basis Theme。\n1.Sandbox 下载地址：[sandbox-theme - Project Hosting on Google Code](http://code.google.com/p\n/sandbox-theme)\nsandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily\u0026rsquo;s Blog](http://www.keelii.com\n/sandbox-zh-cn-package/)\n我使用的就是SandBox主题，模块分割比较清晰，默认是英文，可以找到第三方的中文语言包。\n2.WordPress Basis Theme 不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃\n～～～\n基本上，如果只是想尝鲜，wpbasis也挺适合，小巧，而且默认的css看上去也不错。\n下载地址：wp-basis-theme - Project Hosting on Google\nCode\n除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程\nWordPress 主题教程 二、难对付的插件 1.首先要保证的插件是邮件回复 我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente\nr。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。\n关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](http://www.neoease.com/wordpress-\nthread-comments/)。\n经过测试SandBox 和Wordpress Thread Comment 配合没有问题。\n在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for\nAndroid，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。\n2.代码高亮插件 这个是我需要换主题的根本原因，之前的使用了几个插件都和主题有些不适应，现在索性一步到位。\n切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean\u0026rsquo;s FCKEditor 和 deans",
-  "keywords": [
-    "建站心得", "wordpress"
-  ],
-  "articleBody": " 新主题SimpleD也运行\n了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD\n1.0版。现在缝缝补补到1.3了。\n根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在\n插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。\n一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和\nWordPress Basis Theme。\n1.Sandbox 下载地址：[sandbox-theme - Project Hosting on Google Code](http://code.google.com/p\n/sandbox-theme)\nsandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily’s Blog](http://www.keelii.com\n/sandbox-zh-cn-package/)\n我使用的就是SandBox主题，模块分割比较清晰，默认是英文，可以找到第三方的中文语言包。\n2.WordPress Basis Theme 不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃\n～～～\n基本上，如果只是想尝鲜，wpbasis也挺适合，小巧，而且默认的css看上去也不错。\n下载地址：wp-basis-theme - Project Hosting on Google\nCode\n除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程\nWordPress 主题教程 二、难对付的插件 1.首先要保证的插件是邮件回复 我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente\nr。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。\n关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](http://www.neoease.com/wordpress-\nthread-comments/)。\n经过测试SandBox 和Wordpress Thread Comment 配合没有问题。\n在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for\nAndroid，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。\n2.代码高亮插件 这个是我需要换主题的根本原因，之前的使用了几个插件都和主题有些不适应，现在索性一步到位。\n切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean’s FCKEditor 和 deans\nfckeditor with pwwangs code plugin for\nwordpress，都存在和代码高亮的不兼容情况（在使用html转义时候尤其会出现问题）。\n我花了一个晚上对一些插件进行评估，要求如下\"可以自由模式切换、兼容pre、插件不在仍然可以运行、自己控制转义符而不是自动转换，否则切换回带来问题、兼容CKE\nditor插件使用\"，我还制作了一个xls文档。最后，我发现了一位老外的文章 [Travaganza Blog » Archive » Guide to\nfind a WordPress syntax highlighter that works\n](http://www.travislin.com/2009/05/guide-to-find-a-wordpress-syntax-\nhighlighter-that-works/)\n，解决了我长久以来一直的问题，我曾把这篇文章做了翻译 [WordPress代码高亮插件指南[译文]](http://log4d.com/2010/03\n/guide-to-find-a-wordpress-syntax-highlighter-that-works-translation)\n最后我选用了Syntax Highlighter and Code Colorizer for Wordpress，详情看我那篇翻译的文章。\n3.内容编辑器 其实TinyMCE功能很强，可以媲美CKEditor，可以参看我自己在服务器上建立的完整的TinyMCE http://e.log4d.com/tinym\nce.html，可惜WP和的TinyMCE被阉割的一塌糊涂，还会产生多余的照片缩略图。我\n不得不投奔最强的文本编辑器CKEditor（FCKEditor）。\n原先使用 Dean’s FCKEditor With pwwang’s Code Plugin For Wordpress ，是为了解决代码格式问题\n现在代码问题解决了，使用 Dean’s FCKEditor For Wordpress\n如果需要使用原始WP的文件上传路径，需要修改一下Dean’s FCKEditor For Wordpress 的js配置代码。\n4.移动手持插件 最早时候用T-Wap这款国人制作的插件，支持域名重定向，但是会在根目录下生成一个多余的目录，生成的wap页面也不是很漂亮，后台界面很简陋。\nWordpress PDA \u0026 iPhone。 使用时候需要加入User-Agent:Android才能识别G3，功能比较强大，甚至能使用Add- this插件。\n会和Cool-tags冲突，导致Cool-tag无法加载，可惜这款插件不是通过域名判断，而是通过User-\nAgent来判断的，其实也不支持其他域名，恩，它不是我的菜。\n下载地址：WordPress › Wordpress PDA \u0026 iPhone « WordPress\nPlugins\nWPhone 只适合后台管理，很鸡肋\n实话实说，后台功能做得的确比较强。\n插件地址：WordPress › WPhone « WordPress\nPlugins\nMobile Pack（最后出现的显然是胜利者了） 完美达到我的要求，支持检测User-Agent或者绑定域名的双重显示方法。不过绑定域名时候遇到一些问题，插件没给太多的提示。如果选择\nm.log4d.com的域名，cPanel创建子域默认是public/m，这是需要修改为public/才能使用Mobile\nPack，如果定位到public/m，插件无效。顾名思义，Mobile Pack其实是一种插件包的形式：Mobile Pack= Mobile Theme\nMobile Widgets + Mobile Switcher + mpexo。插件可以切换主题，自定义Wigget显示。 下载地址：WordPress › WordPress Mobile Pack « WordPress\nPlugins\nLast、 虽然版本增加到v1.3，但是很多东西都没有做到自定义，所以我暂时也不想把这个主题发布了。\n需要参考的朋友可以到svn获取一下，地址在：https://workspace4alswl.googlecode.com/svn/trunk/PHP/Si\nmpleD\n",
-  "wordCount" : "185",
-  "inLanguage": "en",
-  "datePublished": "2010-04-14T00:00:00+08:00",
-  "dateModified": "2010-04-14T00:00:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2010/04/log4d-revision-completed/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      Log4D改版完成
-    </h1>
-    <div class="post-meta"><span title='2010-04-14 00:00:00 +0800 CST'>2010-04-14</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#一使用框架">一、使用框架</a>
-      <ul>
-        <li><a href="#1sandbox">1.Sandbox</a></li>
-        <li><a href="#2wordpress-basis-theme">2.WordPress Basis Theme</a></li>
-      </ul>
-    </li>
-    <li><a href="#二难对付的插件">二、难对付的插件</a>
-      <ul>
-        <li><a href="#1首先要保证的插件是邮件回复">1.首先要保证的插件是邮件回复</a></li>
-        <li><a href="#2代码高亮插件">2.代码高亮插件</a></li>
-        <li><a href="#3内容编辑器">3.内容编辑器</a></li>
-        <li><a href="#4移动手持插件">4.移动手持插件</a></li>
-      </ul>
-    </li>
-    <li><a href="#last">Last、</a></li>
-  </ul>
-</nav>
-        </div>
-    </details>
-</div>
-
-  <div class="post-content"><p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201004/log4d_screenshot.png" alt="image"  />
-新主题SimpleD也运行<br />
-了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD<br />
-1.0版。现在缝缝补补到1.3了。</p>
-<p>根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在<br />
-插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。</p>
-<h2 id="一使用框架">一、使用框架<a hidden class="anchor" aria-hidden="true" href="#一使用框架">#</a></h2>
-<p>第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和<br />
-WordPress Basis Theme。</p>
-<h3 id="1sandbox">1.Sandbox<a hidden class="anchor" aria-hidden="true" href="#1sandbox">#</a></h3>
-<p>下载地址：[sandbox-theme - Project Hosting on Google Code](<a href="http://code.google.com/p">http://code.google.com/p</a><br />
-/sandbox-theme)</p>
-<p>sandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily&rsquo;s Blog](<a href="http://www.keelii.com">http://www.keelii.com</a><br />
-/sandbox-zh-cn-package/)</p>
-<p>我使用的就是SandBox主题，模块分割比较清晰，默认是英文，可以找到第三方的中文语言包。</p>
-<h3 id="2wordpress-basis-theme">2.WordPress Basis Theme<a hidden class="anchor" aria-hidden="true" href="#2wordpress-basis-theme">#</a></h3>
-<p>不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃<br />
-～～～</p>
-<p>基本上，如果只是想尝鲜，wpbasis也挺适合，小巧，而且默认的css看上去也不错。</p>
-<p>下载地址：<a href="http://code.google.com/p/wp-basis-theme/">wp-basis-theme - Project Hosting on Google<br />
-Code</a></p>
-<p>除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程<a href="http://fairyfish.net/series/wordpress-theme-tutorials/"><br />
-WordPress 主题教程 </a></p>
-<h2 id="二难对付的插件">二、难对付的插件<a hidden class="anchor" aria-hidden="true" href="#二难对付的插件">#</a></h2>
-<h3 id="1首先要保证的插件是邮件回复">1.首先要保证的插件是邮件回复<a hidden class="anchor" aria-hidden="true" href="#1首先要保证的插件是邮件回复">#</a></h3>
-<p>我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente<br />
-r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。<br />
-关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](<a href="http://www.neoease.com/wordpress-">http://www.neoease.com/wordpress-</a><br />
-thread-comments/)。</p>
-<p>经过测试SandBox 和Wordpress Thread Comment 配合没有问题。</p>
-<p>在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for<br />
-Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。</p>
-<h3 id="2代码高亮插件">2.代码高亮插件<a hidden class="anchor" aria-hidden="true" href="#2代码高亮插件">#</a></h3>
-<p>这个是我需要换主题的根本原因，之前的使用了几个插件都和主题有些不适应，现在索性一步到位。</p>
-<p>切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean&rsquo;s FCKEditor 和 deans<br />
-fckeditor with pwwangs code plugin for<br />
-wordpress，都存在和代码高亮的不兼容情况（在使用html转义时候尤其会出现问题）。</p>
-<p>我花了一个晚上对一些插件进行评估，要求如下&quot;可以自由模式切换、兼容pre、插件不在仍然可以运行、自己控制转义符而不是自动转换，否则切换回带来问题、兼容CKE<br />
-ditor插件使用&quot;，我还制作了一个xls文档。最后，我发现了一位老外的文章 [Travaganza Blog » Archive » Guide to<br />
-find a WordPress syntax highlighter that works<br />
-](<a href="http://www.travislin.com/2009/05/guide-to-find-a-wordpress-syntax-">http://www.travislin.com/2009/05/guide-to-find-a-wordpress-syntax-</a><br />
-highlighter-that-works/)</p>
-<p>，解决了我长久以来一直的问题，我曾把这篇文章做了翻译 [WordPress代码高亮插件指南[译文]](<a href="http://log4d.com/2010/03">http://log4d.com/2010/03</a><br />
-/guide-to-find-a-wordpress-syntax-highlighter-that-works-translation)</p>
-<p>最后我选用了Syntax Highlighter and Code Colorizer for Wordpress，详情看我那篇翻译的文章。</p>
-<h3 id="3内容编辑器">3.内容编辑器<a hidden class="anchor" aria-hidden="true" href="#3内容编辑器">#</a></h3>
-<p>其实TinyMCE功能很强，可以媲美CKEditor，可以参看我自己在服务器上建立的完整的TinyMCE <a href="http://e.log4d.com/tinymce.html">http://e.log4d.com/tinym<br />
-ce.html</a>，可惜WP和的TinyMCE被阉割的一塌糊涂，还会产生多余的照片缩略图。我<br />
-不得不投奔最强的文本编辑器CKEditor（FCKEditor）。</p>
-<p>原先使用 Dean&rsquo;s FCKEditor With pwwang&rsquo;s Code Plugin For Wordpress ，是为了解决代码格式问题</p>
-<p>现在代码问题解决了，使用 Dean&rsquo;s FCKEditor For Wordpress</p>
-<p>如果需要使用原始WP的文件上传路径，需要修改一下Dean&rsquo;s FCKEditor For Wordpress 的js配置代码。</p>
-<h3 id="4移动手持插件">4.移动手持插件<a hidden class="anchor" aria-hidden="true" href="#4移动手持插件">#</a></h3>
-<p>最早时候用T-Wap这款国人制作的插件，支持域名重定向，但是会在根目录下生成一个多余的目录，生成的wap页面也不是很漂亮，后台界面很简陋。</p>
-<h4 id="wordpress-pda--iphone">Wordpress PDA &amp; iPhone。<a hidden class="anchor" aria-hidden="true" href="#wordpress-pda--iphone">#</a></h4>
-<p>使用时候需要加入User-Agent:Android才能识别G3，功能比较强大，甚至能使用Add- this插件。</p>
-<p>会和Cool-tags冲突，导致Cool-tag无法加载，可惜这款插件不是通过域名判断，而是通过User-<br />
-Agent来判断的，其实也不支持其他域名，恩，它不是我的菜。</p>
-<p>下载地址：<a href="http://wordpress.org/extend/plugins/wp-pda/">WordPress › Wordpress PDA &amp; iPhone « WordPress<br />
-Plugins</a></p>
-<h4 id="wphone">WPhone<a hidden class="anchor" aria-hidden="true" href="#wphone">#</a></h4>
-<p>只适合后台管理，很鸡肋</p>
-<p>实话实说，后台功能做得的确比较强。</p>
-<p>插件地址：<a href="http://wordpress.org/extend/plugins/wphone/">WordPress › WPhone « WordPress<br />
-Plugins</a></p>
-<h4 id="mobile-pack最后出现的显然是胜利者了">Mobile Pack（最后出现的显然是胜利者了）<a hidden class="anchor" aria-hidden="true" href="#mobile-pack最后出现的显然是胜利者了">#</a></h4>
-<p>完美达到我的要求，支持检测User-Agent或者绑定域名的双重显示方法。不过绑定域名时候遇到一些问题，插件没给太多的提示。如果选择<br />
-m.log4d.com的域名，cPanel创建子域默认是public/m，这是需要修改为public/才能使用Mobile<br />
-Pack，如果定位到public/m，插件无效。顾名思义，Mobile Pack其实是一种插件包的形式：Mobile Pack= Mobile Theme</p>
-<ul>
-<li>Mobile Widgets + Mobile Switcher + mpexo。插件可以切换主题，自定义Wigget显示。</li>
-</ul>
-<p>下载地址：<a href="http://wordpress.org/extend/plugins/wordpress-mobile-pack/">WordPress › WordPress Mobile Pack « WordPress<br />
-Plugins</a></p>
-<h2 id="last">Last、<a hidden class="anchor" aria-hidden="true" href="#last">#</a></h2>
-<p>虽然版本增加到v1.3，但是很多东西都没有做到自定义，所以我暂时也不想把这个主题发布了。</p>
-<p>需要参考的朋友可以到svn获取一下，地址在：<a href="https://workspace4alswl.googlecode.com/svn/trunk/PHP/SimpleD">https://workspace4alswl.googlecode.com/svn/trunk/PHP/Si<br />
-mpleD</a></p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2010/04/log4d-revision-completed/">Log4D改版完成 | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/%E5%BB%BA%E7%AB%99%E5%BF%83%E5%BE%97/">建站心得</a></li>
-      <li><a href="https://blog.alswl.com/tags/wordpress/">wordpress</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2010/04/recently-read-books/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>最近在看的书</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2010/04/reverence-for-life/">
-    <span class="title">Next »</span>
-    <br>
-    <span>敬畏生命</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean&rsquo;s FCKEditor 和 deans fckeditor with pwwangs code plugin for wordpress，都存在和代码高亮的不兼容情况（在使用html转义时候尤其会出现问题）。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"Log4D改版完成","item":"https://blog.alswl.com/2010/04/log4d-revision-completed/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Log4D改版完成","name":"Log4D改版完成","description":"新主题SimpleD也运行 了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD 1.0版。现在缝缝补补到1.3了。\n根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在 插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。\n一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和 WordPress Basis Theme。\n1.Sandbox 下载地址：[sandbox-theme - Project Hosting on Google Code](http://code.google.com/p /sandbox-theme)\nsandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily\u0026rsquo;s Blog](http://www.keelii.com /sandbox-zh-cn-package/)\n我使用的就是SandBox主题，模块分割比较清晰，默认是英文，可以找到第三方的中文语言包。\n2.WordPress Basis Theme 不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃 ～～～\n基本上，如果只是想尝鲜，wpbasis也挺适合，小巧，而且默认的css看上去也不错。\n下载地址：wp-basis-theme - Project Hosting on Google Code\n除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程 WordPress 主题教程 二、难对付的插件 1.首先要保证的插件是邮件回复 我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。 关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](http://www.neoease.com/wordpress- thread-comments/)。\n经过测试SandBox 和Wordpress Thread Comment 配合没有问题。\n在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。\n2.代码高亮插件 这个是我需要换主题的根本原因，之前的使用了几个插件都和主题有些不适应，现在索性一步到位。\n切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean\u0026rsquo;s FCKEditor 和 deans fckeditor with pwwangs code plugin for wordpress，都存在和代码高亮的不兼容情况（在使用html转义时候尤其会出现问题）。","keywords":["建站心得","wordpress"],"articleBody":" 新主题SimpleD也运行 了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD 1.0版。现在缝缝补补到1.3了。\n根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在 插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。\n一、使用框架 第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和 WordPress Basis Theme。\n1.Sandbox 下载地址：[sandbox-theme - Project Hosting on Google Code](http://code.google.com/p /sandbox-theme)\nsandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily’s Blog](http://www.keelii.com /sandbox-zh-cn-package/)\n我使用的就是SandBox主题，模块分割比较清晰，默认是英文，可以找到第三方的中文语言包。\n2.WordPress Basis Theme 不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃 ～～～\n基本上，如果只是想尝鲜，wpbasis也挺适合，小巧，而且默认的css看上去也不错。\n下载地址：wp-basis-theme - Project Hosting on Google Code\n除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程 WordPress 主题教程 二、难对付的插件 1.首先要保证的插件是邮件回复 我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。 关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](http://www.neoease.com/wordpress- thread-comments/)。\n经过测试SandBox 和Wordpress Thread Comment 配合没有问题。\n在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。\n2.代码高亮插件 这个是我需要换主题的根本原因，之前的使用了几个插件都和主题有些不适应，现在索性一步到位。\n切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean’s FCKEditor 和 deans fckeditor with pwwangs code plugin for wordpress，都存在和代码高亮的不兼容情况（在使用html转义时候尤其会出现问题）。\n我花了一个晚上对一些插件进行评估，要求如下\"可以自由模式切换、兼容pre、插件不在仍然可以运行、自己控制转义符而不是自动转换，否则切换回带来问题、兼容CKE ditor插件使用\"，我还制作了一个xls文档。最后，我发现了一位老外的文章 [Travaganza Blog » Archive » Guide to find a WordPress syntax highlighter that works ](http://www.travislin.com/2009/05/guide-to-find-a-wordpress-syntax- highlighter-that-works/)\n，解决了我长久以来一直的问题，我曾把这篇文章做了翻译 [WordPress代码高亮插件指南[译文]](http://log4d.com/2010/03 /guide-to-find-a-wordpress-syntax-highlighter-that-works-translation)\n最后我选用了Syntax Highlighter and Code Colorizer for Wordpress，详情看我那篇翻译的文章。\n3.内容编辑器 其实TinyMCE功能很强，可以媲美CKEditor，可以参看我自己在服务器上建立的完整的TinyMCE http://e.log4d.com/tinym ce.html，可惜WP和的TinyMCE被阉割的一塌糊涂，还会产生多余的照片缩略图。我 不得不投奔最强的文本编辑器CKEditor（FCKEditor）。\n原先使用 Dean’s FCKEditor With pwwang’s Code Plugin For Wordpress ，是为了解决代码格式问题\n现在代码问题解决了，使用 Dean’s FCKEditor For Wordpress\n如果需要使用原始WP的文件上传路径，需要修改一下Dean’s FCKEditor For Wordpress 的js配置代码。\n4.移动手持插件 最早时候用T-Wap这款国人制作的插件，支持域名重定向，但是会在根目录下生成一个多余的目录，生成的wap页面也不是很漂亮，后台界面很简陋。\nWordpress PDA \u0026 iPhone。 使用时候需要加入User-Agent:Android才能识别G3，功能比较强大，甚至能使用Add- this插件。\n会和Cool-tags冲突，导致Cool-tag无法加载，可惜这款插件不是通过域名判断，而是通过User- Agent来判断的，其实也不支持其他域名，恩，它不是我的菜。\n下载地址：WordPress › Wordpress PDA \u0026 iPhone « WordPress Plugins\nWPhone 只适合后台管理，很鸡肋\n实话实说，后台功能做得的确比较强。\n插件地址：WordPress › WPhone « WordPress Plugins\nMobile Pack（最后出现的显然是胜利者了） 完美达到我的要求，支持检测User-Agent或者绑定域名的双重显示方法。不过绑定域名时候遇到一些问题，插件没给太多的提示。如果选择 m.log4d.com的域名，cPanel创建子域默认是public/m，这是需要修改为public/才能使用Mobile Pack，如果定位到public/m，插件无效。顾名思义，Mobile Pack其实是一种插件包的形式：Mobile Pack= Mobile Theme\nMobile Widgets + Mobile Switcher + mpexo。插件可以切换主题，自定义Wigget显示。 下载地址：WordPress › WordPress Mobile Pack « WordPress Plugins\nLast、 虽然版本增加到v1.3，但是很多东西都没有做到自定义，所以我暂时也不想把这个主题发布了。\n需要参考的朋友可以到svn获取一下，地址在：https://workspace4alswl.googlecode.com/svn/trunk/PHP/Si mpleD\n","wordCount":"185","inLanguage":"en","datePublished":"2010-04-14T00:00:00+08:00","dateModified":"2010-04-14T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2010/04/log4d-revision-completed/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>Log4D改版完成</h1><div class=post-meta><span title='2010-04-14 00:00:00 +0800 +0800'>2010-04-14</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#一使用框架>一、使用框架</a><ul><li><a href=#1sandbox>1.Sandbox</a></li><li><a href=#2wordpress-basis-theme>2.WordPress Basis Theme</a></li></ul></li><li><a href=#二难对付的插件>二、难对付的插件</a><ul><li><a href=#1首先要保证的插件是邮件回复>1.首先要保证的插件是邮件回复</a></li><li><a href=#2代码高亮插件>2.代码高亮插件</a></li><li><a href=#3内容编辑器>3.内容编辑器</a></li><li><a href=#4移动手持插件>4.移动手持插件</a></li></ul></li><li><a href=#last>Last、</a></li></ul></nav></div></details></div><div class=post-content><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201004/log4d_screenshot.png alt=image>
+新主题SimpleD也运行
+了一段时间了，没出什么大Bug。其实从刚工作时候，也就是11月份，就一直说要自己写一个主题，拖啊拖，拖啊拖，拖到上个月才正式发布SimpleD
+1.0版。现在缝缝补补到1.3了。</p><p>根据我的工作性质，我本身也算半个Web Designer，花这么长时间搞鼓一个主题是有原因的。最大的问题不是来自主题本身，毕竟我不是艺术家，问题大部分集中在
+插件的测试和融合上。下面我就把制作我主题的预期目标和中间遇到问题的解决方案分享一下。</p><h2 id=一使用框架>一、使用框架<a hidden class=anchor aria-hidden=true href=#一使用框架>#</a></h2><p>第一件要做的事情是使用一套现有的WordPress主题框架。对于IT从业者来说，编码之前使用一个健壮灵活的框架是多么重要。这里推荐2个框架Sandbox 和
+WordPress Basis Theme。</p><h3 id=1sandbox>1.Sandbox<a hidden class=anchor aria-hidden=true href=#1sandbox>#</a></h3><p>下载地址：[sandbox-theme - Project Hosting on Google Code](<a href=http://code.google.com/p>http://code.google.com/p</a>
+/sandbox-theme)</p><p>sandbox主题中文语言(汉化)包：[sandbox主题中文语言(汉化)包 - Kily&rsquo;s Blog](<a href=http://www.keelii.com>http://www.keelii.com</a>
+/sandbox-zh-cn-package/)</p><p>我使用的就是SandBox主题，模块分割比较清晰，默认是英文，可以找到第三方的中文语言包。</p><h3 id=2wordpress-basis-theme>2.WordPress Basis Theme<a hidden class=anchor aria-hidden=true href=#2wordpress-basis-theme>#</a></h3><p>不用wpbasis并不是说它不好，它甚至提供了基于HTML5的框架，但是问题的关键是，他默认输出是德文。如果是英文的话，我还能翻译成mo包，德文的话～～～呃
+～～～</p><p>基本上，如果只是想尝鲜，wpbasis也挺适合，小巧，而且默认的css看上去也不错。</p><p>下载地址：<a href=http://code.google.com/p/wp-basis-theme/>wp-basis-theme - Project Hosting on Google
+Code</a></p><p>除了框架，还有一些基本的WordPress自带函数和模板结构需要学习。如果真想做自己的主题，这一步是没法逃避的，强烈推荐水煮鱼的一套教程<a href=http://fairyfish.net/series/wordpress-theme-tutorials/>
+WordPress 主题教程</a></p><h2 id=二难对付的插件>二、难对付的插件<a hidden class=anchor aria-hidden=true href=#二难对付的插件>#</a></h2><h3 id=1首先要保证的插件是邮件回复>1.首先要保证的插件是邮件回复<a hidden class=anchor aria-hidden=true href=#1首先要保证的插件是邮件回复>#</a></h3><p>我之前使用的是 MailToCommenter，因为最早时候的cn所在服务器不支持 Thread Comment，之久将就使用 MailToCommente
+r。它不支持Ajax，使用和嵌套起来也比较麻烦，有些主题需要简单的修改源码。之前一直使用@单条回复方式，后来感觉嵌套式回复风格更人性化。
+关于是否需要使用嵌套的讨论，详见mg12大大的 [WordPress 嵌套回复](<a href=http://www.neoease.com/wordpress->http://www.neoease.com/wordpress-</a>
+thread-comments/)。</p><p>经过测试SandBox 和Wordpress Thread Comment 配合没有问题。</p><p>在移动手持上，G3自带浏览器中能够完美使用JavaScript。使用UCWeb for
+Android，关闭JavaScript之后点击[回复]，会需要重新打开一次页面，但是回复输入框已经移动了，应该也没有问题。</p><h3 id=2代码高亮插件>2.代码高亮插件<a hidden class=anchor aria-hidden=true href=#2代码高亮插件>#</a></h3><p>这个是我需要换主题的根本原因，之前的使用了几个插件都和主题有些不适应，现在索性一步到位。</p><p>切换代码高亮插件还牵扯到编辑器的切换问题，所以又牵扯到到底使用哪个在线编辑器的问题。我之前使用的是Dean&rsquo;s FCKEditor 和 deans
+fckeditor with pwwangs code plugin for
+wordpress，都存在和代码高亮的不兼容情况（在使用html转义时候尤其会出现问题）。</p><p>我花了一个晚上对一些插件进行评估，要求如下"可以自由模式切换、兼容pre、插件不在仍然可以运行、自己控制转义符而不是自动转换，否则切换回带来问题、兼容CKE
+ditor插件使用"，我还制作了一个xls文档。最后，我发现了一位老外的文章 [Travaganza Blog » Archive » Guide to
+find a WordPress syntax highlighter that works
+](<a href=http://www.travislin.com/2009/05/guide-to-find-a-wordpress-syntax->http://www.travislin.com/2009/05/guide-to-find-a-wordpress-syntax-</a>
+highlighter-that-works/)</p><p>，解决了我长久以来一直的问题，我曾把这篇文章做了翻译 [WordPress代码高亮插件指南[译文]](<a href=http://log4d.com/2010/03>http://log4d.com/2010/03</a>
+/guide-to-find-a-wordpress-syntax-highlighter-that-works-translation)</p><p>最后我选用了Syntax Highlighter and Code Colorizer for Wordpress，详情看我那篇翻译的文章。</p><h3 id=3内容编辑器>3.内容编辑器<a hidden class=anchor aria-hidden=true href=#3内容编辑器>#</a></h3><p>其实TinyMCE功能很强，可以媲美CKEditor，可以参看我自己在服务器上建立的完整的TinyMCE <a href=http://e.log4d.com/tinymce.html>http://e.log4d.com/tinym
+ce.html</a>，可惜WP和的TinyMCE被阉割的一塌糊涂，还会产生多余的照片缩略图。我
+不得不投奔最强的文本编辑器CKEditor（FCKEditor）。</p><p>原先使用 Dean&rsquo;s FCKEditor With pwwang&rsquo;s Code Plugin For Wordpress ，是为了解决代码格式问题</p><p>现在代码问题解决了，使用 Dean&rsquo;s FCKEditor For Wordpress</p><p>如果需要使用原始WP的文件上传路径，需要修改一下Dean&rsquo;s FCKEditor For Wordpress 的js配置代码。</p><h3 id=4移动手持插件>4.移动手持插件<a hidden class=anchor aria-hidden=true href=#4移动手持插件>#</a></h3><p>最早时候用T-Wap这款国人制作的插件，支持域名重定向，但是会在根目录下生成一个多余的目录，生成的wap页面也不是很漂亮，后台界面很简陋。</p><h4 id=wordpress-pda--iphone>Wordpress PDA & iPhone。<a hidden class=anchor aria-hidden=true href=#wordpress-pda--iphone>#</a></h4><p>使用时候需要加入User-Agent:Android才能识别G3，功能比较强大，甚至能使用Add- this插件。</p><p>会和Cool-tags冲突，导致Cool-tag无法加载，可惜这款插件不是通过域名判断，而是通过User-
+Agent来判断的，其实也不支持其他域名，恩，它不是我的菜。</p><p>下载地址：<a href=http://wordpress.org/extend/plugins/wp-pda/>WordPress › Wordpress PDA & iPhone « WordPress
+Plugins</a></p><h4 id=wphone>WPhone<a hidden class=anchor aria-hidden=true href=#wphone>#</a></h4><p>只适合后台管理，很鸡肋</p><p>实话实说，后台功能做得的确比较强。</p><p>插件地址：<a href=http://wordpress.org/extend/plugins/wphone/>WordPress › WPhone « WordPress
+Plugins</a></p><h4 id=mobile-pack最后出现的显然是胜利者了>Mobile Pack（最后出现的显然是胜利者了）<a hidden class=anchor aria-hidden=true href=#mobile-pack最后出现的显然是胜利者了>#</a></h4><p>完美达到我的要求，支持检测User-Agent或者绑定域名的双重显示方法。不过绑定域名时候遇到一些问题，插件没给太多的提示。如果选择
+m.log4d.com的域名，cPanel创建子域默认是public/m，这是需要修改为public/才能使用Mobile
+Pack，如果定位到public/m，插件无效。顾名思义，Mobile Pack其实是一种插件包的形式：Mobile Pack= Mobile Theme</p><ul><li>Mobile Widgets + Mobile Switcher + mpexo。插件可以切换主题，自定义Wigget显示。</li></ul><p>下载地址：<a href=http://wordpress.org/extend/plugins/wordpress-mobile-pack/>WordPress › WordPress Mobile Pack « WordPress
+Plugins</a></p><h2 id=last>Last、<a hidden class=anchor aria-hidden=true href=#last>#</a></h2><p>虽然版本增加到v1.3，但是很多东西都没有做到自定义，所以我暂时也不想把这个主题发布了。</p><p>需要参考的朋友可以到svn获取一下，地址在：<a href=https://workspace4alswl.googlecode.com/svn/trunk/PHP/SimpleD>https://workspace4alswl.googlecode.com/svn/trunk/PHP/Si
+mpleD</a></p><hr><p>原文链接: <a href=https://blog.alswl.com/2010/04/log4d-revision-completed/>Log4D改版完成 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/%E5%BB%BA%E7%AB%99%E5%BF%83%E5%BE%97/>建站心得</a></li><li><a href=https://blog.alswl.com/tags/wordpress/>wordpress</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2010/04/recently-read-books/><span class=title>« Prev</span><br><span>最近在看的书</span></a>
+<a class=next href=https://blog.alswl.com/2010/04/reverence-for-life/><span class=title>Next »</span><br><span>敬畏生命</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

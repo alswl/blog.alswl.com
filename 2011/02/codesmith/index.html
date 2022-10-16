@@ -1,247 +1,12 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>CodeSmith使用心得 | Log4D</title>
-<meta name="keywords" content="工欲善其事必先利其器, codesmith">
-<meta name="description" content="CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst
-）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。
-一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码&#43;脚本的方式，大致代码如下（官方的sample2）。
-&lt;%@ CodeTemplate Language=&quot;C#&quot; TargetLanguage=&quot;Text&quot; Description=&quot;This template demonstrates using properties in your template.&quot; %&gt; &lt;%@ Property Name=&quot;Person&quot; Type=&quot;System.String&quot; Description=&quot;This will show up at the bottom of the property grid when the property is selected.&quot; %&gt; &lt;%-- This template demonstrates using properties in your template. --%&gt; This is some static content (just like the static HTML in a ASP page). &lt;%= &quot;Hello &quot; &#43; this.">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2011/02/codesmith/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="CodeSmith使用心得" />
-<meta property="og:description" content="CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst
-）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。
-一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码&#43;脚本的方式，大致代码如下（官方的sample2）。
-&lt;%@ CodeTemplate Language=&quot;C#&quot; TargetLanguage=&quot;Text&quot; Description=&quot;This template demonstrates using properties in your template.&quot; %&gt; &lt;%@ Property Name=&quot;Person&quot; Type=&quot;System.String&quot; Description=&quot;This will show up at the bottom of the property grid when the property is selected.&quot; %&gt; &lt;%-- This template demonstrates using properties in your template. --%&gt; This is some static content (just like the static HTML in a ASP page). &lt;%= &quot;Hello &quot; &#43; this." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2011/02/codesmith/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2011-02-26T00:00:00+08:00" />
-<meta property="article:modified_time" content="2011-02-26T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="CodeSmith使用心得"/>
-<meta name="twitter:description" content="CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst
-）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。
-一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码&#43;脚本的方式，大致代码如下（官方的sample2）。
-&lt;%@ CodeTemplate Language=&quot;C#&quot; TargetLanguage=&quot;Text&quot; Description=&quot;This template demonstrates using properties in your template.&quot; %&gt; &lt;%@ Property Name=&quot;Person&quot; Type=&quot;System.String&quot; Description=&quot;This will show up at the bottom of the property grid when the property is selected.&quot; %&gt; &lt;%-- This template demonstrates using properties in your template. --%&gt; This is some static content (just like the static HTML in a ASP page). &lt;%= &quot;Hello &quot; &#43; this."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "CodeSmith使用心得",
-      "item": "https://blog.alswl.com/2011/02/codesmith/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "CodeSmith使用心得",
-  "name": "CodeSmith使用心得",
-  "description": "CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst\n）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。\n一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码+脚本的方式，大致代码如下（官方的sample2）。\n\u0026lt;%@ CodeTemplate Language=\u0026quot;C#\u0026quot; TargetLanguage=\u0026quot;Text\u0026quot; Description=\u0026quot;This template demonstrates using properties in your template.\u0026quot; %\u0026gt; \u0026lt;%@ Property Name=\u0026quot;Person\u0026quot; Type=\u0026quot;System.String\u0026quot; Description=\u0026quot;This will show up at the bottom of the property grid when the property is selected.\u0026quot; %\u0026gt; \u0026lt;%-- This template demonstrates using properties in your template. --%\u0026gt; This is some static content (just like the static HTML in a ASP page). \u0026lt;%= \u0026quot;Hello \u0026quot; + this.",
-  "keywords": [
-    "工欲善其事必先利其器", "codesmith"
-  ],
-  "articleBody": "CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst\n）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。\n一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码+脚本的方式，大致代码如下（官方的sample2）。\n\u003c%@ CodeTemplate Language=\"C#\" TargetLanguage=\"Text\" Description=\"This template demonstrates using properties in your template.\" %\u003e \u003c%@ Property Name=\"Person\" Type=\"System.String\" Description=\"This will show up at the bottom of the property grid when the property is selected.\" %\u003e \u003c%-- This template demonstrates using properties in your template. --%\u003e This is some static content (just like the static HTML in a ASP page). \u003c%= \"Hello \" + this.Person + \"!\" %\u003e This is more static content. 这个结构熟悉吧，几行代码分别表示模板属性，参数，脚本（注释），脚本（输出），静态文本。\n通过上面这个例子可以直观看到CodeSmith使用方式，无非是在固有的代码片段上面进行一些动态的输出。\n例子使用了一个名为Person的属性，其类型是String。在CodeSmith中，所有.net的基础属性都能够使用，除此之外，CodeSmith还封装了一\n些特殊的属性类型，方便用户使用，像多行文本，文件选择，XML序列化文件、Key-Value键值对等等。\n通过\u003c%@ Assembly Name=“SchemaExplorer” %\u003e和\u003c%@ Import Namespace=“SchemaExplorer”\n%\u003e，我们能够使用自定义的dll和命名空间，托.net平台类库的福，系统的灵活性大大提高了。\n数据接入 仅仅拥有上面这些特性，CodeSmith还不足以成为一个趁手的工具。真正让自定义功能发挥到极致的是CodeSmith中的SchemaExplorer。\nSchemaExplorer的作用是给CodeSmith提供各类基础数据，比如字段的设计、表结构的设计。SchemaExplorer下面有两个比较常用的类，\nTableSchema和ViewSchema，能够读取表信息和视图信息。\n官方代码片段如下：\n\u003c%@ Property Category=\"1.Database\" Name=\"Tables\" Optional=\"False\" Type=\"SchemaExplorer.TableSchemaCollection\" Description=\"Database to create SQLite DDL from.\" %\u003e \u003c% foreach (TableSchema table in Tables) { %\u003e -- Table \u003c%= string.Format(EscapeFormat, table.Name) %\u003e data \u003c% string columnDefinition = BuildColumns(table); %\u003e \u003c% string tableName = BuildTableName(table); %\u003e \u003c% DataTable data = table.GetTableData(); %\u003e \u003c% foreach (DataRow row in data.Rows) { %\u003e INSERT INTO \u003c%= tableName %\u003e\u003c%= columnDefinition %\u003e VALUES (\u003c%= BuildInsert(row) %\u003e); \u003c% } // for each row%\u003e \u003c% } // for each table%\u003e\n上面代码通过便利Table，生成了一系列INSERT语句。\n细心的童鞋可能发现了，描述中提到了\"Database to create SQLite DDL from\"，没错，通过SchemaExplorer，Code\nSmith屏蔽了数据库差异，所以能够使用各大主流数据库，从MySQL到MSSQL，从SQLite到PostreSQL，并且，只要把提供实现了SechemaE\nxplorer接口的dll放入CodeSmith/SchemaProviders目录下面，就能够理论上实现各种数据接入（其实。。。官方的SQLite接入都有\n问题，反正我死活没成功，最后还是用了原生支持的MSSQL）。\n我使用的数据接入 CodeSmith提供的SechemaExplorer虽然强大，但是却有一个弊端：它设计用来读取数据库结构，而不是其中的数据。TableSchema类型只提\n供字段类型信息，而不提供具体数据内容。\n我需要读取的数据并不是表结构，而是里面具体的数据，我需要根据这些数据生成具体代码，所以需求和CodeSmith的设计思路不一致，我早起使用了ViewSche\nma来曲线实现读取数据库内容的功能。（ViewSchema可以读取具体内容）\n通过DataRow row in this.V_JOB.GetViewData().Rows，我可以获取视图里面所有数据列。这种方法比较取巧，缺点也显而易见\n：每次不同的SQL需要定义一个额外的视图，很快我就放弃了这种办法。\n最后我决定使用原生的SQL来获取数据，例子如下\n\u003c%@ Assembly Name=\"Microsoft.ApplicationBlocks.Data\" %\u003e \u003c%@ Import Namespace=\"System.Data\" %\u003e \u003c%@ Import Namespace=\"System.Data.SqlClient\" %\u003e \u003c%@ Import Namespace=\"Microsoft.ApplicationBlocks.Data\" %\u003e \u003c% StringBuilder sql = new StringBuilder(); sql.Append(\"SELECT * n\"); sql.Append(\"FROM TASK n\"); sql.Append(\" LEFT JOIN CONTROLER n\"); sql.Append(\" ON TASK.guid = CONTROLER.taskGuid n\"); sql.AppendFormat(\"WHERE TASK.confirmId = '{0}' n\", ConfirmId); sql.AppendFormat(\" AND TASK.id = '{0}' n\", TaskId); sql.Append(\" AND CONTROLER.bodyNo IS NULL n\"); sql.Append(\" OR CONTROLER.bodyNo = 0 \"); SqlConnection connection = new SqlConnection(databaseSchema.ConnectionString);\nconnection.Open();\nDataTable dataTable = SqlHelper.ExecuteDataset(connection, CommandType.Text,\nsql.ToString()).Tables[0];\nforeach (DataRow row in dataTable.Rows) {\n} %\u003e\n这个例子就是引用原生的System.Data.SqlClient完成读数据，另外为了简化操作，我使用了微软的SqlHelper进行数据操作封装，即Micro\nsoft.ApplicationBlocks.Data这个类库。（SqlHelper可以在微软官网下载到）需要引用的类库记得放入CodeSmith/bin目\n录下面。\n最后，如果Template过于复杂，记得把Template进行分割成小模块，再使用Register关键字引用，以提高复用，DRY。\n\u003c%@ Register Name=\"DscHideField\" Template=\"../Controler/DscHideField.cs.cst\" %\u003e 相关链接\nCodeSmith官网\n[CodeSmith 介绍 - 代码生成之路 - 博客园](http://www.cnblogs.com/lxf120/archive/2007/04/03\n/698707.html)里面有个很详细的Tutorial\nCodeSmith开发系列资料总结 - TerryLee’s Tech\nSpace -\n博客园李银河的CodeSmith系列文章，有几个高级议题\n",
-  "wordCount" : "303",
-  "inLanguage": "en",
-  "datePublished": "2011-02-26T00:00:00+08:00",
-  "dateModified": "2011-02-26T00:00:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2011/02/codesmith/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      CodeSmith使用心得
-    </h1>
-    <div class="post-meta"><span title='2011-02-26 00:00:00 +0800 CST'>2011-02-26</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#一个简单的sample">一个简单的Sample</a></li>
-    <li><a href="#数据接入">数据接入</a></li>
-    <li><a href="#我使用的数据接入">我使用的数据接入</a></li>
-  </ul>
-</nav>
-        </div>
-    </details>
-</div>
-
-  <div class="post-content"><p>CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst<br />
-）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。</p>
-<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png" alt="CodeSmith"  />
-</p>
-<h2 id="一个简单的sample">一个简单的Sample<a hidden class="anchor" aria-hidden="true" href="#一个简单的sample">#</a></h2>
-<p>CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码+脚本的方式，大致代码如下（官方的sample2）。</p>
-<pre><code>&lt;%@ CodeTemplate Language=&quot;C#&quot; TargetLanguage=&quot;Text&quot; Description=&quot;This template demonstrates using properties in your template.&quot; %&gt;
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>CodeSmith使用心得 | Log4D</title><meta name=keywords content="工欲善其事必先利其器,codesmith"><meta name=description content="CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst ）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。
+一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码+脚本的方式，大致代码如下（官方的sample2）。
+<%@ CodeTemplate Language=&#34;C#&#34; TargetLanguage=&#34;Text&#34; Description=&#34;This template demonstrates using properties in your template.&#34; %> <%@ Property Name=&#34;Person&#34; Type=&#34;System.String&#34; Description=&#34;This will show up at the bottom of the property grid when the property is selected.&#34; %> <%-- This template demonstrates using properties in your template. --%> This is some static content (just like the static HTML in a ASP page). <%= &#34;Hello &#34; + this."><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2011/02/codesmith/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="CodeSmith使用心得"><meta property="og:description" content="CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst ）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。
+一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码+脚本的方式，大致代码如下（官方的sample2）。
+<%@ CodeTemplate Language=&#34;C#&#34; TargetLanguage=&#34;Text&#34; Description=&#34;This template demonstrates using properties in your template.&#34; %> <%@ Property Name=&#34;Person&#34; Type=&#34;System.String&#34; Description=&#34;This will show up at the bottom of the property grid when the property is selected.&#34; %> <%-- This template demonstrates using properties in your template. --%> This is some static content (just like the static HTML in a ASP page). <%= &#34;Hello &#34; + this."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2011/02/codesmith/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2011-02-26T00:00:00+08:00"><meta property="article:modified_time" content="2011-02-26T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="CodeSmith使用心得"><meta name=twitter:description content="CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst ）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。
+一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码+脚本的方式，大致代码如下（官方的sample2）。
+<%@ CodeTemplate Language=&#34;C#&#34; TargetLanguage=&#34;Text&#34; Description=&#34;This template demonstrates using properties in your template.&#34; %> <%@ Property Name=&#34;Person&#34; Type=&#34;System.String&#34; Description=&#34;This will show up at the bottom of the property grid when the property is selected.&#34; %> <%-- This template demonstrates using properties in your template. --%> This is some static content (just like the static HTML in a ASP page). <%= &#34;Hello &#34; + this."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"CodeSmith使用心得","item":"https://blog.alswl.com/2011/02/codesmith/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"CodeSmith使用心得","name":"CodeSmith使用心得","description":"CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst ）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。\n一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码+脚本的方式，大致代码如下（官方的sample2）。\n\u0026lt;%@ CodeTemplate Language=\u0026quot;C#\u0026quot; TargetLanguage=\u0026quot;Text\u0026quot; Description=\u0026quot;This template demonstrates using properties in your template.\u0026quot; %\u0026gt; \u0026lt;%@ Property Name=\u0026quot;Person\u0026quot; Type=\u0026quot;System.String\u0026quot; Description=\u0026quot;This will show up at the bottom of the property grid when the property is selected.\u0026quot; %\u0026gt; \u0026lt;%-- This template demonstrates using properties in your template. --%\u0026gt; This is some static content (just like the static HTML in a ASP page). \u0026lt;%= \u0026quot;Hello \u0026quot; + this.","keywords":["工欲善其事必先利其器","codesmith"],"articleBody":"CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst ）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。\n一个简单的Sample CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码+脚本的方式，大致代码如下（官方的sample2）。\n\u003c%@ CodeTemplate Language=\"C#\" TargetLanguage=\"Text\" Description=\"This template demonstrates using properties in your template.\" %\u003e \u003c%@ Property Name=\"Person\" Type=\"System.String\" Description=\"This will show up at the bottom of the property grid when the property is selected.\" %\u003e \u003c%-- This template demonstrates using properties in your template. --%\u003e This is some static content (just like the static HTML in a ASP page). \u003c%= \"Hello \" + this.Person + \"!\" %\u003e This is more static content. 这个结构熟悉吧，几行代码分别表示模板属性，参数，脚本（注释），脚本（输出），静态文本。\n通过上面这个例子可以直观看到CodeSmith使用方式，无非是在固有的代码片段上面进行一些动态的输出。\n例子使用了一个名为Person的属性，其类型是String。在CodeSmith中，所有.net的基础属性都能够使用，除此之外，CodeSmith还封装了一 些特殊的属性类型，方便用户使用，像多行文本，文件选择，XML序列化文件、Key-Value键值对等等。\n通过\u003c%@ Assembly Name=“SchemaExplorer” %\u003e和\u003c%@ Import Namespace=“SchemaExplorer” %\u003e，我们能够使用自定义的dll和命名空间，托.net平台类库的福，系统的灵活性大大提高了。\n数据接入 仅仅拥有上面这些特性，CodeSmith还不足以成为一个趁手的工具。真正让自定义功能发挥到极致的是CodeSmith中的SchemaExplorer。\nSchemaExplorer的作用是给CodeSmith提供各类基础数据，比如字段的设计、表结构的设计。SchemaExplorer下面有两个比较常用的类， TableSchema和ViewSchema，能够读取表信息和视图信息。\n官方代码片段如下：\n\u003c%@ Property Category=\"1.Database\" Name=\"Tables\" Optional=\"False\" Type=\"SchemaExplorer.TableSchemaCollection\" Description=\"Database to create SQLite DDL from.\" %\u003e \u003c% foreach (TableSchema table in Tables) { %\u003e -- Table \u003c%= string.Format(EscapeFormat, table.Name) %\u003e data \u003c% string columnDefinition = BuildColumns(table); %\u003e \u003c% string tableName = BuildTableName(table); %\u003e \u003c% DataTable data = table.GetTableData(); %\u003e \u003c% foreach (DataRow row in data.Rows) { %\u003e INSERT INTO \u003c%= tableName %\u003e\u003c%= columnDefinition %\u003e VALUES (\u003c%= BuildInsert(row) %\u003e); \u003c% } // for each row%\u003e \u003c% } // for each table%\u003e\n上面代码通过便利Table，生成了一系列INSERT语句。\n细心的童鞋可能发现了，描述中提到了\"Database to create SQLite DDL from\"，没错，通过SchemaExplorer，Code Smith屏蔽了数据库差异，所以能够使用各大主流数据库，从MySQL到MSSQL，从SQLite到PostreSQL，并且，只要把提供实现了SechemaE xplorer接口的dll放入CodeSmith/SchemaProviders目录下面，就能够理论上实现各种数据接入（其实。。。官方的SQLite接入都有 问题，反正我死活没成功，最后还是用了原生支持的MSSQL）。\n我使用的数据接入 CodeSmith提供的SechemaExplorer虽然强大，但是却有一个弊端：它设计用来读取数据库结构，而不是其中的数据。TableSchema类型只提 供字段类型信息，而不提供具体数据内容。\n我需要读取的数据并不是表结构，而是里面具体的数据，我需要根据这些数据生成具体代码，所以需求和CodeSmith的设计思路不一致，我早起使用了ViewSche ma来曲线实现读取数据库内容的功能。（ViewSchema可以读取具体内容）\n通过DataRow row in this.V_JOB.GetViewData().Rows，我可以获取视图里面所有数据列。这种方法比较取巧，缺点也显而易见 ：每次不同的SQL需要定义一个额外的视图，很快我就放弃了这种办法。\n最后我决定使用原生的SQL来获取数据，例子如下\n\u003c%@ Assembly Name=\"Microsoft.ApplicationBlocks.Data\" %\u003e \u003c%@ Import Namespace=\"System.Data\" %\u003e \u003c%@ Import Namespace=\"System.Data.SqlClient\" %\u003e \u003c%@ Import Namespace=\"Microsoft.ApplicationBlocks.Data\" %\u003e \u003c% StringBuilder sql = new StringBuilder(); sql.Append(\"SELECT * n\"); sql.Append(\"FROM TASK n\"); sql.Append(\" LEFT JOIN CONTROLER n\"); sql.Append(\" ON TASK.guid = CONTROLER.taskGuid n\"); sql.AppendFormat(\"WHERE TASK.confirmId = '{0}' n\", ConfirmId); sql.AppendFormat(\" AND TASK.id = '{0}' n\", TaskId); sql.Append(\" AND CONTROLER.bodyNo IS NULL n\"); sql.Append(\" OR CONTROLER.bodyNo = 0 \"); SqlConnection connection = new SqlConnection(databaseSchema.ConnectionString);\nconnection.Open();\nDataTable dataTable = SqlHelper.ExecuteDataset(connection, CommandType.Text, sql.ToString()).Tables[0];\nforeach (DataRow row in dataTable.Rows) {\n} %\u003e\n这个例子就是引用原生的System.Data.SqlClient完成读数据，另外为了简化操作，我使用了微软的SqlHelper进行数据操作封装，即Micro soft.ApplicationBlocks.Data这个类库。（SqlHelper可以在微软官网下载到）需要引用的类库记得放入CodeSmith/bin目 录下面。\n最后，如果Template过于复杂，记得把Template进行分割成小模块，再使用Register关键字引用，以提高复用，DRY。\n\u003c%@ Register Name=\"DscHideField\" Template=\"../Controler/DscHideField.cs.cst\" %\u003e 相关链接\nCodeSmith官网\n[CodeSmith 介绍 - 代码生成之路 - 博客园](http://www.cnblogs.com/lxf120/archive/2007/04/03 /698707.html)里面有个很详细的Tutorial\nCodeSmith开发系列资料总结 - TerryLee’s Tech Space - 博客园李银河的CodeSmith系列文章，有几个高级议题\n","wordCount":"303","inLanguage":"en","datePublished":"2011-02-26T00:00:00+08:00","dateModified":"2011-02-26T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2011/02/codesmith/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>CodeSmith使用心得</h1><div class=post-meta><span title='2011-02-26 00:00:00 +0800 +0800'>2011-02-26</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#一个简单的sample>一个简单的Sample</a></li><li><a href=#数据接入>数据接入</a></li><li><a href=#我使用的数据接入>我使用的数据接入</a></li></ul></nav></div></details></div><div class=post-content><p>CodeSmith是一款著名的代码生成器，可以帮助开发者完成一些重复性的劳动，并且能够保证更高的代码质量。CodeSmith使用Template（*.cst
+）模板进行基础代码片段的定义，支持语言包括C#, Java, VB, PHP, ASP.NET, SQL等等。</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png alt=CodeSmith></p><h2 id=一个简单的sample>一个简单的Sample<a hidden class=anchor aria-hidden=true href=#一个简单的sample>#</a></h2><p>CodeSmith使用的模板使用方式类似于aspx/jsp页面，也就是基础代码+脚本的方式，大致代码如下（官方的sample2）。</p><pre><code>&lt;%@ CodeTemplate Language=&quot;C#&quot; TargetLanguage=&quot;Text&quot; Description=&quot;This template demonstrates using properties in your template.&quot; %&gt;
 &lt;%@ Property Name=&quot;Person&quot; Type=&quot;System.String&quot; Description=&quot;This will show up at the bottom of the property grid when the property is selected.&quot; %&gt;
 &lt;%-- 
 This template demonstrates using properties in your template.
@@ -249,19 +14,10 @@ This template demonstrates using properties in your template.
 This is some static content (just like the static HTML in a ASP page).
 &lt;%= &quot;Hello &quot; + this.Person + &quot;!&quot; %&gt;
 This is more static content.
-</code></pre>
-<p>这个结构熟悉吧，几行代码分别表示模板属性，参数，脚本（注释），脚本（输出），静态文本。</p>
-<p>通过上面这个例子可以直观看到CodeSmith使用方式，无非是在固有的代码片段上面进行一些动态的输出。</p>
-<p>例子使用了一个名为Person的属性，其类型是String。在CodeSmith中，所有.net的基础属性都能够使用，除此之外，CodeSmith还封装了一<br />
-些特殊的属性类型，方便用户使用，像多行文本，文件选择，XML序列化文件、Key-Value键值对等等。</p>
-<p>通过&lt;%@ Assembly Name=&ldquo;SchemaExplorer&rdquo; %&gt;和&lt;%@ Import Namespace=&ldquo;SchemaExplorer&rdquo;<br />
-%&gt;，我们能够使用自定义的dll和命名空间，托.net平台类库的福，系统的灵活性大大提高了。</p>
-<h2 id="数据接入">数据接入<a hidden class="anchor" aria-hidden="true" href="#数据接入">#</a></h2>
-<p>仅仅拥有上面这些特性，CodeSmith还不足以成为一个趁手的工具。真正让自定义功能发挥到极致的是CodeSmith中的SchemaExplorer。</p>
-<p>SchemaExplorer的作用是给CodeSmith提供各类基础数据，比如字段的设计、表结构的设计。SchemaExplorer下面有两个比较常用的类，<br />
-TableSchema和ViewSchema，能够读取表信息和视图信息。</p>
-<p>官方代码片段如下：</p>
-<pre><code>&lt;%@ Property Category=&quot;1.Database&quot; Name=&quot;Tables&quot; Optional=&quot;False&quot;
+</code></pre><p>这个结构熟悉吧，几行代码分别表示模板属性，参数，脚本（注释），脚本（输出），静态文本。</p><p>通过上面这个例子可以直观看到CodeSmith使用方式，无非是在固有的代码片段上面进行一些动态的输出。</p><p>例子使用了一个名为Person的属性，其类型是String。在CodeSmith中，所有.net的基础属性都能够使用，除此之外，CodeSmith还封装了一
+些特殊的属性类型，方便用户使用，像多行文本，文件选择，XML序列化文件、Key-Value键值对等等。</p><p>通过&lt;%@ Assembly Name=&ldquo;SchemaExplorer&rdquo; %>和&lt;%@ Import Namespace=&ldquo;SchemaExplorer&rdquo;
+%>，我们能够使用自定义的dll和命名空间，托.net平台类库的福，系统的灵活性大大提高了。</p><h2 id=数据接入>数据接入<a hidden class=anchor aria-hidden=true href=#数据接入>#</a></h2><p>仅仅拥有上面这些特性，CodeSmith还不足以成为一个趁手的工具。真正让自定义功能发挥到极致的是CodeSmith中的SchemaExplorer。</p><p>SchemaExplorer的作用是给CodeSmith提供各类基础数据，比如字段的设计、表结构的设计。SchemaExplorer下面有两个比较常用的类，
+TableSchema和ViewSchema，能够读取表信息和视图信息。</p><p>官方代码片段如下：</p><pre><code>&lt;%@ Property Category=&quot;1.Database&quot; Name=&quot;Tables&quot; Optional=&quot;False&quot;
     Type=&quot;SchemaExplorer.TableSchemaCollection&quot; 
     Description=&quot;Database to create SQLite DDL from.&quot; %&gt;
 &lt;% foreach (TableSchema table in Tables) { %&gt;
@@ -272,22 +28,13 @@ TableSchema和ViewSchema，能够读取表信息和视图信息。</p>
 &lt;% foreach (DataRow row in data.Rows) { %&gt;
 INSERT INTO &lt;%= tableName %&gt;&lt;%= columnDefinition %&gt; VALUES (&lt;%= BuildInsert(row) %&gt;);
 &lt;% } // for each row%&gt;
-</code></pre>
-<p>&lt;% } // for each table%&gt;</p>
-<p>上面代码通过便利Table，生成了一系列INSERT语句。</p>
-<p>细心的童鞋可能发现了，描述中提到了&quot;Database to create SQLite DDL from&quot;，没错，通过SchemaExplorer，Code<br />
-Smith屏蔽了数据库差异，所以能够使用各大主流数据库，从MySQL到MSSQL，从SQLite到PostreSQL，并且，只要把提供实现了SechemaE<br />
-xplorer接口的dll放入CodeSmith/SchemaProviders目录下面，就能够理论上实现各种数据接入（其实。。。官方的SQLite接入都有<br />
-问题，反正我死活没成功，最后还是用了原生支持的MSSQL）。</p>
-<h2 id="我使用的数据接入">我使用的数据接入<a hidden class="anchor" aria-hidden="true" href="#我使用的数据接入">#</a></h2>
-<p>CodeSmith提供的SechemaExplorer虽然强大，但是却有一个弊端：它设计用来读取数据库结构，而不是其中的数据。TableSchema类型只提<br />
-供字段类型信息，而不提供具体数据内容。</p>
-<p>我需要读取的数据并不是表结构，而是里面具体的数据，我需要根据这些数据生成具体代码，所以需求和CodeSmith的设计思路不一致，我早起使用了ViewSche<br />
-ma来曲线实现读取数据库内容的功能。（ViewSchema可以读取具体内容）</p>
-<p>通过DataRow row in this.V_JOB.GetViewData().Rows，我可以获取视图里面所有数据列。这种方法比较取巧，缺点也显而易见<br />
-：每次不同的SQL需要定义一个额外的视图，很快我就放弃了这种办法。</p>
-<p>最后我决定使用原生的SQL来获取数据，例子如下</p>
-<pre><code>&lt;%@ Assembly Name=&quot;Microsoft.ApplicationBlocks.Data&quot; %&gt;
+</code></pre><p>&lt;% } // for each table%></p><p>上面代码通过便利Table，生成了一系列INSERT语句。</p><p>细心的童鞋可能发现了，描述中提到了"Database to create SQLite DDL from"，没错，通过SchemaExplorer，Code
+Smith屏蔽了数据库差异，所以能够使用各大主流数据库，从MySQL到MSSQL，从SQLite到PostreSQL，并且，只要把提供实现了SechemaE
+xplorer接口的dll放入CodeSmith/SchemaProviders目录下面，就能够理论上实现各种数据接入（其实。。。官方的SQLite接入都有
+问题，反正我死活没成功，最后还是用了原生支持的MSSQL）。</p><h2 id=我使用的数据接入>我使用的数据接入<a hidden class=anchor aria-hidden=true href=#我使用的数据接入>#</a></h2><p>CodeSmith提供的SechemaExplorer虽然强大，但是却有一个弊端：它设计用来读取数据库结构，而不是其中的数据。TableSchema类型只提
+供字段类型信息，而不提供具体数据内容。</p><p>我需要读取的数据并不是表结构，而是里面具体的数据，我需要根据这些数据生成具体代码，所以需求和CodeSmith的设计思路不一致，我早起使用了ViewSche
+ma来曲线实现读取数据库内容的功能。（ViewSchema可以读取具体内容）</p><p>通过DataRow row in this.V_JOB.GetViewData().Rows，我可以获取视图里面所有数据列。这种方法比较取巧，缺点也显而易见
+：每次不同的SQL需要定义一个额外的视图，很快我就放弃了这种办法。</p><p>最后我决定使用原生的SQL来获取数据，例子如下</p><pre><code>&lt;%@ Assembly Name=&quot;Microsoft.ApplicationBlocks.Data&quot; %&gt;
 &lt;%@ Import Namespace=&quot;System.Data&quot; %&gt;
 &lt;%@ Import Namespace=&quot;System.Data.SqlClient&quot; %&gt;
 &lt;%@ Import Namespace=&quot;Microsoft.ApplicationBlocks.Data&quot; %&gt;
@@ -301,206 +48,16 @@ sql.AppendFormat(&quot;WHERE  TASK.confirmId = '{0}' n&quot;, ConfirmId);
 sql.AppendFormat(&quot;       AND TASK.id = '{0}' n&quot;, TaskId);
 sql.Append(&quot;       AND CONTROLER.bodyNo IS NULL n&quot;);
 sql.Append(&quot;        OR CONTROLER.bodyNo = 0 &quot;);
-</code></pre>
-<p>SqlConnection connection = new SqlConnection(databaseSchema.ConnectionString);</p>
-<p>connection.Open();</p>
-<p>DataTable dataTable = SqlHelper.ExecuteDataset(connection, CommandType.Text,<br />
-sql.ToString()).Tables[0];</p>
-<p>foreach (DataRow row in dataTable.Rows) {</p>
-<p>} %&gt;</p>
-<p>这个例子就是引用原生的System.Data.SqlClient完成读数据，另外为了简化操作，我使用了微软的SqlHelper进行数据操作封装，即Micro<br />
-soft.ApplicationBlocks.Data这个类库。（SqlHelper可以在微软官网下载到）需要引用的类库记得放入CodeSmith/bin目<br />
-录下面。</p>
-<p>最后，如果Template过于复杂，记得把Template进行分割成小模块，再使用Register关键字引用，以提高复用，DRY。</p>
-<pre><code>&lt;%@ Register Name=&quot;DscHideField&quot; Template=&quot;../Controler/DscHideField.cs.cst&quot; %&gt;
-</code></pre>
-<p>相关链接</p>
-<p><a href="http://www.codesmithtools.com/">CodeSmith官网</a></p>
-<p>[CodeSmith 介绍 - 代码生成之路 - 博客园](<a href="http://www.cnblogs.com/lxf120/archive/2007/04/03">http://www.cnblogs.com/lxf120/archive/2007/04/03</a><br />
-/698707.html)里面有个很详细的Tutorial</p>
-<p><a href="http://terrylee.cnblogs.com/archive/2005/12/28/306254.aspx">CodeSmith开发系列资料总结 - TerryLee&rsquo;s Tech<br />
-Space</a> -<br />
-博客园李银河的CodeSmith系列文章，有几个高级议题</p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2011/02/codesmith/">CodeSmith使用心得 | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8/">工欲善其事必先利其器</a></li>
-      <li><a href="https://blog.alswl.com/tags/codesmith/">codesmith</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2011/03/maven-eclipse/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>在Eclipse中使用Maven</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2011/02/no-silver-bullet/">
-    <span class="title">Next »</span>
-    <br>
-    <span>没有银弹</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+</code></pre><p>SqlConnection connection = new SqlConnection(databaseSchema.ConnectionString);</p><p>connection.Open();</p><p>DataTable dataTable = SqlHelper.ExecuteDataset(connection, CommandType.Text,
+sql.ToString()).Tables[0];</p><p>foreach (DataRow row in dataTable.Rows) {</p><p>} %></p><p>这个例子就是引用原生的System.Data.SqlClient完成读数据，另外为了简化操作，我使用了微软的SqlHelper进行数据操作封装，即Micro
+soft.ApplicationBlocks.Data这个类库。（SqlHelper可以在微软官网下载到）需要引用的类库记得放入CodeSmith/bin目
+录下面。</p><p>最后，如果Template过于复杂，记得把Template进行分割成小模块，再使用Register关键字引用，以提高复用，DRY。</p><pre><code>&lt;%@ Register Name=&quot;DscHideField&quot; Template=&quot;../Controler/DscHideField.cs.cst&quot; %&gt;
+</code></pre><p>相关链接</p><p><a href=http://www.codesmithtools.com/>CodeSmith官网</a></p><p>[CodeSmith 介绍 - 代码生成之路 - 博客园](<a href=http://www.cnblogs.com/lxf120/archive/2007/04/03>http://www.cnblogs.com/lxf120/archive/2007/04/03</a>
+/698707.html)里面有个很详细的Tutorial</p><p><a href=http://terrylee.cnblogs.com/archive/2005/12/28/306254.aspx>CodeSmith开发系列资料总结 - TerryLee&rsquo;s Tech
+Space</a> -
+博客园李银河的CodeSmith系列文章，有几个高级议题</p><hr><p>原文链接: <a href=https://blog.alswl.com/2011/02/codesmith/>CodeSmith使用心得 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8/>工欲善其事必先利其器</a></li><li><a href=https://blog.alswl.com/tags/codesmith/>codesmith</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2011/03/maven-eclipse/><span class=title>« Prev</span><br><span>在Eclipse中使用Maven</span></a>
+<a class=next href=https://blog.alswl.com/2011/02/no-silver-bullet/><span class=title>Next »</span><br><span>没有银弹</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

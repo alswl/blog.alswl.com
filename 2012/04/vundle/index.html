@@ -1,560 +1,100 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>使用 Vundle 管理 Vim 插件 | Log4D</title>
-<meta name="keywords" content="工欲善其事必先利其器, vim, vundle">
-<meta name="description" content="早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的
-邮件。
-才惊呼原来有这么强大的插件可以用来管理我那一坨插件，
-今天细细阅读并查了一些资料，变开始配置自己的 Vim。
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>使用 Vundle 管理 Vim 插件 | Log4D</title><meta name=keywords content="工欲善其事必先利其器,vim,vundle"><meta name=description content="早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的 邮件。 才惊呼原来有这么强大的插件可以用来管理我那一坨插件， 今天细细阅读并查了一些资料，变开始配置自己的 Vim。
 几种管理插件 Vim 的插件管理工具有蛮多，比如：
-Vundle vim-addon-manager vpathogen.vim vvundle vvimana 一位同学自己写的 Vim-addon-manager 和 vimana 的对比，参见
-Vim的插件管理工具
-我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。
-我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG
-包描述文件的前提下，分子目录是一种简单有效的方法。
+Vundle vim-addon-manager vpathogen.vim vvundle vvimana 一位同学自己写的 Vim-addon-manager 和 vimana 的对比，参见 Vim的插件管理工具
+我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。 我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG 包描述文件的前提下，分子目录是一种简单有效的方法。
 Vundle 通过 git 来对插件进行更新，有三种源可以添加：
 github 中 vim-scripts 的项目（这个账号是为 Pathogen 建的，用来建立对 Vim.org 上脚本的镜像） github 某个 Vim 插件项目 某个 git 源 以上也是我推荐的选择插件顺序，我认为没有必要去取最新的开发版插件。
-Vundle 安装 无二话，官方文档的 Quick Start
-写的很详细 ，一句话：
+Vundle 安装 无二话，官方文档的 Quick Start 写的很详细 ，一句话：
 $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 然后开始配置 .vimrc，我的 .vimrc
 重点是配置各种 Bundle 我的配置如下
-&#34; My Bundles here: &#34; vim-scripts repos &#34; Syntax Bundle &#39;asciidoc.">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2012/04/vundle/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="使用 Vundle 管理 Vim 插件" />
-<meta property="og:description" content="早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的
-邮件。
-才惊呼原来有这么强大的插件可以用来管理我那一坨插件，
-今天细细阅读并查了一些资料，变开始配置自己的 Vim。
+&#34; My Bundles here: &#34; vim-scripts repos &#34; Syntax Bundle 'asciidoc."><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2012/04/vundle/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="使用 Vundle 管理 Vim 插件"><meta property="og:description" content="早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的 邮件。 才惊呼原来有这么强大的插件可以用来管理我那一坨插件， 今天细细阅读并查了一些资料，变开始配置自己的 Vim。
 几种管理插件 Vim 的插件管理工具有蛮多，比如：
-Vundle vim-addon-manager vpathogen.vim vvundle vvimana 一位同学自己写的 Vim-addon-manager 和 vimana 的对比，参见
-Vim的插件管理工具
-我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。
-我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG
-包描述文件的前提下，分子目录是一种简单有效的方法。
+Vundle vim-addon-manager vpathogen.vim vvundle vvimana 一位同学自己写的 Vim-addon-manager 和 vimana 的对比，参见 Vim的插件管理工具
+我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。 我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG 包描述文件的前提下，分子目录是一种简单有效的方法。
 Vundle 通过 git 来对插件进行更新，有三种源可以添加：
 github 中 vim-scripts 的项目（这个账号是为 Pathogen 建的，用来建立对 Vim.org 上脚本的镜像） github 某个 Vim 插件项目 某个 git 源 以上也是我推荐的选择插件顺序，我认为没有必要去取最新的开发版插件。
-Vundle 安装 无二话，官方文档的 Quick Start
-写的很详细 ，一句话：
+Vundle 安装 无二话，官方文档的 Quick Start 写的很详细 ，一句话：
 $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 然后开始配置 .vimrc，我的 .vimrc
 重点是配置各种 Bundle 我的配置如下
-&#34; My Bundles here: &#34; vim-scripts repos &#34; Syntax Bundle &#39;asciidoc." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2012/04/vundle/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2012-04-14T00:00:00+08:00" />
-<meta property="article:modified_time" content="2012-04-14T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="使用 Vundle 管理 Vim 插件"/>
-<meta name="twitter:description" content="早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的
-邮件。
-才惊呼原来有这么强大的插件可以用来管理我那一坨插件，
-今天细细阅读并查了一些资料，变开始配置自己的 Vim。
+&#34; My Bundles here: &#34; vim-scripts repos &#34; Syntax Bundle 'asciidoc."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2012/04/vundle/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2012-04-14T00:00:00+08:00"><meta property="article:modified_time" content="2012-04-14T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="使用 Vundle 管理 Vim 插件"><meta name=twitter:description content="早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的 邮件。 才惊呼原来有这么强大的插件可以用来管理我那一坨插件， 今天细细阅读并查了一些资料，变开始配置自己的 Vim。
 几种管理插件 Vim 的插件管理工具有蛮多，比如：
-Vundle vim-addon-manager vpathogen.vim vvundle vvimana 一位同学自己写的 Vim-addon-manager 和 vimana 的对比，参见
-Vim的插件管理工具
-我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。
-我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG
-包描述文件的前提下，分子目录是一种简单有效的方法。
+Vundle vim-addon-manager vpathogen.vim vvundle vvimana 一位同学自己写的 Vim-addon-manager 和 vimana 的对比，参见 Vim的插件管理工具
+我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。 我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG 包描述文件的前提下，分子目录是一种简单有效的方法。
 Vundle 通过 git 来对插件进行更新，有三种源可以添加：
 github 中 vim-scripts 的项目（这个账号是为 Pathogen 建的，用来建立对 Vim.org 上脚本的镜像） github 某个 Vim 插件项目 某个 git 源 以上也是我推荐的选择插件顺序，我认为没有必要去取最新的开发版插件。
-Vundle 安装 无二话，官方文档的 Quick Start
-写的很详细 ，一句话：
+Vundle 安装 无二话，官方文档的 Quick Start 写的很详细 ，一句话：
 $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 然后开始配置 .vimrc，我的 .vimrc
 重点是配置各种 Bundle 我的配置如下
-&#34; My Bundles here: &#34; vim-scripts repos &#34; Syntax Bundle &#39;asciidoc."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "使用 Vundle 管理 Vim 插件",
-      "item": "https://blog.alswl.com/2012/04/vundle/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "使用 Vundle 管理 Vim 插件",
-  "name": "使用 Vundle 管理 Vim 插件",
-  "description": "早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的\n邮件。\n才惊呼原来有这么强大的插件可以用来管理我那一坨插件，\n今天细细阅读并查了一些资料，变开始配置自己的 Vim。\n几种管理插件 Vim 的插件管理工具有蛮多，比如：\nVundle vim-addon-manager vpathogen.vim vvundle vvimana 一位同学自己写的 Vim-addon-manager 和 vimana 的对比，参见\nVim的插件管理工具\n我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。\n我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG\n包描述文件的前提下，分子目录是一种简单有效的方法。\nVundle 通过 git 来对插件进行更新，有三种源可以添加：\ngithub 中 vim-scripts 的项目（这个账号是为 Pathogen 建的，用来建立对 Vim.org 上脚本的镜像） github 某个 Vim 插件项目 某个 git 源 以上也是我推荐的选择插件顺序，我认为没有必要去取最新的开发版插件。\nVundle 安装 无二话，官方文档的 Quick Start\n写的很详细 ，一句话：\n$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 然后开始配置 .vimrc，我的 .vimrc\n重点是配置各种 Bundle 我的配置如下\n\u0026#34; My Bundles here: \u0026#34; vim-scripts repos \u0026#34; Syntax Bundle \u0026#39;asciidoc.",
-  "keywords": [
-    "工欲善其事必先利其器", "vim", "vundle"
-  ],
-  "articleBody": "早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的\n邮件。\n才惊呼原来有这么强大的插件可以用来管理我那一坨插件，\n今天细细阅读并查了一些资料，变开始配置自己的 Vim。\n几种管理插件 Vim 的插件管理工具有蛮多，比如：\nVundle vim-addon-manager vpathogen.vim vvundle vvimana 一位同学自己写的 Vim-addon-manager 和 vimana 的对比，参见\nVim的插件管理工具\n我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。\n我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG\n包描述文件的前提下，分子目录是一种简单有效的方法。\nVundle 通过 git 来对插件进行更新，有三种源可以添加：\ngithub 中 vim-scripts 的项目（这个账号是为 Pathogen 建的，用来建立对 Vim.org 上脚本的镜像） github 某个 Vim 插件项目 某个 git 源 以上也是我推荐的选择插件顺序，我认为没有必要去取最新的开发版插件。\nVundle 安装 无二话，官方文档的 Quick Start\n写的很详细 ，一句话：\n$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 然后开始配置 .vimrc，我的 .vimrc\n重点是配置各种 Bundle 我的配置如下\n\" My Bundles here: \" vim-scripts repos \" Syntax Bundle 'asciidoc.vim' Bundle 'confluencewiki.vim' Bundle 'html5.vim' Bundle 'JavaScript-syntax' \"Bundle 'mako.vim' Bundle 'moin.vim' Bundle 'python.vim--Vasiliev' Bundle 'xml.vim' \" Color Bundle 'desert256.vim' Bundle 'Impact' Bundle 'matrix.vim' Bundle 'vibrantink' Bundle 'vividchalk.vim' \" Ftplugin Bundle 'python_fold' \" Indent \"Bundle 'indent/html.vim' Bundle 'IndentAnything' Bundle 'Javascript-Indentation' Bundle 'mako.vim--Torborg' Bundle 'gg/python.vim' \" Plugin Bundle 'The-NERD-tree' Bundle 'AutoClose--Alves' Bundle 'auto_mkdir' Bundle 'cecutil' Bundle 'fcitx.vim' Bundle 'FencView.vim' \"Bundle 'FuzzyFinder' Bundle 'jsbeautify' Bundle 'L9' Bundle 'Mark' Bundle 'matrix.vim' Bundle 'mru.vim' Bundle 'The-NERD-Commenter' \"Bundle 'project.vim' Bundle 'restart.vim' Bundle 'taglist.vim' \"Bundle 'templates.vim' \"Bundle 'vimim.vim' Bundle 'ZenCoding.vim' Bundle 'css_color.vim' Bundle 'hallettj/jslint.vim' 需要注意的是，Vim 插件名称可能存在重名的情况，这时候就需要在插件后面加上作者的姓氏，\n比如 Bundle 'Javascript-Indentation' ，而遇到插件名有空格和斜杠的话，\n需要将空格和斜杠替换为 - 。\n执行 BundleInstall 即可完成安装，如果出现错误提示，多半是名称有问题，\n去 github 和 vim.org 搜索一下吧。\n更多参考：\nVim插件管理利器——Vundle 使用Vundle 来管理 Vim 插件 ps：这篇文章使用 Markdown 写的，以前都是用 Asciidoc 写，貌似是由于 github 带动，\nMardown 自 2010 年之后使用人群猛涨，证据在此，上图是 Markdown，下图是 Asciidoc\n",
-  "wordCount" : "201",
-  "inLanguage": "en",
-  "datePublished": "2012-04-14T00:00:00+08:00",
-  "dateModified": "2012-04-14T00:00:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2012/04/vundle/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      使用 Vundle 管理 Vim 插件
-    </h1>
-    <div class="post-meta"><span title='2012-04-14 00:00:00 +0800 CST'>2012-04-14</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#几种管理插件">几种管理插件</a></li>
-    <li><a href="#vundle-安装">Vundle 安装</a></li>
-  </ul>
-</nav>
-        </div>
-    </details>
-</div>
-
-  <div class="post-content"><p>早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的<br />
-<a href="https://groups.google.com/d/topic/vim-cn/mPES0sNT87Q/discussion">邮件</a>。<br />
-才惊呼原来有这么强大的插件可以用来管理我那一坨插件，<br />
-今天细细阅读并查了一些资料，变开始配置自己的 Vim。</p>
-<h2 id="几种管理插件">几种管理插件<a hidden class="anchor" aria-hidden="true" href="#几种管理插件">#</a></h2>
-<p>Vim 的插件管理工具有蛮多，比如：</p>
-<ul>
-<li><a href="https://github.com/gmarik/vundle">Vundle</a></li>
-<li><a href="http://www.vim.org/scripts/script.php?script_id=2905">vim-addon-manager</a></li>
-<li><a href="http://www.vim.org/scripts/script.php?script_id=2332">vpathogen.vim</a></li>
-<li><a href="http://www.vim.org/scripts/script.php?script_id=3458">vvundle</a></li>
-<li><a href="https://github.com/c9s/Vimana">vvimana</a></li>
-<li><a href="http://www.douban.com/note/173144456/">一位同学自己写的</a></li>
-</ul>
-<p>Vim-addon-manager 和 vimana 的对比，参见<br />
-<a href="http://yixf.name/2011/10/26/vim%E7%9A%84%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/">Vim的插件管理工具</a></p>
-<p>我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。<br />
-我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG<br />
-包描述文件的前提下，分子目录是一种简单有效的方法。</p>
-<!-- more -->
-<p>Vundle 通过 git 来对插件进行更新，有三种源可以添加：</p>
-<ul>
-<li>github 中 vim-scripts 的项目（这个账号是为 Pathogen 建的，用来建立对 Vim.org 上脚本的镜像）</li>
-<li>github 某个 Vim 插件项目</li>
-<li>某个 git 源</li>
-</ul>
-<p>以上也是我推荐的选择插件顺序，我认为没有必要去取最新的开发版插件。</p>
-<h2 id="vundle-安装">Vundle 安装<a hidden class="anchor" aria-hidden="true" href="#vundle-安装">#</a></h2>
-<p>无二话，官方文档的 <a href="https://github.com/gmarik/vundle">Quick Start</a><br />
-写的很详细 ，一句话：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-</span></span></code></pre></div><p>然后开始配置 .vimrc，我的 <a href="https://github.com/alswl/dotfiles/blob/master/.vimrc">.vimrc</a></p>
-<p>重点是配置各种 <code>Bundle</code> 我的配置如下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-vim" data-lang="vim"><span class="line"><span class="cl"><span class="c">&#34; My Bundles here:</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
-</span></span></span><span class="line"><span class="cl"><span class="c">&#34; vim-scripts repos</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
-</span></span></span><span class="line"><span class="cl"><span class="c">&#34; Syntax</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;asciidoc.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;confluencewiki.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;html5.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;JavaScript-syntax&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;Bundle &#39;mako.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;moin.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;python.vim--Vasiliev&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;xml.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
-</span></span></span><span class="line"><span class="cl"><span class="c">&#34; Color</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;desert256.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;Impact&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;matrix.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;vibrantink&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;vividchalk.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
-</span></span></span><span class="line"><span class="cl"><span class="c">&#34; Ftplugin</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;python_fold&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
-</span></span></span><span class="line"><span class="cl"><span class="c">&#34; Indent</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;Bundle &#39;indent/html.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;IndentAnything&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;Javascript-Indentation&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;mako.vim--Torborg&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;gg/python.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
-</span></span></span><span class="line"><span class="cl"><span class="c">&#34; Plugin</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;The-NERD-tree&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;AutoClose--Alves&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;auto_mkdir&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;cecutil&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;fcitx.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;FencView.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;Bundle &#39;FuzzyFinder&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;jsbeautify&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;L9&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;Mark&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;matrix.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;mru.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;The-NERD-Commenter&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;Bundle &#39;project.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;restart.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;taglist.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;Bundle &#39;templates.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;Bundle &#39;vimim.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;ZenCoding.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;css_color.vim&#39;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">Bundle</span> <span class="s1">&#39;hallettj/jslint.vim&#39;</span><span class="err">
-</span></span></span></code></pre></div><p>需要注意的是，Vim 插件名称可能存在重名的情况，这时候就需要在插件后面加上作者的姓氏，<br />
-比如 <code>Bundle 'Javascript-Indentation'</code> ，而遇到插件名有空格和斜杠的话，<br />
-需要将空格和斜杠替换为 <code>-</code> 。</p>
-<p>执行 <code>BundleInstall</code> 即可完成安装，如果出现错误提示，多半是名称有问题，<br />
-去 github 和 vim.org 搜索一下吧。</p>
-<p>更多参考：</p>
-<ul>
-<li><a href="http://blog.houqp.me/use-vundle-to-manage-your-plugins/">Vim插件管理利器——Vundle</a></li>
-<li><a href="http://www.cnblogs.com/qiangji/archive/2011/07/31/Vundle.html">使用Vundle 来管理 Vim 插件</a></li>
-</ul>
-<p>ps：这篇文章使用 Markdown 写的，以前都是用 Asciidoc 写，貌似是由于 github 带动，<br />
-Mardown 自 2010 年之后使用人群猛涨，证据在此，上图是 Markdown，下图是 Asciidoc</p>
-<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201204/markdown-asciidoc.png" alt="Markdown vs Asciidoc"  />
-</p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2012/04/vundle/">使用 Vundle 管理 Vim 插件 | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8/">工欲善其事必先利其器</a></li>
-      <li><a href="https://blog.alswl.com/tags/vim/">vim</a></li>
-      <li><a href="https://blog.alswl.com/tags/vundle/">vundle</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2012/04/vim-emacs-key-binding/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>Vim 下模拟 Emacs 键绑定</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2012/04/fcitx-config/">
-    <span class="title">Next »</span>
-    <br>
-    <span>Fcitx 配置</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+&#34; My Bundles here: &#34; vim-scripts repos &#34; Syntax Bundle 'asciidoc."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"使用 Vundle 管理 Vim 插件","item":"https://blog.alswl.com/2012/04/vundle/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"使用 Vundle 管理 Vim 插件","name":"使用 Vundle 管理 Vim 插件","description":"早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的 邮件。 才惊呼原来有这么强大的插件可以用来管理我那一坨插件， 今天细细阅读并查了一些资料，变开始配置自己的 Vim。\n几种管理插件 Vim 的插件管理工具有蛮多，比如：\nVundle vim-addon-manager vpathogen.vim vvundle vvimana 一位同学自己写的 Vim-addon-manager 和 vimana 的对比，参见 Vim的插件管理工具\n我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。 我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG 包描述文件的前提下，分子目录是一种简单有效的方法。\nVundle 通过 git 来对插件进行更新，有三种源可以添加：\ngithub 中 vim-scripts 的项目（这个账号是为 Pathogen 建的，用来建立对 Vim.org 上脚本的镜像） github 某个 Vim 插件项目 某个 git 源 以上也是我推荐的选择插件顺序，我认为没有必要去取最新的开发版插件。\nVundle 安装 无二话，官方文档的 Quick Start 写的很详细 ，一句话：\n$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 然后开始配置 .vimrc，我的 .vimrc\n重点是配置各种 Bundle 我的配置如下\n\u0026#34; My Bundles here: \u0026#34; vim-scripts repos \u0026#34; Syntax Bundle \u0026#39;asciidoc.","keywords":["工欲善其事必先利其器","vim","vundle"],"articleBody":"早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的 邮件。 才惊呼原来有这么强大的插件可以用来管理我那一坨插件， 今天细细阅读并查了一些资料，变开始配置自己的 Vim。\n几种管理插件 Vim 的插件管理工具有蛮多，比如：\nVundle vim-addon-manager vpathogen.vim vvundle vvimana 一位同学自己写的 Vim-addon-manager 和 vimana 的对比，参见 Vim的插件管理工具\n我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。 我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG 包描述文件的前提下，分子目录是一种简单有效的方法。\nVundle 通过 git 来对插件进行更新，有三种源可以添加：\ngithub 中 vim-scripts 的项目（这个账号是为 Pathogen 建的，用来建立对 Vim.org 上脚本的镜像） github 某个 Vim 插件项目 某个 git 源 以上也是我推荐的选择插件顺序，我认为没有必要去取最新的开发版插件。\nVundle 安装 无二话，官方文档的 Quick Start 写的很详细 ，一句话：\n$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 然后开始配置 .vimrc，我的 .vimrc\n重点是配置各种 Bundle 我的配置如下\n\" My Bundles here: \" vim-scripts repos \" Syntax Bundle 'asciidoc.vim' Bundle 'confluencewiki.vim' Bundle 'html5.vim' Bundle 'JavaScript-syntax' \"Bundle 'mako.vim' Bundle 'moin.vim' Bundle 'python.vim--Vasiliev' Bundle 'xml.vim' \" Color Bundle 'desert256.vim' Bundle 'Impact' Bundle 'matrix.vim' Bundle 'vibrantink' Bundle 'vividchalk.vim' \" Ftplugin Bundle 'python_fold' \" Indent \"Bundle 'indent/html.vim' Bundle 'IndentAnything' Bundle 'Javascript-Indentation' Bundle 'mako.vim--Torborg' Bundle 'gg/python.vim' \" Plugin Bundle 'The-NERD-tree' Bundle 'AutoClose--Alves' Bundle 'auto_mkdir' Bundle 'cecutil' Bundle 'fcitx.vim' Bundle 'FencView.vim' \"Bundle 'FuzzyFinder' Bundle 'jsbeautify' Bundle 'L9' Bundle 'Mark' Bundle 'matrix.vim' Bundle 'mru.vim' Bundle 'The-NERD-Commenter' \"Bundle 'project.vim' Bundle 'restart.vim' Bundle 'taglist.vim' \"Bundle 'templates.vim' \"Bundle 'vimim.vim' Bundle 'ZenCoding.vim' Bundle 'css_color.vim' Bundle 'hallettj/jslint.vim' 需要注意的是，Vim 插件名称可能存在重名的情况，这时候就需要在插件后面加上作者的姓氏， 比如 Bundle 'Javascript-Indentation' ，而遇到插件名有空格和斜杠的话， 需要将空格和斜杠替换为 - 。\n执行 BundleInstall 即可完成安装，如果出现错误提示，多半是名称有问题， 去 github 和 vim.org 搜索一下吧。\n更多参考：\nVim插件管理利器——Vundle 使用Vundle 来管理 Vim 插件 ps：这篇文章使用 Markdown 写的，以前都是用 Asciidoc 写，貌似是由于 github 带动， Mardown 自 2010 年之后使用人群猛涨，证据在此，上图是 Markdown，下图是 Asciidoc\n","wordCount":"201","inLanguage":"en","datePublished":"2012-04-14T00:00:00+08:00","dateModified":"2012-04-14T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2012/04/vundle/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>使用 Vundle 管理 Vim 插件</h1><div class=post-meta><span title='2012-04-14 00:00:00 +0800 +0800'>2012-04-14</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#几种管理插件>几种管理插件</a></li><li><a href=#vundle-安装>Vundle 安装</a></li></ul></nav></div></details></div><div class=post-content><p>早在这个月初，我就在 Vim 的邮件列表看到了一封关于 Vim 插件管理的
+<a href=https://groups.google.com/d/topic/vim-cn/mPES0sNT87Q/discussion>邮件</a>。
+才惊呼原来有这么强大的插件可以用来管理我那一坨插件，
+今天细细阅读并查了一些资料，变开始配置自己的 Vim。</p><h2 id=几种管理插件>几种管理插件<a hidden class=anchor aria-hidden=true href=#几种管理插件>#</a></h2><p>Vim 的插件管理工具有蛮多，比如：</p><ul><li><a href=https://github.com/gmarik/vundle>Vundle</a></li><li><a href="http://www.vim.org/scripts/script.php?script_id=2905">vim-addon-manager</a></li><li><a href="http://www.vim.org/scripts/script.php?script_id=2332">vpathogen.vim</a></li><li><a href="http://www.vim.org/scripts/script.php?script_id=3458">vvundle</a></li><li><a href=https://github.com/c9s/Vimana>vvimana</a></li><li><a href=http://www.douban.com/note/173144456/>一位同学自己写的</a></li></ul><p>Vim-addon-manager 和 vimana 的对比，参见
+<a href=http://yixf.name/2011/10/26/vim%E7%9A%84%E6%8F%92%E4%BB%B6%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/>Vim的插件管理工具</a></p><p>我最会选择了 Vundle，通过子目录管理插件，支持 Git 更新。
+我其实不太喜欢子目录，觉得目录太多看着烦，但是考虑到在没有一个良好的 PKG
+包描述文件的前提下，分子目录是一种简单有效的方法。</p><p>Vundle 通过 git 来对插件进行更新，有三种源可以添加：</p><ul><li>github 中 vim-scripts 的项目（这个账号是为 Pathogen 建的，用来建立对 Vim.org 上脚本的镜像）</li><li>github 某个 Vim 插件项目</li><li>某个 git 源</li></ul><p>以上也是我推荐的选择插件顺序，我认为没有必要去取最新的开发版插件。</p><h2 id=vundle-安装>Vundle 安装<a hidden class=anchor aria-hidden=true href=#vundle-安装>#</a></h2><p>无二话，官方文档的 <a href=https://github.com/gmarik/vundle>Quick Start</a>
+写的很详细 ，一句话：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+</span></span></code></pre></div><p>然后开始配置 .vimrc，我的 <a href=https://github.com/alswl/dotfiles/blob/master/.vimrc>.vimrc</a></p><p>重点是配置各种 <code>Bundle</code> 我的配置如下</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-vim data-lang=vim><span class=line><span class=cl><span class=c>&#34; My Bundles here:</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>
+</span></span></span><span class=line><span class=cl><span class=c>&#34; vim-scripts repos</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>
+</span></span></span><span class=line><span class=cl><span class=c>&#34; Syntax</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;asciidoc.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;confluencewiki.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;html5.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;JavaScript-syntax&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>&#34;Bundle &#39;mako.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;moin.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;python.vim--Vasiliev&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;xml.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>
+</span></span></span><span class=line><span class=cl><span class=c>&#34; Color</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;desert256.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;Impact&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;matrix.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;vibrantink&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;vividchalk.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>
+</span></span></span><span class=line><span class=cl><span class=c>&#34; Ftplugin</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;python_fold&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>
+</span></span></span><span class=line><span class=cl><span class=c>&#34; Indent</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>&#34;Bundle &#39;indent/html.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;IndentAnything&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;Javascript-Indentation&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;mako.vim--Torborg&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;gg/python.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>
+</span></span></span><span class=line><span class=cl><span class=c>&#34; Plugin</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;The-NERD-tree&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;AutoClose--Alves&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;auto_mkdir&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;cecutil&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;fcitx.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;FencView.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>&#34;Bundle &#39;FuzzyFinder&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;jsbeautify&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;L9&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;Mark&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;matrix.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;mru.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;The-NERD-Commenter&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>&#34;Bundle &#39;project.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;restart.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;taglist.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>&#34;Bundle &#39;templates.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>&#34;Bundle &#39;vimim.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;ZenCoding.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;css_color.vim&#39;</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nx>Bundle</span> <span class=s1>&#39;hallettj/jslint.vim&#39;</span><span class=err>
+</span></span></span></code></pre></div><p>需要注意的是，Vim 插件名称可能存在重名的情况，这时候就需要在插件后面加上作者的姓氏，
+比如 <code>Bundle 'Javascript-Indentation'</code> ，而遇到插件名有空格和斜杠的话，
+需要将空格和斜杠替换为 <code>-</code> 。</p><p>执行 <code>BundleInstall</code> 即可完成安装，如果出现错误提示，多半是名称有问题，
+去 github 和 vim.org 搜索一下吧。</p><p>更多参考：</p><ul><li><a href=http://blog.houqp.me/use-vundle-to-manage-your-plugins/>Vim插件管理利器——Vundle</a></li><li><a href=http://www.cnblogs.com/qiangji/archive/2011/07/31/Vundle.html>使用Vundle 来管理 Vim 插件</a></li></ul><p>ps：这篇文章使用 Markdown 写的，以前都是用 Asciidoc 写，貌似是由于 github 带动，
+Mardown 自 2010 年之后使用人群猛涨，证据在此，上图是 Markdown，下图是 Asciidoc</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201204/markdown-asciidoc.png alt="Markdown vs Asciidoc"></p><hr><p>原文链接: <a href=https://blog.alswl.com/2012/04/vundle/>使用 Vundle 管理 Vim 插件 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8/>工欲善其事必先利其器</a></li><li><a href=https://blog.alswl.com/tags/vim/>vim</a></li><li><a href=https://blog.alswl.com/tags/vundle/>vundle</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2012/04/vim-emacs-key-binding/><span class=title>« Prev</span><br><span>Vim 下模拟 Emacs 键绑定</span></a>
+<a class=next href=https://blog.alswl.com/2012/04/fcitx-config/><span class=title>Next »</span><br><span>Fcitx 配置</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,385 +1,89 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>efficiency | Log4D</title>
-<meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/categories/efficiency/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/categories/efficiency/atom.xml">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="efficiency" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://blog.alswl.com/categories/efficiency/" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="efficiency"/>
-<meta name="twitter:description" content=""/>
-
-</head>
-
-<body class="list" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/categories/">Categories</a></div>
-  <h1>
-    efficiency
-  </h1>
-</header>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Firefox 3.6下的Easy DragToGo 1.1.2.4a
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Easy DragToGo是一款很不错的FireFox插件，能够实现一些鼠标手势功能。你可以在Easy DragToGo :: Firefox
-附加组件下载这个插件。
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>efficiency | Log4D</title><meta name=keywords content><meta name=description content><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/categories/efficiency/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.alswl.com/categories/efficiency/atom.xml><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="efficiency"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://blog.alswl.com/categories/efficiency/"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="efficiency"><meta name=twitter:description content></head><body class=list id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><header class=page-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/categories/>Categories</a></div><h1>efficiency</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2>Firefox 3.6下的Easy DragToGo 1.1.2.4a</h2></header><div class=entry-content><p>Easy DragToGo是一款很不错的FireFox插件，能够实现一些鼠标手势功能。你可以在Easy DragToGo :: Firefox 附加组件下载这个插件。
 下面是一段官方的介绍。
 轻松使用拖曳手势打开标签页。
 拖曳对象：选取的文字、链接、图片。
 特点：内核短小精悍，手势动作灵敏准确。
 功能：
-链接 – 在新前台、新后台和当前标签页打开链接，链接另存为； 文字 – 在新前台、新后台和当前标签页搜索（可选搜索引擎），对看似网址的文字，当作网址打开； 图片 – 在新前台、新后台和当前标签页查看或打开链接，图片另存、直接保存在指定目录（默认以当前页面域名为子目录）； 可开启延时取消动作的功能（默认没有开启）； 若按住&#34;Ctrl&#34;键拖动目标放下：若是链接，将对链接中的文字进行搜索；若是文字，强制当作链接打开（自动去除空格和转换全角字母）； 可自定义代码； 最多可以设置 4 个方向的手势（默认只选取了比较简单的上下两个方向）。 延时取消动作和自定义代码可参考以下的链接：[http://mozilla.sociz.com
-/redirect.php?goto=findpost&amp;pid=125854&amp;ptid=21043](http://mozilla.sociz.com
-/redirect.php?goto=findpost&amp;pid=125854&amp;ptid=21043)
+链接 – 在新前台、新后台和当前标签页打开链接，链接另存为； 文字 – 在新前台、新后台和当前标签页搜索（可选搜索引擎），对看似网址的文字，当作网址打开； 图片 – 在新前台、新后台和当前标签页查看或打开链接，图片另存、直接保存在指定目录（默认以当前页面域名为子目录）； 可开启延时取消动作的功能（默认没有开启）； 若按住"Ctrl"键拖动目标放下：若是链接，将对链接中的文字进行搜索；若是文字，强制当作链接打开（自动去除空格和转换全角字母）； 可自定义代码； 最多可以设置 4 个方向的手势（默认只选取了比较简单的上下两个方向）。 延时取消动作和自定义代码可参考以下的链接：[http://mozilla.sociz.com /redirect.php?goto=findpost&pid=125854&ptid=21043](http://mozilla.sociz.com /redirect.php?goto=findpost&pid=125854&ptid=21043)
 尤其适合只需要通过简单拖放来打开标签页的用户。
 Easy DragToGo图图
-但是似乎作者最近很忙，自从2009 年06月13日以来都没有进行插件更新。导致的结果就是在FireFox升级到3.6之后，Easy DragToGo悲惨的标
-记上了&#34;这是一个针对旧版本Firefox的附加组件“字样。我苦苦等了近两个月，依然没有等到作者放出新版本，终于忍不住找第三方修改版。
-很幸运，在「Firefox扩展」Easy DragToGo 1.1.2.4a修改版 – 支持在Firefox 3.6和3.7a1拖动文本框文字搜索 |
-软件集散地找到了修改版的Easy DragToGo，上面说可以在FireFox
-3.7a1下使用，我实测在3.6下没有问题。喜欢Easy　DragToGo的朋友们这下可以满意了。
+但是似乎作者最近很忙，自从2009 年06月13日以来都没有进行插件更新。导致的结果就是在FireFox升级到3.6之后，Easy DragToGo悲惨的标 记上了"这是一个针对旧版本Firefox的附加组件“字样。我苦苦等了近两个月，依然没有等到作者放出新版本，终于忍不住找第三方修改版。
+很幸运，在「Firefox扩展」Easy DragToGo 1.1.2.4a修改版 – 支持在Firefox 3.6和3.7a1拖动文本框文字搜索 | 软件集散地找到了修改版的Easy DragToGo，上面说可以在FireFox 3.7a1下使用，我实测在3.6下没有问题。喜欢Easy　DragToGo的朋友们这下可以满意了。
 有图为证
 最后，下载地址（xpi格式的文件，直接拖拽到FireFox就可以了）
-[下载地址](http://down.qiannao.com/space/file/grayciel/share/2010/1/25/EasyDragToG
-o1.1.2.4a.xpi.7z/.page) ‖
-下载地址
-下载地址 ‖
-下载地址
+[下载地址](http://down.qiannao.com/space/file/grayciel/share/2010/1/25/EasyDragToG o1.1.2.4a.xpi.7z/.page) ‖ 下载地址
 下载地址 ‖ 下载地址
-下载地址 ‖
-下载地址
-[下载地址](http://cid-25076445a5c25e27.skydrive.live.com/self.aspx/.Public/2010.01
-.19/EasyDragToGo1.1.2.4a.xpi.7z) ‖
-下载地址</p>
-  </div>
-  <footer class="entry-footer"><span title='2010-02-28 00:00:00 +0800 CST'>2010-02-28</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to Firefox 3.6下的Easy DragToGo 1.1.2.4a" href="https://blog.alswl.com/2010/02/firefox-3-6-with-easy-dragtogo/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>在Eclipse中使用VSS
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>原文链接：Eclipse中安装配置VSS -
-51CTO.COM
-alswl友情提示：**VSS Plugin for Eclipse
-**已经更新至1.6.2，链接在这里
+下载地址 ‖ 下载地址
+下载地址 ‖ 下载地址
+[下载地址](http://cid-25076445a5c25e27.skydrive.live.com/self.aspx/.Public/2010.01 .19/EasyDragToGo1.1.2.4a.xpi.7z) ‖ 下载地址</p></div><footer class=entry-footer><span title='2010-02-28 00:00:00 +0800 +0800'>2010-02-28</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Firefox 3.6下的Easy DragToGo 1.1.2.4a" href=https://blog.alswl.com/2010/02/firefox-3-6-with-easy-dragtogo/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>在Eclipse中使用VSS</h2></header><div class=entry-content><p>原文链接：Eclipse中安装配置VSS - 51CTO.COM
+alswl友情提示：**VSS Plugin for Eclipse **已经更新至1.6.2，链接在这里
 -BOF-
-vss安装 1. 安装Vss服务器 在服务器上安装vss6.0d，安装好后，在服务器目录C:Program FilesMicrosoft Visual
-StudioCommonVSS下有个NETSETUP.EXE文件，共享这个目录，客户机就执行这个NETSETUP.EXE文件进行安装。
-2. 创建源代码管理数据库 2-1. 在服务端要先创建一个源代码管理数据库，以存储您的开发团队的共享文件的服务器版本。为源代码管理数据库创建共享网络文件夹。在源代码管理服务器中，打开
-Windows 资源管理器，新建一个名为 test的文件夹。
-2-2. 右击&#34;test&#34;，然后单击&#34;属性&#34;。
-2-3. 在&#34;test 属性&#34;对话框中，单击&#34;共享&#34;选项卡，然后单击&#34;共享该文件夹&#34;。现在可以在共享的 test 中创建源代码管理数据库了。
-3. 创建源代码管理数据库 3-1. 在服务器，单击&#34;开始&#34;按钮，指向&#34;程序&#34;，指向&#34;Microsoft Visual SourceSafe&#34;，然后单击&#34;Visual
-SourceSafe 6.0 Admin&#34;。
-3-2. 在&#34;Visual SourceSafe Administrator&#34;对话框的&#34;Tools&#34;菜单中，单击&#34;Create Database&#34;。
-3-3. 在&#34;Create new VSS Database in&#34;框中，找到上面建立的&#34;test&#34;目录
-3-4. Visual Studio .NET
-的源代码管理数据库已设置成功。然后添加用户，就是开发团队的人员都给分配一个账号，以后要打开这个数据库要进行身份认证的。
-在eclipse中配置vss 到网站中下载免费的org.vssplugin_1.4.1-2.0-compability.zip到本机目录； 下载地址：[http://sourceforge.net/projects/vssplugin](http://sourceforge.net/projec
-ts/vssplugin)
+vss安装 1. 安装Vss服务器 在服务器上安装vss6.0d，安装好后，在服务器目录C:Program FilesMicrosoft Visual StudioCommonVSS下有个NETSETUP.EXE文件，共享这个目录，客户机就执行这个NETSETUP.EXE文件进行安装。
+2. 创建源代码管理数据库 2-1. 在服务端要先创建一个源代码管理数据库，以存储您的开发团队的共享文件的服务器版本。为源代码管理数据库创建共享网络文件夹。在源代码管理服务器中，打开 Windows 资源管理器，新建一个名为 test的文件夹。
+2-2. 右击"test"，然后单击"属性"。
+2-3. 在"test 属性"对话框中，单击"共享"选项卡，然后单击"共享该文件夹"。现在可以在共享的 test 中创建源代码管理数据库了。
+3. 创建源代码管理数据库 3-1. 在服务器，单击"开始"按钮，指向"程序"，指向"Microsoft Visual SourceSafe"，然后单击"Visual SourceSafe 6.0 Admin"。
+3-2. 在"Visual SourceSafe Administrator"对话框的"Tools"菜单中，单击"Create Database"。
+3-3. 在"Create new VSS Database in"框中，找到上面建立的"test"目录
+3-4. Visual Studio .NET 的源代码管理数据库已设置成功。然后添加用户，就是开发团队的人员都给分配一个账号，以后要打开这个数据库要进行身份认证的。
+在eclipse中配置vss 到网站中下载免费的org.vssplugin_1.4.1-2.0-compability.zip到本机目录； 下载地址：[http://sourceforge.net/projects/vssplugin](http://sourceforge.net/projec ts/vssplugin)
 将org.vssplugin_1.4.1-2.0-compability.zip解压缩；
-将解完压缩后得到的org.vssplugin_1.4.1文件夹复制到ECLIPSE_PATHplugins下；（ECLIPSE_PATH是
-eclipse的安装路径）
+将解完压缩后得到的org.vssplugin_1.4.1文件夹复制到ECLIPSE_PATHplugins下；（ECLIPSE_PATH是 eclipse的安装路径）
 重新启动eclipse；；(如果找不到，就先推出并删除configuration文件中除INI文件的所有文件)
-Help-&gt;About Eclipse Platform-&gt;Plug-In Details确认插件加入成功；
-Window-&gt;Customize Perspective…，在对话框中的Window&gt;Show
-View和Other中把VSS相关的选项打上钩，OK。...</p>
-  </div>
-  <footer class="entry-footer"><span title='2010-02-24 00:00:00 +0800 CST'>2010-02-24</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 在Eclipse中使用VSS" href="https://blog.alswl.com/2010/02/the-use-of-vss-in-eclipse/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>图片水印工具Binerus Image Commander
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>最近实在是不方便上网，住处没有网络，偶尔有点若有若无的无线信号，还加了&#34;12345678&#34;这个终极密码。
-我以前写过一篇加水印的文章&#34;图片批量加入水印&#34;，使用PhotoShop做一个图案然后加入水印，很是麻烦。虽然也有一些WordPress在线水印，我总是不太放心外观和速
-度，以至于一直手工作坊似的修改。
-下面就要隆重推出今天的主角&#34;Binerus Image
-Commander&#34;，这是一款非常优秀的水印工具。我在xdowns搜索水印关键词排在最前面就是它，而且还是绿色产品，非常环保安全哦。
+Help->About Eclipse Platform->Plug-In Details确认插件加入成功；
+Window->Customize Perspective…，在对话框中的Window>Show View和Other中把VSS相关的选项打上钩，OK。...</p></div><footer class=entry-footer><span title='2010-02-24 00:00:00 +0800 +0800'>2010-02-24</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 在Eclipse中使用VSS" href=https://blog.alswl.com/2010/02/the-use-of-vss-in-eclipse/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>图片水印工具Binerus Image Commander</h2></header><div class=entry-content><p>最近实在是不方便上网，住处没有网络，偶尔有点若有若无的无线信号，还加了"12345678"这个终极密码。
+我以前写过一篇加水印的文章"图片批量加入水印"，使用PhotoShop做一个图案然后加入水印，很是麻烦。虽然也有一些WordPress在线水印，我总是不太放心外观和速 度，以至于一直手工作坊似的修改。
+下面就要隆重推出今天的主角"Binerus Image Commander"，这是一款非常优秀的水印工具。我在xdowns搜索水印关键词排在最前面就是它，而且还是绿色产品，非常环保安全哦。
 主界面截图
 支持批量加入水印，水印的自定义样式也比较多，生成文件时候可以选择生成文件名方式，并且可以修改生成之后的图片质量。
 界面的外观像是Mac样式，我怀疑是从Mac移植到Win上面的。
-最后呢，下载地址，哦活活，http://www.xdowns.com/soft/31/93/2009/Soft_57076.html</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-12-21 00:00:00 +0800 CST'>2009-12-21</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 图片水印工具Binerus Image Commander" href="https://blog.alswl.com/2009/12/picture-watermark-tool-binerus-image-commander/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>在Eclipse3.5下使用Flex Builder 3
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。
-我将系统命名为PylexChat，是一个基于Python&#43;Flex的聊天系统，架构在GAE&#43;AIR环境，支持多平台（Wi
-ndows&#43;Linux&#43;Web&#43;手机）客户端登录。开发IDE为Eclipse&#43;Flex Builder3插件，我的Eclipse
-Gelileo(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。
-安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new Eclipse Version](http://greylurk.com/index.php/2009/06/getting-flex-builder-3
--plugin-to-survive-a-new-eclipse-version/)找到了相应解决方案。
+最后呢，下载地址，哦活活，http://www.xdowns.com/soft/31/93/2009/Soft_57076.html</p></div><footer class=entry-footer><span title='2009-12-21 00:00:00 +0800 +0800'>2009-12-21</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 图片水印工具Binerus Image Commander" href=https://blog.alswl.com/2009/12/picture-watermark-tool-binerus-image-commander/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>在Eclipse3.5下使用Flex Builder 3</h2></header><div class=entry-content><p>这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。
+我将系统命名为PylexChat，是一个基于Python+Flex的聊天系统，架构在GAE+AIR环境，支持多平台（Wi ndows+Linux+Web+手机）客户端登录。开发IDE为Eclipse+Flex Builder3插件，我的Eclipse Gelileo(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。
+安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new Eclipse Version](http://greylurk.com/index.php/2009/06/getting-flex-builder-3 -plugin-to-survive-a-new-eclipse-version/)找到了相应解决方案。
 在Eclipselinks目录下面建立com.adobe.flexbuilder.feature.core.link文件，编辑内容为d:/Stud y/Flex Builder 3 Plug-in（记得修改目录），这样就可以正常加载并编写项目了。
-在使用过程中，如果代码没有写好，会出现An internal error occurred during: &#34;Removing compiler problem markers...&#34;.这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将
-项目删除重新建立，没有其他的办法彻底解决这个问题。
-这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](http://forums.adobe. com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 &#43; Flex Builder
-3下面。
+在使用过程中，如果代码没有写好，会出现An internal error occurred during: "Removing compiler problem markers...".这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将 项目删除重新建立，没有其他的办法彻底解决这个问题。
+这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](http://forums.adobe. com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 + Flex Builder 3下面。
 看来得等Flex Builder3之后的版本发布才能修复这个Bug，否则的话，还是得换回Eclpse 3.4……
-悲剧了，我刚使用Galileo一周时间……</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-11-18 00:00:00 +0800 CST'>2009-11-18</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 在Eclipse3.5下使用Flex Builder 3" href="https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>将Google切换到英文模式
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>注：本文讨论的全部都是Google.com。
-问题 Google的中文化工作做的很不错，几个主流产品都有了中文界面：Gmail/Calendar/Reader。毕竟母语是中文，虽然英文的也勉强看的懂，还是看中
-文来的爽。一般切换到中文只要在右上角的设置里面进行语言选择。
-但是切换成中文带来一个很大的问题，很多Google内容只提供英文版，如果在中文环境下面会有很多无法查看，而Google并没有提供一个简单快捷的语言切换方式（
-在「帮助」右下角可以很轻松切换）。
-比如这次我想在iGoogle添加一个Canlendar的小工具，在中文环境下死活搜索不出来，尽管搜索选项的「通过语言缩小范围」是所有语言。而在英文界面中就能
-搜索出一大推。
+悲剧了，我刚使用Galileo一周时间……</p></div><footer class=entry-footer><span title='2009-11-18 00:00:00 +0800 +0800'>2009-11-18</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 在Eclipse3.5下使用Flex Builder 3" href=https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>将Google切换到英文模式</h2></header><div class=entry-content><p>注：本文讨论的全部都是Google.com。
+问题 Google的中文化工作做的很不错，几个主流产品都有了中文界面：Gmail/Calendar/Reader。毕竟母语是中文，虽然英文的也勉强看的懂，还是看中 文来的爽。一般切换到中文只要在右上角的设置里面进行语言选择。
+但是切换成中文带来一个很大的问题，很多Google内容只提供英文版，如果在中文环境下面会有很多无法查看，而Google并没有提供一个简单快捷的语言切换方式（ 在「帮助」右下角可以很轻松切换）。
+比如这次我想在iGoogle添加一个Canlendar的小工具，在中文环境下死活搜索不出来，尽管搜索选项的「通过语言缩小范围」是所有语言。而在英文界面中就能 搜索出一大推。
 这时候，就给我带来很多困惑，不是明明没有考虑语言么，Google工程师怎么弄的？
-解决方案 那咱们就切换到英文模式下，Google没有提供快捷的切换，咱们就在地址栏中的参数加入「?hl=en」或者「&amp;hl=en」（注意需不需要&amp;和?，根据加的位置而
-定）。
-这样咱们就能切换到英文模式，享受Google.com不同于G.cn的服务拉。</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-11-10 00:00:00 +0800 CST'>2009-11-10</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 将Google切换到英文模式" href="https://blog.alswl.com/2009/11/to-google-to-switch-to-english-mode/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>在FireFox下使用搜狗全网加速
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>搜狗浏览器加速功能很讨喜，尤其对我们这种6毛电信，2毛钱跑教育网的用户来说。但是我更喜欢火狐环境，想在FireFox环境下使用搜狗代理服务器，于是就有了此文
-。
+解决方案 那咱们就切换到英文模式下，Google没有提供快捷的切换，咱们就在地址栏中的参数加入「?hl=en」或者「&hl=en」（注意需不需要&和?，根据加的位置而 定）。
+这样咱们就能切换到英文模式，享受Google.com不同于G.cn的服务拉。</p></div><footer class=entry-footer><span title='2009-11-10 00:00:00 +0800 +0800'>2009-11-10</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 将Google切换到英文模式" href=https://blog.alswl.com/2009/11/to-google-to-switch-to-english-mode/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>在FireFox下使用搜狗全网加速</h2></header><div class=entry-content><p>搜狗浏览器加速功能很讨喜，尤其对我们这种6毛电信，2毛钱跑教育网的用户来说。但是我更喜欢火狐环境，想在FireFox环境下使用搜狗代理服务器，于是就有了此文 。
 原文链接：firefox使用搜狗教育网代理 | 二月鸟的天空
 我没能成功地用bat运行子进程，所以只能开着搜狗浏览器使用加速功能。在FireFox下使用FoxyProxy进行代理管理，相当方便。
 上图：
 正文终于开始拉*
 就只想用用Sogou的代理，本人还是更喜欢 firefox的，所以分析了Sogou程序的进程之后上个 国外网站就找到解决方法了。
-其实Sogou代理的原理原理设这样的，首先如果你设置了 「启用教育网代理」，那么你的sogou会新建一个子进程，专门做代理使用的，用Process
-Explorer 可以看到 这个子进程的命令行：
-&#34;C:Program FilesSogouExplorerSogouExplorer.exe&#34; -proxy &#34;C:Program FilesSogouExplorerat1.dll&#34; &#34;CNC&#34; &#34;C760E475E7821B9EDA873346AC0C76D3 (可以将改行文件写成 .cmd 或者 .bat 直接执行)
+其实Sogou代理的原理原理设这样的，首先如果你设置了 「启用教育网代理」，那么你的sogou会新建一个子进程，专门做代理使用的，用Process Explorer 可以看到 这个子进程的命令行：
+"C:Program FilesSogouExplorerSogouExplorer.exe" -proxy "C:Program FilesSogouExplorerat1.dll" "CNC" "C760E475E7821B9EDA873346AC0C76D3 (可以将改行文件写成 .cmd 或者 .bat 直接执行)
 在TCP/IP 选项卡还可以看到 该进程在 8081和8082两个端口 LISTENING。
 最末尾的是和机器相关的识别码，可能每个人都不一样，如果你运行这个程序后，就自动在本地有了一个代理了。使用其他浏览器，就可以轻松使用这个代理突破教育网了。
 代理地址是 127.0.0.1:8081 类型 http将下面文本保存为 REG 文件，双击导入即可开机自动启动Sogou代理
-Windows Registry Editor Version 5.00 [HKEY_LOCAL_MACHINESOFTWAREMicrosoftWindowsCurrentVersionRun] &#34;Sogou Proxy&#34;=&#34;C:Program FilesSogouExplorerSogouExplorer.exe&#34; -proxy &#34;C:Program FilesSogouExplorerat1.dll&#34; &#34;CNC&#34; &#34;C760E475E7821B9EDA873346AC0C76D3 注意替换后面的识别码
-这种方法同样可以使用于其他浏览器，只要在相应的浏览器中设置代理即可。Good Luck!!</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-11-08 00:00:00 +0800 CST'>2009-11-08</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 在FireFox下使用搜狗全网加速" href="https://blog.alswl.com/2009/11/in-firefox-to-use-search-dogs-to-accelerate-the-whole-network/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>通过Mail For Exchange实现S60 Google Calendar同步
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>原文出处：[通过Mail For Exchange实现S60 Google Calendar同步 | iMobApps-
-手机应用软件](http://imobapps.com/2009/10/mail-for-exchange-s60-google-
-calendar.html)
+Windows Registry Editor Version 5.00 [HKEY_LOCAL_MACHINESOFTWAREMicrosoftWindowsCurrentVersionRun] "Sogou Proxy"="C:Program FilesSogouExplorerSogouExplorer.exe" -proxy "C:Program FilesSogouExplorerat1.dll" "CNC" "C760E475E7821B9EDA873346AC0C76D3 注意替换后面的识别码
+这种方法同样可以使用于其他浏览器，只要在相应的浏览器中设置代理即可。Good Luck!!</p></div><footer class=entry-footer><span title='2009-11-08 00:00:00 +0800 +0800'>2009-11-08</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 在FireFox下使用搜狗全网加速" href=https://blog.alswl.com/2009/11/in-firefox-to-use-search-dogs-to-accelerate-the-whole-network/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>通过Mail For Exchange实现S60 Google Calendar同步</h2></header><div class=entry-content><p>原文出处：[通过Mail For Exchange实现S60 Google Calendar同步 | iMobApps- 手机应用软件](http://imobapps.com/2009/10/mail-for-exchange-s60-google- calendar.html)
 我测试了GooSync，开始收费了，而且半天没收到配置信息，然后就索性测试Mail For Exchange（貌似说有风险，我暂时没碰到，不过最好备份）
 顺便说一下，iMobApps是一个很不错的手机咨询站点
 *****华丽的星星
-对于S60手机的Google
-Calendar同步，之前本站介绍过[GooSync](http://imobapps.com/2009/05/goosync-s60-google-
-calendar-sync.html)和[CalSyncS60](http://imobapps.com/2008/09/calsyncs60-two-
-way-synchronization-between-nokia-s60-phone-and-google-calendar.html)，CalSyncS
-60早早就开始收费，GooSync也与昨日宣布将[终止免费版服务](http://imobapps.com/2009/10/goosync-
-lite.html)，好在可以通过[Mail For Exchange](http://www.google.com/mobile/products/syn
-c.html#p=nokia_smart)来实现Email，Contacts和Calendar的同步。之前没有使用Mail For
-Exchange主要是因为使用Mail For Exchange之后，你不能使用其他方式来实现同步。
-具体设置可以看下图： 安装时会提示：在设备上安装并使用 Mail for Exchange 之后，您不应使用任何其他方法 (例如诺基亚 PC 套件)
-来同步联系人、日历项或任务。 同时使用其他方法同步将会导致数据丢失、重复或损坏。
+对于S60手机的Google Calendar同步，之前本站介绍过[GooSync](http://imobapps.com/2009/05/goosync-s60-google- calendar-sync.html)和[CalSyncS60](http://imobapps.com/2008/09/calsyncs60-two- way-synchronization-between-nokia-s60-phone-and-google-calendar.html)，CalSyncS 60早早就开始收费，GooSync也与昨日宣布将[终止免费版服务](http://imobapps.com/2009/10/goosync- lite.html)，好在可以通过[Mail For Exchange](http://www.google.com/mobile/products/syn c.html#p=nokia_smart)来实现Email，Contacts和Calendar的同步。之前没有使用Mail For Exchange主要是因为使用Mail For Exchange之后，你不能使用其他方式来实现同步。
+具体设置可以看下图： 安装时会提示：在设备上安装并使用 Mail for Exchange 之后，您不应使用任何其他方法 (例如诺基亚 PC 套件) 来同步联系人、日历项或任务。 同时使用其他方法同步将会导致数据丢失、重复或损坏。
 Mail For Exchange的连接设置：
 Exchange的服务器是 m.google.com，
-安全连接选「是」。
-证书设置：
+安全连接选「是」。 证书设置：
 用户名：你的Gmail邮件地址
 密码：你的Gmail密码
-域：m.google.com
-同步日程：
-可以选择手动同步或者自动同步；
-日历：
+域：m.google.com 同步日程：
+可以选择手动同步或者自动同步； 日历：
 同步日历回溯：可以设置2周，一个月或者一年；
-初次同步：如果你希望保留手机上的Calendar内容，请务必选择「保留手机项目」
-Mail For
-Exchange还可以实现Contacts和Email的同步，不过个人觉得[Gmail的客户端](http://imobapps.com/2008/09
-/gmail-mobile-client.html)也不错，并不追求Mail的实时Push，Contacts我通过[Google Sync](http://
-www.williamlong.info/archives/1690.html)同步，所以对我个人而言，同步Calendar就足够了。
+初次同步：如果你希望保留手机上的Calendar内容，请务必选择「保留手机项目」 Mail For Exchange还可以实现Contacts和Email的同步，不过个人觉得[Gmail的客户端](http://imobapps.com/2008/09 /gmail-mobile-client.html)也不错，并不追求Mail的实时Push，Contacts我通过[Google Sync](http:// www.williamlong.info/archives/1690.html)同步，所以对我个人而言，同步Calendar就足够了。
 注：如果你只想同步Calendar的话，需要确保电邮、任务和联系人的同步设为「否」
 以防设置不当导致同步中出现资料丢失，强烈建议你在同步前对手机进行备份！！！
 经试验，单独同步Calendar的话还是可以实现和PC套件的同步。
-[Mail For Exchange下载](http://www.nokia.com.cn/get-support-and-
-software/software/mail-for-exchange/compatibility-and-download)
-|本站下载（1.75Mb）</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-11-08 00:00:00 +0800 CST'>2009-11-08</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 通过Mail For Exchange实现S60 Google Calendar同步" href="https://blog.alswl.com/2009/11/through-the-mail-for-exchange-to-achieve-s60-google-calendar-sync/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>解决windows server 2003不认U盘或移动硬盘
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>今天总监给我配了一台电脑，是HP的服务器，志强的X3210处理器。这样以后再也不用背着电脑翻墙了~
+[Mail For Exchange下载](http://www.nokia.com.cn/get-support-and- software/software/mail-for-exchange/compatibility-and-download) |本站下载（1.75Mb）</p></div><footer class=entry-footer><span title='2009-11-08 00:00:00 +0800 +0800'>2009-11-08</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 通过Mail For Exchange实现S60 Google Calendar同步" href=https://blog.alswl.com/2009/11/through-the-mail-for-exchange-to-achieve-s60-google-calendar-sync/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>解决windows server 2003不认U盘或移动硬盘</h2></header><div class=entry-content><p>今天总监给我配了一台电脑，是HP的服务器，志强的X3210处理器。这样以后再也不用背着电脑翻墙了~
 在这台服务器里发现了Visual Studio 2008 Team System，这好东西啊，不用自己下，我赶紧找移动硬盘来考它。
-试了好一会，Windows Server
-2003都没有认出这个移动硬盘，显示正确的，就是不出现盘符。我一度认为自己的移动硬盘又出了事情，最好发现原来是Windows Server
-2003使用移动硬盘盒Linux一样，需要加载一下。
-相关链接《[解决windows server 2003不认U盘或移动硬盘_蓝色天空](http://hi.baidu.com/cheng_allen/blo
-g/item/5a46d307004a05c97a894746.html)》
+试了好一会，Windows Server 2003都没有认出这个移动硬盘，显示正确的，就是不出现盘符。我一度认为自己的移动硬盘又出了事情，最好发现原来是Windows Server 2003使用移动硬盘盒Linux一样，需要加载一下。
+相关链接《[解决windows server 2003不认U盘或移动硬盘_蓝色天空](http://hi.baidu.com/cheng_allen/blo g/item/5a46d307004a05c97a894746.html)》
 快速解决的2个办法: 一、U盘以及移动硬盘自动装载也是一样的，WINDOWS2003具体配置方法如下： 1、进入命令提示符环境(也就是DOS)
 2、进入DISKPART程序
 3、输入AUTOMOUNT ENABLE指令
@@ -387,132 +91,20 @@ g/item/5a46d307004a05c97a894746.html)》
 二、在我的电脑上右健－－管理－－磁盘管理－－你会看到你的移动硬，右健为你的移动硬盘 指定一个盘符就认出来了。
 如有特殊或其它情况：
 1:供电不足,把两个接头全插上.
-2:没有分配盘符. 在桌面我的电脑上点右键–管理–存储–磁盘管理 里面给你的移动硬盘分配盘符.</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-08-10 00:00:00 +0800 CST'>2009-08-10</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 解决windows server 2003不认U盘或移动硬盘" href="https://blog.alswl.com/2009/08/jie-jue-windows-server-2003-bu-ren-u-pan-huo-yi-dong-ying-pan/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>使用Delicious
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>很久之前就想找一个管理自己书签的地方，尝试了好几个中文网站，甚至当年尝试过百度的搜藏（百度的这个产品真是烂的一B）。但是都没有找到自己心仪的而作罢。
+2:没有分配盘符. 在桌面我的电脑上点右键–管理–存储–磁盘管理 里面给你的移动硬盘分配盘符.</p></div><footer class=entry-footer><span title='2009-08-10 00:00:00 +0800 +0800'>2009-08-10</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 解决windows server 2003不认U盘或移动硬盘" href=https://blog.alswl.com/2009/08/jie-jue-windows-server-2003-bu-ren-u-pan-huo-yi-dong-ying-pan/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>使用Delicious</h2></header><div class=entry-content><p>很久之前就想找一个管理自己书签的地方，尝试了好几个中文网站，甚至当年尝试过百度的搜藏（百度的这个产品真是烂的一B）。但是都没有找到自己心仪的而作罢。
 久闻delicious的大名，一直没有机会尝试，今天终于去试用了一下，果然用户体验非常好，很满足自己需要。
-收藏的书签分为共享和私有，右边可以看到同一书签在delicious收藏的人数。人机交互是典型的Web2.0，很爽（除了可能中国网络，略微有些卡，不过相比Tw
-itter来说，已经好了太多了）。
-Delicious可以直接从IE、FireFox、Opera等中导入链接文件，我把FireFox备份的json书签备份文件中直接导入Delicious，结果
-连分类都作为了Tag，非常人性化。
-略有瑕疵的是，书签的分类通过Tag来实现，而没有加入Category，这让习惯WordPress分类的我略有不习惯。但转念一想，delicious这样做减少
-了操作步骤，通过Tag的区分，也能达到效果了。
+收藏的书签分为共享和私有，右边可以看到同一书签在delicious收藏的人数。人机交互是典型的Web2.0，很爽（除了可能中国网络，略微有些卡，不过相比Tw itter来说，已经好了太多了）。
+Delicious可以直接从IE、FireFox、Opera等中导入链接文件，我把FireFox备份的json书签备份文件中直接导入Delicious，结果 连分类都作为了Tag，非常人性化。
+略有瑕疵的是，书签的分类通过Tag来实现，而没有加入Category，这让习惯WordPress分类的我略有不习惯。但转念一想，delicious这样做减少 了操作步骤，通过Tag的区分，也能达到效果了。
 还有就是Tag只能是一个单词，中文还好，英文的话描述起来是不是就有点吃力哈```
 总的来说，这个网站非常喜欢，不愧是Web2.0中佼佼者。
-将Delicious加入WordPress 在Setting中有Blogging选项，有四种方式：在博客显示Delicious图标、显示Delicious最近收藏书签、显示Delici
-ous收藏Tag、使用Delicious来发布书签文章到自己博客（我就是在WebLeOn&#39;
-blog看到他发布的delicious文章才想到去Delicious注册的）。
-选择一种Blogging方式，Delicous就会提供相应的代码，将它复制到自己博客相应的位置即可。WordPress可以在小工具中加入一个文本，然
-后在其中粘贴相应代码即可。
-目光往右看，就可以看到我的Delicious拉。</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-08-04 00:00:00 +0800 CST'>2009-08-04</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 使用Delicious" href="https://blog.alswl.com/2009/08/use-delicious/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>VS2008格式化aspx代码
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>在VS2008中编辑代码时候，可以使用「编辑-高级-设置文档的格式」来进行格式化代码，快捷键是Ctrl&#43;K Ctrl&#43;D。
+将Delicious加入WordPress 在Setting中有Blogging选项，有四种方式：在博客显示Delicious图标、显示Delicious最近收藏书签、显示Delici ous收藏Tag、使用Delicious来发布书签文章到自己博客（我就是在WebLeOn' blog看到他发布的delicious文章才想到去Delicious注册的）。
+选择一种Blogging方式，Delicous就会提供相应的代码，将它复制到自己博客相应的位置即可。WordPress可以在小工具中加入一个文本，然 后在其中粘贴相应代码即可。
+目光往右看，就可以看到我的Delicious拉。</p></div><footer class=entry-footer><span title='2009-08-04 00:00:00 +0800 +0800'>2009-08-04</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 使用Delicious" href=https://blog.alswl.com/2009/08/use-delicious/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>VS2008格式化aspx代码</h2></header><div class=entry-content><p>在VS2008中编辑代码时候，可以使用「编辑-高级-设置文档的格式」来进行格式化代码，快捷键是Ctrl+K Ctrl+D。
 但是我在格式化aspx代码时候，却遇到这样的问题，提示「未能重新格式化文档。已还原为原始格式」，「未能完成该操作。」，「未能完成操作。参数不正确」。
-遇到这样的原因大凡是由于Html代码中存在一些问题，如嵌套有没有正常关闭，特殊符号如&#34;&gt;“有没有转换成转义字符。
-比较快捷的修改方法是使用DreamWeaver提供的验证功能，在「结果」面板中，可以使用F7快捷键打开，使用它的验证功能，可以快速找出Html不合法的地方。</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-07-31 00:00:00 +0800 CST'>2009-07-31</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to VS2008格式化aspx代码" href="https://blog.alswl.com/2009/07/aspx-code-vs2008-format/"></a>
-</article>
-<footer class="page-footer">
-  <nav class="pagination">
-    <a class="prev" href="https://blog.alswl.com/categories/efficiency/page/3/">
-      «&nbsp;Prev&nbsp;
-    </a>
-    <a class="next" href="https://blog.alswl.com/categories/efficiency/page/5/">Next&nbsp;&nbsp;»
-    </a>
-  </nav>
-</footer>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
-</html>
+遇到这样的原因大凡是由于Html代码中存在一些问题，如嵌套有没有正常关闭，特殊符号如">“有没有转换成转义字符。
+比较快捷的修改方法是使用DreamWeaver提供的验证功能，在「结果」面板中，可以使用F7快捷键打开，使用它的验证功能，可以快速找出Html不合法的地方。</p></div><footer class=entry-footer><span title='2009-07-31 00:00:00 +0800 +0800'>2009-07-31</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to VS2008格式化aspx代码" href=https://blog.alswl.com/2009/07/aspx-code-vs2008-format/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.alswl.com/categories/efficiency/page/3/>«&nbsp;Prev&nbsp;</a>
+<a class=next href=https://blog.alswl.com/categories/efficiency/page/5/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>

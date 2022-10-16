@@ -1,329 +1,47 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>XSS 攻击的处理 | Log4D</title>
-<meta name="keywords" content="security">
-<meta name="description" content="这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。
-谨以此文怀念 乌云。
-事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件，
-告知我厂网站上出现一例 XSS 漏洞。
-因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞，
-后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。
-这里简单科普一下 XSS
-跨网站脚本 -维基百科，自由的百科全书
-中介绍到：
-跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。
-它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。
-XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，
-针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，
-所有访问被攻击的页面，都会触发用户被攻击行为。
-这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。
-时间紧迫，问题必须被解决。
-XSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。
-我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。
-XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式，
-让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>XSS 攻击的处理 | Log4D</title><meta name=keywords content="security"><meta name=description content="这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。 谨以此文怀念 乌云。
+事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件， 告知我厂网站上出现一例 XSS 漏洞。 因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞， 后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。
+这里简单科普一下 XSS 跨网站脚本 -维基百科，自由的百科全书 中介绍到：
+跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。 它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。
+XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS， 针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存， 所有访问被攻击的页面，都会触发用户被攻击行为。
+这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。 时间紧迫，问题必须被解决。
+XSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。 我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。
+XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式， 让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。
 检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。
 常见的检测方法（来自 跨网站脚本 - 维基百科，自由的百科全书：
-&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; =&#39;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; &#34;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; &lt;script&gt;alert(document.cookie)&lt;/script&gt; &lt;script&gt;alert (vulnerable)&lt;/script&gt; %3Cscript%3Ealert(&#39;XSS&#39;)%3C/script%3E &lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt; &lt;img src=&#34;javascript:alert(&#39;XSS&#39;)&#34;&gt; &lt;img src=&#34;http://xxx.">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2017/05/xss/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="XSS 攻击的处理" />
-<meta property="og:description" content="这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。
-谨以此文怀念 乌云。
-事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件，
-告知我厂网站上出现一例 XSS 漏洞。
-因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞，
-后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。
-这里简单科普一下 XSS
-跨网站脚本 -维基百科，自由的百科全书
-中介绍到：
-跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。
-它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。
-XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，
-针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，
-所有访问被攻击的页面，都会触发用户被攻击行为。
-这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。
-时间紧迫，问题必须被解决。
-XSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。
-我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。
-XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式，
-让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。
+><script>alert(document.cookie)</script> ='><script>alert(document.cookie)</script> &#34;><script>alert(document.cookie)</script> <script>alert(document.cookie)</script> <script>alert (vulnerable)</script> %3Cscript%3Ealert('XSS')%3C/script%3E <script>alert('XSS')</script> <img src=&#34;javascript:alert('XSS')&#34;> <img src=&#34;http://xxx."><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2017/05/xss/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="XSS 攻击的处理"><meta property="og:description" content="这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。 谨以此文怀念 乌云。
+事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件， 告知我厂网站上出现一例 XSS 漏洞。 因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞， 后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。
+这里简单科普一下 XSS 跨网站脚本 -维基百科，自由的百科全书 中介绍到：
+跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。 它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。
+XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS， 针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存， 所有访问被攻击的页面，都会触发用户被攻击行为。
+这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。 时间紧迫，问题必须被解决。
+XSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。 我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。
+XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式， 让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。
 检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。
 常见的检测方法（来自 跨网站脚本 - 维基百科，自由的百科全书：
-&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; =&#39;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; &#34;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; &lt;script&gt;alert(document.cookie)&lt;/script&gt; &lt;script&gt;alert (vulnerable)&lt;/script&gt; %3Cscript%3Ealert(&#39;XSS&#39;)%3C/script%3E &lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt; &lt;img src=&#34;javascript:alert(&#39;XSS&#39;)&#34;&gt; &lt;img src=&#34;http://xxx." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2017/05/xss/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2017-05-31T22:04:00+08:00" />
-<meta property="article:modified_time" content="2017-05-31T22:04:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="XSS 攻击的处理"/>
-<meta name="twitter:description" content="这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。
-谨以此文怀念 乌云。
-事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件，
-告知我厂网站上出现一例 XSS 漏洞。
-因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞，
-后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。
-这里简单科普一下 XSS
-跨网站脚本 -维基百科，自由的百科全书
-中介绍到：
-跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。
-它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。
-XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，
-针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，
-所有访问被攻击的页面，都会触发用户被攻击行为。
-这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。
-时间紧迫，问题必须被解决。
-XSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。
-我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。
-XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式，
-让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。
+><script>alert(document.cookie)</script> ='><script>alert(document.cookie)</script> &#34;><script>alert(document.cookie)</script> <script>alert(document.cookie)</script> <script>alert (vulnerable)</script> %3Cscript%3Ealert('XSS')%3C/script%3E <script>alert('XSS')</script> <img src=&#34;javascript:alert('XSS')&#34;> <img src=&#34;http://xxx."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2017/05/xss/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-05-31T22:04:00+08:00"><meta property="article:modified_time" content="2017-05-31T22:04:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="XSS 攻击的处理"><meta name=twitter:description content="这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。 谨以此文怀念 乌云。
+事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件， 告知我厂网站上出现一例 XSS 漏洞。 因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞， 后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。
+这里简单科普一下 XSS 跨网站脚本 -维基百科，自由的百科全书 中介绍到：
+跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。 它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。
+XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS， 针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存， 所有访问被攻击的页面，都会触发用户被攻击行为。
+这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。 时间紧迫，问题必须被解决。
+XSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。 我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。
+XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式， 让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。
 检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。
 常见的检测方法（来自 跨网站脚本 - 维基百科，自由的百科全书：
-&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; =&#39;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; &#34;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; &lt;script&gt;alert(document.cookie)&lt;/script&gt; &lt;script&gt;alert (vulnerable)&lt;/script&gt; %3Cscript%3Ealert(&#39;XSS&#39;)%3C/script%3E &lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt; &lt;img src=&#34;javascript:alert(&#39;XSS&#39;)&#34;&gt; &lt;img src=&#34;http://xxx."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "XSS 攻击的处理",
-      "item": "https://blog.alswl.com/2017/05/xss/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "XSS 攻击的处理",
-  "name": "XSS 攻击的处理",
-  "description": "这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。\n谨以此文怀念 乌云。\n事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件，\n告知我厂网站上出现一例 XSS 漏洞。\n因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞，\n后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。\n这里简单科普一下 XSS\n跨网站脚本 -维基百科，自由的百科全书\n中介绍到：\n跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。\n它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。\nXSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，\n针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，\n所有访问被攻击的页面，都会触发用户被攻击行为。\n这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。\n时间紧迫，问题必须被解决。\nXSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。\n我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。\nXSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式，\n让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。\n检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。\n常见的检测方法（来自 跨网站脚本 - 维基百科，自由的百科全书：\n\u0026gt;\u0026lt;script\u0026gt;alert(document.cookie)\u0026lt;/script\u0026gt; =\u0026#39;\u0026gt;\u0026lt;script\u0026gt;alert(document.cookie)\u0026lt;/script\u0026gt; \u0026#34;\u0026gt;\u0026lt;script\u0026gt;alert(document.cookie)\u0026lt;/script\u0026gt; \u0026lt;script\u0026gt;alert(document.cookie)\u0026lt;/script\u0026gt; \u0026lt;script\u0026gt;alert (vulnerable)\u0026lt;/script\u0026gt; %3Cscript%3Ealert(\u0026#39;XSS\u0026#39;)%3C/script%3E \u0026lt;script\u0026gt;alert(\u0026#39;XSS\u0026#39;)\u0026lt;/script\u0026gt; \u0026lt;img src=\u0026#34;javascript:alert(\u0026#39;XSS\u0026#39;)\u0026#34;\u0026gt; \u0026lt;img src=\u0026#34;http://xxx.",
-  "keywords": [
-    "security"
-  ],
-  "articleBody": "这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。\n谨以此文怀念 乌云。\n事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件，\n告知我厂网站上出现一例 XSS 漏洞。\n因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞，\n后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。\n这里简单科普一下 XSS\n跨网站脚本 -维基百科，自由的百科全书\n中介绍到：\n跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。\n它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。\nXSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，\n针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，\n所有访问被攻击的页面，都会触发用户被攻击行为。\n这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。\n时间紧迫，问题必须被解决。\nXSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。\n我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。\nXSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式，\n让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。\n检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。\n常见的检测方法（来自 跨网站脚本 - 维基百科，自由的百科全书：\n\u003e ='\u003e \"\u003e %3Cscript%3Ealert('XSS')%3C/script%3E （这个仅限IE有效） 攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。\n通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。\nPS：一个有效粗暴的方式，是将对公、对内系统的域名分离，对内部系统进行物理级别隔离。\n我厂历史上的处理方案 XSS 问题又来已久，咱厂子开了这么久，历史上如何防御的呢？\n答案是用了两个策略：第一个是使用 OWASP\n提供的库进行内容过滤，第二个是在存储数据时，存储了转义后的数据。\n在技术上处理 XSS，有两种态度可以选择：第一种是前置过滤，即将用户所有数据都进行转义，\n在输出时候在前端（模板渲染）层面直接输出。\n第二种是用户输入的数据不经过转义就直接存储起来，前端在使用时候保证对数据进行转义。\n我厂历史上使用的方案的前者，优点是在于前端不需要在每个地方转义，\n避免某个地方忘记了转义，从而导致漏洞。缺点则是在输出内容到非 Web 客户端时候，比如\nAPP，需要进行额外的数据处理过程， 否则 HTMLEncode 的内容，在 APP\n上面无法正确输出。\n这个处理方案是稳妥的，那么为什么最近又暴露出问题了？\n排查之后发现，原来最近有若干个服务迁移到了一个新系统，\n而新系统在安全上面没有全局处理，所以爆出了漏洞。\n本次处理方案 知道了原因，那么可以快速解决问题了。在这次处理过程中，我们讨论了在当前移动平台增长迅速，Web 平台增长缓慢的大势下，能否直接存储用户原始数据？\n而且由于规范制定不严格，目前系统内有些地方存储转码后数据，有些地方存储转码前数据。\n导致在一些特殊的字符（颜文字）处理上不一致，从而导致在处理 br / \u003c 这类特殊字符时，表现不同。\n由于 DB 中有部分数据转义处理，部分数据原文存储，所以先处理输出后敏感信息，在模板层面启用全局\nencode。 将有危险的数据转移为在 HTML 文本。\nPS：现代 Web 框架的模板渲染引擎，一般会默认开启 HTMLEncode，而\nFreemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……\n处理方案：\n开启全局 HTML 输出 Encode，有一个 Default HTML-escape using Freemarker 方案，可以默认开启 Html Encode，在这个处理方案中，需要注意有些地方真的需要输出原始 html，需要 noescape 特殊处理 检查所有前端操作，禁止字符串拼接，使用框架支持的模板进行渲染，拖小菊的福，新系统在这块工作完成度一直比较好 将 OWASP 方案强制开启 其他 Tips OWASP 有一个很长的 列表，教导如何避免 XSS，里面提到了：\n为何以及如何进行「积极防御」，对立面是仅仅输出时候转义内容本身 几条对抗 XSS 的规则 尽量不在特定地方输出不可信变量：script / comment / attribute / tag / style， 因为逃脱 HTMl 规则的字符串太多了。 将不可信变量输出到 div / body / attribute / javascript tag / style 之前，对 \u0026 \u003c \u003e \" ' / 进行转义 将不可信变量输出 URL 参数之前，进行 URLEncode 使用合适的 HTML 过滤库进行过滤 预防 DOM-based XSS，见 DOM based XSS Prevention Cheat Sheet 开启 HTTPOnly cookie，让浏览器接触不到 cookie 最后送上一个 XSS 攻击工具 http://webxss.net/，知己知彼，百战不殆。\n",
-  "wordCount" : "215",
-  "inLanguage": "en",
-  "datePublished": "2017-05-31T22:04:00+08:00",
-  "dateModified": "2017-05-31T22:04:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2017/05/xss/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      XSS 攻击的处理
-    </h1>
-    <div class="post-meta"><span title='2017-05-31 22:04:00 +0800 CST'>2017-05-31</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#事情缘由">事情缘由</a></li>
-    <li><a href="#xss-实现手段">XSS 实现手段</a></li>
-    <li><a href="#我厂历史上的处理方案">我厂历史上的处理方案</a></li>
-    <li><a href="#本次处理方案">本次处理方案</a></li>
-    <li><a href="#其他-tips">其他 Tips</a></li>
-  </ul>
-</nav>
-        </div>
-    </details>
-</div>
-
-  <div class="post-content"><p>这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。<br />
-谨以此文怀念 <a href="http://wooyun.org/">乌云</a>。</p>
-<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201705/wooyun.jpg" alt="201705/wooyun.jpg"  />
-</p>
-<hr />
-<h2 id="事情缘由">事情缘由<a hidden class="anchor" aria-hidden="true" href="#事情缘由">#</a></h2>
-<p>春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件，<br />
-告知我厂网站上出现一例 XSS 漏洞。<br />
-因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞，<br />
-后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。</p>
-<p>这里简单科普一下 XSS<br />
-<a href="https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC">跨网站脚本 -维基百科，自由的百科全书</a><br />
-中介绍到：</p>
-<blockquote>
-<p>跨网站脚本（Cross-site  scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。<br />
-它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。</p>
-</blockquote>
-<p>XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，<br />
-针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，<br />
-所有访问被攻击的页面，都会触发用户被攻击行为。</p>
-<p>这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。<br />
-时间紧迫，问题必须被解决。</p>
-<h2 id="xss-实现手段">XSS 实现手段<a hidden class="anchor" aria-hidden="true" href="#xss-实现手段">#</a></h2>
-<p>在解决问题之前，需要对这个问题有必要的基础认识。<br />
-我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。</p>
-<p>XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式，<br />
-让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。</p>
-<p>检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。</p>
-<p>常见的检测方法（来自 <a href="https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC#.E6.A3.80.E6.B5.8B.E6.96.B9.E6.B3.95">跨网站脚本 - 维基百科，自由的百科全书</a>：</p>
-<pre tabindex="0"><code>&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;
+><script>alert(document.cookie)</script> ='><script>alert(document.cookie)</script> &#34;><script>alert(document.cookie)</script> <script>alert(document.cookie)</script> <script>alert (vulnerable)</script> %3Cscript%3Ealert('XSS')%3C/script%3E <script>alert('XSS')</script> <img src=&#34;javascript:alert('XSS')&#34;> <img src=&#34;http://xxx."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"XSS 攻击的处理","item":"https://blog.alswl.com/2017/05/xss/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"XSS 攻击的处理","name":"XSS 攻击的处理","description":"这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。 谨以此文怀念 乌云。\n事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件， 告知我厂网站上出现一例 XSS 漏洞。 因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞， 后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。\n这里简单科普一下 XSS 跨网站脚本 -维基百科，自由的百科全书 中介绍到：\n跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。 它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。\nXSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS， 针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存， 所有访问被攻击的页面，都会触发用户被攻击行为。\n这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。 时间紧迫，问题必须被解决。\nXSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。 我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。\nXSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式， 让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。\n检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。\n常见的检测方法（来自 跨网站脚本 - 维基百科，自由的百科全书：\n\u0026gt;\u0026lt;script\u0026gt;alert(document.cookie)\u0026lt;/script\u0026gt; =\u0026#39;\u0026gt;\u0026lt;script\u0026gt;alert(document.cookie)\u0026lt;/script\u0026gt; \u0026#34;\u0026gt;\u0026lt;script\u0026gt;alert(document.cookie)\u0026lt;/script\u0026gt; \u0026lt;script\u0026gt;alert(document.cookie)\u0026lt;/script\u0026gt; \u0026lt;script\u0026gt;alert (vulnerable)\u0026lt;/script\u0026gt; %3Cscript%3Ealert(\u0026#39;XSS\u0026#39;)%3C/script%3E \u0026lt;script\u0026gt;alert(\u0026#39;XSS\u0026#39;)\u0026lt;/script\u0026gt; \u0026lt;img src=\u0026#34;javascript:alert(\u0026#39;XSS\u0026#39;)\u0026#34;\u0026gt; \u0026lt;img src=\u0026#34;http://xxx.","keywords":["security"],"articleBody":"这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。 谨以此文怀念 乌云。\n事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件， 告知我厂网站上出现一例 XSS 漏洞。 因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞， 后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。\n这里简单科普一下 XSS 跨网站脚本 -维基百科，自由的百科全书 中介绍到：\n跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。 它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。\nXSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS， 针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存， 所有访问被攻击的页面，都会触发用户被攻击行为。\n这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。 时间紧迫，问题必须被解决。\nXSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。 我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。\nXSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式， 让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。\n检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。\n常见的检测方法（来自 跨网站脚本 - 维基百科，自由的百科全书：\n\u003e ='\u003e \"\u003e %3Cscript%3Ealert('XSS')%3C/script%3E （这个仅限IE有效） 攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。 通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。 PS：一个有效粗暴的方式，是将对公、对内系统的域名分离，对内部系统进行物理级别隔离。\n我厂历史上的处理方案 XSS 问题又来已久，咱厂子开了这么久，历史上如何防御的呢？ 答案是用了两个策略：第一个是使用 OWASP 提供的库进行内容过滤，第二个是在存储数据时，存储了转义后的数据。\n在技术上处理 XSS，有两种态度可以选择：第一种是前置过滤，即将用户所有数据都进行转义， 在输出时候在前端（模板渲染）层面直接输出。 第二种是用户输入的数据不经过转义就直接存储起来，前端在使用时候保证对数据进行转义。\n我厂历史上使用的方案的前者，优点是在于前端不需要在每个地方转义， 避免某个地方忘记了转义，从而导致漏洞。缺点则是在输出内容到非 Web 客户端时候，比如 APP，需要进行额外的数据处理过程， 否则 HTMLEncode 的内容，在 APP 上面无法正确输出。\n这个处理方案是稳妥的，那么为什么最近又暴露出问题了？ 排查之后发现，原来最近有若干个服务迁移到了一个新系统， 而新系统在安全上面没有全局处理，所以爆出了漏洞。\n本次处理方案 知道了原因，那么可以快速解决问题了。在这次处理过程中，我们讨论了在当前移动平台增长迅速，Web 平台增长缓慢的大势下，能否直接存储用户原始数据？ 而且由于规范制定不严格，目前系统内有些地方存储转码后数据，有些地方存储转码前数据。 导致在一些特殊的字符（颜文字）处理上不一致，从而导致在处理 br / \u003c 这类特殊字符时，表现不同。\n由于 DB 中有部分数据转义处理，部分数据原文存储，所以先处理输出后敏感信息，在模板层面启用全局 encode。 将有危险的数据转移为在 HTML 文本。\nPS：现代 Web 框架的模板渲染引擎，一般会默认开启 HTMLEncode，而 Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……\n处理方案：\n开启全局 HTML 输出 Encode，有一个 Default HTML-escape using Freemarker 方案，可以默认开启 Html Encode，在这个处理方案中，需要注意有些地方真的需要输出原始 html，需要 noescape 特殊处理 检查所有前端操作，禁止字符串拼接，使用框架支持的模板进行渲染，拖小菊的福，新系统在这块工作完成度一直比较好 将 OWASP 方案强制开启 其他 Tips OWASP 有一个很长的 列表，教导如何避免 XSS，里面提到了：\n为何以及如何进行「积极防御」，对立面是仅仅输出时候转义内容本身 几条对抗 XSS 的规则 尽量不在特定地方输出不可信变量：script / comment / attribute / tag / style， 因为逃脱 HTMl 规则的字符串太多了。 将不可信变量输出到 div / body / attribute / javascript tag / style 之前，对 \u0026 \u003c \u003e \" ' / 进行转义 将不可信变量输出 URL 参数之前，进行 URLEncode 使用合适的 HTML 过滤库进行过滤 预防 DOM-based XSS，见 DOM based XSS Prevention Cheat Sheet 开启 HTTPOnly cookie，让浏览器接触不到 cookie 最后送上一个 XSS 攻击工具 http://webxss.net/，知己知彼，百战不殆。\n","wordCount":"215","inLanguage":"en","datePublished":"2017-05-31T22:04:00+08:00","dateModified":"2017-05-31T22:04:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2017/05/xss/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>XSS 攻击的处理</h1><div class=post-meta><span title='2017-05-31 22:04:00 +0800 +0800'>2017-05-31</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#事情缘由>事情缘由</a></li><li><a href=#xss-实现手段>XSS 实现手段</a></li><li><a href=#我厂历史上的处理方案>我厂历史上的处理方案</a></li><li><a href=#本次处理方案>本次处理方案</a></li><li><a href=#其他-tips>其他 Tips</a></li></ul></nav></div></details></div><div class=post-content><p>这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。
+谨以此文怀念 <a href=http://wooyun.org/>乌云</a>。</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201705/wooyun.jpg alt=201705/wooyun.jpg></p><hr><h2 id=事情缘由>事情缘由<a hidden class=anchor aria-hidden=true href=#事情缘由>#</a></h2><p>春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件，
+告知我厂网站上出现一例 XSS 漏洞。
+因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞，
+后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。</p><p>这里简单科普一下 XSS
+<a href=https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC>跨网站脚本 -维基百科，自由的百科全书</a>
+中介绍到：</p><blockquote><p>跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。
+它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。</p></blockquote><p>XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，
+针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，
+所有访问被攻击的页面，都会触发用户被攻击行为。</p><p>这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。
+时间紧迫，问题必须被解决。</p><h2 id=xss-实现手段>XSS 实现手段<a hidden class=anchor aria-hidden=true href=#xss-实现手段>#</a></h2><p>在解决问题之前，需要对这个问题有必要的基础认识。
+我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。</p><p>XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式，
+让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。</p><p>检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。</p><p>常见的检测方法（来自 <a href=https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC#.E6.A3.80.E6.B5.8B.E6.96.B9.E6.B3.95>跨网站脚本 - 维基百科，自由的百科全书</a>：</p><pre tabindex=0><code>&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;
 =&#39;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;
 &#34;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;
 &lt;script&gt;alert(document.cookie)&lt;/script&gt;
@@ -333,233 +51,24 @@ XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存�
 &lt;img src=&#34;javascript:alert(&#39;XSS&#39;)&#34;&gt;
 &lt;img src=&#34;http://xxx.com/yyy.png&#34; onerror=&#34;alert(&#39;XSS&#39;)&#34;&gt;
 （这个仅限IE有效）
-</code></pre><p>攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。<br />
-通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。<br />
-PS：一个有效粗暴的方式，是将对公、对内系统的域名分离，对内部系统进行物理级别隔离。</p>
-<h2 id="我厂历史上的处理方案">我厂历史上的处理方案<a hidden class="anchor" aria-hidden="true" href="#我厂历史上的处理方案">#</a></h2>
-<p>XSS 问题又来已久，咱厂子开了这么久，历史上如何防御的呢？<br />
-答案是用了两个策略：第一个是使用 <a href="https://www.owasp.org/index.php/Main_Page">OWASP</a><br />
-提供的库进行内容过滤，第二个是在存储数据时，存储了转义后的数据。</p>
-<p>在技术上处理 XSS，有两种态度可以选择：第一种是前置过滤，即将用户所有数据都进行转义，<br />
-在输出时候在前端（模板渲染）层面直接输出。<br />
-第二种是用户输入的数据不经过转义就直接存储起来，前端在使用时候保证对数据进行转义。</p>
-<p>我厂历史上使用的方案的前者，优点是在于前端不需要在每个地方转义，<br />
-避免某个地方忘记了转义，从而导致漏洞。缺点则是在输出内容到非 Web 客户端时候，比如<br />
-APP，需要进行额外的数据处理过程， 否则 HTMLEncode 的内容，在 APP<br />
-上面无法正确输出。</p>
-<p>这个处理方案是稳妥的，那么为什么最近又暴露出问题了？<br />
-排查之后发现，原来最近有若干个服务迁移到了一个新系统，<br />
-而新系统在安全上面没有全局处理，所以爆出了漏洞。</p>
-<h2 id="本次处理方案">本次处理方案<a hidden class="anchor" aria-hidden="true" href="#本次处理方案">#</a></h2>
-<p>知道了原因，那么可以快速解决问题了。在这次处理过程中，我们讨论了在当前移动平台增长迅速，Web 平台增长缓慢的大势下，能否直接存储用户原始数据？<br />
-而且由于规范制定不严格，目前系统内有些地方存储转码后数据，有些地方存储转码前数据。<br />
-导致在一些特殊的字符（颜文字）处理上不一致，从而导致在处理 <code>br</code> / <code>&lt;</code> 这类特殊字符时，表现不同。</p>
-<p>由于 DB 中有部分数据转义处理，部分数据原文存储，所以先处理输出后敏感信息，在模板层面启用全局<br />
-encode。 将有危险的数据转移为在 HTML 文本。</p>
-<p>PS：现代 Web 框架的模板渲染引擎，一般会默认开启 HTMLEncode，而<br />
-Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</p>
-<p>处理方案：</p>
-<ul>
-<li>开启全局 HTML 输出 Encode，有一个 <a href="http://watchitlater.com/blog/2011/10/default-html-escape-using-freemarker/">Default HTML-escape using Freemarker</a> 方案，可以默认开启 Html Encode，在这个处理方案中，需要注意有些地方真的需要输出原始 html，需要 <code>noescape</code> 特殊处理</li>
-<li>检查所有前端操作，禁止字符串拼接，使用框架支持的模板进行渲染，拖小菊的福，新系统在这块工作完成度一直比较好</li>
-<li>将 <a href="https://www.owasp.org/index.php/Main_Page">OWASP</a> 方案强制开启</li>
-</ul>
-<h2 id="其他-tips">其他 Tips<a hidden class="anchor" aria-hidden="true" href="#其他-tips">#</a></h2>
-<p>OWASP 有一个很长的 <a href="https://www.owasp.org/index.php/SS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">列表</a>，教导如何避免 XSS，里面提到了：</p>
-<ul>
-<li>为何以及如何进行「积极防御」，对立面是仅仅输出时候转义内容本身</li>
-<li>几条对抗 XSS 的规则
-<ul>
-<li>尽量不在特定地方输出不可信变量：script / comment / attribute / tag / style， 因为逃脱 HTMl 规则的字符串太多了。</li>
-<li>将不可信变量输出到 div / body / attribute / javascript tag / style 之前，对 <code>&amp; &lt; &gt; &quot; ' /</code> 进行转义</li>
-<li>将不可信变量输出 URL 参数之前，进行 URLEncode</li>
-<li>使用合适的 HTML 过滤库进行过滤</li>
-<li>预防 DOM-based XSS，见 <a href="https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet">DOM based XSS Prevention Cheat Sheet</a></li>
-<li>开启 HTTPOnly cookie，让浏览器接触不到 cookie</li>
-</ul>
-</li>
-</ul>
-<hr />
-<p>最后送上一个 XSS 攻击工具 <a href="http://webxss.net/">http://webxss.net/</a>，知己知彼，百战不殆。</p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2017/05/xss/">XSS 攻击的处理 | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/security/">security</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2017/06/monitoring-introducing/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>当我们在聊监控，我们在聊什么？</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2017/01/prophecy/">
-    <span class="title">Next »</span>
-    <br>
-    <span>👁️ 预测未来？</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+</code></pre><p>攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。
+通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。
+PS：一个有效粗暴的方式，是将对公、对内系统的域名分离，对内部系统进行物理级别隔离。</p><h2 id=我厂历史上的处理方案>我厂历史上的处理方案<a hidden class=anchor aria-hidden=true href=#我厂历史上的处理方案>#</a></h2><p>XSS 问题又来已久，咱厂子开了这么久，历史上如何防御的呢？
+答案是用了两个策略：第一个是使用 <a href=https://www.owasp.org/index.php/Main_Page>OWASP</a>
+提供的库进行内容过滤，第二个是在存储数据时，存储了转义后的数据。</p><p>在技术上处理 XSS，有两种态度可以选择：第一种是前置过滤，即将用户所有数据都进行转义，
+在输出时候在前端（模板渲染）层面直接输出。
+第二种是用户输入的数据不经过转义就直接存储起来，前端在使用时候保证对数据进行转义。</p><p>我厂历史上使用的方案的前者，优点是在于前端不需要在每个地方转义，
+避免某个地方忘记了转义，从而导致漏洞。缺点则是在输出内容到非 Web 客户端时候，比如
+APP，需要进行额外的数据处理过程， 否则 HTMLEncode 的内容，在 APP
+上面无法正确输出。</p><p>这个处理方案是稳妥的，那么为什么最近又暴露出问题了？
+排查之后发现，原来最近有若干个服务迁移到了一个新系统，
+而新系统在安全上面没有全局处理，所以爆出了漏洞。</p><h2 id=本次处理方案>本次处理方案<a hidden class=anchor aria-hidden=true href=#本次处理方案>#</a></h2><p>知道了原因，那么可以快速解决问题了。在这次处理过程中，我们讨论了在当前移动平台增长迅速，Web 平台增长缓慢的大势下，能否直接存储用户原始数据？
+而且由于规范制定不严格，目前系统内有些地方存储转码后数据，有些地方存储转码前数据。
+导致在一些特殊的字符（颜文字）处理上不一致，从而导致在处理 <code>br</code> / <code>&lt;</code> 这类特殊字符时，表现不同。</p><p>由于 DB 中有部分数据转义处理，部分数据原文存储，所以先处理输出后敏感信息，在模板层面启用全局
+encode。 将有危险的数据转移为在 HTML 文本。</p><p>PS：现代 Web 框架的模板渲染引擎，一般会默认开启 HTMLEncode，而
+Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</p><p>处理方案：</p><ul><li>开启全局 HTML 输出 Encode，有一个 <a href=http://watchitlater.com/blog/2011/10/default-html-escape-using-freemarker/>Default HTML-escape using Freemarker</a> 方案，可以默认开启 Html Encode，在这个处理方案中，需要注意有些地方真的需要输出原始 html，需要 <code>noescape</code> 特殊处理</li><li>检查所有前端操作，禁止字符串拼接，使用框架支持的模板进行渲染，拖小菊的福，新系统在这块工作完成度一直比较好</li><li>将 <a href=https://www.owasp.org/index.php/Main_Page>OWASP</a> 方案强制开启</li></ul><h2 id=其他-tips>其他 Tips<a hidden class=anchor aria-hidden=true href=#其他-tips>#</a></h2><p>OWASP 有一个很长的 <a href=https://www.owasp.org/index.php/SS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet>列表</a>，教导如何避免 XSS，里面提到了：</p><ul><li>为何以及如何进行「积极防御」，对立面是仅仅输出时候转义内容本身</li><li>几条对抗 XSS 的规则<ul><li>尽量不在特定地方输出不可信变量：script / comment / attribute / tag / style， 因为逃脱 HTMl 规则的字符串太多了。</li><li>将不可信变量输出到 div / body / attribute / javascript tag / style 之前，对 <code>& &lt; > " ' /</code> 进行转义</li><li>将不可信变量输出 URL 参数之前，进行 URLEncode</li><li>使用合适的 HTML 过滤库进行过滤</li><li>预防 DOM-based XSS，见 <a href=https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet>DOM based XSS Prevention Cheat Sheet</a></li><li>开启 HTTPOnly cookie，让浏览器接触不到 cookie</li></ul></li></ul><hr><p>最后送上一个 XSS 攻击工具 <a href=http://webxss.net/>http://webxss.net/</a>，知己知彼，百战不殆。</p><hr><p>原文链接: <a href=https://blog.alswl.com/2017/05/xss/>XSS 攻击的处理 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/security/>security</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2017/06/monitoring-introducing/><span class=title>« Prev</span><br><span>当我们在聊监控，我们在聊什么？</span></a>
+<a class=next href=https://blog.alswl.com/2017/01/prophecy/><span class=title>Next »</span><br><span>👁️ 预测未来？</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,531 +1,58 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>Fcitx 配置 | Log4D</title>
-<meta name="keywords" content="linuxer, fcitx">
-<meta name="description" content="Fcitx Fcitx 简介：
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Fcitx 配置 | Log4D</title><meta name=keywords content="linuxer,fcitx"><meta name=description content="Fcitx Fcitx 简介：
 小企鹅中文输入法（Free Chinese Input Toy for X，fcitx） 是一个以 GPL 方式发布的输入法框架， 编写它的目是为桌面环境提供一个灵活的输入方案。 本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持
 XIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼，
 并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。
 您可以从 http://fcitx.googlecode.com 下载最新的发布版本。
-当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入
-功能都有提供， 遂转移阵地到 Fcitx。
-Fcitx 安装 大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 pacman -S fcitx 即可安装最新版本。Ubuntu 的安装可以参考
-http://wiki.ubuntu.org.cn/Fcitx 。
-Fcitx 配置 详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](http://fcitx.github.co
-m/handbook/fcitx.html)
-Fcitx 特殊符号 当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx
-提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。
-在 /usr/share/fcitx/pinyin/pySym.mb / ~/.config/fcitx/pinyin/pySym.mb
-（ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 &lt;编码&gt; &lt;符号&gt; ，比如：">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2012/04/fcitx-config/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="Fcitx 配置" />
-<meta property="og:description" content="Fcitx Fcitx 简介：
+当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入 功能都有提供， 遂转移阵地到 Fcitx。
+Fcitx 安装 大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 pacman -S fcitx 即可安装最新版本。Ubuntu 的安装可以参考 http://wiki.ubuntu.org.cn/Fcitx 。
+Fcitx 配置 详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](http://fcitx.github.co m/handbook/fcitx.html)
+Fcitx 特殊符号 当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx 提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。
+在 /usr/share/fcitx/pinyin/pySym.mb / ~/.config/fcitx/pinyin/pySym.mb （ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 <编码> <符号> ，比如："><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2012/04/fcitx-config/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="Fcitx 配置"><meta property="og:description" content="Fcitx Fcitx 简介：
 小企鹅中文输入法（Free Chinese Input Toy for X，fcitx） 是一个以 GPL 方式发布的输入法框架， 编写它的目是为桌面环境提供一个灵活的输入方案。 本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持
 XIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼，
 并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。
 您可以从 http://fcitx.googlecode.com 下载最新的发布版本。
-当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入
-功能都有提供， 遂转移阵地到 Fcitx。
-Fcitx 安装 大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 pacman -S fcitx 即可安装最新版本。Ubuntu 的安装可以参考
-http://wiki.ubuntu.org.cn/Fcitx 。
-Fcitx 配置 详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](http://fcitx.github.co
-m/handbook/fcitx.html)
-Fcitx 特殊符号 当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx
-提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。
-在 /usr/share/fcitx/pinyin/pySym.mb / ~/.config/fcitx/pinyin/pySym.mb
-（ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 &lt;编码&gt; &lt;符号&gt; ，比如：" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2012/04/fcitx-config/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2012-04-01T00:00:00+08:00" />
-<meta property="article:modified_time" content="2012-04-01T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Fcitx 配置"/>
-<meta name="twitter:description" content="Fcitx Fcitx 简介：
+当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入 功能都有提供， 遂转移阵地到 Fcitx。
+Fcitx 安装 大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 pacman -S fcitx 即可安装最新版本。Ubuntu 的安装可以参考 http://wiki.ubuntu.org.cn/Fcitx 。
+Fcitx 配置 详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](http://fcitx.github.co m/handbook/fcitx.html)
+Fcitx 特殊符号 当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx 提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。
+在 /usr/share/fcitx/pinyin/pySym.mb / ~/.config/fcitx/pinyin/pySym.mb （ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 <编码> <符号> ，比如："><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2012/04/fcitx-config/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2012-04-01T00:00:00+08:00"><meta property="article:modified_time" content="2012-04-01T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="Fcitx 配置"><meta name=twitter:description content="Fcitx Fcitx 简介：
 小企鹅中文输入法（Free Chinese Input Toy for X，fcitx） 是一个以 GPL 方式发布的输入法框架， 编写它的目是为桌面环境提供一个灵活的输入方案。 本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持
 XIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼，
 并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。
 您可以从 http://fcitx.googlecode.com 下载最新的发布版本。
-当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入
-功能都有提供， 遂转移阵地到 Fcitx。
-Fcitx 安装 大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 pacman -S fcitx 即可安装最新版本。Ubuntu 的安装可以参考
-http://wiki.ubuntu.org.cn/Fcitx 。
-Fcitx 配置 详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](http://fcitx.github.co
-m/handbook/fcitx.html)
-Fcitx 特殊符号 当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx
-提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。
-在 /usr/share/fcitx/pinyin/pySym.mb / ~/.config/fcitx/pinyin/pySym.mb
-（ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 &lt;编码&gt; &lt;符号&gt; ，比如："/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "Fcitx 配置",
-      "item": "https://blog.alswl.com/2012/04/fcitx-config/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Fcitx 配置",
-  "name": "Fcitx 配置",
-  "description": "Fcitx Fcitx 简介：\n小企鹅中文输入法（Free Chinese Input Toy for X，fcitx） 是一个以 GPL 方式发布的输入法框架， 编写它的目是为桌面环境提供一个灵活的输入方案。 本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持\nXIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼，\n并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。\n您可以从 http://fcitx.googlecode.com 下载最新的发布版本。\n当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入\n功能都有提供， 遂转移阵地到 Fcitx。\nFcitx 安装 大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 pacman -S fcitx 即可安装最新版本。Ubuntu 的安装可以参考\nhttp://wiki.ubuntu.org.cn/Fcitx 。\nFcitx 配置 详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](http://fcitx.github.co\nm/handbook/fcitx.html)\nFcitx 特殊符号 当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx\n提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。\n在 /usr/share/fcitx/pinyin/pySym.mb / ~/.config/fcitx/pinyin/pySym.mb\n（ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 \u0026lt;编码\u0026gt; \u0026lt;符号\u0026gt; ，比如：",
-  "keywords": [
-    "linuxer", "fcitx"
-  ],
-  "articleBody": "Fcitx Fcitx 简介：\n小企鹅中文输入法（Free Chinese Input Toy for X，fcitx） 是一个以 GPL 方式发布的输入法框架， 编写它的目是为桌面环境提供一个灵活的输入方案。 本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持\nXIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼，\n并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。\n您可以从 http://fcitx.googlecode.com 下载最新的发布版本。\n当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入\n功能都有提供， 遂转移阵地到 Fcitx。\nFcitx 安装 大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 pacman -S fcitx 即可安装最新版本。Ubuntu 的安装可以参考\nhttp://wiki.ubuntu.org.cn/Fcitx 。\nFcitx 配置 详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](http://fcitx.github.co\nm/handbook/fcitx.html)\nFcitx 特殊符号 当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx\n提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。\n在 /usr/share/fcitx/pinyin/pySym.mb / ~/.config/fcitx/pinyin/pySym.mb\n（ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 \u003c编码\u003e \u003c符号\u003e ，比如：\nyinyue ♩ yinyue ♪ yinyue ♫ ... 那么，在 Fcitx 中输入 yinyue 就会出现如下候选框\npySym.mb 文件中，「编码」和「符号」均不允许出现空格，所以比较适合短小的符号，\n而颜文字或者长句不适合在这里出现。颜文字以及其他较长的文字如何快速输入， 就要看 Fcitx 的「快速输入」功能了。\n我在这里提供的配置文件包括了常用符号、数字、星座、箭头等等，喜欢可以直接拿去。\nps：我定义的「编码」是全拼，所以可能会混淆正常输入，建议全拼用户将「编码」略做 修改，添加前缀比如 z （文档中说 v 不能被使用为前缀）。\n配置完成之后，使用 fcitx -r 重启 Fcitx（使用 Ctrl+5 可以刷新配置文件， 但并不能刷新全部配置文件，建议重启 Fcitx）。\n待会配置「快速输入」之后，也需要重启 Fcitx 来让配置文件生效。\n我的配置文件 [fcitx-config / pinyin / pySym.mb](https://github.com/alswl/fcitx-\nconfig/blob/master/pinyin/pySym.mb)\nFcitx 快速输入 Fcitx 的「快速输入」和「特殊符号」很类似，后者管理字符，前者管理自定义语句。\n快速输入通过 ； 按键启用，随后输入相应的「字符组合」，Fcitx 会自动补全。\n编码对照文件存放在 ~/.config/fcitx/data/QuickPhrase.mb 或 share 目录下对应的文件中，格式为\n\u003c字符组合\u003e \u003c短语\u003e ，范例如下\n# 颜文字欢呼 （颜文字太需要了，卖个萌什么的太管用了） yhuanhu (/≥▽≤/) yhuanhu ヾ(o◕∀◕)ﾉ 在输入法中，键入 ； 之后再输入 yhuanhu 就会出现下面候选框：\n从图中可以看出，Fcitx 还自动进行了「字符组合」补全。\n我的 [fcitx-config / data / QuickPhrase.mb](https://github.com/alswl/fcitx-\nconfig/blob/master/data/QuickPhrase.mb) 配置文件按类别收集了一些颜文字，可以直接拿过来使用。\n参考链接：\nFCCTT推送特别篇—-FCITX输入法快速输入表情 颜文字收集整理╰(°▽°) Fcitx 中文键位映射 很多朋友和我一样，喜欢使用「和」来替换\"/\"，至于为什么，知乎有一个回答就解释的很好\n为什么大家引用时常用直角引号（「」）而不是弯引号（\"\"）？\nFcitx 完全可以通过配置中英文键位映射来修改中文状态下面的输入。全局配置文件在\n/usr/share/fcitx/data/punc.mb.zh_CN 中， 个人配置文件在\n~/.config/fcitx/data/punc.mb.zh_CN 这个对应位置。\n我的配置 [fcitx-config / data / punc.mb.zh_CN](https://github.com/alswl/fcitx-\nconfig/blob/master/data/punc.mb.zh_CN)\n最后 关于 Fcitx，有 bug 可以到官网反馈，处理起来效率很高， 感谢作者们给大家带来这么优秀的开源软件。\nUpdate:\n2012-03-02 感谢 @Weng Xuetian 指正 Ctrl + F5 是错误的，需要使用 Ctrl + 5 重载配置。 ",
-  "wordCount" : "196",
-  "inLanguage": "en",
-  "datePublished": "2012-04-01T00:00:00+08:00",
-  "dateModified": "2012-04-01T00:00:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2012/04/fcitx-config/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      Fcitx 配置
-    </h1>
-    <div class="post-meta"><span title='2012-04-01 00:00:00 +0800 CST'>2012-04-01</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#fcitx">Fcitx</a></li>
-    <li><a href="#fcitx-安装">Fcitx 安装</a></li>
-    <li><a href="#fcitx-配置">Fcitx 配置</a></li>
-    <li><a href="#fcitx-特殊符号">Fcitx 特殊符号</a></li>
-    <li><a href="#fcitx-快速输入">Fcitx 快速输入</a></li>
-    <li><a href="#fcitx-中文键位映射">Fcitx 中文键位映射</a></li>
-    <li><a href="#最后">最后</a></li>
-  </ul>
-</nav>
-        </div>
-    </details>
-</div>
-
-  <div class="post-content"><h2 id="fcitx">Fcitx<a hidden class="anchor" aria-hidden="true" href="#fcitx">#</a></h2>
-<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201204/fcitx.png" alt="Fcitx"  />
-</p>
-<p>Fcitx 简介：</p>
-<pre><code>小企鹅中文输入法（Free Chinese Input Toy for X，fcitx）
+当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入 功能都有提供， 遂转移阵地到 Fcitx。
+Fcitx 安装 大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 pacman -S fcitx 即可安装最新版本。Ubuntu 的安装可以参考 http://wiki.ubuntu.org.cn/Fcitx 。
+Fcitx 配置 详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](http://fcitx.github.co m/handbook/fcitx.html)
+Fcitx 特殊符号 当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx 提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。
+在 /usr/share/fcitx/pinyin/pySym.mb / ~/.config/fcitx/pinyin/pySym.mb （ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 <编码> <符号> ，比如："><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"Fcitx 配置","item":"https://blog.alswl.com/2012/04/fcitx-config/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Fcitx 配置","name":"Fcitx 配置","description":"Fcitx Fcitx 简介：\n小企鹅中文输入法（Free Chinese Input Toy for X，fcitx） 是一个以 GPL 方式发布的输入法框架， 编写它的目是为桌面环境提供一个灵活的输入方案。 本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持\nXIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼，\n并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。\n您可以从 http://fcitx.googlecode.com 下载最新的发布版本。\n当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入 功能都有提供， 遂转移阵地到 Fcitx。\nFcitx 安装 大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 pacman -S fcitx 即可安装最新版本。Ubuntu 的安装可以参考 http://wiki.ubuntu.org.cn/Fcitx 。\nFcitx 配置 详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](http://fcitx.github.co m/handbook/fcitx.html)\nFcitx 特殊符号 当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx 提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。\n在 /usr/share/fcitx/pinyin/pySym.mb / ~/.config/fcitx/pinyin/pySym.mb （ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 \u0026lt;编码\u0026gt; \u0026lt;符号\u0026gt; ，比如：","keywords":["linuxer","fcitx"],"articleBody":"Fcitx Fcitx 简介：\n小企鹅中文输入法（Free Chinese Input Toy for X，fcitx） 是一个以 GPL 方式发布的输入法框架， 编写它的目是为桌面环境提供一个灵活的输入方案。 本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持\nXIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼，\n并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。\n您可以从 http://fcitx.googlecode.com 下载最新的发布版本。\n当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入 功能都有提供， 遂转移阵地到 Fcitx。\nFcitx 安装 大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 pacman -S fcitx 即可安装最新版本。Ubuntu 的安装可以参考 http://wiki.ubuntu.org.cn/Fcitx 。\nFcitx 配置 详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](http://fcitx.github.co m/handbook/fcitx.html)\nFcitx 特殊符号 当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx 提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。\n在 /usr/share/fcitx/pinyin/pySym.mb / ~/.config/fcitx/pinyin/pySym.mb （ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 \u003c编码\u003e \u003c符号\u003e ，比如：\nyinyue ♩ yinyue ♪ yinyue ♫ ... 那么，在 Fcitx 中输入 yinyue 就会出现如下候选框\npySym.mb 文件中，「编码」和「符号」均不允许出现空格，所以比较适合短小的符号， 而颜文字或者长句不适合在这里出现。颜文字以及其他较长的文字如何快速输入， 就要看 Fcitx 的「快速输入」功能了。\n我在这里提供的配置文件包括了常用符号、数字、星座、箭头等等，喜欢可以直接拿去。 ps：我定义的「编码」是全拼，所以可能会混淆正常输入，建议全拼用户将「编码」略做 修改，添加前缀比如 z （文档中说 v 不能被使用为前缀）。\n配置完成之后，使用 fcitx -r 重启 Fcitx（使用 Ctrl+5 可以刷新配置文件， 但并不能刷新全部配置文件，建议重启 Fcitx）。 待会配置「快速输入」之后，也需要重启 Fcitx 来让配置文件生效。\n我的配置文件 [fcitx-config / pinyin / pySym.mb](https://github.com/alswl/fcitx- config/blob/master/pinyin/pySym.mb)\nFcitx 快速输入 Fcitx 的「快速输入」和「特殊符号」很类似，后者管理字符，前者管理自定义语句。\n快速输入通过 ； 按键启用，随后输入相应的「字符组合」，Fcitx 会自动补全。\n编码对照文件存放在 ~/.config/fcitx/data/QuickPhrase.mb 或 share 目录下对应的文件中，格式为 \u003c字符组合\u003e \u003c短语\u003e ，范例如下\n# 颜文字欢呼 （颜文字太需要了，卖个萌什么的太管用了） yhuanhu (/≥▽≤/) yhuanhu ヾ(o◕∀◕)ﾉ 在输入法中，键入 ； 之后再输入 yhuanhu 就会出现下面候选框：\n从图中可以看出，Fcitx 还自动进行了「字符组合」补全。\n我的 [fcitx-config / data / QuickPhrase.mb](https://github.com/alswl/fcitx- config/blob/master/data/QuickPhrase.mb) 配置文件按类别收集了一些颜文字，可以直接拿过来使用。\n参考链接：\nFCCTT推送特别篇—-FCITX输入法快速输入表情 颜文字收集整理╰(°▽°) Fcitx 中文键位映射 很多朋友和我一样，喜欢使用「和」来替换\"/\"，至于为什么，知乎有一个回答就解释的很好 为什么大家引用时常用直角引号（「」）而不是弯引号（\"\"）？\nFcitx 完全可以通过配置中英文键位映射来修改中文状态下面的输入。全局配置文件在 /usr/share/fcitx/data/punc.mb.zh_CN 中， 个人配置文件在 ~/.config/fcitx/data/punc.mb.zh_CN 这个对应位置。\n我的配置 [fcitx-config / data / punc.mb.zh_CN](https://github.com/alswl/fcitx- config/blob/master/data/punc.mb.zh_CN)\n最后 关于 Fcitx，有 bug 可以到官网反馈，处理起来效率很高， 感谢作者们给大家带来这么优秀的开源软件。\nUpdate:\n2012-03-02 感谢 @Weng Xuetian 指正 Ctrl + F5 是错误的，需要使用 Ctrl + 5 重载配置。 ","wordCount":"196","inLanguage":"en","datePublished":"2012-04-01T00:00:00+08:00","dateModified":"2012-04-01T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2012/04/fcitx-config/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>Fcitx 配置</h1><div class=post-meta><span title='2012-04-01 00:00:00 +0800 +0800'>2012-04-01</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#fcitx>Fcitx</a></li><li><a href=#fcitx-安装>Fcitx 安装</a></li><li><a href=#fcitx-配置>Fcitx 配置</a></li><li><a href=#fcitx-特殊符号>Fcitx 特殊符号</a></li><li><a href=#fcitx-快速输入>Fcitx 快速输入</a></li><li><a href=#fcitx-中文键位映射>Fcitx 中文键位映射</a></li><li><a href=#最后>最后</a></li></ul></nav></div></details></div><div class=post-content><h2 id=fcitx>Fcitx<a hidden class=anchor aria-hidden=true href=#fcitx>#</a></h2><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201204/fcitx.png alt=Fcitx></p><p>Fcitx 简介：</p><pre><code>小企鹅中文输入法（Free Chinese Input Toy for X，fcitx）
 是一个以 GPL 方式发布的输入法框架， 编写它的目是为桌面环境提供一个灵活的输入方案。
-</code></pre>
-<p>本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持</p>
-<p>XIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼，</p>
-<p>并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。</p>
-<p>您可以从 <a href="http://fcitx.googlecode.com">http://fcitx.googlecode.com</a> 下载最新的发布版本。</p>
-<p>当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入<br />
-功能都有提供， 遂转移阵地到 Fcitx。</p>
-<h2 id="fcitx-安装">Fcitx 安装<a hidden class="anchor" aria-hidden="true" href="#fcitx-安装">#</a></h2>
-<p>大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 <code>pacman -S fcitx</code> 即可安装最新版本。Ubuntu 的安装可以参考<br />
-<a href="http://wiki.ubuntu.org.cn/Fcitx">http://wiki.ubuntu.org.cn/Fcitx</a> 。</p>
-<h2 id="fcitx-配置">Fcitx 配置<a hidden class="anchor" aria-hidden="true" href="#fcitx-配置">#</a></h2>
-<p>详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](<a href="http://fcitx.github.co">http://fcitx.github.co</a><br />
-m/handbook/fcitx.html)</p>
-<h2 id="fcitx-特殊符号">Fcitx 特殊符号<a hidden class="anchor" aria-hidden="true" href="#fcitx-特殊符号">#</a></h2>
-<p>当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx<br />
-提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。</p>
-<p>在 <code>/usr/share/fcitx/pinyin/pySym.mb</code> / <code>~/.config/fcitx/pinyin/pySym.mb</code><br />
-（ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 <code>&lt;编码&gt; &lt;符号&gt;</code> ，比如：</p>
-<pre><code>yinyue ♩
+</code></pre><p>本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持</p><p>XIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼，</p><p>并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。</p><p>您可以从 <a href=http://fcitx.googlecode.com>http://fcitx.googlecode.com</a> 下载最新的发布版本。</p><p>当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入
+功能都有提供， 遂转移阵地到 Fcitx。</p><h2 id=fcitx-安装>Fcitx 安装<a hidden class=anchor aria-hidden=true href=#fcitx-安装>#</a></h2><p>大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 <code>pacman -S fcitx</code> 即可安装最新版本。Ubuntu 的安装可以参考
+<a href=http://wiki.ubuntu.org.cn/Fcitx>http://wiki.ubuntu.org.cn/Fcitx</a> 。</p><h2 id=fcitx-配置>Fcitx 配置<a hidden class=anchor aria-hidden=true href=#fcitx-配置>#</a></h2><p>详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](<a href=http://fcitx.github.co>http://fcitx.github.co</a>
+m/handbook/fcitx.html)</p><h2 id=fcitx-特殊符号>Fcitx 特殊符号<a hidden class=anchor aria-hidden=true href=#fcitx-特殊符号>#</a></h2><p>当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx
+提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。</p><p>在 <code>/usr/share/fcitx/pinyin/pySym.mb</code> / <code>~/.config/fcitx/pinyin/pySym.mb</code>
+（ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 <code>&lt;编码> &lt;符号></code> ，比如：</p><pre><code>yinyue ♩
 yinyue ♪
 yinyue ♫
 ...
-</code></pre>
-<p>那么，在 Fcitx 中输入 <code>yinyue</code> 就会出现如下候选框</p>
-<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201204/fcitx-1.png" alt="Fcitx 特殊符号"  />
-</p>
-<p><code>pySym.mb</code> 文件中，「编码」和「符号」均不允许出现空格，所以比较适合短小的符号，<br />
-而颜文字或者长句不适合在这里出现。颜文字以及其他较长的文字如何快速输入， 就要看 Fcitx 的「快速输入」功能了。</p>
-<p>我在这里提供的配置文件包括了常用符号、数字、星座、箭头等等，喜欢可以直接拿去。<br />
-ps：我定义的「编码」是全拼，所以可能会混淆正常输入，建议全拼用户将「编码」略做 修改，添加前缀比如 <code>z</code> （文档中说 <code>v</code> 不能被使用为前缀）。</p>
-<p>配置完成之后，使用 <code>fcitx -r</code> 重启 Fcitx（使用 Ctrl+5 可以刷新配置文件， 但并不能刷新全部配置文件，建议重启 Fcitx）。<br />
-待会配置「快速输入」之后，也需要重启 Fcitx 来让配置文件生效。</p>
-<p>我的配置文件 [fcitx-config / pinyin / pySym.mb](<a href="https://github.com/alswl/fcitx-">https://github.com/alswl/fcitx-</a><br />
-config/blob/master/pinyin/pySym.mb)</p>
-<h2 id="fcitx-快速输入">Fcitx 快速输入<a hidden class="anchor" aria-hidden="true" href="#fcitx-快速输入">#</a></h2>
-<p>Fcitx 的「快速输入」和「特殊符号」很类似，后者管理字符，前者管理自定义语句。</p>
-<p>快速输入通过 <code>；</code> 按键启用，随后输入相应的「字符组合」，Fcitx 会自动补全。</p>
-<p>编码对照文件存放在 <code>~/.config/fcitx/data/QuickPhrase.mb</code> 或 <code>share</code> 目录下对应的文件中，格式为<br />
-<code>&lt;字符组合&gt; &lt;短语&gt;</code> ，范例如下</p>
-<pre><code># 颜文字欢呼 （颜文字太需要了，卖个萌什么的太管用了）
+</code></pre><p>那么，在 Fcitx 中输入 <code>yinyue</code> 就会出现如下候选框</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201204/fcitx-1.png alt="Fcitx 特殊符号"></p><p><code>pySym.mb</code> 文件中，「编码」和「符号」均不允许出现空格，所以比较适合短小的符号，
+而颜文字或者长句不适合在这里出现。颜文字以及其他较长的文字如何快速输入， 就要看 Fcitx 的「快速输入」功能了。</p><p>我在这里提供的配置文件包括了常用符号、数字、星座、箭头等等，喜欢可以直接拿去。
+ps：我定义的「编码」是全拼，所以可能会混淆正常输入，建议全拼用户将「编码」略做 修改，添加前缀比如 <code>z</code> （文档中说 <code>v</code> 不能被使用为前缀）。</p><p>配置完成之后，使用 <code>fcitx -r</code> 重启 Fcitx（使用 Ctrl+5 可以刷新配置文件， 但并不能刷新全部配置文件，建议重启 Fcitx）。
+待会配置「快速输入」之后，也需要重启 Fcitx 来让配置文件生效。</p><p>我的配置文件 [fcitx-config / pinyin / pySym.mb](<a href=https://github.com/alswl/fcitx->https://github.com/alswl/fcitx-</a>
+config/blob/master/pinyin/pySym.mb)</p><h2 id=fcitx-快速输入>Fcitx 快速输入<a hidden class=anchor aria-hidden=true href=#fcitx-快速输入>#</a></h2><p>Fcitx 的「快速输入」和「特殊符号」很类似，后者管理字符，前者管理自定义语句。</p><p>快速输入通过 <code>；</code> 按键启用，随后输入相应的「字符组合」，Fcitx 会自动补全。</p><p>编码对照文件存放在 <code>~/.config/fcitx/data/QuickPhrase.mb</code> 或 <code>share</code> 目录下对应的文件中，格式为
+<code>&lt;字符组合> &lt;短语></code> ，范例如下</p><pre><code># 颜文字欢呼 （颜文字太需要了，卖个萌什么的太管用了）
 yhuanhu (/≥▽≤/)
 yhuanhu ヾ(o◕∀◕)ﾉ
-</code></pre>
-<p>在输入法中，键入 <code>；</code> 之后再输入 <code>yhuanhu</code> 就会出现下面候选框：</p>
-<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201204/fcitx-2.png" alt="Fcitx 快速输入"  />
-</p>
-<p>从图中可以看出，Fcitx 还自动进行了「字符组合」补全。</p>
-<p>我的 [fcitx-config / data / QuickPhrase.mb](<a href="https://github.com/alswl/fcitx-">https://github.com/alswl/fcitx-</a><br />
-config/blob/master/data/QuickPhrase.mb) 配置文件按类别收集了一些颜文字，可以直接拿过来使用。</p>
-<p>参考链接：</p>
-<ul>
-<li><a href="http://zhan.renren.com/fullcirclectt?tagId=163058&amp;checked=true">FCCTT推送特别篇&mdash;-FCITX输入法快速输入表情</a></li>
-<li><a href="http://site.douban.com/widget/notes/4567539/note/197244464/">颜文字收集整理╰(<strong>°▽°</strong>)</a></li>
-</ul>
-<h2 id="fcitx-中文键位映射">Fcitx 中文键位映射<a hidden class="anchor" aria-hidden="true" href="#fcitx-中文键位映射">#</a></h2>
-<p>很多朋友和我一样，喜欢使用「和」来替换&quot;/&quot;，至于为什么，知乎有一个回答就解释的很好<br />
-<a href="http://www.zhihu.com/question/19589668">为什么大家引用时常用直角引号（「」）而不是弯引号（&quot;&quot;）？</a></p>
-<p>Fcitx 完全可以通过配置中英文键位映射来修改中文状态下面的输入。全局配置文件在<br />
-<code>/usr/share/fcitx/data/punc.mb.zh_CN</code> 中， 个人配置文件在<br />
-<code>~/.config/fcitx/data/punc.mb.zh_CN</code> 这个对应位置。</p>
-<p>我的配置 [fcitx-config / data / punc.mb.zh_CN](<a href="https://github.com/alswl/fcitx-">https://github.com/alswl/fcitx-</a><br />
-config/blob/master/data/punc.mb.zh_CN)</p>
-<h2 id="最后">最后<a hidden class="anchor" aria-hidden="true" href="#最后">#</a></h2>
-<p>关于 Fcitx，有 bug 可以到官网反馈，处理起来效率很高， 感谢作者们给大家带来这么优秀的开源软件。</p>
-<p>Update:</p>
-<ul>
-<li>2012-03-02 感谢 @Weng Xuetian 指正 <code>Ctrl + F5</code> 是错误的，需要使用 <code>Ctrl + 5</code> 重载配置。</li>
-</ul>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2012/04/fcitx-config/">Fcitx 配置 | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/linuxer/">linuxer</a></li>
-      <li><a href="https://blog.alswl.com/tags/fcitx/">fcitx</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2012/04/vundle/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>使用 Vundle 管理 Vim 插件</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2012/03/gae/">
-    <span class="title">Next »</span>
-    <br>
-    <span>GAE 编程指南读书笔记</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+</code></pre><p>在输入法中，键入 <code>；</code> 之后再输入 <code>yhuanhu</code> 就会出现下面候选框：</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/201204/fcitx-2.png alt="Fcitx 快速输入"></p><p>从图中可以看出，Fcitx 还自动进行了「字符组合」补全。</p><p>我的 [fcitx-config / data / QuickPhrase.mb](<a href=https://github.com/alswl/fcitx->https://github.com/alswl/fcitx-</a>
+config/blob/master/data/QuickPhrase.mb) 配置文件按类别收集了一些颜文字，可以直接拿过来使用。</p><p>参考链接：</p><ul><li><a href="http://zhan.renren.com/fullcirclectt?tagId=163058&checked=true">FCCTT推送特别篇&mdash;-FCITX输入法快速输入表情</a></li><li><a href=http://site.douban.com/widget/notes/4567539/note/197244464/>颜文字收集整理╰(<strong>°▽°</strong>)</a></li></ul><h2 id=fcitx-中文键位映射>Fcitx 中文键位映射<a hidden class=anchor aria-hidden=true href=#fcitx-中文键位映射>#</a></h2><p>很多朋友和我一样，喜欢使用「和」来替换"/"，至于为什么，知乎有一个回答就解释的很好
+<a href=http://www.zhihu.com/question/19589668>为什么大家引用时常用直角引号（「」）而不是弯引号（""）？</a></p><p>Fcitx 完全可以通过配置中英文键位映射来修改中文状态下面的输入。全局配置文件在
+<code>/usr/share/fcitx/data/punc.mb.zh_CN</code> 中， 个人配置文件在
+<code>~/.config/fcitx/data/punc.mb.zh_CN</code> 这个对应位置。</p><p>我的配置 [fcitx-config / data / punc.mb.zh_CN](<a href=https://github.com/alswl/fcitx->https://github.com/alswl/fcitx-</a>
+config/blob/master/data/punc.mb.zh_CN)</p><h2 id=最后>最后<a hidden class=anchor aria-hidden=true href=#最后>#</a></h2><p>关于 Fcitx，有 bug 可以到官网反馈，处理起来效率很高， 感谢作者们给大家带来这么优秀的开源软件。</p><p>Update:</p><ul><li>2012-03-02 感谢 @Weng Xuetian 指正 <code>Ctrl + F5</code> 是错误的，需要使用 <code>Ctrl + 5</code> 重载配置。</li></ul><hr><p>原文链接: <a href=https://blog.alswl.com/2012/04/fcitx-config/>Fcitx 配置 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/linuxer/>linuxer</a></li><li><a href=https://blog.alswl.com/tags/fcitx/>fcitx</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2012/04/vundle/><span class=title>« Prev</span><br><span>使用 Vundle 管理 Vim 插件</span></a>
+<a class=next href=https://blog.alswl.com/2012/03/gae/><span class=title>Next »</span><br><span>GAE 编程指南读书笔记</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,696 +1,141 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>MFC将退出历史舞台，微软的下一代用户界面技术WPF | Log4D</title>
-<meta name="keywords" content="c, wpf">
-<meta name="description" content="转来的，最近对MFC很关注&hellip;
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>MFC将退出历史舞台，微软的下一代用户界面技术WPF | Log4D</title><meta name=keywords content="c,wpf"><meta name=description content="转来的，最近对MFC很关注&mldr;
 WPF简介
-WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示，
-所以叫Presentation（呈现）。
-作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的
-支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置
-的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
+WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示， 所以叫Presentation（呈现）。
+作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
 微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。
-在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound
-ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本&ndash;
-你可以使用它来开发你的下一代用户界面程序了。
+在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本&ndash; 你可以使用它来开发你的下一代用户界面程序了。
 那么，WPF是什么，为什么它那么重要呢？
 首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：
 •将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。
-•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关
-键逻辑而不干扰设计过程。
+•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关 键逻辑而不干扰设计过程。
 •它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。
-•它支持软件的&quot;空标签&quot;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。
+•它支持软件的&#34;空标签&#34;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。
 WPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。
-其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素
-只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的
-浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管
-理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立
-于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易
-于操作。
-作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的
-支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置
-的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
-&amp;
-nbsp_place_holder;&amp;nb
-sp_place_holder;&amp;nbsp
-_place_holder;&amp;nbsp_p
-lace_holder;&amp;nbsp_pla
-ce_holder;&amp;nbsp_place
-_holder;&amp;nbsp_place_h
-older;&amp;nbsp_place_hol
-der;&amp;nbsp_place_holde
-r;
-&amp;n
-bsp_place_holder;
-WPF前景分析
-WPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是
-界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的）
-，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基
-于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！
-），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景
-应该是一片光明。
+其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素 只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的 浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管 理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立 于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易 于操作。
+作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
+& nbsp_place_holder;&nb sp_place_holder;&nbsp _place_holder;&nbsp_p lace_holder;&nbsp_pla ce_holder;&nbsp_place _holder;&nbsp_place_h older;&nbsp_place_hol der;&nbsp_place_holde r; &n bsp_place_holder; WPF前景分析
+WPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是 界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的） ，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基 于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！ ），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景 应该是一片光明。
 目前开发界的对WPF响应程度
-目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本
-都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是
-刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。
+目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本 都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是 刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。
 目前微软针对WPF提供的服务和支持
-随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主
-要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。
+随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主 要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。
 1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载
-2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方
-技术支持网站发布的信息为准）
-3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS
-2005中进行所见即所得的WPF开发。
+2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方 技术支持网站发布的信息为准）
+3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS 2005中进行所见即所得的WPF开发。
 对比MFC，winform，wpf
 分析：
 MFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，
 winform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。
-wpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的
-显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）
-&amp;
-nbsp_place_holder;&amp;nb
-sp_place_holder;&amp;nbsp
-_place_holder;&amp;nbsp_p
-lace_holder;&amp;nbsp_pla">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="MFC将退出历史舞台，微软的下一代用户界面技术WPF" />
-<meta property="og:description" content="转来的，最近对MFC很关注&hellip;
+wpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的 显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）
+& nbsp_place_holder;&nb sp_place_holder;&nbsp _place_holder;&nbsp_p lace_holder;&nbsp_pla ce_holder;&nbsp_place _holder;&nbsp_place_h older;&nbsp_place_hol der;&nbsp_place_holde r; MFC，winform，wpf"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="MFC将退出历史舞台，微软的下一代用户界面技术WPF"><meta property="og:description" content="转来的，最近对MFC很关注&mldr;
 WPF简介
-WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示，
-所以叫Presentation（呈现）。
-作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的
-支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置
-的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
+WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示， 所以叫Presentation（呈现）。
+作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
 微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。
-在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound
-ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本&ndash;
-你可以使用它来开发你的下一代用户界面程序了。
+在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本&ndash; 你可以使用它来开发你的下一代用户界面程序了。
 那么，WPF是什么，为什么它那么重要呢？
 首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：
 •将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。
-•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关
-键逻辑而不干扰设计过程。
+•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关 键逻辑而不干扰设计过程。
 •它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。
-•它支持软件的&quot;空标签&quot;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。
+•它支持软件的&#34;空标签&#34;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。
 WPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。
-其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素
-只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的
-浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管
-理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立
-于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易
-于操作。
-作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的
-支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置
-的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
-&amp;
-nbsp_place_holder;&amp;nb
-sp_place_holder;&amp;nbsp
-_place_holder;&amp;nbsp_p
-lace_holder;&amp;nbsp_pla
-ce_holder;&amp;nbsp_place
-_holder;&amp;nbsp_place_h
-older;&amp;nbsp_place_hol
-der;&amp;nbsp_place_holde
-r;
-&amp;n
-bsp_place_holder;
-WPF前景分析
-WPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是
-界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的）
-，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基
-于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！
-），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景
-应该是一片光明。
+其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素 只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的 浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管 理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立 于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易 于操作。
+作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
+& nbsp_place_holder;&nb sp_place_holder;&nbsp _place_holder;&nbsp_p lace_holder;&nbsp_pla ce_holder;&nbsp_place _holder;&nbsp_place_h older;&nbsp_place_hol der;&nbsp_place_holde r; &n bsp_place_holder; WPF前景分析
+WPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是 界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的） ，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基 于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！ ），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景 应该是一片光明。
 目前开发界的对WPF响应程度
-目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本
-都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是
-刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。
+目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本 都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是 刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。
 目前微软针对WPF提供的服务和支持
-随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主
-要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。
+随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主 要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。
 1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载
-2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方
-技术支持网站发布的信息为准）
-3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS
-2005中进行所见即所得的WPF开发。
+2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方 技术支持网站发布的信息为准）
+3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS 2005中进行所见即所得的WPF开发。
 对比MFC，winform，wpf
 分析：
 MFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，
 winform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。
-wpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的
-显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）
-&amp;
-nbsp_place_holder;&amp;nb
-sp_place_holder;&amp;nbsp
-_place_holder;&amp;nbsp_p
-lace_holder;&amp;nbsp_pla" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2008-10-28T00:00:00+08:00" />
-<meta property="article:modified_time" content="2008-10-28T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="MFC将退出历史舞台，微软的下一代用户界面技术WPF"/>
-<meta name="twitter:description" content="转来的，最近对MFC很关注&hellip;
+wpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的 显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）
+& nbsp_place_holder;&nb sp_place_holder;&nbsp _place_holder;&nbsp_p lace_holder;&nbsp_pla ce_holder;&nbsp_place _holder;&nbsp_place_h older;&nbsp_place_hol der;&nbsp_place_holde r; MFC，winform，wpf"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2008-10-28T00:00:00+08:00"><meta property="article:modified_time" content="2008-10-28T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="MFC将退出历史舞台，微软的下一代用户界面技术WPF"><meta name=twitter:description content="转来的，最近对MFC很关注&mldr;
 WPF简介
-WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示，
-所以叫Presentation（呈现）。
-作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的
-支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置
-的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
+WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示， 所以叫Presentation（呈现）。
+作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
 微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。
-在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound
-ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本&ndash;
-你可以使用它来开发你的下一代用户界面程序了。
+在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本&ndash; 你可以使用它来开发你的下一代用户界面程序了。
 那么，WPF是什么，为什么它那么重要呢？
 首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：
 •将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。
-•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关
-键逻辑而不干扰设计过程。
+•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关 键逻辑而不干扰设计过程。
 •它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。
-•它支持软件的&quot;空标签&quot;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。
+•它支持软件的&#34;空标签&#34;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。
 WPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。
-其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素
-只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的
-浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管
-理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立
-于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易
-于操作。
-作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的
-支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置
-的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
-&amp;
-nbsp_place_holder;&amp;nb
-sp_place_holder;&amp;nbsp
-_place_holder;&amp;nbsp_p
-lace_holder;&amp;nbsp_pla
-ce_holder;&amp;nbsp_place
-_holder;&amp;nbsp_place_h
-older;&amp;nbsp_place_hol
-der;&amp;nbsp_place_holde
-r;
-&amp;n
-bsp_place_holder;
-WPF前景分析
-WPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是
-界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的）
-，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基
-于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！
-），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景
-应该是一片光明。
+其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素 只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的 浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管 理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立 于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易 于操作。
+作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
+& nbsp_place_holder;&nb sp_place_holder;&nbsp _place_holder;&nbsp_p lace_holder;&nbsp_pla ce_holder;&nbsp_place _holder;&nbsp_place_h older;&nbsp_place_hol der;&nbsp_place_holde r; &n bsp_place_holder; WPF前景分析
+WPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是 界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的） ，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基 于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！ ），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景 应该是一片光明。
 目前开发界的对WPF响应程度
-目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本
-都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是
-刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。
+目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本 都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是 刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。
 目前微软针对WPF提供的服务和支持
-随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主
-要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。
+随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主 要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。
 1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载
-2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方
-技术支持网站发布的信息为准）
-3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS
-2005中进行所见即所得的WPF开发。
+2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方 技术支持网站发布的信息为准）
+3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS 2005中进行所见即所得的WPF开发。
 对比MFC，winform，wpf
 分析：
 MFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，
 winform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。
-wpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的
-显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）
-&amp;
-nbsp_place_holder;&amp;nb
-sp_place_holder;&amp;nbsp
-_place_holder;&amp;nbsp_p
-lace_holder;&amp;nbsp_pla"/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "MFC将退出历史舞台，微软的下一代用户界面技术WPF",
-      "item": "https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "MFC将退出历史舞台，微软的下一代用户界面技术WPF",
-  "name": "MFC将退出历史舞台，微软的下一代用户界面技术WPF",
-  "description": "转来的，最近对MFC很关注\u0026hellip;\nWPF简介\nWPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示，\n所以叫Presentation（呈现）。\n作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的\n支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置\n的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。\n微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。\n在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound\nation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本\u0026ndash;\n你可以使用它来开发你的下一代用户界面程序了。\n那么，WPF是什么，为什么它那么重要呢？\n首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：\n•将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。\n•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关\n键逻辑而不干扰设计过程。\n•它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。\n•它支持软件的\u0026quot;空标签\u0026quot;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。\nWPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。\n其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素\n只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的\n浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管\n理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立\n于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易\n于操作。\n作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的\n支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置\n的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。\n\u0026amp;\nnbsp_place_holder;\u0026amp;nb\nsp_place_holder;\u0026amp;nbsp\n_place_holder;\u0026amp;nbsp_p\nlace_holder;\u0026amp;nbsp_pla\nce_holder;\u0026amp;nbsp_place\n_holder;\u0026amp;nbsp_place_h\nolder;\u0026amp;nbsp_place_hol\nder;\u0026amp;nbsp_place_holde\nr;\n\u0026amp;n\nbsp_place_holder;\nWPF前景分析\nWPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是\n界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的）\n，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基\n于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！\n），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景\n应该是一片光明。\n目前开发界的对WPF响应程度\n目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本\n都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是\n刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。\n目前微软针对WPF提供的服务和支持\n随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主\n要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。\n1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载\n2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方\n技术支持网站发布的信息为准）\n3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS\n2005中进行所见即所得的WPF开发。\n对比MFC，winform，wpf\n分析：\nMFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，\nwinform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。\nwpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的\n显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）\n\u0026amp;\nnbsp_place_holder;\u0026amp;nb\nsp_place_holder;\u0026amp;nbsp\n_place_holder;\u0026amp;nbsp_p\nlace_holder;\u0026amp;nbsp_pla",
-  "keywords": [
-    "c", "wpf"
-  ],
-  "articleBody": "转来的，最近对MFC很关注…\nWPF简介\nWPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示，\n所以叫Presentation（呈现）。\n作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的\n支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置\n的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。\n微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。\n在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound\nation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本–\n你可以使用它来开发你的下一代用户界面程序了。\n那么，WPF是什么，为什么它那么重要呢？\n首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：\n•将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。\n•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关\n键逻辑而不干扰设计过程。\n•它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。\n•它支持软件的\"空标签\"：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。\nWPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。\n其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素\n只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的\n浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管\n理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立\n于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易\n于操作。\n作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的\n支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置\n的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。\n\u0026\nnbsp_place_holder;\u0026nb\nsp_place_holder;\u0026nbsp\n_place_holder;\u0026nbsp_p\nlace_holder;\u0026nbsp_pla\nce_holder;\u0026nbsp_place\n_holder;\u0026nbsp_place_h\nolder;\u0026nbsp_place_hol\nder;\u0026nbsp_place_holde\nr;\n\u0026n\nbsp_place_holder;\nWPF前景分析\nWPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是\n界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的）\n，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基\n于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！\n），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景\n应该是一片光明。\n目前开发界的对WPF响应程度\n目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本\n都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是\n刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。\n目前微软针对WPF提供的服务和支持\n随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主\n要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。\n1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载\n2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方\n技术支持网站发布的信息为准）\n3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS\n2005中进行所见即所得的WPF开发。\n对比MFC，winform，wpf\n分析：\nMFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，\nwinform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。\nwpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的\n显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）\n\u0026\nnbsp_place_holder;\u0026nb\nsp_place_holder;\u0026nbsp\n_place_holder;\u0026nbsp_p\nlace_holder;\u0026nbsp_pla\nce_holder;\u0026nbsp_place\n_holder;\u0026nbsp_place_h\nolder;\u0026nbsp_place_hol\nder;\u0026nbsp_place_holde\nr;\nMFC，winform，wpf\n开发效率上，MFC",
-  "wordCount" : "93",
-  "inLanguage": "en",
-  "datePublished": "2008-10-28T00:00:00+08:00",
-  "dateModified": "2008-10-28T00:00:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      MFC将退出历史舞台，微软的下一代用户界面技术WPF
-    </h1>
-    <div class="post-meta"><span title='2008-10-28 00:00:00 +0800 CST'>2008-10-28</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> 
-
-  <div class="post-content"><p>转来的，最近对MFC很关注&hellip;</p>
-<p>WPF简介</p>
-<p>　　WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示，<br />
-所以叫Presentation（呈现）。</p>
-<p>　　作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的<br />
-支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置<br />
-的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。</p>
-<p>　　微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。</p>
-<p>　　在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound<br />
-ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本&ndash;<br />
-你可以使用它来开发你的下一代用户界面程序了。</p>
-<p>　　那么，WPF是什么，为什么它那么重要呢？</p>
-<p>　　首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：</p>
-<p>　　•将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。</p>
-<p>　　•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关<br />
-键逻辑而不干扰设计过程。</p>
-<p>　　•它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。</p>
-<p>　　•它支持软件的&quot;空标签&quot;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。</p>
-<p>　　WPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。</p>
-<p>　　其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素<br />
-只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的<br />
-浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管<br />
-理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立<br />
-于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易<br />
-于操作。</p>
-<p>　　作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的<br />
-支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置<br />
-的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。</p>
-<p>　&amp;<br />
-nbsp_place_holder;&amp;nb<br />
-sp_place_holder;&amp;nbsp<br />
-_place_holder;&amp;nbsp_p<br />
-lace_holder;&amp;nbsp_pla<br />
-ce_holder;&amp;nbsp_place<br />
-_holder;&amp;nbsp_place_h<br />
-older;&amp;nbsp_place_hol<br />
-der;&amp;nbsp_place_holde<br />
-r;<br />
-&amp;n<br />
-bsp_place_holder;<br />
-WPF前景分析</p>
-<p>　　WPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是<br />
-界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的）<br />
-，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基<br />
-于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！<br />
-），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景<br />
-应该是一片光明。</p>
-<p>目前开发界的对WPF响应程度</p>
-<p>　　目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本<br />
-都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是<br />
-刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。</p>
-<p>　　目前微软针对WPF提供的服务和支持</p>
-<p>　　随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主<br />
-要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。</p>
-<p>　　1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载</p>
-<p>　　2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方<br />
-技术支持网站发布的信息为准）</p>
-<p>　　3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS<br />
-2005中进行所见即所得的WPF开发。</p>
-<p>　　对比MFC，winform，wpf</p>
-<p>　　分析：</p>
-<p>　　MFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，</p>
-<p>　　winform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。</p>
-<p>　　wpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的<br />
-显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）</p>
-<p>　&amp;<br />
-nbsp_place_holder;&amp;nb<br />
-sp_place_holder;&amp;nbsp<br />
-_place_holder;&amp;nbsp_p<br />
-lace_holder;&amp;nbsp_pla<br />
-ce_holder;&amp;nbsp_place<br />
-_holder;&amp;nbsp_place_h<br />
-older;&amp;nbsp_place_hol<br />
-der;&amp;nbsp_place_holde<br />
-r;<br />
-　MFC，winform，wpf</p>
-<p>　　开发效率上，MFC&lt;WPF&lt;winform</p>
-<p>　　尽管MFC开发界面执行效率高但是开发效率低，作为现在的项目开发来说</p>
-<p>　　时间跟开发效率往往能决定项目的成败，所以除非有特别的需求，否则都回尽量避免用mfc来做开发，MFC只是一个弱封装器</p>
-<p>　　开发成本，MFC〉wpf〉winform</p>
-<p>　　用MFC开发成本太高，对开发者能力要求更高，作为客服当然希望开发的费用越少越好，开发者当然希望钱赚得越多越好，这样一比，这也是MFC没落的一个很大的原因</p>
-<p>　　界面执行效率上，MFC==WPF〉winform</p>
-<p>　　随着计算机硬件的性能提高，多核cpu的普及，它们的差距会越来越小</p>
-<p>　　开发灵活性上：wpf〉MFC〉winform</p>
-<p>　　美观上：Wpf〉winform〉MFC</p>
-<p>　　这一项中MFC下要开发出一个华丽的ui极其困难，也许你可以说你可以用控件，但是商业开发控件是要收费的！！Wpf很容易就可以做出vista那样的ui特效</p>
-<p>　　mfc要写出这种效果不知要写到何年何月</p>
-<p>　　这样一来MFC存在的价值就更低了。效率和美观不如Wpf，开发效率又不如winform，预计不出10年，随着vista取代xp，mfc将会退出历史舞台</p>
-<p>　　内存使用上：wpf〉winform〉MFC</p>
-<p>　　随着计算机硬件的性能提高wpf这个缺点会被忽略</p>
-<p>　　使用范围：wpf〉MFC==winform</p>
-<p>　　由以上可知：WPF大有取代winform和MFC之势，从未来net的发展来看，MFC以后只会变成一种经典，作为一种技术来供开发者学习，winform和W<br />
-PF两者会并存发展，但最终都会被WPF取代，最终实现桌面应用程序和浏览器应用程序的统一。</p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/">MFC将退出历史舞台，微软的下一代用户界面技术WPF | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/c/">c</a></li>
-      <li><a href="https://blog.alswl.com/tags/wpf/">wpf</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2008/12/annoying-clip/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>恼人的美工</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2008/10/mfc/">
-    <span class="title">Next »</span>
-    <br>
-    <span>MFC</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+wpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的 显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）
+& nbsp_place_holder;&nb sp_place_holder;&nbsp _place_holder;&nbsp_p lace_holder;&nbsp_pla ce_holder;&nbsp_place _holder;&nbsp_place_h older;&nbsp_place_hol der;&nbsp_place_holde r; MFC，winform，wpf"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"MFC将退出历史舞台，微软的下一代用户界面技术WPF","item":"https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"MFC将退出历史舞台，微软的下一代用户界面技术WPF","name":"MFC将退出历史舞台，微软的下一代用户界面技术WPF","description":"转来的，最近对MFC很关注\u0026hellip;\nWPF简介\nWPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示， 所以叫Presentation（呈现）。\n作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。\n微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。\n在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本\u0026ndash; 你可以使用它来开发你的下一代用户界面程序了。\n那么，WPF是什么，为什么它那么重要呢？\n首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：\n•将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。\n•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关 键逻辑而不干扰设计过程。\n•它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。\n•它支持软件的\u0026quot;空标签\u0026quot;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。\nWPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。\n其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素 只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的 浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管 理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立 于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易 于操作。\n作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。\n\u0026amp; nbsp_place_holder;\u0026amp;nb sp_place_holder;\u0026amp;nbsp _place_holder;\u0026amp;nbsp_p lace_holder;\u0026amp;nbsp_pla ce_holder;\u0026amp;nbsp_place _holder;\u0026amp;nbsp_place_h older;\u0026amp;nbsp_place_hol der;\u0026amp;nbsp_place_holde r; \u0026amp;n bsp_place_holder; WPF前景分析\nWPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是 界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的） ，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基 于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！ ），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景 应该是一片光明。\n目前开发界的对WPF响应程度\n目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本 都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是 刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。\n目前微软针对WPF提供的服务和支持\n随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主 要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。\n1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载\n2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方 技术支持网站发布的信息为准）\n3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS 2005中进行所见即所得的WPF开发。\n对比MFC，winform，wpf\n分析：\nMFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，\nwinform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。\nwpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的 显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）\n\u0026amp; nbsp_place_holder;\u0026amp;nb sp_place_holder;\u0026amp;nbsp _place_holder;\u0026amp;nbsp_p lace_holder;\u0026amp;nbsp_pla ce_holder;\u0026amp;nbsp_place _holder;\u0026amp;nbsp_place_h older;\u0026amp;nbsp_place_hol der;\u0026amp;nbsp_place_holde r; MFC，winform，wpf","keywords":["c","wpf"],"articleBody":"转来的，最近对MFC很关注…\nWPF简介\nWPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示， 所以叫Presentation（呈现）。\n作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。\n微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。\n在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本– 你可以使用它来开发你的下一代用户界面程序了。\n那么，WPF是什么，为什么它那么重要呢？\n首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：\n•将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。\n•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关 键逻辑而不干扰设计过程。\n•它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。\n•它支持软件的\"空标签\"：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。\nWPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。\n其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素 只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的 浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管 理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立 于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易 于操作。\n作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。\n\u0026 nbsp_place_holder;\u0026nb sp_place_holder;\u0026nbsp _place_holder;\u0026nbsp_p lace_holder;\u0026nbsp_pla ce_holder;\u0026nbsp_place _holder;\u0026nbsp_place_h older;\u0026nbsp_place_hol der;\u0026nbsp_place_holde r; \u0026n bsp_place_holder; WPF前景分析\nWPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是 界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的） ，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基 于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！ ），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景 应该是一片光明。\n目前开发界的对WPF响应程度\n目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本 都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是 刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。\n目前微软针对WPF提供的服务和支持\n随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主 要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。\n1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载\n2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方 技术支持网站发布的信息为准）\n3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS 2005中进行所见即所得的WPF开发。\n对比MFC，winform，wpf\n分析：\nMFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，\nwinform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。\nwpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的 显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）\n\u0026 nbsp_place_holder;\u0026nb sp_place_holder;\u0026nbsp _place_holder;\u0026nbsp_p lace_holder;\u0026nbsp_pla ce_holder;\u0026nbsp_place _holder;\u0026nbsp_place_h older;\u0026nbsp_place_hol der;\u0026nbsp_place_holde r; MFC，winform，wpf\n开发效率上，MFC","wordCount":"93","inLanguage":"en","datePublished":"2008-10-28T00:00:00+08:00","dateModified":"2008-10-28T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>MFC将退出历史舞台，微软的下一代用户界面技术WPF</h1><div class=post-meta><span title='2008-10-28 00:00:00 +0800 +0800'>2008-10-28</span>&nbsp;·&nbsp;alswl</div></header><div class=post-content><p>转来的，最近对MFC很关注&mldr;</p><p>WPF简介</p><p>　　WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示，
+所以叫Presentation（呈现）。</p><p>　　作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的
+支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置
+的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。</p><p>　　微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。</p><p>　　在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound
+ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本&ndash;
+你可以使用它来开发你的下一代用户界面程序了。</p><p>　　那么，WPF是什么，为什么它那么重要呢？</p><p>　　首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：</p><p>　　•将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。</p><p>　　•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关
+键逻辑而不干扰设计过程。</p><p>　　•它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。</p><p>　　•它支持软件的"空标签"：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。</p><p>　　WPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。</p><p>　　其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素
+只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的
+浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管
+理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立
+于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易
+于操作。</p><p>　　作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的
+支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置
+的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。</p><p>　&
+nbsp_place_holder;&nb
+sp_place_holder;&nbsp
+_place_holder;&nbsp_p
+lace_holder;&nbsp_pla
+ce_holder;&nbsp_place
+_holder;&nbsp_place_h
+older;&nbsp_place_hol
+der;&nbsp_place_holde
+r;
+&n
+bsp_place_holder;
+WPF前景分析</p><p>　　WPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是
+界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的）
+，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基
+于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！
+），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景
+应该是一片光明。</p><p>目前开发界的对WPF响应程度</p><p>　　目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本
+都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是
+刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。</p><p>　　目前微软针对WPF提供的服务和支持</p><p>　　随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主
+要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。</p><p>　　1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载</p><p>　　2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方
+技术支持网站发布的信息为准）</p><p>　　3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS
+2005中进行所见即所得的WPF开发。</p><p>　　对比MFC，winform，wpf</p><p>　　分析：</p><p>　　MFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，</p><p>　　winform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。</p><p>　　wpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的
+显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）</p><p>　&
+nbsp_place_holder;&nb
+sp_place_holder;&nbsp
+_place_holder;&nbsp_p
+lace_holder;&nbsp_pla
+ce_holder;&nbsp_place
+_holder;&nbsp_place_h
+older;&nbsp_place_hol
+der;&nbsp_place_holde
+r;
+　MFC，winform，wpf</p><p>　　开发效率上，MFC&lt;WPF&lt;winform</p><p>　　尽管MFC开发界面执行效率高但是开发效率低，作为现在的项目开发来说</p><p>　　时间跟开发效率往往能决定项目的成败，所以除非有特别的需求，否则都回尽量避免用mfc来做开发，MFC只是一个弱封装器</p><p>　　开发成本，MFC〉wpf〉winform</p><p>　　用MFC开发成本太高，对开发者能力要求更高，作为客服当然希望开发的费用越少越好，开发者当然希望钱赚得越多越好，这样一比，这也是MFC没落的一个很大的原因</p><p>　　界面执行效率上，MFC==WPF〉winform</p><p>　　随着计算机硬件的性能提高，多核cpu的普及，它们的差距会越来越小</p><p>　　开发灵活性上：wpf〉MFC〉winform</p><p>　　美观上：Wpf〉winform〉MFC</p><p>　　这一项中MFC下要开发出一个华丽的ui极其困难，也许你可以说你可以用控件，但是商业开发控件是要收费的！！Wpf很容易就可以做出vista那样的ui特效</p><p>　　mfc要写出这种效果不知要写到何年何月</p><p>　　这样一来MFC存在的价值就更低了。效率和美观不如Wpf，开发效率又不如winform，预计不出10年，随着vista取代xp，mfc将会退出历史舞台</p><p>　　内存使用上：wpf〉winform〉MFC</p><p>　　随着计算机硬件的性能提高wpf这个缺点会被忽略</p><p>　　使用范围：wpf〉MFC==winform</p><p>　　由以上可知：WPF大有取代winform和MFC之势，从未来net的发展来看，MFC以后只会变成一种经典，作为一种技术来供开发者学习，winform和W
+PF两者会并存发展，但最终都会被WPF取代，最终实现桌面应用程序和浏览器应用程序的统一。</p><hr><p>原文链接: <a href=https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/>MFC将退出历史舞台，微软的下一代用户界面技术WPF | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/c/>c</a></li><li><a href=https://blog.alswl.com/tags/wpf/>wpf</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2008/12/annoying-clip/><span class=title>« Prev</span><br><span>恼人的美工</span></a>
+<a class=next href=https://blog.alswl.com/2008/10/mfc/><span class=title>Next »</span><br><span>MFC</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

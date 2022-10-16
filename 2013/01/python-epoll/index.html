@@ -1,554 +1,98 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>在 Python 中使用 epoll[译文] | Log4D</title>
-<meta name="keywords" content="python, 译文">
-<meta name="description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ，
-我这里取精简内容翻译过来。
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>在 Python 中使用 epoll[译文] | Log4D</title><meta name=keywords content="python,译文"><meta name=description content="原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。
 ============ 正文开始 ============
-介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API
-的 epoll 范例。
-阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient.">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2013/01/python-epoll/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="在 Python 中使用 epoll[译文]" />
-<meta property="og:description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ，
-我这里取精简内容翻译过来。
+介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。
+阻塞的 Socket 通信范例 import socket EOL1 = b'\n\n' EOL2 = b'\n\r\n' response = b'HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00+08:00&#34; response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n' response += b'Hello, world!' serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind(('0.0.0.0', 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b'' while EOL1 not in request and EOL2 not in request: request += connectiontoclient."><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2013/01/python-epoll/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="在 Python 中使用 epoll[译文]"><meta property="og:description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。
 ============ 正文开始 ============
-介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API
-的 epoll 范例。
-阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2013/01/python-epoll/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2013-01-12T00:01:00+08:00" />
-<meta property="article:modified_time" content="2013-01-12T00:01:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="在 Python 中使用 epoll[译文]"/>
-<meta name="twitter:description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ，
-我这里取精简内容翻译过来。
+介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。
+阻塞的 Socket 通信范例 import socket EOL1 = b'\n\n' EOL2 = b'\n\r\n' response = b'HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00+08:00&#34; response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n' response += b'Hello, world!' serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind(('0.0.0.0', 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b'' while EOL1 not in request and EOL2 not in request: request += connectiontoclient."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2013/01/python-epoll/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2013-01-12T00:01:00+08:00"><meta property="article:modified_time" content="2013-01-12T00:01:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="在 Python 中使用 epoll[译文]"><meta name=twitter:description content="原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。
 ============ 正文开始 ============
-介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API
-的 epoll 范例。
-阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "在 Python 中使用 epoll[译文]",
-      "item": "https://blog.alswl.com/2013/01/python-epoll/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "在 Python 中使用 epoll[译文]",
-  "name": "在 Python 中使用 epoll[译文]",
-  "description": "原文地址： http://scotdoyle.com/python-epoll-howto.html ，\n我这里取精简内容翻译过来。\n============ 正文开始 ============\n介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API\n的 epoll 范例。\n阻塞的 Socket 通信范例 import socket EOL1 = b\u0026#39;\\n\\n\u0026#39; EOL2 = b\u0026#39;\\n\\r\\n\u0026#39; response = b\u0026#39;HTTP/1.0 200 OK\\r\\ndate: \u0026#34;2013-01-12T00:01:00+08:00\u0026#34; response += b\u0026#39;Content-Type: text/plain\\r\\nContent-Length: 13\\r\\n\\r\\n\u0026#39; response += b\u0026#39;Hello, world!\u0026#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((\u0026#39;0.0.0.0\u0026#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b\u0026#39;\u0026#39; while EOL1 not in request and EOL2 not in request: request += connectiontoclient.",
-  "keywords": [
-    "python", "译文"
-  ],
-  "articleBody": "原文地址： http://scotdoyle.com/python-epoll-howto.html ，\n我这里取精简内容翻译过来。\n============ 正文开始 ============\n介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API\n的 epoll 范例。\n阻塞的 Socket 通信范例 import socket EOL1 = b'\\n\\n' EOL2 = b'\\n\\r\\n' response = b'HTTP/1.0 200 OK\\r\\ndate: \"2013-01-12T00:01:00+08:00\" response += b'Content-Type: text/plain\\r\\nContent-Length: 13\\r\\n\\r\\n' response += b'Hello, world!' serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind(('0.0.0.0', 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b'' while EOL1 not in request and EOL2 not in request: request += connectiontoclient.recv(1024) print('-'*40 + '\\n' + request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞，\n导致其他连接无法完成。\n通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听，\n将建立成功的连接交给其他线程操作，然后继续在主线程上面监听。\n这样一来，就不会受单次请求阻塞的限制。\nC10K 问题描述了其他处理高并发方法，比如异步 Socket，\n通过监听事件来触发预设的响应。异步 Socket 可以是单线程，也可以是多线程。\nPython 的 API 中包含了 select / poll / epoll，具体的可用性依赖于操作系统。\n他们的效率是 epoll \u003e poll \u003e select，从这个 性能测试文章 就可以看出来。\nepoll 异步编程范例 epoll 的流程是这样的：\n创建 epoll 实例 告诉 epoll 去监听哪几种类型事件 向 epoll 查询最近已监听事件的变化 根据不同的类型做不同的处理 让 epoll 修改监听列表 重复 3-5 直到结束 消灭 epoll 实例 范例代码：\nimport socket, select EOL1 = b'\\n\\n' EOL2 = b'\\n\\r\\n' response = b'HTTP/1.0 200 OK\\r\\ndate: \"2013-01-12T00:01:00+08:00\" response += b'Content-Type: text/plain\\r\\nContent-Length: 13\\r\\n\\r\\n' response += b'Hello, world!' serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind(('0.0.0.0', 8080)) serversocket.listen(1) serversocket.setblocking(0) epoll = select.epoll() epoll.register(serversocket.fileno(), select.EPOLLIN) try: connections = {}; requests = {}; responses = {} while True: events = epoll.poll(1) for fileno, event in events: if fileno == serversocket.fileno(): connection, address = serversocket.accept() connection.setblocking(0) epoll.register(connection.fileno(), select.EPOLLIN) connections[connection.fileno()] = connection requests[connection.fileno()] = b'' responses[connection.fileno()] = response elif event \u0026 select.EPOLLIN: requests[fileno] += connections[fileno].recv(1024) if EOL1 in requests[fileno] or EOL2 in requests[fileno]: epoll.modify(fileno, select.EPOLLOUT) print('-'*40 + '\\n' + requests[fileno].decode()[:-2]) elif event \u0026 select.EPOLLOUT: byteswritten = connections[fileno].send(responses[fileno]) responses[fileno] = responses[fileno][byteswritten:] if len(responses[fileno]) == 0: epoll.modify(fileno, 0) connections[fileno].shutdown(socket.SHUT_RDWR) elif event \u0026 select.EPOLLHUP: epoll.unregister(fileno) connections[fileno].close() del connections[fileno] finally: epoll.unregister(serversocket.fileno()) epoll.close() serversocket.close() 最关键的几行如下：\n16：注册感兴趣的事件 23：如果发现是监听 socket，则创建连接 30：读事件处理 33：读事件完成后，修改 epoll 对应的状态到写事件 35：写事件 41：释放对应的连接 Epoll 分边缘触发（edge-triggered）和水平触发（level-triggered）两种，\n前者只被内核触发一次通知（除非状态被改变为未就绪），后者在触发后如果不做操作，\n以后仍然会收到内核的触发通知。\n更多优化 连接等待池大小 我们之前的代码直接使用 listen() 建立连接，可以通过设定一个队列大小，\n在队列满了时候，就不再接受新的连接，从而保证已经接受的连接顺利完成。\nTCP 选项 使用 TCP_CORK 功能，可以将小数据包封装成大包传输，提高效率。\nTCP_NODELAY 则作用相反，将大包分成小包发送出去。比较适合实时应用比如 SSH。\n（译者：Linux下高性能网络编程中的几个TCP/IP选项介绍这几个 HTTP，写的不错。\n范例中的源码在 source code 下载。\n",
-  "wordCount" : "310",
-  "inLanguage": "en",
-  "datePublished": "2013-01-12T00:01:00+08:00",
-  "dateModified": "2013-01-12T00:01:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2013/01/python-epoll/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      在 Python 中使用 epoll[译文]
-    </h1>
-    <div class="post-meta"><span title='2013-01-12 00:01:00 +0800 CST'>2013-01-12</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#介绍">介绍</a></li>
-    <li><a href="#阻塞的-socket-通信范例">阻塞的 Socket 通信范例</a></li>
-    <li><a href="#epoll-异步编程范例">epoll 异步编程范例</a></li>
-    <li><a href="#更多优化">更多优化</a>
-      <ul>
-        <li><a href="#连接等待池大小">连接等待池大小</a></li>
-        <li><a href="#tcp-选项">TCP 选项</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-        </div>
-    </details>
-</div>
-
-  <div class="post-content"><p>原文地址： <a href="http://scotdoyle.com/python-epoll-howto.html">http://scotdoyle.com/python-epoll-howto.html</a> ，<br />
-我这里取精简内容翻译过来。</p>
-<p>============ 正文开始 ============</p>
-<h2 id="介绍">介绍<a hidden class="anchor" aria-hidden="true" href="#介绍">#</a></h2>
-<p>Python 从 2.6 开始支持 <a href="http://linux.die.net/man/4/epoll">epoll</a>。现在我们用 Python3 来写基于这些 API<br />
-的 epoll 范例。</p>
-<!-- more -->
-<h2 id="阻塞的-socket-通信范例">阻塞的 Socket 通信范例<a hidden class="anchor" aria-hidden="true" href="#阻塞的-socket-通信范例">#</a></h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">EOL1</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="n">EOL2</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n\r\n</span><span class="s1">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="n">response</span>  <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s1">date: &#34;2013-01-12T00:01:00+08:00&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s1">Content-Length: 13</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;Hello, world!&#39;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">serversocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">   <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">      <span class="n">connectiontoclient</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">      <span class="n">request</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">while</span> <span class="n">EOL1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span> <span class="ow">and</span> <span class="n">EOL2</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">          <span class="n">request</span> <span class="o">+=</span> <span class="n">connectiontoclient</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">decode</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
-</span></span><span class="line"><span class="cl">      <span class="n">connectiontoclient</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">      <span class="n">connectiontoclient</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="k">finally</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">   <span class="n">serversocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></span></code></pre></div><p>这个范例中的代码在 <code>accept()</code> 、 <code>recv()</code> 和 <code>send()</code> 时候会发生阻塞，<br />
-导致其他连接无法完成。</p>
-<p>通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听，<br />
-将建立成功的连接交给其他线程操作，然后继续在主线程上面监听。<br />
-这样一来，就不会受单次请求阻塞的限制。</p>
-<p><a href="http://www.kegel.com/c10k.html">C10K</a> 问题描述了其他处理高并发方法，比如异步 Socket，<br />
-通过监听事件来触发预设的响应。异步 Socket 可以是单线程，也可以是多线程。</p>
-<p>Python 的 API 中包含了 select / poll / epoll，具体的可用性依赖于操作系统。<br />
-他们的效率是 epoll &gt; poll &gt; select，从这个 <a href="http://lse.sourceforge.net/epoll/index.html">性能测试文章</a> 就可以看出来。</p>
-<h2 id="epoll-异步编程范例">epoll 异步编程范例<a hidden class="anchor" aria-hidden="true" href="#epoll-异步编程范例">#</a></h2>
-<p>epoll 的流程是这样的：</p>
-<ol>
-<li>创建 epoll 实例</li>
-<li>告诉 epoll 去监听哪几种类型事件</li>
-<li>向 epoll 查询最近已监听事件的变化</li>
-<li>根据不同的类型做不同的处理</li>
-<li>让 epoll 修改监听列表</li>
-<li>重复 3-5 直到结束</li>
-<li>消灭 epoll 实例</li>
-</ol>
-<p>范例代码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span><span class="o">,</span> <span class="nn">select</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">EOL1</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="n">EOL2</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n\r\n</span><span class="s1">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="n">response</span>  <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s1">date: &#34;2013-01-12T00:01:00+08:00&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s1">Content-Length: 13</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;Hello, world!&#39;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">serversocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">epoll</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">epoll</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl"><span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">   <span class="n">connections</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">requests</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">responses</span> <span class="o">=</span> <span class="p">{}</span>
-</span></span><span class="line"><span class="cl">   <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">      <span class="n">events</span> <span class="o">=</span> <span class="n">epoll</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">      <span class="k">for</span> <span class="n">fileno</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="n">fileno</span> <span class="o">==</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">():</span>
-</span></span><span class="line"><span class="cl">            <span class="n">connection</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">            <span class="n">connection</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="n">connections</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">connection</span>
-</span></span><span class="line"><span class="cl">            <span class="n">requests</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
-</span></span><span class="line"><span class="cl">            <span class="n">responses</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">response</span>
-</span></span><span class="line"><span class="cl">         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">+=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">EOL1</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="ow">or</span> <span class="n">EOL2</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]:</span>
-</span></span><span class="line"><span class="cl">               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">               <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
-</span></span><span class="line"><span class="cl">         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="n">byteswritten</span> <span class="o">=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span>
-</span></span><span class="line"><span class="cl">            <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">][</span><span class="n">byteswritten</span><span class="p">:]</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">               <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SHUT_RDWR</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLHUP</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">fileno</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">            <span class="k">del</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl"><span class="k">finally</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">   <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
-</span></span><span class="line"><span class="cl">   <span class="n">epoll</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">   <span class="n">serversocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></span></code></pre></div><p>最关键的几行如下：</p>
-<ul>
-<li>16：注册感兴趣的事件</li>
-<li>23：如果发现是监听 socket，则创建连接</li>
-<li>30：读事件处理</li>
-<li>33：读事件完成后，修改 epoll 对应的状态到写事件</li>
-<li>35：写事件</li>
-<li>41：释放对应的连接</li>
-</ul>
-<p>Epoll 分边缘触发（edge-triggered）和水平触发（level-triggered）两种，<br />
-前者只被内核触发一次通知（除非状态被改变为未就绪），后者在触发后如果不做操作，<br />
-以后仍然会收到内核的触发通知。</p>
-<h2 id="更多优化">更多优化<a hidden class="anchor" aria-hidden="true" href="#更多优化">#</a></h2>
-<h3 id="连接等待池大小">连接等待池大小<a hidden class="anchor" aria-hidden="true" href="#连接等待池大小">#</a></h3>
-<p>我们之前的代码直接使用 <code>listen()</code> 建立连接，可以通过设定一个队列大小，<br />
-在队列满了时候，就不再接受新的连接，从而保证已经接受的连接顺利完成。</p>
-<h3 id="tcp-选项">TCP 选项<a hidden class="anchor" aria-hidden="true" href="#tcp-选项">#</a></h3>
-<p>使用 <a href="http://www.baus.net/on-tcp_cork">TCP_CORK</a> 功能，可以将小数据包封装成大包传输，提高效率。</p>
-<p><a href="http://www.techrepublic.com/article/tcpip-options-for-high-performance-data-transmission/1050878">TCP_NODELAY</a> 则作用相反，将大包分成小包发送出去。比较适合实时应用比如 SSH。</p>
-<p>（译者：<a href="http://www.uplook.cn/blog/8/81276/">Linux下高性能网络编程中的几个TCP/IP选项</a>介绍这几个 HTTP，写的不错。</p>
-<p>范例中的源码在 <a href="http://scotdoyle.com/python-epoll-examples.tar.gz">source code</a> 下载。</p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2013/01/python-epoll/">在 Python 中使用 epoll[译文] | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/python/">python</a></li>
-      <li><a href="https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/">译文</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2013/02/facebook/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>读《打造 Facebook》</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2013/01/my_2012/">
-    <span class="title">Next »</span>
-    <br>
-    <span>My 2012</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。
+阻塞的 Socket 通信范例 import socket EOL1 = b'\n\n' EOL2 = b'\n\r\n' response = b'HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00+08:00&#34; response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n' response += b'Hello, world!' serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind(('0.0.0.0', 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b'' while EOL1 not in request and EOL2 not in request: request += connectiontoclient."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"在 Python 中使用 epoll[译文]","item":"https://blog.alswl.com/2013/01/python-epoll/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"在 Python 中使用 epoll[译文]","name":"在 Python 中使用 epoll[译文]","description":"原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。\n============ 正文开始 ============\n介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。\n阻塞的 Socket 通信范例 import socket EOL1 = b\u0026#39;\\n\\n\u0026#39; EOL2 = b\u0026#39;\\n\\r\\n\u0026#39; response = b\u0026#39;HTTP/1.0 200 OK\\r\\ndate: \u0026#34;2013-01-12T00:01:00+08:00\u0026#34; response += b\u0026#39;Content-Type: text/plain\\r\\nContent-Length: 13\\r\\n\\r\\n\u0026#39; response += b\u0026#39;Hello, world!\u0026#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((\u0026#39;0.0.0.0\u0026#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b\u0026#39;\u0026#39; while EOL1 not in request and EOL2 not in request: request += connectiontoclient.","keywords":["python","译文"],"articleBody":"原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。\n============ 正文开始 ============\n介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。\n阻塞的 Socket 通信范例 import socket EOL1 = b'\\n\\n' EOL2 = b'\\n\\r\\n' response = b'HTTP/1.0 200 OK\\r\\ndate: \"2013-01-12T00:01:00+08:00\" response += b'Content-Type: text/plain\\r\\nContent-Length: 13\\r\\n\\r\\n' response += b'Hello, world!' serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind(('0.0.0.0', 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b'' while EOL1 not in request and EOL2 not in request: request += connectiontoclient.recv(1024) print('-'*40 + '\\n' + request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。\n通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将建立成功的连接交给其他线程操作，然后继续在主线程上面监听。 这样一来，就不会受单次请求阻塞的限制。\nC10K 问题描述了其他处理高并发方法，比如异步 Socket， 通过监听事件来触发预设的响应。异步 Socket 可以是单线程，也可以是多线程。\nPython 的 API 中包含了 select / poll / epoll，具体的可用性依赖于操作系统。 他们的效率是 epoll \u003e poll \u003e select，从这个 性能测试文章 就可以看出来。\nepoll 异步编程范例 epoll 的流程是这样的：\n创建 epoll 实例 告诉 epoll 去监听哪几种类型事件 向 epoll 查询最近已监听事件的变化 根据不同的类型做不同的处理 让 epoll 修改监听列表 重复 3-5 直到结束 消灭 epoll 实例 范例代码：\nimport socket, select EOL1 = b'\\n\\n' EOL2 = b'\\n\\r\\n' response = b'HTTP/1.0 200 OK\\r\\ndate: \"2013-01-12T00:01:00+08:00\" response += b'Content-Type: text/plain\\r\\nContent-Length: 13\\r\\n\\r\\n' response += b'Hello, world!' serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind(('0.0.0.0', 8080)) serversocket.listen(1) serversocket.setblocking(0) epoll = select.epoll() epoll.register(serversocket.fileno(), select.EPOLLIN) try: connections = {}; requests = {}; responses = {} while True: events = epoll.poll(1) for fileno, event in events: if fileno == serversocket.fileno(): connection, address = serversocket.accept() connection.setblocking(0) epoll.register(connection.fileno(), select.EPOLLIN) connections[connection.fileno()] = connection requests[connection.fileno()] = b'' responses[connection.fileno()] = response elif event \u0026 select.EPOLLIN: requests[fileno] += connections[fileno].recv(1024) if EOL1 in requests[fileno] or EOL2 in requests[fileno]: epoll.modify(fileno, select.EPOLLOUT) print('-'*40 + '\\n' + requests[fileno].decode()[:-2]) elif event \u0026 select.EPOLLOUT: byteswritten = connections[fileno].send(responses[fileno]) responses[fileno] = responses[fileno][byteswritten:] if len(responses[fileno]) == 0: epoll.modify(fileno, 0) connections[fileno].shutdown(socket.SHUT_RDWR) elif event \u0026 select.EPOLLHUP: epoll.unregister(fileno) connections[fileno].close() del connections[fileno] finally: epoll.unregister(serversocket.fileno()) epoll.close() serversocket.close() 最关键的几行如下：\n16：注册感兴趣的事件 23：如果发现是监听 socket，则创建连接 30：读事件处理 33：读事件完成后，修改 epoll 对应的状态到写事件 35：写事件 41：释放对应的连接 Epoll 分边缘触发（edge-triggered）和水平触发（level-triggered）两种， 前者只被内核触发一次通知（除非状态被改变为未就绪），后者在触发后如果不做操作， 以后仍然会收到内核的触发通知。\n更多优化 连接等待池大小 我们之前的代码直接使用 listen() 建立连接，可以通过设定一个队列大小， 在队列满了时候，就不再接受新的连接，从而保证已经接受的连接顺利完成。\nTCP 选项 使用 TCP_CORK 功能，可以将小数据包封装成大包传输，提高效率。\nTCP_NODELAY 则作用相反，将大包分成小包发送出去。比较适合实时应用比如 SSH。\n（译者：Linux下高性能网络编程中的几个TCP/IP选项介绍这几个 HTTP，写的不错。\n范例中的源码在 source code 下载。\n","wordCount":"310","inLanguage":"en","datePublished":"2013-01-12T00:01:00+08:00","dateModified":"2013-01-12T00:01:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2013/01/python-epoll/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>在 Python 中使用 epoll[译文]</h1><div class=post-meta><span title='2013-01-12 00:01:00 +0800 +0800'>2013-01-12</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#介绍>介绍</a></li><li><a href=#阻塞的-socket-通信范例>阻塞的 Socket 通信范例</a></li><li><a href=#epoll-异步编程范例>epoll 异步编程范例</a></li><li><a href=#更多优化>更多优化</a><ul><li><a href=#连接等待池大小>连接等待池大小</a></li><li><a href=#tcp-选项>TCP 选项</a></li></ul></li></ul></nav></div></details></div><div class=post-content><p>原文地址： <a href=http://scotdoyle.com/python-epoll-howto.html>http://scotdoyle.com/python-epoll-howto.html</a> ，
+我这里取精简内容翻译过来。</p><p>============ 正文开始 ============</p><h2 id=介绍>介绍<a hidden class=anchor aria-hidden=true href=#介绍>#</a></h2><p>Python 从 2.6 开始支持 <a href=http://linux.die.net/man/4/epoll>epoll</a>。现在我们用 Python3 来写基于这些 API
+的 epoll 范例。</p><h2 id=阻塞的-socket-通信范例>阻塞的 Socket 通信范例<a hidden class=anchor aria-hidden=true href=#阻塞的-socket-通信范例>#</a></h2><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>socket</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>EOL1</span> <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;</span><span class=se>\n\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>EOL2</span> <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;</span><span class=se>\n\r\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>response</span>  <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;HTTP/1.0 200 OK</span><span class=se>\r\n</span><span class=s1>date: &#34;2013-01-12T00:01:00+08:00&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>response</span> <span class=o>+=</span> <span class=sa>b</span><span class=s1>&#39;Content-Type: text/plain</span><span class=se>\r\n</span><span class=s1>Content-Length: 13</span><span class=se>\r\n\r\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>response</span> <span class=o>+=</span> <span class=sa>b</span><span class=s1>&#39;Hello, world!&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>serversocket</span> <span class=o>=</span> <span class=n>socket</span><span class=o>.</span><span class=n>socket</span><span class=p>(</span><span class=n>socket</span><span class=o>.</span><span class=n>AF_INET</span><span class=p>,</span> <span class=n>socket</span><span class=o>.</span><span class=n>SOCK_STREAM</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>serversocket</span><span class=o>.</span><span class=n>setsockopt</span><span class=p>(</span><span class=n>socket</span><span class=o>.</span><span class=n>SOL_SOCKET</span><span class=p>,</span> <span class=n>socket</span><span class=o>.</span><span class=n>SO_REUSEADDR</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>serversocket</span><span class=o>.</span><span class=n>bind</span><span class=p>((</span><span class=s1>&#39;0.0.0.0&#39;</span><span class=p>,</span> <span class=mi>8080</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>serversocket</span><span class=o>.</span><span class=n>listen</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>   <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>      <span class=n>connectiontoclient</span><span class=p>,</span> <span class=n>address</span> <span class=o>=</span> <span class=n>serversocket</span><span class=o>.</span><span class=n>accept</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>      <span class=n>request</span> <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>      <span class=k>while</span> <span class=n>EOL1</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>request</span> <span class=ow>and</span> <span class=n>EOL2</span> <span class=ow>not</span> <span class=ow>in</span> <span class=n>request</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>          <span class=n>request</span> <span class=o>+=</span> <span class=n>connectiontoclient</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>1024</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>      <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;-&#39;</span><span class=o>*</span><span class=mi>40</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span> <span class=o>+</span> <span class=n>request</span><span class=o>.</span><span class=n>decode</span><span class=p>()[:</span><span class=o>-</span><span class=mi>2</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>      <span class=n>connectiontoclient</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>response</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>      <span class=n>connectiontoclient</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=k>finally</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>   <span class=n>serversocket</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span></code></pre></div><p>这个范例中的代码在 <code>accept()</code> 、 <code>recv()</code> 和 <code>send()</code> 时候会发生阻塞，
+导致其他连接无法完成。</p><p>通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听，
+将建立成功的连接交给其他线程操作，然后继续在主线程上面监听。
+这样一来，就不会受单次请求阻塞的限制。</p><p><a href=http://www.kegel.com/c10k.html>C10K</a> 问题描述了其他处理高并发方法，比如异步 Socket，
+通过监听事件来触发预设的响应。异步 Socket 可以是单线程，也可以是多线程。</p><p>Python 的 API 中包含了 select / poll / epoll，具体的可用性依赖于操作系统。
+他们的效率是 epoll > poll > select，从这个 <a href=http://lse.sourceforge.net/epoll/index.html>性能测试文章</a> 就可以看出来。</p><h2 id=epoll-异步编程范例>epoll 异步编程范例<a hidden class=anchor aria-hidden=true href=#epoll-异步编程范例>#</a></h2><p>epoll 的流程是这样的：</p><ol><li>创建 epoll 实例</li><li>告诉 epoll 去监听哪几种类型事件</li><li>向 epoll 查询最近已监听事件的变化</li><li>根据不同的类型做不同的处理</li><li>让 epoll 修改监听列表</li><li>重复 3-5 直到结束</li><li>消灭 epoll 实例</li></ol><p>范例代码：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>socket</span><span class=o>,</span> <span class=nn>select</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>EOL1</span> <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;</span><span class=se>\n\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>EOL2</span> <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;</span><span class=se>\n\r\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>response</span>  <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;HTTP/1.0 200 OK</span><span class=se>\r\n</span><span class=s1>date: &#34;2013-01-12T00:01:00+08:00&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>response</span> <span class=o>+=</span> <span class=sa>b</span><span class=s1>&#39;Content-Type: text/plain</span><span class=se>\r\n</span><span class=s1>Content-Length: 13</span><span class=se>\r\n\r\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>response</span> <span class=o>+=</span> <span class=sa>b</span><span class=s1>&#39;Hello, world!&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>serversocket</span> <span class=o>=</span> <span class=n>socket</span><span class=o>.</span><span class=n>socket</span><span class=p>(</span><span class=n>socket</span><span class=o>.</span><span class=n>AF_INET</span><span class=p>,</span> <span class=n>socket</span><span class=o>.</span><span class=n>SOCK_STREAM</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>serversocket</span><span class=o>.</span><span class=n>setsockopt</span><span class=p>(</span><span class=n>socket</span><span class=o>.</span><span class=n>SOL_SOCKET</span><span class=p>,</span> <span class=n>socket</span><span class=o>.</span><span class=n>SO_REUSEADDR</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>serversocket</span><span class=o>.</span><span class=n>bind</span><span class=p>((</span><span class=s1>&#39;0.0.0.0&#39;</span><span class=p>,</span> <span class=mi>8080</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>serversocket</span><span class=o>.</span><span class=n>listen</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>serversocket</span><span class=o>.</span><span class=n>setblocking</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>epoll</span> <span class=o>=</span> <span class=n>select</span><span class=o>.</span><span class=n>epoll</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>epoll</span><span class=o>.</span><span class=n>register</span><span class=p>(</span><span class=n>serversocket</span><span class=o>.</span><span class=n>fileno</span><span class=p>(),</span> <span class=n>select</span><span class=o>.</span><span class=n>EPOLLIN</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>   <span class=n>connections</span> <span class=o>=</span> <span class=p>{};</span> <span class=n>requests</span> <span class=o>=</span> <span class=p>{};</span> <span class=n>responses</span> <span class=o>=</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>   <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>      <span class=n>events</span> <span class=o>=</span> <span class=n>epoll</span><span class=o>.</span><span class=n>poll</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>      <span class=k>for</span> <span class=n>fileno</span><span class=p>,</span> <span class=n>event</span> <span class=ow>in</span> <span class=n>events</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>         <span class=k>if</span> <span class=n>fileno</span> <span class=o>==</span> <span class=n>serversocket</span><span class=o>.</span><span class=n>fileno</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>            <span class=n>connection</span><span class=p>,</span> <span class=n>address</span> <span class=o>=</span> <span class=n>serversocket</span><span class=o>.</span><span class=n>accept</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>            <span class=n>connection</span><span class=o>.</span><span class=n>setblocking</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>epoll</span><span class=o>.</span><span class=n>register</span><span class=p>(</span><span class=n>connection</span><span class=o>.</span><span class=n>fileno</span><span class=p>(),</span> <span class=n>select</span><span class=o>.</span><span class=n>EPOLLIN</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>connections</span><span class=p>[</span><span class=n>connection</span><span class=o>.</span><span class=n>fileno</span><span class=p>()]</span> <span class=o>=</span> <span class=n>connection</span>
+</span></span><span class=line><span class=cl>            <span class=n>requests</span><span class=p>[</span><span class=n>connection</span><span class=o>.</span><span class=n>fileno</span><span class=p>()]</span> <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>            <span class=n>responses</span><span class=p>[</span><span class=n>connection</span><span class=o>.</span><span class=n>fileno</span><span class=p>()]</span> <span class=o>=</span> <span class=n>response</span>
+</span></span><span class=line><span class=cl>         <span class=k>elif</span> <span class=n>event</span> <span class=o>&amp;</span> <span class=n>select</span><span class=o>.</span><span class=n>EPOLLIN</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>requests</span><span class=p>[</span><span class=n>fileno</span><span class=p>]</span> <span class=o>+=</span> <span class=n>connections</span><span class=p>[</span><span class=n>fileno</span><span class=p>]</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>1024</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>EOL1</span> <span class=ow>in</span> <span class=n>requests</span><span class=p>[</span><span class=n>fileno</span><span class=p>]</span> <span class=ow>or</span> <span class=n>EOL2</span> <span class=ow>in</span> <span class=n>requests</span><span class=p>[</span><span class=n>fileno</span><span class=p>]:</span>
+</span></span><span class=line><span class=cl>               <span class=n>epoll</span><span class=o>.</span><span class=n>modify</span><span class=p>(</span><span class=n>fileno</span><span class=p>,</span> <span class=n>select</span><span class=o>.</span><span class=n>EPOLLOUT</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>               <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;-&#39;</span><span class=o>*</span><span class=mi>40</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span> <span class=o>+</span> <span class=n>requests</span><span class=p>[</span><span class=n>fileno</span><span class=p>]</span><span class=o>.</span><span class=n>decode</span><span class=p>()[:</span><span class=o>-</span><span class=mi>2</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>         <span class=k>elif</span> <span class=n>event</span> <span class=o>&amp;</span> <span class=n>select</span><span class=o>.</span><span class=n>EPOLLOUT</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>byteswritten</span> <span class=o>=</span> <span class=n>connections</span><span class=p>[</span><span class=n>fileno</span><span class=p>]</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>responses</span><span class=p>[</span><span class=n>fileno</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>            <span class=n>responses</span><span class=p>[</span><span class=n>fileno</span><span class=p>]</span> <span class=o>=</span> <span class=n>responses</span><span class=p>[</span><span class=n>fileno</span><span class=p>][</span><span class=n>byteswritten</span><span class=p>:]</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>responses</span><span class=p>[</span><span class=n>fileno</span><span class=p>])</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>               <span class=n>epoll</span><span class=o>.</span><span class=n>modify</span><span class=p>(</span><span class=n>fileno</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>               <span class=n>connections</span><span class=p>[</span><span class=n>fileno</span><span class=p>]</span><span class=o>.</span><span class=n>shutdown</span><span class=p>(</span><span class=n>socket</span><span class=o>.</span><span class=n>SHUT_RDWR</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>         <span class=k>elif</span> <span class=n>event</span> <span class=o>&amp;</span> <span class=n>select</span><span class=o>.</span><span class=n>EPOLLHUP</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>epoll</span><span class=o>.</span><span class=n>unregister</span><span class=p>(</span><span class=n>fileno</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>connections</span><span class=p>[</span><span class=n>fileno</span><span class=p>]</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>            <span class=k>del</span> <span class=n>connections</span><span class=p>[</span><span class=n>fileno</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=k>finally</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>   <span class=n>epoll</span><span class=o>.</span><span class=n>unregister</span><span class=p>(</span><span class=n>serversocket</span><span class=o>.</span><span class=n>fileno</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>   <span class=n>epoll</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>   <span class=n>serversocket</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span></code></pre></div><p>最关键的几行如下：</p><ul><li>16：注册感兴趣的事件</li><li>23：如果发现是监听 socket，则创建连接</li><li>30：读事件处理</li><li>33：读事件完成后，修改 epoll 对应的状态到写事件</li><li>35：写事件</li><li>41：释放对应的连接</li></ul><p>Epoll 分边缘触发（edge-triggered）和水平触发（level-triggered）两种，
+前者只被内核触发一次通知（除非状态被改变为未就绪），后者在触发后如果不做操作，
+以后仍然会收到内核的触发通知。</p><h2 id=更多优化>更多优化<a hidden class=anchor aria-hidden=true href=#更多优化>#</a></h2><h3 id=连接等待池大小>连接等待池大小<a hidden class=anchor aria-hidden=true href=#连接等待池大小>#</a></h3><p>我们之前的代码直接使用 <code>listen()</code> 建立连接，可以通过设定一个队列大小，
+在队列满了时候，就不再接受新的连接，从而保证已经接受的连接顺利完成。</p><h3 id=tcp-选项>TCP 选项<a hidden class=anchor aria-hidden=true href=#tcp-选项>#</a></h3><p>使用 <a href=http://www.baus.net/on-tcp_cork>TCP_CORK</a> 功能，可以将小数据包封装成大包传输，提高效率。</p><p><a href=http://www.techrepublic.com/article/tcpip-options-for-high-performance-data-transmission/1050878>TCP_NODELAY</a> 则作用相反，将大包分成小包发送出去。比较适合实时应用比如 SSH。</p><p>（译者：<a href=http://www.uplook.cn/blog/8/81276/>Linux下高性能网络编程中的几个TCP/IP选项</a>介绍这几个 HTTP，写的不错。</p><p>范例中的源码在 <a href=http://scotdoyle.com/python-epoll-examples.tar.gz>source code</a> 下载。</p><hr><p>原文链接: <a href=https://blog.alswl.com/2013/01/python-epoll/>在 Python 中使用 epoll[译文] | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/python/>python</a></li><li><a href=https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/>译文</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2013/02/facebook/><span class=title>« Prev</span><br><span>读《打造 Facebook》</span></a>
+<a class=next href=https://blog.alswl.com/2013/01/my_2012/><span class=title>Next »</span><br><span>My 2012</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

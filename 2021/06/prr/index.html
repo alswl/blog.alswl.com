@@ -1,594 +1,83 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>如何做好 PRR（Production Rediness Review）？ | Log4D</title>
-<meta name="keywords" content="">
-<meta name="description" content="image from pixabay.com
-SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>如何做好 PRR（Production Rediness Review）？ | Log4D</title><meta name=keywords content><meta name=description content="image from pixabay.com
+SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。 需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等， 有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。 那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢， 如何将「接手」这个行为做得有掌控力、顺畅且体面？
+了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。 现状包含组件的当前运行状态、环境， 还包含当前 SRE 团队的能力、平台是否可以顺利衔接。
+了解一个组件，可以先以用户角度进行切入。 去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？ 能否将组件进行归类？是属于普通业务系统，还是基础设施？ 如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。
+近期和长期的规划也是需要重点关注的内容。 在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。 生命早期的组件要多关注变更和基础能力建设； 成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。 生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。
+第二步是以技术的视角来切入， 分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：
+架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图； 历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？ 有没有特殊的部署要求？
+对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：
+L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。 接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。
+明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。 完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？
+需要关注的领域有可观测性、变更、应急预案：
+可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？ 告警的具体流程如何？是否具备告警抑制降噪能力？告警是否具备定位能力？历史数据是否可追溯？ 变更：目前基于什么工具进行变更？CI CD 流程分别是什么？发布周期是什么样子？配置变更二进制变更是否分离？是否有特性开关？ 存储层面变更是否有考虑？各类变更流程是否有完成自动化？变更过程是否可以灰度？是否具备变更回滚能力。 应急预案：是否有突发流量处理预案；是否有限流、降级策略？整体不可用之后业务影响如何？流量处理上是否考虑过雪崩场景？ 在应急方面，还需要去了解过去历史上出现过哪些的问题。 翻看组件的故障复盘文档，了解历史上故障过程，故障原因，对应的 Action 是否落地？ 尤其注意的是要关注 Action 工作机制是阻断式、检查式还是发现式？ 老故障放到当下如果要避免是依赖系统、流程机制还是人工？"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2021/06/prr/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="如何做好 PRR（Production Rediness Review）？"><meta property="og:description" content="image from pixabay.com
+SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。 需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等， 有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。 那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢， 如何将「接手」这个行为做得有掌控力、顺畅且体面？
+了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。 现状包含组件的当前运行状态、环境， 还包含当前 SRE 团队的能力、平台是否可以顺利衔接。
+了解一个组件，可以先以用户角度进行切入。 去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？ 能否将组件进行归类？是属于普通业务系统，还是基础设施？ 如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。
+近期和长期的规划也是需要重点关注的内容。 在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。 生命早期的组件要多关注变更和基础能力建设； 成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。 生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。
+第二步是以技术的视角来切入， 分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：
+架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图； 历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？ 有没有特殊的部署要求？
+对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：
+L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。 接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。
+明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。 完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？
+需要关注的领域有可观测性、变更、应急预案：
+可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？ 告警的具体流程如何？是否具备告警抑制降噪能力？告警是否具备定位能力？历史数据是否可追溯？ 变更：目前基于什么工具进行变更？CI CD 流程分别是什么？发布周期是什么样子？配置变更二进制变更是否分离？是否有特性开关？ 存储层面变更是否有考虑？各类变更流程是否有完成自动化？变更过程是否可以灰度？是否具备变更回滚能力。 应急预案：是否有突发流量处理预案；是否有限流、降级策略？整体不可用之后业务影响如何？流量处理上是否考虑过雪崩场景？ 在应急方面，还需要去了解过去历史上出现过哪些的问题。 翻看组件的故障复盘文档，了解历史上故障过程，故障原因，对应的 Action 是否落地？ 尤其注意的是要关注 Action 工作机制是阻断式、检查式还是发现式？ 老故障放到当下如果要避免是依赖系统、流程机制还是人工？"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2021/06/prr/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2021-06-11T17:53:00+08:00"><meta property="article:modified_time" content="2021-06-11T17:53:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="如何做好 PRR（Production Rediness Review）？"><meta name=twitter:description content="image from pixabay.com
+SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。 需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等， 有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。 那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢， 如何将「接手」这个行为做得有掌控力、顺畅且体面？
+了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。 现状包含组件的当前运行状态、环境， 还包含当前 SRE 团队的能力、平台是否可以顺利衔接。
+了解一个组件，可以先以用户角度进行切入。 去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？ 能否将组件进行归类？是属于普通业务系统，还是基础设施？ 如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。
+近期和长期的规划也是需要重点关注的内容。 在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。 生命早期的组件要多关注变更和基础能力建设； 成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。 生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。
+第二步是以技术的视角来切入， 分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：
+架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图； 历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？ 有没有特殊的部署要求？
+对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：
+L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。 接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。
+明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。 完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？
+需要关注的领域有可观测性、变更、应急预案：
+可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？ 告警的具体流程如何？是否具备告警抑制降噪能力？告警是否具备定位能力？历史数据是否可追溯？ 变更：目前基于什么工具进行变更？CI CD 流程分别是什么？发布周期是什么样子？配置变更二进制变更是否分离？是否有特性开关？ 存储层面变更是否有考虑？各类变更流程是否有完成自动化？变更过程是否可以灰度？是否具备变更回滚能力。 应急预案：是否有突发流量处理预案；是否有限流、降级策略？整体不可用之后业务影响如何？流量处理上是否考虑过雪崩场景？ 在应急方面，还需要去了解过去历史上出现过哪些的问题。 翻看组件的故障复盘文档，了解历史上故障过程，故障原因，对应的 Action 是否落地？ 尤其注意的是要关注 Action 工作机制是阻断式、检查式还是发现式？ 老故障放到当下如果要避免是依赖系统、流程机制还是人工？"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"如何做好 PRR（Production Rediness Review）？","item":"https://blog.alswl.com/2021/06/prr/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"如何做好 PRR（Production Rediness Review）？","name":"如何做好 PRR（Production Rediness Review）？","description":"image from pixabay.com\nSRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。 需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等， 有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。 那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢， 如何将「接手」这个行为做得有掌控力、顺畅且体面？\n了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。 现状包含组件的当前运行状态、环境， 还包含当前 SRE 团队的能力、平台是否可以顺利衔接。\n了解一个组件，可以先以用户角度进行切入。 去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？ 能否将组件进行归类？是属于普通业务系统，还是基础设施？ 如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。\n近期和长期的规划也是需要重点关注的内容。 在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。 生命早期的组件要多关注变更和基础能力建设； 成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。 生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。\n第二步是以技术的视角来切入， 分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：\n架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图； 历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？ 有没有特殊的部署要求？\n对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：\nL1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。 接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。\n明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。 完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？\n需要关注的领域有可观测性、变更、应急预案：\n可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？ 告警的具体流程如何？是否具备告警抑制降噪能力？告警是否具备定位能力？历史数据是否可追溯？ 变更：目前基于什么工具进行变更？CI CD 流程分别是什么？发布周期是什么样子？配置变更二进制变更是否分离？是否有特性开关？ 存储层面变更是否有考虑？各类变更流程是否有完成自动化？变更过程是否可以灰度？是否具备变更回滚能力。 应急预案：是否有突发流量处理预案；是否有限流、降级策略？整体不可用之后业务影响如何？流量处理上是否考虑过雪崩场景？ 在应急方面，还需要去了解过去历史上出现过哪些的问题。 翻看组件的故障复盘文档，了解历史上故障过程，故障原因，对应的 Action 是否落地？ 尤其注意的是要关注 Action 工作机制是阻断式、检查式还是发现式？ 老故障放到当下如果要避免是依赖系统、流程机制还是人工？","keywords":[""],"articleBody":" image from pixabay.com\nSRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。 需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等， 有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。 那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢， 如何将「接手」这个行为做得有掌控力、顺畅且体面？\n了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。 现状包含组件的当前运行状态、环境， 还包含当前 SRE 团队的能力、平台是否可以顺利衔接。\n了解一个组件，可以先以用户角度进行切入。 去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？ 能否将组件进行归类？是属于普通业务系统，还是基础设施？ 如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。\n近期和长期的规划也是需要重点关注的内容。 在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。 生命早期的组件要多关注变更和基础能力建设； 成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。 生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。\n第二步是以技术的视角来切入， 分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：\n架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图； 历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？ 有没有特殊的部署要求？\n对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：\nL1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。 接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。\n明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。 完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？\n需要关注的领域有可观测性、变更、应急预案：\n可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？ 告警的具体流程如何？是否具备告警抑制降噪能力？告警是否具备定位能力？历史数据是否可追溯？ 变更：目前基于什么工具进行变更？CI CD 流程分别是什么？发布周期是什么样子？配置变更二进制变更是否分离？是否有特性开关？ 存储层面变更是否有考虑？各类变更流程是否有完成自动化？变更过程是否可以灰度？是否具备变更回滚能力。 应急预案：是否有突发流量处理预案；是否有限流、降级策略？整体不可用之后业务影响如何？流量处理上是否考虑过雪崩场景？ 在应急方面，还需要去了解过去历史上出现过哪些的问题。 翻看组件的故障复盘文档，了解历史上故障过程，故障原因，对应的 Action 是否落地？ 尤其注意的是要关注 Action 工作机制是阻断式、检查式还是发现式？ 老故障放到当下如果要避免是依赖系统、流程机制还是人工？\n由于 SRE 日常工作主要构成是两类：能力建设和 On-Call。 在了解日常、应急场景事项时，还需要持续思考这些日常事项和应急动作能否基于 SRE 的工具平台、能力平台完成。 按照能力模型等级：手工 -\u003e 工具 -\u003e 自动化 -\u003e 智能化来划分，当前日常、应急动作进入哪个环节了？ SRE 也可以借事修物，借接收这个环节，重新审视自己的各类工具平台，是否满足这些日常、应急动作，能否更快更强更安全更准更好用？\n明确服务范围 为了保证接手过程的顺畅，以及日后合作的体面，服务范围必须要在接手环节明确清楚。\n什么是服务范围？就是接手之后工作内容的边界和日常合作模式。\n一个最常见的边界划分是。变更：SRE 团队负责 CI / CD 环境建设，而 SWE 团队使用 CI 环境完成日常的部署。 SRE 团队则使用自行建设的 CD 系统进行变更管理。 日常和应急：在日常 Operational 事项和应急中，SRE 会按预案进行处置并保障组件回到最理想状态。 SRE 还需要建设可观测性、应急相关的技术基础设施，对组件全生命周期监控和应急处理。 SRE 最终承诺的组件对外 SLA，并将 SLA 拆解为 SLO 跟 SWE 共背。 在接受过程中很重要的一个工作就是，理清楚组件的 SLI / SLO，并且根据现状跟 SWE 团队商榷出对外承诺的 SLA。\n除了服务范围，SRE 和 SWE 还要建设任务协作机制和沟通机制。 有没有统一的任务记录和流转平台？遇到稳定性相关的反馈如何，如何将需求转化为任务并追踪完成？ 故障相关的 Action 如何追踪落地？一些基础环境变化以及业务上活动变化，是否有统一场合进行同步？ 比较理想的情况是，基于任务管理系统，一个需求/缺陷从提出，到设计，到实现，到变更，SRE 都参与其中。 考虑到成本，现实执行时候可以根据精力、理解成本、重要程度、组件生命阶段进行微调。 有一个简单低成本执行方式，将服务领域组件进行划分后，每个领域派遣一个 SRE 进入对口的 SWE 团队进行追踪： 参加 SWE 团队的周会和日会，并将信息带回 SRE 团队同步。\n谨记，划分没有统一的标准，不同团队，不同技术成熟度，不同生命周期组件都会导致不一样的边界和合作模式。\n总结 「接手」是管理的第一步。 在了解现状、明确日常和应急事项、明确服务范围等一系列动作之后， 相信 SRE 已经具备初步掌控力了。有了方法论，还要持续精益求精，将掌控力从 L2 进步到 L4。 想把事情给真正做好，核心是持续学习思考在对应领域的基础技能，并且持续了解客户的需求变化。 保持一专多能，成为随时可以顶上去独当一面的 SRE，这才能避免成为一个工单人。🐶\nimage from Twitter\n扩展阅读：\nThe Evolving SRE Engagement Model Introducing Non-Abstract Large System Design How SREs at Google find the landmines in a service | Google Cloud Blog ","wordCount":"203","inLanguage":"en","datePublished":"2021-06-11T17:53:00+08:00","dateModified":"2021-06-11T17:53:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2021/06/prr/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>如何做好 PRR（Production Rediness Review）？</h1><div class=post-meta><span title='2021-06-11 17:53:00 +0800 +0800'>2021-06-11</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#了解组件现状>了解组件现状</a></li><li><a href=#明确日常和应急事项>明确日常和应急事项</a></li><li><a href=#明确服务范围>明确服务范围</a></li><li><a href=#总结>总结</a></li></ul></nav></div></details></div><div class=post-content><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/202106/prr.png alt=prr>
+<small>image from pixabay.com</small></p><p>SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。
 需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等，
 有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。
 那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢，
-如何将「接手」这个行为做得有掌控力、顺畅且体面？
-了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。
+如何将「接手」这个行为做得有掌控力、顺畅且体面？</p><h2 id=了解组件现状>了解组件现状<a hidden class=anchor aria-hidden=true href=#了解组件现状>#</a></h2><p><strong>第一步永远是了解现状</strong>，孙子兵法谋攻篇说，知己知彼，百战不殆。
 现状包含组件的当前运行状态、环境，
-还包含当前 SRE 团队的能力、平台是否可以顺利衔接。
-了解一个组件，可以先以用户角度进行切入。
+还包含当前 SRE 团队的能力、平台是否可以顺利衔接。</p><p>了解一个组件，可以先以<strong>用户角度进行切入</strong>。
 去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？
 能否将组件进行归类？是属于普通业务系统，还是基础设施？
-如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。
-近期和长期的规划也是需要重点关注的内容。
+如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。</p><p><strong>近期和长期的规划</strong>也是需要重点关注的内容。
 在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。
 生命早期的组件要多关注变更和基础能力建设；
 成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。
-生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。
-第二步是以技术的视角来切入，
-分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：
-架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图；
-历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？
-有没有特殊的部署要求？
-对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：
-L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。
-接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。
-明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。
-完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？
-需要关注的领域有可观测性、变更、应急预案：
-可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2021/06/prr/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="如何做好 PRR（Production Rediness Review）？" />
-<meta property="og:description" content="image from pixabay.com
-SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。
-需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等，
-有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。
-那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢，
-如何将「接手」这个行为做得有掌控力、顺畅且体面？
-了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。
-现状包含组件的当前运行状态、环境，
-还包含当前 SRE 团队的能力、平台是否可以顺利衔接。
-了解一个组件，可以先以用户角度进行切入。
-去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？
-能否将组件进行归类？是属于普通业务系统，还是基础设施？
-如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。
-近期和长期的规划也是需要重点关注的内容。
-在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。
-生命早期的组件要多关注变更和基础能力建设；
-成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。
-生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。
-第二步是以技术的视角来切入，
-分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：
-架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图；
-历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？
-有没有特殊的部署要求？
-对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：
-L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。
-接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。
-明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。
-完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？
-需要关注的领域有可观测性、变更、应急预案：
-可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2021/06/prr/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-06-11T17:53:00+08:00" />
-<meta property="article:modified_time" content="2021-06-11T17:53:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="如何做好 PRR（Production Rediness Review）？"/>
-<meta name="twitter:description" content="image from pixabay.com
-SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。
-需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等，
-有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。
-那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢，
-如何将「接手」这个行为做得有掌控力、顺畅且体面？
-了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。
-现状包含组件的当前运行状态、环境，
-还包含当前 SRE 团队的能力、平台是否可以顺利衔接。
-了解一个组件，可以先以用户角度进行切入。
-去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？
-能否将组件进行归类？是属于普通业务系统，还是基础设施？
-如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。
-近期和长期的规划也是需要重点关注的内容。
-在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。
-生命早期的组件要多关注变更和基础能力建设；
-成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。
-生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。
-第二步是以技术的视角来切入，
-分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：
-架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图；
-历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？
-有没有特殊的部署要求？
-对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：
-L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。
-接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。
-明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。
-完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？
-需要关注的领域有可观测性、变更、应急预案：
-可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？"/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "如何做好 PRR（Production Rediness Review）？",
-      "item": "https://blog.alswl.com/2021/06/prr/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "如何做好 PRR（Production Rediness Review）？",
-  "name": "如何做好 PRR（Production Rediness Review）？",
-  "description": "image from pixabay.com\nSRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。\n需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等，\n有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。\n那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢，\n如何将「接手」这个行为做得有掌控力、顺畅且体面？\n了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。\n现状包含组件的当前运行状态、环境，\n还包含当前 SRE 团队的能力、平台是否可以顺利衔接。\n了解一个组件，可以先以用户角度进行切入。\n去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？\n能否将组件进行归类？是属于普通业务系统，还是基础设施？\n如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。\n近期和长期的规划也是需要重点关注的内容。\n在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。\n生命早期的组件要多关注变更和基础能力建设；\n成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。\n生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。\n第二步是以技术的视角来切入，\n分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：\n架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图；\n历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？\n有没有特殊的部署要求？\n对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：\nL1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。\n接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。\n明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。\n完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？\n需要关注的领域有可观测性、变更、应急预案：\n可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？",
-  "keywords": [
-    ""
-  ],
-  "articleBody": " image from pixabay.com\nSRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。\n需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等，\n有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。\n那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢，\n如何将「接手」这个行为做得有掌控力、顺畅且体面？\n了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。\n现状包含组件的当前运行状态、环境，\n还包含当前 SRE 团队的能力、平台是否可以顺利衔接。\n了解一个组件，可以先以用户角度进行切入。\n去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？\n能否将组件进行归类？是属于普通业务系统，还是基础设施？\n如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。\n近期和长期的规划也是需要重点关注的内容。\n在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。\n生命早期的组件要多关注变更和基础能力建设；\n成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。\n生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。\n第二步是以技术的视角来切入，\n分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：\n架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图；\n历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？\n有没有特殊的部署要求？\n对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：\nL1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。\n接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。\n明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。\n完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？\n需要关注的领域有可观测性、变更、应急预案：\n可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？\n告警的具体流程如何？是否具备告警抑制降噪能力？告警是否具备定位能力？历史数据是否可追溯？ 变更：目前基于什么工具进行变更？CI CD 流程分别是什么？发布周期是什么样子？配置变更二进制变更是否分离？是否有特性开关？\n存储层面变更是否有考虑？各类变更流程是否有完成自动化？变更过程是否可以灰度？是否具备变更回滚能力。 应急预案：是否有突发流量处理预案；是否有限流、降级策略？整体不可用之后业务影响如何？流量处理上是否考虑过雪崩场景？ 在应急方面，还需要去了解过去历史上出现过哪些的问题。\n翻看组件的故障复盘文档，了解历史上故障过程，故障原因，对应的 Action 是否落地？\n尤其注意的是要关注 Action 工作机制是阻断式、检查式还是发现式？\n老故障放到当下如果要避免是依赖系统、流程机制还是人工？\n由于 SRE 日常工作主要构成是两类：能力建设和 On-Call。\n在了解日常、应急场景事项时，还需要持续思考这些日常事项和应急动作能否基于 SRE 的工具平台、能力平台完成。\n按照能力模型等级：手工 -\u003e 工具 -\u003e 自动化 -\u003e 智能化来划分，当前日常、应急动作进入哪个环节了？\nSRE 也可以借事修物，借接收这个环节，重新审视自己的各类工具平台，是否满足这些日常、应急动作，能否更快更强更安全更准更好用？\n明确服务范围 为了保证接手过程的顺畅，以及日后合作的体面，服务范围必须要在接手环节明确清楚。\n什么是服务范围？就是接手之后工作内容的边界和日常合作模式。\n一个最常见的边界划分是。变更：SRE 团队负责 CI / CD 环境建设，而 SWE 团队使用 CI 环境完成日常的部署。\nSRE 团队则使用自行建设的 CD 系统进行变更管理。\n日常和应急：在日常 Operational 事项和应急中，SRE 会按预案进行处置并保障组件回到最理想状态。\nSRE 还需要建设可观测性、应急相关的技术基础设施，对组件全生命周期监控和应急处理。\nSRE 最终承诺的组件对外 SLA，并将 SLA 拆解为 SLO 跟 SWE 共背。\n在接受过程中很重要的一个工作就是，理清楚组件的 SLI / SLO，并且根据现状跟 SWE 团队商榷出对外承诺的 SLA。\n除了服务范围，SRE 和 SWE 还要建设任务协作机制和沟通机制。\n有没有统一的任务记录和流转平台？遇到稳定性相关的反馈如何，如何将需求转化为任务并追踪完成？\n故障相关的 Action 如何追踪落地？一些基础环境变化以及业务上活动变化，是否有统一场合进行同步？\n比较理想的情况是，基于任务管理系统，一个需求/缺陷从提出，到设计，到实现，到变更，SRE 都参与其中。\n考虑到成本，现实执行时候可以根据精力、理解成本、重要程度、组件生命阶段进行微调。\n有一个简单低成本执行方式，将服务领域组件进行划分后，每个领域派遣一个 SRE 进入对口的 SWE 团队进行追踪：\n参加 SWE 团队的周会和日会，并将信息带回 SRE 团队同步。\n谨记，划分没有统一的标准，不同团队，不同技术成熟度，不同生命周期组件都会导致不一样的边界和合作模式。\n总结 「接手」是管理的第一步。\n在了解现状、明确日常和应急事项、明确服务范围等一系列动作之后，\n相信 SRE 已经具备初步掌控力了。有了方法论，还要持续精益求精，将掌控力从 L2 进步到 L4。\n想把事情给真正做好，核心是持续学习思考在对应领域的基础技能，并且持续了解客户的需求变化。\n保持一专多能，成为随时可以顶上去独当一面的 SRE，这才能避免成为一个工单人。🐶\nimage from Twitter\n扩展阅读：\nThe Evolving SRE Engagement Model Introducing Non-Abstract Large System Design How SREs at Google find the landmines in a service | Google Cloud Blog ",
-  "wordCount" : "203",
-  "inLanguage": "en",
-  "datePublished": "2021-06-11T17:53:00+08:00",
-  "dateModified": "2021-06-11T17:53:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2021/06/prr/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      如何做好 PRR（Production Rediness Review）？
-    </h1>
-    <div class="post-meta"><span title='2021-06-11 17:53:00 +0800 CST'>2021-06-11</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#了解组件现状">了解组件现状</a></li>
-    <li><a href="#明确日常和应急事项">明确日常和应急事项</a></li>
-    <li><a href="#明确服务范围">明确服务范围</a></li>
-    <li><a href="#总结">总结</a></li>
-  </ul>
-</nav>
-        </div>
-    </details>
-</div>
-
-  <div class="post-content"><p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/202106/prr.png" alt="prr"  />
-<br />
-<small>image from pixabay.com</small></p>
-<p>SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。<br />
-需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等，<br />
-有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。<br />
-那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢，<br />
-如何将「接手」这个行为做得有掌控力、顺畅且体面？</p>
-<h2 id="了解组件现状">了解组件现状<a hidden class="anchor" aria-hidden="true" href="#了解组件现状">#</a></h2>
-<p><strong>第一步永远是了解现状</strong>，孙子兵法谋攻篇说，知己知彼，百战不殆。<br />
-现状包含组件的当前运行状态、环境，<br />
-还包含当前 SRE 团队的能力、平台是否可以顺利衔接。</p>
-<!-- more -->
-<p>了解一个组件，可以先以<strong>用户角度进行切入</strong>。<br />
-去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？<br />
-能否将组件进行归类？是属于普通业务系统，还是基础设施？<br />
-如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。</p>
-<p><strong>近期和长期的规划</strong>也是需要重点关注的内容。<br />
-在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。<br />
-生命早期的组件要多关注变更和基础能力建设；<br />
-成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。<br />
-生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。</p>
-<p><strong>第二步是以技术的视角来切入</strong>，<br />
-分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：</p>
-<ul>
-<li>架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图；<br />
-历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？</li>
-<li>部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖</li>
-<li>Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？</li>
-<li>容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？</li>
-</ul>
-<p>结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？<br />
-有没有特殊的部署要求？</p>
-<p><strong>对一个组件需要了解到什么程度才能接手？</strong> 这里我用几种程度来描述掌控力：</p>
-<ul>
-<li>L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。</li>
-<li>L2 具备资深用户能力，有一定调优能力（Tuning）能力。</li>
-<li>L3 具备处置问题（Trouble Shooting）能力。</li>
-<li>L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入</li>
-</ul>
-<p>在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。<br />
-接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。</p>
-<h2 id="明确日常和应急事项">明确日常和应急事项<a hidden class="anchor" aria-hidden="true" href="#明确日常和应急事项">#</a></h2>
-<p>了解现状这个动作基本上是以静态的视角来看待组件。<br />
-完成之后，还要换成动态视角来看：<strong>有哪些日常操作（Operational）和紧急状态（Emergency）的操作</strong>？</p>
-<p>需要关注的领域有可观测性、变更、应急预案：</p>
-<ul>
-<li>可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？
-<ul>
-<li>告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？<br />
-告警的具体流程如何？是否具备告警抑制降噪能力？告警是否具备定位能力？历史数据是否可追溯？</li>
-</ul>
-</li>
-<li>变更：目前基于什么工具进行变更？CI CD 流程分别是什么？发布周期是什么样子？配置变更二进制变更是否分离？是否有特性开关？<br />
-存储层面变更是否有考虑？各类变更流程是否有完成自动化？变更过程是否可以灰度？是否具备变更回滚能力。</li>
-<li>应急预案：是否有突发流量处理预案；是否有限流、降级策略？整体不可用之后业务影响如何？流量处理上是否考虑过雪崩场景？</li>
-</ul>
-<p><strong>在应急方面，还需要去了解过去历史上出现过哪些的问题</strong>。<br />
-翻看组件的故障复盘文档，了解历史上故障过程，故障原因，对应的 Action 是否落地？<br />
-尤其注意的是要关注 Action 工作机制是阻断式、检查式还是发现式？<br />
-老故障放到当下如果要避免是依赖系统、流程机制还是人工？</p>
-<p>由于 SRE 日常工作主要构成是两类：能力建设和 On-Call。<br />
-在了解日常、应急场景事项时，还需要持续思考这些日常事项和应急动作能否基于 SRE 的工具平台、能力平台完成。<br />
-按照能力模型等级：手工 -&gt; 工具 -&gt; 自动化 -&gt; 智能化来划分，当前日常、应急动作进入哪个环节了？<br />
-SRE 也可以借事修物，借接收这个环节，重新审视自己的各类工具平台，是否满足这些日常、应急动作，能否更快更强更安全更准更好用？</p>
-<h2 id="明确服务范围">明确服务范围<a hidden class="anchor" aria-hidden="true" href="#明确服务范围">#</a></h2>
-<p>为了保证接手过程的顺畅，以及日后合作的体面，服务范围必须要在接手环节明确清楚。</p>
-<p>什么是服务范围？就是接手之后工作内容的边界和日常合作模式。</p>
-<p>一个最常见的边界划分是。变更：SRE 团队负责 CI / CD 环境建设，而 SWE 团队使用 CI 环境完成日常的部署。<br />
-SRE 团队则使用自行建设的 CD 系统进行变更管理。<br />
-日常和应急：在日常 Operational 事项和应急中，SRE 会按预案进行处置并保障组件回到最理想状态。<br />
-SRE 还需要建设可观测性、应急相关的技术基础设施，对组件全生命周期监控和应急处理。<br />
-SRE 最终承诺的组件对外 SLA，并将 SLA 拆解为 SLO 跟 SWE 共背。<br />
-在接受过程中很重要的一个工作就是，理清楚组件的 SLI / SLO，并且根据现状跟 SWE 团队商榷出对外承诺的 SLA。</p>
-<p>除了服务范围，SRE 和 SWE 还要建设任务协作机制和沟通机制。<br />
-有没有统一的任务记录和流转平台？遇到稳定性相关的反馈如何，如何将需求转化为任务并追踪完成？<br />
-故障相关的 Action 如何追踪落地？一些基础环境变化以及业务上活动变化，是否有统一场合进行同步？<br />
-比较理想的情况是，基于任务管理系统，一个需求/缺陷从提出，到设计，到实现，到变更，SRE 都参与其中。<br />
-考虑到成本，现实执行时候可以根据精力、理解成本、重要程度、组件生命阶段进行微调。<br />
-有一个简单低成本执行方式，将服务领域组件进行划分后，每个领域派遣一个 SRE 进入对口的 SWE 团队进行追踪：<br />
-参加 SWE 团队的周会和日会，并将信息带回 SRE 团队同步。</p>
-<p>谨记，<strong>划分没有统一的标准，不同团队，不同技术成熟度，不同生命周期组件都会导致不一样的边界和合作模式</strong>。</p>
-<h2 id="总结">总结<a hidden class="anchor" aria-hidden="true" href="#总结">#</a></h2>
-<p>「接手」是管理的第一步。<br />
-在了解现状、明确日常和应急事项、明确服务范围等一系列动作之后，<br />
-相信 SRE 已经具备初步掌控力了。有了方法论，还要持续精益求精，将掌控力从 L2 进步到 L4。<br />
-想把事情给真正做好，核心是持续学习思考在对应领域的基础技能，并且持续了解客户的需求变化。<br />
-保持一专多能，成为随时可以顶上去独当一面的 SRE，这才能避免成为一个工单人。🐶</p>
-<p><img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/202106/sre-push-up.jpg" alt="sre-push-up"  />
-<br />
-<small>image from Twitter</small></p>
-<p>扩展阅读：</p>
-<ul>
-<li><a href="https://sre.google/sre-book/evolving-sre-engagement-model/">The Evolving SRE Engagement Model</a></li>
-<li><a href="https://sre.google/workbook/non-abstract-design/">Introducing Non-Abstract Large System Design</a></li>
-<li><a href="https://cloud.google.com/blog/products/gcp/how-sres-find-the-landmines-in-a-service-cre-life-lessons">How SREs at Google find the landmines in a service | Google Cloud Blog</a></li>
-</ul>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2021/06/prr/">如何做好 PRR（Production Rediness Review）？ | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2022/01/20-21/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>20 21</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2020/06/type-safe-python/">
-    <span class="title">Next »</span>
-    <br>
-    <span>Python 的类型系统</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。</p><p><strong>第二步是以技术的视角来切入</strong>，
+分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：</p><ul><li>架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图；
+历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？</li><li>部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖</li><li>Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？</li><li>容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？</li></ul><p>结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？
+有没有特殊的部署要求？</p><p><strong>对一个组件需要了解到什么程度才能接手？</strong> 这里我用几种程度来描述掌控力：</p><ul><li>L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。</li><li>L2 具备资深用户能力，有一定调优能力（Tuning）能力。</li><li>L3 具备处置问题（Trouble Shooting）能力。</li><li>L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入</li></ul><p>在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。
+接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。</p><h2 id=明确日常和应急事项>明确日常和应急事项<a hidden class=anchor aria-hidden=true href=#明确日常和应急事项>#</a></h2><p>了解现状这个动作基本上是以静态的视角来看待组件。
+完成之后，还要换成动态视角来看：<strong>有哪些日常操作（Operational）和紧急状态（Emergency）的操作</strong>？</p><p>需要关注的领域有可观测性、变更、应急预案：</p><ul><li>可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？<ul><li>告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？
+告警的具体流程如何？是否具备告警抑制降噪能力？告警是否具备定位能力？历史数据是否可追溯？</li></ul></li><li>变更：目前基于什么工具进行变更？CI CD 流程分别是什么？发布周期是什么样子？配置变更二进制变更是否分离？是否有特性开关？
+存储层面变更是否有考虑？各类变更流程是否有完成自动化？变更过程是否可以灰度？是否具备变更回滚能力。</li><li>应急预案：是否有突发流量处理预案；是否有限流、降级策略？整体不可用之后业务影响如何？流量处理上是否考虑过雪崩场景？</li></ul><p><strong>在应急方面，还需要去了解过去历史上出现过哪些的问题</strong>。
+翻看组件的故障复盘文档，了解历史上故障过程，故障原因，对应的 Action 是否落地？
+尤其注意的是要关注 Action 工作机制是阻断式、检查式还是发现式？
+老故障放到当下如果要避免是依赖系统、流程机制还是人工？</p><p>由于 SRE 日常工作主要构成是两类：能力建设和 On-Call。
+在了解日常、应急场景事项时，还需要持续思考这些日常事项和应急动作能否基于 SRE 的工具平台、能力平台完成。
+按照能力模型等级：手工 -> 工具 -> 自动化 -> 智能化来划分，当前日常、应急动作进入哪个环节了？
+SRE 也可以借事修物，借接收这个环节，重新审视自己的各类工具平台，是否满足这些日常、应急动作，能否更快更强更安全更准更好用？</p><h2 id=明确服务范围>明确服务范围<a hidden class=anchor aria-hidden=true href=#明确服务范围>#</a></h2><p>为了保证接手过程的顺畅，以及日后合作的体面，服务范围必须要在接手环节明确清楚。</p><p>什么是服务范围？就是接手之后工作内容的边界和日常合作模式。</p><p>一个最常见的边界划分是。变更：SRE 团队负责 CI / CD 环境建设，而 SWE 团队使用 CI 环境完成日常的部署。
+SRE 团队则使用自行建设的 CD 系统进行变更管理。
+日常和应急：在日常 Operational 事项和应急中，SRE 会按预案进行处置并保障组件回到最理想状态。
+SRE 还需要建设可观测性、应急相关的技术基础设施，对组件全生命周期监控和应急处理。
+SRE 最终承诺的组件对外 SLA，并将 SLA 拆解为 SLO 跟 SWE 共背。
+在接受过程中很重要的一个工作就是，理清楚组件的 SLI / SLO，并且根据现状跟 SWE 团队商榷出对外承诺的 SLA。</p><p>除了服务范围，SRE 和 SWE 还要建设任务协作机制和沟通机制。
+有没有统一的任务记录和流转平台？遇到稳定性相关的反馈如何，如何将需求转化为任务并追踪完成？
+故障相关的 Action 如何追踪落地？一些基础环境变化以及业务上活动变化，是否有统一场合进行同步？
+比较理想的情况是，基于任务管理系统，一个需求/缺陷从提出，到设计，到实现，到变更，SRE 都参与其中。
+考虑到成本，现实执行时候可以根据精力、理解成本、重要程度、组件生命阶段进行微调。
+有一个简单低成本执行方式，将服务领域组件进行划分后，每个领域派遣一个 SRE 进入对口的 SWE 团队进行追踪：
+参加 SWE 团队的周会和日会，并将信息带回 SRE 团队同步。</p><p>谨记，<strong>划分没有统一的标准，不同团队，不同技术成熟度，不同生命周期组件都会导致不一样的边界和合作模式</strong>。</p><h2 id=总结>总结<a hidden class=anchor aria-hidden=true href=#总结>#</a></h2><p>「接手」是管理的第一步。
+在了解现状、明确日常和应急事项、明确服务范围等一系列动作之后，
+相信 SRE 已经具备初步掌控力了。有了方法论，还要持续精益求精，将掌控力从 L2 进步到 L4。
+想把事情给真正做好，核心是持续学习思考在对应领域的基础技能，并且持续了解客户的需求变化。
+保持一专多能，成为随时可以顶上去独当一面的 SRE，这才能避免成为一个工单人。🐶</p><p><img loading=lazy src=https://4ocf5n.dijingchao.com/upload_dropbox/202106/sre-push-up.jpg alt=sre-push-up>
+<small>image from Twitter</small></p><p>扩展阅读：</p><ul><li><a href=https://sre.google/sre-book/evolving-sre-engagement-model/>The Evolving SRE Engagement Model</a></li><li><a href=https://sre.google/workbook/non-abstract-design/>Introducing Non-Abstract Large System Design</a></li><li><a href=https://cloud.google.com/blog/products/gcp/how-sres-find-the-landmines-in-a-service-cre-life-lessons>How SREs at Google find the landmines in a service | Google Cloud Blog</a></li></ul><hr><p>原文链接: <a href=https://blog.alswl.com/2021/06/prr/>如何做好 PRR（Production Rediness Review）？ | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2022/01/20-21/><span class=title>« Prev</span><br><span>20 21</span></a>
+<a class=next href=https://blog.alswl.com/2020/06/type-safe-python/><span class=title>Next »</span><br><span>Python 的类型系统</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

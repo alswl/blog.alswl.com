@@ -1,511 +1,58 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>CakePHP的全局变量 | Log4D</title>
-<meta name="keywords" content="php, azaajaxchat, cakephp">
-<meta name="description" content="毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。
-忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application
-和全局变量其实完全不是同一个概念）
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>CakePHP的全局变量 | Log4D</title><meta name=keywords content="php,azaajaxchat,cakephp"><meta name=description content="毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。
+忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application 和全局变量其实完全不是同一个概念）
 我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。
 一、使用bootstrap.php文件 在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。
 定义方便的函数 注册全局常量 定义新增的控制器，视图，控制器路径 通过这个文件可以实现全局变量的声明。
-if (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( &#39;currentMessageId&#39; =&gt; -1, &#39;onlineUsers&#39; =&gt; array() ); } 在其他文件中就可以调用这个全局变量了。
+if (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( 'currentMessageId' => -1, 'onlineUsers' => array() ); } 在其他文件中就可以调用这个全局变量了。
 二、通过Configure 类 Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。
-Configure::write(&#39;Aac.currentMessageId&#39;, -1); Configure::read(&#39;Aac.currentMessageId&#39;); 其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global-
-variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。
-$config =&amp; Configure::getInstance(); $config-&gt;myVariable = &#39;Hello World&#39;; $config =&amp; Configure::getInstance();
-debug($config-&gt;myVariable);
+Configure::write('Aac.currentMessageId', -1); Configure::read('Aac.currentMessageId'); 其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global- variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。
+$config =& Configure::getInstance(); $config->myVariable = 'Hello World'; $config =& Configure::getInstance();
+debug($config->myVariable);
 其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。
 三、关于类似Application 对象的全局变量 以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。
-我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2010/05/cakephp-global-variables/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="CakePHP的全局变量" />
-<meta property="og:description" content="毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。
-忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application
-和全局变量其实完全不是同一个概念）
+我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2010/05/cakephp-global-variables/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="CakePHP的全局变量"><meta property="og:description" content="毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。
+忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application 和全局变量其实完全不是同一个概念）
 我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。
 一、使用bootstrap.php文件 在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。
 定义方便的函数 注册全局常量 定义新增的控制器，视图，控制器路径 通过这个文件可以实现全局变量的声明。
-if (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( &#39;currentMessageId&#39; =&gt; -1, &#39;onlineUsers&#39; =&gt; array() ); } 在其他文件中就可以调用这个全局变量了。
+if (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( 'currentMessageId' => -1, 'onlineUsers' => array() ); } 在其他文件中就可以调用这个全局变量了。
 二、通过Configure 类 Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。
-Configure::write(&#39;Aac.currentMessageId&#39;, -1); Configure::read(&#39;Aac.currentMessageId&#39;); 其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global-
-variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。
-$config =&amp; Configure::getInstance(); $config-&gt;myVariable = &#39;Hello World&#39;; $config =&amp; Configure::getInstance();
-debug($config-&gt;myVariable);
+Configure::write('Aac.currentMessageId', -1); Configure::read('Aac.currentMessageId'); 其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global- variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。
+$config =& Configure::getInstance(); $config->myVariable = 'Hello World'; $config =& Configure::getInstance();
+debug($config->myVariable);
 其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。
 三、关于类似Application 对象的全局变量 以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。
-我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2010/05/cakephp-global-variables/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2010-05-17T00:00:00+08:00" />
-<meta property="article:modified_time" content="2010-05-17T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="CakePHP的全局变量"/>
-<meta name="twitter:description" content="毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。
-忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application
-和全局变量其实完全不是同一个概念）
+我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2010/05/cakephp-global-variables/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2010-05-17T00:00:00+08:00"><meta property="article:modified_time" content="2010-05-17T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="CakePHP的全局变量"><meta name=twitter:description content="毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。
+忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application 和全局变量其实完全不是同一个概念）
 我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。
 一、使用bootstrap.php文件 在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。
 定义方便的函数 注册全局常量 定义新增的控制器，视图，控制器路径 通过这个文件可以实现全局变量的声明。
-if (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( &#39;currentMessageId&#39; =&gt; -1, &#39;onlineUsers&#39; =&gt; array() ); } 在其他文件中就可以调用这个全局变量了。
+if (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( 'currentMessageId' => -1, 'onlineUsers' => array() ); } 在其他文件中就可以调用这个全局变量了。
 二、通过Configure 类 Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。
-Configure::write(&#39;Aac.currentMessageId&#39;, -1); Configure::read(&#39;Aac.currentMessageId&#39;); 其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global-
-variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。
-$config =&amp; Configure::getInstance(); $config-&gt;myVariable = &#39;Hello World&#39;; $config =&amp; Configure::getInstance();
-debug($config-&gt;myVariable);
+Configure::write('Aac.currentMessageId', -1); Configure::read('Aac.currentMessageId'); 其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global- variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。
+$config =& Configure::getInstance(); $config->myVariable = 'Hello World'; $config =& Configure::getInstance();
+debug($config->myVariable);
 其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。
 三、关于类似Application 对象的全局变量 以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。
-我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。"/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "CakePHP的全局变量",
-      "item": "https://blog.alswl.com/2010/05/cakephp-global-variables/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "CakePHP的全局变量",
-  "name": "CakePHP的全局变量",
-  "description": "毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。\n忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application\n和全局变量其实完全不是同一个概念）\n我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。\n一、使用bootstrap.php文件 在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。\n定义方便的函数 注册全局常量 定义新增的控制器，视图，控制器路径 通过这个文件可以实现全局变量的声明。\nif (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( 'currentMessageId' =\u0026gt; -1, 'onlineUsers' =\u0026gt; array() ); } 在其他文件中就可以调用这个全局变量了。\n二、通过Configure 类 Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。\nConfigure::write('Aac.currentMessageId', -1); Configure::read('Aac.currentMessageId'); 其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global-\nvariables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。\n$config =\u0026amp; Configure::getInstance(); $config-\u0026gt;myVariable = 'Hello World'; $config =\u0026amp; Configure::getInstance();\ndebug($config-\u0026gt;myVariable);\n其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。\n三、关于类似Application 对象的全局变量 以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。\n我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。",
-  "keywords": [
-    "php", "azaajaxchat", "cakephp"
-  ],
-  "articleBody": "毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。\n忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application\n和全局变量其实完全不是同一个概念）\n我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。\n一、使用bootstrap.php文件 在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。\n定义方便的函数 注册全局常量 定义新增的控制器，视图，控制器路径 通过这个文件可以实现全局变量的声明。\nif (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( 'currentMessageId' =\u003e -1, 'onlineUsers' =\u003e array() ); } 在其他文件中就可以调用这个全局变量了。\n二、通过Configure 类 Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。\nConfigure::write('Aac.currentMessageId', -1); Configure::read('Aac.currentMessageId'); 其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global-\nvariables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。\n$config =\u0026 Configure::getInstance(); $config-\u003emyVariable = 'Hello World'; $config =\u0026 Configure::getInstance();\ndebug($config-\u003emyVariable);\n其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。\n三、关于类似Application 对象的全局变量 以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。\n我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。\n什么是Application 对象？Application 对象用于存储和访问来自任何页面的变量，类似于 session\n对象。不同之处在于，所有的用户分享一个 Application 对象，而 session 对象和用户的关系是一一对应的。\n在翻阅PHP资料之后，我终于在ChinaUNIX找到一些蛛丝马迹 全局变量，在多个页面的可以使用吗？ - Php - ChinaUnix.net\n。文中一位读者给了很肯定的回答\"php中没有基于整个网站的全局变量，一般用数据库什么的替代方案。\"。\n我再检查一个基于PHP的聊天系统，果然是通过数据库的 online_users来实现在线用户的保存。\n吃亏吃在用传统的Java思想做PHP，并且PHP接触时间太短，以后学习的时候必须多用用心了~\n",
-  "wordCount" : "90",
-  "inLanguage": "en",
-  "datePublished": "2010-05-17T00:00:00+08:00",
-  "dateModified": "2010-05-17T00:00:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2010/05/cakephp-global-variables/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      CakePHP的全局变量
-    </h1>
-    <div class="post-meta"><span title='2010-05-17 00:00:00 +0800 CST'>2010-05-17</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#一使用bootstrapphp文件">一、使用bootstrap.php文件</a></li>
-        <li><a href="#二通过configure-类">二、通过Configure 类</a></li>
-        <li><a href="#三关于类似application-对象的全局变量">三、关于类似Application 对象的全局变量</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-        </div>
-    </details>
-</div>
-
-  <div class="post-content"><p>毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。</p>
-<p>忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application<br />
-和全局变量其实完全不是同一个概念）</p>
-<p>我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。</p>
-<h3 id="一使用bootstrapphp文件">一、使用bootstrap.php文件<a hidden class="anchor" aria-hidden="true" href="#一使用bootstrapphp文件">#</a></h3>
-<p>在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。</p>
-<blockquote>
-<ul>
-<li>定义方便的函数</li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>注册全局常量</li>
-</ul>
-</blockquote>
-<blockquote>
-<ul>
-<li>定义新增的控制器，视图，控制器路径</li>
-</ul>
-</blockquote>
-<p>通过这个文件可以实现全局变量的声明。</p>
-<pre><code>if (!isset ($globalAAC)) {
+我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"CakePHP的全局变量","item":"https://blog.alswl.com/2010/05/cakephp-global-variables/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"CakePHP的全局变量","name":"CakePHP的全局变量","description":"毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。\n忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application 和全局变量其实完全不是同一个概念）\n我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。\n一、使用bootstrap.php文件 在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。\n定义方便的函数 注册全局常量 定义新增的控制器，视图，控制器路径 通过这个文件可以实现全局变量的声明。\nif (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( 'currentMessageId' =\u0026gt; -1, 'onlineUsers' =\u0026gt; array() ); } 在其他文件中就可以调用这个全局变量了。\n二、通过Configure 类 Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。\nConfigure::write('Aac.currentMessageId', -1); Configure::read('Aac.currentMessageId'); 其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global- variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。\n$config =\u0026amp; Configure::getInstance(); $config-\u0026gt;myVariable = 'Hello World'; $config =\u0026amp; Configure::getInstance();\ndebug($config-\u0026gt;myVariable);\n其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。\n三、关于类似Application 对象的全局变量 以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。\n我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。","keywords":["php","azaajaxchat","cakephp"],"articleBody":"毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。\n忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application 和全局变量其实完全不是同一个概念）\n我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。\n一、使用bootstrap.php文件 在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。\n定义方便的函数 注册全局常量 定义新增的控制器，视图，控制器路径 通过这个文件可以实现全局变量的声明。\nif (!isset ($globalAAC)) { global $globalAAC; $globalAAC = array ( 'currentMessageId' =\u003e -1, 'onlineUsers' =\u003e array() ); } 在其他文件中就可以调用这个全局变量了。\n二、通过Configure 类 Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。\nConfigure::write('Aac.currentMessageId', -1); Configure::read('Aac.currentMessageId'); 其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](http://debuggable.com/posts/need-to-share-global- variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。\n$config =\u0026 Configure::getInstance(); $config-\u003emyVariable = 'Hello World'; $config =\u0026 Configure::getInstance();\ndebug($config-\u003emyVariable);\n其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。\n三、关于类似Application 对象的全局变量 以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。\n我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。\n什么是Application 对象？Application 对象用于存储和访问来自任何页面的变量，类似于 session 对象。不同之处在于，所有的用户分享一个 Application 对象，而 session 对象和用户的关系是一一对应的。\n在翻阅PHP资料之后，我终于在ChinaUNIX找到一些蛛丝马迹 全局变量，在多个页面的可以使用吗？ - Php - ChinaUnix.net 。文中一位读者给了很肯定的回答\"php中没有基于整个网站的全局变量，一般用数据库什么的替代方案。\"。\n我再检查一个基于PHP的聊天系统，果然是通过数据库的 online_users来实现在线用户的保存。\n吃亏吃在用传统的Java思想做PHP，并且PHP接触时间太短，以后学习的时候必须多用用心了~\n","wordCount":"90","inLanguage":"en","datePublished":"2010-05-17T00:00:00+08:00","dateModified":"2010-05-17T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2010/05/cakephp-global-variables/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>CakePHP的全局变量</h1><div class=post-meta><span title='2010-05-17 00:00:00 +0800 +0800'>2010-05-17</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><ul><li><a href=#一使用bootstrapphp文件>一、使用bootstrap.php文件</a></li><li><a href=#二通过configure-类>二、通过Configure 类</a></li><li><a href=#三关于类似application-对象的全局变量>三、关于类似Application 对象的全局变量</a></li></ul></li></ul></nav></div></details></div><div class=post-content><p>毕业设计AzaAjaxChat 中有一个功能，记录当前在线用户，直观的看，用Application对象就可以解决。</p><p>忙了一会发现，原来PHP没有Application对象这个概念，于是我想到了全局变量，噩梦便开始了。（Application
+和全局变量其实完全不是同一个概念）</p><p>我使用的框架是CakePHP，查找资料后，找到了几种CakePHP中使用全局变量的方法。</p><h3 id=一使用bootstrapphp文件>一、使用bootstrap.php文件<a hidden class=anchor aria-hidden=true href=#一使用bootstrapphp文件>#</a></h3><p>在app/config 下面，有一个bootstrap文件，从名字就可以看出，这个是在控制器之前加载的文件，根据官方的描述，有下面几个用法。</p><blockquote><ul><li>定义方便的函数</li></ul></blockquote><blockquote><ul><li>注册全局常量</li></ul></blockquote><blockquote><ul><li>定义新增的控制器，视图，控制器路径</li></ul></blockquote><p>通过这个文件可以实现全局变量的声明。</p><pre><code>if (!isset ($globalAAC)) {
 	global $globalAAC;
 	$globalAAC = array (
 		'currentMessageId' =&gt; -1,
 		'onlineUsers' =&gt; array()
 	);
 }
-</code></pre>
-<p>在其他文件中就可以调用这个全局变量了。</p>
-<h3 id="二通过configure-类">二、通过Configure 类<a hidden class="anchor" aria-hidden="true" href="#二通过configure-类">#</a></h3>
-<p>Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。</p>
-<pre><code>Configure::write('Aac.currentMessageId', -1);
+</code></pre><p>在其他文件中就可以调用这个全局变量了。</p><h3 id=二通过configure-类>二、通过Configure 类<a hidden class=anchor aria-hidden=true href=#二通过configure-类>#</a></h3><p>Configure类是CakePHP用来进行配置文件的地方，通过write() 和read()方法，也能实现全局变量的读写操作。</p><pre><code>Configure::write('Aac.currentMessageId', -1);
 Configure::read('Aac.currentMessageId');
-</code></pre>
-<p>其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](<a href="http://debuggable.com/posts/need-to-share-global-">http://debuggable.com/posts/need-to-share-global-</a><br />
-variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。</p>
-<pre><code>$config =&amp; Configure::getInstance();
+</code></pre><p>其中，还有一个使用Configure的偏门方法，我从 [Need to share global variables throughout your app? » Debuggable Ltd](<a href=http://debuggable.com/posts/need-to-share-global->http://debuggable.com/posts/need-to-share-global-</a>
+variables-throughout-your-app:480f4dd5-6f64-4c88-812d-46d5cbdd56cb) 看到的。</p><pre><code>$config =&amp; Configure::getInstance();
 $config-&gt;myVariable = 'Hello World';
-</code></pre>
-<p>$config =&amp; Configure::getInstance();</p>
-<p>debug($config-&gt;myVariable);</p>
-<p>其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。</p>
-<h3 id="三关于类似application-对象的全局变量">三、关于类似Application 对象的全局变量<a hidden class="anchor" aria-hidden="true" href="#三关于类似application-对象的全局变量">#</a></h3>
-<p>以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。</p>
-<p>我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。</p>
-<p>什么是Application 对象？Application 对象用于存储和访问来自任何页面的变量，类似于 session<br />
-对象。不同之处在于，所有的用户分享一个 Application 对象，而 session 对象和用户的关系是一一对应的。</p>
-<p>在翻阅PHP资料之后，我终于在ChinaUNIX找到一些蛛丝马迹 <a href="http://bbs.chinaunix.net/viewthread.php?tid=79537">全局变量，在多个页面的可以使用吗？ - Php - ChinaUnix.net</a><br />
-。文中一位读者给了很肯定的回答&quot;php中没有基于整个网站的全局变量，一般用数据库什么的替代方案。&quot;。</p>
-<p>我再检查一个基于PHP的聊天系统，果然是通过数据库的 online_users来实现在线用户的保存。</p>
-<p>吃亏吃在用传统的Java思想做PHP，并且PHP接触时间太短，以后学习的时候必须多用用心了~</p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2010/05/cakephp-global-variables/">CakePHP的全局变量 | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/php/">php</a></li>
-      <li><a href="https://blog.alswl.com/tags/azaajaxchat/">azaajaxchat</a></li>
-      <li><a href="https://blog.alswl.com/tags/cakephp/">cakephp</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2010/05/fms-80-port-used/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>FMS的80端口占用</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2010/05/three-invitations-of-tencent-micro-blog/">
-    <span class="title">Next »</span>
-    <br>
-    <span>腾讯微博邀请3枚</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+</code></pre><p>$config =& Configure::getInstance();</p><p>debug($config->myVariable);</p><p>其实就是通过引用操作Configure 类内部的getInstance() 方法，看源码就能看出来。</p><h3 id=三关于类似application-对象的全局变量>三、关于类似Application 对象的全局变量<a hidden class=anchor aria-hidden=true href=#三关于类似application-对象的全局变量>#</a></h3><p>以上两种方法都没错，都可以操作全局变量，但是我却都操作失败了，为此我折腾了整整一天。</p><p>我甚至一度把错误归结到CakePHP，后来才发现，原来我冤枉它了。问题的根本是在于，这个全局变量根本不是我所想的那个Application 对象。</p><p>什么是Application 对象？Application 对象用于存储和访问来自任何页面的变量，类似于 session
+对象。不同之处在于，所有的用户分享一个 Application 对象，而 session 对象和用户的关系是一一对应的。</p><p>在翻阅PHP资料之后，我终于在ChinaUNIX找到一些蛛丝马迹 <a href="http://bbs.chinaunix.net/viewthread.php?tid=79537">全局变量，在多个页面的可以使用吗？ - Php - ChinaUnix.net</a>
+。文中一位读者给了很肯定的回答"php中没有基于整个网站的全局变量，一般用数据库什么的替代方案。"。</p><p>我再检查一个基于PHP的聊天系统，果然是通过数据库的 online_users来实现在线用户的保存。</p><p>吃亏吃在用传统的Java思想做PHP，并且PHP接触时间太短，以后学习的时候必须多用用心了~</p><hr><p>原文链接: <a href=https://blog.alswl.com/2010/05/cakephp-global-variables/>CakePHP的全局变量 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/php/>php</a></li><li><a href=https://blog.alswl.com/tags/azaajaxchat/>azaajaxchat</a></li><li><a href=https://blog.alswl.com/tags/cakephp/>cakephp</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2010/05/fms-80-port-used/><span class=title>« Prev</span><br><span>FMS的80端口占用</span></a>
+<a class=next href=https://blog.alswl.com/2010/05/three-invitations-of-tencent-micro-blog/><span class=title>Next »</span><br><span>腾讯微博邀请3枚</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

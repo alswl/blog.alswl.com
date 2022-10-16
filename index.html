@@ -1,630 +1,96 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head>
-	<meta name="generator" content="Hugo 0.104.3" /><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>Log4D</title>
-
-<meta name="description" content="">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/atom.xml">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="Log4D" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://blog.alswl.com/" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Log4D"/>
-<meta name="twitter:description" content=""/>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Log4D",
-  "url": "https://blog.alswl.com",
-  "description": "",
-  "thumbnailUrl": "https://blog.alswl.com/favicon.ico",
-  "sameAs": [
-      "https://twitter.com/alswl", "https://github.com/alswl", "/atom.xml"
-  ]
-}
-</script>
-</head>
-
-<body class="list" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main"> 
-<article class="first-entry home-info">
-    <header class="entry-header">
-        <h1>Hi, ther, I&rsquo;m alswl</h1>
-    </header>
-    <div class="entry-content">
-        Code Monkey // Senior YAML Editor // 擅长江浙菜
-    </div>
-    <footer class="entry-footer">
-        <div class="social-icons">
-    <a href="https://twitter.com/alswl" target="_blank" rel="noopener noreferrer me" title="Twitter">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <path
-        d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
-    </path>
-</svg>
-    </a>
-    <a href="https://github.com/alswl" target="_blank" rel="noopener noreferrer me" title="Github">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <path
-        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-    </path>
-</svg>
-    </a>
-    <a href="/atom.xml" target="_blank" rel="noopener noreferrer me" title="Rss">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 11a9 9 0 0 1 9 9" />
-    <path d="M4 4a16 16 0 0 1 16 16" />
-    <circle cx="5" cy="19" r="1" />
-</svg>
-    </a>
-</div>
-
-    </footer>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>跟 Google 学开公司 - 谈谈方向、文化和人
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>我居然也有胆来想这个命题了。
-困惑 - 换个视角看待公司 大部分年轻人都在一个商业组织（即公司）中工作。
-我们似乎对这个商业组织的运作已经很熟悉：
-接触公司并进行面试和岗位匹配，在特定的岗位里面工作，过程也许开心或沮丧，通过组织的种种管理手段（KPI / OKR）来完成上级分发的任务。
+<!doctype html><html lang=en dir=auto><head><meta name=generator content="Hugo 0.104.3"><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Log4D</title><meta name=description content><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.alswl.com/atom.xml><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="Log4D"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://blog.alswl.com/"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="Log4D"><meta name=twitter:description content><script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":"Log4D","url":"https://blog.alswl.com","description":"","thumbnailUrl":"https://blog.alswl.com/favicon.ico","sameAs":["https://twitter.com/alswl","https://github.com/alswl","/atom.xml","https://www.zhihu.com/people/alswl"]}</script></head><body class=list id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class="first-entry home-info"><header class=entry-header><h1>Hi, ther, I&rsquo;m alswl</h1></header><div class=entry-content>Code Monkey // Senior YAML Editor // 擅长江浙菜</div><footer class=entry-footer><div class=social-icons><a href=https://twitter.com/alswl target=_blank rel="noopener noreferrer me" title=Twitter><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9.0 01-3.14 1.53 4.48 4.48.0 00-7.86 3v1A10.66 10.66.0 013 4s-4 9 5 13a11.64 11.64.0 01-7 2c9 5 20 0 20-11.5a4.5 4.5.0 00-.08-.83A7.72 7.72.0 0023 3z"/></svg></a><a href=https://github.com/alswl target=_blank rel="noopener noreferrer me" title=Github><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg></a><a href=/atom.xml target=_blank rel="noopener noreferrer me" title=Rss><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a9 9 0 019 9"/><path d="M4 4a16 16 0 0116 16"/><circle cx="5" cy="19" r="1"/></svg></a><a href=https://www.zhihu.com/people/alswl target=_blank rel="noopener noreferrer me" title=Zhihu><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg></a></div></footer></article><article class=post-entry><header class=entry-header><h2>跟 Google 学开公司 - 谈谈方向、文化和人</h2></header><div class=entry-content><p>我居然也有胆来想这个命题了。
+困惑 - 换个视角看待公司 大部分年轻人都在一个商业组织（即公司）中工作。 我们似乎对这个商业组织的运作已经很熟悉： 接触公司并进行面试和岗位匹配，在特定的岗位里面工作，过程也许开心或沮丧，通过组织的种种管理手段（KPI / OKR）来完成上级分发的任务。
 这个过程中，我们往往遇到不少困惑，有些朋友还经历过职场 PUA（Pick-Up Artist）；有些朋友可能感觉自己已经干的足够出色却无法得到晋升；有些朋友感慨合作的上下游太不专业了；总之，我们对公司不满是常态，而对公司满意则是反常。
-其实很多时候，雇员的感受是公司运行的规律的投影。
-我们制定 OKR 时候想去创造，应该通过什么方法论去开拓工作？这是公司战略决定的。
-公司是怎么定义优秀人选的，我有没有机会获得晋升？这是公司用人态度决定的。
-996 这么辛苦，我们该怎么去保持生活工作平衡？这是公司价值观和文化决定的。
+其实很多时候，雇员的感受是公司运行的规律的投影。 我们制定 OKR 时候想去创造，应该通过什么方法论去开拓工作？这是公司战略决定的。 公司是怎么定义优秀人选的，我有没有机会获得晋升？这是公司用人态度决定的。 996 这么辛苦，我们该怎么去保持生活工作平衡？这是公司价值观和文化决定的。
 Google 在这个方面似乎做得不错，从 2022 福布斯雇主（America’s Best Large Employers 2022）排名来看，Google 排在 34 名，互联网领域则是第 4 位（前三名分别是 Microsoft / Ultimate Kronos Group / LinkedIn）。
-Google 做对了哪些事情？让我们换一个视角，从雇员视角切换到雇主，甚至再宽阔一些，以投资者视角来观察公司。
-来解答一些关键问题：公司是如何决定前进方向的？公司每年的目标是应该怎么制定出来？公司通过什么方式筛选和激励人才？
-重新定义公司 这本书告诉我们很多 Google 的回答，
-国际大公司的方案未必能拿来立即用上，但这些答案可以给我们很多启发。
+Google 做对了哪些事情？让我们换一个视角，从雇员视角切换到雇主，甚至再宽阔一些，以投资者视角来观察公司。 来解答一些关键问题：公司是如何决定前进方向的？公司每年的目标是应该怎么制定出来？公司通过什么方式筛选和激励人才？
+重新定义公司 这本书告诉我们很多 Google 的回答， 国际大公司的方案未必能拿来立即用上，但这些答案可以给我们很多启发。
 Google 说：战略、人才、文化、沟通，这些是定义公司的关键。
 公司往哪里走 - 战略和方向决定了收入 公司发展的真正原动力是什么？我思考答案的朴素的：科技在发展，世界在变得更复杂，人们希望自己生活更安全、幸福、高效。这时候就需要一些机构，尤其是利润驱动的商业公司来提供更好的服务来满足大家。从这个角度出发，公司只要是与人为善，帮助用户解决确实存在的问题，就创造了相应的价值。
 那具体怎么创造，往哪个方向发展？追寻利润是唯一的驱动方向么？显然不是的，否则很多公司就要去围绕人性的弱点（黄赌毒）去开展业务了（你别说，这种公司还真的挺多）。
-伟大的公司之所以伟大，是他们仅仅将利润看作一个副产品。真正指引是 基于对新兴技术的洞见而形成的判断。这是一种那什么是「洞见」呢？
-技术洞见是创新方式应用科技或设计，达到成本或者特性的 10X 变化，甚至是代际变化。
-制定的战略要足够有挑战。
-Google 说 [这个战略是否足够吸引人，就好比 NASA 登月计划一样，让渴望的人聚拢在一起。而不是单纯一份体面的工作。」
-如果想做一鸣惊人的事情确实比较困难，也不符合科技发展规律。
-有时我们的创新仅仅是「组合式创新」，将领域 A 的知识复用到领域 B，...</p>
-  </div>
-  <footer class="entry-footer"><span title='2022-07-15 23:40:00 +0800 CST'>2022-07-15</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 跟 Google 学开公司 - 谈谈方向、文化和人" href="https://blog.alswl.com/2022/07/company/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>20 21
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>image from wife
+伟大的公司之所以伟大，是他们仅仅将利润看作一个副产品。真正指引是 基于对新兴技术的洞见而形成的判断。这是一种那什么是「洞见」呢？ 技术洞见是创新方式应用科技或设计，达到成本或者特性的 10X 变化，甚至是代际变化。
+制定的战略要足够有挑战。 Google 说 [这个战略是否足够吸引人，就好比 NASA 登月计划一样，让渴望的人聚拢在一起。而不是单纯一份体面的工作。」
+如果想做一鸣惊人的事情确实比较困难，也不符合科技发展规律。 有时我们的创新仅仅是「组合式创新」，将领域 A 的知识复用到领域 B， 就形成了创新。计算机为什么持续受到热捧，因为这个作为基础领域可以跟大量其他领域进行相结合。...</p></div><footer class=entry-footer><span title='2022-07-15 23:40:00 +0800 +0800'>2022-07-15</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 跟 Google 学开公司 - 谈谈方向、文化和人" href=https://blog.alswl.com/2022/07/company/></a></article><article class=post-entry><header class=entry-header><h2>20 21</h2></header><div class=entry-content><p>image from wife
 关键词：柳暗花明 家庭 这两年疫情来袭，生活、工作的方方面面都产生了巨大变化，也是我人生的最艰难的一段时光。
-2020 年中，母亲身体抱恙，术后逐渐康复，全家紧绷的神经也得到了一丝放松。但在年末，小朋友出了一些状况。
-具体情况我不过多谈及，圈内人称为地狱爬行。三十而立的年龄，奔跑中时突然撞上了一道无形的墙壁，抬头望去，
-一片漫无边际的黑暗笼罩。好在经过全家的努力，终于在 2021 年末柳暗花明。
-这两年，压力之下，也重新在思考自己在家庭、团队、个人的角色定位。
-工作 在蚂蚁的前两年，我主要开发一款面向外部商户的 DevOps 系统，过程中不仅要设计开发，也要跑到用户那边做需求挖掘和产品交付。
-还要对内讲清楚业务价值。这种「既要又要还要」非常反工程实践，一度让我沮丧。工程师内核坚持和「业务价值落地」的冲突，
-我无法将其融合在一起。最终就变成干苦活没回报，产出被收割。在我快失去对工作的掌控和热情时，
-托另外一位朋友福及时转岗，
-新的领域是容器调度领域（Kubernetes），这个领域生机勃勃，是 Cloud Native 基石，也是云计算的基础。
-这个领域特点是，背靠社区、客户稳定、需求（规模的扩大、稳定性的提高、性能的提升）可预见
-之前工作时候，若干次接触过这个领域。
-14 年左右我初次接触了 Mesos 调度系统，将其作为 Hadoop Yarn 的替代品用在离线计算任务上。
-后来我又开发过一套名为 Prisim 的开发环境，基于容器技术提供独立的 Dev 环境，具备静态和基于域名的简单 Service Discovery，
-当时土法造炮堪堪能用，支撑起公司的整个研发环境。
-蚂蚁前两年的工作，几乎中断了我在基础设施领域的工作，内容发散不聚焦。现在终于重新拉回了主干路线。
-虽然新工作也并不轻松，但深挖领域、探索新方向、寻找增长点很有意思。
-一句话概括所做的事情：管理好这些大规模集群，并以这个目的为出发，设计开发变更、可见性、应急、生命周期管理等工具。
-团队 TL 来自 Google，同伴也普遍有相当的水准（小组最近两年每年给 KubeCon / SREcon 贡献一场分享），能够在一个不卷的地方深挖，可能是大部分技术人的梦想了。
+2020 年中，母亲身体抱恙，术后逐渐康复，全家紧绷的神经也得到了一丝放松。但在年末，小朋友出了一些状况。 具体情况我不过多谈及，圈内人称为地狱爬行。三十而立的年龄，奔跑中时突然撞上了一道无形的墙壁，抬头望去， 一片漫无边际的黑暗笼罩。好在经过全家的努力，终于在 2021 年末柳暗花明。 这两年，压力之下，也重新在思考自己在家庭、团队、个人的角色定位。
+工作 在蚂蚁的前两年，我主要开发一款面向外部商户的 DevOps 系统，过程中不仅要设计开发，也要跑到用户那边做需求挖掘和产品交付。 还要对内讲清楚业务价值。这种「既要又要还要」非常反工程实践，一度让我沮丧。工程师内核坚持和「业务价值落地」的冲突， 我无法将其融合在一起。最终就变成干苦活没回报，产出被收割。在我快失去对工作的掌控和热情时， 托另外一位朋友福及时转岗，
+新的领域是容器调度领域（Kubernetes），这个领域生机勃勃，是 Cloud Native 基石，也是云计算的基础。 这个领域特点是，背靠社区、客户稳定、需求（规模的扩大、稳定性的提高、性能的提升）可预见 之前工作时候，若干次接触过这个领域。 14 年左右我初次接触了 Mesos 调度系统，将其作为 Hadoop Yarn 的替代品用在离线计算任务上。 后来我又开发过一套名为 Prisim 的开发环境，基于容器技术提供独立的 Dev 环境，具备静态和基于域名的简单 Service Discovery， 当时土法造炮堪堪能用，支撑起公司的整个研发环境。
+蚂蚁前两年的工作，几乎中断了我在基础设施领域的工作，内容发散不聚焦。现在终于重新拉回了主干路线。 虽然新工作也并不轻松，但深挖领域、探索新方向、寻找增长点很有意思。 一句话概括所做的事情：管理好这些大规模集群，并以这个目的为出发，设计开发变更、可见性、应急、生命周期管理等工具。 团队 TL 来自 Google，同伴也普遍有相当的水准（小组最近两年每年给 KubeCon / SREcon 贡献一场分享），能够在一个不卷的地方深挖，可能是大部分技术人的梦想了。
 这两年做的还不够地方，是影响力建设，输出社区太少，输出内容也太少。时间金贵，总是感觉不够用。
-书 正面管教 (豆瓣)
-坚定、和善，发掘孩子的天性。
-无条件养育 (豆瓣)
-唯有爱，帮孩子身心健康，走得更远。
-Java Concurrency in Practice (豆瓣)
-并发相关殿堂级书，应该放到大学读，不管是不是 Java 开发者都应该阅读。我的笔记。
-how to (豆瓣)...</p>
-  </div>
-  <footer class="entry-footer"><span title='2022-01-03 10:23:00 +0800 CST'>2022-01-03</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 20 21" href="https://blog.alswl.com/2022/01/20-21/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>如何做好 PRR（Production Rediness Review）？
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>image from pixabay.com
-SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。
-需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等，
-有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。
-那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢，
-如何将「接手」这个行为做得有掌控力、顺畅且体面？
-了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。
-现状包含组件的当前运行状态、环境，
-还包含当前 SRE 团队的能力、平台是否可以顺利衔接。
-了解一个组件，可以先以用户角度进行切入。
-去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？
-能否将组件进行归类？是属于普通业务系统，还是基础设施？
-如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。
-近期和长期的规划也是需要重点关注的内容。
-在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。
-生命早期的组件要多关注变更和基础能力建设；
-成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。
-生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。
-第二步是以技术的视角来切入，
-分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：
-架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图；
-历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？
-有没有特殊的部署要求？
+书 正面管教 (豆瓣) 坚定、和善，发掘孩子的天性。
+无条件养育 (豆瓣) 唯有爱，帮孩子身心健康，走得更远。
+Java Concurrency in Practice (豆瓣) 并发相关殿堂级书，应该放到大学读，不管是不是 Java 开发者都应该阅读。我的笔记。
+how to (豆瓣) 换个思路解决问题，有趣的小故事。...</p></div><footer class=entry-footer><span title='2022-01-03 10:23:00 +0800 +0800'>2022-01-03</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 20 21" href=https://blog.alswl.com/2022/01/20-21/></a></article><article class=post-entry><header class=entry-header><h2>如何做好 PRR（Production Rediness Review）？</h2></header><div class=entry-content><p>image from pixabay.com
+SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。 需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等， 有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。 那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢， 如何将「接手」这个行为做得有掌控力、顺畅且体面？
+了解组件现状 第一步永远是了解现状，孙子兵法谋攻篇说，知己知彼，百战不殆。 现状包含组件的当前运行状态、环境， 还包含当前 SRE 团队的能力、平台是否可以顺利衔接。
+了解一个组件，可以先以用户角度进行切入。 去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？ 能否将组件进行归类？是属于普通业务系统，还是基础设施？ 如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。
+近期和长期的规划也是需要重点关注的内容。 在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。 生命早期的组件要多关注变更和基础能力建设； 成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。 生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。
+第二步是以技术的视角来切入， 分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：
+架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图； 历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？ 部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖 Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？ 容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？ 结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？ 有没有特殊的部署要求？
 对一个组件需要了解到什么程度才能接手？ 这里我用几种程度来描述掌控力：
-L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。
-接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。
-明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。
-完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？
+L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。 L2 具备资深用户能力，有一定调优能力（Tuning）能力。 L3 具备处置问题（Trouble Shooting）能力。 L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入 在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。 接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。
+明确日常和应急事项 了解现状这个动作基本上是以静态的视角来看待组件。 完成之后，还要换成动态视角来看：有哪些日常操作（Operational）和紧急状态（Emergency）的操作？
 需要关注的领域有可观测性、变更、应急预案：
-可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？...</p>
-  </div>
-  <footer class="entry-footer"><span title='2021-06-11 17:53:00 +0800 CST'>2021-06-11</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 如何做好 PRR（Production Rediness Review）？" href="https://blog.alswl.com/2021/06/prr/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Python 的类型系统
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>image from pixabay.com
-静态类型正在逐渐成为潮流，
-2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。
-过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。
-我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难：
-在重构阶段代码回归成本异常之高，很多历史代码不敢动。
-后来技术栈转到 Java，被类型系统怀抱让人产生安全感。
-最近一年在一个面向稳定性的运维系统耕耘。系统选型之初使用了 Python。
-我在项目中力推了 Python 3.7，并大规模使用了 Python 的类型系统来降低潜在风险。
-追根溯源，我花了一些时间了解 Python 在类型系统的设计和实现，
-本文以 PEP 提案介绍一下 Python 在类型系统上面走过的路。
+可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？ 告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？ 告警的具体流程如何？是否具备告警抑制降噪能力？告警是否具备定位能力？历史数据是否可追溯？ 变更：目前基于什么工具进行变更？CI CD 流程分别是什么？发布周期是什么样子？配置变更二进制变更是否分离？是否有特性开关？ 存储层面变更是否有考虑？各类变更流程是否有完成自动化？变更过程是否可以灰度？是否具备变更回滚能力。 应急预案：是否有突发流量处理预案；是否有限流、降级策略？整体不可用之后业务影响如何？流量处理上是否考虑过雪崩场景？ 在应急方面，还需要去了解过去历史上出现过哪些的问题。 翻看组件的故障复盘文档，了解历史上故障过程，故障原因，对应的 Action 是否落地？ 尤其注意的是要关注 Action 工作机制是阻断式、检查式还是发现式？ 老故障放到当下如果要避免是依赖系统、流程机制还是人工？...</p></div><footer class=entry-footer><span title='2021-06-11 17:53:00 +0800 +0800'>2021-06-11</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 如何做好 PRR（Production Rediness Review）？" href=https://blog.alswl.com/2021/06/prr/></a></article><article class=post-entry><header class=entry-header><h2>Python 的类型系统</h2></header><div class=entry-content><p>image from pixabay.com
+静态类型正在逐渐成为潮流， 2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。 过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。
+我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难： 在重构阶段代码回归成本异常之高，很多历史代码不敢动。 后来技术栈转到 Java，被类型系统怀抱让人产生安全感。
+最近一年在一个面向稳定性的运维系统耕耘。系统选型之初使用了 Python。 我在项目中力推了 Python 3.7，并大规模使用了 Python 的类型系统来降低潜在风险。
+追根溯源，我花了一些时间了解 Python 在类型系统的设计和实现， 本文以 PEP 提案介绍一下 Python 在类型系统上面走过的路。
 类型系统 谈类型系统之前，要厘定两个概念，动态语言和动态类型。
-动态语言（Dynamic Programming Language）则是指程序在运行时可以改变结构。
-这个结构可以包含函数、对象、变量类型、程序结构。
-动态类型是类型系统（Type System）其中一类，即程序在运行期间可以修改变量类型。
-另外一种是静态类型：在编译期就决定了变量类型，运行期不允许发生变化。
-类型系统还有一种分法是强类型和弱类型，强类型是指禁止类型不匹配的指令，弱类型反之。
-动态语言和动态类型这两个概念切入点不一样，
-Python 是一门动态语言，也是动态类型语言，还是强类型的动态类型。
-这篇文章主要讨论 Python 语言的类型系统，不会涉及动态语言特性。
-类型安全之路 行业里面一直有一个争论：动态类型和静态类型哪一种更强大。
-静态类型的支持者认为三个方面具备优势：性能、错误发现、高效重构。
-静态类型通过编译期决定具体类型可以显著的提高运行期效率；
-编译期就能够发现错误，在工程规模逐步变大时候尤其明显；
-类型系统可以帮助 IDE 提示，高效重构。
-动态类型的支持者则认为分析代码会更简单，减少出错机会，写起来也更为快速。
-Python 开发者们并非没有看到这个痛点，
-一系列 PEP 提案应运而生。
-在保留 Python 动态类型系统优势前提，通过语法、特性增强，将类型系统引入 Python。
-Python 在 2014 年即提出了 PEP 484，随后提出一个精粹版 PEP 483（The Theory of Type Hints），...</p>
-  </div>
-  <footer class="entry-footer"><span title='2020-06-23 17:54:00 +0800 CST'>2020-06-23</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to Python 的类型系统" href="https://blog.alswl.com/2020/06/type-safe-python/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>浅谈 Code Review 之事前准备
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>随着业务规模扩大、团队组成变复杂，如何降低项目实施风险，降低软件复杂度变得尤为关键。
-我从 Martin Flower、Joel Spolsky（软件随想录 作者）
-等巨匠智慧中寻找解决复杂工程之道，其中 Code Review 是行之有效手段。
-我认同 Code Review 价值也是忠实执行者。
-加入蚂蚁以后，我在所接触项目中都大力推广 Code Review。
-感谢团队信任和支持，目前 CR 协作进展顺利，
-项目 CR 从最早不主动，到现在形成基于模块 Owner 制度 CR 和 Peer Review。
-我也曾经在 3 个月内处理完成 700 多个 Pull Request，并在 PR 讨论中中都留下一些有价值讨论。
-这里我将自己对 Code Review 一些理解记录下来。
+动态语言（Dynamic Programming Language）则是指程序在运行时可以改变结构。 这个结构可以包含函数、对象、变量类型、程序结构。 动态类型是类型系统（Type System）其中一类，即程序在运行期间可以修改变量类型。 另外一种是静态类型：在编译期就决定了变量类型，运行期不允许发生变化。 类型系统还有一种分法是强类型和弱类型，强类型是指禁止类型不匹配的指令，弱类型反之。
+动态语言和动态类型这两个概念切入点不一样， Python 是一门动态语言，也是动态类型语言，还是强类型的动态类型。 这篇文章主要讨论 Python 语言的类型系统，不会涉及动态语言特性。
+类型安全之路 行业里面一直有一个争论：动态类型和静态类型哪一种更强大。 静态类型的支持者认为三个方面具备优势：性能、错误发现、高效重构。 静态类型通过编译期决定具体类型可以显著的提高运行期效率； 编译期就能够发现错误，在工程规模逐步变大时候尤其明显； 类型系统可以帮助 IDE 提示，高效重构。 动态类型的支持者则认为分析代码会更简单，减少出错机会，写起来也更为快速。
+Python 开发者们并非没有看到这个痛点， 一系列 PEP 提案应运而生。 在保留 Python 动态类型系统优势前提，通过语法、特性增强，将类型系统引入 Python。
+Python 在 2014 年即提出了 PEP 484，随后提出一个精粹版 PEP 483（The Theory of Type Hints）， 其工程实现 typing 模块在 3....</p></div><footer class=entry-footer><span title='2020-06-23 17:54:00 +0800 +0800'>2020-06-23</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Python 的类型系统" href=https://blog.alswl.com/2020/06/type-safe-python/></a></article><article class=post-entry><header class=entry-header><h2>浅谈 Code Review 之事前准备</h2></header><div class=entry-content><p>随着业务规模扩大、团队组成变复杂，如何降低项目实施风险，降低软件复杂度变得尤为关键。 我从 Martin Flower、Joel Spolsky（软件随想录 作者） 等巨匠智慧中寻找解决复杂工程之道，其中 Code Review 是行之有效手段。 我认同 Code Review 价值也是忠实执行者。
+加入蚂蚁以后，我在所接触项目中都大力推广 Code Review。 感谢团队信任和支持，目前 CR 协作进展顺利， 项目 CR 从最早不主动，到现在形成基于模块 Owner 制度 CR 和 Peer Review。 我也曾经在 3 个月内处理完成 700 多个 Pull Request，并在 PR 讨论中中都留下一些有价值讨论。 这里我将自己对 Code Review 一些理解记录下来。
 这一篇先讲讲进入 Code Review 之前需要做准备工作。
-评估团队成熟度 不管是在一个遗留系统上推广 Code Review，还是在一个新团队推广 Code Review，
-起手式不是立马挽起袖子猛干，而是应当观察一下当前所处情况是否允许自己推动这个「艰巨」任务。
-最需要观察的是团队成熟度。
-我将团队成熟度粗略分为草台班子、成长型团队、成熟团队。
-具体衡量指标可以有成员技术储备、团队成员信任度、团队负责人对工程管控力度。
-相信集团内大部分团队处于成长型、成熟型团队。
-但如果考虑到生态同学一起协作，或者临时因为紧急项目凑在一起，就比较容易成为「草台班子」。
-如果还停留在草台班子，那就得先在团队内形成一定共识：
-包括技术共识和合作模式的共识。
-技术共识需要包括：技术栈共识、好代码定义、研发流程共识等。
-合作模式共识需要包括：冲突解决机制、职责范围边界、决策机制等。
-如果基本共识还没有形成就仓促进入 Code Review，那就容易将一件好事变成工程师战争。
-并不是所有团队、项目都适合无差别引入 Code Review。这么几种情况建议暂缓 Code Review 推广：...</p>
-  </div>
-  <footer class="entry-footer"><span title='2020-03-31 12:13:00 +0800 CST'>2020-03-31</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 浅谈 Code Review 之事前准备" href="https://blog.alswl.com/2020/03/before-code-review/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>再见 2019
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>2019 年 9 月摄于巴厘岛
+评估团队成熟度 不管是在一个遗留系统上推广 Code Review，还是在一个新团队推广 Code Review， 起手式不是立马挽起袖子猛干，而是应当观察一下当前所处情况是否允许自己推动这个「艰巨」任务。 最需要观察的是团队成熟度。
+我将团队成熟度粗略分为草台班子、成长型团队、成熟团队。 具体衡量指标可以有成员技术储备、团队成员信任度、团队负责人对工程管控力度。 相信集团内大部分团队处于成长型、成熟型团队。 但如果考虑到生态同学一起协作，或者临时因为紧急项目凑在一起，就比较容易成为「草台班子」。
+如果还停留在草台班子，那就得先在团队内形成一定共识： 包括技术共识和合作模式的共识。 技术共识需要包括：技术栈共识、好代码定义、研发流程共识等。 合作模式共识需要包括：冲突解决机制、职责范围边界、决策机制等。 如果基本共识还没有形成就仓促进入 Code Review，那就容易将一件好事变成工程师战争。
+并不是所有团队、项目都适合无差别引入 Code Review。这么几种情况建议暂缓 Code Review 推广：...</p></div><footer class=entry-footer><span title='2020-03-31 12:13:00 +0800 +0800'>2020-03-31</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 浅谈 Code Review 之事前准备" href=https://blog.alswl.com/2020/03/before-code-review/></a></article><article class=post-entry><header class=entry-header><h2>再见 2019</h2></header><div class=entry-content><p>2019 年 9 月摄于巴厘岛
 和老友聚餐时候完了一个游戏，大家各自找了一个词形容自己的 2019。我用的词是「累」和「平凡」。
 2019 关键词：累和平凡 2019 没有进入生门。
-加入阿里之后，组织像榨汁机一样将个体精力榨干。
-工作日几乎没有自己的时间。这样画面经常出现：回到酒店先倒头趴一会，然后洗完澡看眼儿子视频就睡觉，醒来又是新的循环。
-周末的时间则是交给了家人，今年母亲身体抱恙，我尽量每月都能回一趟老家，以至于陪伴儿子的时间所剩无几。
-工作日典型的一天是：早上 8:00 起床，酒店就餐，9:30 到公司，项目进度同步，杂项计划，
-客户落地沟通，协同外部同事（外包 &#43; 外部合作公司）困难事项解决。
-下午 14:00 开始细项工作，写设计方案、写一点代码，做一些技术攻坚。
-傍晚到 22:00 很可能开会（需求会、设计会），如果不开会就需要写一些设计文档。
-另外一周有两个晚上在出差路上。
-这还不算有些团队其他突发的小型项目需求过来。为了追求更多价值输出地方，我来者不拒。
-这样算来，每周真正能自由支配时间只有 4-6 小时，这么一点时间刚好够做下工作日志整理，谈不上去学习新知识。
-每天最适合学习的时间可能是在出差高铁路和日常打车时坐在后座。
-个人 OKR 则是惨不忍睹，Q4 整个季度累的没有翻开 OKR 帐簿。
-回过头来看，Q4 有些量化的产出完全靠日常习惯养成大类目。
-最佳 OKR 贡献者居然是 RescueTime 效率大于 80 和工作日工作在案时间 8h 这两条。
-我的 2019 是累的，由内而外。工作、家庭压力扑面而来，而立之年感受到生命的脆弱，以及个体在大组织的身不由己。
-彻头彻尾感受到自己的渺小和普通。
-王国维说人生有三种境界，我倒是听过人生三种落空：「对父母的期望落空」、「对自己的期望落空」和
-「对子女的期望落空」。落空让我重新思考自己定位，欲望和所得是否匹配。
+加入阿里之后，组织像榨汁机一样将个体精力榨干。 工作日几乎没有自己的时间。这样画面经常出现：回到酒店先倒头趴一会，然后洗完澡看眼儿子视频就睡觉，醒来又是新的循环。 周末的时间则是交给了家人，今年母亲身体抱恙，我尽量每月都能回一趟老家，以至于陪伴儿子的时间所剩无几。
+工作日典型的一天是：早上 8:00 起床，酒店就餐，9:30 到公司，项目进度同步，杂项计划， 客户落地沟通，协同外部同事（外包 + 外部合作公司）困难事项解决。 下午 14:00 开始细项工作，写设计方案、写一点代码，做一些技术攻坚。 傍晚到 22:00 很可能开会（需求会、设计会），如果不开会就需要写一些设计文档。 另外一周有两个晚上在出差路上。 这还不算有些团队其他突发的小型项目需求过来。为了追求更多价值输出地方，我来者不拒。
+这样算来，每周真正能自由支配时间只有 4-6 小时，这么一点时间刚好够做下工作日志整理，谈不上去学习新知识。 每天最适合学习的时间可能是在出差高铁路和日常打车时坐在后座。
+个人 OKR 则是惨不忍睹，Q4 整个季度累的没有翻开 OKR 帐簿。 回过头来看，Q4 有些量化的产出完全靠日常习惯养成大类目。 最佳 OKR 贡献者居然是 RescueTime 效率大于 80 和工作日工作在案时间 8h 这两条。
+我的 2019 是累的，由内而外。工作、家庭压力扑面而来，而立之年感受到生命的脆弱，以及个体在大组织的身不由己。 彻头彻尾感受到自己的渺小和普通。 王国维说人生有三种境界，我倒是听过人生三种落空：「对父母的期望落空」、「对自己的期望落空」和 「对子女的期望落空」。落空让我重新思考自己定位，欲望和所得是否匹配。
 量化 OKR 照例回顾 OKR，四个季度的 OKR 完成度分别是：
-13.06% 13.98% 11.21% 7.85% 今年开局的两个 Q 的 OKR 完成度还不错，第三个季度则是由于家中有变，一下子打破了平衡。...</p>
-  </div>
-  <footer class="entry-footer"><span title='2020-03-29 23:48:00 +0800 CST'>2020-03-29</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 再见 2019" href="https://blog.alswl.com/2020/03/2019/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>漫谈前后端天花板
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>在阿里，我们不得不承认一个事实：前端的确有价值，但放在全局来看，前端产生的价值并非核心价值。 在阿里，虽然前端的工作已
-经不可或缺，但对大公司而言，不可或缺的岗位多了去呢，不可或缺不代表有核心价值，我就不说了。
+13.06% 13.98% 11.21% 7.85% 今年开局的两个 Q 的 OKR 完成度还不错，第三个季度则是由于家中有变，一下子打破了平衡。 第四个季度更是在照顾家中和 KPI 冲刺双重打压之下更为惨不忍睹。...</p></div><footer class=entry-footer><span title='2020-03-29 23:48:00 +0800 +0800'>2020-03-29</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 再见 2019" href=https://blog.alswl.com/2020/03/2019/></a></article><article class=post-entry><header class=entry-header><h2>漫谈前后端天花板</h2></header><div class=entry-content><p>在阿里，我们不得不承认一个事实：前端的确有价值，但放在全局来看，前端产生的价值并非核心价值。 在阿里，虽然前端的工作已 经不可或缺，但对大公司而言，不可或缺的岗位多了去呢，不可或缺不代表有核心价值，我就不说了。
 - 玉伯 2013 年 阿里前端的困局与突围
 image from Abbey Arches Architecture - Free photo on Pixabay
-和 G 总论道 前几天和某大厂前端负责人 G 聊职业生涯发展，聊着聊着就谈到了前端和后端职业天花板。
-我表达了自己观点：后端职业天花板更高，这是由职能细分决定。
-后端（服务端）概念比较宽泛，常见分类可以有应用开发工程师、中间件工程师、甚至可以包含运维、数据工程师、算法工程师。
-本文我只将后端工程师限定在应用开发工程师以及衍生的框架、库开发工程师。
-前端这边由于引入大前端概念，概念也比较广，包含：Web 前端、移动端（iOS &#43; Android 客户端）、桌面端（PC 端）。
-我们也限定在这几个方向的应用开发。
-有些同学可能不服气，现在基于 Node.js 也能写后端应用，并且已经有越来越多成熟产品。
-单页应用推动了 React / React Native / Vue 等技术发展，这类前端框架也需要基于 MVC / MVVM 设计模式管理复杂数据流。
-在端场景，Hybrid 应用愈发成熟，并且在一些特定领域比如 AI，iOS 也引入 Core ML 技术。
-这样天花板还不够高么？
-是的，尽管前端近年发展迅猛，探索出多种新技术，从更广泛端技术来看，Android / iOS 也迎来爆炸式发展，
-几乎隐隐有势头盖过后端趋势。
-随着业务复杂度提升， Web Frontend / Android / iOS 开发困难度愈发提升；随着科技普惠云计算发展，...</p>
-  </div>
-  <footer class="entry-footer"><span title='2019-07-04 19:58:28 +0800 CST'>2019-07-04</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 漫谈前后端天花板" href="https://blog.alswl.com/2019/07/frontend-backend-ceiling/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>从 2018 到 2019
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>图片摄于北京圆明园
+和 G 总论道 前几天和某大厂前端负责人 G 聊职业生涯发展，聊着聊着就谈到了前端和后端职业天花板。 我表达了自己观点：后端职业天花板更高，这是由职能细分决定。
+后端（服务端）概念比较宽泛，常见分类可以有应用开发工程师、中间件工程师、甚至可以包含运维、数据工程师、算法工程师。 本文我只将后端工程师限定在应用开发工程师以及衍生的框架、库开发工程师。 前端这边由于引入大前端概念，概念也比较广，包含：Web 前端、移动端（iOS + Android 客户端）、桌面端（PC 端）。 我们也限定在这几个方向的应用开发。
+有些同学可能不服气，现在基于 Node.js 也能写后端应用，并且已经有越来越多成熟产品。 单页应用推动了 React / React Native / Vue 等技术发展，这类前端框架也需要基于 MVC / MVVM 设计模式管理复杂数据流。 在端场景，Hybrid 应用愈发成熟，并且在一些特定领域比如 AI，iOS 也引入 Core ML 技术。 这样天花板还不够高么？
+是的，尽管前端近年发展迅猛，探索出多种新技术，从更广泛端技术来看，Android / iOS 也迎来爆炸式发展， 几乎隐隐有势头盖过后端趋势。 随着业务复杂度提升， Web Frontend / Android / iOS 开发困难度愈发提升；随着科技普惠云计算发展， 技术门槛会进一步降低，当前前端工程师会有更宽阔空间。 但是仍然认为后端是更难掌握，职业天花板更高。...</p></div><footer class=entry-footer><span title='2019-07-04 19:58:28 +0800 +0800'>2019-07-04</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 漫谈前后端天花板" href=https://blog.alswl.com/2019/07/frontend-backend-ceiling/></a></article><article class=post-entry><header class=entry-header><h2>从 2018 到 2019</h2></header><div class=entry-content><p>图片摄于北京圆明园
 怎么描述 2018？我找了三个关键词。
-2018 忙、拥抱变化、新生 我的 2018 年从北京拉开帷幕，1 月份时候团队几个小伙伴一起去给北京研发中心同学做了一次技术分享。
-TL 余老师带我们三个架构师逛了圆明园，北京小伙伴热情招待我们吃了东来顺火锅。
-在天津时候还第一次从海河冰面渡河。只是没想到，这次旅行成了我在沪江最后一次团建，
-当时我已经有一些想法离开沪江，一些问题逐步暴露出来：
-沪江工作舒适、做事情自由，但技术上缺乏量级挑战，制度上内部流程僵化，部门利益关系错综复杂。
-我深信业务、技术是互相引领促进，在这种环境下无法全力施展拳脚。
-恰好此接到蚂蚁金服 Sourcing 电话，于是开始走面试流程。事后证明，这是不靠谱沟通流程，
-无准备状态的我让一些细节问题考倒(这也让我养成了 Sourcing 候选人时候都会问一句最近有没有做过面试准备)。
-最终我还是走完了流程，以（我以为的） SRE 身份加入了蚂蚁。这里隐含一个巨大风险，
-当时我对蚂蚁金服体系不够了解，这也给之后「拥抱变化」埋下了伏笔。
-加入蚂蚁之后一个月后，第一个项目就让我大跌眼镜，我成为了一个增删改查工程师，而且是在技术债务较为严重项目上开展。
-这个项目疲惫不堪，倒不是加班加点，而是在业务进度压迫之下必须囫囵吞枣实现功能，
-不顾工程设计缺乏，框架使用方式不标准，带来大量低效劳动重复劳动。
-期望成为 SRE 做 Infrastructure 的我一下子就蒙逼了，我先压下不满和震惊，抱着学习态度先投入完成交给自己的任务。
-9 月儿子出生，我似乎做足了准备，但仍然发现准备不充分。
-怀抱红彤彤的小精灵，我该如何做好父亲一角色？
-这触发了我对家庭关系、父子关系的思考。我能给他提供什么，带来什么？我希望他成为什么样的人？
-坎贝尔的千面英雄里提到的英雄之旅给我深刻印象。
-人生历程是一个少年成为英雄的过程：懵懂、自我、挑战、出走、成长、灭龙、回归。
-期望在他英雄之旅上，我能成为他的后盾，他的炮火，也能在他疲惫时候给他温暖归处。
-陪产假很快结束，我重新回到工作中节奏仍然没有能控制起来，做了两个体量并不大的项目。
-「拥抱变化」这个词我很喜欢，这是一种 VUCA 下面抵抗不确定性生存策略。
-我不想让信任我的伙伴失望，也不愿意轻易放弃，持续想在业务场景中挖掘技术能够发挥价值。
-18 年末我抓到一个机会。尽管这个想法还不够完善，但这个机会是我能够发挥价值重大突破口。
-纵观 18 年，我职业生涯面临了巨大拐点，做了一个选择。
-这也许不是最好，但是回头看 19 年沪江经历了一场巨大人事变动，至少这不是最差。
-量化 OKR 语言力量是软弱的，我直接用量化数字来回顾 2018。
-很不幸，按照年初计划 OKR 来看，这一年我的评分特别打脸。
-原因有如下几个：
-照顾家庭，照顾夫人和照顾小孩 工作环境变化，需要额外精力投入 目标设定较高，有妄念 量化表格附在本文最后。
-完成度按照每季度如下：
-5.88% 12.02% 6.61% 2....</p>
-  </div>
-  <footer class="entry-footer"><span title='2019-04-03 00:19:24 +0800 CST'>2019-04-03</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 从 2018 到 2019" href="https://blog.alswl.com/2019/04/2018/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>DevOps 和 SRE
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。
-我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。
-现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。
-于是我给了一些见解并整理成文章以饕大众。
+2018 忙、拥抱变化、新生 我的 2018 年从北京拉开帷幕，1 月份时候团队几个小伙伴一起去给北京研发中心同学做了一次技术分享。 TL 余老师带我们三个架构师逛了圆明园，北京小伙伴热情招待我们吃了东来顺火锅。 在天津时候还第一次从海河冰面渡河。只是没想到，这次旅行成了我在沪江最后一次团建，
+当时我已经有一些想法离开沪江，一些问题逐步暴露出来： 沪江工作舒适、做事情自由，但技术上缺乏量级挑战，制度上内部流程僵化，部门利益关系错综复杂。 我深信业务、技术是互相引领促进，在这种环境下无法全力施展拳脚。
+恰好此接到蚂蚁金服 Sourcing 电话，于是开始走面试流程。事后证明，这是不靠谱沟通流程， 无准备状态的我让一些细节问题考倒(这也让我养成了 Sourcing 候选人时候都会问一句最近有没有做过面试准备)。 最终我还是走完了流程，以（我以为的） SRE 身份加入了蚂蚁。这里隐含一个巨大风险， 当时我对蚂蚁金服体系不够了解，这也给之后「拥抱变化」埋下了伏笔。
+加入蚂蚁之后一个月后，第一个项目就让我大跌眼镜，我成为了一个增删改查工程师，而且是在技术债务较为严重项目上开展。 这个项目疲惫不堪，倒不是加班加点，而是在业务进度压迫之下必须囫囵吞枣实现功能， 不顾工程设计缺乏，框架使用方式不标准，带来大量低效劳动重复劳动。 期望成为 SRE 做 Infrastructure 的我一下子就蒙逼了，我先压下不满和震惊，抱着学习态度先投入完成交给自己的任务。
+9 月儿子出生，我似乎做足了准备，但仍然发现准备不充分。 怀抱红彤彤的小精灵，我该如何做好父亲一角色？ 这触发了我对家庭关系、父子关系的思考。我能给他提供什么，带来什么？我希望他成为什么样的人？ 坎贝尔的千面英雄里提到的英雄之旅给我深刻印象。 人生历程是一个少年成为英雄的过程：懵懂、自我、挑战、出走、成长、灭龙、回归。 期望在他英雄之旅上，我能成为他的后盾，他的炮火，也能在他疲惫时候给他温暖归处。
+陪产假很快结束，我重新回到工作中节奏仍然没有能控制起来，做了两个体量并不大的项目。 「拥抱变化」这个词我很喜欢，这是一种 VUCA 下面抵抗不确定性生存策略。 我不想让信任我的伙伴失望，也不愿意轻易放弃，持续想在业务场景中挖掘技术能够发挥价值。 18 年末我抓到一个机会。尽管这个想法还不够完善，但这个机会是我能够发挥价值重大突破口。
+纵观 18 年，我职业生涯面临了巨大拐点，做了一个选择。 这也许不是最好，但是回头看 19 年沪江经历了一场巨大人事变动，至少这不是最差。
+量化 OKR 语言力量是软弱的，我直接用量化数字来回顾 2018。 很不幸，按照年初计划 OKR 来看，这一年我的评分特别打脸。 原因有如下几个：
+照顾家庭，照顾夫人和照顾小孩 工作环境变化，需要额外精力投入 目标设定较高，有妄念 量化表格附在本文最后。 完成度按照每季度如下：
+5.88% 12.02% 6.61% 2....</p></div><footer class=entry-footer><span title='2019-04-03 00:19:24 +0800 +0800'>2019-04-03</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 从 2018 到 2019" href=https://blog.alswl.com/2019/04/2018/></a></article><article class=post-entry><header class=entry-header><h2>DevOps 和 SRE</h2></header><div class=entry-content><p>最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。 我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。 现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。 于是我给了一些见解并整理成文章以饕大众。
 最常见的误区：
 DevOps 新概念，好高级哦 SRE 是高级版 DevOps 运维可以轻松转身 DevOps 工程师 让我一一给你讲解吧。
 image via YouTube
-DevOps 和 SRE 定义 DevOps 是字面上 Dev 开发 / Ops 运维两者组合，
-严格意义上 DevOps 如下（via DevOps - Wikipedia）：
-DevOps（Development 和 Operations 的组合词）是一种重视“软件开发人员（Dev）
-”和“IT 运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。
-SRE 全称是 Site Reliability Engineering，最早是由 Google 提出，并且在其工程实践中发扬光大。
-他们还出了一本同名书籍「Site Reliability Engineering」，
-让这个理念在互联网工程师圈子里广泛传播。
+DevOps 和 SRE 定义 DevOps 是字面上 Dev 开发 / Ops 运维两者组合， 严格意义上 DevOps 如下（via DevOps - Wikipedia）：
+DevOps（Development 和 Operations 的组合词）是一种重视“软件开发人员（Dev） ”和“IT 运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。
+SRE 全称是 Site Reliability Engineering，最早是由 Google 提出，并且在其工程实践中发扬光大。 他们还出了一本同名书籍「Site Reliability Engineering」， 让这个理念在互联网工程师圈子里广泛传播。
 Google 对 SRE 解释是（via Site Reliability Engineering - Wikipedia）：
-Site reliability engineering (SRE) is a discipline that incorporates aspects of...</p>
-  </div>
-  <footer class="entry-footer"><span title='2018-09-09 23:21:40 +0800 CST'>2018-09-09</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to DevOps 和 SRE" href="https://blog.alswl.com/2018/09/devops-and-sre/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>破解三才五格姓名测试
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>image from Wikipedia 八卦
-随着孩子预产期临近，我还有一个重要的任务没有完成：给孩子起一个名字。
-这本来是个随性的任务，但是由于上一辈笃信某个算命先生的姓名测试算法，让这个任务难度倍增。
-我根据一些古文取了不少名字，但是最后都败在姓名测试上面：得分不高。得分不高老一辈就要有说辞，
-我自己就是一个活生生案例，曾用名得分不高，中考被逼换了名字，改头换面重新做人。
-我根据韵律取的名字几乎都败在算分数上面，我得琢磨一下其中奥秘，提高取名效率，避免再出现差错。
-不少网站都提供姓名测试算命，我且先看看上面的得分，研究一下规律：
-姓名测试,姓名打评分,姓名算命,姓名分析,在线三才五格五行吉凶剖象 姓名测试打分，根据周易三才五格取名法为您评测姓名-中华起名网 【姓名测试】姓名测试打分算命_姓名打分_姓名测试打分生辰八字 - 美国神婆星座网 每家网站都写得天花乱坠：易经、五格剖象法、五行起名、五格起名、三格数理。
-这些都不用 Care，因为它们都是来自同一个算法：「三才五格」。
+Site reliability engineering (SRE) is a discipline that incorporates aspects of software engineering and applies that to operations whose goals are to create ultra-scalable and highly reliable software systems....</p></div><footer class=entry-footer><span title='2018-09-09 23:21:40 +0800 +0800'>2018-09-09</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to DevOps 和 SRE" href=https://blog.alswl.com/2018/09/devops-and-sre/></a></article><article class=post-entry><header class=entry-header><h2>破解三才五格姓名测试</h2></header><div class=entry-content><p>image from Wikipedia 八卦
+随着孩子预产期临近，我还有一个重要的任务没有完成：给孩子起一个名字。 这本来是个随性的任务，但是由于上一辈笃信某个算命先生的姓名测试算法，让这个任务难度倍增。 我根据一些古文取了不少名字，但是最后都败在姓名测试上面：得分不高。得分不高老一辈就要有说辞， 我自己就是一个活生生案例，曾用名得分不高，中考被逼换了名字，改头换面重新做人。
+我根据韵律取的名字几乎都败在算分数上面，我得琢磨一下其中奥秘，提高取名效率，避免再出现差错。 不少网站都提供姓名测试算命，我且先看看上面的得分，研究一下规律：
+姓名测试,姓名打评分,姓名算命,姓名分析,在线三才五格五行吉凶剖象 姓名测试打分，根据周易三才五格取名法为您评测姓名-中华起名网 【姓名测试】姓名测试打分算命_姓名打分_姓名测试打分生辰八字 - 美国神婆星座网 每家网站都写得天花乱坠：易经、五格剖象法、五行起名、五格起名、三格数理。 这些都不用 Care，因为它们都是来自同一个算法：「三才五格」。
 熊崎健翁的三才五格 我回想先生使用的算命方法，有这么几个特点：
-跟我强调使用了「康熙字典」进行计算 给了我一个网址是 .jp 结尾，我当年上网计算之后，的确得到的数字和先生算计的一样，惊为天人 根据这两个线索，我很快挖掘到了
-姓名学 - 维基百科，自由的百科全书
-。这里面就着重解释了日本人熊崎健翁的「三才五格」算法，
-五格分别是天格、人格、地格、外格、总格，三才是天格、人格、地格的总称。
-虽然三才五格看着挺像中国易经的概念，但其实是出口转内销的舶来品。
-五格的具体解释如下：
-天格：是先祖留传下来的，其数理对人影响不大。 地格：又称前运，影响人中年以前的活动力。 人格：又称主运，是整个姓名的中心点，影响人的一生命运。 总格：又称后运，影响人中年以后的命运。 外格：又称变格，影响人的社交能力、智慧等，其数理不用重点去看。 另外熊崎健翁还创造性的将五行引入，把这个模型做的更复杂。
-不过评分的影响因子还是只有五格，单个字的五行并没有发挥直接的作用。
-也有一些算命先生会刻意将单字的五行做成相生相克连贯起来，这样显得更有学问。
+跟我强调使用了「康熙字典」进行计算 给了我一个网址是 .jp 结尾，我当年上网计算之后，的确得到的数字和先生算计的一样，惊为天人 根据这两个线索，我很快挖掘到了 姓名学 - 维基百科，自由的百科全书 。这里面就着重解释了日本人熊崎健翁的「三才五格」算法，
+五格分别是天格、人格、地格、外格、总格，三才是天格、人格、地格的总称。 虽然三才五格看着挺像中国易经的概念，但其实是出口转内销的舶来品。 五格的具体解释如下：
+天格：是先祖留传下来的，其数理对人影响不大。 地格：又称前运，影响人中年以前的活动力。 人格：又称主运，是整个姓名的中心点，影响人的一生命运。 总格：又称后运，影响人中年以后的命运。 外格：又称变格，影响人的社交能力、智慧等，其数理不用重点去看。 另外熊崎健翁还创造性的将五行引入，把这个模型做的更复杂。 不过评分的影响因子还是只有五格，单个字的五行并没有发挥直接的作用。 也有一些算命先生会刻意将单字的五行做成相生相克连贯起来，这样显得更有学问。
 三才五格计算算法 这个算法的流程是这样：
-计算每个汉字的笔画数 姓名拆分为姓和名，尤其要注意单姓和复姓 将简体姓和名转换为繁体姓和名 将繁体姓和名映射为康熙字典中的姓和名 将康熙字典中的姓和名的笔画数检出 根据笔画数计算五格（数字） 天格：姓氏笔划再加一数即是天格数（若是复姓，将姓之笔划合计） 人格：将姓氏与第一个名字相加即是人格数（若复姓双名，则姓氏的第二个字笔画加名的第一个字的笔画；
-复姓单名则姓氏的第二个字加名的笔画） 地格：将第一个名字与第二个名字相加即是地格数（若是单名，将名字再加一数） 外格：将名字最后一字加一数即是外格数 总格：将姓与名相加即是总格数 （可选）根据五格计算五行（这个五行对计算结果没有影响） 尾数 1、2 于五行属木 尾数 3、4 于五行属火 尾数 5、6 于五行属土 尾数 7、8 于五行属金 尾数 9、10 于五行属水 根据笔画数得到解释 计算规则见 总格_百度百科，...</p>
-  </div>
-  <footer class="entry-footer"><span title='2018-07-29 19:19:36 +0800 CST'>2018-07-29</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 破解三才五格姓名测试" href="https://blog.alswl.com/2018/07/naming-algorithem/"></a>
-</article>
-<footer class="page-footer">
-  <nav class="pagination">
-    <a class="next" href="https://blog.alswl.com/page/2/">Next&nbsp;&nbsp;»
-    </a>
-  </nav>
-</footer>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
-</html>
+计算每个汉字的笔画数 姓名拆分为姓和名，尤其要注意单姓和复姓 将简体姓和名转换为繁体姓和名 将繁体姓和名映射为康熙字典中的姓和名 将康熙字典中的姓和名的笔画数检出 根据笔画数计算五格（数字） 天格：姓氏笔划再加一数即是天格数（若是复姓，将姓之笔划合计） 人格：将姓氏与第一个名字相加即是人格数（若复姓双名，则姓氏的第二个字笔画加名的第一个字的笔画； 复姓单名则姓氏的第二个字加名的笔画） 地格：将第一个名字与第二个名字相加即是地格数（若是单名，将名字再加一数） 外格：将名字最后一字加一数即是外格数 总格：将姓与名相加即是总格数 （可选）根据五格计算五行（这个五行对计算结果没有影响） 尾数 1、2 于五行属木 尾数 3、4 于五行属火 尾数 5、6 于五行属土 尾数 7、8 于五行属金 尾数 9、10 于五行属水 根据笔画数得到解释 计算规则见 总格_百度百科， 其内容是列出 1-81 数字对应的情况，这个规则没有给出具体吉凶 根据解释得到吉凶等级 123cha / 中华起名网 / 美国神婆都是根据这个解释给出一个大概吉凶，他们给吉凶有一些小差异 根据吉凶等级计算总分 每家网站的算法有些差异，我估计算命先生的公式也应该有一些差异 我自己根据对五格的解释，给出一个加权公式，跟几家算命网站进行了加权因子拟合 上述流程中，有两个给算命先生留出的调整空间：...</p></div><footer class=entry-footer><span title='2018-07-29 19:19:36 +0800 +0800'>2018-07-29</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 破解三才五格姓名测试" href=https://blog.alswl.com/2018/07/naming-algorithem/></a></article><footer class=page-footer><nav class=pagination><a class=next href=https://blog.alswl.com/page/2/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>

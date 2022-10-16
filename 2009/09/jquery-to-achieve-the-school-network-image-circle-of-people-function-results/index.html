@@ -1,262 +1,13 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>jQuery图片圈人功能在ASP.NET下的改进 | Log4D</title>
-<meta name="keywords" content="dotnet, javascript, jquery, 人人">
-<meta name="description" content="项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网&quot;图片圈人 &ldquo;功能效果》（强烈推荐这篇
-文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。
-原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》
-）
-样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer.">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="jQuery图片圈人功能在ASP.NET下的改进" />
-<meta property="og:description" content="项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网&quot;图片圈人 &ldquo;功能效果》（强烈推荐这篇
-文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。
-原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》
-）
-样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2009-09-02T00:00:00+08:00" />
-<meta property="article:modified_time" content="2009-09-02T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="jQuery图片圈人功能在ASP.NET下的改进"/>
-<meta name="twitter:description" content="项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网&quot;图片圈人 &ldquo;功能效果》（强烈推荐这篇
-文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。
-原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》
-）
-样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "jQuery图片圈人功能在ASP.NET下的改进",
-      "item": "https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "jQuery图片圈人功能在ASP.NET下的改进",
-  "name": "jQuery图片圈人功能在ASP.NET下的改进",
-  "description": "项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网\u0026quot;图片圈人 \u0026ldquo;功能效果》（强烈推荐这篇\n文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。\n原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》\n）\n样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer.",
-  "keywords": [
-    "dotnet", "javascript", "jquery", "人人"
-  ],
-  "articleBody": "项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网\"图片圈人 “功能效果》（强烈推荐这篇\n文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。\n原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》\n）\n样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer.gif) no-repeat -1px -1px; } #select-area-box span { position: absolute; border: 1px solid #005EAC; width: 8px; height: 8px; background-color: #FFF; font-size: 0; z-index: 18; } #select-area-box span.north-west-resize { cursor: nw-resize; left: 0; top: 0; margin-left: -1px; margin-top: -1px; } #select-area-box span.north-east-resize { cursor: ne-resize; right: 0; top: 0; margin-right: -1px; margin-top: -1px; } #select-area-box span.south-west-resize { cursor: sw-resize; left: 0; bottom: 0; margin-left: -1px; margin-bottom: -1px; } #select-area-box span.south-east-resize { cursor: se-resize; right: 0; bottom: 0; margin-right: -1px; margin-bottom: -1px; } #enclose-wrapper ul#tag-list { list-style: none; margin: 0; padding: 0; font-size: 13px; float: left; } #enclose-wrapper ul#tag-list li { list-style: none; float: left; } #enclose-wrapper ul#tag-list li a { color: #F60; } js实现代码： var photoTag = { show: function(left, top, width, height, show_resize_square) { $('#select-area-box').css({ 'left': left - 7, 'top': top - 7 }) $('#select-area-box').width(width + 4).height(height + 4).show(); $('#select-area').width(width).height(height); if (show_resize_square) $('#select-area-box span').show(); else $('#select-area-box span').hide(); }, hide: function() { $('#select-area-box').hide(); }, add: function(tag_name, tag_value, left, top, width, height) { var json = { id: Math.floor(Math.random() * 10000) }; var args = left + ',' + top + ',' + width + ',' + height; var li = ' * '; li += ''; li += '([删除](javascript:;))'; li += ''; li += ' '; $('#tag-list').append(li); }, remove: function(id, li) { li.parentNode.removeChild(li); } }; $(function() { var is_started = false; // 选区左上角,和高宽 var info = { 'left': 0, 'top': 0, 'width': 0, 'height': 0 }; var origin = { x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0), y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0) }; var dnr = new DragResize($('#select-area-box')[0], { minWidth: 20, minHeight: 20, bound: { left: 0, top: 0, right: 9999, bottom: 9999 }, callback: function(i) { // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和 info = { 'left': i.left + 7, 'top': i.top + 7, 'width': i.width - 4, 'height': i.height - 4 }; $('#select-area').width(info.width).height(info.height); // 将添加标签的表单定位在选区的右边 $('#form-add-tag').css({ 'left': i.left + i.width + 10, 'top': i.top }); } }); // 拖动选区 $('#select-area').mousedown(function(e) { dnr.drag(e); }); // 调整选区大小 $('#select-area-box span').mousedown(function(e) { dnr.resize(e, this.className.replace('-resize', '')); }); // 在图片上点击一下,开始获取选区 $('#photo-wrapper img').mousedown(function(e) { if (is_started) return; is_started = true; var left = e.pageX - origin.x - 50 - 7; var top = e.pageY - origin.y - 50 - 7; info = { 'left': left + 7, 'top': top + 7, 'width': 100, 'height': 100 }; photoTag.show(info.left, info.top, info.width, info.height, true); $('#form-add-tag').show().css({ 'left': left + 100 + 4 + 10, 'top': top }); }); // 鼠标进入图片内时,显示选区 $('#photo-wrapper img').bind('mouseenter', function(e) { if (!is_started) return; photoTag.show(info.left, info.top, info.width, info.height, true); }); // 确定添加一个标签,或取消 $('#btn-add-tag, #btn-cancel').click(function(e) { if (this.id == 'btn-cancel') { $('#form-add-tag, #select-area-box').hide(); is_started = false; return false; } if (!$('#tag-name').val()) { alert('标签名不能为空！'); return false; } // 添加标签 photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height); // 隐藏选区和表单 $('#form-add-tag, #select-area-box').hide(); is_started = false; }); photoTag.hide(); }); Html代码 相片中： aaa (删除) 输入标签： 确认\n取消\n改进 在Asp.NET下这段代码存在几个问题（毕竟这段代码应该只能算是Demo）：1.无法和服务器进行数据交互。2.无法在ASP.NET环境下获取相关id。3.只\n能提交到服务器一个\"标签”，不足以完成需求。\n修改后js: var photoTag = { show: function(left, top, width, height, show_resize_square) { $('#select-area-box').css({ 'left': left - 7, 'top': top - 7 }) $('#select-area-box').width(width + 4).height(height + 4).show(); $('#select-area').width(width).height(height); if (show_resize_square) $('#select-area-box span').show(); else $('#select-area-box span').hide(); }, hide: function() { $('#select-area-box').hide(); }, add: function(tag_name, tag_value, left, top, width, height) { var json = { id: Math.floor(Math.random() * 10000) }; //$.getJSON('add_tag.php', {'name':tag_name,'left':left,'top':top,'width':width,'height':height}, function(json) { //reflesh tag list // if(json.message) alert(json.message); // if(json.error == 0) { var args = left + ',' + top + ',' + width + ',' + height; var li = ' * '; li += ''; li += '([删除](javascript:;))'; li += ''; li += ' '; $('#tag-list').append(li); // } //}); }, remove: function(id, li) { //$.getJSON('remove_tag.php', {'tag_id':id}, function(json) { //reflesh tag list // if(json.message) alert(json.message); // if(json.error == 0) li.parentNode.removeChild(li); //}); } }; $(function() { var is_started = false; // 选区左上角,和高宽 var info = { 'left': 0, 'top': 0, 'width': 0, 'height': 0 }; var origin = { x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0), y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0) }; var dnr = new DragResize($('#select-area-box')[0], { minWidth: 20, minHeight: 20, bound: { left: 0, top: 0, right: 9999, bottom: 9999 }, callback: function(i) { // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和 info = { 'left': i.left + 7, 'top': i.top + 7, 'width': i.width - 4, 'height': i.height - 4 }; $('#select-area').width(info.width).height(info.height); // 将添加标签的表单定位在选区的右边 $('#form-add-tag').css({ 'left': i.left + i.width + 10, 'top': i.top }); } }); // 拖动选区 $('#select-area').mousedown(function(e) { dnr.drag(e); }); // 调整选区大小 $('#select-area-box span').mousedown(function(e) { dnr.resize(e, this.className.replace('-resize', '')); }); // 在图片上点击一下,开始获取选区 $('#photo-wrapper img').mousedown(function(e) { if (is_started) return; is_started = true; var left = e.pageX - origin.x - 50 - 7; var top = e.pageY - origin.y - 50 - 7; info = { 'left': left + 7, 'top': top + 7, 'width': 100, 'height': 100 }; photoTag.show(info.left, info.top, info.width, info.height, true); $('#form-add-tag').show().css({ 'left': left + 100 + 4 + 10, 'top': top }); }); // 鼠标进入图片内时,显示选区 $('#photo-wrapper img').bind('mouseenter', function(e) { if (!is_started) return; photoTag.show(info.left, info.top, info.width, info.height, true); }); // 确定添加一个标签,或取消 $('#btn-add-tag, #btn-cancel').click(function(e) { if (this.id == 'btn-cancel') { $('#form-add-tag, #select-area-box').hide(); is_started = false; return false; } if (!$('#tag-name').val()) { alert('标签名不能为空！'); return false; } // 添加标签 photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height); // 隐藏选区和表单 $('#form-add-tag, #select-area-box').hide(); is_started = false; }); photoTag.hide(); }); Html代码： 名称： 数值：\n确认\n取消\n这边的主要修改在于把框子的右边的内容增加为名称和数值，方便数据的识别。\n后台ASP.NET文件读取 string[] fields = Request.Params.GetValues(\"photoField\"); 这里呢，由于上传的元素name相同，都是photoField，所以通过Params.GetValues()就可以取出string数组，这样就\n能获取所有数据了。数据格式是\"ddl:小楠,x:98.88333129882812,y:146,width:100,height:100“这种形式，依靠\n“,“分割。\n相关下载 DragResize.js\ntemplate.js\ncss.css\n",
-  "wordCount" : "989",
-  "inLanguage": "en",
-  "datePublished": "2009-09-02T00:00:00+08:00",
-  "dateModified": "2009-09-02T00:00:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      jQuery图片圈人功能在ASP.NET下的改进
-    </h1>
-    <div class="post-meta"><span title='2009-09-02 00:00:00 +0800 CST'>2009-09-02</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#原始code">原始Code:</a>
-      <ul>
-        <li><a href="#样式">样式：</a></li>
-        <li><a href="#js实现代码">js实现代码：</a></li>
-        <li><a href="#html代码">Html代码</a></li>
-      </ul>
-    </li>
-    <li><a href="#改进">改进</a>
-      <ul>
-        <li><a href="#修改后js">修改后js:</a></li>
-        <li><a href="#html代码-1">Html代码：</a></li>
-        <li><a href="#后台aspnet文件读取">后台ASP.NET文件读取</a></li>
-        <li><a href="#相关下载">相关下载</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-        </div>
-    </details>
-</div>
-
-  <div class="post-content"><p>项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《<a href="http://www.cnblogs.com/czy1121/archive/2009/03/03/1402105.html">JS实现校内网&quot;图片圈人 &ldquo;功能效果</a>》（强烈推荐这篇<br />
-文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。</p>
-<h2 id="原始code">原始Code:<a hidden class="anchor" aria-hidden="true" href="#原始code">#</a></h2>
-<p>运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《<a href="http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.html">Javascript Resize和Drag类,基于jQuery</a>》<br />
-）</p>
-<h3 id="样式">样式：<a hidden class="anchor" aria-hidden="true" href="#样式">#</a></h3>
-<pre><code>#enclose-wrapper {
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>jQuery图片圈人功能在ASP.NET下的改进 | Log4D</title><meta name=keywords content="dotnet,javascript,jquery,人人"><meta name=description content="项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网&#34;图片圈人 &ldquo;功能效果》（强烈推荐这篇 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。
+原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》 ）
+样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer."><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="jQuery图片圈人功能在ASP.NET下的改进"><meta property="og:description" content="项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网&#34;图片圈人 &ldquo;功能效果》（强烈推荐这篇 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。
+原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》 ）
+样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2009-09-02T00:00:00+08:00"><meta property="article:modified_time" content="2009-09-02T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="jQuery图片圈人功能在ASP.NET下的改进"><meta name=twitter:description content="项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网&#34;图片圈人 &ldquo;功能效果》（强烈推荐这篇 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。
+原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》 ）
+样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"jQuery图片圈人功能在ASP.NET下的改进","item":"https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"jQuery图片圈人功能在ASP.NET下的改进","name":"jQuery图片圈人功能在ASP.NET下的改进","description":"项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网\u0026quot;图片圈人 \u0026ldquo;功能效果》（强烈推荐这篇 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。\n原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》 ）\n样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer.","keywords":["dotnet","javascript","jquery","人人"],"articleBody":"项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网\"图片圈人 “功能效果》（强烈推荐这篇 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。\n原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》 ）\n样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer.gif) no-repeat -1px -1px; } #select-area-box span { position: absolute; border: 1px solid #005EAC; width: 8px; height: 8px; background-color: #FFF; font-size: 0; z-index: 18; } #select-area-box span.north-west-resize { cursor: nw-resize; left: 0; top: 0; margin-left: -1px; margin-top: -1px; } #select-area-box span.north-east-resize { cursor: ne-resize; right: 0; top: 0; margin-right: -1px; margin-top: -1px; } #select-area-box span.south-west-resize { cursor: sw-resize; left: 0; bottom: 0; margin-left: -1px; margin-bottom: -1px; } #select-area-box span.south-east-resize { cursor: se-resize; right: 0; bottom: 0; margin-right: -1px; margin-bottom: -1px; } #enclose-wrapper ul#tag-list { list-style: none; margin: 0; padding: 0; font-size: 13px; float: left; } #enclose-wrapper ul#tag-list li { list-style: none; float: left; } #enclose-wrapper ul#tag-list li a { color: #F60; } js实现代码： var photoTag = { show: function(left, top, width, height, show_resize_square) { $('#select-area-box').css({ 'left': left - 7, 'top': top - 7 }) $('#select-area-box').width(width + 4).height(height + 4).show(); $('#select-area').width(width).height(height); if (show_resize_square) $('#select-area-box span').show(); else $('#select-area-box span').hide(); }, hide: function() { $('#select-area-box').hide(); }, add: function(tag_name, tag_value, left, top, width, height) { var json = { id: Math.floor(Math.random() * 10000) }; var args = left + ',' + top + ',' + width + ',' + height; var li = ' * '; li += ''; li += '([删除](javascript:;))'; li += ''; li += ' '; $('#tag-list').append(li); }, remove: function(id, li) { li.parentNode.removeChild(li); } }; $(function() { var is_started = false; // 选区左上角,和高宽 var info = { 'left': 0, 'top': 0, 'width': 0, 'height': 0 }; var origin = { x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0), y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0) }; var dnr = new DragResize($('#select-area-box')[0], { minWidth: 20, minHeight: 20, bound: { left: 0, top: 0, right: 9999, bottom: 9999 }, callback: function(i) { // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和 info = { 'left': i.left + 7, 'top': i.top + 7, 'width': i.width - 4, 'height': i.height - 4 }; $('#select-area').width(info.width).height(info.height); // 将添加标签的表单定位在选区的右边 $('#form-add-tag').css({ 'left': i.left + i.width + 10, 'top': i.top }); } }); // 拖动选区 $('#select-area').mousedown(function(e) { dnr.drag(e); }); // 调整选区大小 $('#select-area-box span').mousedown(function(e) { dnr.resize(e, this.className.replace('-resize', '')); }); // 在图片上点击一下,开始获取选区 $('#photo-wrapper img').mousedown(function(e) { if (is_started) return; is_started = true; var left = e.pageX - origin.x - 50 - 7; var top = e.pageY - origin.y - 50 - 7; info = { 'left': left + 7, 'top': top + 7, 'width': 100, 'height': 100 }; photoTag.show(info.left, info.top, info.width, info.height, true); $('#form-add-tag').show().css({ 'left': left + 100 + 4 + 10, 'top': top }); }); // 鼠标进入图片内时,显示选区 $('#photo-wrapper img').bind('mouseenter', function(e) { if (!is_started) return; photoTag.show(info.left, info.top, info.width, info.height, true); }); // 确定添加一个标签,或取消 $('#btn-add-tag, #btn-cancel').click(function(e) { if (this.id == 'btn-cancel') { $('#form-add-tag, #select-area-box').hide(); is_started = false; return false; } if (!$('#tag-name').val()) { alert('标签名不能为空！'); return false; } // 添加标签 photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height); // 隐藏选区和表单 $('#form-add-tag, #select-area-box').hide(); is_started = false; }); photoTag.hide(); }); Html代码 相片中： aaa (删除) 输入标签： 确认\n取消\n改进 在Asp.NET下这段代码存在几个问题（毕竟这段代码应该只能算是Demo）：1.无法和服务器进行数据交互。2.无法在ASP.NET环境下获取相关id。3.只 能提交到服务器一个\"标签”，不足以完成需求。\n修改后js: var photoTag = { show: function(left, top, width, height, show_resize_square) { $('#select-area-box').css({ 'left': left - 7, 'top': top - 7 }) $('#select-area-box').width(width + 4).height(height + 4).show(); $('#select-area').width(width).height(height); if (show_resize_square) $('#select-area-box span').show(); else $('#select-area-box span').hide(); }, hide: function() { $('#select-area-box').hide(); }, add: function(tag_name, tag_value, left, top, width, height) { var json = { id: Math.floor(Math.random() * 10000) }; //$.getJSON('add_tag.php', {'name':tag_name,'left':left,'top':top,'width':width,'height':height}, function(json) { //reflesh tag list // if(json.message) alert(json.message); // if(json.error == 0) { var args = left + ',' + top + ',' + width + ',' + height; var li = ' * '; li += ''; li += '([删除](javascript:;))'; li += ''; li += ' '; $('#tag-list').append(li); // } //}); }, remove: function(id, li) { //$.getJSON('remove_tag.php', {'tag_id':id}, function(json) { //reflesh tag list // if(json.message) alert(json.message); // if(json.error == 0) li.parentNode.removeChild(li); //}); } }; $(function() { var is_started = false; // 选区左上角,和高宽 var info = { 'left': 0, 'top': 0, 'width': 0, 'height': 0 }; var origin = { x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0), y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0) }; var dnr = new DragResize($('#select-area-box')[0], { minWidth: 20, minHeight: 20, bound: { left: 0, top: 0, right: 9999, bottom: 9999 }, callback: function(i) { // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和 info = { 'left': i.left + 7, 'top': i.top + 7, 'width': i.width - 4, 'height': i.height - 4 }; $('#select-area').width(info.width).height(info.height); // 将添加标签的表单定位在选区的右边 $('#form-add-tag').css({ 'left': i.left + i.width + 10, 'top': i.top }); } }); // 拖动选区 $('#select-area').mousedown(function(e) { dnr.drag(e); }); // 调整选区大小 $('#select-area-box span').mousedown(function(e) { dnr.resize(e, this.className.replace('-resize', '')); }); // 在图片上点击一下,开始获取选区 $('#photo-wrapper img').mousedown(function(e) { if (is_started) return; is_started = true; var left = e.pageX - origin.x - 50 - 7; var top = e.pageY - origin.y - 50 - 7; info = { 'left': left + 7, 'top': top + 7, 'width': 100, 'height': 100 }; photoTag.show(info.left, info.top, info.width, info.height, true); $('#form-add-tag').show().css({ 'left': left + 100 + 4 + 10, 'top': top }); }); // 鼠标进入图片内时,显示选区 $('#photo-wrapper img').bind('mouseenter', function(e) { if (!is_started) return; photoTag.show(info.left, info.top, info.width, info.height, true); }); // 确定添加一个标签,或取消 $('#btn-add-tag, #btn-cancel').click(function(e) { if (this.id == 'btn-cancel') { $('#form-add-tag, #select-area-box').hide(); is_started = false; return false; } if (!$('#tag-name').val()) { alert('标签名不能为空！'); return false; } // 添加标签 photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height); // 隐藏选区和表单 $('#form-add-tag, #select-area-box').hide(); is_started = false; }); photoTag.hide(); }); Html代码： 名称： 数值：\n确认\n取消\n这边的主要修改在于把框子的右边的内容增加为名称和数值，方便数据的识别。\n后台ASP.NET文件读取 string[] fields = Request.Params.GetValues(\"photoField\"); 这里呢，由于上传的元素name相同，都是photoField，所以通过Params.GetValues()就可以取出string数组，这样就 能获取所有数据了。数据格式是\"ddl:小楠,x:98.88333129882812,y:146,width:100,height:100“这种形式，依靠 “,“分割。\n相关下载 DragResize.js template.js css.css\n","wordCount":"989","inLanguage":"en","datePublished":"2009-09-02T00:00:00+08:00","dateModified":"2009-09-02T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>jQuery图片圈人功能在ASP.NET下的改进</h1><div class=post-meta><span title='2009-09-02 00:00:00 +0800 +0800'>2009-09-02</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#原始code>原始Code:</a><ul><li><a href=#样式>样式：</a></li><li><a href=#js实现代码>js实现代码：</a></li><li><a href=#html代码>Html代码</a></li></ul></li><li><a href=#改进>改进</a><ul><li><a href=#修改后js>修改后js:</a></li><li><a href=#html代码-1>Html代码：</a></li><li><a href=#后台aspnet文件读取>后台ASP.NET文件读取</a></li><li><a href=#相关下载>相关下载</a></li></ul></li></ul></nav></div></details></div><div class=post-content><p>项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《<a href=http://www.cnblogs.com/czy1121/archive/2009/03/03/1402105.html>JS实现校内网"图片圈人 &ldquo;功能效果</a>》（强烈推荐这篇
+文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。</p><h2 id=原始code>原始Code:<a hidden class=anchor aria-hidden=true href=#原始code>#</a></h2><p>运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《<a href=http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.html>Javascript Resize和Drag类,基于jQuery</a>》
+）</p><h3 id=样式>样式：<a hidden class=anchor aria-hidden=true href=#样式>#</a></h3><pre><code>#enclose-wrapper {
 	position: relative;
 	z-index: 0;
 	border: 4px solid #DDD;
@@ -335,9 +86,7 @@ if (!doNotTrack) {
 #enclose-wrapper ul#tag-list li a {
 	color: #F60;
 }
-</code></pre>
-<h3 id="js实现代码">js实现代码：<a hidden class="anchor" aria-hidden="true" href="#js实现代码">#</a></h3>
-<pre><code>var photoTag = {
+</code></pre><h3 id=js实现代码>js实现代码：<a hidden class=anchor aria-hidden=true href=#js实现代码>#</a></h3><pre><code>var photoTag = {
     show: function(left, top, width, height, show_resize_square) {
         $('#select-area-box').css({
             'left': left - 7,
@@ -455,9 +204,7 @@ $(function() {
     });
     photoTag.hide();
 });
-</code></pre>
-<h3 id="html代码">Html代码<a hidden class="anchor" aria-hidden="true" href="#html代码">#</a></h3>
-<pre><code>&lt;div id=&quot;enclose-wrapper&quot;&gt;
+</code></pre><h3 id=html代码>Html代码<a hidden class=anchor aria-hidden=true href=#html代码>#</a></h3><pre><code>&lt;div id=&quot;enclose-wrapper&quot;&gt;
   &lt;div id=&quot;photo-wrapper&quot; style=&quot;margin:15px auto;text-align:center;&quot;&gt; &lt;img id=&quot;photo&quot; src=&quot;heroes_s3_peter.jpg&quot; /&gt; &lt;/div&gt;
   &lt;div&gt;
     &lt;ul id=&quot;tag-list&quot;&gt;
@@ -469,17 +216,8 @@ $(function() {
     &lt;div id=&quot;select-area&quot;&gt;&lt;/div&gt;
     &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;/div&gt;
   &lt;div id=&quot;form-add-tag&quot; style=&quot;display:none;&quot;&gt; 输入标签：
-</code></pre>
-<input id="tag-name" name="tag-name" type="text" />
-<p><button id="btn-add-tag" type="button">确认</button></p>
-<p><button id="btn-cancel" type="button">取消</button></p>
-</div>
-</div>
-<h2 id="改进">改进<a hidden class="anchor" aria-hidden="true" href="#改进">#</a></h2>
-<p>在Asp.NET下这段代码存在几个问题（毕竟这段代码应该只能算是Demo）：1.无法和服务器进行数据交互。2.无法在ASP.NET环境下获取相关id。3.只<br />
-能提交到服务器一个&quot;标签&rdquo;，不足以完成需求。</p>
-<h3 id="修改后js">修改后js:<a hidden class="anchor" aria-hidden="true" href="#修改后js">#</a></h3>
-<pre><code>var photoTag = {
+</code></pre><input id=tag-name name=tag-name type=text><p><button id=btn-add-tag type=button>确认</button></p><p><button id=btn-cancel type=button>取消</button></p></div></div><h2 id=改进>改进<a hidden class=anchor aria-hidden=true href=#改进>#</a></h2><p>在Asp.NET下这段代码存在几个问题（毕竟这段代码应该只能算是Demo）：1.无法和服务器进行数据交互。2.无法在ASP.NET环境下获取相关id。3.只
+能提交到服务器一个"标签&rdquo;，不足以完成需求。</p><h3 id=修改后js>修改后js:<a hidden class=anchor aria-hidden=true href=#修改后js>#</a></h3><pre><code>var photoTag = {
     show: function(left, top, width, height, show_resize_square) {
         $('#select-area-box').css({
             'left': left - 7,
@@ -608,9 +346,7 @@ $(function() {
     });
     photoTag.hide();
 });
-</code></pre>
-<h3 id="html代码-1">Html代码：<a hidden class="anchor" aria-hidden="true" href="#html代码-1">#</a></h3>
-<pre><code>&lt;div id=&quot;enclose-wrapper&quot;&gt;
+</code></pre><h3 id=html代码-1>Html代码：<a hidden class=anchor aria-hidden=true href=#html代码-1>#</a></h3><pre><code>&lt;div id=&quot;enclose-wrapper&quot;&gt;
   &lt;div id=&quot;photo-wrapper&quot;&gt;
     &lt;asp:Image ID=&quot;ImgPhoto&quot; Visible=&quot;false&quot; runat=&quot;server&quot; /&gt;
   &lt;/div&gt;
@@ -623,206 +359,14 @@ $(function() {
     &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;/div&gt;
   &lt;div id=&quot;form-add-tag&quot; style=&quot;display: none;&quot;&gt; 名称：
     &lt;input id=&quot;tag-name&quot; name=&quot;tag-name&quot; type=&quot;text&quot; /&gt;
-</code></pre>
-<p>数值：</p>
-<input id="tag-value" name="tag-value" type="text" />
-<p><button id="btn-add-tag" type="button"> 确认</button></p>
-<p><button id="btn-cancel" type="button"> 取消</button></p>
-</div>
-</div>
-<p>这边的主要修改在于把框子的右边的内容增加为名称和数值，方便数据的识别。</p>
-<h3 id="后台aspnet文件读取">后台ASP.NET文件读取<a hidden class="anchor" aria-hidden="true" href="#后台aspnet文件读取">#</a></h3>
-<pre><code>string[] fields = Request.Params.GetValues(&quot;photoField&quot;);
-</code></pre>
-<p>这里呢，由于上传的元素<code>name</code>相同，都是<code>photoField</code>，所以通过<code>Params.GetValues()</code>就可以取出<code>string</code>数组，这样就<br />
-能获取所有数据了。数据格式是&quot;<code>ddl:小楠,x:98.88333129882812,y:146,width:100,height:100</code>&ldquo;这种形式，依靠<br />
-&ldquo;,&ldquo;分割。</p>
-<h3 id="相关下载">相关下载<a hidden class="anchor" aria-hidden="true" href="#相关下载">#</a></h3>
-<p><a href="https://4ocf5n.dijingchao.com/upload_dropbox/200909/DragResize.js">DragResize.js</a><br />
-<a href="https://4ocf5n.dijingchao.com/upload_dropbox/200909/template.js">template.js</a><br />
-<a href="https://4ocf5n.dijingchao.com/upload_dropbox/200909/css.css">css.css</a></p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/">jQuery图片圈人功能在ASP.NET下的改进 | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/dotnet/">dotnet</a></li>
-      <li><a href="https://blog.alswl.com/tags/javascript/">javascript</a></li>
-      <li><a href="https://blog.alswl.com/tags/jquery/">jquery</a></li>
-      <li><a href="https://blog.alswl.com/tags/%E4%BA%BA%E4%BA%BA/">人人</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2009/09/python-code-to-read-and-write-txt/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>Python读写txt代码</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2009/08/direction/">
-    <span class="title">Next »</span>
-    <br>
-    <span>方向</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+</code></pre><p>数值：</p><input id=tag-value name=tag-value type=text><p><button id=btn-add-tag type=button> 确认</button></p><p><button id=btn-cancel type=button> 取消</button></p></div></div><p>这边的主要修改在于把框子的右边的内容增加为名称和数值，方便数据的识别。</p><h3 id=后台aspnet文件读取>后台ASP.NET文件读取<a hidden class=anchor aria-hidden=true href=#后台aspnet文件读取>#</a></h3><pre><code>string[] fields = Request.Params.GetValues(&quot;photoField&quot;);
+</code></pre><p>这里呢，由于上传的元素<code>name</code>相同，都是<code>photoField</code>，所以通过<code>Params.GetValues()</code>就可以取出<code>string</code>数组，这样就
+能获取所有数据了。数据格式是"<code>ddl:小楠,x:98.88333129882812,y:146,width:100,height:100</code>&ldquo;这种形式，依靠
+&ldquo;,&ldquo;分割。</p><h3 id=相关下载>相关下载<a hidden class=anchor aria-hidden=true href=#相关下载>#</a></h3><p><a href=https://4ocf5n.dijingchao.com/upload_dropbox/200909/DragResize.js>DragResize.js</a>
+<a href=https://4ocf5n.dijingchao.com/upload_dropbox/200909/template.js>template.js</a>
+<a href=https://4ocf5n.dijingchao.com/upload_dropbox/200909/css.css>css.css</a></p><hr><p>原文链接: <a href=https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/>jQuery图片圈人功能在ASP.NET下的改进 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/dotnet/>dotnet</a></li><li><a href=https://blog.alswl.com/tags/javascript/>javascript</a></li><li><a href=https://blog.alswl.com/tags/jquery/>jquery</a></li><li><a href=https://blog.alswl.com/tags/%E4%BA%BA%E4%BA%BA/>人人</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2009/09/python-code-to-read-and-write-txt/><span class=title>« Prev</span><br><span>Python读写txt代码</span></a>
+<a class=next href=https://blog.alswl.com/2009/08/direction/><span class=title>Next »</span><br><span>方向</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

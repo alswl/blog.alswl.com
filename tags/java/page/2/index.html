@@ -1,335 +1,56 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>java | Log4D</title>
-<meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/tags/java/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/tags/java/atom.xml">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="java" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://blog.alswl.com/tags/java/" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="java"/>
-<meta name="twitter:description" content=""/>
-
-</head>
-
-<body class="list" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/tags/">Tags</a></div>
-  <h1>
-    java
-  </h1>
-</header>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>贴吧小结报告
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>终于完成了这个贴吧系统，虽然还有很多地方不完善，但是却包含了我很多心血和精力，也实践了我的很多想法。
-具体的不说了，稍微说一下开发使用的技术：Java、Struts2、Hibernate、OGNL、Eclipse、Tomcat、MySQL、AJAX、jQue
-ry、SVN、UP开发模式、UML。
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>java | Log4D</title><meta name=keywords content><meta name=description content><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/tags/java/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.alswl.com/tags/java/atom.xml><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="java"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://blog.alswl.com/tags/java/"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="java"><meta name=twitter:description content></head><body class=list id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><header class=page-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/tags/>Tags</a></div><h1>java</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2>贴吧小结报告</h2></header><div class=entry-content><p>终于完成了这个贴吧系统，虽然还有很多地方不完善，但是却包含了我很多心血和精力，也实践了我的很多想法。
+具体的不说了，稍微说一下开发使用的技术：Java、Struts2、Hibernate、OGNL、Eclipse、Tomcat、MySQL、AJAX、jQue ry、SVN、UP开发模式、UML。
 之中学习了很多内容，我恨兴奋，说起来这是我第一个完整写的一个网站系统，之前的asp啊，asp.NET多多少少借鉴了别人的代码。
-终于知道其实资历代表着经验，很多东西只有自己试过才知道怎么做，这一块我太欠缺了，对于JaveEE开发，也终于开始有了接触，寒假回家3个星期，应该在Java的
-本质技术上合Hibernate高级内容、设计模式上花时间了。
+终于知道其实资历代表着经验，很多东西只有自己试过才知道怎么做，这一块我太欠缺了，对于JaveEE开发，也终于开始有了接触，寒假回家3个星期，应该在Java的 本质技术上合Hibernate高级内容、设计模式上花时间了。
 09_11_16 Update:
 今天又check out了一下，然后加入About和Links，当初贴吧在课程设计之后就没有完善，现在加上这两个模块，也就能release了。
 相关链接：
-项目在Google Code托管 （你可以check
-out，不知道游客有没有权限，需要可以Mail我）
-相关开发博客链接 </p>
-  </div>
-  <footer class="entry-footer"><span title='2009-07-02 00:00:00 +0800 CST'>2009-07-02</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 贴吧小结报告" href="https://blog.alswl.com/2009/07/summary-report-of-post-bar/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>再谈s:if的使用
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>上次遇到过&lt;s:if&gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。
-&lt;s:if test=&#34;&#34;&gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。
+项目在Google Code托管 （你可以check out，不知道游客有没有权限，需要可以Mail我）
+相关开发博客链接</p></div><footer class=entry-footer><span title='2009-07-02 00:00:00 +0800 +0800'>2009-07-02</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 贴吧小结报告" href=https://blog.alswl.com/2009/07/summary-report-of-post-bar/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>再谈s:if的使用</h2></header><div class=entry-content><p>上次遇到过&lt;s:if>的问题，费了好久才弄好，这次又遇到，有了一点新的体验。
+&lt;s:if test="">中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。
 尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？
-其实使用&lt;s:if test=‘str==“中文”’&gt;，就可以了，请注意，是单引号-双引号-中文-双引号-
-单引号的顺序，这样才能够正确的解析中文字符串是否相等。
-唔。。。终于可以做下一个部分了</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-06-28 00:00:00 +0800 CST'>2009-06-28</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 再谈s:if的使用" href="https://blog.alswl.com/2009/06/return-s-if-the-use-of/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>贴吧中期进度汇报
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>查看sql更新版本，我才发现这个项目已经做了将近2个月了。
-之前一个多月都是我有空就做做，一边要写OpenSSL的模型，还要应付平时学习和考试，最近的1个星期，才开始全身心投入的，使这个项目变成了一个课程设计，但决不
-止于课程设计。
+其实使用&lt;s:if test=‘str==“中文”’>，就可以了，请注意，是单引号-双引号-中文-双引号- 单引号的顺序，这样才能够正确的解析中文字符串是否相等。
+唔。。。终于可以做下一个部分了</p></div><footer class=entry-footer><span title='2009-06-28 00:00:00 +0800 +0800'>2009-06-28</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 再谈s:if的使用" href=https://blog.alswl.com/2009/06/return-s-if-the-use-of/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>贴吧中期进度汇报</h2></header><div class=entry-content><p>查看sql更新版本，我才发现这个项目已经做了将近2个月了。
+之前一个多月都是我有空就做做，一边要写OpenSSL的模型，还要应付平时学习和考试，最近的1个星期，才开始全身心投入的，使这个项目变成了一个课程设计，但决不 止于课程设计。
 由于鸡鸡的加入，而且对原先设计的一些不满意，我用UP的方式重新对系统进行了设计，从用例到实际类图，都重新设计并加以重构。
-这是一个很有意义的过程，我花了很多时间在UML的使用上，用的是StarUML（开始使用Rose，发现太难入门了），继烨负责用例，我是在设计完第一个迭代过程之
-后进行编写代码的。
+这是一个很有意义的过程，我花了很多时间在UML的使用上，用的是StarUML（开始使用Rose，发现太难入门了），继烨负责用例，我是在设计完第一个迭代过程之 后进行编写代码的。
 原计划是尽量设计之后再编码，但是由于时间关系被迫提前编码，这样，整个过程相对的倾向于敏捷，这其实也是我最开始想要的效果。
 写着写着，越发的理解设计的重要性，往往一个小错误会影响很多改变，很多东西没有一定经验真的很难做优秀。
-今天的代码提交到Google
-Code之后，基本接近我之前自己完成的程度，但我觉得这次的重构，使我学到了很多平时没接触到的东西。两个人的协作也使我完全体会到SVN的好处。
+今天的代码提交到Google Code之后，基本接近我之前自己完成的程度，但我觉得这次的重构，使我学到了很多平时没接触到的东西。两个人的协作也使我完全体会到SVN的好处。
 以上是贴吧中期报告。
-相关链接： PostBar in Google Project Host&lt;猛击这里打开&gt;
-PostBar svn-readonly&lt;[猛击这里打开](http://postbar.googlecode.com/svn/trunk/
-postbar-read-only)&gt;</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-06-27 00:00:00 +0800 CST'>2009-06-27</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 贴吧中期进度汇报" href="https://blog.alswl.com/2009/06/affixed-to-it-the-progress-report-on-the-medium-term/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>校内踩踩小工具v0.1
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>明天要考数据库应用了，今天仍然忍不住把校内踩踩小工具写完。
-上次被打击了，人家刷人气的工具是建立一个平台进行互踩，但是安全性存在问题。我自己写的这个小东西能在校内限制范围内刷50个相同区域的页面(校内限制次数是100
-，可以执行两次，以后再执行就必须到网页输入验证码)，然后通过他人回踩来提高人气。
+相关链接： PostBar in Google Project Host&lt;猛击这里打开>
+PostBar svn-readonly&lt;[猛击这里打开](http://postbar.googlecode.com/svn/trunk/ postbar-read-only)></p></div><footer class=entry-footer><span title='2009-06-27 00:00:00 +0800 +0800'>2009-06-27</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 贴吧中期进度汇报" href=https://blog.alswl.com/2009/06/affixed-to-it-the-progress-report-on-the-medium-term/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>校内踩踩小工具v0.1</h2></header><div class=entry-content><p>明天要考数据库应用了，今天仍然忍不住把校内踩踩小工具写完。
+上次被打击了，人家刷人气的工具是建立一个平台进行互踩，但是安全性存在问题。我自己写的这个小东西能在校内限制范围内刷50个相同区域的页面(校内限制次数是100 ，可以执行两次，以后再执行就必须到网页输入验证码)，然后通过他人回踩来提高人气。
 纯粹是自己写着玩，几乎没有什么应用价值，不过既然写了这么久，也就放上来，大家把玩一下。
-压缩包内两个文件，一个xml保存帐号密码，用文本编辑器就可以编辑，另外一个是jar文件，在cmd下面用&#34;java -jar
-XiaoneiCaiCai.jar&#34;运行。
+压缩包内两个文件，一个xml保存帐号密码，用文本编辑器就可以编辑，另外一个是jar文件，在cmd下面用"java -jar XiaoneiCaiCai.jar"运行。
 纯属娱乐，水平很菜，大家不要喷我。
-猛击这里下载xiaoneicaicai</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-06-14 00:00:00 +0800 CST'>2009-06-14</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 校内踩踩小工具v0.1" href="https://blog.alswl.com/2009/06/xiaoneicaicai-gadget-v0-1/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>校内小工具告一段落
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>这段时间在写校内小工具，开心农场小外挂，刷刷人气的小外挂。
-结果开心农场的FramKey改了算法，由时间参数改为flash中(5,
-3)这点RGB颜色，而且返回的JSON也重新加密了。我对AS3不懂，而且破解算法也不是我强项，就暂停开心农场外挂的开发。
-想把这个工具转为校内刷人气的，原理就是访问大量用户，可能会有一定几率其他用户回访。这个不难写，我只要用爬虫去爬就可以获得大量相关用户，但是爬着爬着，发现校内
-只允许在一段时间内查看100用户页面，否则会有验证码，而且爬时候还不能并发。这样一来，就需要手工输入验证码，刷的效率会大打折扣。
-我同学下了一个刷人气的，输入帐号后几乎人气是1秒一个，把玩了一会，感觉是在服务器上存储了所有使用这个软件的人的账号，然后在服务器上进行互刷，这个想法相当于D
-ispatch刷人气了，那完全不是我这个单机小工具能够媲美的了。
-这种速度狠狠的打击了我，再继续开发就不得不加入图形界面来输入验证码，本来想写着玩的一个小工具，会成为一个复杂的开发。我只能暂时停止继续写这个工具，投身到课程
-设计的洪流中去了。
-当然，这小东西花了我三天时间，也不是一点收获没有，我学会了用XOM持久化对象来保存信息，学会了用正则来获取Html中的信息，学会了用java.net.*操作
-Get/Post，学会了操作cookie，学习正确使用I/O系统，学习操作文件，理解Try/Catch更深一点，学会使用注解生成javadoc。
+猛击这里下载xiaoneicaicai</p></div><footer class=entry-footer><span title='2009-06-14 00:00:00 +0800 +0800'>2009-06-14</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 校内踩踩小工具v0.1" href=https://blog.alswl.com/2009/06/xiaoneicaicai-gadget-v0-1/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>校内小工具告一段落</h2></header><div class=entry-content><p>这段时间在写校内小工具，开心农场小外挂，刷刷人气的小外挂。
+结果开心农场的FramKey改了算法，由时间参数改为flash中(5, 3)这点RGB颜色，而且返回的JSON也重新加密了。我对AS3不懂，而且破解算法也不是我强项，就暂停开心农场外挂的开发。
+想把这个工具转为校内刷人气的，原理就是访问大量用户，可能会有一定几率其他用户回访。这个不难写，我只要用爬虫去爬就可以获得大量相关用户，但是爬着爬着，发现校内 只允许在一段时间内查看100用户页面，否则会有验证码，而且爬时候还不能并发。这样一来，就需要手工输入验证码，刷的效率会大打折扣。
+我同学下了一个刷人气的，输入帐号后几乎人气是1秒一个，把玩了一会，感觉是在服务器上存储了所有使用这个软件的人的账号，然后在服务器上进行互刷，这个想法相当于D ispatch刷人气了，那完全不是我这个单机小工具能够媲美的了。
+这种速度狠狠的打击了我，再继续开发就不得不加入图形界面来输入验证码，本来想写着玩的一个小工具，会成为一个复杂的开发。我只能暂时停止继续写这个工具，投身到课程 设计的洪流中去了。
+当然，这小东西花了我三天时间，也不是一点收获没有，我学会了用XOM持久化对象来保存信息，学会了用正则来获取Html中的信息，学会了用java.net.*操作 Get/Post，学会了操作cookie，学习正确使用I/O系统，学习操作文件，理解Try/Catch更深一点，学会使用注解生成javadoc。
 我所在的学校并没有开设Java课程，自己学习时候是直接写jsp的，通过这一次学习，掌握了很多原来不会的知识。
-好了，再写就成报告了，就这样了，美好的一天又开始了，海绵宝宝，我们去抓水母吧。</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-06-12 00:00:00 +0800 CST'>2009-06-12</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 校内小工具告一段落" href="https://blog.alswl.com/2009/06/xiaonei-gadgets-come-to-an-end/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>使用XOM类库对Java对象进行序列化
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>校内工具需要保存用户名和帐号，我就想把帐号信息作为一个XiaoneiUser类，然后对其进行对象持久化。
-Google下的方法有好几种方法进行持久化，JDOM， DOM4J,
-SAX等。我看了之后，感觉都比较麻烦，我个人比较喜欢使用jdk自带的工具，但是查阅jdk api之后，感觉使用 javax.xml.* 下工具开发更加困难。
-我仅仅是需要对一个简单的对象进行持久化来保存数据，并不需要太多太复杂的功能。最后我决定使用《Thinking in Java》推荐的开源类库：XOM
-猛击这里打开www.xom.nu 友情提示一下，网站可以打开，但是下载的连接貌似被墙了，至少我教育网连不上去。推荐
-一个在线代理服务器古狗在线代理（猛击这里打开），通过它就可以下载类库了。
-使用类库非常简单，我这里提供个小例子。XiaoneiUser类
-package cn.dddspace.xiaonei.bean; import java.io.OutputStream; import nu.xom.*; public class XiaoneiUser { /** * 用户Email */ private String userEmail; /** * 用户Password */ private String userPassword; public String getUserEmail() { return userEmail; } public void setUserEmail(String userEmail) { this.userEmail = userEmail; } public String getUserPassword() { return userPassword; } public void setUserPassword(String userPassword) { this.userPassword = userPassword; } /** * 将类转换为XML * * @return */ public Element getXML() { Element userE = new Element(&#34;xiaoneiUser&#34;); Element userEmailE = new Element(&#34;userEmail&#34;); userEmailE....</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-06-10 00:00:00 +0800 CST'>2009-06-10</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 使用XOM类库对Java对象进行序列化" href="https://blog.alswl.com/2009/06/xom-class-library-to-use-java-objects-serialization/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>java.net.*操作session/GET/POST方法
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具-
-全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统
-的浏览器或者之间创建一个Browser。
+好了，再写就成报告了，就这样了，美好的一天又开始了，海绵宝宝，我们去抓水母吧。</p></div><footer class=entry-footer><span title='2009-06-12 00:00:00 +0800 +0800'>2009-06-12</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 校内小工具告一段落" href=https://blog.alswl.com/2009/06/xiaonei-gadgets-come-to-an-end/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>使用XOM类库对Java对象进行序列化</h2></header><div class=entry-content><p>校内工具需要保存用户名和帐号，我就想把帐号信息作为一个XiaoneiUser类，然后对其进行对象持久化。 Google下的方法有好几种方法进行持久化，JDOM， DOM4J, SAX等。我看了之后，感觉都比较麻烦，我个人比较喜欢使用jdk自带的工具，但是查阅jdk api之后，感觉使用 javax.xml.* 下工具开发更加困难。 我仅仅是需要对一个简单的对象进行持久化来保存数据，并不需要太多太复杂的功能。最后我决定使用《Thinking in Java》推荐的开源类库：XOM 猛击这里打开www.xom.nu 友情提示一下，网站可以打开，但是下载的连接貌似被墙了，至少我教育网连不上去。推荐 一个在线代理服务器古狗在线代理（猛击这里打开），通过它就可以下载类库了。 使用类库非常简单，我这里提供个小例子。XiaoneiUser类
+package cn.dddspace.xiaonei.bean; import java.io.OutputStream; import nu.xom.*; public class XiaoneiUser { /** * 用户Email */ private String userEmail; /** * 用户Password */ private String userPassword; public String getUserEmail() { return userEmail; } public void setUserEmail(String userEmail) { this.userEmail = userEmail; } public String getUserPassword() { return userPassword; } public void setUserPassword(String userPassword) { this.userPassword = userPassword; } /** * 将类转换为XML * * @return */ public Element getXML() { Element userE = new Element("xiaoneiUser"); Element userEmailE = new Element("userEmail"); userEmailE....</p></div><footer class=entry-footer><span title='2009-06-10 00:00:00 +0800 +0800'>2009-06-10</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 使用XOM类库对Java对象进行序列化" href=https://blog.alswl.com/2009/06/xom-class-library-to-use-java-objects-serialization/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>java.net.*操作session/GET/POST方法</h2></header><div class=entry-content><p>终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具- 全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统 的浏览器或者之间创建一个Browser。
 开始写了自己的第一个版本。
 import java.io.BufferedReader; import java.io.IOException; import java.io.InputStreamReader; import java.net.MalformedURLException; import java.net.ProtocolException; import java.net.URL; import java.net.HttpURLConnection; public class FarmerHelper {
 /**
 @param args @throws ProtocolException
 */
-public static void main(String[] args) throws ProtocolException { String loginUrlStr = “http://login.xiaonei.com/Login.do&#34;;
-String homeUrlStr = “http://home.xiaonei.com/Home.do&#34;;
+public static void main(String[] args) throws ProtocolException { String loginUrlStr = “http://login.xiaonei.com/Login.do";
+String homeUrlStr = “http://home.xiaonei.com/Home.do";
 URL loginUrl = null;
 URL homeUrl = null;
 HttpURLConnection loginConn = null;
 HttpURLConnection homeConn = null;
 try {
 loginUrl = new URL(loginUrlStr);
-homeUrl = new URL(homeUrlStr);...</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-06-09 00:00:00 +0800 CST'>2009-06-09</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to java.net.*操作session/GET/POST方法" href="https://blog.alswl.com/2009/06/java-net-operation-session-get-post-method/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Mp3Lrc的可执行文件
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>早上把代码输出成了Runnable Jar，生成一个jar格式的文件，只要是有JavaSE的电脑都可以运行了。
+homeUrl = new URL(homeUrlStr);...</p></div><footer class=entry-footer><span title='2009-06-09 00:00:00 +0800 +0800'>2009-06-09</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to java.net.*操作session/GET/POST方法" href=https://blog.alswl.com/2009/06/java-net-operation-session-get-post-method/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>Mp3Lrc的可执行文件</h2></header><div class=entry-content><p>早上把代码输出成了Runnable Jar，生成一个jar格式的文件，只要是有JavaSE的电脑都可以运行了。
 当然，不是双击运行，进入CMD，然后进入jar文件所在文件夹，运行＂java -jar Mp3Lrc.jar＂
 就会出来提示输入Mp3根目录和歌词根目录，把两个目录输入就可以运行了。
 猛击这里下载Mp3Lrc.rar
-这个程序是自己用的，可能存在Bug，由于会操作文件，请在使用前备份重要资料（虽然根本没有删除命令，只有复制命令）</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-05-26 00:00:00 +0800 CST'>2009-05-26</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to Mp3Lrc的可执行文件" href="https://blog.alswl.com/2009/05/the-executable-file-mp3lrc/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Java写的Mp3歌词复制器
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>大家可能会遇到这样的情况，Mp3里有很多歌，电脑上也有很多相同的歌，但是有歌词。把歌词同步到Mp3播放器非常麻烦，我以前用千千静听导入目录，然后逐个播放，或
-者用一个软件从网上搜索到Mp3播放器。 千千静听或者其他播放器都会有一个选项是设置歌词存储位置的，一般来说，我们听过的歌都是会自动下载歌词到这个文件夹，其实
-我们完全可以不必大费周折去找lrc，只要把这个歌词文件夹和Mp3播放器同步就可以了。
-以前就想写一个东西完成这个麻烦的工程，现在贴吧1.0完成了，可以休息几天，晚上花了一点时间用Java写了一个这样的小东西。
-如果大家碰到和我一样的麻烦，可以试试。呃，时间仓促，没有图形界面，而且必须是Java程序员才能用，因为我这儿只提供了源码….
+这个程序是自己用的，可能存在Bug，由于会操作文件，请在使用前备份重要资料（虽然根本没有删除命令，只有复制命令）</p></div><footer class=entry-footer><span title='2009-05-26 00:00:00 +0800 +0800'>2009-05-26</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Mp3Lrc的可执行文件" href=https://blog.alswl.com/2009/05/the-executable-file-mp3lrc/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>Java写的Mp3歌词复制器</h2></header><div class=entry-content><p>大家可能会遇到这样的情况，Mp3里有很多歌，电脑上也有很多相同的歌，但是有歌词。把歌词同步到Mp3播放器非常麻烦，我以前用千千静听导入目录，然后逐个播放，或 者用一个软件从网上搜索到Mp3播放器。 千千静听或者其他播放器都会有一个选项是设置歌词存储位置的，一般来说，我们听过的歌都是会自动下载歌词到这个文件夹，其实 我们完全可以不必大费周折去找lrc，只要把这个歌词文件夹和Mp3播放器同步就可以了。 以前就想写一个东西完成这个麻烦的工程，现在贴吧1.0完成了，可以休息几天，晚上花了一点时间用Java写了一个这样的小东西。 如果大家碰到和我一样的麻烦，可以试试。呃，时间仓促，没有图形界面，而且必须是Java程序员才能用，因为我这儿只提供了源码….
 package ddd; import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -348,123 +69,22 @@ pathLrc = in.readLine();
 copyLrc(pathMp3, pathLrc);
 }
 private static void copyLrc(String mp3sPath, String lrcsPath) {
-String pathMp3 = mp3sPath;...</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-05-25 00:00:00 +0800 CST'>2009-05-25</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to Java写的Mp3歌词复制器" href="https://blog.alswl.com/2009/05/lyrics-written-in-java-replicator-mp3/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Struts2中Ajax的使用
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>贴吧1.0差不多可以完成了，进入界面美化，我服务器验证写完之后，开始用jQuery写js。
+String pathMp3 = mp3sPath;...</p></div><footer class=entry-footer><span title='2009-05-25 00:00:00 +0800 +0800'>2009-05-25</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Java写的Mp3歌词复制器" href=https://blog.alswl.com/2009/05/lyrics-written-in-java-replicator-mp3/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>Struts2中Ajax的使用</h2></header><div class=entry-content><p>贴吧1.0差不多可以完成了，进入界面美化，我服务器验证写完之后，开始用jQuery写js。
 使用了jQuery的UI，后来想加入Ajax验证，但是遇到了问题：
-09-05-23 07:53 WARN [org.apache.struts2.dispatcher.Dispatcher] - Could not
-find action or result
-There is no Action mapped for namespace / and action name AjaxLogin. -
-[unknown location]
-我整整找了一个多小时，曾以为是action name的问题或者是package name, package namespace
-的问题，为此我特意重新学习了一下他们的使用方法，但是仍然没有效果。
+09-05-23 07:53 WARN [org.apache.struts2.dispatcher.Dispatcher] - Could not find action or result
+There is no Action mapped for namespace / and action name AjaxLogin. - [unknown location]
+我整整找了一个多小时，曾以为是action name的问题或者是package name, package namespace 的问题，为此我特意重新学习了一下他们的使用方法，但是仍然没有效果。
 最后，终于在Google找到了一些资料：
-struts2 json jquery 集成详解来自
-户起龙的博客
-我本来以为Struts/lib下面的json-lib-2.1.jar就可以了，而且启动Tomcat没有任何报错，居然要另外一个jar，叫做json-
-plugin
+struts2 json jquery 集成详解来自 户起龙的博客
+我本来以为Struts/lib下面的json-lib-2.1.jar就可以了，而且启动Tomcat没有任何报错，居然要另外一个jar，叫做json- plugin
 下载地址：猛击这里下载
 使用这个插件之后，本以为轻松搞定，但是仍然还是这个错误！！！
 怎么可能？！我怒了，翻开Struts2的文档，文档用的是DWR，已经使用taglib封装了，再查看json-plugin的文档，仍然未果！！
-最后逼急了，使用这篇文章 《在Struts 2中使用JSON Ajax支持》猛击这里打开，重新写了一个Action和一个简单的jsp页面，使用最淳朴的提交。终于可以成功了，数据交
-换能够明显的在FireBug下看到。
-这种情况的话，据我猜测，应该是我原来使用的&lt;s:form&gt;标签的问题，如果使用简单的就应该可以避免了。
+最后逼急了，使用这篇文章 《在Struts 2中使用JSON Ajax支持》猛击这里打开，重新写了一个Action和一个简单的jsp页面，使用最淳朴的提交。终于可以成功了，数据交 换能够明显的在FireBug下看到。
+这种情况的话，据我猜测，应该是我原来使用的&lt;s:form>标签的问题，如果使用简单的就应该可以避免了。
 09_05_24修正
-之前说是&lt;s:form&gt;的问题，而用可以解决，结果我发现也不行，直接返回当前页面，这就比较郁闷了，最后，我把去除，只留下
-就可以了，不好意思，让Strut2蒙冤了。</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-05-23 00:00:00 +0800 CST'>2009-05-23</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to Struts2中Ajax的使用" href="https://blog.alswl.com/2009/05/struts2-in-the-use-of-ajax/"></a>
-</article>
-<footer class="page-footer">
-  <nav class="pagination">
-    <a class="prev" href="https://blog.alswl.com/tags/java/">
-      «&nbsp;Prev&nbsp;
-    </a>
-    <a class="next" href="https://blog.alswl.com/tags/java/page/3/">Next&nbsp;&nbsp;»
-    </a>
-  </nav>
-</footer>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
-</html>
+之前说是&lt;s:form>的问题，而用可以解决，结果我发现也不行，直接返回当前页面，这就比较郁闷了，最后，我把去除，只留下 就可以了，不好意思，让Strut2蒙冤了。</p></div><footer class=entry-footer><span title='2009-05-23 00:00:00 +0800 +0800'>2009-05-23</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Struts2中Ajax的使用" href=https://blog.alswl.com/2009/05/struts2-in-the-use-of-ajax/></a></article><footer class=page-footer><nav class=pagination><a class=prev href=https://blog.alswl.com/tags/java/>«&nbsp;Prev&nbsp;</a>
+<a class=next href=https://blog.alswl.com/tags/java/page/3/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>

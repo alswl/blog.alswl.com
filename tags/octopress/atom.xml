@@ -1,49 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>octopress on Log4D</title>
-    <link>https://blog.alswl.com/tags/octopress/</link>
-    <description>Recent content in octopress on Log4D</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 22 May 2012 16:18:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/octopress/atom.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>让 Octopress 支持 RSS2.0</title>
-      <link>https://blog.alswl.com/2012/05/support-rss/</link>
-      <pubDate>Tue, 22 May 2012 16:18:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2012/05/support-rss/</guid>
-      <description>土鳖人人网的 日志导入 功能仅支持 RSS2.0，而 Octopress 输出的订阅格式是 Atom1.0。
-于是为了让人人网的同学能看见我那些技术宅，又或非技术宅的文章，
-我只能昧着良心，给 Octopress 加上过时的 RSS2.0 输出。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>octopress on Log4D</title><link>https://blog.alswl.com/tags/octopress/</link><description>Recent content in octopress on Log4D</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 22 May 2012 16:18:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/octopress/atom.xml" rel="self" type="application/rss+xml"/><item><title>让 Octopress 支持 RSS2.0</title><link>https://blog.alswl.com/2012/05/support-rss/</link><pubDate>Tue, 22 May 2012 16:18:00 +0800</pubDate><guid>https://blog.alswl.com/2012/05/support-rss/</guid><description>土鳖人人网的 日志导入 功能仅支持 RSS2.0，而 Octopress 输出的订阅格式是 Atom1.0。 于是为了让人人网的同学能看见我那些技术宅，又或非技术宅的文章， 我只能昧着良心，给 Octopress 加上过时的 RSS2.0 输出。
 在 source/ 下创建新文件 rss.xml ，内容如下：
---- layout: nil --- &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;rss xmlns:dc=&amp;#34;http://purl.org/dc/elements/1.1/&amp;#34; version=&amp;#34;2.0&amp;#34;&amp;gt; &amp;lt;channel&amp;gt; &amp;lt;description&amp;gt;&amp;lt;![CDATA[{{ site.title }}]]&amp;gt;&amp;lt;/description&amp;gt; &amp;lt;title&amp;gt;&amp;lt;![CDATA[{{ site.title }}]]&amp;gt;&amp;lt;/title&amp;gt; &amp;lt;link&amp;gt;{{ site.url }}/&amp;lt;/link&amp;gt; &amp;lt;pubDate&amp;gt;{{ site.time | date_to_xmlschema }}&amp;lt;/pubDate&amp;gt; {% for post in site.posts limit: 20 %} &amp;lt;item&amp;gt; &amp;lt;description&amp;gt; &amp;lt;![CDATA[ {{ post.content | expand_urls: site.url | cdata_escape }} {% include post/copyright.html %} ]]&amp;gt; &amp;lt;/description&amp;gt; &amp;lt;title&amp;gt;&amp;lt;![CDATA[{{ post.title | cdata_escape }}]]&amp;gt;&amp;lt;/title&amp;gt; &amp;lt;link&amp;gt;{{ site.</description>
-    </item>
-    
-    <item>
-      <title>给 Octopress 加上标签功能</title>
-      <link>https://blog.alswl.com/2012/05/tag-cloud/</link>
-      <pubDate>Mon, 21 May 2012 15:17:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2012/05/tag-cloud/</guid>
-      <description>上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。
-自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后，
-就只剩下 tag 的问题没有搞定了。
-我当时使用了YORKXIN的修改版本来处理 Wordpress
-的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category /
-tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。
-只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略
-tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。
-一篇文章只能属于一个 category，但可以同时属于多个 tag。
-Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。
-ps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件，
-但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag
-概念。更多官方插件可以查看
-3rd party plugins。
-就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件：
-robbyedwards / octopress-tag-pages和
-robbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。</description>
-    </item>
-    
-  </channel>
-</rss>
+--- layout: nil --- &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;rss xmlns:dc=&amp;#34;http://purl.org/dc/elements/1.1/&amp;#34; version=&amp;#34;2.0&amp;#34;&amp;gt; &amp;lt;channel&amp;gt; &amp;lt;description&amp;gt;&amp;lt;![CDATA[{{ site.title }}]]&amp;gt;&amp;lt;/description&amp;gt; &amp;lt;title&amp;gt;&amp;lt;![CDATA[{{ site.title }}]]&amp;gt;&amp;lt;/title&amp;gt; &amp;lt;link&amp;gt;{{ site.url }}/&amp;lt;/link&amp;gt; &amp;lt;pubDate&amp;gt;{{ site.time | date_to_xmlschema }}&amp;lt;/pubDate&amp;gt; {% for post in site.posts limit: 20 %} &amp;lt;item&amp;gt; &amp;lt;description&amp;gt; &amp;lt;![CDATA[ {{ post.content | expand_urls: site.url | cdata_escape }} {% include post/copyright.html %} ]]&amp;gt; &amp;lt;/description&amp;gt; &amp;lt;title&amp;gt;&amp;lt;![CDATA[{{ post.title | cdata_escape }}]]&amp;gt;&amp;lt;/title&amp;gt; &amp;lt;link&amp;gt;{{ site.</description></item><item><title>给 Octopress 加上标签功能</title><link>https://blog.alswl.com/2012/05/tag-cloud/</link><pubDate>Mon, 21 May 2012 15:17:00 +0800</pubDate><guid>https://blog.alswl.com/2012/05/tag-cloud/</guid><description>上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。
+我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。
+只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。 一篇文章只能属于一个 category，但可以同时属于多个 tag。 Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。
+ps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件， 但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag 概念。更多官方插件可以查看 3rd party plugins。
+就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件： robbyedwards / octopress-tag-pages和 robbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。</description></item></channel></rss>

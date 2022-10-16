@@ -1,759 +1,95 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>铁血联盟EdtTxt转换器v0.9 | Log4D</title>
-<meta name="keywords" content="python">
-<meta name="description" content="上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt&lt;-&gt;Txt转换器，我前前后后大约三个星期完成
-到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高
-人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。
-一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>铁血联盟EdtTxt转换器v0.9 | Log4D</title><meta name=keywords content="python"><meta name=description content="上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt<->Txt转换器，我前前后后大约三个星期完成 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高 人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。 一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：
 edt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下
 一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明
-把 000.edt 文件用16进制方式打开，对话从&quot;0&quot;处开始，结束标志是2个16进制字节：00 00
-000.edt 里面每个/每段对话/说明相隔 640 个字节，即&quot;0&quot;开始为第一段，直到16进制双字节出现&quot;00 00&quot;结束，然后第2段话在第 640
-字节处开始，也是以&quot;00 00&quot;表示结束，后面的以此类推。
-（因为有几种edt文件，每种edt文件的对话间隔不同，所以这个&quot;间隔&quot;最好设个参数，可以在转换前自定义输入。）
-然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位
-&mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以
-，直接用UTF-16无bom格式做文本文件&mdash;-不过这样不太方便编辑），那么文本就出来了
+把 000.edt 文件用16进制方式打开，对话从&#34;0&#34;处开始，结束标志是2个16进制字节：00 00
+000.edt 里面每个/每段对话/说明相隔 640 个字节，即&#34;0&#34;开始为第一段，直到16进制双字节出现&#34;00 00&#34;结束，然后第2段话在第 640 字节处开始，也是以&#34;00 00&#34;表示结束，后面的以此类推。 （因为有几种edt文件，每种edt文件的对话间隔不同，所以这个&#34;间隔&#34;最好设个参数，可以在转换前自定义输入。）
+然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位 &mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以 ，直接用UTF-16无bom格式做文本文件&mdash;-不过这样不太方便编辑），那么文本就出来了
 每段话提取并转换后按 000.txt 一样显示，方便修改
-对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的&quot;00 00&quot;，它是每个对话的结束标志。
+对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的&#34;00 00&#34;，它是每个对话的结束标志。
 2）&ldquo;20 00&rdquo;：UTF-16编码&rsquo;空格&rsquo;的编码，这个是保持不变的，不用 -1 处理。
-3）&ldquo;B3 00&rdquo; 和 &ldquo;B4 00&rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3
-00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如&quot;㈡&quot; &ldquo;㈢&rdquo;。
+3）&ldquo;B3 00&rdquo; 和 &ldquo;B4 00&rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3 00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如&#34;㈡&#34; &ldquo;㈢&rdquo;。
 这样就能修改对话了/提取出的英文翻译成中文。
-二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用&quot;00 00&quot;填充），当然最好两个方式都行">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="铁血联盟EdtTxt转换器v0.9" />
-<meta property="og:description" content="上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt&lt;-&gt;Txt转换器，我前前后后大约三个星期完成
-到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高
-人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。
-一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：
+二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用&#34;00 00&#34;填充），当然最好两个方式都行"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="铁血联盟EdtTxt转换器v0.9"><meta property="og:description" content="上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt<->Txt转换器，我前前后后大约三个星期完成 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高 人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。 一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：
 edt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下
 一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明
-把 000.edt 文件用16进制方式打开，对话从&quot;0&quot;处开始，结束标志是2个16进制字节：00 00
-000.edt 里面每个/每段对话/说明相隔 640 个字节，即&quot;0&quot;开始为第一段，直到16进制双字节出现&quot;00 00&quot;结束，然后第2段话在第 640
-字节处开始，也是以&quot;00 00&quot;表示结束，后面的以此类推。
-（因为有几种edt文件，每种edt文件的对话间隔不同，所以这个&quot;间隔&quot;最好设个参数，可以在转换前自定义输入。）
-然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位
-&mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以
-，直接用UTF-16无bom格式做文本文件&mdash;-不过这样不太方便编辑），那么文本就出来了
+把 000.edt 文件用16进制方式打开，对话从&#34;0&#34;处开始，结束标志是2个16进制字节：00 00
+000.edt 里面每个/每段对话/说明相隔 640 个字节，即&#34;0&#34;开始为第一段，直到16进制双字节出现&#34;00 00&#34;结束，然后第2段话在第 640 字节处开始，也是以&#34;00 00&#34;表示结束，后面的以此类推。 （因为有几种edt文件，每种edt文件的对话间隔不同，所以这个&#34;间隔&#34;最好设个参数，可以在转换前自定义输入。）
+然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位 &mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以 ，直接用UTF-16无bom格式做文本文件&mdash;-不过这样不太方便编辑），那么文本就出来了
 每段话提取并转换后按 000.txt 一样显示，方便修改
-对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的&quot;00 00&quot;，它是每个对话的结束标志。
+对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的&#34;00 00&#34;，它是每个对话的结束标志。
 2）&ldquo;20 00&rdquo;：UTF-16编码&rsquo;空格&rsquo;的编码，这个是保持不变的，不用 -1 处理。
-3）&ldquo;B3 00&rdquo; 和 &ldquo;B4 00&rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3
-00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如&quot;㈡&quot; &ldquo;㈢&rdquo;。
+3）&ldquo;B3 00&rdquo; 和 &ldquo;B4 00&rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3 00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如&#34;㈡&#34; &ldquo;㈢&rdquo;。
 这样就能修改对话了/提取出的英文翻译成中文。
-二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用&quot;00 00&quot;填充），当然最好两个方式都行" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2009-11-01T00:00:00+08:00" />
-<meta property="article:modified_time" content="2009-11-01T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="铁血联盟EdtTxt转换器v0.9"/>
-<meta name="twitter:description" content="上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt&lt;-&gt;Txt转换器，我前前后后大约三个星期完成
-到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高
-人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。
-一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：
+二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用&#34;00 00&#34;填充），当然最好两个方式都行"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2009-11-01T00:00:00+08:00"><meta property="article:modified_time" content="2009-11-01T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="铁血联盟EdtTxt转换器v0.9"><meta name=twitter:description content="上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt<->Txt转换器，我前前后后大约三个星期完成 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高 人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。 一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：
 edt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下
 一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明
-把 000.edt 文件用16进制方式打开，对话从&quot;0&quot;处开始，结束标志是2个16进制字节：00 00
-000.edt 里面每个/每段对话/说明相隔 640 个字节，即&quot;0&quot;开始为第一段，直到16进制双字节出现&quot;00 00&quot;结束，然后第2段话在第 640
-字节处开始，也是以&quot;00 00&quot;表示结束，后面的以此类推。
-（因为有几种edt文件，每种edt文件的对话间隔不同，所以这个&quot;间隔&quot;最好设个参数，可以在转换前自定义输入。）
-然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位
-&mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以
-，直接用UTF-16无bom格式做文本文件&mdash;-不过这样不太方便编辑），那么文本就出来了
+把 000.edt 文件用16进制方式打开，对话从&#34;0&#34;处开始，结束标志是2个16进制字节：00 00
+000.edt 里面每个/每段对话/说明相隔 640 个字节，即&#34;0&#34;开始为第一段，直到16进制双字节出现&#34;00 00&#34;结束，然后第2段话在第 640 字节处开始，也是以&#34;00 00&#34;表示结束，后面的以此类推。 （因为有几种edt文件，每种edt文件的对话间隔不同，所以这个&#34;间隔&#34;最好设个参数，可以在转换前自定义输入。）
+然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位 &mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以 ，直接用UTF-16无bom格式做文本文件&mdash;-不过这样不太方便编辑），那么文本就出来了
 每段话提取并转换后按 000.txt 一样显示，方便修改
-对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的&quot;00 00&quot;，它是每个对话的结束标志。
+对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的&#34;00 00&#34;，它是每个对话的结束标志。
 2）&ldquo;20 00&rdquo;：UTF-16编码&rsquo;空格&rsquo;的编码，这个是保持不变的，不用 -1 处理。
-3）&ldquo;B3 00&rdquo; 和 &ldquo;B4 00&rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3
-00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如&quot;㈡&quot; &ldquo;㈢&rdquo;。
+3）&ldquo;B3 00&rdquo; 和 &ldquo;B4 00&rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3 00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如&#34;㈡&#34; &ldquo;㈢&rdquo;。
 这样就能修改对话了/提取出的英文翻译成中文。
-二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用&quot;00 00&quot;填充），当然最好两个方式都行"/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "铁血联盟EdtTxt转换器v0.9",
-      "item": "https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "铁血联盟EdtTxt转换器v0.9",
-  "name": "铁血联盟EdtTxt转换器v0.9",
-  "description": "上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt\u0026lt;-\u0026gt;Txt转换器，我前前后后大约三个星期完成\n到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高\n人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。\n一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：\nedt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下\n一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明\n把 000.edt 文件用16进制方式打开，对话从\u0026quot;0\u0026quot;处开始，结束标志是2个16进制字节：00 00\n000.edt 里面每个/每段对话/说明相隔 640 个字节，即\u0026quot;0\u0026quot;开始为第一段，直到16进制双字节出现\u0026quot;00 00\u0026quot;结束，然后第2段话在第 640\n字节处开始，也是以\u0026quot;00 00\u0026quot;表示结束，后面的以此类推。\n（因为有几种edt文件，每种edt文件的对话间隔不同，所以这个\u0026quot;间隔\u0026quot;最好设个参数，可以在转换前自定义输入。）\n然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位\n\u0026mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以\n，直接用UTF-16无bom格式做文本文件\u0026mdash;-不过这样不太方便编辑），那么文本就出来了\n每段话提取并转换后按 000.txt 一样显示，方便修改\n对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的\u0026quot;00 00\u0026quot;，它是每个对话的结束标志。\n2）\u0026ldquo;20 00\u0026rdquo;：UTF-16编码\u0026rsquo;空格\u0026rsquo;的编码，这个是保持不变的，不用 -1 处理。\n3）\u0026ldquo;B3 00\u0026rdquo; 和 \u0026ldquo;B4 00\u0026rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3\n00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如\u0026quot;㈡\u0026quot; \u0026ldquo;㈢\u0026rdquo;。\n这样就能修改对话了/提取出的英文翻译成中文。\n二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用\u0026quot;00 00\u0026quot;填充），当然最好两个方式都行",
-  "keywords": [
-    "python"
-  ],
-  "articleBody": "上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt\u003c-\u003eTxt转换器，我前前后后大约三个星期完成\n到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高\n人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。\n一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：\nedt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下\n一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明\n把 000.edt 文件用16进制方式打开，对话从\"0\"处开始，结束标志是2个16进制字节：00 00\n000.edt 里面每个/每段对话/说明相隔 640 个字节，即\"0\"开始为第一段，直到16进制双字节出现\"00 00\"结束，然后第2段话在第 640\n字节处开始，也是以\"00 00\"表示结束，后面的以此类推。\n（因为有几种edt文件，每种edt文件的对话间隔不同，所以这个\"间隔\"最好设个参数，可以在转换前自定义输入。）\n然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位\n—-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以\n，直接用UTF-16无bom格式做文本文件—-不过这样不太方便编辑），那么文本就出来了\n每段话提取并转换后按 000.txt 一样显示，方便修改\n对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的\"00 00\"，它是每个对话的结束标志。\n2）“20 00”：UTF-16编码’空格’的编码，这个是保持不变的，不用 -1 处理。\n3）“B3 00” 和 “B4 00”：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3\n00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如\"㈡\" “㈢”。\n这样就能修改对话了/提取出的英文翻译成中文。\n二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用\"00 00\"填充），当然最好两个方式都行\n在v0.9中，我已经可以在程序中对参数进行配置，对系统的blockSize和标识符进行修改。一个已知缺陷是在Edt-\u003eTxt的处理行数时候可能出现问题。\n程序是用Python写的，不要觉得很难，我也是在用Python完成Hello\nWorld之后第三天开始写这个程序，只要有C/Java/C#这些语言一些基础，就可以理解这些程序了。\n# coding=utf-8 import struct import os import ConfigParser configParser=ConfigParser.ConfigParser()\nCONFIGNAME = ‘config.cfg’\nblockSize = 640 #size per block 640/480\nisDebug = False #isDebug mode True/False\nsysEnd = ‘x00x00’ #end of a sentence, e.g. a space x00x00\nstartPosition = 00 #start posion\nPASS_SYMBOL = ‘x20x00’ #the list of word not decode\nSPECIAL_1 = ‘xB3x00’ #the word of B300\nSPECIAL_2 = ‘xB4x00’ #the word of B400\nsysEndList = {‘00’: ‘x00’, ‘01’: ‘x01’, ‘02’: ‘x02’, ‘03’: ‘x03’, ‘04’: ‘x04’,\n‘05’: ‘x05’, ‘06’: ‘x06’, ‘07’: ‘x07’, ‘08’: ‘x08’, ‘09’: ‘x09’, ‘0a’: ‘x0a’,\n‘0b’: ‘x0b’, ‘0c’: ‘x0c’, ‘0d’: ‘x0d’, ‘0e’: ‘x0e’, ‘0f’: ‘x0f’, ‘10’: ‘x10’,\n‘11’: ‘x11’, ‘12’: ‘x12’, ‘13’: ‘x13’, ‘14’: ‘x14’, ‘15’: ‘x15’, ‘16’: ‘x16’,\n‘17’: ‘x17’, ‘18’: ‘x18’, ‘19’: ‘x19’, ‘1a’: ‘x1a’, ‘1b’: ‘x1b’, ‘1c’: ‘x1c’,\n‘1d’: ‘x1d’, ‘1e’: ‘x1e’, ‘1f’: ‘x1f’, ‘20’: ‘x20’, ‘21’: ‘x21’, ‘22’: ‘x22’,\n‘23’: ‘x23’, ‘24’: ‘x24’, ‘25’: ‘x25’, ‘26’: ‘x26’, ‘27’: ‘x27’, ‘28’: ‘x28’,\n‘29’: ‘x29’, ‘2a’: ‘x2a’, ‘2b’: ‘x2b’, ‘2c’: ‘x2c’, ‘2d’: ‘x2d’, ‘2e’: ‘x2e’,\n‘2f’: ‘x2f’, ‘30’: ‘x30’, ‘31’: ‘x31’, ‘32’: ‘x32’, ‘33’: ‘x33’, ‘34’: ‘x34’,\n‘35’: ‘x35’, ‘36’: ‘x36’, ‘37’: ‘x37’, ‘38’: ‘x38’, ‘39’: ‘x39’, ‘3a’: ‘x3a’,\n‘3b’: ‘x3b’, ‘3c’: ‘x3c’, ‘3d’: ‘x3d’, ‘3e’: ‘x3e’, ‘3f’: ‘x3f’, ‘40’: ‘x40’,\n‘41’: ‘x41’, ‘42’: ‘x42’, ‘43’: ‘x43’, ‘44’: ‘x44’, ‘45’: ‘x45’, ‘46’: ‘x46’,\n‘47’: ‘x47’, ‘48’: ‘x48’, ‘49’: ‘x49’, ‘4a’: ‘x4a’, ‘4b’: ‘x4b’, ‘4c’: ‘x4c’,\n‘4d’: ‘x4d’, ‘4e’: ‘x4e’, ‘4f’: ‘x4f’, ‘50’: ‘x50’, ‘51’: ‘x51’, ‘52’: ‘x52’,\n‘53’: ‘x53’, ‘54’: ‘x54’, ‘55’: ‘x55’, ‘56’: ‘x56’, ‘57’: ‘x57’, ‘58’: ‘x58’,\n‘59’: ‘x59’, ‘5a’: ‘x5a’, ‘5b’: ‘x5b’, ‘5c’: ‘x5c’, ‘5d’: ‘x5d’, ‘5e’: ‘x5e’,\n‘5f’: ‘x5f’, ‘60’: ‘x60’, ‘61’: ‘x61’, ‘62’: ‘x62’, ‘63’: ‘x63’, ‘64’: ‘x64’,\n‘65’: ‘x65’, ‘66’: ‘x66’, ‘67’: ‘x67’, ‘68’: ‘x68’, ‘69’: ‘x69’, ‘6a’: ‘x6a’,\n‘6b’: ‘x6b’, ‘6c’: ‘x6c’, ‘6d’: ‘x6d’, ‘6e’: ‘x6e’, ‘6f’: ‘x6f’, ‘70’: ‘x70’,\n‘71’: ‘x71’, ‘72’: ‘x72’, ‘73’: ‘x73’, ‘74’: ‘x74’, ‘75’: ‘x75’, ‘76’: ‘x76’,\n‘77’: ‘x77’, ‘78’: ‘x78’, ‘79’: ‘x79’, ‘7a’: ‘x7a’, ‘7b’: ‘x7b’, ‘7c’: ‘x7c’,\n‘7d’: ‘x7d’, ‘7e’: ‘x7e’, ‘7f’: ‘x7f’, ‘80’: ‘x80’, ‘81’: ‘x81’, ‘82’: ‘x82’,\n‘83’: ‘x83’, ‘84’: ‘x84’, ‘85’: ‘x85’, ‘86’: ‘x86’, ‘87’: ‘x87’, ‘88’: ‘x88’,\n‘89’: ‘x89’, ‘8a’: ‘x8a’, ‘8b’: ‘x8b’, ‘8c’: ‘x8c’, ‘8d’: ‘x8d’, ‘8e’: ‘x8e’,\n‘8f’: ‘x8f’, ‘90’: ‘x90’, ‘91’: ‘x91’, ‘92’: ‘x92’, ‘93’: ‘x93’, ‘94’: ‘x94’,\n‘95’: ‘x95’, ‘96’: ‘x96’, ‘97’: ‘x97’, ‘98’: ‘x98’, ‘99’: ‘x99’, ‘9a’: ‘x9a’,\n‘9b’: ‘x9b’, ‘9c’: ‘x9c’, ‘9d’: ‘x9d’, ‘9e’: ‘x9e’, ‘9f’: ‘x9f’, ‘a0’: ‘xa0’,\n‘a1’: ‘xa1’, ‘a2’: ‘xa2’, ‘a3’: ‘xa3’, ‘a4’: ‘xa4’, ‘a5’: ‘xa5’, ‘a6’: ‘xa6’,\n‘a7’: ‘xa7’, ‘a8’: ‘xa8’, ‘a9’: ‘xa9’, ‘aa’: ‘xaa’, ‘ab’: ‘xab’, ‘ac’: ‘xac’,\n‘ad’: ‘xad’, ‘ae’: ‘xae’, ‘af’: ‘xaf’, ‘b0’: ‘xb0’, ‘b1’: ‘xb1’, ‘b2’: ‘xb2’,\n‘b3’: ‘xb3’, ‘b4’: ‘xb4’, ‘b5’: ‘xb5’, ‘b6’: ‘xb6’, ‘b7’: ‘xb7’, ‘b8’: ‘xb8’,\n‘b9’: ‘xb9’, ‘ba’: ‘xba’, ‘bb’: ‘xbb’, ‘bc’: ‘xbc’, ‘bd’: ‘xbd’, ‘be’: ‘xbe’,\n‘bf’: ‘xbf’, ‘c0’: ‘xc0’, ‘c1’: ‘xc1’, ‘c2’: ‘xc2’, ‘c3’: ‘xc3’, ‘c4’: ‘xc4’,\n‘c5’: ‘xc5’, ‘c6’: ‘xc6’, ‘c7’: ‘xc7’, ‘c8’: ‘xc8’, ‘c9’: ‘xc9’, ‘ca’: ‘xca’,\n‘cb’: ‘xcb’, ‘cc’: ‘xcc’, ‘cd’: ‘xcd’, ‘ce’: ‘xce’, ‘cf’: ‘xcf’, ‘d0’: ‘xd0’,\n‘d1’: ‘xd1’, ‘d2’: ‘xd2’, ‘d3’: ‘xd3’, ‘d4’: ‘xd4’, ‘d5’: ‘xd5’, ‘d6’: ‘xd6’,\n‘d7’: ‘xd7’, ‘d8’: ‘xd8’, ‘d9’: ‘xd9’, ‘da’: ‘xda’, ‘db’: ‘xdb’, ‘dc’: ‘xdc’,\n‘dd’: ‘xdd’, ‘de’: ‘xde’, ‘df’: ‘xdf’, ’e0’: ‘xe0’, ’e1’: ‘xe1’, ’e2’: ‘xe2’,\n’e3’: ‘xe3’, ’e4’: ‘xe4’, ’e5’: ‘xe5’, ’e6’: ‘xe6’, ’e7’: ‘xe7’, ’e8’: ‘xe8’,\n’e9’: ‘xe9’, ’ea’: ‘xea’, ’eb’: ‘xeb’, ’ec’: ‘xec’, ’ed’: ‘xed’, ’ee’: ‘xee’,\n’ef’: ‘xef’, ‘f0’: ‘xf0’, ‘f1’: ‘xf1’, ‘f2’: ‘xf2’, ‘f3’: ‘xf3’, ‘f4’: ‘xf4’,\n‘f5’: ‘xf5’, ‘f6’: ‘xf6’, ‘f7’: ‘xf7’, ‘f8’: ‘xf8’, ‘f9’: ‘xf9’, ‘fa’: ‘xfa’,\n‘fb’: ‘xfb’, ‘fc’: ‘xfc’, ‘fd’: ‘xfd’, ‘fe’: ‘xfe’, ‘ff’: ‘xff’, }\ndef welcome():\nprint u’*******************************************************************’\nprint u’*************************** ***************************’\nprint u’EdtTxtConvert’\nprint u’*************************** ***************************’\nprint u’*******************************************************************’\nprint u’Any problem can connect me with my web site.’\nprint u’ powered by alswl '\nprint u’ http://dddspace.cn’\nprint u’ 09-10-01 v0.9 '\ndef getFiles(type):\n‘get the files of path’\nglobal dirPath\ndirPath = raw_input(u’Input the files path:’)\nwhile not os.path.isdir(dirPath):\nprint u’%s is not a path’ %(dirPath)\ndirPath = raw_input(u’Input the files path:’)\n#os.chdir(dirPath)\nfiles = os.listdir(dirPath)\nfileList = list()\nfor file in files:\nif os.path.splitext(file)[1].lower() == type:\nfileList.append(file)\nreturn fileList\ndef myInit():\n‘init the argu’\ntry:\nglobal blockSize, isDebug, sysEnd, startPosition\nconfigParser.read(CONFIGNAME)\nblockSize = configParser.getint(’edt_encode_config’, ‘block_size’)\nisDebug = configParser.getboolean(’edt_encode_config’, ‘debug’)\nsysEnd = configParser.get(’edt_encode_config’, ‘sys_end’)\nstartPosition = configParser.getint(’edt_encode_config’, ‘start_position’)\nviewConfig()\nexcept Exception, e:\nprint u’configure file %s error！Exiting！’ %CONFIGNAME\nraw_input(u’Press Enter to exit’)\nsys.exit()\ndef viewConfig():\nprint u’Current configure:’\nprint u’Block size:%s’ %blockSize\nprint u’Start Position:%s’ %startPosition\nprint u’Debug mode:%s’ %isDebug\nprint u’End Symbol:%s’ %toHex(sysEnd)\ndef setConfig():\nglobal blockSize, isDebug, sysEnd, startPosition\nconfigParser.read(CONFIGNAME)\ntry:\nblockSize = int(raw_input(‘set block size:’))\nstartPosition = int(raw_input(‘set start position:’))\nisDebug = bool(raw_input(‘set is debug mode(empty is False):’))\nsysEndInput = raw_input(‘set symbol of end(eg.0000)’)\nsysEnd = sysEndList[sysEndInput[:2]] + sysEndList[sysEndInput[2:]]\nconfigParser.set(’edt_encode_config’, ‘block_size’, blockSize)\nconfigParser.set(’edt_encode_config’, ‘debug’, str(isDebug))\nconfigParser.set(’edt_encode_config’, ‘sys_end’, sysEnd)\nconfigParser.set(’edt_encode_config’, ‘start_position’, startPosition)\nwith open(CONFIGNAME, ‘wb’) as configFile:\nconfigParser.write(configFile)\nexcept Exception, e:\nprint ‘Error set’\nraw_input(‘Press Enter to continue’)\ndef toHex(s):\n‘format string to hex’\nlst = []\nfor ch in s:\nhv = hex(ord(ch)).replace(‘0x’, ‘’)\nif len(hv) == 1:\nhv = ‘0’+hv\nlst.append(hv)\nreturn reduce(lambda x,y:x+y, lst)\ndef getBlock(block640):\n‘get the useful string from block of 640 bytes’\nfor i in range(0, len(block640), 2):\nif block640[i : i+2] == sysEnd:\nreturn block640[:i]\ndef decode(text):\n‘-1 operate’\nlist = '’\nfor i in range(0, len(text), 2):\ntry:\nrawStr = text[i: i+2]\nif rawStr == PASS_SYMBOL :\nlist += rawStr\nelif rawStr == SPECIAL_1:\nlist += ‘x21x32’\nelif rawStr == SPECIAL_2:\nlist += ‘x22x32’\nelse:\na, b = struct.unpack(‘BB’, rawStr)\na -= 1\nlist += struct.pack(‘BB’, a, b)\nexcept Exception, e:\ntt = 0\nreturn list\ndef encode(text):\n‘+1 operate’\nlist = '’\nfor char in text:\ntry:\nif char == ‘x21x32’:\nlist += SPECIAL_1\nelif char == ‘x22x32’:\nlist += SPECIAL_2\nelse:\na, b = struct.unpack(‘BB’, char.encode(‘utf-16’)[2:])\na += 1\nlist += struct.pack(‘BB’, a, b)\nexcept Exception, e:\ntt = 0\nlist += ‘x00x00’\nreturn list\ndef read(file):\n‘read the block of file(use blockSize)’\nreturn file.read(blockSize)\ndef edtProcess(edtFile):\n’edt-\u003etxt process’\nfedt = open(dirPath + ‘' + edtFile, ‘rb’)\nftxt = open(dirPath + ‘' + edtFile[0:-3] + ’txt’, ‘w’)\nglobal i\ni = 0\ntry:\nfedt.seek(startPosition)\nwhile True:\nblock640 = read(fedt)\nif not block640:\nbreak\nif i == 640 and isDebug == True:\nnonono = 0\nblock = getBlock(block640)\nblockStr = decode(block)\nif blockStr != ‘’:\nlineNum = u’%d:n’ %(i)\nlineStr = blockStr.decode(‘utf-16’) + ’nn’\nif isDebug:\nprint lineNum, ’line number:%s’ %(hex(i/16))\nprint lineStr,\nftxt.write(lineNum.encode(‘gbk’))\nftxt.write(lineStr.encode(‘gbk’))\ni += blockSize\nprint u’%s -\u003e %s Convert successful’ %(fedt.name, ftxt.name)\nexcept Exception, e:\nprint u’%s -\u003e %s Convert Errorn%s’ %(fedt.name, ftxt.name, e)\nfinally:\nfedt.close()\nftxt.close()\ndef txtProcess(txtFile):\n’txt-\u003eedt process’\nftxt = open(dirPath + ‘' + txtFile, ‘r’)\nfedt = open(dirPath + ‘' + txtFile[0:-3] + ’edt’, ‘wb’)\nglobal i\ni = 0\ntry:\nfedt.seek(startPosition)\ni = 0\nblockStr = '’\nfor eachLine in ftxt:\nif eachLine != ’n’ and i % 3 != 0:\nblockStr += eachLine\nif (i+2) % 3 == 0:\nif isDebug:\nprint blockStr.decode(‘gbk’),\nblock = encode(blockStr[:-1].decode(‘gbk’))\nfedt.write(block)\nfedt.seek(640 - len(block), os.SEEK_CUR)\nblockStr = '’\ni += 1\nprint u’%s -\u003e %s Convert successful’ %(ftxt.name, fedt.name)\nexcept Exception, e:\nprint u’%s -\u003e %s Convert Errorn%s’ %(ftxt.name, fedt.name, e)\nfinally:\nftxt.close()\nfedt.close()\nif name == ‘main’:\nwelcome()\nmyInit()\nwhile True:\nprint ’nMenu’\nprint ‘1.edt-\u003etxtn2.txt-\u003eedtn3.view confign4.set confign0.exit’\nmode = raw_input(u’Please choose:’)\nif mode == ‘1’:\nfileList = getFiles(’.edt’)\nif fileList != None:\nprint u’fiels ready to convert:%sn’ %fileList\nraw_input(u’Press Enter to convert’)\nfor edtFile in fileList:\nedtProcess(edtFile)\nelse:\nprint ‘There is no edt files!’\nraw_input(‘Press Enter to continue’)\nelif mode == ‘2’:\nfileList = getFiles(’.txt’)\nif fileList != None:\nprint u’fiels ready to convert:%sn’ %fileList\nraw_input(u’Press Enter to convert’)\nfor txtFile in fileList:\ntxtProcess(txtFile)\nelse:\nprint ‘There is no txt files!’\nraw_input(‘Press Enter to continue’)\nelif mode == ‘3’:\nprint '’\nviewConfig()\nraw_input(‘Press Enter to continue’)\nelif mode == ‘4’:\nprint '’\nsetConfig()\nraw_input(‘Press Enter to continue’)\nelif mode == ‘0’:\nbreak\nelse:\nprint ‘Error: Input error!!n’\nraw_input(‘Press Enter to continue’)\n点击这里下载源代码（edtTxtConvert.py+config.cfg+reade me.txt，需要Python2.6以上），如果需要exe版本的程序，可以向我索取，也可以使用py2exe自行编译。\n",
-  "wordCount" : "1382",
-  "inLanguage": "en",
-  "datePublished": "2009-11-01T00:00:00+08:00",
-  "dateModified": "2009-11-01T00:00:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      铁血联盟EdtTxt转换器v0.9
-    </h1>
-    <div class="post-meta"><span title='2009-11-01 00:00:00 +0800 CST'>2009-11-01</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> 
-
-  <div class="post-content"><p>上个月时候，<a href="http://zww.me/">zwwooooo</a>同鞋联系我让帮写一个铁血联盟中需要用到的Edt&lt;-&gt;Txt转换器，我前前后后大约三个星期完成<br />
-到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高<br />
-人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。<br />
-一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：</p>
-<blockquote>
-<p>edt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下</p>
-</blockquote>
-<p>一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明</p>
-<ol>
-<li>
-<p>把 000.edt 文件用16进制方式打开，对话从&quot;0&quot;处开始，结束标志是2个16进制字节：00 00</p>
-</li>
-<li>
-<p>000.edt 里面每个/每段对话/说明相隔 640 个字节，即&quot;0&quot;开始为第一段，直到16进制双字节出现&quot;00 00&quot;结束，然后第2段话在第 640<br />
-字节处开始，也是以&quot;00 00&quot;表示结束，后面的以此类推。<br />
-（因为有几种edt文件，每种edt文件的对话间隔不同，所以这个&quot;间隔&quot;最好设个参数，可以在转换前自定义输入。）</p>
-</li>
-<li>
-<p>然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位<br />
-&mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以<br />
-，直接用UTF-16无bom格式做文本文件&mdash;-不过这样不太方便编辑），那么文本就出来了</p>
-</li>
-</ol>
-<p>每段话提取并转换后按 000.txt 一样显示，方便修改</p>
-<ol start="4">
-<li>对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）：</li>
-</ol>
-<p>1）就是刚才说的&quot;00 00&quot;，它是每个对话的结束标志。</p>
-<p>2）&ldquo;20 00&rdquo;：UTF-16编码&rsquo;空格&rsquo;的编码，这个是保持不变的，不用 -1 处理。</p>
-<p>3）&ldquo;B3 00&rdquo; 和 &ldquo;B4 00&rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3<br />
-00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如&quot;㈡&quot; &ldquo;㈢&rdquo;。</p>
-<p>这样就能修改对话了/提取出的英文翻译成中文。</p>
-<p>二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用&quot;00 00&quot;填充），当然最好两个方式都行</p>
-<p>在v0.9中，我已经可以在程序中对参数进行配置，对系统的blockSize和标识符进行修改。一个已知缺陷是在Edt-&gt;Txt的处理行数时候可能出现问题。</p>
-<p>程序是<a href="http://log4d.com/2009/10/python-django-mtv-framework-and-php-mvc-framework">用Python写的</a>，不要觉得很难，我也是在用Python完成Hello<br />
-World之后第三天开始写这个程序，只要有C/Java/C#这些语言一些基础，就可以理解这些程序了。</p>
-<pre><code># coding=utf-8
+二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用&#34;00 00&#34;填充），当然最好两个方式都行"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"铁血联盟EdtTxt转换器v0.9","item":"https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"铁血联盟EdtTxt转换器v0.9","name":"铁血联盟EdtTxt转换器v0.9","description":"上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt\u0026lt;-\u0026gt;Txt转换器，我前前后后大约三个星期完成 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高 人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。 一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：\nedt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下\n一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明\n把 000.edt 文件用16进制方式打开，对话从\u0026quot;0\u0026quot;处开始，结束标志是2个16进制字节：00 00\n000.edt 里面每个/每段对话/说明相隔 640 个字节，即\u0026quot;0\u0026quot;开始为第一段，直到16进制双字节出现\u0026quot;00 00\u0026quot;结束，然后第2段话在第 640 字节处开始，也是以\u0026quot;00 00\u0026quot;表示结束，后面的以此类推。 （因为有几种edt文件，每种edt文件的对话间隔不同，所以这个\u0026quot;间隔\u0026quot;最好设个参数，可以在转换前自定义输入。）\n然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位 \u0026mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以 ，直接用UTF-16无bom格式做文本文件\u0026mdash;-不过这样不太方便编辑），那么文本就出来了\n每段话提取并转换后按 000.txt 一样显示，方便修改\n对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的\u0026quot;00 00\u0026quot;，它是每个对话的结束标志。\n2）\u0026ldquo;20 00\u0026rdquo;：UTF-16编码\u0026rsquo;空格\u0026rsquo;的编码，这个是保持不变的，不用 -1 处理。\n3）\u0026ldquo;B3 00\u0026rdquo; 和 \u0026ldquo;B4 00\u0026rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3 00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如\u0026quot;㈡\u0026quot; \u0026ldquo;㈢\u0026rdquo;。\n这样就能修改对话了/提取出的英文翻译成中文。\n二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用\u0026quot;00 00\u0026quot;填充），当然最好两个方式都行","keywords":["python"],"articleBody":"上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt\u003c-\u003eTxt转换器，我前前后后大约三个星期完成 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高 人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。 一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：\nedt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下\n一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明\n把 000.edt 文件用16进制方式打开，对话从\"0\"处开始，结束标志是2个16进制字节：00 00\n000.edt 里面每个/每段对话/说明相隔 640 个字节，即\"0\"开始为第一段，直到16进制双字节出现\"00 00\"结束，然后第2段话在第 640 字节处开始，也是以\"00 00\"表示结束，后面的以此类推。 （因为有几种edt文件，每种edt文件的对话间隔不同，所以这个\"间隔\"最好设个参数，可以在转换前自定义输入。）\n然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位 —-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以 ，直接用UTF-16无bom格式做文本文件—-不过这样不太方便编辑），那么文本就出来了\n每段话提取并转换后按 000.txt 一样显示，方便修改\n对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的\"00 00\"，它是每个对话的结束标志。\n2）“20 00”：UTF-16编码’空格’的编码，这个是保持不变的，不用 -1 处理。\n3）“B3 00” 和 “B4 00”：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3 00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如\"㈡\" “㈢”。\n这样就能修改对话了/提取出的英文翻译成中文。\n二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用\"00 00\"填充），当然最好两个方式都行\n在v0.9中，我已经可以在程序中对参数进行配置，对系统的blockSize和标识符进行修改。一个已知缺陷是在Edt-\u003eTxt的处理行数时候可能出现问题。\n程序是用Python写的，不要觉得很难，我也是在用Python完成Hello World之后第三天开始写这个程序，只要有C/Java/C#这些语言一些基础，就可以理解这些程序了。\n# coding=utf-8 import struct import os import ConfigParser configParser=ConfigParser.ConfigParser()\nCONFIGNAME = ‘config.cfg’\nblockSize = 640 #size per block 640/480\nisDebug = False #isDebug mode True/False\nsysEnd = ‘x00x00’ #end of a sentence, e.g. a space x00x00\nstartPosition = 00 #start posion\nPASS_SYMBOL = ‘x20x00’ #the list of word not decode\nSPECIAL_1 = ‘xB3x00’ #the word of B300\nSPECIAL_2 = ‘xB4x00’ #the word of B400\nsysEndList = {‘00’: ‘x00’, ‘01’: ‘x01’, ‘02’: ‘x02’, ‘03’: ‘x03’, ‘04’: ‘x04’, ‘05’: ‘x05’, ‘06’: ‘x06’, ‘07’: ‘x07’, ‘08’: ‘x08’, ‘09’: ‘x09’, ‘0a’: ‘x0a’, ‘0b’: ‘x0b’, ‘0c’: ‘x0c’, ‘0d’: ‘x0d’, ‘0e’: ‘x0e’, ‘0f’: ‘x0f’, ‘10’: ‘x10’, ‘11’: ‘x11’, ‘12’: ‘x12’, ‘13’: ‘x13’, ‘14’: ‘x14’, ‘15’: ‘x15’, ‘16’: ‘x16’, ‘17’: ‘x17’, ‘18’: ‘x18’, ‘19’: ‘x19’, ‘1a’: ‘x1a’, ‘1b’: ‘x1b’, ‘1c’: ‘x1c’, ‘1d’: ‘x1d’, ‘1e’: ‘x1e’, ‘1f’: ‘x1f’, ‘20’: ‘x20’, ‘21’: ‘x21’, ‘22’: ‘x22’, ‘23’: ‘x23’, ‘24’: ‘x24’, ‘25’: ‘x25’, ‘26’: ‘x26’, ‘27’: ‘x27’, ‘28’: ‘x28’, ‘29’: ‘x29’, ‘2a’: ‘x2a’, ‘2b’: ‘x2b’, ‘2c’: ‘x2c’, ‘2d’: ‘x2d’, ‘2e’: ‘x2e’, ‘2f’: ‘x2f’, ‘30’: ‘x30’, ‘31’: ‘x31’, ‘32’: ‘x32’, ‘33’: ‘x33’, ‘34’: ‘x34’, ‘35’: ‘x35’, ‘36’: ‘x36’, ‘37’: ‘x37’, ‘38’: ‘x38’, ‘39’: ‘x39’, ‘3a’: ‘x3a’, ‘3b’: ‘x3b’, ‘3c’: ‘x3c’, ‘3d’: ‘x3d’, ‘3e’: ‘x3e’, ‘3f’: ‘x3f’, ‘40’: ‘x40’, ‘41’: ‘x41’, ‘42’: ‘x42’, ‘43’: ‘x43’, ‘44’: ‘x44’, ‘45’: ‘x45’, ‘46’: ‘x46’, ‘47’: ‘x47’, ‘48’: ‘x48’, ‘49’: ‘x49’, ‘4a’: ‘x4a’, ‘4b’: ‘x4b’, ‘4c’: ‘x4c’, ‘4d’: ‘x4d’, ‘4e’: ‘x4e’, ‘4f’: ‘x4f’, ‘50’: ‘x50’, ‘51’: ‘x51’, ‘52’: ‘x52’, ‘53’: ‘x53’, ‘54’: ‘x54’, ‘55’: ‘x55’, ‘56’: ‘x56’, ‘57’: ‘x57’, ‘58’: ‘x58’, ‘59’: ‘x59’, ‘5a’: ‘x5a’, ‘5b’: ‘x5b’, ‘5c’: ‘x5c’, ‘5d’: ‘x5d’, ‘5e’: ‘x5e’, ‘5f’: ‘x5f’, ‘60’: ‘x60’, ‘61’: ‘x61’, ‘62’: ‘x62’, ‘63’: ‘x63’, ‘64’: ‘x64’, ‘65’: ‘x65’, ‘66’: ‘x66’, ‘67’: ‘x67’, ‘68’: ‘x68’, ‘69’: ‘x69’, ‘6a’: ‘x6a’, ‘6b’: ‘x6b’, ‘6c’: ‘x6c’, ‘6d’: ‘x6d’, ‘6e’: ‘x6e’, ‘6f’: ‘x6f’, ‘70’: ‘x70’, ‘71’: ‘x71’, ‘72’: ‘x72’, ‘73’: ‘x73’, ‘74’: ‘x74’, ‘75’: ‘x75’, ‘76’: ‘x76’, ‘77’: ‘x77’, ‘78’: ‘x78’, ‘79’: ‘x79’, ‘7a’: ‘x7a’, ‘7b’: ‘x7b’, ‘7c’: ‘x7c’, ‘7d’: ‘x7d’, ‘7e’: ‘x7e’, ‘7f’: ‘x7f’, ‘80’: ‘x80’, ‘81’: ‘x81’, ‘82’: ‘x82’, ‘83’: ‘x83’, ‘84’: ‘x84’, ‘85’: ‘x85’, ‘86’: ‘x86’, ‘87’: ‘x87’, ‘88’: ‘x88’, ‘89’: ‘x89’, ‘8a’: ‘x8a’, ‘8b’: ‘x8b’, ‘8c’: ‘x8c’, ‘8d’: ‘x8d’, ‘8e’: ‘x8e’, ‘8f’: ‘x8f’, ‘90’: ‘x90’, ‘91’: ‘x91’, ‘92’: ‘x92’, ‘93’: ‘x93’, ‘94’: ‘x94’, ‘95’: ‘x95’, ‘96’: ‘x96’, ‘97’: ‘x97’, ‘98’: ‘x98’, ‘99’: ‘x99’, ‘9a’: ‘x9a’, ‘9b’: ‘x9b’, ‘9c’: ‘x9c’, ‘9d’: ‘x9d’, ‘9e’: ‘x9e’, ‘9f’: ‘x9f’, ‘a0’: ‘xa0’, ‘a1’: ‘xa1’, ‘a2’: ‘xa2’, ‘a3’: ‘xa3’, ‘a4’: ‘xa4’, ‘a5’: ‘xa5’, ‘a6’: ‘xa6’, ‘a7’: ‘xa7’, ‘a8’: ‘xa8’, ‘a9’: ‘xa9’, ‘aa’: ‘xaa’, ‘ab’: ‘xab’, ‘ac’: ‘xac’, ‘ad’: ‘xad’, ‘ae’: ‘xae’, ‘af’: ‘xaf’, ‘b0’: ‘xb0’, ‘b1’: ‘xb1’, ‘b2’: ‘xb2’, ‘b3’: ‘xb3’, ‘b4’: ‘xb4’, ‘b5’: ‘xb5’, ‘b6’: ‘xb6’, ‘b7’: ‘xb7’, ‘b8’: ‘xb8’, ‘b9’: ‘xb9’, ‘ba’: ‘xba’, ‘bb’: ‘xbb’, ‘bc’: ‘xbc’, ‘bd’: ‘xbd’, ‘be’: ‘xbe’, ‘bf’: ‘xbf’, ‘c0’: ‘xc0’, ‘c1’: ‘xc1’, ‘c2’: ‘xc2’, ‘c3’: ‘xc3’, ‘c4’: ‘xc4’, ‘c5’: ‘xc5’, ‘c6’: ‘xc6’, ‘c7’: ‘xc7’, ‘c8’: ‘xc8’, ‘c9’: ‘xc9’, ‘ca’: ‘xca’, ‘cb’: ‘xcb’, ‘cc’: ‘xcc’, ‘cd’: ‘xcd’, ‘ce’: ‘xce’, ‘cf’: ‘xcf’, ‘d0’: ‘xd0’, ‘d1’: ‘xd1’, ‘d2’: ‘xd2’, ‘d3’: ‘xd3’, ‘d4’: ‘xd4’, ‘d5’: ‘xd5’, ‘d6’: ‘xd6’, ‘d7’: ‘xd7’, ‘d8’: ‘xd8’, ‘d9’: ‘xd9’, ‘da’: ‘xda’, ‘db’: ‘xdb’, ‘dc’: ‘xdc’, ‘dd’: ‘xdd’, ‘de’: ‘xde’, ‘df’: ‘xdf’, ’e0’: ‘xe0’, ’e1’: ‘xe1’, ’e2’: ‘xe2’, ’e3’: ‘xe3’, ’e4’: ‘xe4’, ’e5’: ‘xe5’, ’e6’: ‘xe6’, ’e7’: ‘xe7’, ’e8’: ‘xe8’, ’e9’: ‘xe9’, ’ea’: ‘xea’, ’eb’: ‘xeb’, ’ec’: ‘xec’, ’ed’: ‘xed’, ’ee’: ‘xee’, ’ef’: ‘xef’, ‘f0’: ‘xf0’, ‘f1’: ‘xf1’, ‘f2’: ‘xf2’, ‘f3’: ‘xf3’, ‘f4’: ‘xf4’, ‘f5’: ‘xf5’, ‘f6’: ‘xf6’, ‘f7’: ‘xf7’, ‘f8’: ‘xf8’, ‘f9’: ‘xf9’, ‘fa’: ‘xfa’, ‘fb’: ‘xfb’, ‘fc’: ‘xfc’, ‘fd’: ‘xfd’, ‘fe’: ‘xfe’, ‘ff’: ‘xff’, }\ndef welcome():\nprint u’*******************************************************************’\nprint u’*************************** ***************************’\nprint u’EdtTxtConvert’\nprint u’*************************** ***************************’\nprint u’*******************************************************************’\nprint u’Any problem can connect me with my web site.’\nprint u’ powered by alswl '\nprint u’ http://dddspace.cn’\nprint u’ 09-10-01 v0.9 '\ndef getFiles(type):\n‘get the files of path’\nglobal dirPath\ndirPath = raw_input(u’Input the files path:’)\nwhile not os.path.isdir(dirPath):\nprint u’%s is not a path’ %(dirPath)\ndirPath = raw_input(u’Input the files path:’)\n#os.chdir(dirPath)\nfiles = os.listdir(dirPath)\nfileList = list()\nfor file in files:\nif os.path.splitext(file)[1].lower() == type:\nfileList.append(file)\nreturn fileList\ndef myInit():\n‘init the argu’\ntry:\nglobal blockSize, isDebug, sysEnd, startPosition\nconfigParser.read(CONFIGNAME)\nblockSize = configParser.getint(’edt_encode_config’, ‘block_size’)\nisDebug = configParser.getboolean(’edt_encode_config’, ‘debug’)\nsysEnd = configParser.get(’edt_encode_config’, ‘sys_end’)\nstartPosition = configParser.getint(’edt_encode_config’, ‘start_position’)\nviewConfig()\nexcept Exception, e:\nprint u’configure file %s error！Exiting！’ %CONFIGNAME\nraw_input(u’Press Enter to exit’)\nsys.exit()\ndef viewConfig():\nprint u’Current configure:’\nprint u’Block size:%s’ %blockSize\nprint u’Start Position:%s’ %startPosition\nprint u’Debug mode:%s’ %isDebug\nprint u’End Symbol:%s’ %toHex(sysEnd)\ndef setConfig():\nglobal blockSize, isDebug, sysEnd, startPosition\nconfigParser.read(CONFIGNAME)\ntry:\nblockSize = int(raw_input(‘set block size:’))\nstartPosition = int(raw_input(‘set start position:’))\nisDebug = bool(raw_input(‘set is debug mode(empty is False):’))\nsysEndInput = raw_input(‘set symbol of end(eg.0000)’)\nsysEnd = sysEndList[sysEndInput[:2]] + sysEndList[sysEndInput[2:]]\nconfigParser.set(’edt_encode_config’, ‘block_size’, blockSize)\nconfigParser.set(’edt_encode_config’, ‘debug’, str(isDebug))\nconfigParser.set(’edt_encode_config’, ‘sys_end’, sysEnd)\nconfigParser.set(’edt_encode_config’, ‘start_position’, startPosition)\nwith open(CONFIGNAME, ‘wb’) as configFile:\nconfigParser.write(configFile)\nexcept Exception, e:\nprint ‘Error set’\nraw_input(‘Press Enter to continue’)\ndef toHex(s):\n‘format string to hex’\nlst = []\nfor ch in s:\nhv = hex(ord(ch)).replace(‘0x’, ‘’)\nif len(hv) == 1:\nhv = ‘0’+hv\nlst.append(hv)\nreturn reduce(lambda x,y:x+y, lst)\ndef getBlock(block640):\n‘get the useful string from block of 640 bytes’\nfor i in range(0, len(block640), 2):\nif block640[i : i+2] == sysEnd:\nreturn block640[:i]\ndef decode(text):\n‘-1 operate’\nlist = '’\nfor i in range(0, len(text), 2):\ntry:\nrawStr = text[i: i+2]\nif rawStr == PASS_SYMBOL :\nlist += rawStr\nelif rawStr == SPECIAL_1:\nlist += ‘x21x32’\nelif rawStr == SPECIAL_2:\nlist += ‘x22x32’\nelse:\na, b = struct.unpack(‘BB’, rawStr)\na -= 1\nlist += struct.pack(‘BB’, a, b)\nexcept Exception, e:\ntt = 0\nreturn list\ndef encode(text):\n‘+1 operate’\nlist = '’\nfor char in text:\ntry:\nif char == ‘x21x32’:\nlist += SPECIAL_1\nelif char == ‘x22x32’:\nlist += SPECIAL_2\nelse:\na, b = struct.unpack(‘BB’, char.encode(‘utf-16’)[2:])\na += 1\nlist += struct.pack(‘BB’, a, b)\nexcept Exception, e:\ntt = 0\nlist += ‘x00x00’\nreturn list\ndef read(file):\n‘read the block of file(use blockSize)’\nreturn file.read(blockSize)\ndef edtProcess(edtFile):\n’edt-\u003etxt process’\nfedt = open(dirPath + ‘' + edtFile, ‘rb’)\nftxt = open(dirPath + ‘' + edtFile[0:-3] + ’txt’, ‘w’)\nglobal i\ni = 0\ntry:\nfedt.seek(startPosition)\nwhile True:\nblock640 = read(fedt)\nif not block640:\nbreak\nif i == 640 and isDebug == True:\nnonono = 0\nblock = getBlock(block640)\nblockStr = decode(block)\nif blockStr != ‘’:\nlineNum = u’%d:n’ %(i)\nlineStr = blockStr.decode(‘utf-16’) + ’nn’\nif isDebug:\nprint lineNum, ’line number:%s’ %(hex(i/16))\nprint lineStr,\nftxt.write(lineNum.encode(‘gbk’))\nftxt.write(lineStr.encode(‘gbk’))\ni += blockSize\nprint u’%s -\u003e %s Convert successful’ %(fedt.name, ftxt.name)\nexcept Exception, e:\nprint u’%s -\u003e %s Convert Errorn%s’ %(fedt.name, ftxt.name, e)\nfinally:\nfedt.close()\nftxt.close()\ndef txtProcess(txtFile):\n’txt-\u003eedt process’\nftxt = open(dirPath + ‘' + txtFile, ‘r’)\nfedt = open(dirPath + ‘' + txtFile[0:-3] + ’edt’, ‘wb’)\nglobal i\ni = 0\ntry:\nfedt.seek(startPosition)\ni = 0\nblockStr = '’\nfor eachLine in ftxt:\nif eachLine != ’n’ and i % 3 != 0:\nblockStr += eachLine\nif (i+2) % 3 == 0:\nif isDebug:\nprint blockStr.decode(‘gbk’),\nblock = encode(blockStr[:-1].decode(‘gbk’))\nfedt.write(block)\nfedt.seek(640 - len(block), os.SEEK_CUR)\nblockStr = '’\ni += 1\nprint u’%s -\u003e %s Convert successful’ %(ftxt.name, fedt.name)\nexcept Exception, e:\nprint u’%s -\u003e %s Convert Errorn%s’ %(ftxt.name, fedt.name, e)\nfinally:\nftxt.close()\nfedt.close()\nif name == ‘main’:\nwelcome()\nmyInit()\nwhile True:\nprint ’nMenu’\nprint ‘1.edt-\u003etxtn2.txt-\u003eedtn3.view confign4.set confign0.exit’\nmode = raw_input(u’Please choose:’)\nif mode == ‘1’:\nfileList = getFiles(’.edt’)\nif fileList != None:\nprint u’fiels ready to convert:%sn’ %fileList\nraw_input(u’Press Enter to convert’)\nfor edtFile in fileList:\nedtProcess(edtFile)\nelse:\nprint ‘There is no edt files!’\nraw_input(‘Press Enter to continue’)\nelif mode == ‘2’:\nfileList = getFiles(’.txt’)\nif fileList != None:\nprint u’fiels ready to convert:%sn’ %fileList\nraw_input(u’Press Enter to convert’)\nfor txtFile in fileList:\ntxtProcess(txtFile)\nelse:\nprint ‘There is no txt files!’\nraw_input(‘Press Enter to continue’)\nelif mode == ‘3’:\nprint '’\nviewConfig()\nraw_input(‘Press Enter to continue’)\nelif mode == ‘4’:\nprint '’\nsetConfig()\nraw_input(‘Press Enter to continue’)\nelif mode == ‘0’:\nbreak\nelse:\nprint ‘Error: Input error!!n’\nraw_input(‘Press Enter to continue’)\n点击这里下载源代码（edtTxtConvert.py+config.cfg+reade me.txt，需要Python2.6以上），如果需要exe版本的程序，可以向我索取，也可以使用py2exe自行编译。\n","wordCount":"1382","inLanguage":"en","datePublished":"2009-11-01T00:00:00+08:00","dateModified":"2009-11-01T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>铁血联盟EdtTxt转换器v0.9</h1><div class=post-meta><span title='2009-11-01 00:00:00 +0800 +0800'>2009-11-01</span>&nbsp;·&nbsp;alswl</div></header><div class=post-content><p>上个月时候，<a href=http://zww.me/>zwwooooo</a>同鞋联系我让帮写一个铁血联盟中需要用到的Edt&lt;->Txt转换器，我前前后后大约三个星期完成
+到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高
+人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。
+一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：</p><blockquote><p>edt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下</p></blockquote><p>一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明</p><ol><li><p>把 000.edt 文件用16进制方式打开，对话从"0"处开始，结束标志是2个16进制字节：00 00</p></li><li><p>000.edt 里面每个/每段对话/说明相隔 640 个字节，即"0"开始为第一段，直到16进制双字节出现"00 00"结束，然后第2段话在第 640
+字节处开始，也是以"00 00"表示结束，后面的以此类推。
+（因为有几种edt文件，每种edt文件的对话间隔不同，所以这个"间隔"最好设个参数，可以在转换前自定义输入。）</p></li><li><p>然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位
+&mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以
+，直接用UTF-16无bom格式做文本文件&mdash;-不过这样不太方便编辑），那么文本就出来了</p></li></ol><p>每段话提取并转换后按 000.txt 一样显示，方便修改</p><ol start=4><li>对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）：</li></ol><p>1）就是刚才说的"00 00"，它是每个对话的结束标志。</p><p>2）&ldquo;20 00&rdquo;：UTF-16编码&rsquo;空格&rsquo;的编码，这个是保持不变的，不用 -1 处理。</p><p>3）&ldquo;B3 00&rdquo; 和 &ldquo;B4 00&rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3
+00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如"㈡" &ldquo;㈢&rdquo;。</p><p>这样就能修改对话了/提取出的英文翻译成中文。</p><p>二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用"00 00"填充），当然最好两个方式都行</p><p>在v0.9中，我已经可以在程序中对参数进行配置，对系统的blockSize和标识符进行修改。一个已知缺陷是在Edt->Txt的处理行数时候可能出现问题。</p><p>程序是<a href=http://log4d.com/2009/10/python-django-mtv-framework-and-php-mvc-framework>用Python写的</a>，不要觉得很难，我也是在用Python完成Hello
+World之后第三天开始写这个程序，只要有C/Java/C#这些语言一些基础，就可以理解这些程序了。</p><pre><code># coding=utf-8
 import struct
 import os
 import ConfigParser
-</code></pre>
-<p>configParser=ConfigParser.ConfigParser()</p>
-<p>CONFIGNAME = &lsquo;config.cfg&rsquo;</p>
-<p>blockSize = 640 #size per block 640/480</p>
-<p>isDebug = False #isDebug mode True/False</p>
-<p>sysEnd = &lsquo;x00x00&rsquo; #end of a sentence, e.g. a space x00x00</p>
-<p>startPosition = 00 #start posion</p>
-<p>PASS_SYMBOL = &lsquo;x20x00&rsquo; #the list of word not decode</p>
-<p>SPECIAL_1 = &lsquo;xB3x00&rsquo; #the word of B300</p>
-<p>SPECIAL_2 = &lsquo;xB4x00&rsquo; #the word of B400</p>
-<p>sysEndList = {&lsquo;00&rsquo;: &lsquo;x00&rsquo;, &lsquo;01&rsquo;: &lsquo;x01&rsquo;, &lsquo;02&rsquo;: &lsquo;x02&rsquo;, &lsquo;03&rsquo;: &lsquo;x03&rsquo;, &lsquo;04&rsquo;: &lsquo;x04&rsquo;,<br />
-&lsquo;05&rsquo;: &lsquo;x05&rsquo;, &lsquo;06&rsquo;: &lsquo;x06&rsquo;, &lsquo;07&rsquo;: &lsquo;x07&rsquo;, &lsquo;08&rsquo;: &lsquo;x08&rsquo;, &lsquo;09&rsquo;: &lsquo;x09&rsquo;, &lsquo;0a&rsquo;: &lsquo;x0a&rsquo;,<br />
-&lsquo;0b&rsquo;: &lsquo;x0b&rsquo;, &lsquo;0c&rsquo;: &lsquo;x0c&rsquo;, &lsquo;0d&rsquo;: &lsquo;x0d&rsquo;, &lsquo;0e&rsquo;: &lsquo;x0e&rsquo;, &lsquo;0f&rsquo;: &lsquo;x0f&rsquo;, &lsquo;10&rsquo;: &lsquo;x10&rsquo;,<br />
-&lsquo;11&rsquo;: &lsquo;x11&rsquo;, &lsquo;12&rsquo;: &lsquo;x12&rsquo;, &lsquo;13&rsquo;: &lsquo;x13&rsquo;, &lsquo;14&rsquo;: &lsquo;x14&rsquo;, &lsquo;15&rsquo;: &lsquo;x15&rsquo;, &lsquo;16&rsquo;: &lsquo;x16&rsquo;,<br />
-&lsquo;17&rsquo;: &lsquo;x17&rsquo;, &lsquo;18&rsquo;: &lsquo;x18&rsquo;, &lsquo;19&rsquo;: &lsquo;x19&rsquo;, &lsquo;1a&rsquo;: &lsquo;x1a&rsquo;, &lsquo;1b&rsquo;: &lsquo;x1b&rsquo;, &lsquo;1c&rsquo;: &lsquo;x1c&rsquo;,<br />
-&lsquo;1d&rsquo;: &lsquo;x1d&rsquo;, &lsquo;1e&rsquo;: &lsquo;x1e&rsquo;, &lsquo;1f&rsquo;: &lsquo;x1f&rsquo;, &lsquo;20&rsquo;: &lsquo;x20&rsquo;, &lsquo;21&rsquo;: &lsquo;x21&rsquo;, &lsquo;22&rsquo;: &lsquo;x22&rsquo;,<br />
-&lsquo;23&rsquo;: &lsquo;x23&rsquo;, &lsquo;24&rsquo;: &lsquo;x24&rsquo;, &lsquo;25&rsquo;: &lsquo;x25&rsquo;, &lsquo;26&rsquo;: &lsquo;x26&rsquo;, &lsquo;27&rsquo;: &lsquo;x27&rsquo;, &lsquo;28&rsquo;: &lsquo;x28&rsquo;,<br />
-&lsquo;29&rsquo;: &lsquo;x29&rsquo;, &lsquo;2a&rsquo;: &lsquo;x2a&rsquo;, &lsquo;2b&rsquo;: &lsquo;x2b&rsquo;, &lsquo;2c&rsquo;: &lsquo;x2c&rsquo;, &lsquo;2d&rsquo;: &lsquo;x2d&rsquo;, &lsquo;2e&rsquo;: &lsquo;x2e&rsquo;,<br />
-&lsquo;2f&rsquo;: &lsquo;x2f&rsquo;, &lsquo;30&rsquo;: &lsquo;x30&rsquo;, &lsquo;31&rsquo;: &lsquo;x31&rsquo;, &lsquo;32&rsquo;: &lsquo;x32&rsquo;, &lsquo;33&rsquo;: &lsquo;x33&rsquo;, &lsquo;34&rsquo;: &lsquo;x34&rsquo;,<br />
-&lsquo;35&rsquo;: &lsquo;x35&rsquo;, &lsquo;36&rsquo;: &lsquo;x36&rsquo;, &lsquo;37&rsquo;: &lsquo;x37&rsquo;, &lsquo;38&rsquo;: &lsquo;x38&rsquo;, &lsquo;39&rsquo;: &lsquo;x39&rsquo;, &lsquo;3a&rsquo;: &lsquo;x3a&rsquo;,<br />
-&lsquo;3b&rsquo;: &lsquo;x3b&rsquo;, &lsquo;3c&rsquo;: &lsquo;x3c&rsquo;, &lsquo;3d&rsquo;: &lsquo;x3d&rsquo;, &lsquo;3e&rsquo;: &lsquo;x3e&rsquo;, &lsquo;3f&rsquo;: &lsquo;x3f&rsquo;, &lsquo;40&rsquo;: &lsquo;x40&rsquo;,<br />
-&lsquo;41&rsquo;: &lsquo;x41&rsquo;, &lsquo;42&rsquo;: &lsquo;x42&rsquo;, &lsquo;43&rsquo;: &lsquo;x43&rsquo;, &lsquo;44&rsquo;: &lsquo;x44&rsquo;, &lsquo;45&rsquo;: &lsquo;x45&rsquo;, &lsquo;46&rsquo;: &lsquo;x46&rsquo;,<br />
-&lsquo;47&rsquo;: &lsquo;x47&rsquo;, &lsquo;48&rsquo;: &lsquo;x48&rsquo;, &lsquo;49&rsquo;: &lsquo;x49&rsquo;, &lsquo;4a&rsquo;: &lsquo;x4a&rsquo;, &lsquo;4b&rsquo;: &lsquo;x4b&rsquo;, &lsquo;4c&rsquo;: &lsquo;x4c&rsquo;,<br />
-&lsquo;4d&rsquo;: &lsquo;x4d&rsquo;, &lsquo;4e&rsquo;: &lsquo;x4e&rsquo;, &lsquo;4f&rsquo;: &lsquo;x4f&rsquo;, &lsquo;50&rsquo;: &lsquo;x50&rsquo;, &lsquo;51&rsquo;: &lsquo;x51&rsquo;, &lsquo;52&rsquo;: &lsquo;x52&rsquo;,<br />
-&lsquo;53&rsquo;: &lsquo;x53&rsquo;, &lsquo;54&rsquo;: &lsquo;x54&rsquo;, &lsquo;55&rsquo;: &lsquo;x55&rsquo;, &lsquo;56&rsquo;: &lsquo;x56&rsquo;, &lsquo;57&rsquo;: &lsquo;x57&rsquo;, &lsquo;58&rsquo;: &lsquo;x58&rsquo;,<br />
-&lsquo;59&rsquo;: &lsquo;x59&rsquo;, &lsquo;5a&rsquo;: &lsquo;x5a&rsquo;, &lsquo;5b&rsquo;: &lsquo;x5b&rsquo;, &lsquo;5c&rsquo;: &lsquo;x5c&rsquo;, &lsquo;5d&rsquo;: &lsquo;x5d&rsquo;, &lsquo;5e&rsquo;: &lsquo;x5e&rsquo;,<br />
-&lsquo;5f&rsquo;: &lsquo;x5f&rsquo;, &lsquo;60&rsquo;: &lsquo;x60&rsquo;, &lsquo;61&rsquo;: &lsquo;x61&rsquo;, &lsquo;62&rsquo;: &lsquo;x62&rsquo;, &lsquo;63&rsquo;: &lsquo;x63&rsquo;, &lsquo;64&rsquo;: &lsquo;x64&rsquo;,<br />
-&lsquo;65&rsquo;: &lsquo;x65&rsquo;, &lsquo;66&rsquo;: &lsquo;x66&rsquo;, &lsquo;67&rsquo;: &lsquo;x67&rsquo;, &lsquo;68&rsquo;: &lsquo;x68&rsquo;, &lsquo;69&rsquo;: &lsquo;x69&rsquo;, &lsquo;6a&rsquo;: &lsquo;x6a&rsquo;,<br />
-&lsquo;6b&rsquo;: &lsquo;x6b&rsquo;, &lsquo;6c&rsquo;: &lsquo;x6c&rsquo;, &lsquo;6d&rsquo;: &lsquo;x6d&rsquo;, &lsquo;6e&rsquo;: &lsquo;x6e&rsquo;, &lsquo;6f&rsquo;: &lsquo;x6f&rsquo;, &lsquo;70&rsquo;: &lsquo;x70&rsquo;,<br />
-&lsquo;71&rsquo;: &lsquo;x71&rsquo;, &lsquo;72&rsquo;: &lsquo;x72&rsquo;, &lsquo;73&rsquo;: &lsquo;x73&rsquo;, &lsquo;74&rsquo;: &lsquo;x74&rsquo;, &lsquo;75&rsquo;: &lsquo;x75&rsquo;, &lsquo;76&rsquo;: &lsquo;x76&rsquo;,<br />
-&lsquo;77&rsquo;: &lsquo;x77&rsquo;, &lsquo;78&rsquo;: &lsquo;x78&rsquo;, &lsquo;79&rsquo;: &lsquo;x79&rsquo;, &lsquo;7a&rsquo;: &lsquo;x7a&rsquo;, &lsquo;7b&rsquo;: &lsquo;x7b&rsquo;, &lsquo;7c&rsquo;: &lsquo;x7c&rsquo;,<br />
-&lsquo;7d&rsquo;: &lsquo;x7d&rsquo;, &lsquo;7e&rsquo;: &lsquo;x7e&rsquo;, &lsquo;7f&rsquo;: &lsquo;x7f&rsquo;, &lsquo;80&rsquo;: &lsquo;x80&rsquo;, &lsquo;81&rsquo;: &lsquo;x81&rsquo;, &lsquo;82&rsquo;: &lsquo;x82&rsquo;,<br />
-&lsquo;83&rsquo;: &lsquo;x83&rsquo;, &lsquo;84&rsquo;: &lsquo;x84&rsquo;, &lsquo;85&rsquo;: &lsquo;x85&rsquo;, &lsquo;86&rsquo;: &lsquo;x86&rsquo;, &lsquo;87&rsquo;: &lsquo;x87&rsquo;, &lsquo;88&rsquo;: &lsquo;x88&rsquo;,<br />
-&lsquo;89&rsquo;: &lsquo;x89&rsquo;, &lsquo;8a&rsquo;: &lsquo;x8a&rsquo;, &lsquo;8b&rsquo;: &lsquo;x8b&rsquo;, &lsquo;8c&rsquo;: &lsquo;x8c&rsquo;, &lsquo;8d&rsquo;: &lsquo;x8d&rsquo;, &lsquo;8e&rsquo;: &lsquo;x8e&rsquo;,<br />
-&lsquo;8f&rsquo;: &lsquo;x8f&rsquo;, &lsquo;90&rsquo;: &lsquo;x90&rsquo;, &lsquo;91&rsquo;: &lsquo;x91&rsquo;, &lsquo;92&rsquo;: &lsquo;x92&rsquo;, &lsquo;93&rsquo;: &lsquo;x93&rsquo;, &lsquo;94&rsquo;: &lsquo;x94&rsquo;,<br />
-&lsquo;95&rsquo;: &lsquo;x95&rsquo;, &lsquo;96&rsquo;: &lsquo;x96&rsquo;, &lsquo;97&rsquo;: &lsquo;x97&rsquo;, &lsquo;98&rsquo;: &lsquo;x98&rsquo;, &lsquo;99&rsquo;: &lsquo;x99&rsquo;, &lsquo;9a&rsquo;: &lsquo;x9a&rsquo;,<br />
-&lsquo;9b&rsquo;: &lsquo;x9b&rsquo;, &lsquo;9c&rsquo;: &lsquo;x9c&rsquo;, &lsquo;9d&rsquo;: &lsquo;x9d&rsquo;, &lsquo;9e&rsquo;: &lsquo;x9e&rsquo;, &lsquo;9f&rsquo;: &lsquo;x9f&rsquo;, &lsquo;a0&rsquo;: &lsquo;xa0&rsquo;,<br />
-&lsquo;a1&rsquo;: &lsquo;xa1&rsquo;, &lsquo;a2&rsquo;: &lsquo;xa2&rsquo;, &lsquo;a3&rsquo;: &lsquo;xa3&rsquo;, &lsquo;a4&rsquo;: &lsquo;xa4&rsquo;, &lsquo;a5&rsquo;: &lsquo;xa5&rsquo;, &lsquo;a6&rsquo;: &lsquo;xa6&rsquo;,<br />
-&lsquo;a7&rsquo;: &lsquo;xa7&rsquo;, &lsquo;a8&rsquo;: &lsquo;xa8&rsquo;, &lsquo;a9&rsquo;: &lsquo;xa9&rsquo;, &lsquo;aa&rsquo;: &lsquo;xaa&rsquo;, &lsquo;ab&rsquo;: &lsquo;xab&rsquo;, &lsquo;ac&rsquo;: &lsquo;xac&rsquo;,<br />
-&lsquo;ad&rsquo;: &lsquo;xad&rsquo;, &lsquo;ae&rsquo;: &lsquo;xae&rsquo;, &lsquo;af&rsquo;: &lsquo;xaf&rsquo;, &lsquo;b0&rsquo;: &lsquo;xb0&rsquo;, &lsquo;b1&rsquo;: &lsquo;xb1&rsquo;, &lsquo;b2&rsquo;: &lsquo;xb2&rsquo;,<br />
-&lsquo;b3&rsquo;: &lsquo;xb3&rsquo;, &lsquo;b4&rsquo;: &lsquo;xb4&rsquo;, &lsquo;b5&rsquo;: &lsquo;xb5&rsquo;, &lsquo;b6&rsquo;: &lsquo;xb6&rsquo;, &lsquo;b7&rsquo;: &lsquo;xb7&rsquo;, &lsquo;b8&rsquo;: &lsquo;xb8&rsquo;,<br />
-&lsquo;b9&rsquo;: &lsquo;xb9&rsquo;, &lsquo;ba&rsquo;: &lsquo;xba&rsquo;, &lsquo;bb&rsquo;: &lsquo;xbb&rsquo;, &lsquo;bc&rsquo;: &lsquo;xbc&rsquo;, &lsquo;bd&rsquo;: &lsquo;xbd&rsquo;, &lsquo;be&rsquo;: &lsquo;xbe&rsquo;,<br />
-&lsquo;bf&rsquo;: &lsquo;xbf&rsquo;, &lsquo;c0&rsquo;: &lsquo;xc0&rsquo;, &lsquo;c1&rsquo;: &lsquo;xc1&rsquo;, &lsquo;c2&rsquo;: &lsquo;xc2&rsquo;, &lsquo;c3&rsquo;: &lsquo;xc3&rsquo;, &lsquo;c4&rsquo;: &lsquo;xc4&rsquo;,<br />
-&lsquo;c5&rsquo;: &lsquo;xc5&rsquo;, &lsquo;c6&rsquo;: &lsquo;xc6&rsquo;, &lsquo;c7&rsquo;: &lsquo;xc7&rsquo;, &lsquo;c8&rsquo;: &lsquo;xc8&rsquo;, &lsquo;c9&rsquo;: &lsquo;xc9&rsquo;, &lsquo;ca&rsquo;: &lsquo;xca&rsquo;,<br />
-&lsquo;cb&rsquo;: &lsquo;xcb&rsquo;, &lsquo;cc&rsquo;: &lsquo;xcc&rsquo;, &lsquo;cd&rsquo;: &lsquo;xcd&rsquo;, &lsquo;ce&rsquo;: &lsquo;xce&rsquo;, &lsquo;cf&rsquo;: &lsquo;xcf&rsquo;, &lsquo;d0&rsquo;: &lsquo;xd0&rsquo;,<br />
-&lsquo;d1&rsquo;: &lsquo;xd1&rsquo;, &lsquo;d2&rsquo;: &lsquo;xd2&rsquo;, &lsquo;d3&rsquo;: &lsquo;xd3&rsquo;, &lsquo;d4&rsquo;: &lsquo;xd4&rsquo;, &lsquo;d5&rsquo;: &lsquo;xd5&rsquo;, &lsquo;d6&rsquo;: &lsquo;xd6&rsquo;,<br />
-&lsquo;d7&rsquo;: &lsquo;xd7&rsquo;, &lsquo;d8&rsquo;: &lsquo;xd8&rsquo;, &lsquo;d9&rsquo;: &lsquo;xd9&rsquo;, &lsquo;da&rsquo;: &lsquo;xda&rsquo;, &lsquo;db&rsquo;: &lsquo;xdb&rsquo;, &lsquo;dc&rsquo;: &lsquo;xdc&rsquo;,<br />
-&lsquo;dd&rsquo;: &lsquo;xdd&rsquo;, &lsquo;de&rsquo;: &lsquo;xde&rsquo;, &lsquo;df&rsquo;: &lsquo;xdf&rsquo;, &rsquo;e0&rsquo;: &lsquo;xe0&rsquo;, &rsquo;e1&rsquo;: &lsquo;xe1&rsquo;, &rsquo;e2&rsquo;: &lsquo;xe2&rsquo;,<br />
-&rsquo;e3&rsquo;: &lsquo;xe3&rsquo;, &rsquo;e4&rsquo;: &lsquo;xe4&rsquo;, &rsquo;e5&rsquo;: &lsquo;xe5&rsquo;, &rsquo;e6&rsquo;: &lsquo;xe6&rsquo;, &rsquo;e7&rsquo;: &lsquo;xe7&rsquo;, &rsquo;e8&rsquo;: &lsquo;xe8&rsquo;,<br />
-&rsquo;e9&rsquo;: &lsquo;xe9&rsquo;, &rsquo;ea&rsquo;: &lsquo;xea&rsquo;, &rsquo;eb&rsquo;: &lsquo;xeb&rsquo;, &rsquo;ec&rsquo;: &lsquo;xec&rsquo;, &rsquo;ed&rsquo;: &lsquo;xed&rsquo;, &rsquo;ee&rsquo;: &lsquo;xee&rsquo;,<br />
-&rsquo;ef&rsquo;: &lsquo;xef&rsquo;, &lsquo;f0&rsquo;: &lsquo;xf0&rsquo;, &lsquo;f1&rsquo;: &lsquo;xf1&rsquo;, &lsquo;f2&rsquo;: &lsquo;xf2&rsquo;, &lsquo;f3&rsquo;: &lsquo;xf3&rsquo;, &lsquo;f4&rsquo;: &lsquo;xf4&rsquo;,<br />
-&lsquo;f5&rsquo;: &lsquo;xf5&rsquo;, &lsquo;f6&rsquo;: &lsquo;xf6&rsquo;, &lsquo;f7&rsquo;: &lsquo;xf7&rsquo;, &lsquo;f8&rsquo;: &lsquo;xf8&rsquo;, &lsquo;f9&rsquo;: &lsquo;xf9&rsquo;, &lsquo;fa&rsquo;: &lsquo;xfa&rsquo;,<br />
-&lsquo;fb&rsquo;: &lsquo;xfb&rsquo;, &lsquo;fc&rsquo;: &lsquo;xfc&rsquo;, &lsquo;fd&rsquo;: &lsquo;xfd&rsquo;, &lsquo;fe&rsquo;: &lsquo;xfe&rsquo;, &lsquo;ff&rsquo;: &lsquo;xff&rsquo;, }</p>
-<p>def welcome():</p>
-<p>print u&rsquo;*******************************************************************&rsquo;</p>
-<p>print u&rsquo;*************************** ***************************&rsquo;</p>
-<p>print u&rsquo;<em><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>EdtTxtConvert</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></em>&rsquo;</p>
-<p>print u&rsquo;*************************** ***************************&rsquo;</p>
-<p>print u&rsquo;*******************************************************************&rsquo;</p>
-<p>print u&rsquo;Any problem can connect me with my web site.&rsquo;</p>
-<p>print u&rsquo; <em>powered by alswl</em> '</p>
-<p>print u&rsquo; <em><a href="http://dddspace.cn">http://dddspace.cn</a></em>&rsquo;</p>
-<p>print u&rsquo; <em>09-10-01 v0.9</em> '</p>
-<p>def getFiles(type):</p>
-<p>&lsquo;get the files of path&rsquo;</p>
-<p>global dirPath</p>
-<p>dirPath = raw_input(u&rsquo;Input the files path:&rsquo;)</p>
-<p>while not os.path.isdir(dirPath):</p>
-<p>print u&rsquo;%s is not a path&rsquo; %(dirPath)</p>
-<p>dirPath = raw_input(u&rsquo;Input the files path:&rsquo;)</p>
-<p>#os.chdir(dirPath)</p>
-<p>files = os.listdir(dirPath)</p>
-<p>fileList = list()</p>
-<p>for file in files:</p>
-<p>if os.path.splitext(file)[1].lower() == type:</p>
-<p>fileList.append(file)</p>
-<p>return fileList</p>
-<p>def myInit():</p>
-<p>&lsquo;init the argu&rsquo;</p>
-<p>try:</p>
-<p>global blockSize, isDebug, sysEnd, startPosition</p>
-<p>configParser.read(CONFIGNAME)</p>
-<p>blockSize = configParser.getint(&rsquo;edt_encode_config&rsquo;, &lsquo;block_size&rsquo;)</p>
-<p>isDebug = configParser.getboolean(&rsquo;edt_encode_config&rsquo;, &lsquo;debug&rsquo;)</p>
-<p>sysEnd = configParser.get(&rsquo;edt_encode_config&rsquo;, &lsquo;sys_end&rsquo;)</p>
-<p>startPosition = configParser.getint(&rsquo;edt_encode_config&rsquo;, &lsquo;start_position&rsquo;)</p>
-<p>viewConfig()</p>
-<p>except Exception, e:</p>
-<p>print u&rsquo;configure file %s error！Exiting！&rsquo; %CONFIGNAME</p>
-<p>raw_input(u&rsquo;Press Enter to exit&rsquo;)</p>
-<p>sys.exit()</p>
-<p>def viewConfig():</p>
-<p>print u&rsquo;Current configure:&rsquo;</p>
-<p>print u&rsquo;Block size:%s&rsquo; %blockSize</p>
-<p>print u&rsquo;Start Position:%s&rsquo; %startPosition</p>
-<p>print u&rsquo;Debug mode:%s&rsquo; %isDebug</p>
-<p>print u&rsquo;End Symbol:%s&rsquo; %toHex(sysEnd)</p>
-<p>def setConfig():</p>
-<p>global blockSize, isDebug, sysEnd, startPosition</p>
-<p>configParser.read(CONFIGNAME)</p>
-<p>try:</p>
-<p>blockSize = int(raw_input(&lsquo;set block size:&rsquo;))</p>
-<p>startPosition = int(raw_input(&lsquo;set start position:&rsquo;))</p>
-<p>isDebug = bool(raw_input(&lsquo;set is debug mode(empty is False):&rsquo;))</p>
-<p>sysEndInput = raw_input(&lsquo;set symbol of end(eg.0000)&rsquo;)</p>
-<p>sysEnd = sysEndList[sysEndInput[:2]] + sysEndList[sysEndInput[2:]]</p>
-<p>configParser.set(&rsquo;edt_encode_config&rsquo;, &lsquo;block_size&rsquo;, blockSize)</p>
-<p>configParser.set(&rsquo;edt_encode_config&rsquo;, &lsquo;debug&rsquo;, str(isDebug))</p>
-<p>configParser.set(&rsquo;edt_encode_config&rsquo;, &lsquo;sys_end&rsquo;, sysEnd)</p>
-<p>configParser.set(&rsquo;edt_encode_config&rsquo;, &lsquo;start_position&rsquo;, startPosition)</p>
-<p>with open(CONFIGNAME, &lsquo;wb&rsquo;) as configFile:</p>
-<p>configParser.write(configFile)</p>
-<p>except Exception, e:</p>
-<p>print &lsquo;Error set&rsquo;</p>
-<p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p>
-<p>def toHex(s):</p>
-<p>&lsquo;format string to hex&rsquo;</p>
-<p>lst = []</p>
-<p>for ch in s:</p>
-<p>hv = hex(ord(ch)).replace(&lsquo;0x&rsquo;, &lsquo;&rsquo;)</p>
-<p>if len(hv) == 1:</p>
-<p>hv = &lsquo;0&rsquo;+hv</p>
-<p>lst.append(hv)</p>
-<p>return reduce(lambda x,y:x+y, lst)</p>
-<p>def getBlock(block640):</p>
-<p>&lsquo;get the useful string from block of 640 bytes&rsquo;</p>
-<p>for i in range(0, len(block640), 2):</p>
-<p>if block640[i : i+2] == sysEnd:</p>
-<p>return block640[:i]</p>
-<p>def decode(text):</p>
-<p>&lsquo;-1 operate&rsquo;</p>
-<p>list = '&rsquo;</p>
-<p>for i in range(0, len(text), 2):</p>
-<p>try:</p>
-<p>rawStr = text[i: i+2]</p>
-<p>if rawStr == PASS_SYMBOL :</p>
-<p>list += rawStr</p>
-<p>elif rawStr == SPECIAL_1:</p>
-<p>list += &lsquo;x21x32&rsquo;</p>
-<p>elif rawStr == SPECIAL_2:</p>
-<p>list += &lsquo;x22x32&rsquo;</p>
-<p>else:</p>
-<p>a, b = struct.unpack(&lsquo;BB&rsquo;, rawStr)</p>
-<p>a -= 1</p>
-<p>list += struct.pack(&lsquo;BB&rsquo;, a, b)</p>
-<p>except Exception, e:</p>
-<p>tt = 0</p>
-<p>return list</p>
-<p>def encode(text):</p>
-<p>&lsquo;+1 operate&rsquo;</p>
-<p>list = '&rsquo;</p>
-<p>for char in text:</p>
-<p>try:</p>
-<p>if char == &lsquo;x21x32&rsquo;:</p>
-<p>list += SPECIAL_1</p>
-<p>elif char == &lsquo;x22x32&rsquo;:</p>
-<p>list += SPECIAL_2</p>
-<p>else:</p>
-<p>a, b = struct.unpack(&lsquo;BB&rsquo;, char.encode(&lsquo;utf-16&rsquo;)[2:])</p>
-<p>a += 1</p>
-<p>list += struct.pack(&lsquo;BB&rsquo;, a, b)</p>
-<p>except Exception, e:</p>
-<p>tt = 0</p>
-<p>list += &lsquo;x00x00&rsquo;</p>
-<p>return list</p>
-<p>def read(file):</p>
-<p>&lsquo;read the block of file(use blockSize)&rsquo;</p>
-<p>return file.read(blockSize)</p>
-<p>def edtProcess(edtFile):</p>
-<p>&rsquo;edt-&gt;txt process&rsquo;</p>
-<p>fedt = open(dirPath + &lsquo;' + edtFile, &lsquo;rb&rsquo;)</p>
-<p>ftxt = open(dirPath + &lsquo;' + edtFile[0:-3] + &rsquo;txt&rsquo;, &lsquo;w&rsquo;)</p>
-<p>global i</p>
-<p>i = 0</p>
-<p>try:</p>
-<p>fedt.seek(startPosition)</p>
-<p>while True:</p>
-<p>block640 = read(fedt)</p>
-<p>if not block640:</p>
-<p>break</p>
-<p>if i == 640 and isDebug == True:</p>
-<p>nonono = 0</p>
-<p>block = getBlock(block640)</p>
-<p>blockStr = decode(block)</p>
-<p>if blockStr != &lsquo;&rsquo;:</p>
-<p>lineNum = u&rsquo;%d:n&rsquo; %(i)</p>
-<p>lineStr = blockStr.decode(&lsquo;utf-16&rsquo;) + &rsquo;nn&rsquo;</p>
-<p>if isDebug:</p>
-<p>print lineNum, &rsquo;line number:%s&rsquo; %(hex(i/16))</p>
-<p>print lineStr,</p>
-<p>ftxt.write(lineNum.encode(&lsquo;gbk&rsquo;))</p>
-<p>ftxt.write(lineStr.encode(&lsquo;gbk&rsquo;))</p>
-<p>i += blockSize</p>
-<p>print u&rsquo;%s -&gt; %s Convert successful&rsquo; %(fedt.name, ftxt.name)</p>
-<p>except Exception, e:</p>
-<p>print u&rsquo;%s -&gt; %s Convert Errorn%s&rsquo; %(fedt.name, ftxt.name, e)</p>
-<p>finally:</p>
-<p>fedt.close()</p>
-<p>ftxt.close()</p>
-<p>def txtProcess(txtFile):</p>
-<p>&rsquo;txt-&gt;edt process&rsquo;</p>
-<p>ftxt = open(dirPath + &lsquo;' + txtFile, &lsquo;r&rsquo;)</p>
-<p>fedt = open(dirPath + &lsquo;' + txtFile[0:-3] + &rsquo;edt&rsquo;, &lsquo;wb&rsquo;)</p>
-<p>global i</p>
-<p>i = 0</p>
-<p>try:</p>
-<p>fedt.seek(startPosition)</p>
-<p>i = 0</p>
-<p>blockStr = '&rsquo;</p>
-<p>for eachLine in ftxt:</p>
-<p>if eachLine != &rsquo;n&rsquo; and i % 3 != 0:</p>
-<p>blockStr += eachLine</p>
-<p>if (i+2) % 3 == 0:</p>
-<p>if isDebug:</p>
-<p>print blockStr.decode(&lsquo;gbk&rsquo;),</p>
-<p>block = encode(blockStr[:-1].decode(&lsquo;gbk&rsquo;))</p>
-<p>fedt.write(block)</p>
-<p>fedt.seek(640 - len(block), os.SEEK_CUR)</p>
-<p>blockStr = '&rsquo;</p>
-<p>i += 1</p>
-<p>print u&rsquo;%s -&gt; %s Convert successful&rsquo; %(ftxt.name, fedt.name)</p>
-<p>except Exception, e:</p>
-<p>print u&rsquo;%s -&gt; %s Convert Errorn%s&rsquo; %(ftxt.name, fedt.name, e)</p>
-<p>finally:</p>
-<p>ftxt.close()</p>
-<p>fedt.close()</p>
-<p>if <strong>name</strong> == &lsquo;<strong>main</strong>&rsquo;:</p>
-<p>welcome()</p>
-<p>myInit()</p>
-<p>while True:</p>
-<p>print &rsquo;n<strong><strong><strong><strong>Menu</strong></strong></strong></strong>&rsquo;</p>
-<p>print &lsquo;1.edt-&gt;txtn2.txt-&gt;edtn3.view confign4.set confign0.exit&rsquo;</p>
-<p>mode = raw_input(u&rsquo;Please choose:&rsquo;)</p>
-<p>if mode == &lsquo;1&rsquo;:</p>
-<p>fileList = getFiles(&rsquo;.edt&rsquo;)</p>
-<p>if fileList != None:</p>
-<p>print u&rsquo;fiels ready to convert:%sn&rsquo; %fileList</p>
-<p>raw_input(u&rsquo;Press Enter to convert&rsquo;)</p>
-<p>for edtFile in fileList:</p>
-<p>edtProcess(edtFile)</p>
-<p>else:</p>
-<p>print &lsquo;There is no edt files!&rsquo;</p>
-<p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p>
-<p>elif mode == &lsquo;2&rsquo;:</p>
-<p>fileList = getFiles(&rsquo;.txt&rsquo;)</p>
-<p>if fileList != None:</p>
-<p>print u&rsquo;fiels ready to convert:%sn&rsquo; %fileList</p>
-<p>raw_input(u&rsquo;Press Enter to convert&rsquo;)</p>
-<p>for txtFile in fileList:</p>
-<p>txtProcess(txtFile)</p>
-<p>else:</p>
-<p>print &lsquo;There is no txt files!&rsquo;</p>
-<p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p>
-<p>elif mode == &lsquo;3&rsquo;:</p>
-<p>print '&rsquo;</p>
-<p>viewConfig()</p>
-<p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p>
-<p>elif mode == &lsquo;4&rsquo;:</p>
-<p>print '&rsquo;</p>
-<p>setConfig()</p>
-<p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p>
-<p>elif mode == &lsquo;0&rsquo;:</p>
-<p>break</p>
-<p>else:</p>
-<p>print &lsquo;Error: Input error!!n&rsquo;</p>
-<p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p>
-<p>点击这里<a href="https://4ocf5n.dijingchao.com/upload_dropbox/200911/edtTxtConvert_0_9.zip">下载源代码</a>（edtTxtConvert.py+config.cfg+reade me.txt，需要Python2.6以上），如果需要exe版本的程序，可以向我索取，也可以<a href="http://log4d.com/2009/09/python-program-will-be-compiled-into-an-executable-program-exe">使用py2exe自行编译</a>。</p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/">铁血联盟EdtTxt转换器v0.9 | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/python/">python</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2009/11/thishouse-housing-sales-system/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>ThisHouse房屋销售系统</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2009/10/defeat/">
-    <span class="title">Next »</span>
-    <br>
-    <span>挫败</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+</code></pre><p>configParser=ConfigParser.ConfigParser()</p><p>CONFIGNAME = &lsquo;config.cfg&rsquo;</p><p>blockSize = 640 #size per block 640/480</p><p>isDebug = False #isDebug mode True/False</p><p>sysEnd = &lsquo;x00x00&rsquo; #end of a sentence, e.g. a space x00x00</p><p>startPosition = 00 #start posion</p><p>PASS_SYMBOL = &lsquo;x20x00&rsquo; #the list of word not decode</p><p>SPECIAL_1 = &lsquo;xB3x00&rsquo; #the word of B300</p><p>SPECIAL_2 = &lsquo;xB4x00&rsquo; #the word of B400</p><p>sysEndList = {&lsquo;00&rsquo;: &lsquo;x00&rsquo;, &lsquo;01&rsquo;: &lsquo;x01&rsquo;, &lsquo;02&rsquo;: &lsquo;x02&rsquo;, &lsquo;03&rsquo;: &lsquo;x03&rsquo;, &lsquo;04&rsquo;: &lsquo;x04&rsquo;,
+&lsquo;05&rsquo;: &lsquo;x05&rsquo;, &lsquo;06&rsquo;: &lsquo;x06&rsquo;, &lsquo;07&rsquo;: &lsquo;x07&rsquo;, &lsquo;08&rsquo;: &lsquo;x08&rsquo;, &lsquo;09&rsquo;: &lsquo;x09&rsquo;, &lsquo;0a&rsquo;: &lsquo;x0a&rsquo;,
+&lsquo;0b&rsquo;: &lsquo;x0b&rsquo;, &lsquo;0c&rsquo;: &lsquo;x0c&rsquo;, &lsquo;0d&rsquo;: &lsquo;x0d&rsquo;, &lsquo;0e&rsquo;: &lsquo;x0e&rsquo;, &lsquo;0f&rsquo;: &lsquo;x0f&rsquo;, &lsquo;10&rsquo;: &lsquo;x10&rsquo;,
+&lsquo;11&rsquo;: &lsquo;x11&rsquo;, &lsquo;12&rsquo;: &lsquo;x12&rsquo;, &lsquo;13&rsquo;: &lsquo;x13&rsquo;, &lsquo;14&rsquo;: &lsquo;x14&rsquo;, &lsquo;15&rsquo;: &lsquo;x15&rsquo;, &lsquo;16&rsquo;: &lsquo;x16&rsquo;,
+&lsquo;17&rsquo;: &lsquo;x17&rsquo;, &lsquo;18&rsquo;: &lsquo;x18&rsquo;, &lsquo;19&rsquo;: &lsquo;x19&rsquo;, &lsquo;1a&rsquo;: &lsquo;x1a&rsquo;, &lsquo;1b&rsquo;: &lsquo;x1b&rsquo;, &lsquo;1c&rsquo;: &lsquo;x1c&rsquo;,
+&lsquo;1d&rsquo;: &lsquo;x1d&rsquo;, &lsquo;1e&rsquo;: &lsquo;x1e&rsquo;, &lsquo;1f&rsquo;: &lsquo;x1f&rsquo;, &lsquo;20&rsquo;: &lsquo;x20&rsquo;, &lsquo;21&rsquo;: &lsquo;x21&rsquo;, &lsquo;22&rsquo;: &lsquo;x22&rsquo;,
+&lsquo;23&rsquo;: &lsquo;x23&rsquo;, &lsquo;24&rsquo;: &lsquo;x24&rsquo;, &lsquo;25&rsquo;: &lsquo;x25&rsquo;, &lsquo;26&rsquo;: &lsquo;x26&rsquo;, &lsquo;27&rsquo;: &lsquo;x27&rsquo;, &lsquo;28&rsquo;: &lsquo;x28&rsquo;,
+&lsquo;29&rsquo;: &lsquo;x29&rsquo;, &lsquo;2a&rsquo;: &lsquo;x2a&rsquo;, &lsquo;2b&rsquo;: &lsquo;x2b&rsquo;, &lsquo;2c&rsquo;: &lsquo;x2c&rsquo;, &lsquo;2d&rsquo;: &lsquo;x2d&rsquo;, &lsquo;2e&rsquo;: &lsquo;x2e&rsquo;,
+&lsquo;2f&rsquo;: &lsquo;x2f&rsquo;, &lsquo;30&rsquo;: &lsquo;x30&rsquo;, &lsquo;31&rsquo;: &lsquo;x31&rsquo;, &lsquo;32&rsquo;: &lsquo;x32&rsquo;, &lsquo;33&rsquo;: &lsquo;x33&rsquo;, &lsquo;34&rsquo;: &lsquo;x34&rsquo;,
+&lsquo;35&rsquo;: &lsquo;x35&rsquo;, &lsquo;36&rsquo;: &lsquo;x36&rsquo;, &lsquo;37&rsquo;: &lsquo;x37&rsquo;, &lsquo;38&rsquo;: &lsquo;x38&rsquo;, &lsquo;39&rsquo;: &lsquo;x39&rsquo;, &lsquo;3a&rsquo;: &lsquo;x3a&rsquo;,
+&lsquo;3b&rsquo;: &lsquo;x3b&rsquo;, &lsquo;3c&rsquo;: &lsquo;x3c&rsquo;, &lsquo;3d&rsquo;: &lsquo;x3d&rsquo;, &lsquo;3e&rsquo;: &lsquo;x3e&rsquo;, &lsquo;3f&rsquo;: &lsquo;x3f&rsquo;, &lsquo;40&rsquo;: &lsquo;x40&rsquo;,
+&lsquo;41&rsquo;: &lsquo;x41&rsquo;, &lsquo;42&rsquo;: &lsquo;x42&rsquo;, &lsquo;43&rsquo;: &lsquo;x43&rsquo;, &lsquo;44&rsquo;: &lsquo;x44&rsquo;, &lsquo;45&rsquo;: &lsquo;x45&rsquo;, &lsquo;46&rsquo;: &lsquo;x46&rsquo;,
+&lsquo;47&rsquo;: &lsquo;x47&rsquo;, &lsquo;48&rsquo;: &lsquo;x48&rsquo;, &lsquo;49&rsquo;: &lsquo;x49&rsquo;, &lsquo;4a&rsquo;: &lsquo;x4a&rsquo;, &lsquo;4b&rsquo;: &lsquo;x4b&rsquo;, &lsquo;4c&rsquo;: &lsquo;x4c&rsquo;,
+&lsquo;4d&rsquo;: &lsquo;x4d&rsquo;, &lsquo;4e&rsquo;: &lsquo;x4e&rsquo;, &lsquo;4f&rsquo;: &lsquo;x4f&rsquo;, &lsquo;50&rsquo;: &lsquo;x50&rsquo;, &lsquo;51&rsquo;: &lsquo;x51&rsquo;, &lsquo;52&rsquo;: &lsquo;x52&rsquo;,
+&lsquo;53&rsquo;: &lsquo;x53&rsquo;, &lsquo;54&rsquo;: &lsquo;x54&rsquo;, &lsquo;55&rsquo;: &lsquo;x55&rsquo;, &lsquo;56&rsquo;: &lsquo;x56&rsquo;, &lsquo;57&rsquo;: &lsquo;x57&rsquo;, &lsquo;58&rsquo;: &lsquo;x58&rsquo;,
+&lsquo;59&rsquo;: &lsquo;x59&rsquo;, &lsquo;5a&rsquo;: &lsquo;x5a&rsquo;, &lsquo;5b&rsquo;: &lsquo;x5b&rsquo;, &lsquo;5c&rsquo;: &lsquo;x5c&rsquo;, &lsquo;5d&rsquo;: &lsquo;x5d&rsquo;, &lsquo;5e&rsquo;: &lsquo;x5e&rsquo;,
+&lsquo;5f&rsquo;: &lsquo;x5f&rsquo;, &lsquo;60&rsquo;: &lsquo;x60&rsquo;, &lsquo;61&rsquo;: &lsquo;x61&rsquo;, &lsquo;62&rsquo;: &lsquo;x62&rsquo;, &lsquo;63&rsquo;: &lsquo;x63&rsquo;, &lsquo;64&rsquo;: &lsquo;x64&rsquo;,
+&lsquo;65&rsquo;: &lsquo;x65&rsquo;, &lsquo;66&rsquo;: &lsquo;x66&rsquo;, &lsquo;67&rsquo;: &lsquo;x67&rsquo;, &lsquo;68&rsquo;: &lsquo;x68&rsquo;, &lsquo;69&rsquo;: &lsquo;x69&rsquo;, &lsquo;6a&rsquo;: &lsquo;x6a&rsquo;,
+&lsquo;6b&rsquo;: &lsquo;x6b&rsquo;, &lsquo;6c&rsquo;: &lsquo;x6c&rsquo;, &lsquo;6d&rsquo;: &lsquo;x6d&rsquo;, &lsquo;6e&rsquo;: &lsquo;x6e&rsquo;, &lsquo;6f&rsquo;: &lsquo;x6f&rsquo;, &lsquo;70&rsquo;: &lsquo;x70&rsquo;,
+&lsquo;71&rsquo;: &lsquo;x71&rsquo;, &lsquo;72&rsquo;: &lsquo;x72&rsquo;, &lsquo;73&rsquo;: &lsquo;x73&rsquo;, &lsquo;74&rsquo;: &lsquo;x74&rsquo;, &lsquo;75&rsquo;: &lsquo;x75&rsquo;, &lsquo;76&rsquo;: &lsquo;x76&rsquo;,
+&lsquo;77&rsquo;: &lsquo;x77&rsquo;, &lsquo;78&rsquo;: &lsquo;x78&rsquo;, &lsquo;79&rsquo;: &lsquo;x79&rsquo;, &lsquo;7a&rsquo;: &lsquo;x7a&rsquo;, &lsquo;7b&rsquo;: &lsquo;x7b&rsquo;, &lsquo;7c&rsquo;: &lsquo;x7c&rsquo;,
+&lsquo;7d&rsquo;: &lsquo;x7d&rsquo;, &lsquo;7e&rsquo;: &lsquo;x7e&rsquo;, &lsquo;7f&rsquo;: &lsquo;x7f&rsquo;, &lsquo;80&rsquo;: &lsquo;x80&rsquo;, &lsquo;81&rsquo;: &lsquo;x81&rsquo;, &lsquo;82&rsquo;: &lsquo;x82&rsquo;,
+&lsquo;83&rsquo;: &lsquo;x83&rsquo;, &lsquo;84&rsquo;: &lsquo;x84&rsquo;, &lsquo;85&rsquo;: &lsquo;x85&rsquo;, &lsquo;86&rsquo;: &lsquo;x86&rsquo;, &lsquo;87&rsquo;: &lsquo;x87&rsquo;, &lsquo;88&rsquo;: &lsquo;x88&rsquo;,
+&lsquo;89&rsquo;: &lsquo;x89&rsquo;, &lsquo;8a&rsquo;: &lsquo;x8a&rsquo;, &lsquo;8b&rsquo;: &lsquo;x8b&rsquo;, &lsquo;8c&rsquo;: &lsquo;x8c&rsquo;, &lsquo;8d&rsquo;: &lsquo;x8d&rsquo;, &lsquo;8e&rsquo;: &lsquo;x8e&rsquo;,
+&lsquo;8f&rsquo;: &lsquo;x8f&rsquo;, &lsquo;90&rsquo;: &lsquo;x90&rsquo;, &lsquo;91&rsquo;: &lsquo;x91&rsquo;, &lsquo;92&rsquo;: &lsquo;x92&rsquo;, &lsquo;93&rsquo;: &lsquo;x93&rsquo;, &lsquo;94&rsquo;: &lsquo;x94&rsquo;,
+&lsquo;95&rsquo;: &lsquo;x95&rsquo;, &lsquo;96&rsquo;: &lsquo;x96&rsquo;, &lsquo;97&rsquo;: &lsquo;x97&rsquo;, &lsquo;98&rsquo;: &lsquo;x98&rsquo;, &lsquo;99&rsquo;: &lsquo;x99&rsquo;, &lsquo;9a&rsquo;: &lsquo;x9a&rsquo;,
+&lsquo;9b&rsquo;: &lsquo;x9b&rsquo;, &lsquo;9c&rsquo;: &lsquo;x9c&rsquo;, &lsquo;9d&rsquo;: &lsquo;x9d&rsquo;, &lsquo;9e&rsquo;: &lsquo;x9e&rsquo;, &lsquo;9f&rsquo;: &lsquo;x9f&rsquo;, &lsquo;a0&rsquo;: &lsquo;xa0&rsquo;,
+&lsquo;a1&rsquo;: &lsquo;xa1&rsquo;, &lsquo;a2&rsquo;: &lsquo;xa2&rsquo;, &lsquo;a3&rsquo;: &lsquo;xa3&rsquo;, &lsquo;a4&rsquo;: &lsquo;xa4&rsquo;, &lsquo;a5&rsquo;: &lsquo;xa5&rsquo;, &lsquo;a6&rsquo;: &lsquo;xa6&rsquo;,
+&lsquo;a7&rsquo;: &lsquo;xa7&rsquo;, &lsquo;a8&rsquo;: &lsquo;xa8&rsquo;, &lsquo;a9&rsquo;: &lsquo;xa9&rsquo;, &lsquo;aa&rsquo;: &lsquo;xaa&rsquo;, &lsquo;ab&rsquo;: &lsquo;xab&rsquo;, &lsquo;ac&rsquo;: &lsquo;xac&rsquo;,
+&lsquo;ad&rsquo;: &lsquo;xad&rsquo;, &lsquo;ae&rsquo;: &lsquo;xae&rsquo;, &lsquo;af&rsquo;: &lsquo;xaf&rsquo;, &lsquo;b0&rsquo;: &lsquo;xb0&rsquo;, &lsquo;b1&rsquo;: &lsquo;xb1&rsquo;, &lsquo;b2&rsquo;: &lsquo;xb2&rsquo;,
+&lsquo;b3&rsquo;: &lsquo;xb3&rsquo;, &lsquo;b4&rsquo;: &lsquo;xb4&rsquo;, &lsquo;b5&rsquo;: &lsquo;xb5&rsquo;, &lsquo;b6&rsquo;: &lsquo;xb6&rsquo;, &lsquo;b7&rsquo;: &lsquo;xb7&rsquo;, &lsquo;b8&rsquo;: &lsquo;xb8&rsquo;,
+&lsquo;b9&rsquo;: &lsquo;xb9&rsquo;, &lsquo;ba&rsquo;: &lsquo;xba&rsquo;, &lsquo;bb&rsquo;: &lsquo;xbb&rsquo;, &lsquo;bc&rsquo;: &lsquo;xbc&rsquo;, &lsquo;bd&rsquo;: &lsquo;xbd&rsquo;, &lsquo;be&rsquo;: &lsquo;xbe&rsquo;,
+&lsquo;bf&rsquo;: &lsquo;xbf&rsquo;, &lsquo;c0&rsquo;: &lsquo;xc0&rsquo;, &lsquo;c1&rsquo;: &lsquo;xc1&rsquo;, &lsquo;c2&rsquo;: &lsquo;xc2&rsquo;, &lsquo;c3&rsquo;: &lsquo;xc3&rsquo;, &lsquo;c4&rsquo;: &lsquo;xc4&rsquo;,
+&lsquo;c5&rsquo;: &lsquo;xc5&rsquo;, &lsquo;c6&rsquo;: &lsquo;xc6&rsquo;, &lsquo;c7&rsquo;: &lsquo;xc7&rsquo;, &lsquo;c8&rsquo;: &lsquo;xc8&rsquo;, &lsquo;c9&rsquo;: &lsquo;xc9&rsquo;, &lsquo;ca&rsquo;: &lsquo;xca&rsquo;,
+&lsquo;cb&rsquo;: &lsquo;xcb&rsquo;, &lsquo;cc&rsquo;: &lsquo;xcc&rsquo;, &lsquo;cd&rsquo;: &lsquo;xcd&rsquo;, &lsquo;ce&rsquo;: &lsquo;xce&rsquo;, &lsquo;cf&rsquo;: &lsquo;xcf&rsquo;, &lsquo;d0&rsquo;: &lsquo;xd0&rsquo;,
+&lsquo;d1&rsquo;: &lsquo;xd1&rsquo;, &lsquo;d2&rsquo;: &lsquo;xd2&rsquo;, &lsquo;d3&rsquo;: &lsquo;xd3&rsquo;, &lsquo;d4&rsquo;: &lsquo;xd4&rsquo;, &lsquo;d5&rsquo;: &lsquo;xd5&rsquo;, &lsquo;d6&rsquo;: &lsquo;xd6&rsquo;,
+&lsquo;d7&rsquo;: &lsquo;xd7&rsquo;, &lsquo;d8&rsquo;: &lsquo;xd8&rsquo;, &lsquo;d9&rsquo;: &lsquo;xd9&rsquo;, &lsquo;da&rsquo;: &lsquo;xda&rsquo;, &lsquo;db&rsquo;: &lsquo;xdb&rsquo;, &lsquo;dc&rsquo;: &lsquo;xdc&rsquo;,
+&lsquo;dd&rsquo;: &lsquo;xdd&rsquo;, &lsquo;de&rsquo;: &lsquo;xde&rsquo;, &lsquo;df&rsquo;: &lsquo;xdf&rsquo;, &rsquo;e0&rsquo;: &lsquo;xe0&rsquo;, &rsquo;e1&rsquo;: &lsquo;xe1&rsquo;, &rsquo;e2&rsquo;: &lsquo;xe2&rsquo;,
+&rsquo;e3&rsquo;: &lsquo;xe3&rsquo;, &rsquo;e4&rsquo;: &lsquo;xe4&rsquo;, &rsquo;e5&rsquo;: &lsquo;xe5&rsquo;, &rsquo;e6&rsquo;: &lsquo;xe6&rsquo;, &rsquo;e7&rsquo;: &lsquo;xe7&rsquo;, &rsquo;e8&rsquo;: &lsquo;xe8&rsquo;,
+&rsquo;e9&rsquo;: &lsquo;xe9&rsquo;, &rsquo;ea&rsquo;: &lsquo;xea&rsquo;, &rsquo;eb&rsquo;: &lsquo;xeb&rsquo;, &rsquo;ec&rsquo;: &lsquo;xec&rsquo;, &rsquo;ed&rsquo;: &lsquo;xed&rsquo;, &rsquo;ee&rsquo;: &lsquo;xee&rsquo;,
+&rsquo;ef&rsquo;: &lsquo;xef&rsquo;, &lsquo;f0&rsquo;: &lsquo;xf0&rsquo;, &lsquo;f1&rsquo;: &lsquo;xf1&rsquo;, &lsquo;f2&rsquo;: &lsquo;xf2&rsquo;, &lsquo;f3&rsquo;: &lsquo;xf3&rsquo;, &lsquo;f4&rsquo;: &lsquo;xf4&rsquo;,
+&lsquo;f5&rsquo;: &lsquo;xf5&rsquo;, &lsquo;f6&rsquo;: &lsquo;xf6&rsquo;, &lsquo;f7&rsquo;: &lsquo;xf7&rsquo;, &lsquo;f8&rsquo;: &lsquo;xf8&rsquo;, &lsquo;f9&rsquo;: &lsquo;xf9&rsquo;, &lsquo;fa&rsquo;: &lsquo;xfa&rsquo;,
+&lsquo;fb&rsquo;: &lsquo;xfb&rsquo;, &lsquo;fc&rsquo;: &lsquo;xfc&rsquo;, &lsquo;fd&rsquo;: &lsquo;xfd&rsquo;, &lsquo;fe&rsquo;: &lsquo;xfe&rsquo;, &lsquo;ff&rsquo;: &lsquo;xff&rsquo;, }</p><p>def welcome():</p><p>print u&rsquo;*******************************************************************&rsquo;</p><p>print u&rsquo;*************************** ***************************&rsquo;</p><p>print u&rsquo;<em><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>EdtTxtConvert</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></em>&rsquo;</p><p>print u&rsquo;*************************** ***************************&rsquo;</p><p>print u&rsquo;*******************************************************************&rsquo;</p><p>print u&rsquo;Any problem can connect me with my web site.&rsquo;</p><p>print u&rsquo; <em>powered by alswl</em> '</p><p>print u&rsquo; <em><a href=http://dddspace.cn>http://dddspace.cn</a></em>&rsquo;</p><p>print u&rsquo; <em>09-10-01 v0.9</em> '</p><p>def getFiles(type):</p><p>&lsquo;get the files of path&rsquo;</p><p>global dirPath</p><p>dirPath = raw_input(u&rsquo;Input the files path:&rsquo;)</p><p>while not os.path.isdir(dirPath):</p><p>print u&rsquo;%s is not a path&rsquo; %(dirPath)</p><p>dirPath = raw_input(u&rsquo;Input the files path:&rsquo;)</p><p>#os.chdir(dirPath)</p><p>files = os.listdir(dirPath)</p><p>fileList = list()</p><p>for file in files:</p><p>if os.path.splitext(file)[1].lower() == type:</p><p>fileList.append(file)</p><p>return fileList</p><p>def myInit():</p><p>&lsquo;init the argu&rsquo;</p><p>try:</p><p>global blockSize, isDebug, sysEnd, startPosition</p><p>configParser.read(CONFIGNAME)</p><p>blockSize = configParser.getint(&rsquo;edt_encode_config&rsquo;, &lsquo;block_size&rsquo;)</p><p>isDebug = configParser.getboolean(&rsquo;edt_encode_config&rsquo;, &lsquo;debug&rsquo;)</p><p>sysEnd = configParser.get(&rsquo;edt_encode_config&rsquo;, &lsquo;sys_end&rsquo;)</p><p>startPosition = configParser.getint(&rsquo;edt_encode_config&rsquo;, &lsquo;start_position&rsquo;)</p><p>viewConfig()</p><p>except Exception, e:</p><p>print u&rsquo;configure file %s error！Exiting！&rsquo; %CONFIGNAME</p><p>raw_input(u&rsquo;Press Enter to exit&rsquo;)</p><p>sys.exit()</p><p>def viewConfig():</p><p>print u&rsquo;Current configure:&rsquo;</p><p>print u&rsquo;Block size:%s&rsquo; %blockSize</p><p>print u&rsquo;Start Position:%s&rsquo; %startPosition</p><p>print u&rsquo;Debug mode:%s&rsquo; %isDebug</p><p>print u&rsquo;End Symbol:%s&rsquo; %toHex(sysEnd)</p><p>def setConfig():</p><p>global blockSize, isDebug, sysEnd, startPosition</p><p>configParser.read(CONFIGNAME)</p><p>try:</p><p>blockSize = int(raw_input(&lsquo;set block size:&rsquo;))</p><p>startPosition = int(raw_input(&lsquo;set start position:&rsquo;))</p><p>isDebug = bool(raw_input(&lsquo;set is debug mode(empty is False):&rsquo;))</p><p>sysEndInput = raw_input(&lsquo;set symbol of end(eg.0000)&rsquo;)</p><p>sysEnd = sysEndList[sysEndInput[:2]] + sysEndList[sysEndInput[2:]]</p><p>configParser.set(&rsquo;edt_encode_config&rsquo;, &lsquo;block_size&rsquo;, blockSize)</p><p>configParser.set(&rsquo;edt_encode_config&rsquo;, &lsquo;debug&rsquo;, str(isDebug))</p><p>configParser.set(&rsquo;edt_encode_config&rsquo;, &lsquo;sys_end&rsquo;, sysEnd)</p><p>configParser.set(&rsquo;edt_encode_config&rsquo;, &lsquo;start_position&rsquo;, startPosition)</p><p>with open(CONFIGNAME, &lsquo;wb&rsquo;) as configFile:</p><p>configParser.write(configFile)</p><p>except Exception, e:</p><p>print &lsquo;Error set&rsquo;</p><p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p><p>def toHex(s):</p><p>&lsquo;format string to hex&rsquo;</p><p>lst = []</p><p>for ch in s:</p><p>hv = hex(ord(ch)).replace(&lsquo;0x&rsquo;, &lsquo;&rsquo;)</p><p>if len(hv) == 1:</p><p>hv = &lsquo;0&rsquo;+hv</p><p>lst.append(hv)</p><p>return reduce(lambda x,y:x+y, lst)</p><p>def getBlock(block640):</p><p>&lsquo;get the useful string from block of 640 bytes&rsquo;</p><p>for i in range(0, len(block640), 2):</p><p>if block640[i : i+2] == sysEnd:</p><p>return block640[:i]</p><p>def decode(text):</p><p>&lsquo;-1 operate&rsquo;</p><p>list = '&rsquo;</p><p>for i in range(0, len(text), 2):</p><p>try:</p><p>rawStr = text[i: i+2]</p><p>if rawStr == PASS_SYMBOL :</p><p>list += rawStr</p><p>elif rawStr == SPECIAL_1:</p><p>list += &lsquo;x21x32&rsquo;</p><p>elif rawStr == SPECIAL_2:</p><p>list += &lsquo;x22x32&rsquo;</p><p>else:</p><p>a, b = struct.unpack(&lsquo;BB&rsquo;, rawStr)</p><p>a -= 1</p><p>list += struct.pack(&lsquo;BB&rsquo;, a, b)</p><p>except Exception, e:</p><p>tt = 0</p><p>return list</p><p>def encode(text):</p><p>&lsquo;+1 operate&rsquo;</p><p>list = '&rsquo;</p><p>for char in text:</p><p>try:</p><p>if char == &lsquo;x21x32&rsquo;:</p><p>list += SPECIAL_1</p><p>elif char == &lsquo;x22x32&rsquo;:</p><p>list += SPECIAL_2</p><p>else:</p><p>a, b = struct.unpack(&lsquo;BB&rsquo;, char.encode(&lsquo;utf-16&rsquo;)[2:])</p><p>a += 1</p><p>list += struct.pack(&lsquo;BB&rsquo;, a, b)</p><p>except Exception, e:</p><p>tt = 0</p><p>list += &lsquo;x00x00&rsquo;</p><p>return list</p><p>def read(file):</p><p>&lsquo;read the block of file(use blockSize)&rsquo;</p><p>return file.read(blockSize)</p><p>def edtProcess(edtFile):</p><p>&rsquo;edt->txt process&rsquo;</p><p>fedt = open(dirPath + &lsquo;' + edtFile, &lsquo;rb&rsquo;)</p><p>ftxt = open(dirPath + &lsquo;' + edtFile[0:-3] + &rsquo;txt&rsquo;, &lsquo;w&rsquo;)</p><p>global i</p><p>i = 0</p><p>try:</p><p>fedt.seek(startPosition)</p><p>while True:</p><p>block640 = read(fedt)</p><p>if not block640:</p><p>break</p><p>if i == 640 and isDebug == True:</p><p>nonono = 0</p><p>block = getBlock(block640)</p><p>blockStr = decode(block)</p><p>if blockStr != &lsquo;&rsquo;:</p><p>lineNum = u&rsquo;%d:n&rsquo; %(i)</p><p>lineStr = blockStr.decode(&lsquo;utf-16&rsquo;) + &rsquo;nn&rsquo;</p><p>if isDebug:</p><p>print lineNum, &rsquo;line number:%s&rsquo; %(hex(i/16))</p><p>print lineStr,</p><p>ftxt.write(lineNum.encode(&lsquo;gbk&rsquo;))</p><p>ftxt.write(lineStr.encode(&lsquo;gbk&rsquo;))</p><p>i += blockSize</p><p>print u&rsquo;%s -> %s Convert successful&rsquo; %(fedt.name, ftxt.name)</p><p>except Exception, e:</p><p>print u&rsquo;%s -> %s Convert Errorn%s&rsquo; %(fedt.name, ftxt.name, e)</p><p>finally:</p><p>fedt.close()</p><p>ftxt.close()</p><p>def txtProcess(txtFile):</p><p>&rsquo;txt->edt process&rsquo;</p><p>ftxt = open(dirPath + &lsquo;' + txtFile, &lsquo;r&rsquo;)</p><p>fedt = open(dirPath + &lsquo;' + txtFile[0:-3] + &rsquo;edt&rsquo;, &lsquo;wb&rsquo;)</p><p>global i</p><p>i = 0</p><p>try:</p><p>fedt.seek(startPosition)</p><p>i = 0</p><p>blockStr = '&rsquo;</p><p>for eachLine in ftxt:</p><p>if eachLine != &rsquo;n&rsquo; and i % 3 != 0:</p><p>blockStr += eachLine</p><p>if (i+2) % 3 == 0:</p><p>if isDebug:</p><p>print blockStr.decode(&lsquo;gbk&rsquo;),</p><p>block = encode(blockStr[:-1].decode(&lsquo;gbk&rsquo;))</p><p>fedt.write(block)</p><p>fedt.seek(640 - len(block), os.SEEK_CUR)</p><p>blockStr = '&rsquo;</p><p>i += 1</p><p>print u&rsquo;%s -> %s Convert successful&rsquo; %(ftxt.name, fedt.name)</p><p>except Exception, e:</p><p>print u&rsquo;%s -> %s Convert Errorn%s&rsquo; %(ftxt.name, fedt.name, e)</p><p>finally:</p><p>ftxt.close()</p><p>fedt.close()</p><p>if <strong>name</strong> == &lsquo;<strong>main</strong>&rsquo;:</p><p>welcome()</p><p>myInit()</p><p>while True:</p><p>print &rsquo;n<strong><strong><strong><strong>Menu</strong></strong></strong></strong>&rsquo;</p><p>print &lsquo;1.edt->txtn2.txt->edtn3.view confign4.set confign0.exit&rsquo;</p><p>mode = raw_input(u&rsquo;Please choose:&rsquo;)</p><p>if mode == &lsquo;1&rsquo;:</p><p>fileList = getFiles(&rsquo;.edt&rsquo;)</p><p>if fileList != None:</p><p>print u&rsquo;fiels ready to convert:%sn&rsquo; %fileList</p><p>raw_input(u&rsquo;Press Enter to convert&rsquo;)</p><p>for edtFile in fileList:</p><p>edtProcess(edtFile)</p><p>else:</p><p>print &lsquo;There is no edt files!&rsquo;</p><p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p><p>elif mode == &lsquo;2&rsquo;:</p><p>fileList = getFiles(&rsquo;.txt&rsquo;)</p><p>if fileList != None:</p><p>print u&rsquo;fiels ready to convert:%sn&rsquo; %fileList</p><p>raw_input(u&rsquo;Press Enter to convert&rsquo;)</p><p>for txtFile in fileList:</p><p>txtProcess(txtFile)</p><p>else:</p><p>print &lsquo;There is no txt files!&rsquo;</p><p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p><p>elif mode == &lsquo;3&rsquo;:</p><p>print '&rsquo;</p><p>viewConfig()</p><p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p><p>elif mode == &lsquo;4&rsquo;:</p><p>print '&rsquo;</p><p>setConfig()</p><p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p><p>elif mode == &lsquo;0&rsquo;:</p><p>break</p><p>else:</p><p>print &lsquo;Error: Input error!!n&rsquo;</p><p>raw_input(&lsquo;Press Enter to continue&rsquo;)</p><p>点击这里<a href=https://4ocf5n.dijingchao.com/upload_dropbox/200911/edtTxtConvert_0_9.zip>下载源代码</a>（edtTxtConvert.py+config.cfg+reade me.txt，需要Python2.6以上），如果需要exe版本的程序，可以向我索取，也可以<a href=http://log4d.com/2009/09/python-program-will-be-compiled-into-an-executable-program-exe>使用py2exe自行编译</a>。</p><hr><p>原文链接: <a href=https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/>铁血联盟EdtTxt转换器v0.9 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/python/>python</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2009/11/thishouse-housing-sales-system/><span class=title>« Prev</span><br><span>ThisHouse房屋销售系统</span></a>
+<a class=next href=https://blog.alswl.com/2009/10/defeat/><span class=title>Next »</span><br><span>挫败</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

@@ -1,1176 +1,387 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>中国省份与城市数据SQL | Log4D</title>
-<meta name="keywords" content="综合技术, database, sql">
-<meta name="description" content="本文来源：中国省份与城市数据插入 - xlx - CSDN博客
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>中国省份与城市数据SQL | Log4D</title><meta name=keywords content="综合技术,database,sql"><meta name=description content="本文来源：中国省份与城市数据插入 - xlx - CSDN博客
 在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。
-if exists (select * from sysobjects where id = OBJECT_ID(&#39;[province]&#39;) and OBJECTPROPERTY(id, &#39;IsUserTable&#39;) = 1) DROP TABLE [province] CREATE TABLE [province] (
+if exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1) DROP TABLE [province] CREATE TABLE [province] (
 [id] [int] NOT NULL,
 [provinceID] [nvarchar] (12) NOT NULL,
 [province] [nvarchar] (80) NOT NULL)
-ALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY
-NONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES (
-1,&lsquo;110000&rsquo;,&lsquo;北京市&rsquo;)
+ALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY NONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES ( 1,&lsquo;110000&rsquo;,&lsquo;北京市&rsquo;)
 INSERT [province] ([id],[provinceID],[province]) VALUES ( 2,&lsquo;120000&rsquo;,&lsquo;天津市&rsquo;)
-INSERT [province] ([id],[provinceID],[province]) VALUES ( 3,&lsquo;130000&rsquo;,&lsquo;河北省&rsquo;)">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2009/08/zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="中国省份与城市数据SQL" />
-<meta property="og:description" content="本文来源：中国省份与城市数据插入 - xlx - CSDN博客
+INSERT [province] ([id],[provinceID],[province]) VALUES ( 3,&lsquo;130000&rsquo;,&lsquo;河北省&rsquo;)"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2009/08/zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="中国省份与城市数据SQL"><meta property="og:description" content="本文来源：中国省份与城市数据插入 - xlx - CSDN博客
 在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。
-if exists (select * from sysobjects where id = OBJECT_ID(&#39;[province]&#39;) and OBJECTPROPERTY(id, &#39;IsUserTable&#39;) = 1) DROP TABLE [province] CREATE TABLE [province] (
+if exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1) DROP TABLE [province] CREATE TABLE [province] (
 [id] [int] NOT NULL,
 [provinceID] [nvarchar] (12) NOT NULL,
 [province] [nvarchar] (80) NOT NULL)
-ALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY
-NONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES (
-1,&lsquo;110000&rsquo;,&lsquo;北京市&rsquo;)
+ALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY NONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES ( 1,&lsquo;110000&rsquo;,&lsquo;北京市&rsquo;)
 INSERT [province] ([id],[provinceID],[province]) VALUES ( 2,&lsquo;120000&rsquo;,&lsquo;天津市&rsquo;)
-INSERT [province] ([id],[provinceID],[province]) VALUES ( 3,&lsquo;130000&rsquo;,&lsquo;河北省&rsquo;)" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2009/08/zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2009-08-22T00:00:00+08:00" />
-<meta property="article:modified_time" content="2009-08-22T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="中国省份与城市数据SQL"/>
-<meta name="twitter:description" content="本文来源：中国省份与城市数据插入 - xlx - CSDN博客
+INSERT [province] ([id],[provinceID],[province]) VALUES ( 3,&lsquo;130000&rsquo;,&lsquo;河北省&rsquo;)"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2009/08/zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2009-08-22T00:00:00+08:00"><meta property="article:modified_time" content="2009-08-22T00:00:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="中国省份与城市数据SQL"><meta name=twitter:description content="本文来源：中国省份与城市数据插入 - xlx - CSDN博客
 在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。
-if exists (select * from sysobjects where id = OBJECT_ID(&#39;[province]&#39;) and OBJECTPROPERTY(id, &#39;IsUserTable&#39;) = 1) DROP TABLE [province] CREATE TABLE [province] (
+if exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1) DROP TABLE [province] CREATE TABLE [province] (
 [id] [int] NOT NULL,
 [provinceID] [nvarchar] (12) NOT NULL,
 [province] [nvarchar] (80) NOT NULL)
-ALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY
-NONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES (
-1,&lsquo;110000&rsquo;,&lsquo;北京市&rsquo;)
+ALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY NONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES ( 1,&lsquo;110000&rsquo;,&lsquo;北京市&rsquo;)
 INSERT [province] ([id],[provinceID],[province]) VALUES ( 2,&lsquo;120000&rsquo;,&lsquo;天津市&rsquo;)
-INSERT [province] ([id],[provinceID],[province]) VALUES ( 3,&lsquo;130000&rsquo;,&lsquo;河北省&rsquo;)"/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "中国省份与城市数据SQL",
-      "item": "https://blog.alswl.com/2009/08/zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "中国省份与城市数据SQL",
-  "name": "中国省份与城市数据SQL",
-  "description": "本文来源：中国省份与城市数据插入 - xlx - CSDN博客\n在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。\nif exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1) DROP TABLE [province] CREATE TABLE [province] (\n[id] [int] NOT NULL,\n[provinceID] [nvarchar] (12) NOT NULL,\n[province] [nvarchar] (80) NOT NULL)\nALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY\nNONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES (\n1,\u0026lsquo;110000\u0026rsquo;,\u0026lsquo;北京市\u0026rsquo;)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 2,\u0026lsquo;120000\u0026rsquo;,\u0026lsquo;天津市\u0026rsquo;)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 3,\u0026lsquo;130000\u0026rsquo;,\u0026lsquo;河北省\u0026rsquo;)",
-  "keywords": [
-    "综合技术", "database", "sql"
-  ],
-  "articleBody": "本文来源：中国省份与城市数据插入 - xlx - CSDN博客\n在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。\nif exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1) DROP TABLE [province] CREATE TABLE [province] (\n[id] [int] NOT NULL,\n[provinceID] [nvarchar] (12) NOT NULL,\n[province] [nvarchar] (80) NOT NULL)\nALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY\nNONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES (\n1,‘110000’,‘北京市’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 2,‘120000’,‘天津市’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 3,‘130000’,‘河北省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 4,‘140000’,‘山西省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 5,‘150000’,‘内蒙古自治区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 6,‘210000’,‘辽宁省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 7,‘220000’,‘吉林省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 8,‘230000’,‘黑龙江省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 9,‘310000’,‘上海市’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 10,‘320000’,‘江苏省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 11,‘330000’,‘浙江省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 12,‘340000’,‘安徽省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 13,‘350000’,‘福建省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 14,‘360000’,‘江西省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 15,‘370000’,‘山东省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 16,‘410000’,‘河南省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 17,‘420000’,‘湖北省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 18,‘430000’,‘湖南省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 19,‘440000’,‘广东省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES (\n20,‘450000’,‘广西壮族自治区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 21,‘460000’,‘海南省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 22,‘500000’,‘重庆市’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 23,‘510000’,‘四川省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 24,‘520000’,‘贵州省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 25,‘530000’,‘云南省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 26,‘540000’,‘西藏自治区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 27,‘610000’,‘陕西省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 28,‘620000’,‘甘肃省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 29,‘630000’,‘青海省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES (\n30,‘640000’,‘宁夏回族自治区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES (\n31,‘650000’,‘新疆维吾尔自治区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 32,‘710000’,‘台湾省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES (\n33,‘810000’,‘香港特别行政区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES (\n34,‘820000’,‘澳门特别行政区’)\nif exists (select * from sysobjects where id = OBJECT_ID(’[area]’) and\nOBJECTPROPERTY(id, ‘IsUserTable’) = 1)\nDROP TABLE [area]\nCREATE TABLE [area] (\n[id] [int] NOT NULL,\n[cityID] [nvarchar] (12) NOT NULL,\n[city] [nvarchar] (100) NOT NULL,\n[father] [nvarchar] (12) NOT NULL)\nALTER TABLE [area] WITH NOCHECK ADD CONSTRAINT [PK_area] PRIMARY KEY\nNONCLUSTERED ( [id] )INSERT [area] ([id],[cityID],[city],[father]) VALUES (\n1,‘110100’,‘市辖区’,‘110000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n2,‘110200’,‘县’,‘110000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n3,‘120100’,‘市辖区’,‘120000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n4,‘120200’,‘县’,‘120000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n5,‘130100’,‘石家庄市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n6,‘130200’,‘唐山市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n7,‘130300’,‘秦皇岛市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n8,‘130400’,‘邯郸市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n9,‘130500’,‘邢台市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n10,‘130600’,‘保定市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n11,‘130700’,‘张家口市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n12,‘130800’,‘承德市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n13,‘130900’,‘沧州市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n14,‘131000’,‘廊坊市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n15,‘131100’,‘衡水市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n16,‘140100’,‘太原市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n17,‘140200’,‘大同市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n18,‘140300’,‘阳泉市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n19,‘140400’,‘长治市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n20,‘140500’,‘晋城市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n21,‘140600’,‘朔州市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n22,‘140700’,‘晋中市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n23,‘140800’,‘运城市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n24,‘140900’,‘忻州市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n25,‘141000’,‘临汾市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n26,‘141100’,‘吕梁市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n27,‘150100’,‘呼和浩特市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n28,‘150200’,‘包头市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n29,‘150300’,‘乌海市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n30,‘150400’,‘赤峰市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n31,‘150500’,‘通辽市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n32,‘150600’,‘鄂尔多斯市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n33,‘150700’,‘呼伦贝尔市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n34,‘150800’,‘巴彦淖尔市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n35,‘150900’,‘乌兰察布市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n36,‘152200’,‘兴安盟’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n37,‘152500’,‘锡林郭勒盟’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n38,‘152900’,‘阿拉善盟’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n39,‘210100’,‘沈阳市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n40,‘210200’,‘大连市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n41,‘210300’,‘鞍山市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n42,‘210400’,‘抚顺市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n43,‘210500’,‘本溪市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n44,‘210600’,‘丹东市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n45,‘210700’,‘锦州市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n46,‘210800’,‘营口市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n47,‘210900’,‘阜新市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n48,‘211000’,‘辽阳市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n49,‘211100’,‘盘锦市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n50,‘211200’,‘铁岭市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n51,‘211300’,‘朝阳市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n52,‘211400’,‘葫芦岛市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n53,‘220100’,‘长春市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n54,‘220200’,‘吉林市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n55,‘220300’,‘四平市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n56,‘220400’,‘辽源市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n57,‘220500’,‘通化市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n58,‘220600’,‘白山市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n59,‘220700’,‘松原市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n60,‘220800’,‘白城市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n61,‘222400’,‘延边朝鲜族自治州’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n62,‘230100’,‘哈尔滨市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n63,‘230200’,‘齐齐哈尔市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n64,‘230300’,‘鸡西市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n65,‘230400’,‘鹤岗市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n66,‘230500’,‘双鸭山市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n67,‘230600’,‘大庆市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n68,‘230700’,‘伊春市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n69,‘230800’,‘佳木斯市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n70,‘230900’,‘七台河市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n71,‘231000’,‘牡丹江市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n72,‘231100’,‘黑河市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n73,‘231200’,‘绥化市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n74,‘232700’,‘大兴安岭地区’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n75,‘310100’,‘市辖区’,‘310000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n76,‘310200’,‘县’,‘310000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n77,‘320100’,‘南京市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n78,‘320200’,‘无锡市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n79,‘320300’,‘徐州市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n80,‘320400’,‘常州市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n81,‘320500’,‘苏州市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n82,‘320600’,‘南通市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n83,‘320700’,‘连云港市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n84,‘320800’,‘淮安市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n85,‘320900’,‘盐城市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n86,‘321000’,‘扬州市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n87,‘321100’,‘镇江市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n88,‘321200’,‘泰州市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n89,‘321300’,‘宿迁市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n90,‘330100’,‘杭州市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n91,‘330200’,‘宁波市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n92,‘330300’,‘温州市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n93,‘330400’,‘嘉兴市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n94,‘330500’,‘湖州市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n95,‘330600’,‘绍兴市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n96,‘330700’,‘金华市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n97,‘330800’,‘衢州市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n98,‘330900’,‘舟山市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n99,‘331000’,‘台州市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n100,‘331100’,‘丽水市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n101,‘340100’,‘合肥市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n102,‘340200’,‘芜湖市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n103,‘340300’,‘蚌埠市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n104,‘340400’,‘淮南市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n105,‘340500’,‘马鞍山市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n106,‘340600’,‘淮北市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n107,‘340700’,‘铜陵市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n108,‘340800’,‘安庆市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n109,‘341000’,‘黄山市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n110,‘341100’,‘滁州市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n111,‘341200’,‘阜阳市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n112,‘341300’,‘宿州市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n113,‘341400’,‘巢湖市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n114,‘341500’,‘六安市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n115,‘341600’,‘亳州市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n116,‘341700’,‘池州市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n117,‘341800’,‘宣城市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n118,‘350100’,‘福州市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n119,‘350200’,‘厦门市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n120,‘350300’,‘莆田市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n121,‘350400’,‘三明市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n122,‘350500’,‘泉州市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n123,‘350600’,‘漳州市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n124,‘350700’,‘南平市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n125,‘350800’,‘龙岩市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n126,‘350900’,‘宁德市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n127,‘360100’,‘南昌市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n128,‘360200’,‘景德镇市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n129,‘360300’,‘萍乡市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n130,‘360400’,‘九江市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n131,‘360500’,‘新余市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n132,‘360600’,‘鹰潭市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n133,‘360700’,‘赣州市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n134,‘360800’,‘吉安市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n135,‘360900’,‘宜春市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n136,‘361000’,‘抚州市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n137,‘361100’,‘上饶市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n138,‘370100’,‘济南市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n139,‘370200’,‘青岛市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n140,‘370300’,‘淄博市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n141,‘370400’,‘枣庄市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n142,‘370500’,‘东营市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n143,‘370600’,‘烟台市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n144,‘370700’,‘潍坊市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n145,‘370800’,‘济宁市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n146,‘370900’,‘泰安市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n147,‘371000’,‘威海市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n148,‘371100’,‘日照市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n149,‘371200’,‘莱芜市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n150,‘371300’,‘临沂市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n151,‘371400’,‘德州市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n152,‘371500’,‘聊城市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n153,‘371600’,‘滨州市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n154,‘371700’,‘荷泽市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n155,‘410100’,‘郑州市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n156,‘410200’,‘开封市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n157,‘410300’,‘洛阳市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n158,‘410400’,‘平顶山市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n159,‘410500’,‘安阳市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n160,‘410600’,‘鹤壁市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n161,‘410700’,‘新乡市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n162,‘410800’,‘焦作市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n163,‘410900’,‘濮阳市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n164,‘411000’,‘许昌市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n165,‘411100’,‘漯河市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n166,‘411200’,‘三门峡市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n167,‘411300’,‘南阳市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n168,‘411400’,‘商丘市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n169,‘411500’,‘信阳市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n170,‘411600’,‘周口市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n171,‘411700’,‘驻马店市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n172,‘420100’,‘武汉市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n173,‘420200’,‘黄石市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n174,‘420300’,‘十堰市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n175,‘420500’,‘宜昌市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n176,‘420600’,‘襄樊市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n177,‘420700’,‘鄂州市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n178,‘420800’,‘荆门市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n179,‘420900’,‘孝感市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n180,‘421000’,‘荆州市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n181,‘421100’,‘黄冈市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n182,‘421200’,‘咸宁市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n183,‘421300’,‘随州市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n184,‘422800’,‘恩施土家族苗族自治州’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n185,‘429000’,‘省直辖行政单位’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n186,‘430100’,‘长沙市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n187,‘430200’,‘株洲市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n188,‘430300’,‘湘潭市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n189,‘430400’,‘衡阳市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n190,‘430500’,‘邵阳市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n191,‘430600’,‘岳阳市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n192,‘430700’,‘常德市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n193,‘430800’,‘张家界市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n194,‘430900’,‘益阳市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n195,‘431000’,‘郴州市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n196,‘431100’,‘永州市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n197,‘431200’,‘怀化市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n198,‘431300’,‘娄底市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n199,‘433100’,‘湘西土家族苗族自治州’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n200,‘440100’,‘广州市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n201,‘440200’,‘韶关市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n202,‘440300’,‘深圳市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n203,‘440400’,‘珠海市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n204,‘440500’,‘汕头市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n205,‘440600’,‘佛山市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n206,‘440700’,‘江门市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n207,‘440800’,‘湛江市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n208,‘440900’,‘茂名市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n209,‘441200’,‘肇庆市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n210,‘441300’,‘惠州市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n211,‘441400’,‘梅州市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n212,‘441500’,‘汕尾市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n213,‘441600’,‘河源市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n214,‘441700’,‘阳江市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n215,‘441800’,‘清远市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n216,‘441900’,‘东莞市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n217,‘442000’,‘中山市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n218,‘445100’,‘潮州市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n219,‘445200’,‘揭阳市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n220,‘445300’,‘云浮市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n221,‘450100’,‘南宁市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n222,‘450200’,‘柳州市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n223,‘450300’,‘桂林市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n224,‘450400’,‘梧州市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n225,‘450500’,‘北海市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n226,‘450600’,‘防城港市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n227,‘450700’,‘钦州市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n228,‘450800’,‘贵港市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n229,‘450900’,‘玉林市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n230,‘451000’,‘百色市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n231,‘451100’,‘贺州市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n232,‘451200’,‘河池市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n233,‘451300’,‘来宾市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n234,‘451400’,‘崇左市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n235,‘460100’,‘海口市’,‘460000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n236,‘460200’,‘三亚市’,‘460000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n237,‘469000’,‘省直辖县级行政单位’,‘460000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n238,‘500100’,‘市辖区’,‘500000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n239,‘500200’,‘县’,‘500000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n240,‘500300’,‘市’,‘500000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n241,‘510100’,‘成都市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n242,‘510300’,‘自贡市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n243,‘510400’,‘攀枝花市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n244,‘510500’,‘泸州市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n245,‘510600’,‘德阳市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n246,‘510700’,‘绵阳市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n247,‘510800’,‘广元市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n248,‘510900’,‘遂宁市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n249,‘511000’,‘内江市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n250,‘511100’,‘乐山市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n251,‘511300’,‘南充市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n252,‘511400’,‘眉山市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n253,‘511500’,‘宜宾市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n254,‘511600’,‘广安市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n255,‘511700’,‘达州市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n256,‘511800’,‘雅安市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n257,‘511900’,‘巴中市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n258,‘512000’,‘资阳市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n259,‘513200’,‘阿坝藏族羌族自治州’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n260,‘513300’,‘甘孜藏族自治州’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n261,‘513400’,‘凉山彝族自治州’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n262,‘520100’,‘贵阳市’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n263,‘520200’,‘六盘水市’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n264,‘520300’,‘遵义市’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n265,‘520400’,‘安顺市’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n266,‘522200’,‘铜仁地区’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n267,‘522300’,‘黔西南布依族苗族自治州’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n268,‘522400’,‘毕节地区’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n269,‘522600’,‘黔东南苗族侗族自治州’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n270,‘522700’,‘黔南布依族苗族自治州’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n271,‘530100’,‘昆明市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n272,‘530300’,‘曲靖市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n273,‘530400’,‘玉溪市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n274,‘530500’,‘保山市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n275,‘530600’,‘昭通市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n276,‘530700’,‘丽江市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n277,‘530800’,‘思茅市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n278,‘530900’,‘临沧市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n279,‘532300’,‘楚雄彝族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n280,‘532500’,‘红河哈尼族彝族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n281,‘532600’,‘文山壮族苗族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n282,‘532800’,‘西双版纳傣族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n283,‘532900’,‘大理白族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n284,‘533100’,‘德宏傣族景颇族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n285,‘533300’,‘怒江傈僳族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n286,‘533400’,‘迪庆藏族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n287,‘540100’,‘拉萨市’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n288,‘542100’,‘昌都地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n289,‘542200’,‘山南地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n290,‘542300’,‘日喀则地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n291,‘542400’,‘那曲地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n292,‘542500’,‘阿里地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n293,‘542600’,‘林芝地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n294,‘610100’,‘西安市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n295,‘610200’,‘铜川市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n296,‘610300’,‘宝鸡市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n297,‘610400’,‘咸阳市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n298,‘610500’,‘渭南市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n299,‘610600’,‘延安市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n300,‘610700’,‘汉中市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n301,‘610800’,‘榆林市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n302,‘610900’,‘安康市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n303,‘611000’,‘商洛市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n304,‘620100’,‘兰州市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n305,‘620200’,‘嘉峪关市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n306,‘620300’,‘金昌市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n307,‘620400’,‘白银市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n308,‘620500’,‘天水市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n309,‘620600’,‘武威市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n310,‘620700’,‘张掖市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n311,‘620800’,‘平凉市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n312,‘620900’,‘酒泉市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n313,‘621000’,‘庆阳市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n314,‘621100’,‘定西市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n315,‘621200’,‘陇南市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n316,‘622900’,‘临夏回族自治州’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n317,‘623000’,‘甘南藏族自治州’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n318,‘630100’,‘西宁市’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n319,‘632100’,‘海东地区’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n320,‘632200’,‘海北藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n321,‘632300’,‘黄南藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n322,‘632500’,‘海南藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n323,‘632600’,‘果洛藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n324,‘632700’,‘玉树藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n325,‘632800’,‘海西蒙古族藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n326,‘640100’,‘银川市’,‘640000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n327,‘640200’,‘石嘴山市’,‘640000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n328,‘640300’,‘吴忠市’,‘640000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n329,‘640400’,‘固原市’,‘640000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n330,‘640500’,‘中卫市’,‘640000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n331,‘650100’,‘乌鲁木齐市’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n332,‘650200’,‘克拉玛依市’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n333,‘652100’,‘吐鲁番地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n334,‘652200’,‘哈密地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n335,‘652300’,‘昌吉回族自治州’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n336,‘652700’,‘博尔塔拉蒙古自治州’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n337,‘652800’,‘巴音郭楞蒙古自治州’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n338,‘652900’,‘阿克苏地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n339,‘653000’,‘克孜勒苏柯尔克孜自治州’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n340,‘653100’,‘喀什地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n341,‘653200’,‘和田地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n342,‘654000’,‘伊犁哈萨克自治州’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n343,‘654200’,‘塔城地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n344,‘654300’,‘阿勒泰地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES (\n345,‘659000’,‘省直辖行政单位’,‘650000’)\n",
-  "wordCount" : "2383",
-  "inLanguage": "en",
-  "datePublished": "2009-08-22T00:00:00+08:00",
-  "dateModified": "2009-08-22T00:00:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2009/08/zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      中国省份与城市数据SQL
-    </h1>
-    <div class="post-meta"><span title='2009-08-22 00:00:00 +0800 CST'>2009-08-22</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> 
-
-  <div class="post-content"><p>本文来源：<a href="http://blog.csdn.net/xielingxu/archive/2007/08/26/1759471.aspx">中国省份与城市数据插入 - xlx - CSDN博客</a></p>
-<p>在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。</p>
-<pre><code>if exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1)
+INSERT [province] ([id],[provinceID],[province]) VALUES ( 3,&lsquo;130000&rsquo;,&lsquo;河北省&rsquo;)"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"中国省份与城市数据SQL","item":"https://blog.alswl.com/2009/08/zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"中国省份与城市数据SQL","name":"中国省份与城市数据SQL","description":"本文来源：中国省份与城市数据插入 - xlx - CSDN博客\n在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。\nif exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1) DROP TABLE [province] CREATE TABLE [province] (\n[id] [int] NOT NULL,\n[provinceID] [nvarchar] (12) NOT NULL,\n[province] [nvarchar] (80) NOT NULL)\nALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY NONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES ( 1,\u0026lsquo;110000\u0026rsquo;,\u0026lsquo;北京市\u0026rsquo;)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 2,\u0026lsquo;120000\u0026rsquo;,\u0026lsquo;天津市\u0026rsquo;)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 3,\u0026lsquo;130000\u0026rsquo;,\u0026lsquo;河北省\u0026rsquo;)","keywords":["综合技术","database","sql"],"articleBody":"本文来源：中国省份与城市数据插入 - xlx - CSDN博客\n在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。\nif exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1) DROP TABLE [province] CREATE TABLE [province] (\n[id] [int] NOT NULL,\n[provinceID] [nvarchar] (12) NOT NULL,\n[province] [nvarchar] (80) NOT NULL)\nALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY NONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES ( 1,‘110000’,‘北京市’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 2,‘120000’,‘天津市’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 3,‘130000’,‘河北省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 4,‘140000’,‘山西省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 5,‘150000’,‘内蒙古自治区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 6,‘210000’,‘辽宁省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 7,‘220000’,‘吉林省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 8,‘230000’,‘黑龙江省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 9,‘310000’,‘上海市’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 10,‘320000’,‘江苏省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 11,‘330000’,‘浙江省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 12,‘340000’,‘安徽省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 13,‘350000’,‘福建省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 14,‘360000’,‘江西省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 15,‘370000’,‘山东省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 16,‘410000’,‘河南省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 17,‘420000’,‘湖北省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 18,‘430000’,‘湖南省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 19,‘440000’,‘广东省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 20,‘450000’,‘广西壮族自治区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 21,‘460000’,‘海南省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 22,‘500000’,‘重庆市’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 23,‘510000’,‘四川省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 24,‘520000’,‘贵州省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 25,‘530000’,‘云南省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 26,‘540000’,‘西藏自治区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 27,‘610000’,‘陕西省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 28,‘620000’,‘甘肃省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 29,‘630000’,‘青海省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 30,‘640000’,‘宁夏回族自治区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 31,‘650000’,‘新疆维吾尔自治区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 32,‘710000’,‘台湾省’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 33,‘810000’,‘香港特别行政区’)\nINSERT [province] ([id],[provinceID],[province]) VALUES ( 34,‘820000’,‘澳门特别行政区’)\nif exists (select * from sysobjects where id = OBJECT_ID(’[area]’) and OBJECTPROPERTY(id, ‘IsUserTable’) = 1)\nDROP TABLE [area]\nCREATE TABLE [area] (\n[id] [int] NOT NULL,\n[cityID] [nvarchar] (12) NOT NULL,\n[city] [nvarchar] (100) NOT NULL,\n[father] [nvarchar] (12) NOT NULL)\nALTER TABLE [area] WITH NOCHECK ADD CONSTRAINT [PK_area] PRIMARY KEY NONCLUSTERED ( [id] )INSERT [area] ([id],[cityID],[city],[father]) VALUES ( 1,‘110100’,‘市辖区’,‘110000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 2,‘110200’,‘县’,‘110000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 3,‘120100’,‘市辖区’,‘120000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 4,‘120200’,‘县’,‘120000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 5,‘130100’,‘石家庄市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 6,‘130200’,‘唐山市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 7,‘130300’,‘秦皇岛市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 8,‘130400’,‘邯郸市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 9,‘130500’,‘邢台市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 10,‘130600’,‘保定市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 11,‘130700’,‘张家口市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 12,‘130800’,‘承德市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 13,‘130900’,‘沧州市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 14,‘131000’,‘廊坊市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 15,‘131100’,‘衡水市’,‘130000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 16,‘140100’,‘太原市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 17,‘140200’,‘大同市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 18,‘140300’,‘阳泉市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 19,‘140400’,‘长治市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 20,‘140500’,‘晋城市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 21,‘140600’,‘朔州市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 22,‘140700’,‘晋中市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 23,‘140800’,‘运城市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 24,‘140900’,‘忻州市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 25,‘141000’,‘临汾市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 26,‘141100’,‘吕梁市’,‘140000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 27,‘150100’,‘呼和浩特市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 28,‘150200’,‘包头市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 29,‘150300’,‘乌海市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 30,‘150400’,‘赤峰市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 31,‘150500’,‘通辽市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 32,‘150600’,‘鄂尔多斯市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 33,‘150700’,‘呼伦贝尔市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 34,‘150800’,‘巴彦淖尔市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 35,‘150900’,‘乌兰察布市’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 36,‘152200’,‘兴安盟’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 37,‘152500’,‘锡林郭勒盟’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 38,‘152900’,‘阿拉善盟’,‘150000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 39,‘210100’,‘沈阳市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 40,‘210200’,‘大连市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 41,‘210300’,‘鞍山市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 42,‘210400’,‘抚顺市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 43,‘210500’,‘本溪市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 44,‘210600’,‘丹东市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 45,‘210700’,‘锦州市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 46,‘210800’,‘营口市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 47,‘210900’,‘阜新市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 48,‘211000’,‘辽阳市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 49,‘211100’,‘盘锦市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 50,‘211200’,‘铁岭市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 51,‘211300’,‘朝阳市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 52,‘211400’,‘葫芦岛市’,‘210000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 53,‘220100’,‘长春市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 54,‘220200’,‘吉林市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 55,‘220300’,‘四平市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 56,‘220400’,‘辽源市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 57,‘220500’,‘通化市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 58,‘220600’,‘白山市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 59,‘220700’,‘松原市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 60,‘220800’,‘白城市’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 61,‘222400’,‘延边朝鲜族自治州’,‘220000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 62,‘230100’,‘哈尔滨市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 63,‘230200’,‘齐齐哈尔市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 64,‘230300’,‘鸡西市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 65,‘230400’,‘鹤岗市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 66,‘230500’,‘双鸭山市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 67,‘230600’,‘大庆市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 68,‘230700’,‘伊春市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 69,‘230800’,‘佳木斯市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 70,‘230900’,‘七台河市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 71,‘231000’,‘牡丹江市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 72,‘231100’,‘黑河市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 73,‘231200’,‘绥化市’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 74,‘232700’,‘大兴安岭地区’,‘230000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 75,‘310100’,‘市辖区’,‘310000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 76,‘310200’,‘县’,‘310000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 77,‘320100’,‘南京市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 78,‘320200’,‘无锡市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 79,‘320300’,‘徐州市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 80,‘320400’,‘常州市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 81,‘320500’,‘苏州市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 82,‘320600’,‘南通市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 83,‘320700’,‘连云港市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 84,‘320800’,‘淮安市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 85,‘320900’,‘盐城市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 86,‘321000’,‘扬州市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 87,‘321100’,‘镇江市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 88,‘321200’,‘泰州市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 89,‘321300’,‘宿迁市’,‘320000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 90,‘330100’,‘杭州市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 91,‘330200’,‘宁波市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 92,‘330300’,‘温州市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 93,‘330400’,‘嘉兴市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 94,‘330500’,‘湖州市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 95,‘330600’,‘绍兴市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 96,‘330700’,‘金华市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 97,‘330800’,‘衢州市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 98,‘330900’,‘舟山市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 99,‘331000’,‘台州市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 100,‘331100’,‘丽水市’,‘330000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 101,‘340100’,‘合肥市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 102,‘340200’,‘芜湖市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 103,‘340300’,‘蚌埠市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 104,‘340400’,‘淮南市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 105,‘340500’,‘马鞍山市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 106,‘340600’,‘淮北市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 107,‘340700’,‘铜陵市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 108,‘340800’,‘安庆市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 109,‘341000’,‘黄山市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 110,‘341100’,‘滁州市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 111,‘341200’,‘阜阳市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 112,‘341300’,‘宿州市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 113,‘341400’,‘巢湖市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 114,‘341500’,‘六安市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 115,‘341600’,‘亳州市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 116,‘341700’,‘池州市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 117,‘341800’,‘宣城市’,‘340000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 118,‘350100’,‘福州市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 119,‘350200’,‘厦门市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 120,‘350300’,‘莆田市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 121,‘350400’,‘三明市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 122,‘350500’,‘泉州市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 123,‘350600’,‘漳州市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 124,‘350700’,‘南平市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 125,‘350800’,‘龙岩市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 126,‘350900’,‘宁德市’,‘350000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 127,‘360100’,‘南昌市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 128,‘360200’,‘景德镇市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 129,‘360300’,‘萍乡市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 130,‘360400’,‘九江市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 131,‘360500’,‘新余市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 132,‘360600’,‘鹰潭市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 133,‘360700’,‘赣州市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 134,‘360800’,‘吉安市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 135,‘360900’,‘宜春市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 136,‘361000’,‘抚州市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 137,‘361100’,‘上饶市’,‘360000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 138,‘370100’,‘济南市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 139,‘370200’,‘青岛市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 140,‘370300’,‘淄博市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 141,‘370400’,‘枣庄市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 142,‘370500’,‘东营市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 143,‘370600’,‘烟台市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 144,‘370700’,‘潍坊市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 145,‘370800’,‘济宁市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 146,‘370900’,‘泰安市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 147,‘371000’,‘威海市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 148,‘371100’,‘日照市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 149,‘371200’,‘莱芜市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 150,‘371300’,‘临沂市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 151,‘371400’,‘德州市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 152,‘371500’,‘聊城市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 153,‘371600’,‘滨州市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 154,‘371700’,‘荷泽市’,‘370000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 155,‘410100’,‘郑州市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 156,‘410200’,‘开封市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 157,‘410300’,‘洛阳市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 158,‘410400’,‘平顶山市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 159,‘410500’,‘安阳市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 160,‘410600’,‘鹤壁市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 161,‘410700’,‘新乡市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 162,‘410800’,‘焦作市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 163,‘410900’,‘濮阳市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 164,‘411000’,‘许昌市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 165,‘411100’,‘漯河市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 166,‘411200’,‘三门峡市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 167,‘411300’,‘南阳市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 168,‘411400’,‘商丘市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 169,‘411500’,‘信阳市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 170,‘411600’,‘周口市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 171,‘411700’,‘驻马店市’,‘410000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 172,‘420100’,‘武汉市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 173,‘420200’,‘黄石市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 174,‘420300’,‘十堰市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 175,‘420500’,‘宜昌市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 176,‘420600’,‘襄樊市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 177,‘420700’,‘鄂州市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 178,‘420800’,‘荆门市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 179,‘420900’,‘孝感市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 180,‘421000’,‘荆州市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 181,‘421100’,‘黄冈市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 182,‘421200’,‘咸宁市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 183,‘421300’,‘随州市’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 184,‘422800’,‘恩施土家族苗族自治州’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 185,‘429000’,‘省直辖行政单位’,‘420000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 186,‘430100’,‘长沙市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 187,‘430200’,‘株洲市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 188,‘430300’,‘湘潭市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 189,‘430400’,‘衡阳市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 190,‘430500’,‘邵阳市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 191,‘430600’,‘岳阳市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 192,‘430700’,‘常德市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 193,‘430800’,‘张家界市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 194,‘430900’,‘益阳市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 195,‘431000’,‘郴州市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 196,‘431100’,‘永州市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 197,‘431200’,‘怀化市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 198,‘431300’,‘娄底市’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 199,‘433100’,‘湘西土家族苗族自治州’,‘430000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 200,‘440100’,‘广州市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 201,‘440200’,‘韶关市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 202,‘440300’,‘深圳市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 203,‘440400’,‘珠海市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 204,‘440500’,‘汕头市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 205,‘440600’,‘佛山市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 206,‘440700’,‘江门市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 207,‘440800’,‘湛江市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 208,‘440900’,‘茂名市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 209,‘441200’,‘肇庆市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 210,‘441300’,‘惠州市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 211,‘441400’,‘梅州市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 212,‘441500’,‘汕尾市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 213,‘441600’,‘河源市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 214,‘441700’,‘阳江市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 215,‘441800’,‘清远市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 216,‘441900’,‘东莞市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 217,‘442000’,‘中山市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 218,‘445100’,‘潮州市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 219,‘445200’,‘揭阳市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 220,‘445300’,‘云浮市’,‘440000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 221,‘450100’,‘南宁市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 222,‘450200’,‘柳州市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 223,‘450300’,‘桂林市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 224,‘450400’,‘梧州市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 225,‘450500’,‘北海市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 226,‘450600’,‘防城港市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 227,‘450700’,‘钦州市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 228,‘450800’,‘贵港市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 229,‘450900’,‘玉林市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 230,‘451000’,‘百色市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 231,‘451100’,‘贺州市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 232,‘451200’,‘河池市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 233,‘451300’,‘来宾市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 234,‘451400’,‘崇左市’,‘450000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 235,‘460100’,‘海口市’,‘460000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 236,‘460200’,‘三亚市’,‘460000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 237,‘469000’,‘省直辖县级行政单位’,‘460000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 238,‘500100’,‘市辖区’,‘500000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 239,‘500200’,‘县’,‘500000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 240,‘500300’,‘市’,‘500000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 241,‘510100’,‘成都市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 242,‘510300’,‘自贡市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 243,‘510400’,‘攀枝花市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 244,‘510500’,‘泸州市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 245,‘510600’,‘德阳市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 246,‘510700’,‘绵阳市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 247,‘510800’,‘广元市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 248,‘510900’,‘遂宁市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 249,‘511000’,‘内江市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 250,‘511100’,‘乐山市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 251,‘511300’,‘南充市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 252,‘511400’,‘眉山市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 253,‘511500’,‘宜宾市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 254,‘511600’,‘广安市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 255,‘511700’,‘达州市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 256,‘511800’,‘雅安市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 257,‘511900’,‘巴中市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 258,‘512000’,‘资阳市’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 259,‘513200’,‘阿坝藏族羌族自治州’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 260,‘513300’,‘甘孜藏族自治州’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 261,‘513400’,‘凉山彝族自治州’,‘510000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 262,‘520100’,‘贵阳市’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 263,‘520200’,‘六盘水市’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 264,‘520300’,‘遵义市’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 265,‘520400’,‘安顺市’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 266,‘522200’,‘铜仁地区’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 267,‘522300’,‘黔西南布依族苗族自治州’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 268,‘522400’,‘毕节地区’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 269,‘522600’,‘黔东南苗族侗族自治州’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 270,‘522700’,‘黔南布依族苗族自治州’,‘520000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 271,‘530100’,‘昆明市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 272,‘530300’,‘曲靖市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 273,‘530400’,‘玉溪市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 274,‘530500’,‘保山市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 275,‘530600’,‘昭通市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 276,‘530700’,‘丽江市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 277,‘530800’,‘思茅市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 278,‘530900’,‘临沧市’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 279,‘532300’,‘楚雄彝族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 280,‘532500’,‘红河哈尼族彝族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 281,‘532600’,‘文山壮族苗族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 282,‘532800’,‘西双版纳傣族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 283,‘532900’,‘大理白族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 284,‘533100’,‘德宏傣族景颇族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 285,‘533300’,‘怒江傈僳族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 286,‘533400’,‘迪庆藏族自治州’,‘530000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 287,‘540100’,‘拉萨市’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 288,‘542100’,‘昌都地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 289,‘542200’,‘山南地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 290,‘542300’,‘日喀则地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 291,‘542400’,‘那曲地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 292,‘542500’,‘阿里地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 293,‘542600’,‘林芝地区’,‘540000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 294,‘610100’,‘西安市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 295,‘610200’,‘铜川市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 296,‘610300’,‘宝鸡市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 297,‘610400’,‘咸阳市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 298,‘610500’,‘渭南市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 299,‘610600’,‘延安市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 300,‘610700’,‘汉中市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 301,‘610800’,‘榆林市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 302,‘610900’,‘安康市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 303,‘611000’,‘商洛市’,‘610000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 304,‘620100’,‘兰州市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 305,‘620200’,‘嘉峪关市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 306,‘620300’,‘金昌市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 307,‘620400’,‘白银市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 308,‘620500’,‘天水市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 309,‘620600’,‘武威市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 310,‘620700’,‘张掖市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 311,‘620800’,‘平凉市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 312,‘620900’,‘酒泉市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 313,‘621000’,‘庆阳市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 314,‘621100’,‘定西市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 315,‘621200’,‘陇南市’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 316,‘622900’,‘临夏回族自治州’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 317,‘623000’,‘甘南藏族自治州’,‘620000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 318,‘630100’,‘西宁市’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 319,‘632100’,‘海东地区’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 320,‘632200’,‘海北藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 321,‘632300’,‘黄南藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 322,‘632500’,‘海南藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 323,‘632600’,‘果洛藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 324,‘632700’,‘玉树藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 325,‘632800’,‘海西蒙古族藏族自治州’,‘630000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 326,‘640100’,‘银川市’,‘640000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 327,‘640200’,‘石嘴山市’,‘640000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 328,‘640300’,‘吴忠市’,‘640000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 329,‘640400’,‘固原市’,‘640000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 330,‘640500’,‘中卫市’,‘640000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 331,‘650100’,‘乌鲁木齐市’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 332,‘650200’,‘克拉玛依市’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 333,‘652100’,‘吐鲁番地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 334,‘652200’,‘哈密地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 335,‘652300’,‘昌吉回族自治州’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 336,‘652700’,‘博尔塔拉蒙古自治州’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 337,‘652800’,‘巴音郭楞蒙古自治州’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 338,‘652900’,‘阿克苏地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 339,‘653000’,‘克孜勒苏柯尔克孜自治州’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 340,‘653100’,‘喀什地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 341,‘653200’,‘和田地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 342,‘654000’,‘伊犁哈萨克自治州’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 343,‘654200’,‘塔城地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 344,‘654300’,‘阿勒泰地区’,‘650000’)\nINSERT [area] ([id],[cityID],[city],[father]) VALUES ( 345,‘659000’,‘省直辖行政单位’,‘650000’)\n","wordCount":"2383","inLanguage":"en","datePublished":"2009-08-22T00:00:00+08:00","dateModified":"2009-08-22T00:00:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2009/08/zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>中国省份与城市数据SQL</h1><div class=post-meta><span title='2009-08-22 00:00:00 +0800 +0800'>2009-08-22</span>&nbsp;·&nbsp;alswl</div></header><div class=post-content><p>本文来源：<a href=http://blog.csdn.net/xielingxu/archive/2007/08/26/1759471.aspx>中国省份与城市数据插入 - xlx - CSDN博客</a></p><p>在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。</p><pre><code>if exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1)
 DROP TABLE [province]
-</code></pre>
-<p>CREATE TABLE [province] (</p>
-<p>[id] [int] NOT NULL,</p>
-<p>[provinceID] [nvarchar] (12) NOT NULL,</p>
-<p>[province] [nvarchar] (80) NOT NULL)</p>
-<p>ALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY<br />
-NONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES (<br />
-1,&lsquo;110000&rsquo;,&lsquo;北京市&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 2,&lsquo;120000&rsquo;,&lsquo;天津市&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 3,&lsquo;130000&rsquo;,&lsquo;河北省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 4,&lsquo;140000&rsquo;,&lsquo;山西省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 5,&lsquo;150000&rsquo;,&lsquo;内蒙古自治区&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 6,&lsquo;210000&rsquo;,&lsquo;辽宁省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 7,&lsquo;220000&rsquo;,&lsquo;吉林省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 8,&lsquo;230000&rsquo;,&lsquo;黑龙江省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 9,&lsquo;310000&rsquo;,&lsquo;上海市&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 10,&lsquo;320000&rsquo;,&lsquo;江苏省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 11,&lsquo;330000&rsquo;,&lsquo;浙江省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 12,&lsquo;340000&rsquo;,&lsquo;安徽省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 13,&lsquo;350000&rsquo;,&lsquo;福建省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 14,&lsquo;360000&rsquo;,&lsquo;江西省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 15,&lsquo;370000&rsquo;,&lsquo;山东省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 16,&lsquo;410000&rsquo;,&lsquo;河南省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 17,&lsquo;420000&rsquo;,&lsquo;湖北省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 18,&lsquo;430000&rsquo;,&lsquo;湖南省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 19,&lsquo;440000&rsquo;,&lsquo;广东省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES (<br />
-20,&lsquo;450000&rsquo;,&lsquo;广西壮族自治区&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 21,&lsquo;460000&rsquo;,&lsquo;海南省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 22,&lsquo;500000&rsquo;,&lsquo;重庆市&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 23,&lsquo;510000&rsquo;,&lsquo;四川省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 24,&lsquo;520000&rsquo;,&lsquo;贵州省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 25,&lsquo;530000&rsquo;,&lsquo;云南省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 26,&lsquo;540000&rsquo;,&lsquo;西藏自治区&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 27,&lsquo;610000&rsquo;,&lsquo;陕西省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 28,&lsquo;620000&rsquo;,&lsquo;甘肃省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 29,&lsquo;630000&rsquo;,&lsquo;青海省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES (<br />
-30,&lsquo;640000&rsquo;,&lsquo;宁夏回族自治区&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES (<br />
-31,&lsquo;650000&rsquo;,&lsquo;新疆维吾尔自治区&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 32,&lsquo;710000&rsquo;,&lsquo;台湾省&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES (<br />
-33,&lsquo;810000&rsquo;,&lsquo;香港特别行政区&rsquo;)</p>
-<p>INSERT [province] ([id],[provinceID],[province]) VALUES (<br />
-34,&lsquo;820000&rsquo;,&lsquo;澳门特别行政区&rsquo;)</p>
-<p>if exists (select * from sysobjects where id = OBJECT_ID(&rsquo;[area]&rsquo;) and<br />
-OBJECTPROPERTY(id, &lsquo;IsUserTable&rsquo;) = 1)</p>
-<p>DROP TABLE [area]</p>
-<p>CREATE TABLE [area] (</p>
-<p>[id] [int] NOT NULL,</p>
-<p>[cityID] [nvarchar] (12) NOT NULL,</p>
-<p>[city] [nvarchar] (100) NOT NULL,</p>
-<p>[father] [nvarchar] (12) NOT NULL)</p>
-<p>ALTER TABLE [area] WITH NOCHECK ADD CONSTRAINT [PK_area] PRIMARY KEY<br />
-NONCLUSTERED ( [id] )INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-1,&lsquo;110100&rsquo;,&lsquo;市辖区&rsquo;,&lsquo;110000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-2,&lsquo;110200&rsquo;,&lsquo;县&rsquo;,&lsquo;110000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-3,&lsquo;120100&rsquo;,&lsquo;市辖区&rsquo;,&lsquo;120000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-4,&lsquo;120200&rsquo;,&lsquo;县&rsquo;,&lsquo;120000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-5,&lsquo;130100&rsquo;,&lsquo;石家庄市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-6,&lsquo;130200&rsquo;,&lsquo;唐山市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-7,&lsquo;130300&rsquo;,&lsquo;秦皇岛市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-8,&lsquo;130400&rsquo;,&lsquo;邯郸市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-9,&lsquo;130500&rsquo;,&lsquo;邢台市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-10,&lsquo;130600&rsquo;,&lsquo;保定市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-11,&lsquo;130700&rsquo;,&lsquo;张家口市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-12,&lsquo;130800&rsquo;,&lsquo;承德市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-13,&lsquo;130900&rsquo;,&lsquo;沧州市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-14,&lsquo;131000&rsquo;,&lsquo;廊坊市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-15,&lsquo;131100&rsquo;,&lsquo;衡水市&rsquo;,&lsquo;130000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-16,&lsquo;140100&rsquo;,&lsquo;太原市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-17,&lsquo;140200&rsquo;,&lsquo;大同市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-18,&lsquo;140300&rsquo;,&lsquo;阳泉市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-19,&lsquo;140400&rsquo;,&lsquo;长治市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-20,&lsquo;140500&rsquo;,&lsquo;晋城市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-21,&lsquo;140600&rsquo;,&lsquo;朔州市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-22,&lsquo;140700&rsquo;,&lsquo;晋中市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-23,&lsquo;140800&rsquo;,&lsquo;运城市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-24,&lsquo;140900&rsquo;,&lsquo;忻州市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-25,&lsquo;141000&rsquo;,&lsquo;临汾市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-26,&lsquo;141100&rsquo;,&lsquo;吕梁市&rsquo;,&lsquo;140000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-27,&lsquo;150100&rsquo;,&lsquo;呼和浩特市&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-28,&lsquo;150200&rsquo;,&lsquo;包头市&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-29,&lsquo;150300&rsquo;,&lsquo;乌海市&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-30,&lsquo;150400&rsquo;,&lsquo;赤峰市&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-31,&lsquo;150500&rsquo;,&lsquo;通辽市&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-32,&lsquo;150600&rsquo;,&lsquo;鄂尔多斯市&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-33,&lsquo;150700&rsquo;,&lsquo;呼伦贝尔市&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-34,&lsquo;150800&rsquo;,&lsquo;巴彦淖尔市&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-35,&lsquo;150900&rsquo;,&lsquo;乌兰察布市&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-36,&lsquo;152200&rsquo;,&lsquo;兴安盟&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-37,&lsquo;152500&rsquo;,&lsquo;锡林郭勒盟&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-38,&lsquo;152900&rsquo;,&lsquo;阿拉善盟&rsquo;,&lsquo;150000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-39,&lsquo;210100&rsquo;,&lsquo;沈阳市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-40,&lsquo;210200&rsquo;,&lsquo;大连市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-41,&lsquo;210300&rsquo;,&lsquo;鞍山市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-42,&lsquo;210400&rsquo;,&lsquo;抚顺市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-43,&lsquo;210500&rsquo;,&lsquo;本溪市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-44,&lsquo;210600&rsquo;,&lsquo;丹东市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-45,&lsquo;210700&rsquo;,&lsquo;锦州市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-46,&lsquo;210800&rsquo;,&lsquo;营口市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-47,&lsquo;210900&rsquo;,&lsquo;阜新市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-48,&lsquo;211000&rsquo;,&lsquo;辽阳市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-49,&lsquo;211100&rsquo;,&lsquo;盘锦市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-50,&lsquo;211200&rsquo;,&lsquo;铁岭市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-51,&lsquo;211300&rsquo;,&lsquo;朝阳市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-52,&lsquo;211400&rsquo;,&lsquo;葫芦岛市&rsquo;,&lsquo;210000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-53,&lsquo;220100&rsquo;,&lsquo;长春市&rsquo;,&lsquo;220000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-54,&lsquo;220200&rsquo;,&lsquo;吉林市&rsquo;,&lsquo;220000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-55,&lsquo;220300&rsquo;,&lsquo;四平市&rsquo;,&lsquo;220000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-56,&lsquo;220400&rsquo;,&lsquo;辽源市&rsquo;,&lsquo;220000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-57,&lsquo;220500&rsquo;,&lsquo;通化市&rsquo;,&lsquo;220000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-58,&lsquo;220600&rsquo;,&lsquo;白山市&rsquo;,&lsquo;220000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-59,&lsquo;220700&rsquo;,&lsquo;松原市&rsquo;,&lsquo;220000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-60,&lsquo;220800&rsquo;,&lsquo;白城市&rsquo;,&lsquo;220000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-61,&lsquo;222400&rsquo;,&lsquo;延边朝鲜族自治州&rsquo;,&lsquo;220000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-62,&lsquo;230100&rsquo;,&lsquo;哈尔滨市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-63,&lsquo;230200&rsquo;,&lsquo;齐齐哈尔市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-64,&lsquo;230300&rsquo;,&lsquo;鸡西市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-65,&lsquo;230400&rsquo;,&lsquo;鹤岗市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-66,&lsquo;230500&rsquo;,&lsquo;双鸭山市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-67,&lsquo;230600&rsquo;,&lsquo;大庆市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-68,&lsquo;230700&rsquo;,&lsquo;伊春市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-69,&lsquo;230800&rsquo;,&lsquo;佳木斯市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-70,&lsquo;230900&rsquo;,&lsquo;七台河市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-71,&lsquo;231000&rsquo;,&lsquo;牡丹江市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-72,&lsquo;231100&rsquo;,&lsquo;黑河市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-73,&lsquo;231200&rsquo;,&lsquo;绥化市&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-74,&lsquo;232700&rsquo;,&lsquo;大兴安岭地区&rsquo;,&lsquo;230000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-75,&lsquo;310100&rsquo;,&lsquo;市辖区&rsquo;,&lsquo;310000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-76,&lsquo;310200&rsquo;,&lsquo;县&rsquo;,&lsquo;310000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-77,&lsquo;320100&rsquo;,&lsquo;南京市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-78,&lsquo;320200&rsquo;,&lsquo;无锡市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-79,&lsquo;320300&rsquo;,&lsquo;徐州市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-80,&lsquo;320400&rsquo;,&lsquo;常州市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-81,&lsquo;320500&rsquo;,&lsquo;苏州市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-82,&lsquo;320600&rsquo;,&lsquo;南通市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-83,&lsquo;320700&rsquo;,&lsquo;连云港市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-84,&lsquo;320800&rsquo;,&lsquo;淮安市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-85,&lsquo;320900&rsquo;,&lsquo;盐城市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-86,&lsquo;321000&rsquo;,&lsquo;扬州市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-87,&lsquo;321100&rsquo;,&lsquo;镇江市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-88,&lsquo;321200&rsquo;,&lsquo;泰州市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-89,&lsquo;321300&rsquo;,&lsquo;宿迁市&rsquo;,&lsquo;320000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-90,&lsquo;330100&rsquo;,&lsquo;杭州市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-91,&lsquo;330200&rsquo;,&lsquo;宁波市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-92,&lsquo;330300&rsquo;,&lsquo;温州市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-93,&lsquo;330400&rsquo;,&lsquo;嘉兴市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-94,&lsquo;330500&rsquo;,&lsquo;湖州市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-95,&lsquo;330600&rsquo;,&lsquo;绍兴市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-96,&lsquo;330700&rsquo;,&lsquo;金华市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-97,&lsquo;330800&rsquo;,&lsquo;衢州市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-98,&lsquo;330900&rsquo;,&lsquo;舟山市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-99,&lsquo;331000&rsquo;,&lsquo;台州市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-100,&lsquo;331100&rsquo;,&lsquo;丽水市&rsquo;,&lsquo;330000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-101,&lsquo;340100&rsquo;,&lsquo;合肥市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-102,&lsquo;340200&rsquo;,&lsquo;芜湖市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-103,&lsquo;340300&rsquo;,&lsquo;蚌埠市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-104,&lsquo;340400&rsquo;,&lsquo;淮南市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-105,&lsquo;340500&rsquo;,&lsquo;马鞍山市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-106,&lsquo;340600&rsquo;,&lsquo;淮北市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-107,&lsquo;340700&rsquo;,&lsquo;铜陵市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-108,&lsquo;340800&rsquo;,&lsquo;安庆市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-109,&lsquo;341000&rsquo;,&lsquo;黄山市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-110,&lsquo;341100&rsquo;,&lsquo;滁州市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-111,&lsquo;341200&rsquo;,&lsquo;阜阳市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-112,&lsquo;341300&rsquo;,&lsquo;宿州市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-113,&lsquo;341400&rsquo;,&lsquo;巢湖市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-114,&lsquo;341500&rsquo;,&lsquo;六安市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-115,&lsquo;341600&rsquo;,&lsquo;亳州市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-116,&lsquo;341700&rsquo;,&lsquo;池州市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-117,&lsquo;341800&rsquo;,&lsquo;宣城市&rsquo;,&lsquo;340000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-118,&lsquo;350100&rsquo;,&lsquo;福州市&rsquo;,&lsquo;350000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-119,&lsquo;350200&rsquo;,&lsquo;厦门市&rsquo;,&lsquo;350000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-120,&lsquo;350300&rsquo;,&lsquo;莆田市&rsquo;,&lsquo;350000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-121,&lsquo;350400&rsquo;,&lsquo;三明市&rsquo;,&lsquo;350000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-122,&lsquo;350500&rsquo;,&lsquo;泉州市&rsquo;,&lsquo;350000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-123,&lsquo;350600&rsquo;,&lsquo;漳州市&rsquo;,&lsquo;350000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-124,&lsquo;350700&rsquo;,&lsquo;南平市&rsquo;,&lsquo;350000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-125,&lsquo;350800&rsquo;,&lsquo;龙岩市&rsquo;,&lsquo;350000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-126,&lsquo;350900&rsquo;,&lsquo;宁德市&rsquo;,&lsquo;350000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-127,&lsquo;360100&rsquo;,&lsquo;南昌市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-128,&lsquo;360200&rsquo;,&lsquo;景德镇市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-129,&lsquo;360300&rsquo;,&lsquo;萍乡市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-130,&lsquo;360400&rsquo;,&lsquo;九江市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-131,&lsquo;360500&rsquo;,&lsquo;新余市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-132,&lsquo;360600&rsquo;,&lsquo;鹰潭市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-133,&lsquo;360700&rsquo;,&lsquo;赣州市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-134,&lsquo;360800&rsquo;,&lsquo;吉安市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-135,&lsquo;360900&rsquo;,&lsquo;宜春市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-136,&lsquo;361000&rsquo;,&lsquo;抚州市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-137,&lsquo;361100&rsquo;,&lsquo;上饶市&rsquo;,&lsquo;360000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-138,&lsquo;370100&rsquo;,&lsquo;济南市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-139,&lsquo;370200&rsquo;,&lsquo;青岛市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-140,&lsquo;370300&rsquo;,&lsquo;淄博市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-141,&lsquo;370400&rsquo;,&lsquo;枣庄市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-142,&lsquo;370500&rsquo;,&lsquo;东营市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-143,&lsquo;370600&rsquo;,&lsquo;烟台市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-144,&lsquo;370700&rsquo;,&lsquo;潍坊市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-145,&lsquo;370800&rsquo;,&lsquo;济宁市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-146,&lsquo;370900&rsquo;,&lsquo;泰安市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-147,&lsquo;371000&rsquo;,&lsquo;威海市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-148,&lsquo;371100&rsquo;,&lsquo;日照市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-149,&lsquo;371200&rsquo;,&lsquo;莱芜市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-150,&lsquo;371300&rsquo;,&lsquo;临沂市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-151,&lsquo;371400&rsquo;,&lsquo;德州市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-152,&lsquo;371500&rsquo;,&lsquo;聊城市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-153,&lsquo;371600&rsquo;,&lsquo;滨州市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-154,&lsquo;371700&rsquo;,&lsquo;荷泽市&rsquo;,&lsquo;370000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-155,&lsquo;410100&rsquo;,&lsquo;郑州市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-156,&lsquo;410200&rsquo;,&lsquo;开封市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-157,&lsquo;410300&rsquo;,&lsquo;洛阳市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-158,&lsquo;410400&rsquo;,&lsquo;平顶山市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-159,&lsquo;410500&rsquo;,&lsquo;安阳市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-160,&lsquo;410600&rsquo;,&lsquo;鹤壁市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-161,&lsquo;410700&rsquo;,&lsquo;新乡市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-162,&lsquo;410800&rsquo;,&lsquo;焦作市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-163,&lsquo;410900&rsquo;,&lsquo;濮阳市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-164,&lsquo;411000&rsquo;,&lsquo;许昌市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-165,&lsquo;411100&rsquo;,&lsquo;漯河市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-166,&lsquo;411200&rsquo;,&lsquo;三门峡市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-167,&lsquo;411300&rsquo;,&lsquo;南阳市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-168,&lsquo;411400&rsquo;,&lsquo;商丘市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-169,&lsquo;411500&rsquo;,&lsquo;信阳市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-170,&lsquo;411600&rsquo;,&lsquo;周口市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-171,&lsquo;411700&rsquo;,&lsquo;驻马店市&rsquo;,&lsquo;410000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-172,&lsquo;420100&rsquo;,&lsquo;武汉市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-173,&lsquo;420200&rsquo;,&lsquo;黄石市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-174,&lsquo;420300&rsquo;,&lsquo;十堰市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-175,&lsquo;420500&rsquo;,&lsquo;宜昌市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-176,&lsquo;420600&rsquo;,&lsquo;襄樊市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-177,&lsquo;420700&rsquo;,&lsquo;鄂州市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-178,&lsquo;420800&rsquo;,&lsquo;荆门市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-179,&lsquo;420900&rsquo;,&lsquo;孝感市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-180,&lsquo;421000&rsquo;,&lsquo;荆州市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-181,&lsquo;421100&rsquo;,&lsquo;黄冈市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-182,&lsquo;421200&rsquo;,&lsquo;咸宁市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-183,&lsquo;421300&rsquo;,&lsquo;随州市&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-184,&lsquo;422800&rsquo;,&lsquo;恩施土家族苗族自治州&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-185,&lsquo;429000&rsquo;,&lsquo;省直辖行政单位&rsquo;,&lsquo;420000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-186,&lsquo;430100&rsquo;,&lsquo;长沙市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-187,&lsquo;430200&rsquo;,&lsquo;株洲市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-188,&lsquo;430300&rsquo;,&lsquo;湘潭市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-189,&lsquo;430400&rsquo;,&lsquo;衡阳市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-190,&lsquo;430500&rsquo;,&lsquo;邵阳市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-191,&lsquo;430600&rsquo;,&lsquo;岳阳市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-192,&lsquo;430700&rsquo;,&lsquo;常德市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-193,&lsquo;430800&rsquo;,&lsquo;张家界市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-194,&lsquo;430900&rsquo;,&lsquo;益阳市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-195,&lsquo;431000&rsquo;,&lsquo;郴州市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-196,&lsquo;431100&rsquo;,&lsquo;永州市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-197,&lsquo;431200&rsquo;,&lsquo;怀化市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-198,&lsquo;431300&rsquo;,&lsquo;娄底市&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-199,&lsquo;433100&rsquo;,&lsquo;湘西土家族苗族自治州&rsquo;,&lsquo;430000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-200,&lsquo;440100&rsquo;,&lsquo;广州市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-201,&lsquo;440200&rsquo;,&lsquo;韶关市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-202,&lsquo;440300&rsquo;,&lsquo;深圳市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-203,&lsquo;440400&rsquo;,&lsquo;珠海市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-204,&lsquo;440500&rsquo;,&lsquo;汕头市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-205,&lsquo;440600&rsquo;,&lsquo;佛山市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-206,&lsquo;440700&rsquo;,&lsquo;江门市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-207,&lsquo;440800&rsquo;,&lsquo;湛江市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-208,&lsquo;440900&rsquo;,&lsquo;茂名市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-209,&lsquo;441200&rsquo;,&lsquo;肇庆市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-210,&lsquo;441300&rsquo;,&lsquo;惠州市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-211,&lsquo;441400&rsquo;,&lsquo;梅州市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-212,&lsquo;441500&rsquo;,&lsquo;汕尾市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-213,&lsquo;441600&rsquo;,&lsquo;河源市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-214,&lsquo;441700&rsquo;,&lsquo;阳江市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-215,&lsquo;441800&rsquo;,&lsquo;清远市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-216,&lsquo;441900&rsquo;,&lsquo;东莞市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-217,&lsquo;442000&rsquo;,&lsquo;中山市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-218,&lsquo;445100&rsquo;,&lsquo;潮州市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-219,&lsquo;445200&rsquo;,&lsquo;揭阳市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-220,&lsquo;445300&rsquo;,&lsquo;云浮市&rsquo;,&lsquo;440000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-221,&lsquo;450100&rsquo;,&lsquo;南宁市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-222,&lsquo;450200&rsquo;,&lsquo;柳州市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-223,&lsquo;450300&rsquo;,&lsquo;桂林市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-224,&lsquo;450400&rsquo;,&lsquo;梧州市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-225,&lsquo;450500&rsquo;,&lsquo;北海市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-226,&lsquo;450600&rsquo;,&lsquo;防城港市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-227,&lsquo;450700&rsquo;,&lsquo;钦州市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-228,&lsquo;450800&rsquo;,&lsquo;贵港市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-229,&lsquo;450900&rsquo;,&lsquo;玉林市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-230,&lsquo;451000&rsquo;,&lsquo;百色市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-231,&lsquo;451100&rsquo;,&lsquo;贺州市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-232,&lsquo;451200&rsquo;,&lsquo;河池市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-233,&lsquo;451300&rsquo;,&lsquo;来宾市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-234,&lsquo;451400&rsquo;,&lsquo;崇左市&rsquo;,&lsquo;450000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-235,&lsquo;460100&rsquo;,&lsquo;海口市&rsquo;,&lsquo;460000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-236,&lsquo;460200&rsquo;,&lsquo;三亚市&rsquo;,&lsquo;460000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-237,&lsquo;469000&rsquo;,&lsquo;省直辖县级行政单位&rsquo;,&lsquo;460000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-238,&lsquo;500100&rsquo;,&lsquo;市辖区&rsquo;,&lsquo;500000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-239,&lsquo;500200&rsquo;,&lsquo;县&rsquo;,&lsquo;500000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-240,&lsquo;500300&rsquo;,&lsquo;市&rsquo;,&lsquo;500000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-241,&lsquo;510100&rsquo;,&lsquo;成都市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-242,&lsquo;510300&rsquo;,&lsquo;自贡市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-243,&lsquo;510400&rsquo;,&lsquo;攀枝花市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-244,&lsquo;510500&rsquo;,&lsquo;泸州市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-245,&lsquo;510600&rsquo;,&lsquo;德阳市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-246,&lsquo;510700&rsquo;,&lsquo;绵阳市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-247,&lsquo;510800&rsquo;,&lsquo;广元市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-248,&lsquo;510900&rsquo;,&lsquo;遂宁市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-249,&lsquo;511000&rsquo;,&lsquo;内江市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-250,&lsquo;511100&rsquo;,&lsquo;乐山市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-251,&lsquo;511300&rsquo;,&lsquo;南充市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-252,&lsquo;511400&rsquo;,&lsquo;眉山市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-253,&lsquo;511500&rsquo;,&lsquo;宜宾市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-254,&lsquo;511600&rsquo;,&lsquo;广安市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-255,&lsquo;511700&rsquo;,&lsquo;达州市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-256,&lsquo;511800&rsquo;,&lsquo;雅安市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-257,&lsquo;511900&rsquo;,&lsquo;巴中市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-258,&lsquo;512000&rsquo;,&lsquo;资阳市&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-259,&lsquo;513200&rsquo;,&lsquo;阿坝藏族羌族自治州&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-260,&lsquo;513300&rsquo;,&lsquo;甘孜藏族自治州&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-261,&lsquo;513400&rsquo;,&lsquo;凉山彝族自治州&rsquo;,&lsquo;510000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-262,&lsquo;520100&rsquo;,&lsquo;贵阳市&rsquo;,&lsquo;520000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-263,&lsquo;520200&rsquo;,&lsquo;六盘水市&rsquo;,&lsquo;520000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-264,&lsquo;520300&rsquo;,&lsquo;遵义市&rsquo;,&lsquo;520000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-265,&lsquo;520400&rsquo;,&lsquo;安顺市&rsquo;,&lsquo;520000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-266,&lsquo;522200&rsquo;,&lsquo;铜仁地区&rsquo;,&lsquo;520000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-267,&lsquo;522300&rsquo;,&lsquo;黔西南布依族苗族自治州&rsquo;,&lsquo;520000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-268,&lsquo;522400&rsquo;,&lsquo;毕节地区&rsquo;,&lsquo;520000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-269,&lsquo;522600&rsquo;,&lsquo;黔东南苗族侗族自治州&rsquo;,&lsquo;520000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-270,&lsquo;522700&rsquo;,&lsquo;黔南布依族苗族自治州&rsquo;,&lsquo;520000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-271,&lsquo;530100&rsquo;,&lsquo;昆明市&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-272,&lsquo;530300&rsquo;,&lsquo;曲靖市&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-273,&lsquo;530400&rsquo;,&lsquo;玉溪市&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-274,&lsquo;530500&rsquo;,&lsquo;保山市&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-275,&lsquo;530600&rsquo;,&lsquo;昭通市&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-276,&lsquo;530700&rsquo;,&lsquo;丽江市&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-277,&lsquo;530800&rsquo;,&lsquo;思茅市&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-278,&lsquo;530900&rsquo;,&lsquo;临沧市&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-279,&lsquo;532300&rsquo;,&lsquo;楚雄彝族自治州&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-280,&lsquo;532500&rsquo;,&lsquo;红河哈尼族彝族自治州&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-281,&lsquo;532600&rsquo;,&lsquo;文山壮族苗族自治州&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-282,&lsquo;532800&rsquo;,&lsquo;西双版纳傣族自治州&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-283,&lsquo;532900&rsquo;,&lsquo;大理白族自治州&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-284,&lsquo;533100&rsquo;,&lsquo;德宏傣族景颇族自治州&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-285,&lsquo;533300&rsquo;,&lsquo;怒江傈僳族自治州&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-286,&lsquo;533400&rsquo;,&lsquo;迪庆藏族自治州&rsquo;,&lsquo;530000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-287,&lsquo;540100&rsquo;,&lsquo;拉萨市&rsquo;,&lsquo;540000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-288,&lsquo;542100&rsquo;,&lsquo;昌都地区&rsquo;,&lsquo;540000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-289,&lsquo;542200&rsquo;,&lsquo;山南地区&rsquo;,&lsquo;540000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-290,&lsquo;542300&rsquo;,&lsquo;日喀则地区&rsquo;,&lsquo;540000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-291,&lsquo;542400&rsquo;,&lsquo;那曲地区&rsquo;,&lsquo;540000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-292,&lsquo;542500&rsquo;,&lsquo;阿里地区&rsquo;,&lsquo;540000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-293,&lsquo;542600&rsquo;,&lsquo;林芝地区&rsquo;,&lsquo;540000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-294,&lsquo;610100&rsquo;,&lsquo;西安市&rsquo;,&lsquo;610000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-295,&lsquo;610200&rsquo;,&lsquo;铜川市&rsquo;,&lsquo;610000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-296,&lsquo;610300&rsquo;,&lsquo;宝鸡市&rsquo;,&lsquo;610000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-297,&lsquo;610400&rsquo;,&lsquo;咸阳市&rsquo;,&lsquo;610000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-298,&lsquo;610500&rsquo;,&lsquo;渭南市&rsquo;,&lsquo;610000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-299,&lsquo;610600&rsquo;,&lsquo;延安市&rsquo;,&lsquo;610000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-300,&lsquo;610700&rsquo;,&lsquo;汉中市&rsquo;,&lsquo;610000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-301,&lsquo;610800&rsquo;,&lsquo;榆林市&rsquo;,&lsquo;610000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-302,&lsquo;610900&rsquo;,&lsquo;安康市&rsquo;,&lsquo;610000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-303,&lsquo;611000&rsquo;,&lsquo;商洛市&rsquo;,&lsquo;610000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-304,&lsquo;620100&rsquo;,&lsquo;兰州市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-305,&lsquo;620200&rsquo;,&lsquo;嘉峪关市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-306,&lsquo;620300&rsquo;,&lsquo;金昌市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-307,&lsquo;620400&rsquo;,&lsquo;白银市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-308,&lsquo;620500&rsquo;,&lsquo;天水市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-309,&lsquo;620600&rsquo;,&lsquo;武威市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-310,&lsquo;620700&rsquo;,&lsquo;张掖市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-311,&lsquo;620800&rsquo;,&lsquo;平凉市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-312,&lsquo;620900&rsquo;,&lsquo;酒泉市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-313,&lsquo;621000&rsquo;,&lsquo;庆阳市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-314,&lsquo;621100&rsquo;,&lsquo;定西市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-315,&lsquo;621200&rsquo;,&lsquo;陇南市&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-316,&lsquo;622900&rsquo;,&lsquo;临夏回族自治州&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-317,&lsquo;623000&rsquo;,&lsquo;甘南藏族自治州&rsquo;,&lsquo;620000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-318,&lsquo;630100&rsquo;,&lsquo;西宁市&rsquo;,&lsquo;630000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-319,&lsquo;632100&rsquo;,&lsquo;海东地区&rsquo;,&lsquo;630000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-320,&lsquo;632200&rsquo;,&lsquo;海北藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-321,&lsquo;632300&rsquo;,&lsquo;黄南藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-322,&lsquo;632500&rsquo;,&lsquo;海南藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-323,&lsquo;632600&rsquo;,&lsquo;果洛藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-324,&lsquo;632700&rsquo;,&lsquo;玉树藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-325,&lsquo;632800&rsquo;,&lsquo;海西蒙古族藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-326,&lsquo;640100&rsquo;,&lsquo;银川市&rsquo;,&lsquo;640000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-327,&lsquo;640200&rsquo;,&lsquo;石嘴山市&rsquo;,&lsquo;640000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-328,&lsquo;640300&rsquo;,&lsquo;吴忠市&rsquo;,&lsquo;640000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-329,&lsquo;640400&rsquo;,&lsquo;固原市&rsquo;,&lsquo;640000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-330,&lsquo;640500&rsquo;,&lsquo;中卫市&rsquo;,&lsquo;640000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-331,&lsquo;650100&rsquo;,&lsquo;乌鲁木齐市&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-332,&lsquo;650200&rsquo;,&lsquo;克拉玛依市&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-333,&lsquo;652100&rsquo;,&lsquo;吐鲁番地区&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-334,&lsquo;652200&rsquo;,&lsquo;哈密地区&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-335,&lsquo;652300&rsquo;,&lsquo;昌吉回族自治州&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-336,&lsquo;652700&rsquo;,&lsquo;博尔塔拉蒙古自治州&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-337,&lsquo;652800&rsquo;,&lsquo;巴音郭楞蒙古自治州&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-338,&lsquo;652900&rsquo;,&lsquo;阿克苏地区&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-339,&lsquo;653000&rsquo;,&lsquo;克孜勒苏柯尔克孜自治州&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-340,&lsquo;653100&rsquo;,&lsquo;喀什地区&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-341,&lsquo;653200&rsquo;,&lsquo;和田地区&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-342,&lsquo;654000&rsquo;,&lsquo;伊犁哈萨克自治州&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-343,&lsquo;654200&rsquo;,&lsquo;塔城地区&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-344,&lsquo;654300&rsquo;,&lsquo;阿勒泰地区&rsquo;,&lsquo;650000&rsquo;)</p>
-<p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (<br />
-345,&lsquo;659000&rsquo;,&lsquo;省直辖行政单位&rsquo;,&lsquo;650000&rsquo;)</p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2009/08/zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql/">中国省份与城市数据SQL | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/%E7%BB%BC%E5%90%88%E6%8A%80%E6%9C%AF/">综合技术</a></li>
-      <li><a href="https://blog.alswl.com/tags/database/">database</a></li>
-      <li><a href="https://blog.alswl.com/tags/sql/">sql</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2009/08/pan-shuangshuang-i-beg-you-say-you-are-willing-to/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>潘霜霜，求求你，说你愿意</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2009/08/i-finally-had-the-4/">
-    <span class="title">Next »</span>
-    <br>
-    <span>牛逼的我终于过了四级</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+</code></pre><p>CREATE TABLE [province] (</p><p>[id] [int] NOT NULL,</p><p>[provinceID] [nvarchar] (12) NOT NULL,</p><p>[province] [nvarchar] (80) NOT NULL)</p><p>ALTER TABLE [province] WITH NOCHECK ADD CONSTRAINT [PK_province] PRIMARY KEY
+NONCLUSTERED ( [id] )INSERT [province] ([id],[provinceID],[province]) VALUES (
+1,&lsquo;110000&rsquo;,&lsquo;北京市&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 2,&lsquo;120000&rsquo;,&lsquo;天津市&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 3,&lsquo;130000&rsquo;,&lsquo;河北省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 4,&lsquo;140000&rsquo;,&lsquo;山西省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 5,&lsquo;150000&rsquo;,&lsquo;内蒙古自治区&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 6,&lsquo;210000&rsquo;,&lsquo;辽宁省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 7,&lsquo;220000&rsquo;,&lsquo;吉林省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 8,&lsquo;230000&rsquo;,&lsquo;黑龙江省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 9,&lsquo;310000&rsquo;,&lsquo;上海市&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 10,&lsquo;320000&rsquo;,&lsquo;江苏省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 11,&lsquo;330000&rsquo;,&lsquo;浙江省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 12,&lsquo;340000&rsquo;,&lsquo;安徽省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 13,&lsquo;350000&rsquo;,&lsquo;福建省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 14,&lsquo;360000&rsquo;,&lsquo;江西省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 15,&lsquo;370000&rsquo;,&lsquo;山东省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 16,&lsquo;410000&rsquo;,&lsquo;河南省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 17,&lsquo;420000&rsquo;,&lsquo;湖北省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 18,&lsquo;430000&rsquo;,&lsquo;湖南省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 19,&lsquo;440000&rsquo;,&lsquo;广东省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES (
+20,&lsquo;450000&rsquo;,&lsquo;广西壮族自治区&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 21,&lsquo;460000&rsquo;,&lsquo;海南省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 22,&lsquo;500000&rsquo;,&lsquo;重庆市&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 23,&lsquo;510000&rsquo;,&lsquo;四川省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 24,&lsquo;520000&rsquo;,&lsquo;贵州省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 25,&lsquo;530000&rsquo;,&lsquo;云南省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 26,&lsquo;540000&rsquo;,&lsquo;西藏自治区&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 27,&lsquo;610000&rsquo;,&lsquo;陕西省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 28,&lsquo;620000&rsquo;,&lsquo;甘肃省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 29,&lsquo;630000&rsquo;,&lsquo;青海省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES (
+30,&lsquo;640000&rsquo;,&lsquo;宁夏回族自治区&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES (
+31,&lsquo;650000&rsquo;,&lsquo;新疆维吾尔自治区&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES ( 32,&lsquo;710000&rsquo;,&lsquo;台湾省&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES (
+33,&lsquo;810000&rsquo;,&lsquo;香港特别行政区&rsquo;)</p><p>INSERT [province] ([id],[provinceID],[province]) VALUES (
+34,&lsquo;820000&rsquo;,&lsquo;澳门特别行政区&rsquo;)</p><p>if exists (select * from sysobjects where id = OBJECT_ID(&rsquo;[area]&rsquo;) and
+OBJECTPROPERTY(id, &lsquo;IsUserTable&rsquo;) = 1)</p><p>DROP TABLE [area]</p><p>CREATE TABLE [area] (</p><p>[id] [int] NOT NULL,</p><p>[cityID] [nvarchar] (12) NOT NULL,</p><p>[city] [nvarchar] (100) NOT NULL,</p><p>[father] [nvarchar] (12) NOT NULL)</p><p>ALTER TABLE [area] WITH NOCHECK ADD CONSTRAINT [PK_area] PRIMARY KEY
+NONCLUSTERED ( [id] )INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+1,&lsquo;110100&rsquo;,&lsquo;市辖区&rsquo;,&lsquo;110000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+2,&lsquo;110200&rsquo;,&lsquo;县&rsquo;,&lsquo;110000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+3,&lsquo;120100&rsquo;,&lsquo;市辖区&rsquo;,&lsquo;120000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+4,&lsquo;120200&rsquo;,&lsquo;县&rsquo;,&lsquo;120000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+5,&lsquo;130100&rsquo;,&lsquo;石家庄市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+6,&lsquo;130200&rsquo;,&lsquo;唐山市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+7,&lsquo;130300&rsquo;,&lsquo;秦皇岛市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+8,&lsquo;130400&rsquo;,&lsquo;邯郸市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+9,&lsquo;130500&rsquo;,&lsquo;邢台市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+10,&lsquo;130600&rsquo;,&lsquo;保定市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+11,&lsquo;130700&rsquo;,&lsquo;张家口市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+12,&lsquo;130800&rsquo;,&lsquo;承德市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+13,&lsquo;130900&rsquo;,&lsquo;沧州市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+14,&lsquo;131000&rsquo;,&lsquo;廊坊市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+15,&lsquo;131100&rsquo;,&lsquo;衡水市&rsquo;,&lsquo;130000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+16,&lsquo;140100&rsquo;,&lsquo;太原市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+17,&lsquo;140200&rsquo;,&lsquo;大同市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+18,&lsquo;140300&rsquo;,&lsquo;阳泉市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+19,&lsquo;140400&rsquo;,&lsquo;长治市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+20,&lsquo;140500&rsquo;,&lsquo;晋城市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+21,&lsquo;140600&rsquo;,&lsquo;朔州市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+22,&lsquo;140700&rsquo;,&lsquo;晋中市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+23,&lsquo;140800&rsquo;,&lsquo;运城市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+24,&lsquo;140900&rsquo;,&lsquo;忻州市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+25,&lsquo;141000&rsquo;,&lsquo;临汾市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+26,&lsquo;141100&rsquo;,&lsquo;吕梁市&rsquo;,&lsquo;140000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+27,&lsquo;150100&rsquo;,&lsquo;呼和浩特市&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+28,&lsquo;150200&rsquo;,&lsquo;包头市&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+29,&lsquo;150300&rsquo;,&lsquo;乌海市&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+30,&lsquo;150400&rsquo;,&lsquo;赤峰市&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+31,&lsquo;150500&rsquo;,&lsquo;通辽市&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+32,&lsquo;150600&rsquo;,&lsquo;鄂尔多斯市&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+33,&lsquo;150700&rsquo;,&lsquo;呼伦贝尔市&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+34,&lsquo;150800&rsquo;,&lsquo;巴彦淖尔市&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+35,&lsquo;150900&rsquo;,&lsquo;乌兰察布市&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+36,&lsquo;152200&rsquo;,&lsquo;兴安盟&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+37,&lsquo;152500&rsquo;,&lsquo;锡林郭勒盟&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+38,&lsquo;152900&rsquo;,&lsquo;阿拉善盟&rsquo;,&lsquo;150000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+39,&lsquo;210100&rsquo;,&lsquo;沈阳市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+40,&lsquo;210200&rsquo;,&lsquo;大连市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+41,&lsquo;210300&rsquo;,&lsquo;鞍山市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+42,&lsquo;210400&rsquo;,&lsquo;抚顺市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+43,&lsquo;210500&rsquo;,&lsquo;本溪市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+44,&lsquo;210600&rsquo;,&lsquo;丹东市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+45,&lsquo;210700&rsquo;,&lsquo;锦州市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+46,&lsquo;210800&rsquo;,&lsquo;营口市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+47,&lsquo;210900&rsquo;,&lsquo;阜新市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+48,&lsquo;211000&rsquo;,&lsquo;辽阳市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+49,&lsquo;211100&rsquo;,&lsquo;盘锦市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+50,&lsquo;211200&rsquo;,&lsquo;铁岭市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+51,&lsquo;211300&rsquo;,&lsquo;朝阳市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+52,&lsquo;211400&rsquo;,&lsquo;葫芦岛市&rsquo;,&lsquo;210000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+53,&lsquo;220100&rsquo;,&lsquo;长春市&rsquo;,&lsquo;220000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+54,&lsquo;220200&rsquo;,&lsquo;吉林市&rsquo;,&lsquo;220000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+55,&lsquo;220300&rsquo;,&lsquo;四平市&rsquo;,&lsquo;220000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+56,&lsquo;220400&rsquo;,&lsquo;辽源市&rsquo;,&lsquo;220000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+57,&lsquo;220500&rsquo;,&lsquo;通化市&rsquo;,&lsquo;220000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+58,&lsquo;220600&rsquo;,&lsquo;白山市&rsquo;,&lsquo;220000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+59,&lsquo;220700&rsquo;,&lsquo;松原市&rsquo;,&lsquo;220000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+60,&lsquo;220800&rsquo;,&lsquo;白城市&rsquo;,&lsquo;220000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+61,&lsquo;222400&rsquo;,&lsquo;延边朝鲜族自治州&rsquo;,&lsquo;220000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+62,&lsquo;230100&rsquo;,&lsquo;哈尔滨市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+63,&lsquo;230200&rsquo;,&lsquo;齐齐哈尔市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+64,&lsquo;230300&rsquo;,&lsquo;鸡西市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+65,&lsquo;230400&rsquo;,&lsquo;鹤岗市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+66,&lsquo;230500&rsquo;,&lsquo;双鸭山市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+67,&lsquo;230600&rsquo;,&lsquo;大庆市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+68,&lsquo;230700&rsquo;,&lsquo;伊春市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+69,&lsquo;230800&rsquo;,&lsquo;佳木斯市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+70,&lsquo;230900&rsquo;,&lsquo;七台河市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+71,&lsquo;231000&rsquo;,&lsquo;牡丹江市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+72,&lsquo;231100&rsquo;,&lsquo;黑河市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+73,&lsquo;231200&rsquo;,&lsquo;绥化市&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+74,&lsquo;232700&rsquo;,&lsquo;大兴安岭地区&rsquo;,&lsquo;230000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+75,&lsquo;310100&rsquo;,&lsquo;市辖区&rsquo;,&lsquo;310000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+76,&lsquo;310200&rsquo;,&lsquo;县&rsquo;,&lsquo;310000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+77,&lsquo;320100&rsquo;,&lsquo;南京市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+78,&lsquo;320200&rsquo;,&lsquo;无锡市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+79,&lsquo;320300&rsquo;,&lsquo;徐州市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+80,&lsquo;320400&rsquo;,&lsquo;常州市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+81,&lsquo;320500&rsquo;,&lsquo;苏州市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+82,&lsquo;320600&rsquo;,&lsquo;南通市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+83,&lsquo;320700&rsquo;,&lsquo;连云港市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+84,&lsquo;320800&rsquo;,&lsquo;淮安市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+85,&lsquo;320900&rsquo;,&lsquo;盐城市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+86,&lsquo;321000&rsquo;,&lsquo;扬州市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+87,&lsquo;321100&rsquo;,&lsquo;镇江市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+88,&lsquo;321200&rsquo;,&lsquo;泰州市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+89,&lsquo;321300&rsquo;,&lsquo;宿迁市&rsquo;,&lsquo;320000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+90,&lsquo;330100&rsquo;,&lsquo;杭州市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+91,&lsquo;330200&rsquo;,&lsquo;宁波市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+92,&lsquo;330300&rsquo;,&lsquo;温州市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+93,&lsquo;330400&rsquo;,&lsquo;嘉兴市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+94,&lsquo;330500&rsquo;,&lsquo;湖州市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+95,&lsquo;330600&rsquo;,&lsquo;绍兴市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+96,&lsquo;330700&rsquo;,&lsquo;金华市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+97,&lsquo;330800&rsquo;,&lsquo;衢州市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+98,&lsquo;330900&rsquo;,&lsquo;舟山市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+99,&lsquo;331000&rsquo;,&lsquo;台州市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+100,&lsquo;331100&rsquo;,&lsquo;丽水市&rsquo;,&lsquo;330000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+101,&lsquo;340100&rsquo;,&lsquo;合肥市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+102,&lsquo;340200&rsquo;,&lsquo;芜湖市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+103,&lsquo;340300&rsquo;,&lsquo;蚌埠市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+104,&lsquo;340400&rsquo;,&lsquo;淮南市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+105,&lsquo;340500&rsquo;,&lsquo;马鞍山市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+106,&lsquo;340600&rsquo;,&lsquo;淮北市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+107,&lsquo;340700&rsquo;,&lsquo;铜陵市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+108,&lsquo;340800&rsquo;,&lsquo;安庆市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+109,&lsquo;341000&rsquo;,&lsquo;黄山市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+110,&lsquo;341100&rsquo;,&lsquo;滁州市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+111,&lsquo;341200&rsquo;,&lsquo;阜阳市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+112,&lsquo;341300&rsquo;,&lsquo;宿州市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+113,&lsquo;341400&rsquo;,&lsquo;巢湖市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+114,&lsquo;341500&rsquo;,&lsquo;六安市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+115,&lsquo;341600&rsquo;,&lsquo;亳州市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+116,&lsquo;341700&rsquo;,&lsquo;池州市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+117,&lsquo;341800&rsquo;,&lsquo;宣城市&rsquo;,&lsquo;340000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+118,&lsquo;350100&rsquo;,&lsquo;福州市&rsquo;,&lsquo;350000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+119,&lsquo;350200&rsquo;,&lsquo;厦门市&rsquo;,&lsquo;350000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+120,&lsquo;350300&rsquo;,&lsquo;莆田市&rsquo;,&lsquo;350000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+121,&lsquo;350400&rsquo;,&lsquo;三明市&rsquo;,&lsquo;350000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+122,&lsquo;350500&rsquo;,&lsquo;泉州市&rsquo;,&lsquo;350000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+123,&lsquo;350600&rsquo;,&lsquo;漳州市&rsquo;,&lsquo;350000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+124,&lsquo;350700&rsquo;,&lsquo;南平市&rsquo;,&lsquo;350000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+125,&lsquo;350800&rsquo;,&lsquo;龙岩市&rsquo;,&lsquo;350000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+126,&lsquo;350900&rsquo;,&lsquo;宁德市&rsquo;,&lsquo;350000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+127,&lsquo;360100&rsquo;,&lsquo;南昌市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+128,&lsquo;360200&rsquo;,&lsquo;景德镇市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+129,&lsquo;360300&rsquo;,&lsquo;萍乡市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+130,&lsquo;360400&rsquo;,&lsquo;九江市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+131,&lsquo;360500&rsquo;,&lsquo;新余市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+132,&lsquo;360600&rsquo;,&lsquo;鹰潭市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+133,&lsquo;360700&rsquo;,&lsquo;赣州市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+134,&lsquo;360800&rsquo;,&lsquo;吉安市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+135,&lsquo;360900&rsquo;,&lsquo;宜春市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+136,&lsquo;361000&rsquo;,&lsquo;抚州市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+137,&lsquo;361100&rsquo;,&lsquo;上饶市&rsquo;,&lsquo;360000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+138,&lsquo;370100&rsquo;,&lsquo;济南市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+139,&lsquo;370200&rsquo;,&lsquo;青岛市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+140,&lsquo;370300&rsquo;,&lsquo;淄博市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+141,&lsquo;370400&rsquo;,&lsquo;枣庄市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+142,&lsquo;370500&rsquo;,&lsquo;东营市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+143,&lsquo;370600&rsquo;,&lsquo;烟台市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+144,&lsquo;370700&rsquo;,&lsquo;潍坊市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+145,&lsquo;370800&rsquo;,&lsquo;济宁市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+146,&lsquo;370900&rsquo;,&lsquo;泰安市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+147,&lsquo;371000&rsquo;,&lsquo;威海市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+148,&lsquo;371100&rsquo;,&lsquo;日照市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+149,&lsquo;371200&rsquo;,&lsquo;莱芜市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+150,&lsquo;371300&rsquo;,&lsquo;临沂市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+151,&lsquo;371400&rsquo;,&lsquo;德州市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+152,&lsquo;371500&rsquo;,&lsquo;聊城市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+153,&lsquo;371600&rsquo;,&lsquo;滨州市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+154,&lsquo;371700&rsquo;,&lsquo;荷泽市&rsquo;,&lsquo;370000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+155,&lsquo;410100&rsquo;,&lsquo;郑州市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+156,&lsquo;410200&rsquo;,&lsquo;开封市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+157,&lsquo;410300&rsquo;,&lsquo;洛阳市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+158,&lsquo;410400&rsquo;,&lsquo;平顶山市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+159,&lsquo;410500&rsquo;,&lsquo;安阳市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+160,&lsquo;410600&rsquo;,&lsquo;鹤壁市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+161,&lsquo;410700&rsquo;,&lsquo;新乡市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+162,&lsquo;410800&rsquo;,&lsquo;焦作市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+163,&lsquo;410900&rsquo;,&lsquo;濮阳市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+164,&lsquo;411000&rsquo;,&lsquo;许昌市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+165,&lsquo;411100&rsquo;,&lsquo;漯河市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+166,&lsquo;411200&rsquo;,&lsquo;三门峡市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+167,&lsquo;411300&rsquo;,&lsquo;南阳市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+168,&lsquo;411400&rsquo;,&lsquo;商丘市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+169,&lsquo;411500&rsquo;,&lsquo;信阳市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+170,&lsquo;411600&rsquo;,&lsquo;周口市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+171,&lsquo;411700&rsquo;,&lsquo;驻马店市&rsquo;,&lsquo;410000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+172,&lsquo;420100&rsquo;,&lsquo;武汉市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+173,&lsquo;420200&rsquo;,&lsquo;黄石市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+174,&lsquo;420300&rsquo;,&lsquo;十堰市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+175,&lsquo;420500&rsquo;,&lsquo;宜昌市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+176,&lsquo;420600&rsquo;,&lsquo;襄樊市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+177,&lsquo;420700&rsquo;,&lsquo;鄂州市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+178,&lsquo;420800&rsquo;,&lsquo;荆门市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+179,&lsquo;420900&rsquo;,&lsquo;孝感市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+180,&lsquo;421000&rsquo;,&lsquo;荆州市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+181,&lsquo;421100&rsquo;,&lsquo;黄冈市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+182,&lsquo;421200&rsquo;,&lsquo;咸宁市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+183,&lsquo;421300&rsquo;,&lsquo;随州市&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+184,&lsquo;422800&rsquo;,&lsquo;恩施土家族苗族自治州&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+185,&lsquo;429000&rsquo;,&lsquo;省直辖行政单位&rsquo;,&lsquo;420000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+186,&lsquo;430100&rsquo;,&lsquo;长沙市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+187,&lsquo;430200&rsquo;,&lsquo;株洲市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+188,&lsquo;430300&rsquo;,&lsquo;湘潭市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+189,&lsquo;430400&rsquo;,&lsquo;衡阳市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+190,&lsquo;430500&rsquo;,&lsquo;邵阳市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+191,&lsquo;430600&rsquo;,&lsquo;岳阳市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+192,&lsquo;430700&rsquo;,&lsquo;常德市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+193,&lsquo;430800&rsquo;,&lsquo;张家界市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+194,&lsquo;430900&rsquo;,&lsquo;益阳市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+195,&lsquo;431000&rsquo;,&lsquo;郴州市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+196,&lsquo;431100&rsquo;,&lsquo;永州市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+197,&lsquo;431200&rsquo;,&lsquo;怀化市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+198,&lsquo;431300&rsquo;,&lsquo;娄底市&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+199,&lsquo;433100&rsquo;,&lsquo;湘西土家族苗族自治州&rsquo;,&lsquo;430000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+200,&lsquo;440100&rsquo;,&lsquo;广州市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+201,&lsquo;440200&rsquo;,&lsquo;韶关市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+202,&lsquo;440300&rsquo;,&lsquo;深圳市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+203,&lsquo;440400&rsquo;,&lsquo;珠海市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+204,&lsquo;440500&rsquo;,&lsquo;汕头市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+205,&lsquo;440600&rsquo;,&lsquo;佛山市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+206,&lsquo;440700&rsquo;,&lsquo;江门市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+207,&lsquo;440800&rsquo;,&lsquo;湛江市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+208,&lsquo;440900&rsquo;,&lsquo;茂名市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+209,&lsquo;441200&rsquo;,&lsquo;肇庆市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+210,&lsquo;441300&rsquo;,&lsquo;惠州市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+211,&lsquo;441400&rsquo;,&lsquo;梅州市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+212,&lsquo;441500&rsquo;,&lsquo;汕尾市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+213,&lsquo;441600&rsquo;,&lsquo;河源市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+214,&lsquo;441700&rsquo;,&lsquo;阳江市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+215,&lsquo;441800&rsquo;,&lsquo;清远市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+216,&lsquo;441900&rsquo;,&lsquo;东莞市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+217,&lsquo;442000&rsquo;,&lsquo;中山市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+218,&lsquo;445100&rsquo;,&lsquo;潮州市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+219,&lsquo;445200&rsquo;,&lsquo;揭阳市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+220,&lsquo;445300&rsquo;,&lsquo;云浮市&rsquo;,&lsquo;440000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+221,&lsquo;450100&rsquo;,&lsquo;南宁市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+222,&lsquo;450200&rsquo;,&lsquo;柳州市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+223,&lsquo;450300&rsquo;,&lsquo;桂林市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+224,&lsquo;450400&rsquo;,&lsquo;梧州市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+225,&lsquo;450500&rsquo;,&lsquo;北海市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+226,&lsquo;450600&rsquo;,&lsquo;防城港市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+227,&lsquo;450700&rsquo;,&lsquo;钦州市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+228,&lsquo;450800&rsquo;,&lsquo;贵港市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+229,&lsquo;450900&rsquo;,&lsquo;玉林市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+230,&lsquo;451000&rsquo;,&lsquo;百色市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+231,&lsquo;451100&rsquo;,&lsquo;贺州市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+232,&lsquo;451200&rsquo;,&lsquo;河池市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+233,&lsquo;451300&rsquo;,&lsquo;来宾市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+234,&lsquo;451400&rsquo;,&lsquo;崇左市&rsquo;,&lsquo;450000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+235,&lsquo;460100&rsquo;,&lsquo;海口市&rsquo;,&lsquo;460000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+236,&lsquo;460200&rsquo;,&lsquo;三亚市&rsquo;,&lsquo;460000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+237,&lsquo;469000&rsquo;,&lsquo;省直辖县级行政单位&rsquo;,&lsquo;460000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+238,&lsquo;500100&rsquo;,&lsquo;市辖区&rsquo;,&lsquo;500000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+239,&lsquo;500200&rsquo;,&lsquo;县&rsquo;,&lsquo;500000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+240,&lsquo;500300&rsquo;,&lsquo;市&rsquo;,&lsquo;500000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+241,&lsquo;510100&rsquo;,&lsquo;成都市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+242,&lsquo;510300&rsquo;,&lsquo;自贡市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+243,&lsquo;510400&rsquo;,&lsquo;攀枝花市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+244,&lsquo;510500&rsquo;,&lsquo;泸州市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+245,&lsquo;510600&rsquo;,&lsquo;德阳市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+246,&lsquo;510700&rsquo;,&lsquo;绵阳市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+247,&lsquo;510800&rsquo;,&lsquo;广元市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+248,&lsquo;510900&rsquo;,&lsquo;遂宁市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+249,&lsquo;511000&rsquo;,&lsquo;内江市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+250,&lsquo;511100&rsquo;,&lsquo;乐山市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+251,&lsquo;511300&rsquo;,&lsquo;南充市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+252,&lsquo;511400&rsquo;,&lsquo;眉山市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+253,&lsquo;511500&rsquo;,&lsquo;宜宾市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+254,&lsquo;511600&rsquo;,&lsquo;广安市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+255,&lsquo;511700&rsquo;,&lsquo;达州市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+256,&lsquo;511800&rsquo;,&lsquo;雅安市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+257,&lsquo;511900&rsquo;,&lsquo;巴中市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+258,&lsquo;512000&rsquo;,&lsquo;资阳市&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+259,&lsquo;513200&rsquo;,&lsquo;阿坝藏族羌族自治州&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+260,&lsquo;513300&rsquo;,&lsquo;甘孜藏族自治州&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+261,&lsquo;513400&rsquo;,&lsquo;凉山彝族自治州&rsquo;,&lsquo;510000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+262,&lsquo;520100&rsquo;,&lsquo;贵阳市&rsquo;,&lsquo;520000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+263,&lsquo;520200&rsquo;,&lsquo;六盘水市&rsquo;,&lsquo;520000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+264,&lsquo;520300&rsquo;,&lsquo;遵义市&rsquo;,&lsquo;520000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+265,&lsquo;520400&rsquo;,&lsquo;安顺市&rsquo;,&lsquo;520000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+266,&lsquo;522200&rsquo;,&lsquo;铜仁地区&rsquo;,&lsquo;520000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+267,&lsquo;522300&rsquo;,&lsquo;黔西南布依族苗族自治州&rsquo;,&lsquo;520000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+268,&lsquo;522400&rsquo;,&lsquo;毕节地区&rsquo;,&lsquo;520000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+269,&lsquo;522600&rsquo;,&lsquo;黔东南苗族侗族自治州&rsquo;,&lsquo;520000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+270,&lsquo;522700&rsquo;,&lsquo;黔南布依族苗族自治州&rsquo;,&lsquo;520000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+271,&lsquo;530100&rsquo;,&lsquo;昆明市&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+272,&lsquo;530300&rsquo;,&lsquo;曲靖市&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+273,&lsquo;530400&rsquo;,&lsquo;玉溪市&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+274,&lsquo;530500&rsquo;,&lsquo;保山市&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+275,&lsquo;530600&rsquo;,&lsquo;昭通市&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+276,&lsquo;530700&rsquo;,&lsquo;丽江市&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+277,&lsquo;530800&rsquo;,&lsquo;思茅市&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+278,&lsquo;530900&rsquo;,&lsquo;临沧市&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+279,&lsquo;532300&rsquo;,&lsquo;楚雄彝族自治州&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+280,&lsquo;532500&rsquo;,&lsquo;红河哈尼族彝族自治州&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+281,&lsquo;532600&rsquo;,&lsquo;文山壮族苗族自治州&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+282,&lsquo;532800&rsquo;,&lsquo;西双版纳傣族自治州&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+283,&lsquo;532900&rsquo;,&lsquo;大理白族自治州&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+284,&lsquo;533100&rsquo;,&lsquo;德宏傣族景颇族自治州&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+285,&lsquo;533300&rsquo;,&lsquo;怒江傈僳族自治州&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+286,&lsquo;533400&rsquo;,&lsquo;迪庆藏族自治州&rsquo;,&lsquo;530000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+287,&lsquo;540100&rsquo;,&lsquo;拉萨市&rsquo;,&lsquo;540000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+288,&lsquo;542100&rsquo;,&lsquo;昌都地区&rsquo;,&lsquo;540000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+289,&lsquo;542200&rsquo;,&lsquo;山南地区&rsquo;,&lsquo;540000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+290,&lsquo;542300&rsquo;,&lsquo;日喀则地区&rsquo;,&lsquo;540000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+291,&lsquo;542400&rsquo;,&lsquo;那曲地区&rsquo;,&lsquo;540000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+292,&lsquo;542500&rsquo;,&lsquo;阿里地区&rsquo;,&lsquo;540000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+293,&lsquo;542600&rsquo;,&lsquo;林芝地区&rsquo;,&lsquo;540000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+294,&lsquo;610100&rsquo;,&lsquo;西安市&rsquo;,&lsquo;610000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+295,&lsquo;610200&rsquo;,&lsquo;铜川市&rsquo;,&lsquo;610000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+296,&lsquo;610300&rsquo;,&lsquo;宝鸡市&rsquo;,&lsquo;610000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+297,&lsquo;610400&rsquo;,&lsquo;咸阳市&rsquo;,&lsquo;610000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+298,&lsquo;610500&rsquo;,&lsquo;渭南市&rsquo;,&lsquo;610000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+299,&lsquo;610600&rsquo;,&lsquo;延安市&rsquo;,&lsquo;610000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+300,&lsquo;610700&rsquo;,&lsquo;汉中市&rsquo;,&lsquo;610000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+301,&lsquo;610800&rsquo;,&lsquo;榆林市&rsquo;,&lsquo;610000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+302,&lsquo;610900&rsquo;,&lsquo;安康市&rsquo;,&lsquo;610000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+303,&lsquo;611000&rsquo;,&lsquo;商洛市&rsquo;,&lsquo;610000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+304,&lsquo;620100&rsquo;,&lsquo;兰州市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+305,&lsquo;620200&rsquo;,&lsquo;嘉峪关市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+306,&lsquo;620300&rsquo;,&lsquo;金昌市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+307,&lsquo;620400&rsquo;,&lsquo;白银市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+308,&lsquo;620500&rsquo;,&lsquo;天水市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+309,&lsquo;620600&rsquo;,&lsquo;武威市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+310,&lsquo;620700&rsquo;,&lsquo;张掖市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+311,&lsquo;620800&rsquo;,&lsquo;平凉市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+312,&lsquo;620900&rsquo;,&lsquo;酒泉市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+313,&lsquo;621000&rsquo;,&lsquo;庆阳市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+314,&lsquo;621100&rsquo;,&lsquo;定西市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+315,&lsquo;621200&rsquo;,&lsquo;陇南市&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+316,&lsquo;622900&rsquo;,&lsquo;临夏回族自治州&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+317,&lsquo;623000&rsquo;,&lsquo;甘南藏族自治州&rsquo;,&lsquo;620000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+318,&lsquo;630100&rsquo;,&lsquo;西宁市&rsquo;,&lsquo;630000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+319,&lsquo;632100&rsquo;,&lsquo;海东地区&rsquo;,&lsquo;630000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+320,&lsquo;632200&rsquo;,&lsquo;海北藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+321,&lsquo;632300&rsquo;,&lsquo;黄南藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+322,&lsquo;632500&rsquo;,&lsquo;海南藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+323,&lsquo;632600&rsquo;,&lsquo;果洛藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+324,&lsquo;632700&rsquo;,&lsquo;玉树藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+325,&lsquo;632800&rsquo;,&lsquo;海西蒙古族藏族自治州&rsquo;,&lsquo;630000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+326,&lsquo;640100&rsquo;,&lsquo;银川市&rsquo;,&lsquo;640000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+327,&lsquo;640200&rsquo;,&lsquo;石嘴山市&rsquo;,&lsquo;640000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+328,&lsquo;640300&rsquo;,&lsquo;吴忠市&rsquo;,&lsquo;640000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+329,&lsquo;640400&rsquo;,&lsquo;固原市&rsquo;,&lsquo;640000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+330,&lsquo;640500&rsquo;,&lsquo;中卫市&rsquo;,&lsquo;640000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+331,&lsquo;650100&rsquo;,&lsquo;乌鲁木齐市&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+332,&lsquo;650200&rsquo;,&lsquo;克拉玛依市&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+333,&lsquo;652100&rsquo;,&lsquo;吐鲁番地区&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+334,&lsquo;652200&rsquo;,&lsquo;哈密地区&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+335,&lsquo;652300&rsquo;,&lsquo;昌吉回族自治州&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+336,&lsquo;652700&rsquo;,&lsquo;博尔塔拉蒙古自治州&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+337,&lsquo;652800&rsquo;,&lsquo;巴音郭楞蒙古自治州&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+338,&lsquo;652900&rsquo;,&lsquo;阿克苏地区&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+339,&lsquo;653000&rsquo;,&lsquo;克孜勒苏柯尔克孜自治州&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+340,&lsquo;653100&rsquo;,&lsquo;喀什地区&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+341,&lsquo;653200&rsquo;,&lsquo;和田地区&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+342,&lsquo;654000&rsquo;,&lsquo;伊犁哈萨克自治州&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+343,&lsquo;654200&rsquo;,&lsquo;塔城地区&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+344,&lsquo;654300&rsquo;,&lsquo;阿勒泰地区&rsquo;,&lsquo;650000&rsquo;)</p><p>INSERT [area] ([id],[cityID],[city],[father]) VALUES (
+345,&lsquo;659000&rsquo;,&lsquo;省直辖行政单位&rsquo;,&lsquo;650000&rsquo;)</p><hr><p>原文链接: <a href=https://blog.alswl.com/2009/08/zhong-guo-sheng-fen-yu-cheng-shi-shu-ju-sql/>中国省份与城市数据SQL | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/%E7%BB%BC%E5%90%88%E6%8A%80%E6%9C%AF/>综合技术</a></li><li><a href=https://blog.alswl.com/tags/database/>database</a></li><li><a href=https://blog.alswl.com/tags/sql/>sql</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2009/08/pan-shuangshuang-i-beg-you-say-you-are-willing-to/><span class=title>« Prev</span><br><span>潘霜霜，求求你，说你愿意</span></a>
+<a class=next href=https://blog.alswl.com/2009/08/i-finally-had-the-4/><span class=title>Next »</span><br><span>牛逼的我终于过了四级</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

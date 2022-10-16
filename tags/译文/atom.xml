@@ -1,265 +1,89 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>译文 on Log4D</title>
-    <link>https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/</link>
-    <description>Recent content in 译文 on Log4D</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 12 Nov 2017 15:30:12 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/atom.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>服务性能监控：USE 方法（The USE Method）</title>
-      <link>https://blog.alswl.com/2017/11/use-method/</link>
-      <pubDate>Sun, 12 Nov 2017 15:30:12 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2017/11/use-method/</guid>
-      <description>本文首发在沪江技术学院公众号，小莞翻译，我做了校对。
-由于微信公众号的封闭性，我担心未来文章不容易被发现。
-为了避免沧海遗珠，特意转到这里。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>译文 on Log4D</title><link>https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/</link><description>Recent content in 译文 on Log4D</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 12 Nov 2017 15:30:12 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/atom.xml" rel="self" type="application/rss+xml"/><item><title>服务性能监控：USE 方法（The USE Method）</title><link>https://blog.alswl.com/2017/11/use-method/</link><pubDate>Sun, 12 Nov 2017 15:30:12 +0800</pubDate><guid>https://blog.alswl.com/2017/11/use-method/</guid><description>本文首发在沪江技术学院公众号，小莞翻译，我做了校对。 由于微信公众号的封闭性，我担心未来文章不容易被发现。 为了避免沧海遗珠，特意转到这里。
 英文原文：The USE Method。
-USE 方法是一种能分析任何系统性能的方法论。
-我们可以根据能帮助系统分析的结构化清单，来迅速的定位资源的瓶颈和错误所在。
-它通常会先以列出问题为开始，然后再寻找适合的指标，而不是给你制定一些固定的指标，
-然后让你按部就班的执行下去。
-本页左侧下方，是我列出的，根据不同的操作系统（Linux、 Solaris 等）
-衍生的 USE 方法列表。（译者注：可以参考原文链接）
-我列出了为不同的操作系统而衍生的 USE 方法列表供大家参考，
-你们可以根据你的环境来为你的站点服务，选择适合的附加监控指标。
+USE 方法是一种能分析任何系统性能的方法论。 我们可以根据能帮助系统分析的结构化清单，来迅速的定位资源的瓶颈和错误所在。 它通常会先以列出问题为开始，然后再寻找适合的指标，而不是给你制定一些固定的指标， 然后让你按部就班的执行下去。
+本页左侧下方，是我列出的，根据不同的操作系统（Linux、 Solaris 等） 衍生的 USE 方法列表。（译者注：可以参考原文链接）
+我列出了为不同的操作系统而衍生的 USE 方法列表供大家参考， 你们可以根据你的环境来为你的站点服务，选择适合的附加监控指标。
 通过这个工具，可以很方便的筛选出适合不同的系统的建议 metrics：USE Method: Rosetta Stone of Performance Checklists
-Intro（Introduction） 如果你遇到一个很严重的性能问题升级的时候，并且你不能确定它是否由服务导致的，
-这时候你该怎么办？
+Intro（Introduction） 如果你遇到一个很严重的性能问题升级的时候，并且你不能确定它是否由服务导致的， 这时候你该怎么办？
 我们都说万事开头难。所以我开发出了 USE 方法，来帮助大家，如何去快速的解决常见的性能问题，而同时又不容易忽略重要的地方。
-USE 方法在设计之初就定位了简洁、明了、完整、快速的特性，
-就好像一本航天手册的紧急事项列表那样。
-（译者注：航天手册，介绍包括不限于飞机的各种特性、指标、性能等，
-用于帮助飞行学员学习驾驶飞机，或者是帮助那些希望提高他们的飞行潜能和航空知识的人了解的更全面）。
+USE 方法在设计之初就定位了简洁、明了、完整、快速的特性， 就好像一本航天手册的紧急事项列表那样。 （译者注：航天手册，介绍包括不限于飞机的各种特性、指标、性能等， 用于帮助飞行学员学习驾驶飞机，或者是帮助那些希望提高他们的飞行潜能和航空知识的人了解的更全面）。
 USE 方法已经在不同的企业、课堂（作为学习工具）以及最近的云计算等场景中，被成功应用了无数次。
-USE 方法基于 3+1 模型（三种指标类型+一种策略），来切入一个复杂的系统。我发现它仅仅发挥了
-5% 的力量，就解决了大概 80% 的服务器问题，并且正如我将证明的，它除了服务器以外，也同样适应于各种系统。
+USE 方法基于 3+1 模型（三种指标类型+一种策略），来切入一个复杂的系统。我发现它仅仅发挥了 5% 的力量，就解决了大概 80% 的服务器问题，并且正如我将证明的，它除了服务器以外，也同样适应于各种系统。
 它应当被理解为一种工具，一种很大的方法工具箱里面的工具。不过，它目前仍然还有很多问题类型以待解决，还需要点其他方法和更多的时间。
 Summary USE 方法可以概括为：检查所有的资源的利用率，饱和度，和错误信息。
 我们期望大家能尽早使用 USE 方法去做性能检查，或者是用它确定系统的瓶颈。
 名词定义：
 资源： 服务器功能性的物理组成硬件（CPU， 硬盘, 总线） 利用率： 资源执行某工作的平均时间 饱和：衡量资源超载工作的程度，往往会被塞入队列 错误： 错误事件的数量 分析软件资源，或者是软件的强制性限制（资源控制）也是很有用的，同时要关注哪些指标是处于正常的可接受范围之内的。这些指标通常用以下术语表示：
-利用率：
-以一个时间段内的百分比来表示，例如：一个硬盘以 90% 的利用率运行 饱和度： 一个队列的长度，例如：CPUs 平均的运行时队列长度是4 错误（数）： 可度量的数量，例如：这个网络接口有 50 次（超时？） 我们应该要调查那些错误，因为它们会降低系统的性能，并且当故障模型处于可回复模式的时候，它可能不会立刻被发现。</description>
-    </item>
-    
-    <item>
-      <title>Stack Overflow 的 HTTPS 化：漫漫长路的终点</title>
-      <link>https://blog.alswl.com/2017/09/https-on-stack-overflow/</link>
-      <pubDate>Wed, 27 Sep 2017 12:07:44 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2017/09/https-on-stack-overflow/</guid>
-      <description>原文作者：Nick Craver 翻译作者：罗晟 @luosheng &amp;amp; @alswl 原文地址：Nick Craver - HTTPS on Stack Overflow: The End of a Long Road 本文为原创翻译文章，已经获得原作者授权，转载请注明作者及出处。 本文首发在「沪江技术学院」公众号 今天，我们默认在 Stack Overflow 上部署了 HTTPS。目前所有的流量都将跳转到 https:// 上。与此同时，Google 链接也会在接下去的几周内更改。启用的过程本身只是举手之劳，但在此之前我们却花了好几年的时间。到目前为止，HTTPS 在我们所有的 Q&amp;amp;A 网站上都默认启用了。
+利用率： 以一个时间段内的百分比来表示，例如：一个硬盘以 90% 的利用率运行 饱和度： 一个队列的长度，例如：CPUs 平均的运行时队列长度是4 错误（数）： 可度量的数量，例如：这个网络接口有 50 次（超时？） 我们应该要调查那些错误，因为它们会降低系统的性能，并且当故障模型处于可回复模式的时候，它可能不会立刻被发现。</description></item><item><title>Stack Overflow 的 HTTPS 化：漫漫长路的终点</title><link>https://blog.alswl.com/2017/09/https-on-stack-overflow/</link><pubDate>Wed, 27 Sep 2017 12:07:44 +0800</pubDate><guid>https://blog.alswl.com/2017/09/https-on-stack-overflow/</guid><description>原文作者：Nick Craver 翻译作者：罗晟 @luosheng &amp;amp; @alswl 原文地址：Nick Craver - HTTPS on Stack Overflow: The End of a Long Road 本文为原创翻译文章，已经获得原作者授权，转载请注明作者及出处。 本文首发在「沪江技术学院」公众号 今天，我们默认在 Stack Overflow 上部署了 HTTPS。目前所有的流量都将跳转到 https:// 上。与此同时，Google 链接也会在接下去的几周内更改。启用的过程本身只是举手之劳，但在此之前我们却花了好几年的时间。到目前为止，HTTPS 在我们所有的 Q&amp;amp;A 网站上都默认启用了。
 在过去的两个月里，我们在 Stack Exchange 全网维持发布 HTTPS。Stack Overflow 是最后，也是迄今最大的的一个站点。这对我们来说是一个巨大里程碑，但决不意味着是终点。后文会提到，我们仍有很多需要做的事情。但现在我们总算能看得见终点了，耶！
 友情提示：这篇文章讲述的是一个漫长的旅程。非常漫长。你可能已经注意到你的滚动条现在非常小。我们遇到的问题并不是只在 Stack Exchange/Overflow 才有，但这些问题的组合还挺罕见。我在文章中会讲到我们的一些尝试、折腾、错误、成功，也会包括一些开源项目——希望这些细节对你们有所帮助。由于它们的关系错综复杂，我难以用时间顺序来组织这篇文章，所以我会将文章拆解成架构、应用层、错误等几个主题。
 首先，我们要提一下为什么我们的处境相对独特：
 我们有几百个域名（大量站点及服务） 大量二级域名（stackoverflow.com、stackexchange.com、askubuntu.com等） 大量四级域名（如 meta.gaming.stackexchange.com） 我们允许用户提交、嵌入内容（比如帖子中的图片和 YouTube 视频） 我们仅有一个数据中心（造成单源的延时） 我们有广告（及广告网络） 我们用 websockets，任何时刻的活跃数都不少于 50 万个（连接数问题） 我们会被 DDoSed 攻击（代理问题） 我们有不少站点及应用还是通过 HTTP API 通信的（代理问题） 我们热衷于性能（好像有点太过了） 由于这篇文章实在太长，我在这里先列出链接：
-开篇 懒人包 基础设施 证书 Meta 子域（meta.</description>
-    </item>
-    
-    <item>
-      <title>Redis 到底有多快[译文]</title>
-      <link>https://blog.alswl.com/2014/02/redis-benchmarks/</link>
-      <pubDate>Sun, 23 Feb 2014 22:38:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2014/02/redis-benchmarks/</guid>
-      <description>原文地址 http://redis.io/topics/benchmarks。
+开篇 懒人包 基础设施 证书 Meta 子域（meta.</description></item><item><title>Redis 到底有多快[译文]</title><link>https://blog.alswl.com/2014/02/redis-benchmarks/</link><pubDate>Sun, 23 Feb 2014 22:38:00 +0800</pubDate><guid>https://blog.alswl.com/2014/02/redis-benchmarks/</guid><description>原文地址 http://redis.io/topics/benchmarks。
 拖了一个半月的稿子~
-Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。
-（类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。
-以下参数被支持： Usage: redis-benchmark [-h &amp;lt;host&amp;gt;] [-p &amp;lt;port&amp;gt;] [-c &amp;lt;clients&amp;gt;] [-n &amp;lt;requests]&amp;gt; [-k &amp;lt;boolean&amp;gt;] -h &amp;lt;hostname&amp;gt; Server hostname (default 127.0.0.1) -p &amp;lt;port&amp;gt; Server port (default 6379) -s &amp;lt;socket&amp;gt; Server socket (overrides host and port) -c &amp;lt;clients&amp;gt; Number of parallel connections (default 50) -n &amp;lt;requests&amp;gt; Total number of requests (default 10000) -d &amp;lt;size&amp;gt; Data size of SET/GET value in bytes (default 2) -k &amp;lt;boolean&amp;gt; 1=keep alive 0=reconnect (default 1) -r &amp;lt;keyspacelen&amp;gt; Use random keys for SET/GET/INCR, random values for SADD Using this option the benchmark will get/set keys in the form mykey_rand:000000012456 instead of constant keys, the &amp;lt;keyspacelen&amp;gt; argument determines the max number of values for the random number.</description>
-    </item>
-    
-    <item>
-      <title>Postfix 基本配置[译文]</title>
-      <link>https://blog.alswl.com/2013/11/postfix-basic-configuration/</link>
-      <pubDate>Sat, 09 Nov 2013 14:59:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2013/11/postfix-basic-configuration/</guid>
-      <description>原文地址：Postfix Basic Configuration 。
-有少许编译。
-介绍 Postfix 的配置文件 main.cf 有数百个配置参数，
-幸运的是，所有参数都有合理的默认配置项。
-大部分时候，只需要配置两三个参数即可。
+Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。 （类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。
+以下参数被支持： Usage: redis-benchmark [-h &amp;lt;host&amp;gt;] [-p &amp;lt;port&amp;gt;] [-c &amp;lt;clients&amp;gt;] [-n &amp;lt;requests]&amp;gt; [-k &amp;lt;boolean&amp;gt;] -h &amp;lt;hostname&amp;gt; Server hostname (default 127.0.0.1) -p &amp;lt;port&amp;gt; Server port (default 6379) -s &amp;lt;socket&amp;gt; Server socket (overrides host and port) -c &amp;lt;clients&amp;gt; Number of parallel connections (default 50) -n &amp;lt;requests&amp;gt; Total number of requests (default 10000) -d &amp;lt;size&amp;gt; Data size of SET/GET value in bytes (default 2) -k &amp;lt;boolean&amp;gt; 1=keep alive 0=reconnect (default 1) -r &amp;lt;keyspacelen&amp;gt; Use random keys for SET/GET/INCR, random values for SADD Using this option the benchmark will get/set keys in the form mykey_rand:000000012456 instead of constant keys, the &amp;lt;keyspacelen&amp;gt; argument determines the max number of values for the random number.</description></item><item><title>Postfix 基本配置[译文]</title><link>https://blog.alswl.com/2013/11/postfix-basic-configuration/</link><pubDate>Sat, 09 Nov 2013 14:59:00 +0800</pubDate><guid>https://blog.alswl.com/2013/11/postfix-basic-configuration/</guid><description>原文地址：Postfix Basic Configuration 。 有少许编译。
+介绍 Postfix 的配置文件 main.cf 有数百个配置参数， 幸运的是，所有参数都有合理的默认配置项。 大部分时候，只需要配置两三个参数即可。
 安装 Postfix 的方法可以参见 安装方法。
-特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在
-标准配置说明 里面查看。
-Postfix 配置语法 Postfix 的配置文件默认在 /etc/postfix。主力配置文件是 main.cf 和
-master.cf。用户权限必须是 root 的。
+特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在 标准配置说明 里面查看。
+Postfix 配置语法 Postfix 的配置文件默认在 /etc/postfix。主力配置文件是 main.cf 和 master.cf。用户权限必须是 root 的。
 /etc/postfix/main.cf 配置语法有两个要点：不用引号，可以使用 $ 来引用参数。
 # 定义一个参数 /etc/postfix/main.cf: parameter = value # 引用一个已有参数 /etc/postfix/main.cf: other_parameter = $parameter 引用参数时候，可以再定义之前先引用（Postfix 使用延迟计算技术）。
 Postfix 使用数据文件来控制接入权限。详情请看 DATABASE 介绍，一般这样配置：
 /etc/postfix/main.cf: virtual_alias_maps = hash:/etc/postfix/virtual 修改 main.cf 或者 master.cf 之后，需要 postfix reload 重新载入配置文件。
-配置对外发送域名 myorigin 参数指定邮件中显示的发送域名，默认使用当前机器名 $myhostname。
-一般来说，我们会把 myorigin 设置成顶级域名 $mydomain。</description>
-    </item>
-    
-    <item>
-      <title>在 Python 中使用 GDB 来调试[译文]</title>
-      <link>https://blog.alswl.com/2013/11/python-gdb/</link>
-      <pubDate>Fri, 01 Nov 2013 01:11:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2013/11/python-gdb/</guid>
-      <description>大约一年前，我接触了 Java 中的 Btrace
-能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。
-另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。
-当时公司技术方面也遇到了一些瓶颈，一部分原因是 CPython 本身的 IO 模型问题，
-另一方面也和早期代码写的极不工整脱不了关系。万般无奈之下，我们用
-Jython 推翻重做了主要业务，效果立竿见影，但同时也把真实问题给规避掉了。
-在这之后我们在 JVM 的领导下，走上了康庄大道。但我心中始终还有一个梗，
-就是想对性能遇到瓶颈的 Python Process 进行线上侦测。
-这篇文章就是开始的第一步。
-PS:这篇文章理论上是可行的，但是在我机器（Ubuntu 12.04 / 系统自带 Python）
-无法正常执行，会爆出 unable to read python frame information
-的问题。解决方法我会在下篇文章中写出。这里只是单纯翻译一下原文。
+配置对外发送域名 myorigin 参数指定邮件中显示的发送域名，默认使用当前机器名 $myhostname。 一般来说，我们会把 myorigin 设置成顶级域名 $mydomain。</description></item><item><title>在 Python 中使用 GDB 来调试[译文]</title><link>https://blog.alswl.com/2013/11/python-gdb/</link><pubDate>Fri, 01 Nov 2013 01:11:00 +0800</pubDate><guid>https://blog.alswl.com/2013/11/python-gdb/</guid><description>大约一年前，我接触了 Java 中的 Btrace 能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。 另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。
+当时公司技术方面也遇到了一些瓶颈，一部分原因是 CPython 本身的 IO 模型问题， 另一方面也和早期代码写的极不工整脱不了关系。万般无奈之下，我们用 Jython 推翻重做了主要业务，效果立竿见影，但同时也把真实问题给规避掉了。
+在这之后我们在 JVM 的领导下，走上了康庄大道。但我心中始终还有一个梗， 就是想对性能遇到瓶颈的 Python Process 进行线上侦测。 这篇文章就是开始的第一步。
+PS:这篇文章理论上是可行的，但是在我机器（Ubuntu 12.04 / 系统自带 Python） 无法正常执行，会爆出 unable to read python frame information 的问题。解决方法我会在下篇文章中写出。这里只是单纯翻译一下原文。
 原文可以移步 https://wiki.python.org/moin/DebuggingWithGdb。
 有一些类型的 bugs 很难使用 Python 直接进行 debug，比如
 段错误（无法被捕捉的 Python 异常） 卡住的进程（这种情况下面没法使用 pdb 来进行跟踪） 控制之外的后台处理 daemon 进程 这些情况下，你可以使用尝试使用 gdb。
-准备 需要在系统安装 gdb 和 Python debug 扩展。
-Python debug 扩展包含了一些 debug 命令，并且添加了一些 Python 特定的命令到 gdb。</description>
-    </item>
-    
-    <item>
-      <title>15 分钟学会 R 语言[译文]</title>
-      <link>https://blog.alswl.com/2013/10/r-tutorial/</link>
-      <pubDate>Tue, 29 Oct 2013 22:32:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2013/10/r-tutorial/</guid>
-      <description>仗着自己有几门语言的基础，我在学新语言时候，都会选择一些快速入门教程。
-比如 Learn X in Y minuts 就是我经常光顾的站点。
-前段时间，小柒在用 R 写数据分析脚本，我就建议她把 Learn X in Y minuts 里面的
-R 语言教程翻译出来。话说 Learn X in Y minuts 里面的中文贡献还是非常多的，赞。
-Learn X in Y minuts 的源码托管在 Github。
-小柒被我逼着把这篇 R 语言教程
-翻译到 R 语言教程中文版。
+准备 需要在系统安装 gdb 和 Python debug 扩展。 Python debug 扩展包含了一些 debug 命令，并且添加了一些 Python 特定的命令到 gdb。 在主流的 Linux 发行版中，你可以轻松的安装他们：</description></item><item><title>15 分钟学会 R 语言[译文]</title><link>https://blog.alswl.com/2013/10/r-tutorial/</link><pubDate>Tue, 29 Oct 2013 22:32:00 +0800</pubDate><guid>https://blog.alswl.com/2013/10/r-tutorial/</guid><description>仗着自己有几门语言的基础，我在学新语言时候，都会选择一些快速入门教程。 比如 Learn X in Y minuts 就是我经常光顾的站点。
+前段时间，小柒在用 R 写数据分析脚本，我就建议她把 Learn X in Y minuts 里面的 R 语言教程翻译出来。话说 Learn X in Y minuts 里面的中文贡献还是非常多的，赞。
+Learn X in Y minuts 的源码托管在 Github。 小柒被我逼着把这篇 R 语言教程 翻译到 R 语言教程中文版。
 下面是译文，有不妥的地方可以留言或者直接去 Github 上面 Pull request。
-R 是一门统计语言。它有很多数据分析和挖掘程序包。可以用来统计、分析和制图。
-你也可以在 LaTeX 文档中运行 R 命令。
-# 评论以 # 开始 # R 语言原生不支持 多行注释 # 但是你可以像这样来多行注释 # 在窗口里按回车键可以执行一条命令 ################################################################### # 不用懂编程就可以开始动手了 ################################################################### data()	# 浏览内建的数据集 data(rivers)	# 北美主要河流的长度（数据集） ls()	# 在工作空间中查看「河流」是否出现 head(rivers)	# 撇一眼数据集 # 735 320 325 392 524 450 length(rivers)	# 我们测量了多少条河流？ # 141 summary(rivers) # Min.</description>
-    </item>
-    
-    <item>
-      <title>在 Python 中使用 epoll[译文]</title>
-      <link>https://blog.alswl.com/2013/01/python-epoll/</link>
-      <pubDate>Sat, 12 Jan 2013 00:01:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2013/01/python-epoll/</guid>
-      <description>原文地址： http://scotdoyle.com/python-epoll-howto.html ，
-我这里取精简内容翻译过来。
+R 是一门统计语言。它有很多数据分析和挖掘程序包。可以用来统计、分析和制图。 你也可以在 LaTeX 文档中运行 R 命令。
+# 评论以 # 开始 # R 语言原生不支持 多行注释 # 但是你可以像这样来多行注释 # 在窗口里按回车键可以执行一条命令 ################################################################### # 不用懂编程就可以开始动手了 ################################################################### data() # 浏览内建的数据集 data(rivers) # 北美主要河流的长度（数据集） ls() # 在工作空间中查看「河流」是否出现 head(rivers) # 撇一眼数据集 # 735 320 325 392 524 450 length(rivers) # 我们测量了多少条河流？ # 141 summary(rivers) # Min.</description></item><item><title>在 Python 中使用 epoll[译文]</title><link>https://blog.alswl.com/2013/01/python-epoll/</link><pubDate>Sat, 12 Jan 2013 00:01:00 +0800</pubDate><guid>https://blog.alswl.com/2013/01/python-epoll/</guid><description>原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。
 ============ 正文开始 ============
-介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API
-的 epoll 范例。
-阻塞的 Socket 通信范例 import socket EOL1 = b&amp;#39;\n\n&amp;#39; EOL2 = b&amp;#39;\n\r\n&amp;#39; response = b&amp;#39;HTTP/1.0 200 OK\r\ndate: &amp;#34;2013-01-12T00:01:00+08:00&amp;#34; response += b&amp;#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&amp;#39; response += b&amp;#39;Hello, world!&amp;#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&amp;#39;0.0.0.0&amp;#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&amp;#39;&amp;#39; while EOL1 not in request and EOL2 not in request: request += connectiontoclient.</description>
-    </item>
-    
-    <item>
-      <title>如何让 Instagram 在一百多万用户爆炸后稳定运行</title>
-      <link>https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/</link>
-      <pubDate>Mon, 19 Nov 2012 00:06:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/</guid>
-      <description>原文链接：Keeping Instagram up with over a million new users in twelve hours
-这周二我们发布了 Instagram for Android，反响空前强烈。
-最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。
-尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。
-在这里我们将分享一些帮助我们解决问题的工具和技术。
+介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。
+阻塞的 Socket 通信范例 import socket EOL1 = b&amp;#39;\n\n&amp;#39; EOL2 = b&amp;#39;\n\r\n&amp;#39; response = b&amp;#39;HTTP/1.0 200 OK\r\ndate: &amp;#34;2013-01-12T00:01:00+08:00&amp;#34; response += b&amp;#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&amp;#39; response += b&amp;#39;Hello, world!&amp;#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&amp;#39;0.0.0.0&amp;#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&amp;#39;&amp;#39; while EOL1 not in request and EOL2 not in request: request += connectiontoclient.</description></item><item><title>如何让 Instagram 在一百多万用户爆炸后稳定运行</title><link>https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/</link><pubDate>Mon, 19 Nov 2012 00:06:00 +0800</pubDate><guid>https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/</guid><description>原文链接：Keeping Instagram up with over a million new users in twelve hours
+这周二我们发布了 Instagram for Android，反响空前强烈。 最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。 尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。 在这里我们将分享一些帮助我们解决问题的工具和技术。
 ##statsd##
-statsd 在 Instagram 很受欢迎。这是 Etsy 写的一个网络监控器，
-能够统计并图形化数据。它有两种核心的统计方式：计数器和计时器。
-我们用计数器来跟踪许多信息，从每秒钟注册数到喜欢数量统计。
-同时我们使用计时器来跟踪 feeds 变化，用户停留在 feeds 多久，和其他的主要操作。
-我们喜欢 statsd 的最大原因是它能迅速将状态显示并图形化出来。
-Stats 几乎是实时的（在我们系统中有 10 秒钟的延时）
-帮助我们评估系统状况和代码变化情况。
-Stats 可以随意启用，当我们需要跟踪时，能够快速启用它。
-你可以指定一个取样密度，来均匀的查看 web 应用概况，
-而不会影响它运行效率。
+statsd 在 Instagram 很受欢迎。这是 Etsy 写的一个网络监控器， 能够统计并图形化数据。它有两种核心的统计方式：计数器和计时器。 我们用计数器来跟踪许多信息，从每秒钟注册数到喜欢数量统计。 同时我们使用计时器来跟踪 feeds 变化，用户停留在 feeds 多久，和其他的主要操作。
+我们喜欢 statsd 的最大原因是它能迅速将状态显示并图形化出来。 Stats 几乎是实时的（在我们系统中有 10 秒钟的延时） 帮助我们评估系统状况和代码变化情况。 Stats 可以随意启用，当我们需要跟踪时，能够快速启用它。 你可以指定一个取样密度，来均匀的查看 web 应用概况， 而不会影响它运行效率。
 总结：实时统计可以动态添加，帮助你线上诊断而无须等待问题重现。
 ##Dogslow##
-Bitbucket 出品，Dogslow 是一个 Django middleware，它能监视运行的进程，
-当发现有进程运行时间超过 N 秒时，会保存当前进程信息的快照到磁盘。
-一直开着它很耗性能，但当去定位突发问题的瓶颈时，就会非常有用（我们在 web
-服务器上加了一个开关控制）。
-在发布那天，我们发现很多运行时间超过 1.5s 的进程都卡在 memcached 的 set()
-和 get_many() 方法上。我们使用 Munin 跟踪我们的机器状态，发现 memcached</description>
-    </item>
-    
-    <item>
-      <title>Working with Python subprocess[译文]</title>
-      <link>https://blog.alswl.com/2012/10/working-with-python-subprocess/</link>
-      <pubDate>Tue, 16 Oct 2012 00:42:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2012/10/working-with-python-subprocess/</guid>
-      <description>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。
-这篇文章是在写 Btrace 脚本时候查资料看到的，
-看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。
-熬了一个月才磨出来，媳妇都快成婆了有木有。
+Bitbucket 出品，Dogslow 是一个 Django middleware，它能监视运行的进程， 当发现有进程运行时间超过 N 秒时，会保存当前进程信息的快照到磁盘。 一直开着它很耗性能，但当去定位突发问题的瓶颈时，就会非常有用（我们在 web 服务器上加了一个开关控制）。
+在发布那天，我们发现很多运行时间超过 1.5s 的进程都卡在 memcached 的 set() 和 get_many() 方法上。我们使用 Munin 跟踪我们的机器状态，发现 memcached 每秒有 5 万次请求，因此，尽管还没到达 CPU 上限，却被 memcached 拖慢了应用服务器速度。</description></item><item><title>Working with Python subprocess[译文]</title><link>https://blog.alswl.com/2012/10/working-with-python-subprocess/</link><pubDate>Tue, 16 Oct 2012 00:42:00 +0800</pubDate><guid>https://blog.alswl.com/2012/10/working-with-python-subprocess/</guid><description>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。
+这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。
 原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More
 注意
-关于「执行命令时候发生了什么」这个问题，可以在
-http://en.wikipedia.org/wiki/Redirection_(computing)
-找到更多最新信息。这篇文章遵循 GFDL 协议。
-在我的上一篇日志中，我写到如何
-build a command line interface with sub-commands in Python。
-这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。
+关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。
+在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。
 我想达到的目标是：
-查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序 执行程序时发生了什么 当你双击桌面上的终端程序图标时，就会打开一个载入 shell 的程序。
-你键入的命令不会直接在内核执行，而是先和 shell 进行交互。
-Command (eg. `ls -l&amp;#39;) ↓ Terminal Program (eg. `gnome-terminal&amp;#39;) ↓ Shell (eg Bash) ↓ Kernel (eg.</description>
-    </item>
-    
-    <item>
-      <title>Flotr2 - 我最喜欢的 Javascript 图形库[译文]</title>
-      <link>https://blog.alswl.com/2012/06/flotr2/</link>
-      <pubDate>Tue, 19 Jun 2012 07:03:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2012/06/flotr2/</guid>
-      <description>原文地址：Flotr2 - my favorite javascript graph library
+查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序 执行程序时发生了什么 当你双击桌面上的终端程序图标时，就会打开一个载入 shell 的程序。 你键入的命令不会直接在内核执行，而是先和 shell 进行交互。
+Command (eg. `ls -l&amp;#39;) ↓ Terminal Program (eg. `gnome-terminal&amp;#39;) ↓ Shell (eg Bash) ↓ Kernel (eg.</description></item><item><title>Flotr2 - 我最喜欢的 Javascript 图形库[译文]</title><link>https://blog.alswl.com/2012/06/flotr2/</link><pubDate>Tue, 19 Jun 2012 07:03:00 +0800</pubDate><guid>https://blog.alswl.com/2012/06/flotr2/</guid><description>原文地址：Flotr2 - my favorite javascript graph library
 译者：alswl
 我研究了很久，得到的终极数据可视化方案是 javascript + html ，这是唯一像样又好用的。
-Gnuplot 虽然看上去不错，但是不太漂亮。
-一些基于 Python 的图形化工具也有同样的问题。
-Mathematica 在我看来则太正式了，所以我不怎么用它。
-基于 javascript 的图形化工具其中一个巨大优势是易于共享。
-通过设置 Github Page、分享链接等方法，我们都可以很方便的获取最新图表数据，
-甚至可以进行交互。
+Gnuplot 虽然看上去不错，但是不太漂亮。 一些基于 Python 的图形化工具也有同样的问题。 Mathematica 在我看来则太正式了，所以我不怎么用它。
+基于 javascript 的图形化工具其中一个巨大优势是易于共享。 通过设置 Github Page、分享链接等方法，我们都可以很方便的获取最新图表数据， 甚至可以进行交互。
 那些基于 javascript 的图形化工具 有很多 javascript 图形化库，从极简到复杂绚丽的风格，都极为丰富。
-最流行的可能就是 d3.js 和 Raphael 了。
-他们用起来相当麻烦，但却能实现绚丽到超越你想象的可视化效果。
+最流行的可能就是 d3.js 和 Raphael 了。 他们用起来相当麻烦，但却能实现绚丽到超越你想象的可视化效果。
 Raphael 还一个 web 矢量库，外观同样很漂亮。
 Raphael 中的分析图表
 Raphael 中的气泡图
 Raphael 中的钟表时间图
-D3.js 的愿景是帮助人们轻松的完成数据可视化，可惜事与愿违，
-它弄得太复杂了。
+D3.js 的愿景是帮助人们轻松的完成数据可视化，可惜事与愿违， 它弄得太复杂了。
 Hacker News 文章标题的可视化数据
 用 d3.js 绘制购房信息
 用 d3.js 制作的散布图
-Flotr2 这些可视化工具，虽然看上去很华丽，但是难以使用。
-他们会很浪费时间，让人捣鼓到最后却发现什么都没弄出来。
-大部分 Raphael 和 d3 的功能矫正过枉了，有时我们只想要一个简单的绘图工具而已。
-为了将我去年的 750 个关键字数据可视化，我使用了 Flotr2。</description>
-    </item>
-    
-    <item>
-      <title>使用pptpclient连接vpn网络[译文]</title>
-      <link>https://blog.alswl.com/2011/09/pptpclient/</link>
-      <pubDate>Sun, 04 Sep 2011 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2011/09/pptpclient/</guid>
-      <description>最近在ddwrt配置vpn，参考了arch的pptpclient配置文档[Microsoft VPN client setup with pptpclien
-t](https://wiki.archlinux.org/index.php/Microsoft_VPN_client_setup_with_pptpcl
-ient)，同时顺便花了一点时间翻译成中文，正文如下（使用wiky.js转换pe
-diawiki到html，原文会有更多的wiki模板样式便于查看，有问题请参照原文）。
+Flotr2 这些可视化工具，虽然看上去很华丽，但是难以使用。 他们会很浪费时间，让人捣鼓到最后却发现什么都没弄出来。 大部分 Raphael 和 d3 的功能矫正过枉了，有时我们只想要一个简单的绘图工具而已。
+为了将我去年的 750 个关键字数据可视化，我使用了 Flotr2。 只花费我数分钟，就能通过操作 javascript 将数据转化成 Flotr2 能理解的函数， 然后 Flotr2 就将数据转化成漂亮的图表。</description></item><item><title>使用pptpclient连接vpn网络[译文]</title><link>https://blog.alswl.com/2011/09/pptpclient/</link><pubDate>Sun, 04 Sep 2011 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2011/09/pptpclient/</guid><description>最近在ddwrt配置vpn，参考了arch的pptpclient配置文档[Microsoft VPN client setup with pptpclien t](https://wiki.archlinux.org/index.php/Microsoft_VPN_client_setup_with_pptpcl ient)，同时顺便花了一点时间翻译成中文，正文如下（使用wiky.js转换pe diawiki到html，原文会有更多的wiki模板样式便于查看，有问题请参照原文）。
 pptpclient是一个实现Microsoft PPTP协议的程序。因此它能够被用来接入另一个Microsoft VPN网络，比如学校和单位。
 安装PPTPClient pptpclient由安装包pptpclient提供，运行下列命令可以安装：
 pacman -S pptpclient 配置 你需要从网络管理员获取以下信息来配置pptpclient:
-VPN服务器的ip或者域名 VPN隧道名称 Windows域（不是所有网络都需要） VPN用户名 VPN密码 编辑配置文件 用你称手的编辑器打开/etc/ppp/options.pptp。这个文件为你的VPN连接启用了一系列默认安全设置。如果你连接时候出现问题，你可以自定义配置。
-你的options.pptp文件最少需要包含以下内容：
-lock noauth nobsdcomp nodeflate 编辑密码文件 下一步，打开或者创建/etc/ppp/chap-
-secrets。我们将在这个文件里面存储你的密码，记得修改权限让除root之外所有用户不能访问它。这个文件的格式如下：
+VPN服务器的ip或者域名 VPN隧道名称 Windows域（不是所有网络都需要） VPN用户名 VPN密码 编辑配置文件 用你称手的编辑器打开/etc/ppp/options.pptp。这个文件为你的VPN连接启用了一系列默认安全设置。如果你连接时候出现问题，你可以自定义配置。 你的options.pptp文件最少需要包含以下内容：
+lock noauth nobsdcomp nodeflate 编辑密码文件 下一步，打开或者创建/etc/ppp/chap- secrets。我们将在这个文件里面存储你的密码，记得修改权限让除root之外所有用户不能访问它。这个文件的格式如下：
 &amp;lt;DOMAIN&amp;gt;\&amp;lt;USERNAME&amp;gt; PPTP &amp;lt;PASSWORD&amp;gt; * 如果你的服务器不要求域，则配置如下：
 &amp;lt;USERNAME&amp;gt; PPTP &amp;lt;PASSWORD&amp;gt; * 替换掉上文中范例中的占位符。注意，如果你的密码包含特殊字符，比如&amp;quot;$&amp;quot;，你需要用双引号把它们包起来。
 命名你的VPN隧道 用你称手的编辑器创建类似/etc/ppp/peers/的文件，把这里替换成你的VPN连接名。这个文件设置之后看起来如下：
@@ -267,66 +91,30 @@ pty &amp;quot;pptp &amp;lt;SERVER&amp;gt; --nolaunchpppd&amp;quot; name &amp;lt;
 是VPN服务器的地址，是你所属的域，是你将要用来连接服务器的用户名，是连接的名称。
 {{Note|如果你不需要使用MPPE，你应当从/etc/ppp/options.pptp中移除require-mppe-128这个选项}}
 创建你的连接
-用root执行以下命令来确保配置是正确的： # pon $TUNNEL debug dump logfd 2 nodetach</description>
-    </item>
-    
-    <item>
-      <title>7条大型网站设计和维护的关键技巧[译文]</title>
-      <link>https://blog.alswl.com/2010/07/7-crucial-tips-for-designing-and-maintaining-a-large-site/</link>
-      <pubDate>Sat, 17 Jul 2010 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2010/07/7-crucial-tips-for-designing-and-maintaining-a-large-site/</guid>
-      <description>原文出处：[7 Crucial Tips for Designing and Maintaining a Large Site | Nettuts+](http://net.tutsplus.com/articles/general/7-crucial-tips-for-
-designing-and-maintaining-a-large-site/)
+用root执行以下命令来确保配置是正确的： # pon $TUNNEL debug dump logfd 2 nodetach 如果一切都配置好了，pon命令应当不会自动结束。一旦你感觉差不多OK了，就可以终止这个命令。 {{Note|另一个用来确保配置正确的命令是ifconfig -a，看看里面时候有一个名叫ppp0的新驱动，并且还是可用的}} 执行以下命令来连接VPN隧道： # pon 是你之前命名过的VPN隧道名称。注意使用root命令执行。</description></item><item><title>7条大型网站设计和维护的关键技巧[译文]</title><link>https://blog.alswl.com/2010/07/7-crucial-tips-for-designing-and-maintaining-a-large-site/</link><pubDate>Sat, 17 Jul 2010 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2010/07/7-crucial-tips-for-designing-and-maintaining-a-large-site/</guid><description>原文出处：[7 Crucial Tips for Designing and Maintaining a Large Site | Nettuts+](http://net.tutsplus.com/articles/general/7-crucial-tips-for- designing-and-maintaining-a-large-site/)
 译者：alswl
 以下为译文
-项目范围和规模各不相同，他们带来的挑战各不相同一样。作为一个独立的网页设计师，我最大的职责就是负责FlashDen。随着成千上万的活动用户聊天，上传和购物，
-网站处理着大额的金钱和巨大的流量。
-设计，重构，维护和开发团队的工作给了我一些能使事情变得更容易的用用的见解和技巧。而且，就在昨天，我们开始了对网站最大的一次重构，着看上去是一次很好的机会来记
-录我最有用的7个秘诀。
-1. 可维护的设计和代码 我给的第一条也是最条一条秘诀是设计站点保证可以轻松维护。很多时候，当你设计一个站点，你可能为了美学牺牲一些东西。例如，你可能使用一个图片而文字或者样式就可以
-应付。或者你可能故意使用一个没有空间缩放的菜单结构。当网站变大时，这将将成为一个非常糟糕的设计。
-当我两年前建成FlashDen的第一个版本时，我使用图片按钮。他们看起来很漂亮，但同时我被100多个不同的按钮图片库拖累着，更谈不上修改图片了。之后在接下来
-的几个月中，当一个开发者需要一个新按钮时候他们向我要一个新图片。不用说，我学到这个教训很快，我们切换到一个单独的按钮类，虽然看上去不是很好，但是这种情况更能
-安心。
-可维护性的另一面是考虑站点将会怎样成长和变化。比如，当一个新页面增加时，它到哪里去？我一直想要一个横向的导航栏，但是经过一些尝试，我们限制地使用了加入子栏目
-的垂直的导航栏，从而加入一个标签结构到页面来保证相关的页面能被归类到一起。我不敢说这是世界上最好的导航栏，但是它肯定能够让我们不用重新设计在一个新的节点加入
-网站的时候。
+项目范围和规模各不相同，他们带来的挑战各不相同一样。作为一个独立的网页设计师，我最大的职责就是负责FlashDen。随着成千上万的活动用户聊天，上传和购物， 网站处理着大额的金钱和巨大的流量。
+设计，重构，维护和开发团队的工作给了我一些能使事情变得更容易的用用的见解和技巧。而且，就在昨天，我们开始了对网站最大的一次重构，着看上去是一次很好的机会来记 录我最有用的7个秘诀。
+1. 可维护的设计和代码 我给的第一条也是最条一条秘诀是设计站点保证可以轻松维护。很多时候，当你设计一个站点，你可能为了美学牺牲一些东西。例如，你可能使用一个图片而文字或者样式就可以 应付。或者你可能故意使用一个没有空间缩放的菜单结构。当网站变大时，这将将成为一个非常糟糕的设计。
+当我两年前建成FlashDen的第一个版本时，我使用图片按钮。他们看起来很漂亮，但同时我被100多个不同的按钮图片库拖累着，更谈不上修改图片了。之后在接下来 的几个月中，当一个开发者需要一个新按钮时候他们向我要一个新图片。不用说，我学到这个教训很快，我们切换到一个单独的按钮类，虽然看上去不是很好，但是这种情况更能 安心。
+可维护性的另一面是考虑站点将会怎样成长和变化。比如，当一个新页面增加时，它到哪里去？我一直想要一个横向的导航栏，但是经过一些尝试，我们限制地使用了加入子栏目 的垂直的导航栏，从而加入一个标签结构到页面来保证相关的页面能被归类到一起。我不敢说这是世界上最好的导航栏，但是它肯定能够让我们不用重新设计在一个新的节点加入 网站的时候。
 所以当你在设计大型站点时候，设法让它变得简单，你会为此而感到高兴的！
-2. 找出你的用户群和任务 大型网站网站和小型站点的最大一个区别就是使用网站的不同用户类型的数量。例如在FlashDen上，有买家、作家、访客、管理员和会员。每个用户组都有他们各自不同
-的目标和任务。有时候他们的任务重叠，但是他们有很大的不同。
-一个地方的用户任务在相互对立的观点最好的例子是在一个网页。网站上没有任何一个地方不衔接的每个用户组，并在其他地方是如此的重要，以确保每个人都会有他们想要的。
-当然，你要小心，在服务一个用户组你不忽略另一个。
+2. 找出你的用户群和任务 大型网站网站和小型站点的最大一个区别就是使用网站的不同用户类型的数量。例如在FlashDen上，有买家、作家、访客、管理员和会员。每个用户组都有他们各自不同 的目标和任务。有时候他们的任务重叠，但是他们有很大的不同。
+一个地方的用户任务在相互对立的观点最好的例子是在一个网页。网站上没有任何一个地方不衔接的每个用户组，并在其他地方是如此的重要，以确保每个人都会有他们想要的。 当然，你要小心，在服务一个用户组你不忽略另一个。
 在这次最新一次FlashDen重新设计时候，我所作工作最大的地方是主页。我做的第一件事情是给自己列出每个用户组需要做的事情：
-买家 - 在FlashDen上购买文件的人
-浏览项目，搜索，访问他们的个人主页，存款，学习使用网站（新买家） 作者 - 在FlashDen上卖商品的人
-与其他会员聊天，在主页上展示他们项目的功能，了解网站的新闻，快速的获取他们的投资搭配和收益 新访客 - 潜在的买家/作者/会员，刚到站点的人
-快速了解到站点是干嘛的，起步教程，查看不同类别的文件和价格 会员 - 不是真正的买家或作者，而是在社区中活跃
-和其他会员聊天，查看站点新闻，浏览文件 管理员/审稿人 - 我们的工作人员，管理文件的批准，主持论坛，参与大部分活动
-快速批准文件，查看最新论坛主题，添加站点新闻 当你知道不同的用户群体想要做什么，那么你可以设计一个网页，解决了他们所有的需要。不用说，这是随着用户组和任务数量指数级增加的困难的任务。在该网站的其他网页，
-你会经常为部分用户组而苦恼，而在主页上，他们却又都集中在一起。不用怀疑，主页是你设计一个网站时候最重要的一项工作。
+买家 - 在FlashDen上购买文件的人 浏览项目，搜索，访问他们的个人主页，存款，学习使用网站（新买家） 作者 - 在FlashDen上卖商品的人 与其他会员聊天，在主页上展示他们项目的功能，了解网站的新闻，快速的获取他们的投资搭配和收益 新访客 - 潜在的买家/作者/会员，刚到站点的人 快速了解到站点是干嘛的，起步教程，查看不同类别的文件和价格 会员 - 不是真正的买家或作者，而是在社区中活跃 和其他会员聊天，查看站点新闻，浏览文件 管理员/审稿人 - 我们的工作人员，管理文件的批准，主持论坛，参与大部分活动 快速批准文件，查看最新论坛主题，添加站点新闻 当你知道不同的用户群体想要做什么，那么你可以设计一个网页，解决了他们所有的需要。不用说，这是随着用户组和任务数量指数级增加的困难的任务。在该网站的其他网页， 你会经常为部分用户组而苦恼，而在主页上，他们却又都集中在一起。不用怀疑，主页是你设计一个网站时候最重要的一项工作。
 在你解决不同需求之前，你需要先考虑用户群。为了做到这个，你需要了解该网站是要实现的目标。
 3. 了解网站目标 虽然每个用户组会很自然地认为他们是最重要的，但是你应该根据他们的优先度来判别站点要实现的目标。比如在FlashDen上，我们给候补人员列出下面几条结论：
 该网站的首要任务是为买家服务。为买家服务可以带来不断的收入，同时也可以为作者群服务。 让游客更快的了解网站进而成为会员也是至关重要的。FlashDen还处在一个比较新兴的市场，不断有新竞争对手出现，如何将注册会员变成买家或者作者是相当重要的。 创作者是FlashDen的核心部分，他们也是非常重要，和其他用户群不同的是，他们是网站坚定的拥护者。 注册会员虽然没有创作者或者买家这么重要，但是他们也在为周边的社群作出贡献。 作为雇员，管理员/审稿人是相对最不重要的。 因此，从以上所说可以得出结论，网站服务的的用户需求优先顺序：访客&amp;gt;买家&amp;gt;作者&amp;gt;成员&amp;quot;&amp;gt;管理员。
-认识你的网站正在努力实现的却是最终用户线程的缝制任务一起，并告诉你什么你应该尝试把页面上。</description>
-    </item>
-    
-    <item>
-      <title>WordPress代码高亮插件指南[译文]</title>
-      <link>https://blog.alswl.com/2010/03/guide-to-find-a-wordpress-syntax-highlighter-that-works-translation/</link>
-      <pubDate>Fri, 19 Mar 2010 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2010/03/guide-to-find-a-wordpress-syntax-highlighter-that-works-translation/</guid>
-      <description>这是我第二篇译文，第一篇见这里 使用Firebug和 FirePHP调试PHP[译文]
-关注我博客的作者可能知道，我在年前就在做自己的主题，但是因为种种原因，一直到现在才完成beta1.0，不仅仅是主题的原因，还有各种插件的匹配，最让我头疼的两
-个&amp;quot;回复插件&amp;quot;和&amp;quot;代码着色插件&amp;quot;。
+认识你的网站正在努力实现的却是最终用户线程的缝制任务一起，并告诉你什么你应该尝试把页面上。</description></item><item><title>WordPress代码高亮插件指南[译文]</title><link>https://blog.alswl.com/2010/03/guide-to-find-a-wordpress-syntax-highlighter-that-works-translation/</link><pubDate>Fri, 19 Mar 2010 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2010/03/guide-to-find-a-wordpress-syntax-highlighter-that-works-translation/</guid><description>这是我第二篇译文，第一篇见这里 使用Firebug和 FirePHP调试PHP[译文]
+关注我博客的作者可能知道，我在年前就在做自己的主题，但是因为种种原因，一直到现在才完成beta1.0，不仅仅是主题的原因，还有各种插件的匹配，最让我头疼的两 个&amp;quot;回复插件&amp;quot;和&amp;quot;代码着色插件&amp;quot;。
 这篇文章做了一个很好的评测，自此我找到了真正好用的代码着色软件。
 关于博客改版的一些经验，我会在稍后的日志中总结出来。
 原文链接：Guide to find a WordPress syntax highlighter that works · Geek Out
 原文作者：Travis
 译者：alswl
-之前，我曾经抱怨过我
-多么需要一个代码高亮插件但是却没有收到好的建议…我亲自测试审核了一些我在插件目录找到较为的流行插件。这些被我列出的插件满足下列的要求：
+之前，我曾经抱怨过我 多么需要一个代码高亮插件但是却没有收到好的建议…我亲自测试审核了一些我在插件目录找到较为的流行插件。这些被我列出的插件满足下列的要求：
 支持WordPress 2.7.1
 在2009年有过更新
 我寻找代码高亮插件的标准除了以上两点上还有：
@@ -335,62 +123,32 @@ designing-and-maintaining-a-large-site/)
 SyntaxHighlighterEvolved
 上次更新: 2009-5-4 (Version 2.1.0)
 标记: 可视化的. Eg/ [php], [javascript]
-SyntaxHighlighter Evolved 的一个功能是它有一个漂亮的工具栏在代码快的转角处，允许你使用下列功能：在一个弹出窗体内查看代码、复制代码
-到剪贴板和打印代码。出于某些原因Syntaxhighter Evolved喜欢去掉我的代码里缩进（空格）（译者按：这可能是WordPress自带TinyMC
-E在FireFox下的Bug）。如果我尝试在HTML模式保存，我会收到PHP警告同时我的代码在我的文章中消失。总之，这个插件不是我想要的。
+SyntaxHighlighter Evolved 的一个功能是它有一个漂亮的工具栏在代码快的转角处，允许你使用下列功能：在一个弹出窗体内查看代码、复制代码 到剪贴板和打印代码。出于某些原因Syntaxhighter Evolved喜欢去掉我的代码里缩进（空格）（译者按：这可能是WordPress自带TinyMC E在FireFox下的Bug）。如果我尝试在HTML模式保存，我会收到PHP警告同时我的代码在我的文章中消失。总之，这个插件不是我想要的。
 Syntax Highlighter Plus Syntax Highlighter Plus
 上次更新: 2009-2-11 (Version 1.0b2)
-标记: 可视化的. Eg/ [sourcecode language=&#39;css&#39;]
-就像_Syntax Highlighter_家庭的其他插件，这款插件也有一个工具条，并且和Syntax Highlighter
-Evolved一样，它也因为在我尝试保存到HTML模式时候丢失了我代码的缩进而失败。
-Google Syntax Highlighter for WordPress Google Syntax Highlighter for WordPress</description>
-    </item>
-    
-    <item>
-      <title>使用Firebug和FirePHP调试PHP[译文]</title>
-      <link>https://blog.alswl.com/2010/03/use-firebug-and-firephp-debugging-php/</link>
-      <pubDate>Mon, 15 Mar 2010 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2010/03/use-firebug-and-firephp-debugging-php/</guid>
-      <description>这是我第一篇译文，在写WordPress 主题时候偶尔看到的FirePHP插件，看都这篇文章，不知道为什么，动了翻译的念头。
-原文链接：Debug PHP with Firebug and
-FirePHP
-译言的链接：译言网 |
-使用Firebug和FirePHP调试PHP
+标记: 可视化的. Eg/ [sourcecode language='css']
+就像_Syntax Highlighter_家庭的其他插件，这款插件也有一个工具条，并且和Syntax Highlighter Evolved一样，它也因为在我尝试保存到HTML模式时候丢失了我代码的缩进而失败。
+Google Syntax Highlighter for WordPress Google Syntax Highlighter for WordPress</description></item><item><title>使用Firebug和FirePHP调试PHP[译文]</title><link>https://blog.alswl.com/2010/03/use-firebug-and-firephp-debugging-php/</link><pubDate>Mon, 15 Mar 2010 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2010/03/use-firebug-and-firephp-debugging-php/</guid><description>这是我第一篇译文，在写WordPress 主题时候偶尔看到的FirePHP插件，看都这篇文章，不知道为什么，动了翻译的念头。
+原文链接：Debug PHP with Firebug and FirePHP
+译言的链接：译言网 | 使用Firebug和FirePHP调试PHP
 ×××××以下译文××××××
-如果你和我一样，你会在开发网页项目时候完全无法离开FireBug。这个小巧的&amp;quot;臭虫&amp;quot;是一个神奇而有用的H
-TML/CSS/JavaScript/Ajax调试器。但是你也许不知道这个还可以用来调试PHP，没错，它可以，感谢一款名为FirePHP的FireFox插件
-。
-通过一个小小的服务端库，和这款在Firebug上的插件，你的PHP脚本能够发送调试信息到浏览器，轻易的通过HTTP相应头编码。一旦你设置，你可以在Fiire
-bug的控制台获得PHP脚本警告和错误，就感觉像直接调试JavaScript一样
-使用这个工具，首先你需要安装FirePHP插件
-。这个插件需要你已经安装FireBug。装好FirePHP之后，重新打开Firebug面板时候，你会看到新加了一个蓝色的臭虫图标。点击这个图标会出现一个开启
-或者关闭FirePHP的菜单。
-当然，这时候我们还无法做任何事，你还需要安装FirePHP的服务端，点击这里下载。这是一个独立的版本，你可以手动下载或者使用PEAR。装后之后，你可是轻松的将这个库加入你的代码。它被设计了很多版本来整合入多个框架或者管理系统，比如
-[WP-FirePHP plugin for WordPress](http://wordpress.org/extend/plugins/wp-
-firephp/) 和 [JFirePHP plugin for Joomla](http://joomlacode.org/gf/project/kune
-na/frs/?action=FrsReleaseView&amp;amp;release_id=11823)。暂时不管这些，我们将把精力集中在独立的功能上。
+如果你和我一样，你会在开发网页项目时候完全无法离开FireBug。这个小巧的&amp;quot;臭虫&amp;quot;是一个神奇而有用的H TML/CSS/JavaScript/Ajax调试器。但是你也许不知道这个还可以用来调试PHP，没错，它可以，感谢一款名为FirePHP的FireFox插件 。
+通过一个小小的服务端库，和这款在Firebug上的插件，你的PHP脚本能够发送调试信息到浏览器，轻易的通过HTTP相应头编码。一旦你设置，你可以在Fiire bug的控制台获得PHP脚本警告和错误，就感觉像直接调试JavaScript一样
+使用这个工具，首先你需要安装FirePHP插件 。这个插件需要你已经安装FireBug。装好FirePHP之后，重新打开Firebug面板时候，你会看到新加了一个蓝色的臭虫图标。点击这个图标会出现一个开启 或者关闭FirePHP的菜单。
+当然，这时候我们还无法做任何事，你还需要安装FirePHP的服务端，点击这里下载。这是一个独立的版本，你可以手动下载或者使用PEAR。装后之后，你可是轻松的将这个库加入你的代码。它被设计了很多版本来整合入多个框架或者管理系统，比如 [WP-FirePHP plugin for WordPress](http://wordpress.org/extend/plugins/wp- firephp/) 和 [JFirePHP plugin for Joomla](http://joomlacode.org/gf/project/kune na/frs/?action=FrsReleaseView&amp;amp;release_id=11823)。暂时不管这些，我们将把精力集中在独立的功能上。
 一旦你在你服务器上部署了FirePHP库，你还需要在你的代码中加入以下的代码：
-require_once(&#39;FirePHPCore/fb.php&#39;);
+require_once('FirePHPCore/fb.php');
 这是因为FirePHP通过HTTP头发送记录的数据，你需要缓存你的代码产生的输出，从而来响应头信息从这里获取代码生成的内容。这个可以通过在代码头部的ob_ start来实现。
 ob_start();
-当这些步骤完成后，你可以开始使用FirePHP了。你需要做的只是调用fb函数在任何你想要记录的地方。同时你也可以使用一个可选的标签和常量去定义预定义信息
-，一个错误，一个警告，或者一条信息。
-$var=array(&amp;lsquo;a&amp;rsquo;=&amp;gt;&amp;lsquo;pizza&amp;rsquo;,&amp;amp;nbsp_place_hold
-er;&amp;lsquo;b&amp;rsquo;=&amp;gt;&amp;lsquo;cookies&amp;rsquo;,&amp;lsquo;c&amp;rsquo;=&amp;gt;&amp;lsquo;celery&amp;rsquo;);
+当这些步骤完成后，你可以开始使用FirePHP了。你需要做的只是调用fb函数在任何你想要记录的地方。同时你也可以使用一个可选的标签和常量去定义预定义信息 ，一个错误，一个警告，或者一条信息。
+$var=array(&amp;lsquo;a&amp;rsquo;=&amp;gt;&amp;lsquo;pizza&amp;rsquo;,&amp;amp;nbsp_place_hold er;&amp;lsquo;b&amp;rsquo;=&amp;gt;&amp;lsquo;cookies&amp;rsquo;,&amp;lsquo;c&amp;rsquo;=&amp;gt;&amp;lsquo;celery&amp;rsquo;);
 fb($var);
 fb($var,&amp;ldquo;Anarray&amp;rdquo;);
 fb($var,FirePHP::WARN);
 fb($var,FirePHP::INFO);
-fb($var,&amp;lsquo;Anarraywith&amp;amp;
-nbsp_place_holder;anErrortype&amp;rsquo;,&amp;amp;nbsp_pla
-ce_holder;FirePHP::ERROR);
-$var = array(&#39;a&#39;=&amp;gt;&#39;pizza&#39;, &#39;b&#39;=&amp;gt;&#39;cookies&#39;, &#39;c&#39;=&amp;gt;&#39;celery&#39;);fb($var);fb($var, &amp;quot;An array&amp;quot;);fb($var, FirePHP::WARN);fb($var, FirePHP::INFO);fb($var, &#39;An array with an Error type&#39;, FirePHP::ERROR); 这些代码将在Firebug控制台输出如下所示
+fb($var,&amp;lsquo;Anarraywith&amp;amp; nbsp_place_holder;anErrortype&amp;rsquo;,&amp;amp;nbsp_pla ce_holder;FirePHP::ERROR);
+$var = array('a'=&amp;gt;'pizza', 'b'=&amp;gt;'cookies', 'c'=&amp;gt;'celery');fb($var);fb($var, &amp;quot;An array&amp;quot;);fb($var, FirePHP::WARN);fb($var, FirePHP::INFO);fb($var, 'An array with an Error type', FirePHP::ERROR); 这些代码将在Firebug控制台输出如下所示
 你也可以使用FirePHP来跟踪你程序的执行情况：通过使用FirePHP::TRACE常量，你可以在 fb被调用的地方查看``行数、类名和方法名
 1
 functionhello(){
-2</description>
-    </item>
-    
-  </channel>
-</rss>
+2</description></item></channel></rss>

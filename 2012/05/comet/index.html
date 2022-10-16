@@ -1,824 +1,250 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>服务器 Push 技术 | Log4D</title>
-<meta name="keywords" content="综合技术, comet, rabbitmq, socket.io, node.js, ampq">
-<meta name="description" content="服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。
-实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。
-在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>服务器 Push 技术 | Log4D</title><meta name=keywords content="综合技术,comet,rabbitmq,socket.io,node.js,ampq"><meta name=description content="服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。
+实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。 在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。
 ps：「长连接」在一些场景下，是另外一种意义「HTTP: Keep alive」。不在本文讨论的范围中。
 参考链接：
-Comet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持，
-Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。
+Comet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持， Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。
 参考连接：
-HTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket，
-否则 FireBug 是无法监测的，WebSocket 可以双向通讯。
-新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api&amp;_pid=10001&amp;count=2&amp;source=3818214747&amp;callback=STK_133834300664875
-未读信息大约每20秒触发一次，像是 Ajax 轮询。">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/2012/05/comet/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="服务器 Push 技术" />
-<meta property="og:description" content="服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。
-实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。
-在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。
+HTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket， 否则 FireBug 是无法监测的，WebSocket 可以双向通讯。
+新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api&_pid=10001&count=2&source=3818214747&callback=STK_133834300664875
+未读信息大约每20秒触发一次，像是 Ajax 轮询。"><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/2012/05/comet/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><script defer crossorigin=anonymous src=/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG+9vmJ0cTS+ovo0FeA=" onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="服务器 Push 技术"><meta property="og:description" content="服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。
+实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。 在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。
 ps：「长连接」在一些场景下，是另外一种意义「HTTP: Keep alive」。不在本文讨论的范围中。
 参考链接：
-Comet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持，
-Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。
+Comet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持， Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。
 参考连接：
-HTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket，
-否则 FireBug 是无法监测的，WebSocket 可以双向通讯。
-新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api&amp;_pid=10001&amp;count=2&amp;source=3818214747&amp;callback=STK_133834300664875
-未读信息大约每20秒触发一次，像是 Ajax 轮询。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2012/05/comet/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2012-05-30T10:40:00+08:00" />
-<meta property="article:modified_time" content="2012-05-30T10:40:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="服务器 Push 技术"/>
-<meta name="twitter:description" content="服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。
-实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。
-在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。
+HTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket， 否则 FireBug 是无法监测的，WebSocket 可以双向通讯。
+新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api&_pid=10001&count=2&source=3818214747&callback=STK_133834300664875
+未读信息大约每20秒触发一次，像是 Ajax 轮询。"><meta property="og:type" content="article"><meta property="og:url" content="https://blog.alswl.com/2012/05/comet/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2012-05-30T10:40:00+08:00"><meta property="article:modified_time" content="2012-05-30T10:40:00+08:00"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="服务器 Push 技术"><meta name=twitter:description content="服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。
+实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。 在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。
 ps：「长连接」在一些场景下，是另外一种意义「HTTP: Keep alive」。不在本文讨论的范围中。
 参考链接：
-Comet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持，
-Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。
+Comet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持， Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。
 参考连接：
-HTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket，
-否则 FireBug 是无法监测的，WebSocket 可以双向通讯。
-新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api&amp;_pid=10001&amp;count=2&amp;source=3818214747&amp;callback=STK_133834300664875
-未读信息大约每20秒触发一次，像是 Ajax 轮询。"/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Posts",
-      "item": "https://blog.alswl.com/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  3 ,
-      "name": "服务器 Push 技术",
-      "item": "https://blog.alswl.com/2012/05/comet/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "服务器 Push 技术",
-  "name": "服务器 Push 技术",
-  "description": "服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。\n实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。\n在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。\nps：「长连接」在一些场景下，是另外一种意义「HTTP: Keep alive」。不在本文讨论的范围中。\n参考链接：\nComet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持，\nFlash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。\n参考连接：\nHTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket，\n否则 FireBug 是无法监测的，WebSocket 可以双向通讯。\n新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api\u0026amp;_pid=10001\u0026amp;count=2\u0026amp;source=3818214747\u0026amp;callback=STK_133834300664875\n未读信息大约每20秒触发一次，像是 Ajax 轮询。",
-  "keywords": [
-    "综合技术", "comet", "rabbitmq", "socket.io", "node.js", "ampq"
-  ],
-  "articleBody": "服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。\n实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。\n在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。\nps：「长连接」在一些场景下，是另外一种意义「HTTP: Keep alive」。不在本文讨论的范围中。\n参考链接：\nComet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持，\nFlash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。\n参考连接：\nHTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket，\n否则 FireBug 是无法监测的，WebSocket 可以双向通讯。\n新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api\u0026_pid=10001\u0026count=2\u0026source=3818214747\u0026callback=STK_133834300664875\n未读信息大约每20秒触发一次，像是 Ajax 轮询。\nIM 长连接：\nhttp://4.46.web1.im.weibo.com/im?jsonp=parent.org.cometd.script._callback5\u0026message=%5B%7B%22channel%22%3A%22%2Fmeta%2Fconnect%22%2C%22connectionType%22%3A%22callback-polling%22%2C%22id%22%3A6%2C%22clientId%22%3A%22b02qp9qw9cgiuxxyn3%22%7D%5D\u00261338343019008\n可以看出新浪在使用 JSONP 跨域做 IM 长连接，FireBug 中也始终有链接请求，\n看上去像 Script Tag 请求方式。\n知乎 请求链接：\nhttp://comet.zhihu.com/update?loc=http%3A%2F%2Fwww.zhihu.com%2F\u0026channel=13781e6817833300f0a70f19\u0026callback=zhp13781e6a6f22349b9865b47c8\n依然能在 FireBug 中看到请求地址，说明客户端请求数据还是走 HTTP 方式，\n并且会出现 update 动作链接一直出于请求状态，猜测知乎仍然使用 Script Tag 请求。\n框架支持 orbited2 http://labs.gameclosure.com/orbited2/\n跨浏览器 容易集成：IRC / XMPP / ActiveMQ / RabbitMQ Python StreamHub http://www.stream-hub.com/\n免费版仅支持 10 个在线 支持 Java / .net / iPhone socket.io http://socket.io/\nNodeJS 推送方式： WebSocket Adobe® Flash® Socket AJAX long polling AJAX multipart streaming Forever Iframe JSONP Polling 支持浏览器： Internet Explorer 5.5+ Safari 3+ Google Chrome 4+ Firefox 3+ Opera 10.61+ iPhone Safari iPad Safari Android WebKit WebOs WebKit sockjs-client https://github.com/sockjs/sockjs-client\n支持 Node.js / Erlang / Lua / Python-Tornado 跨浏览器 实战 Socket.io 考虑到上述候选框架的使用场景，这里选择 Socket.IO 作为 Comet 框架。\n尴尬的 Pylons Pylons 和 Comet 配合有问题，问题处在标准 WSGI 是非异步的。\n（看邮件列表里面，似乎新的标准准备支持）。\nhttp://stackoverflow.com/a/3090118 http://mail.python.org/pipermail/web-sig/2008-July/003545.html Spawning 这样的话，我就直接选择使用 Node.JS 做 Comet 服务器，Nginx 负责转发。\n简单Demo node.js 代码\n/* global __dirname, console */ var app = require('http').createServer(handler), io = require('socket.io').listen(app), fs = require('fs'); app.listen(8080); function handler(req, res) { fs.readFile(__dirname + '/index.html', function (err, data) { if (err) { res.writeHead(500); return res.end('Error loading index.html'); } res.writeHead(200); res.end(data); }); } io.sockets.on('connection', function (socket) { 'use strict'; socket.emit('news', {hello: 'world, for everyone!'}); socket.on('my other event', function (data) { console.log(data); }); socket.on('private message', function (from, msg) { console.log('I received a private message by ', from, ' saying ', msg); }); }); 页面代码\n\u003chtml\u003e \u003chead\u003e \u003cmeta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"\u003e \u003ctitle\u003eSocket.io Demo\u003c/title\u003e \u003cscript src=\"/socket.io/socket.io.js\"\u003e\u003c/script\u003e \u003cscript\u003e var socket = io.connect('/'); socket.on('news', function (data) { console.log(data); socket.emit('my other event', { my: 'data' }); }); \u003c/script\u003e \u003c/head\u003e \u003cbody\u003e \u003c/body\u003e \u003c/html\u003e 连接成功之后，在浏览器控制台里面，可以使用 socket.emit('my other event', {biu: 'biu'});\n向服务器发送消息。\n服务器也可以通过 socket.emit() 来向客户端推送消息。\n私有信息发送，使用 socket.emit('private message', 'James', {some: 'message'}); 。\n跨平台 实测看来，在 IE8 下面， Socket.io 会降级使用 htmlfile 来实现 Comet。\n而 Firefox 中会有 websocket / htmlfile / xhr-polling / jsonp-polling 依次备选，\n首选 websocket。\n安全性 问题：提交数据的身份认证过程，以前在后台由 Web 框架自动完成，而现在流程是\nSocket.IO -\u003e RabbitMQ -\u003e Web App，身份验证的复杂度增加了。\n思路：Socket.IO 使用 Nginx 代理转发，从而保留同一域名下面的 cookie 信息，\n这样能够提交到 Socket.IO 服务器，每次 RabbitMQ Message 都记录 cookie 信息，\n后台从 RabbitMQ 读取信息时候，再进行认证。\n实际操作：由于 Comet 中的数据流仅负责推送，客户端继续使用原始 POST\n方式发送数据到服务器，所以暂时不会产生身份认证问题。\nNode AMPQ 驱动 Socket.IO 提供了一个通用的 Comet 解决方案，下面就需要点润滑剂，将整个数据流跑通。\n消息队列 RabbitMQ 正好适合用来做这个。\nRabbit 官网提到了一个套件 rabbit.js 。\n遗憾的是这个库是混合了 RabbitMQ 和 Node.JS，提供了一个封装好的 Node.JS 库，\n而我想要的仅仅是一个 AMPQ 协议驱动。node-amqp 则是我们需要的驱动。\nDemo 服务器接收者脚本：\n/* global __dirname, console */ var conn = require('amqp').createConnection({ url: 'amqp://localhost'}); console.log('socket works'); conn.on('ready', function() { console.log('conn ready'); conn.queue('socket.io', {passive: true}, function(queue){ queue.subscribe(function (json, headers, deliveryInfo) { console.log('#json:') view(json); console.log('#headers:') view(headers); console.log('#deliveryInfo:') view(deliveryInfo); }); }); }); conn.on('error', function() { console.error('error'); }); function view(obj) { for (var i in obj) { if(obj.hasOwnProperty(i)) { console.log(i + ': ' + obj[i]); } } } 用 Python 写的发送者脚本：\n# coding=utf-8 #! /usr/bin/env python2 import pika import json import logging import time logger = logging.getLogger() def main(): conn = pika.BlockingConnection( pika.ConnectionParameters('localhost')) chan = conn.channel() chan.queue_declare(queue='socket.io') count = 10 while (count \u003e 0): message = {'no': count, 'some': 'Message', u'比如': u'中文信息'} publish_text(chan, 'socket.io', u'text %d' %count) publish_json(chan, 'socket.io', message) logger.info('add one message to RabbitMQ') #time.sleep(5) # sleep 5 sec count -= 1 def publish_text(channel, queue, message): channel.basic_publish(exchange='', routing_key=queue, body=json.dumps(message), properties=pika.BasicProperties( content_type='text/plain', content_encoding='utf-8', delivery_mode=1) ) def publish_json(channel, queue, message): channel.basic_publish(exchange='', routing_key=queue, body=json.dumps(message), properties=pika.BasicProperties( content_type='application/json', content_encoding='utf-8', delivery_mode=1) ) if __name__ == '__main__': main() 使用 node ./app-amqp.js 运行 Node.JS 服务器，然后运行 producter.py 产生\nRabbitMQ Message，我使用的数据格式是序列化的 JSON 字串，\n还有 JSON, Thrift, Protocol Buffers, MessagePack 这些格式可供选择。运行结果如下：\n#json: data: \"text 1\" UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-3: ordinal not icontentType: text/plain #headers: #deliveryInfo: contentType: text/plain contentEncoding: utf-8 deliveryMode: 1 queue: socket.io deliveryTag: 19 redelivered: false exchange: routingKey: socket.io consumerTag: node-amqp-10880-0.06487216474488378 #json: 比如: 中文信息 some: Message no: 1 #headers: #deliveryInfo: contentType: application/json contentEncoding: utf-8 deliveryMode: 1 queue: socket.io deliveryTag: 20 redelivered: false exchange: routingKey: socket.io consumerTag: node-amqp-10880-0.06487216474488378 里面有两个 Message，发送数据格式为 text/plain 和 application/json 。\n参考链接：\nPika Document Socket.IO + RabbitMQ 最后提供 Socket.IO + RabbitMQ 的完整 Demo，客户端会实时接受到来自消息发送者的消息。\n/* global __dirname, console */ var app = require('http').createServer(handler), io = require('socket.io').listen(app), fs = require('fs'); app.listen(8080); function handler(req, res) { fs.readFile(__dirname + '/index.html', function (err, data) { if (err) { res.writeHead(500); return res.end('Error loading index.html'); } res.writeHead(200); res.end(data); }); } io.sockets.on('connection', function (socket) { console.log('io ready'); var conn = require('amqp').createConnection({ url: 'amqp://localhost'}); conn.on('ready', function () { console.log('conn ready'); conn.queue('socket.io', {passive: true}, function(queue){ queue.subscribe(function (json, headers, deliveryInfo) { console.log(json); console.log(deliveryInfo.contentType); if (deliveryInfo.contentType == 'application/json') { socket.emit('news', json); } if (deliveryInfo.contentType == 'text/plain') { socket.emit('news', json.data.toString()); } }); }); }); }); 在运行 producter.py 后，Python 脚本持续产生 Message 到 RabbitMQ，\napp-amqp-socket.js 订阅读取 Message 并推送到浏览器端。\n浏览器可以在 Console 里面看到日志：\nObject { 比如=\"中文信息\", some=\"Message\", no=1} 至此，我们可以完成 WebApp -\u003e RabbitMQ -\u003e Socket.IO -\u003e Browser 的实时推送。\n",
-  "wordCount" : "780",
-  "inLanguage": "en",
-  "datePublished": "2012-05-30T10:40:00+08:00",
-  "dateModified": "2012-05-30T10:40:00+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "alswl"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.alswl.com/2012/05/comet/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Log4D",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.alswl.com/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
-
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
-      服务器 Push 技术
-    </h1>
-    <div class="post-meta"><span title='2012-05-30 10:40:00 +0800 CST'>2012-05-30</span>&nbsp;·&nbsp;alswl
-
-</div>
-  </header> <div class="toc">
-    <details >
-        <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
-        </summary>
-
-        <div class="inner"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#实现方式">实现方式</a>
-      <ul>
-        <li><a href="#浏览器支持情况">浏览器支持情况</a></li>
-      </ul>
-    </li>
-    <li><a href="#各大网站连接情况">各大网站连接情况</a>
-      <ul>
-        <li><a href="#新浪微博">新浪微博</a></li>
-        <li><a href="#知乎">知乎</a></li>
-      </ul>
-    </li>
-    <li><a href="#框架支持">框架支持</a>
-      <ul>
-        <li><a href="#orbited2">orbited2</a></li>
-        <li><a href="#streamhub">StreamHub</a></li>
-        <li><a href="#socketio">socket.io</a></li>
-        <li><a href="#sockjs-client">sockjs-client</a></li>
-      </ul>
-    </li>
-    <li><a href="#实战-socketio">实战 Socket.io</a>
-      <ul>
-        <li><a href="#尴尬的-pylons">尴尬的 Pylons</a></li>
-        <li><a href="#简单demo">简单Demo</a></li>
-        <li><a href="#跨平台">跨平台</a></li>
-        <li><a href="#安全性">安全性</a></li>
-      </ul>
-    </li>
-    <li><a href="#node-ampq-驱动">Node AMPQ 驱动</a>
-      <ul>
-        <li><a href="#demo">Demo</a></li>
-      </ul>
-    </li>
-    <li><a href="#socketio--rabbitmq">Socket.IO + RabbitMQ</a></li>
-  </ul>
-</nav>
-        </div>
-    </details>
-</div>
-
-  <div class="post-content"><p>服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。</p>
-<h2 id="实现方式">实现方式<a hidden class="anchor" aria-hidden="true" href="#实现方式">#</a></h2>
-<ul>
-<li>Comet
-<ul>
-<li>Ajax 轮询</li>
-<li>iframe / htmlfile</li>
-<li>script tag （不中断的连续请求）</li>
-<li>Flash 通讯</li>
-</ul>
-</li>
-<li>WebSocket</li>
-</ul>
-<p>Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。<br />
-在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。</p>
-<p>ps：「长连接」在一些场景下，是另外一种意义「HTTP: Keep alive」。不在本文讨论的范围中。</p>
-<p>参考链接：</p>
-<ul>
-<li><a href="http://www.ibm.com/developerworks/cn/web/wa-lo-comet/">Comet：基于 HTTP 长连接的「服务器推」技术</a></li>
-<li><a href="http://socket.io/#browser-support">Socket.IO Supported transports</a></li>
-</ul>
-<!-- more -->
-<h3 id="浏览器支持情况">浏览器支持情况<a hidden class="anchor" aria-hidden="true" href="#浏览器支持情况">#</a></h3>
-<p>WebSocket 属于 HTML5 规范，需要「先进」浏览器支持，<br />
-Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。</p>
-<p>参考连接：</p>
-<ul>
-<li><a href="http://zh.wikipedia.org/wiki/HTTP%E6%8C%81%E4%B9%85%E9%93%BE%E6%8E%A5">HTTP持久链接</a></li>
-<li>[Comet (programming)](<a href="http://en.wikipedia.org/wiki/Comet_(programming">http://en.wikipedia.org/wiki/Comet_(programming</a>))</li>
-<li><a href="http://www.cnblogs.com/tianzhiliang/archive/2011/06/13/2079564.html">一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」</a></li>
-<li><a href="http://www.zeitoun.net/articles/comet_and_php/start">How to implement COMET with PHP</a></li>
-</ul>
-<h2 id="各大网站连接情况">各大网站连接情况<a hidden class="anchor" aria-hidden="true" href="#各大网站连接情况">#</a></h2>
-<p>可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket，<br />
-否则 FireBug 是无法监测的，WebSocket 可以双向通讯。</p>
-<h3 id="新浪微博">新浪微博<a hidden class="anchor" aria-hidden="true" href="#新浪微博">#</a></h3>
-<p>未读信息链接： <code>http://rm.api.weibo.com/remind/unread_count.json?target=api&amp;_pid=10001&amp;count=2&amp;source=3818214747&amp;callback=STK_133834300664875</code></p>
-<p>未读信息大约每20秒触发一次，像是 Ajax 轮询。</p>
-<p>IM 长连接：<br />
-<code>http://4.46.web1.im.weibo.com/im?jsonp=parent.org.cometd.script._callback5&amp;message=%5B%7B%22channel%22%3A%22%2Fmeta%2Fconnect%22%2C%22connectionType%22%3A%22callback-polling%22%2C%22id%22%3A6%2C%22clientId%22%3A%22b02qp9qw9cgiuxxyn3%22%7D%5D&amp;1338343019008</code></p>
-<p>可以看出新浪在使用 JSONP 跨域做 IM 长连接，FireBug 中也始终有链接请求，<br />
-看上去像 Script Tag 请求方式。</p>
-<h3 id="知乎">知乎<a hidden class="anchor" aria-hidden="true" href="#知乎">#</a></h3>
-<p>请求链接：<br />
-<code>http://comet.zhihu.com/update?loc=http%3A%2F%2Fwww.zhihu.com%2F&amp;channel=13781e6817833300f0a70f19&amp;callback=zhp13781e6a6f22349b9865b47c8</code></p>
-<p>依然能在 FireBug 中看到请求地址，说明客户端请求数据还是走 HTTP 方式，<br />
-并且会出现 update 动作链接一直出于请求状态，猜测知乎仍然使用 Script Tag 请求。</p>
-<h2 id="框架支持">框架支持<a hidden class="anchor" aria-hidden="true" href="#框架支持">#</a></h2>
-<h3 id="orbited2">orbited2<a hidden class="anchor" aria-hidden="true" href="#orbited2">#</a></h3>
-<p><a href="http://labs.gameclosure.com/orbited2/">http://labs.gameclosure.com/orbited2/</a></p>
-<ul>
-<li>跨浏览器</li>
-<li>容易集成：IRC / XMPP / ActiveMQ / RabbitMQ</li>
-<li>Python</li>
-</ul>
-<h3 id="streamhub">StreamHub<a hidden class="anchor" aria-hidden="true" href="#streamhub">#</a></h3>
-<p><a href="http://www.stream-hub.com/">http://www.stream-hub.com/</a></p>
-<ul>
-<li>免费版仅支持 10 个在线</li>
-<li>支持 Java / .net / iPhone</li>
-</ul>
-<h3 id="socketio">socket.io<a hidden class="anchor" aria-hidden="true" href="#socketio">#</a></h3>
-<p><a href="http://socket.io/">http://socket.io/</a></p>
-<ul>
-<li>NodeJS</li>
-<li>推送方式：
-<ul>
-<li>WebSocket</li>
-<li>Adobe® Flash® Socket</li>
-<li>AJAX long polling</li>
-<li>AJAX multipart streaming</li>
-<li>Forever Iframe</li>
-<li>JSONP Polling</li>
-</ul>
-</li>
-<li>支持浏览器：
-<ul>
-<li>Internet Explorer 5.5+</li>
-<li>Safari 3+</li>
-<li>Google Chrome 4+</li>
-<li>Firefox 3+</li>
-<li>Opera 10.61+</li>
-<li>iPhone Safari</li>
-<li>iPad Safari</li>
-<li>Android WebKit</li>
-<li>WebOs WebKit</li>
-</ul>
-</li>
-</ul>
-<h3 id="sockjs-client">sockjs-client<a hidden class="anchor" aria-hidden="true" href="#sockjs-client">#</a></h3>
-<p><a href="https://github.com/sockjs/sockjs-client">https://github.com/sockjs/sockjs-client</a></p>
-<ul>
-<li>支持 Node.js / Erlang / Lua / Python-Tornado</li>
-<li>跨浏览器</li>
-</ul>
-<h2 id="实战-socketio">实战 Socket.io<a hidden class="anchor" aria-hidden="true" href="#实战-socketio">#</a></h2>
-<p>考虑到上述候选框架的使用场景，这里选择 Socket.IO 作为 Comet 框架。</p>
-<h3 id="尴尬的-pylons">尴尬的 Pylons<a hidden class="anchor" aria-hidden="true" href="#尴尬的-pylons">#</a></h3>
-<p>Pylons 和 Comet 配合有问题，问题处在标准 WSGI 是非异步的。<br />
-（看邮件列表里面，似乎新的标准准备支持）。</p>
-<ul>
-<li><a href="http://stackoverflow.com/a/3090118">http://stackoverflow.com/a/3090118</a></li>
-<li><a href="http://mail.python.org/pipermail/web-sig/2008-July/003545.html">http://mail.python.org/pipermail/web-sig/2008-July/003545.html</a></li>
-<li><a href="http://pypi.python.org/pypi/Spawning/">Spawning</a></li>
-</ul>
-<p>这样的话，我就直接选择使用 Node.JS 做 Comet 服务器，Nginx 负责转发。</p>
-<h3 id="简单demo">简单Demo<a hidden class="anchor" aria-hidden="true" href="#简单demo">#</a></h3>
-<p>node.js 代码</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="cm">/* global __dirname, console */</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">).</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">handler</span><span class="p">),</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">io</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;socket.io&#39;</span><span class="p">).</span><span class="nx">listen</span><span class="p">(</span><span class="nx">app</span><span class="p">),</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">handler</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/index.html&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">		<span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">				<span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">&#39;Error loading index.html&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">			<span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">			<span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="p">});</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">io</span><span class="p">.</span><span class="nx">sockets</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connection&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="s1">&#39;use strict&#39;</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;news&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">hello</span><span class="o">:</span> <span class="s1">&#39;world, for everyone!&#39;</span><span class="p">});</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;my other event&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">	<span class="p">});</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;private message&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;I received a private message by &#39;</span><span class="p">,</span> <span class="nx">from</span><span class="p">,</span> <span class="s1">&#39; saying &#39;</span><span class="p">,</span> <span class="nx">msg</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">	<span class="p">});</span>
-</span></span><span class="line"><span class="cl"><span class="p">});</span>
-</span></span></code></pre></div><p>页面代码</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&#34;content-type&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;text/html; charset=utf-8&#34;</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Socket.io Demo<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&#34;/socket.io/socket.io.js&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">		<span class="kd">var</span> <span class="nx">socket</span> <span class="o">=</span> <span class="nx">io</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">		<span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;news&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;my other event&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">my</span><span class="o">:</span> <span class="s1">&#39;data&#39;</span> <span class="p">});</span>
-</span></span><span class="line"><span class="cl">		<span class="p">});</span>
-</span></span><span class="line"><span class="cl">	<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</span></span></code></pre></div><p>连接成功之后，在浏览器控制台里面，可以使用 <code>socket.emit('my other event', {biu: 'biu'});</code><br />
-向服务器发送消息。</p>
-<p>服务器也可以通过 <code>socket.emit()</code> 来向客户端推送消息。</p>
-<p>私有信息发送，使用 <code>socket.emit('private message', 'James', {some: 'message'});</code> 。</p>
-<h3 id="跨平台">跨平台<a hidden class="anchor" aria-hidden="true" href="#跨平台">#</a></h3>
-<p>实测看来，在 IE8 下面， Socket.io 会降级使用 <code>htmlfile</code> 来实现 Comet。</p>
-<p>而 Firefox 中会有 <code>websocket / htmlfile / xhr-polling / jsonp-polling</code> 依次备选，<br />
-首选 websocket。</p>
-<h3 id="安全性">安全性<a hidden class="anchor" aria-hidden="true" href="#安全性">#</a></h3>
-<p>问题：提交数据的身份认证过程，以前在后台由 Web 框架自动完成，而现在流程是<br />
-Socket.IO -&gt; RabbitMQ -&gt; Web App，身份验证的复杂度增加了。</p>
-<p>思路：Socket.IO 使用 Nginx 代理转发，从而保留同一域名下面的 cookie 信息，<br />
-这样能够提交到 Socket.IO 服务器，每次 RabbitMQ Message 都记录 cookie 信息，<br />
-后台从 RabbitMQ 读取信息时候，再进行认证。</p>
-<p>实际操作：由于 Comet 中的数据流仅负责推送，客户端继续使用原始 POST<br />
-方式发送数据到服务器，所以暂时不会产生身份认证问题。</p>
-<h2 id="node-ampq-驱动">Node AMPQ 驱动<a hidden class="anchor" aria-hidden="true" href="#node-ampq-驱动">#</a></h2>
-<p>Socket.IO 提供了一个通用的 Comet 解决方案，下面就需要点润滑剂，将整个数据流跑通。<br />
-消息队列 RabbitMQ 正好适合用来做这个。</p>
-<p>Rabbit 官网提到了一个套件 <a href="https://github.com/squaremo/rabbit.js">rabbit.js</a> 。<br />
-遗憾的是这个库是混合了 RabbitMQ 和 Node.JS，提供了一个封装好的 Node.JS 库，<br />
-而我想要的仅仅是一个 AMPQ 协议驱动。<a href="https://github.com/postwait/node-amqp/blob/master/amqp.js">node-amqp</a> 则是我们需要的驱动。</p>
-<h3 id="demo">Demo<a hidden class="anchor" aria-hidden="true" href="#demo">#</a></h3>
-<p>服务器接收者脚本：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="cm">/* global __dirname, console */</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">conn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;amqp&#39;</span><span class="p">).</span><span class="nx">createConnection</span><span class="p">({</span> <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;amqp://localhost&#39;</span><span class="p">});</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;socket works&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="nx">conn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;ready&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;conn ready&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">conn</span><span class="p">.</span><span class="nx">queue</span><span class="p">(</span><span class="s1">&#39;socket.io&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">passive</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">queue</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">queue</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">json</span><span class="p">,</span> <span class="nx">headers</span><span class="p">,</span> <span class="nx">deliveryInfo</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;#json:&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">view</span><span class="p">(</span><span class="nx">json</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;#headers:&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">view</span><span class="p">(</span><span class="nx">headers</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;#deliveryInfo:&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">view</span><span class="p">(</span><span class="nx">deliveryInfo</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="p">});</span>
-</span></span><span class="line"><span class="cl">	<span class="p">});</span>
-</span></span><span class="line"><span class="cl"><span class="p">});</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">conn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">});</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">view</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="k">in</span> <span class="nx">obj</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="k">if</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">i</span><span class="p">))</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nx">obj</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
-</span></span><span class="line"><span class="cl">		<span class="p">}</span>
-</span></span><span class="line"><span class="cl">	<span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>用 Python 写的发送者脚本：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># coding=utf-8</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#! /usr/bin/env python2</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pika</span>
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">json</span>
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">logging</span>
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-</span></span><span class="line"><span class="cl">    <span class="n">conn</span> <span class="o">=</span> <span class="n">pika</span><span class="o">.</span><span class="n">BlockingConnection</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">        <span class="n">pika</span><span class="o">.</span><span class="n">ConnectionParameters</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">    <span class="n">chan</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">channel</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="n">chan</span><span class="o">.</span><span class="n">queue_declare</span><span class="p">(</span><span class="n">queue</span><span class="o">=</span><span class="s1">&#39;socket.io&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">count</span> <span class="o">=</span> <span class="mi">10</span>
-</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="n">message</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;no&#39;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span> <span class="s1">&#39;some&#39;</span><span class="p">:</span> <span class="s1">&#39;Message&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;比如&#39;</span><span class="p">:</span> <span class="sa">u</span><span class="s1">&#39;中文信息&#39;</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="n">publish_text</span><span class="p">(</span><span class="n">chan</span><span class="p">,</span> <span class="s1">&#39;socket.io&#39;</span><span class="p">,</span> <span class="sa">u</span><span class="s1">&#39;text </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">count</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">publish_json</span><span class="p">(</span><span class="n">chan</span><span class="p">,</span> <span class="s1">&#39;socket.io&#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;add one message to RabbitMQ&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">#time.sleep(5) # sleep 5 sec</span>
-</span></span><span class="line"><span class="cl">        <span class="n">count</span> <span class="o">-=</span> <span class="mi">1</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">publish_text</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="n">channel</span><span class="o">.</span><span class="n">basic_publish</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                          <span class="n">routing_key</span><span class="o">=</span><span class="n">queue</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                          <span class="n">body</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
-</span></span><span class="line"><span class="cl">                          <span class="n">properties</span><span class="o">=</span><span class="n">pika</span><span class="o">.</span><span class="n">BasicProperties</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">                              <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;text/plain&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                              <span class="n">content_encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                              <span class="n">delivery_mode</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                         <span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">publish_json</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="n">channel</span><span class="o">.</span><span class="n">basic_publish</span><span class="p">(</span><span class="n">exchange</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                          <span class="n">routing_key</span><span class="o">=</span><span class="n">queue</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                          <span class="n">body</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
-</span></span><span class="line"><span class="cl">                          <span class="n">properties</span><span class="o">=</span><span class="n">pika</span><span class="o">.</span><span class="n">BasicProperties</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">                              <span class="n">content_type</span><span class="o">=</span><span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                              <span class="n">content_encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">                              <span class="n">delivery_mode</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                         <span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
-</span></span></code></pre></div><p>使用 <code>node ./app-amqp.js</code> 运行 Node.JS 服务器，然后运行 <code>producter.py</code> 产生<br />
-RabbitMQ Message，我使用的数据格式是序列化的 JSON 字串，<br />
-还有 <code>JSON, Thrift, Protocol Buffers, MessagePack</code> 这些格式可供选择。运行结果如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">#json:
-</span></span><span class="line"><span class="cl">data: &#34;text 1&#34;
-</span></span><span class="line"><span class="cl">UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 0-3: ordinal not icontentType: text/plain
-</span></span><span class="line"><span class="cl">#headers:
-</span></span><span class="line"><span class="cl">#deliveryInfo:
-</span></span><span class="line"><span class="cl">contentType: text/plain
-</span></span><span class="line"><span class="cl">contentEncoding: utf-8
-</span></span><span class="line"><span class="cl">deliveryMode: 1
-</span></span><span class="line"><span class="cl">queue: socket.io
-</span></span><span class="line"><span class="cl">deliveryTag: 19
-</span></span><span class="line"><span class="cl">redelivered: false
-</span></span><span class="line"><span class="cl">exchange:
-</span></span><span class="line"><span class="cl">routingKey: socket.io
-</span></span><span class="line"><span class="cl">consumerTag: node-amqp-10880-0.06487216474488378
-</span></span><span class="line"><span class="cl">#json:
-</span></span><span class="line"><span class="cl">比如: 中文信息
-</span></span><span class="line"><span class="cl">some: Message
-</span></span><span class="line"><span class="cl">no: 1
-</span></span><span class="line"><span class="cl">#headers:
-</span></span><span class="line"><span class="cl">#deliveryInfo:
-</span></span><span class="line"><span class="cl">contentType: application/json
-</span></span><span class="line"><span class="cl">contentEncoding: utf-8
-</span></span><span class="line"><span class="cl">deliveryMode: 1
-</span></span><span class="line"><span class="cl">queue: socket.io
-</span></span><span class="line"><span class="cl">deliveryTag: 20
-</span></span><span class="line"><span class="cl">redelivered: false
-</span></span><span class="line"><span class="cl">exchange:
-</span></span><span class="line"><span class="cl">routingKey: socket.io
-</span></span><span class="line"><span class="cl">consumerTag: node-amqp-10880-0.06487216474488378
-</span></span></code></pre></div><p>里面有两个 Message，发送数据格式为 <code>text/plain</code> 和 <code>application/json</code> 。</p>
-<p>参考链接：</p>
-<ul>
-<li><a href="http://pika.github.com/">Pika Document</a></li>
-</ul>
-<h2 id="socketio--rabbitmq">Socket.IO + RabbitMQ<a hidden class="anchor" aria-hidden="true" href="#socketio--rabbitmq">#</a></h2>
-<p>最后提供 Socket.IO + RabbitMQ 的完整 Demo，客户端会实时接受到来自消息发送者的消息。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="cm">/* global __dirname, console */</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">).</span><span class="nx">createServer</span><span class="p">(</span><span class="nx">handler</span><span class="p">),</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">io</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;socket.io&#39;</span><span class="p">).</span><span class="nx">listen</span><span class="p">(</span><span class="nx">app</span><span class="p">),</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8080</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">handler</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/index.html&#39;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">		<span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">				<span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="s1">&#39;Error loading index.html&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">			<span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">			<span class="nx">res</span><span class="p">.</span><span class="nx">writeHead</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">res</span><span class="p">.</span><span class="nx">end</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="p">});</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nx">io</span><span class="p">.</span><span class="nx">sockets</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connection&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;io ready&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">	<span class="kd">var</span> <span class="nx">conn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;amqp&#39;</span><span class="p">).</span><span class="nx">createConnection</span><span class="p">({</span> <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;amqp://localhost&#39;</span><span class="p">});</span>
-</span></span><span class="line"><span class="cl">	<span class="nx">conn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;ready&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;conn ready&#39;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">		<span class="nx">conn</span><span class="p">.</span><span class="nx">queue</span><span class="p">(</span><span class="s1">&#39;socket.io&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">passive</span><span class="o">:</span> <span class="kc">true</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">queue</span><span class="p">){</span>
-</span></span><span class="line"><span class="cl">			<span class="nx">queue</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">json</span><span class="p">,</span> <span class="nx">headers</span><span class="p">,</span> <span class="nx">deliveryInfo</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">json</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">				<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">deliveryInfo</span><span class="p">.</span><span class="nx">contentType</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">				<span class="k">if</span> <span class="p">(</span><span class="nx">deliveryInfo</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">==</span> <span class="s1">&#39;application/json&#39;</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;news&#39;</span><span class="p">,</span> <span class="nx">json</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">				<span class="p">}</span>
-</span></span><span class="line"><span class="cl">				<span class="k">if</span> <span class="p">(</span><span class="nx">deliveryInfo</span><span class="p">.</span><span class="nx">contentType</span> <span class="o">==</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">					<span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;news&#39;</span><span class="p">,</span> <span class="nx">json</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
-</span></span><span class="line"><span class="cl">				<span class="p">}</span>
-</span></span><span class="line"><span class="cl">			<span class="p">});</span>
-</span></span><span class="line"><span class="cl">		<span class="p">});</span>
-</span></span><span class="line"><span class="cl">	<span class="p">});</span>
-</span></span><span class="line"><span class="cl"><span class="p">});</span>
-</span></span></code></pre></div><p>在运行 <code>producter.py</code> 后，Python 脚本持续产生 Message 到 RabbitMQ，<br />
-<code>app-amqp-socket.js</code> 订阅读取 Message 并推送到浏览器端。<br />
-浏览器可以在 Console 里面看到日志：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Object { 比如=&#34;中文信息&#34;, some=&#34;Message&#34;, no=1}
-</span></span></code></pre></div><p>至此，我们可以完成 WebApp -&gt; RabbitMQ -&gt; Socket.IO -&gt; Browser 的实时推送。</p>
-
-<hr />
-<p>原文链接: <a href="https://blog.alswl.com/2012/05/comet/">服务器 Push 技术 | Log4D</a></p>
-<p>3a1ff193cee606bd1e2ea554a16353ee</p>
-<p>欢迎关注我的微信公众号：<a
-href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
-alt="窥豹" />
-<figcaption aria-hidden="true">窥豹</figcaption>
-</figure>
-<figure>
-<img
-src="https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png"
-alt="如果对你有帮助，给作者 ￥2 买张彩票吧。" />
-<figcaption aria-hidden="true">如果对你有帮助，给作者 ￥2
-买张彩票吧。</figcaption>
-</figure>
-
-    
-  </div>
-
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/%E7%BB%BC%E5%90%88%E6%8A%80%E6%9C%AF/">综合技术</a></li>
-      <li><a href="https://blog.alswl.com/tags/comet/">comet</a></li>
-      <li><a href="https://blog.alswl.com/tags/rabbitmq/">rabbitmq</a></li>
-      <li><a href="https://blog.alswl.com/tags/socket.io/">socket.io</a></li>
-      <li><a href="https://blog.alswl.com/tags/node.js/">node.js</a></li>
-      <li><a href="https://blog.alswl.com/tags/ampq/">ampq</a></li>
-    </ul>
-<nav class="paginav">
-  <a class="prev" href="https://blog.alswl.com/2012/06/vundle-submodule/">
-    <span class="title">« Prev</span>
-    <br>
-    <span>Vundle 和 Submodule</span>
-  </a>
-  <a class="next" href="https://blog.alswl.com/2012/05/opensource-and-freedom/">
-    <span class="title">Next »</span>
-    <br>
-    <span>《开源和自由》幻灯片</span>
-  </a>
-</nav>
-
-  </footer><div id="disqus_thread"></div>
-<script type="application/javascript">
-    window.disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "log4d" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-<script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
-
-        function copyingDone() {
-            copybutton.innerHTML = 'copied!';
-            setTimeout(() => {
-                copybutton.innerHTML = 'copy';
-            }, 2000);
-        }
-
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
-                return;
-            }
-
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
-        });
-
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
-</script>
-</body>
-
-</html>
+HTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket， 否则 FireBug 是无法监测的，WebSocket 可以双向通讯。
+新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api&_pid=10001&count=2&source=3818214747&callback=STK_133834300664875
+未读信息大约每20秒触发一次，像是 Ajax 轮询。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":2,"name":"Posts","item":"https://blog.alswl.com/posts/"},{"@type":"ListItem","position":3,"name":"服务器 Push 技术","item":"https://blog.alswl.com/2012/05/comet/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"服务器 Push 技术","name":"服务器 Push 技术","description":"服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。\n实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。 在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。\nps：「长连接」在一些场景下，是另外一种意义「HTTP: Keep alive」。不在本文讨论的范围中。\n参考链接：\nComet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持， Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。\n参考连接：\nHTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket， 否则 FireBug 是无法监测的，WebSocket 可以双向通讯。\n新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api\u0026amp;_pid=10001\u0026amp;count=2\u0026amp;source=3818214747\u0026amp;callback=STK_133834300664875\n未读信息大约每20秒触发一次，像是 Ajax 轮询。","keywords":["综合技术","comet","rabbitmq","socket.io","node.js","ampq"],"articleBody":"服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。\n实现方式 Comet Ajax 轮询 iframe / htmlfile script tag （不中断的连续请求） Flash 通讯 WebSocket Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。 在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。\nps：「长连接」在一些场景下，是另外一种意义「HTTP: Keep alive」。不在本文讨论的范围中。\n参考链接：\nComet：基于 HTTP 长连接的「服务器推」技术 Socket.IO Supported transports 浏览器支持情况 WebSocket 属于 HTML5 规范，需要「先进」浏览器支持， Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。\n参考连接：\nHTTP持久链接 [Comet (programming)](http://en.wikipedia.org/wiki/Comet_(programming)) 一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」 How to implement COMET with PHP 各大网站连接情况 可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket， 否则 FireBug 是无法监测的，WebSocket 可以双向通讯。\n新浪微博 未读信息链接： http://rm.api.weibo.com/remind/unread_count.json?target=api\u0026_pid=10001\u0026count=2\u0026source=3818214747\u0026callback=STK_133834300664875\n未读信息大约每20秒触发一次，像是 Ajax 轮询。\nIM 长连接： http://4.46.web1.im.weibo.com/im?jsonp=parent.org.cometd.script._callback5\u0026message=%5B%7B%22channel%22%3A%22%2Fmeta%2Fconnect%22%2C%22connectionType%22%3A%22callback-polling%22%2C%22id%22%3A6%2C%22clientId%22%3A%22b02qp9qw9cgiuxxyn3%22%7D%5D\u00261338343019008\n可以看出新浪在使用 JSONP 跨域做 IM 长连接，FireBug 中也始终有链接请求， 看上去像 Script Tag 请求方式。\n知乎 请求链接： http://comet.zhihu.com/update?loc=http%3A%2F%2Fwww.zhihu.com%2F\u0026channel=13781e6817833300f0a70f19\u0026callback=zhp13781e6a6f22349b9865b47c8\n依然能在 FireBug 中看到请求地址，说明客户端请求数据还是走 HTTP 方式， 并且会出现 update 动作链接一直出于请求状态，猜测知乎仍然使用 Script Tag 请求。\n框架支持 orbited2 http://labs.gameclosure.com/orbited2/\n跨浏览器 容易集成：IRC / XMPP / ActiveMQ / RabbitMQ Python StreamHub http://www.stream-hub.com/\n免费版仅支持 10 个在线 支持 Java / .net / iPhone socket.io http://socket.io/\nNodeJS 推送方式： WebSocket Adobe® Flash® Socket AJAX long polling AJAX multipart streaming Forever Iframe JSONP Polling 支持浏览器： Internet Explorer 5.5+ Safari 3+ Google Chrome 4+ Firefox 3+ Opera 10.61+ iPhone Safari iPad Safari Android WebKit WebOs WebKit sockjs-client https://github.com/sockjs/sockjs-client\n支持 Node.js / Erlang / Lua / Python-Tornado 跨浏览器 实战 Socket.io 考虑到上述候选框架的使用场景，这里选择 Socket.IO 作为 Comet 框架。\n尴尬的 Pylons Pylons 和 Comet 配合有问题，问题处在标准 WSGI 是非异步的。 （看邮件列表里面，似乎新的标准准备支持）。\nhttp://stackoverflow.com/a/3090118 http://mail.python.org/pipermail/web-sig/2008-July/003545.html Spawning 这样的话，我就直接选择使用 Node.JS 做 Comet 服务器，Nginx 负责转发。\n简单Demo node.js 代码\n/* global __dirname, console */ var app = require('http').createServer(handler), io = require('socket.io').listen(app), fs = require('fs'); app.listen(8080); function handler(req, res) { fs.readFile(__dirname + '/index.html', function (err, data) { if (err) { res.writeHead(500); return res.end('Error loading index.html'); } res.writeHead(200); res.end(data); }); } io.sockets.on('connection', function (socket) { 'use strict'; socket.emit('news', {hello: 'world, for everyone!'}); socket.on('my other event', function (data) { console.log(data); }); socket.on('private message', function (from, msg) { console.log('I received a private message by ', from, ' saying ', msg); }); }); 页面代码\n\u003chtml\u003e \u003chead\u003e \u003cmeta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\"\u003e \u003ctitle\u003eSocket.io Demo\u003c/title\u003e \u003cscript src=\"/socket.io/socket.io.js\"\u003e\u003c/script\u003e \u003cscript\u003e var socket = io.connect('/'); socket.on('news', function (data) { console.log(data); socket.emit('my other event', { my: 'data' }); }); \u003c/script\u003e \u003c/head\u003e \u003cbody\u003e \u003c/body\u003e \u003c/html\u003e 连接成功之后，在浏览器控制台里面，可以使用 socket.emit('my other event', {biu: 'biu'}); 向服务器发送消息。\n服务器也可以通过 socket.emit() 来向客户端推送消息。\n私有信息发送，使用 socket.emit('private message', 'James', {some: 'message'}); 。\n跨平台 实测看来，在 IE8 下面， Socket.io 会降级使用 htmlfile 来实现 Comet。\n而 Firefox 中会有 websocket / htmlfile / xhr-polling / jsonp-polling 依次备选， 首选 websocket。\n安全性 问题：提交数据的身份认证过程，以前在后台由 Web 框架自动完成，而现在流程是 Socket.IO -\u003e RabbitMQ -\u003e Web App，身份验证的复杂度增加了。\n思路：Socket.IO 使用 Nginx 代理转发，从而保留同一域名下面的 cookie 信息， 这样能够提交到 Socket.IO 服务器，每次 RabbitMQ Message 都记录 cookie 信息， 后台从 RabbitMQ 读取信息时候，再进行认证。\n实际操作：由于 Comet 中的数据流仅负责推送，客户端继续使用原始 POST 方式发送数据到服务器，所以暂时不会产生身份认证问题。\nNode AMPQ 驱动 Socket.IO 提供了一个通用的 Comet 解决方案，下面就需要点润滑剂，将整个数据流跑通。 消息队列 RabbitMQ 正好适合用来做这个。\nRabbit 官网提到了一个套件 rabbit.js 。 遗憾的是这个库是混合了 RabbitMQ 和 Node.JS，提供了一个封装好的 Node.JS 库， 而我想要的仅仅是一个 AMPQ 协议驱动。node-amqp 则是我们需要的驱动。\nDemo 服务器接收者脚本：\n/* global __dirname, console */ var conn = require('amqp').createConnection({ url: 'amqp://localhost'}); console.log('socket works'); conn.on('ready', function() { console.log('conn ready'); conn.queue('socket.io', {passive: true}, function(queue){ queue.subscribe(function (json, headers, deliveryInfo) { console.log('#json:') view(json); console.log('#headers:') view(headers); console.log('#deliveryInfo:') view(deliveryInfo); }); }); }); conn.on('error', function() { console.error('error'); }); function view(obj) { for (var i in obj) { if(obj.hasOwnProperty(i)) { console.log(i + ': ' + obj[i]); } } } 用 Python 写的发送者脚本：\n# coding=utf-8 #! /usr/bin/env python2 import pika import json import logging import time logger = logging.getLogger() def main(): conn = pika.BlockingConnection( pika.ConnectionParameters('localhost')) chan = conn.channel() chan.queue_declare(queue='socket.io') count = 10 while (count \u003e 0): message = {'no': count, 'some': 'Message', u'比如': u'中文信息'} publish_text(chan, 'socket.io', u'text %d' %count) publish_json(chan, 'socket.io', message) logger.info('add one message to RabbitMQ') #time.sleep(5) # sleep 5 sec count -= 1 def publish_text(channel, queue, message): channel.basic_publish(exchange='', routing_key=queue, body=json.dumps(message), properties=pika.BasicProperties( content_type='text/plain', content_encoding='utf-8', delivery_mode=1) ) def publish_json(channel, queue, message): channel.basic_publish(exchange='', routing_key=queue, body=json.dumps(message), properties=pika.BasicProperties( content_type='application/json', content_encoding='utf-8', delivery_mode=1) ) if __name__ == '__main__': main() 使用 node ./app-amqp.js 运行 Node.JS 服务器，然后运行 producter.py 产生 RabbitMQ Message，我使用的数据格式是序列化的 JSON 字串， 还有 JSON, Thrift, Protocol Buffers, MessagePack 这些格式可供选择。运行结果如下：\n#json: data: \"text 1\" UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-3: ordinal not icontentType: text/plain #headers: #deliveryInfo: contentType: text/plain contentEncoding: utf-8 deliveryMode: 1 queue: socket.io deliveryTag: 19 redelivered: false exchange: routingKey: socket.io consumerTag: node-amqp-10880-0.06487216474488378 #json: 比如: 中文信息 some: Message no: 1 #headers: #deliveryInfo: contentType: application/json contentEncoding: utf-8 deliveryMode: 1 queue: socket.io deliveryTag: 20 redelivered: false exchange: routingKey: socket.io consumerTag: node-amqp-10880-0.06487216474488378 里面有两个 Message，发送数据格式为 text/plain 和 application/json 。\n参考链接：\nPika Document Socket.IO + RabbitMQ 最后提供 Socket.IO + RabbitMQ 的完整 Demo，客户端会实时接受到来自消息发送者的消息。\n/* global __dirname, console */ var app = require('http').createServer(handler), io = require('socket.io').listen(app), fs = require('fs'); app.listen(8080); function handler(req, res) { fs.readFile(__dirname + '/index.html', function (err, data) { if (err) { res.writeHead(500); return res.end('Error loading index.html'); } res.writeHead(200); res.end(data); }); } io.sockets.on('connection', function (socket) { console.log('io ready'); var conn = require('amqp').createConnection({ url: 'amqp://localhost'}); conn.on('ready', function () { console.log('conn ready'); conn.queue('socket.io', {passive: true}, function(queue){ queue.subscribe(function (json, headers, deliveryInfo) { console.log(json); console.log(deliveryInfo.contentType); if (deliveryInfo.contentType == 'application/json') { socket.emit('news', json); } if (deliveryInfo.contentType == 'text/plain') { socket.emit('news', json.data.toString()); } }); }); }); }); 在运行 producter.py 后，Python 脚本持续产生 Message 到 RabbitMQ， app-amqp-socket.js 订阅读取 Message 并推送到浏览器端。 浏览器可以在 Console 里面看到日志：\nObject { 比如=\"中文信息\", some=\"Message\", no=1} 至此，我们可以完成 WebApp -\u003e RabbitMQ -\u003e Socket.IO -\u003e Browser 的实时推送。\n","wordCount":"780","inLanguage":"en","datePublished":"2012-05-30T10:40:00+08:00","dateModified":"2012-05-30T10:40:00+08:00","author":{"@type":"Person","name":"alswl"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.alswl.com/2012/05/comet/"},"publisher":{"@type":"Organization","name":"Log4D","logo":{"@type":"ImageObject","url":"https://blog.alswl.com/favicon.ico"}}}</script></head><body id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><article class=post-single><header class=post-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/posts/>Posts</a></div><h1 class=post-title>服务器 Push 技术</h1><div class=post-meta><span title='2012-05-30 10:40:00 +0800 +0800'>2012-05-30</span>&nbsp;·&nbsp;alswl</div></header><div class=toc><details><summary accesskey=c title="(Alt + C)"><span class=details>Table of Contents</span></summary><div class=inner><nav id=TableOfContents><ul><li><a href=#实现方式>实现方式</a><ul><li><a href=#浏览器支持情况>浏览器支持情况</a></li></ul></li><li><a href=#各大网站连接情况>各大网站连接情况</a><ul><li><a href=#新浪微博>新浪微博</a></li><li><a href=#知乎>知乎</a></li></ul></li><li><a href=#框架支持>框架支持</a><ul><li><a href=#orbited2>orbited2</a></li><li><a href=#streamhub>StreamHub</a></li><li><a href=#socketio>socket.io</a></li><li><a href=#sockjs-client>sockjs-client</a></li></ul></li><li><a href=#实战-socketio>实战 Socket.io</a><ul><li><a href=#尴尬的-pylons>尴尬的 Pylons</a></li><li><a href=#简单demo>简单Demo</a></li><li><a href=#跨平台>跨平台</a></li><li><a href=#安全性>安全性</a></li></ul></li><li><a href=#node-ampq-驱动>Node AMPQ 驱动</a><ul><li><a href=#demo>Demo</a></li></ul></li><li><a href=#socketio--rabbitmq>Socket.IO + RabbitMQ</a></li></ul></nav></div></details></div><div class=post-content><p>服务器 Push 技术表示服务器可以主动推送消息给客户端浏览器。</p><h2 id=实现方式>实现方式<a hidden class=anchor aria-hidden=true href=#实现方式>#</a></h2><ul><li>Comet<ul><li>Ajax 轮询</li><li>iframe / htmlfile</li><li>script tag （不中断的连续请求）</li><li>Flash 通讯</li></ul></li><li>WebSocket</li></ul><p>Comet 本意是彗星，彗星尾巴痕迹很像长连接工作方式，所以 Comet 指代长连接。
+在 Ajax 轮询的分类上，存在一些分歧，这里我把轮询认为一种 Comet 方式。</p><p>ps：「长连接」在一些场景下，是另外一种意义「HTTP: Keep alive」。不在本文讨论的范围中。</p><p>参考链接：</p><ul><li><a href=http://www.ibm.com/developerworks/cn/web/wa-lo-comet/>Comet：基于 HTTP 长连接的「服务器推」技术</a></li><li><a href=http://socket.io/#browser-support>Socket.IO Supported transports</a></li></ul><h3 id=浏览器支持情况>浏览器支持情况<a hidden class=anchor aria-hidden=true href=#浏览器支持情况>#</a></h3><p>WebSocket 属于 HTML5 规范，需要「先进」浏览器支持，
+Flash 通讯需要浏览器安装 Flash 插件，其他方式都可以适应常见浏览器。</p><p>参考连接：</p><ul><li><a href=http://zh.wikipedia.org/wiki/HTTP%E6%8C%81%E4%B9%85%E9%93%BE%E6%8E%A5>HTTP持久链接</a></li><li>[Comet (programming)](<a href=http://en.wikipedia.org/wiki/Comet_(programming>http://en.wikipedia.org/wiki/Comet_(programming</a>))</li><li><a href=http://www.cnblogs.com/tianzhiliang/archive/2011/06/13/2079564.html>一个误解: 单个服务器程序可承受最大连接数「理论」上是「65535」</a></li><li><a href=http://www.zeitoun.net/articles/comet_and_php/start>How to implement COMET with PHP</a></li></ul><h2 id=各大网站连接情况>各大网站连接情况<a hidden class=anchor aria-hidden=true href=#各大网站连接情况>#</a></h2><p>可以通过 url 请求来揣测一些东西，比如说，它们没有用 WebSocket，
+否则 FireBug 是无法监测的，WebSocket 可以双向通讯。</p><h3 id=新浪微博>新浪微博<a hidden class=anchor aria-hidden=true href=#新浪微博>#</a></h3><p>未读信息链接： <code>http://rm.api.weibo.com/remind/unread_count.json?target=api&_pid=10001&count=2&source=3818214747&callback=STK_133834300664875</code></p><p>未读信息大约每20秒触发一次，像是 Ajax 轮询。</p><p>IM 长连接：
+<code>http://4.46.web1.im.weibo.com/im?jsonp=parent.org.cometd.script._callback5&message=%5B%7B%22channel%22%3A%22%2Fmeta%2Fconnect%22%2C%22connectionType%22%3A%22callback-polling%22%2C%22id%22%3A6%2C%22clientId%22%3A%22b02qp9qw9cgiuxxyn3%22%7D%5D&1338343019008</code></p><p>可以看出新浪在使用 JSONP 跨域做 IM 长连接，FireBug 中也始终有链接请求，
+看上去像 Script Tag 请求方式。</p><h3 id=知乎>知乎<a hidden class=anchor aria-hidden=true href=#知乎>#</a></h3><p>请求链接：
+<code>http://comet.zhihu.com/update?loc=http%3A%2F%2Fwww.zhihu.com%2F&channel=13781e6817833300f0a70f19&callback=zhp13781e6a6f22349b9865b47c8</code></p><p>依然能在 FireBug 中看到请求地址，说明客户端请求数据还是走 HTTP 方式，
+并且会出现 update 动作链接一直出于请求状态，猜测知乎仍然使用 Script Tag 请求。</p><h2 id=框架支持>框架支持<a hidden class=anchor aria-hidden=true href=#框架支持>#</a></h2><h3 id=orbited2>orbited2<a hidden class=anchor aria-hidden=true href=#orbited2>#</a></h3><p><a href=http://labs.gameclosure.com/orbited2/>http://labs.gameclosure.com/orbited2/</a></p><ul><li>跨浏览器</li><li>容易集成：IRC / XMPP / ActiveMQ / RabbitMQ</li><li>Python</li></ul><h3 id=streamhub>StreamHub<a hidden class=anchor aria-hidden=true href=#streamhub>#</a></h3><p><a href=http://www.stream-hub.com/>http://www.stream-hub.com/</a></p><ul><li>免费版仅支持 10 个在线</li><li>支持 Java / .net / iPhone</li></ul><h3 id=socketio>socket.io<a hidden class=anchor aria-hidden=true href=#socketio>#</a></h3><p><a href=http://socket.io/>http://socket.io/</a></p><ul><li>NodeJS</li><li>推送方式：<ul><li>WebSocket</li><li>Adobe® Flash® Socket</li><li>AJAX long polling</li><li>AJAX multipart streaming</li><li>Forever Iframe</li><li>JSONP Polling</li></ul></li><li>支持浏览器：<ul><li>Internet Explorer 5.5+</li><li>Safari 3+</li><li>Google Chrome 4+</li><li>Firefox 3+</li><li>Opera 10.61+</li><li>iPhone Safari</li><li>iPad Safari</li><li>Android WebKit</li><li>WebOs WebKit</li></ul></li></ul><h3 id=sockjs-client>sockjs-client<a hidden class=anchor aria-hidden=true href=#sockjs-client>#</a></h3><p><a href=https://github.com/sockjs/sockjs-client>https://github.com/sockjs/sockjs-client</a></p><ul><li>支持 Node.js / Erlang / Lua / Python-Tornado</li><li>跨浏览器</li></ul><h2 id=实战-socketio>实战 Socket.io<a hidden class=anchor aria-hidden=true href=#实战-socketio>#</a></h2><p>考虑到上述候选框架的使用场景，这里选择 Socket.IO 作为 Comet 框架。</p><h3 id=尴尬的-pylons>尴尬的 Pylons<a hidden class=anchor aria-hidden=true href=#尴尬的-pylons>#</a></h3><p>Pylons 和 Comet 配合有问题，问题处在标准 WSGI 是非异步的。
+（看邮件列表里面，似乎新的标准准备支持）。</p><ul><li><a href=http://stackoverflow.com/a/3090118>http://stackoverflow.com/a/3090118</a></li><li><a href=http://mail.python.org/pipermail/web-sig/2008-July/003545.html>http://mail.python.org/pipermail/web-sig/2008-July/003545.html</a></li><li><a href=http://pypi.python.org/pypi/Spawning/>Spawning</a></li></ul><p>这样的话，我就直接选择使用 Node.JS 做 Comet 服务器，Nginx 负责转发。</p><h3 id=简单demo>简单Demo<a hidden class=anchor aria-hidden=true href=#简单demo>#</a></h3><p>node.js 代码</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=cm>/* global __dirname, console */</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>var</span> <span class=nx>app</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;http&#39;</span><span class=p>).</span><span class=nx>createServer</span><span class=p>(</span><span class=nx>handler</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>	<span class=nx>io</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;socket.io&#39;</span><span class=p>).</span><span class=nx>listen</span><span class=p>(</span><span class=nx>app</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>	<span class=nx>fs</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;fs&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>app</span><span class=p>.</span><span class=nx>listen</span><span class=p>(</span><span class=mi>8080</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>handler</span><span class=p>(</span><span class=nx>req</span><span class=p>,</span> <span class=nx>res</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>fs</span><span class=p>.</span><span class=nx>readFile</span><span class=p>(</span><span class=nx>__dirname</span> <span class=o>+</span> <span class=s1>&#39;/index.html&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=kd>function</span> <span class=p>(</span><span class=nx>err</span><span class=p>,</span> <span class=nx>data</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=k>if</span> <span class=p>(</span><span class=nx>err</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>res</span><span class=p>.</span><span class=nx>writeHead</span><span class=p>(</span><span class=mi>500</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>				<span class=k>return</span> <span class=nx>res</span><span class=p>.</span><span class=nx>end</span><span class=p>(</span><span class=s1>&#39;Error loading index.html&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>			<span class=nx>res</span><span class=p>.</span><span class=nx>writeHead</span><span class=p>(</span><span class=mi>200</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>			<span class=nx>res</span><span class=p>.</span><span class=nx>end</span><span class=p>(</span><span class=nx>data</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>io</span><span class=p>.</span><span class=nx>sockets</span><span class=p>.</span><span class=nx>on</span><span class=p>(</span><span class=s1>&#39;connection&#39;</span><span class=p>,</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>socket</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=s1>&#39;use strict&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=nx>socket</span><span class=p>.</span><span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;news&#39;</span><span class=p>,</span> <span class=p>{</span><span class=nx>hello</span><span class=o>:</span> <span class=s1>&#39;world, for everyone!&#39;</span><span class=p>});</span>
+</span></span><span class=line><span class=cl>	<span class=nx>socket</span><span class=p>.</span><span class=nx>on</span><span class=p>(</span><span class=s1>&#39;my other event&#39;</span><span class=p>,</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>data</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>data</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=p>});</span>
+</span></span><span class=line><span class=cl>	<span class=nx>socket</span><span class=p>.</span><span class=nx>on</span><span class=p>(</span><span class=s1>&#39;private message&#39;</span><span class=p>,</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>from</span><span class=p>,</span> <span class=nx>msg</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;I received a private message by &#39;</span><span class=p>,</span> <span class=nx>from</span><span class=p>,</span> <span class=s1>&#39; saying &#39;</span><span class=p>,</span> <span class=nx>msg</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></div><p>页面代码</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>meta</span> <span class=na>http-equiv</span><span class=o>=</span><span class=s>&#34;content-type&#34;</span> <span class=na>content</span><span class=o>=</span><span class=s>&#34;text/html; charset=utf-8&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>title</span><span class=p>&gt;</span>Socket.io Demo<span class=p>&lt;/</span><span class=nt>title</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>script</span> <span class=na>src</span><span class=o>=</span><span class=s>&#34;/socket.io/socket.io.js&#34;</span><span class=p>&gt;&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>		<span class=kd>var</span> <span class=nx>socket</span> <span class=o>=</span> <span class=nx>io</span><span class=p>.</span><span class=nx>connect</span><span class=p>(</span><span class=s1>&#39;/&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>		<span class=nx>socket</span><span class=p>.</span><span class=nx>on</span><span class=p>(</span><span class=s1>&#39;news&#39;</span><span class=p>,</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>data</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>data</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>			<span class=nx>socket</span><span class=p>.</span><span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;my other event&#39;</span><span class=p>,</span> <span class=p>{</span> <span class=nx>my</span><span class=o>:</span> <span class=s1>&#39;data&#39;</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl>		<span class=p>});</span>
+</span></span><span class=line><span class=cl>	<span class=p>&lt;/</span><span class=nt>script</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>head</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>body</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>&lt;/</span><span class=nt>html</span><span class=p>&gt;</span>
+</span></span></code></pre></div><p>连接成功之后，在浏览器控制台里面，可以使用 <code>socket.emit('my other event', {biu: 'biu'});</code>
+向服务器发送消息。</p><p>服务器也可以通过 <code>socket.emit()</code> 来向客户端推送消息。</p><p>私有信息发送，使用 <code>socket.emit('private message', 'James', {some: 'message'});</code> 。</p><h3 id=跨平台>跨平台<a hidden class=anchor aria-hidden=true href=#跨平台>#</a></h3><p>实测看来，在 IE8 下面， Socket.io 会降级使用 <code>htmlfile</code> 来实现 Comet。</p><p>而 Firefox 中会有 <code>websocket / htmlfile / xhr-polling / jsonp-polling</code> 依次备选，
+首选 websocket。</p><h3 id=安全性>安全性<a hidden class=anchor aria-hidden=true href=#安全性>#</a></h3><p>问题：提交数据的身份认证过程，以前在后台由 Web 框架自动完成，而现在流程是
+Socket.IO -> RabbitMQ -> Web App，身份验证的复杂度增加了。</p><p>思路：Socket.IO 使用 Nginx 代理转发，从而保留同一域名下面的 cookie 信息，
+这样能够提交到 Socket.IO 服务器，每次 RabbitMQ Message 都记录 cookie 信息，
+后台从 RabbitMQ 读取信息时候，再进行认证。</p><p>实际操作：由于 Comet 中的数据流仅负责推送，客户端继续使用原始 POST
+方式发送数据到服务器，所以暂时不会产生身份认证问题。</p><h2 id=node-ampq-驱动>Node AMPQ 驱动<a hidden class=anchor aria-hidden=true href=#node-ampq-驱动>#</a></h2><p>Socket.IO 提供了一个通用的 Comet 解决方案，下面就需要点润滑剂，将整个数据流跑通。
+消息队列 RabbitMQ 正好适合用来做这个。</p><p>Rabbit 官网提到了一个套件 <a href=https://github.com/squaremo/rabbit.js>rabbit.js</a> 。
+遗憾的是这个库是混合了 RabbitMQ 和 Node.JS，提供了一个封装好的 Node.JS 库，
+而我想要的仅仅是一个 AMPQ 协议驱动。<a href=https://github.com/postwait/node-amqp/blob/master/amqp.js>node-amqp</a> 则是我们需要的驱动。</p><h3 id=demo>Demo<a hidden class=anchor aria-hidden=true href=#demo>#</a></h3><p>服务器接收者脚本：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=cm>/* global __dirname, console */</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>var</span> <span class=nx>conn</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;amqp&#39;</span><span class=p>).</span><span class=nx>createConnection</span><span class=p>({</span> <span class=nx>url</span><span class=o>:</span> <span class=s1>&#39;amqp://localhost&#39;</span><span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;socket works&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=nx>conn</span><span class=p>.</span><span class=nx>on</span><span class=p>(</span><span class=s1>&#39;ready&#39;</span><span class=p>,</span> <span class=kd>function</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;conn ready&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=nx>conn</span><span class=p>.</span><span class=nx>queue</span><span class=p>(</span><span class=s1>&#39;socket.io&#39;</span><span class=p>,</span> <span class=p>{</span><span class=nx>passive</span><span class=o>:</span> <span class=kc>true</span><span class=p>},</span> <span class=kd>function</span><span class=p>(</span><span class=nx>queue</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>		<span class=nx>queue</span><span class=p>.</span><span class=nx>subscribe</span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>json</span><span class=p>,</span> <span class=nx>headers</span><span class=p>,</span> <span class=nx>deliveryInfo</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;#json:&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=nx>view</span><span class=p>(</span><span class=nx>json</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>			<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;#headers:&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=nx>view</span><span class=p>(</span><span class=nx>headers</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>			<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;#deliveryInfo:&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=nx>view</span><span class=p>(</span><span class=nx>deliveryInfo</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=p>});</span>
+</span></span><span class=line><span class=cl>	<span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>conn</span><span class=p>.</span><span class=nx>on</span><span class=p>(</span><span class=s1>&#39;error&#39;</span><span class=p>,</span> <span class=kd>function</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>console</span><span class=p>.</span><span class=nx>error</span><span class=p>(</span><span class=s1>&#39;error&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>view</span><span class=p>(</span><span class=nx>obj</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=p>(</span><span class=kd>var</span> <span class=nx>i</span> <span class=k>in</span> <span class=nx>obj</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=k>if</span><span class=p>(</span><span class=nx>obj</span><span class=p>.</span><span class=nx>hasOwnProperty</span><span class=p>(</span><span class=nx>i</span><span class=p>))</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>i</span> <span class=o>+</span> <span class=s1>&#39;: &#39;</span> <span class=o>+</span> <span class=nx>obj</span><span class=p>[</span><span class=nx>i</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>		<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>用 Python 写的发送者脚本：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># coding=utf-8</span>
+</span></span><span class=line><span class=cl><span class=c1>#! /usr/bin/env python2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>pika</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>json</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>logging</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>time</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>logger</span> <span class=o>=</span> <span class=n>logging</span><span class=o>.</span><span class=n>getLogger</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=n>conn</span> <span class=o>=</span> <span class=n>pika</span><span class=o>.</span><span class=n>BlockingConnection</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=n>pika</span><span class=o>.</span><span class=n>ConnectionParameters</span><span class=p>(</span><span class=s1>&#39;localhost&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>chan</span> <span class=o>=</span> <span class=n>conn</span><span class=o>.</span><span class=n>channel</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>chan</span><span class=o>.</span><span class=n>queue_declare</span><span class=p>(</span><span class=n>queue</span><span class=o>=</span><span class=s1>&#39;socket.io&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>count</span> <span class=o>=</span> <span class=mi>10</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=p>(</span><span class=n>count</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>message</span> <span class=o>=</span> <span class=p>{</span><span class=s1>&#39;no&#39;</span><span class=p>:</span> <span class=n>count</span><span class=p>,</span> <span class=s1>&#39;some&#39;</span><span class=p>:</span> <span class=s1>&#39;Message&#39;</span><span class=p>,</span> <span class=sa>u</span><span class=s1>&#39;比如&#39;</span><span class=p>:</span> <span class=sa>u</span><span class=s1>&#39;中文信息&#39;</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=n>publish_text</span><span class=p>(</span><span class=n>chan</span><span class=p>,</span> <span class=s1>&#39;socket.io&#39;</span><span class=p>,</span> <span class=sa>u</span><span class=s1>&#39;text </span><span class=si>%d</span><span class=s1>&#39;</span> <span class=o>%</span><span class=n>count</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>publish_json</span><span class=p>(</span><span class=n>chan</span><span class=p>,</span> <span class=s1>&#39;socket.io&#39;</span><span class=p>,</span> <span class=n>message</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>logger</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s1>&#39;add one message to RabbitMQ&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=c1>#time.sleep(5) # sleep 5 sec</span>
+</span></span><span class=line><span class=cl>        <span class=n>count</span> <span class=o>-=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>publish_text</span><span class=p>(</span><span class=n>channel</span><span class=p>,</span> <span class=n>queue</span><span class=p>,</span> <span class=n>message</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>channel</span><span class=o>.</span><span class=n>basic_publish</span><span class=p>(</span><span class=n>exchange</span><span class=o>=</span><span class=s1>&#39;&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                          <span class=n>routing_key</span><span class=o>=</span><span class=n>queue</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                          <span class=n>body</span><span class=o>=</span><span class=n>json</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=n>message</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>                          <span class=n>properties</span><span class=o>=</span><span class=n>pika</span><span class=o>.</span><span class=n>BasicProperties</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>                              <span class=n>content_type</span><span class=o>=</span><span class=s1>&#39;text/plain&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                              <span class=n>content_encoding</span><span class=o>=</span><span class=s1>&#39;utf-8&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                              <span class=n>delivery_mode</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                         <span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>publish_json</span><span class=p>(</span><span class=n>channel</span><span class=p>,</span> <span class=n>queue</span><span class=p>,</span> <span class=n>message</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>channel</span><span class=o>.</span><span class=n>basic_publish</span><span class=p>(</span><span class=n>exchange</span><span class=o>=</span><span class=s1>&#39;&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                          <span class=n>routing_key</span><span class=o>=</span><span class=n>queue</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                          <span class=n>body</span><span class=o>=</span><span class=n>json</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=n>message</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>                          <span class=n>properties</span><span class=o>=</span><span class=n>pika</span><span class=o>.</span><span class=n>BasicProperties</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>                              <span class=n>content_type</span><span class=o>=</span><span class=s1>&#39;application/json&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                              <span class=n>content_encoding</span><span class=o>=</span><span class=s1>&#39;utf-8&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                              <span class=n>delivery_mode</span><span class=o>=</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                         <span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>main</span><span class=p>()</span>
+</span></span></code></pre></div><p>使用 <code>node ./app-amqp.js</code> 运行 Node.JS 服务器，然后运行 <code>producter.py</code> 产生
+RabbitMQ Message，我使用的数据格式是序列化的 JSON 字串，
+还有 <code>JSON, Thrift, Protocol Buffers, MessagePack</code> 这些格式可供选择。运行结果如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>#json:
+</span></span><span class=line><span class=cl>data: &#34;text 1&#34;
+</span></span><span class=line><span class=cl>UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 0-3: ordinal not icontentType: text/plain
+</span></span><span class=line><span class=cl>#headers:
+</span></span><span class=line><span class=cl>#deliveryInfo:
+</span></span><span class=line><span class=cl>contentType: text/plain
+</span></span><span class=line><span class=cl>contentEncoding: utf-8
+</span></span><span class=line><span class=cl>deliveryMode: 1
+</span></span><span class=line><span class=cl>queue: socket.io
+</span></span><span class=line><span class=cl>deliveryTag: 19
+</span></span><span class=line><span class=cl>redelivered: false
+</span></span><span class=line><span class=cl>exchange:
+</span></span><span class=line><span class=cl>routingKey: socket.io
+</span></span><span class=line><span class=cl>consumerTag: node-amqp-10880-0.06487216474488378
+</span></span><span class=line><span class=cl>#json:
+</span></span><span class=line><span class=cl>比如: 中文信息
+</span></span><span class=line><span class=cl>some: Message
+</span></span><span class=line><span class=cl>no: 1
+</span></span><span class=line><span class=cl>#headers:
+</span></span><span class=line><span class=cl>#deliveryInfo:
+</span></span><span class=line><span class=cl>contentType: application/json
+</span></span><span class=line><span class=cl>contentEncoding: utf-8
+</span></span><span class=line><span class=cl>deliveryMode: 1
+</span></span><span class=line><span class=cl>queue: socket.io
+</span></span><span class=line><span class=cl>deliveryTag: 20
+</span></span><span class=line><span class=cl>redelivered: false
+</span></span><span class=line><span class=cl>exchange:
+</span></span><span class=line><span class=cl>routingKey: socket.io
+</span></span><span class=line><span class=cl>consumerTag: node-amqp-10880-0.06487216474488378
+</span></span></code></pre></div><p>里面有两个 Message，发送数据格式为 <code>text/plain</code> 和 <code>application/json</code> 。</p><p>参考链接：</p><ul><li><a href=http://pika.github.com/>Pika Document</a></li></ul><h2 id=socketio--rabbitmq>Socket.IO + RabbitMQ<a hidden class=anchor aria-hidden=true href=#socketio--rabbitmq>#</a></h2><p>最后提供 Socket.IO + RabbitMQ 的完整 Demo，客户端会实时接受到来自消息发送者的消息。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=cm>/* global __dirname, console */</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>var</span> <span class=nx>app</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;http&#39;</span><span class=p>).</span><span class=nx>createServer</span><span class=p>(</span><span class=nx>handler</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>	<span class=nx>io</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;socket.io&#39;</span><span class=p>).</span><span class=nx>listen</span><span class=p>(</span><span class=nx>app</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>	<span class=nx>fs</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;fs&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>app</span><span class=p>.</span><span class=nx>listen</span><span class=p>(</span><span class=mi>8080</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>handler</span><span class=p>(</span><span class=nx>req</span><span class=p>,</span> <span class=nx>res</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>fs</span><span class=p>.</span><span class=nx>readFile</span><span class=p>(</span><span class=nx>__dirname</span> <span class=o>+</span> <span class=s1>&#39;/index.html&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>		<span class=kd>function</span> <span class=p>(</span><span class=nx>err</span><span class=p>,</span> <span class=nx>data</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>			<span class=k>if</span> <span class=p>(</span><span class=nx>err</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>res</span><span class=p>.</span><span class=nx>writeHead</span><span class=p>(</span><span class=mi>500</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>				<span class=k>return</span> <span class=nx>res</span><span class=p>.</span><span class=nx>end</span><span class=p>(</span><span class=s1>&#39;Error loading index.html&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>			<span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>			<span class=nx>res</span><span class=p>.</span><span class=nx>writeHead</span><span class=p>(</span><span class=mi>200</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>			<span class=nx>res</span><span class=p>.</span><span class=nx>end</span><span class=p>(</span><span class=nx>data</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>io</span><span class=p>.</span><span class=nx>sockets</span><span class=p>.</span><span class=nx>on</span><span class=p>(</span><span class=s1>&#39;connection&#39;</span><span class=p>,</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>socket</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;io ready&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>	<span class=kd>var</span> <span class=nx>conn</span> <span class=o>=</span> <span class=nx>require</span><span class=p>(</span><span class=s1>&#39;amqp&#39;</span><span class=p>).</span><span class=nx>createConnection</span><span class=p>({</span> <span class=nx>url</span><span class=o>:</span> <span class=s1>&#39;amqp://localhost&#39;</span><span class=p>});</span>
+</span></span><span class=line><span class=cl>	<span class=nx>conn</span><span class=p>.</span><span class=nx>on</span><span class=p>(</span><span class=s1>&#39;ready&#39;</span><span class=p>,</span> <span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s1>&#39;conn ready&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=nx>conn</span><span class=p>.</span><span class=nx>queue</span><span class=p>(</span><span class=s1>&#39;socket.io&#39;</span><span class=p>,</span> <span class=p>{</span><span class=nx>passive</span><span class=o>:</span> <span class=kc>true</span><span class=p>},</span> <span class=kd>function</span><span class=p>(</span><span class=nx>queue</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>			<span class=nx>queue</span><span class=p>.</span><span class=nx>subscribe</span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>json</span><span class=p>,</span> <span class=nx>headers</span><span class=p>,</span> <span class=nx>deliveryInfo</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>				<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>json</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>				<span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>deliveryInfo</span><span class=p>.</span><span class=nx>contentType</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>				<span class=k>if</span> <span class=p>(</span><span class=nx>deliveryInfo</span><span class=p>.</span><span class=nx>contentType</span> <span class=o>==</span> <span class=s1>&#39;application/json&#39;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>socket</span><span class=p>.</span><span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;news&#39;</span><span class=p>,</span> <span class=nx>json</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>				<span class=p>}</span>
+</span></span><span class=line><span class=cl>				<span class=k>if</span> <span class=p>(</span><span class=nx>deliveryInfo</span><span class=p>.</span><span class=nx>contentType</span> <span class=o>==</span> <span class=s1>&#39;text/plain&#39;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>					<span class=nx>socket</span><span class=p>.</span><span class=nx>emit</span><span class=p>(</span><span class=s1>&#39;news&#39;</span><span class=p>,</span> <span class=nx>json</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>toString</span><span class=p>());</span>
+</span></span><span class=line><span class=cl>				<span class=p>}</span>
+</span></span><span class=line><span class=cl>			<span class=p>});</span>
+</span></span><span class=line><span class=cl>		<span class=p>});</span>
+</span></span><span class=line><span class=cl>	<span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></div><p>在运行 <code>producter.py</code> 后，Python 脚本持续产生 Message 到 RabbitMQ，
+<code>app-amqp-socket.js</code> 订阅读取 Message 并推送到浏览器端。
+浏览器可以在 Console 里面看到日志：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>Object { 比如=&#34;中文信息&#34;, some=&#34;Message&#34;, no=1}
+</span></span></code></pre></div><p>至此，我们可以完成 WebApp -> RabbitMQ -> Socket.IO -> Browser 的实时推送。</p><hr><p>原文链接: <a href=https://blog.alswl.com/2012/05/comet/>服务器 Push 技术 | Log4D</a></p><p>3a1ff193cee606bd1e2ea554a16353ee</p><p>欢迎关注我的微信公众号：<a href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect">窥豹</a></p><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg alt=窥豹><figcaption aria-hidden=true>窥豹</figcaption></figure><figure><img src=https://4ocf5n.dijingchao.com/upload_dropbox/meta/wechat-pay-s-crop.png alt="如果对你有帮助，给作者 ￥2 买张彩票吧。"><figcaption aria-hidden=true>如果对你有帮助，给作者 ￥2
+买张彩票吧。</figcaption></figure></div><footer class=post-footer><ul class=post-tags><li><a href=https://blog.alswl.com/tags/%E7%BB%BC%E5%90%88%E6%8A%80%E6%9C%AF/>综合技术</a></li><li><a href=https://blog.alswl.com/tags/comet/>comet</a></li><li><a href=https://blog.alswl.com/tags/rabbitmq/>rabbitmq</a></li><li><a href=https://blog.alswl.com/tags/socket.io/>socket.io</a></li><li><a href=https://blog.alswl.com/tags/node.js/>node.js</a></li><li><a href=https://blog.alswl.com/tags/ampq/>ampq</a></li></ul><nav class=paginav><a class=prev href=https://blog.alswl.com/2012/06/vundle-submodule/><span class=title>« Prev</span><br><span>Vundle 和 Submodule</span></a>
+<a class=next href=https://blog.alswl.com/2012/05/opensource-and-freedom/><span class=title>Next »</span><br><span>《开源和自由》幻灯片</span></a></nav></footer><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//log4d.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></article></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script><script>document.querySelectorAll("pre > code").forEach(e=>{const n=e.parentNode.parentNode,t=document.createElement("button");t.classList.add("copy-code"),t.innerHTML="copy";function s(){t.innerHTML="copied!",setTimeout(()=>{t.innerHTML="copy"},2e3)}t.addEventListener("click",t=>{if("clipboard"in navigator){navigator.clipboard.writeText(e.textContent),s();return}const n=document.createRange();n.selectNodeContents(e);const o=window.getSelection();o.removeAllRanges(),o.addRange(n);try{document.execCommand("copy"),s()}catch{}o.removeRange(n)}),n.classList.contains("highlight")?n.appendChild(t):n.parentNode.firstChild==n||(e.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName=="TABLE"?e.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(t):e.parentNode.appendChild(t))})</script></body></html>

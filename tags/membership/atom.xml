@@ -1,70 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>membership on Log4D</title>
-    <link>https://blog.alswl.com/tags/membership/</link>
-    <description>Recent content in membership on Log4D</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 05 Nov 2009 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/membership/atom.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>MemberShip使用心得</title>
-      <link>https://blog.alswl.com/2009/11/membership-the-use-of-experience/</link>
-      <pubDate>Thu, 05 Nov 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/11/membership-the-use-of-experience/</guid>
-      <description>花了很大一段时间在学习MemberShip，总是要留下一些纪念文章的。
-我之前的日志提到过一个简单的用户权限设计：User+Role+UserInRole([http://log4d.com/2009/06/design-of-user-rights](http://log4d.com/2009/06/design-of-user-
-rights))，但是这样还是不够灵活，最好需要能够对每一个功能模块进行权限控制，而且需要符合开闭原则。 MemberShip呢，是微软推出的一套很强大的用
-户权限管理系统。就我使用的两大部分，主要包括MemberShip和roleManager这两个模块，分别是对用户和角色进行管理。
-MemberShip对系统进行管理大致分为两个办法 1.可以通过&amp;quot;登录&amp;quot;系列用户控件的任务窗口中的&amp;quot;管理网站&amp;quot;打开&amp;quot;ASP.Net Web 应用程序管理&amp;quot;。 可以控制用户、角色、权限三个主要属性，另外还能选择
-&amp;ldquo;提供程序&amp;rdquo;（这个provider分为MemberShip和RoleManager两种，如果同名的话，可以选择同一提供程序）
-2.使用Web.config进行配置
-其实上面的可视化界面在配置提供程序和访问规则（权限设定）时候，本质上修改的是根目录web.config和各个文件夹下对应的web.config
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>membership on Log4D</title><link>https://blog.alswl.com/tags/membership/</link><description>Recent content in membership on Log4D</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 05 Nov 2009 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/membership/atom.xml" rel="self" type="application/rss+xml"/><item><title>MemberShip使用心得</title><link>https://blog.alswl.com/2009/11/membership-the-use-of-experience/</link><pubDate>Thu, 05 Nov 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/11/membership-the-use-of-experience/</guid><description>花了很大一段时间在学习MemberShip，总是要留下一些纪念文章的。 我之前的日志提到过一个简单的用户权限设计：User+Role+UserInRole([http://log4d.com/2009/06/design-of-user-rights](http://log4d.com/2009/06/design-of-user- rights))，但是这样还是不够灵活，最好需要能够对每一个功能模块进行权限控制，而且需要符合开闭原则。 MemberShip呢，是微软推出的一套很强大的用 户权限管理系统。就我使用的两大部分，主要包括MemberShip和roleManager这两个模块，分别是对用户和角色进行管理。
+MemberShip对系统进行管理大致分为两个办法 1.可以通过&amp;quot;登录&amp;quot;系列用户控件的任务窗口中的&amp;quot;管理网站&amp;quot;打开&amp;quot;ASP.Net Web 应用程序管理&amp;quot;。 可以控制用户、角色、权限三个主要属性，另外还能选择 &amp;ldquo;提供程序&amp;rdquo;（这个provider分为MemberShip和RoleManager两种，如果同名的话，可以选择同一提供程序） 2.使用Web.config进行配置 其实上面的可视化界面在配置提供程序和访问规则（权限设定）时候，本质上修改的是根目录web.config和各个文件夹下对应的web.config
 我的根Web.config
 &amp;lt;authentication mode=&amp;quot;Forms&amp;quot;&amp;gt; &amp;lt;forms name=&amp;quot;ThisHouse&amp;quot; defaultUrl=&amp;quot;Default.aspx&amp;quot; loginUrl=&amp;quot;Signin.aspx&amp;quot; protection=&amp;quot;All&amp;quot; timeout=&amp;quot;30&amp;quot;/&amp;gt; &amp;lt;/authentication&amp;gt; &amp;lt;membership defaultProvider=&amp;quot;SqlProvider&amp;quot;&amp;gt; &amp;lt;providers&amp;gt; &amp;lt;add connectionStringName=&amp;quot;thisHouseConnectionString&amp;quot; enablePasswordRetrieval=&amp;quot;false&amp;quot; enablePasswordReset=&amp;quot;true&amp;quot; requiresQuestionAndAnswer=&amp;quot;true&amp;quot; applicationName=&amp;quot;ThisHouse&amp;quot; requiresUniqueEmail=&amp;quot;false&amp;quot; passwordFormat=&amp;quot;Clear&amp;quot; maxInvalidPasswordAttempts=&amp;quot;255&amp;quot; minRequiredPasswordLength=&amp;quot;1&amp;quot; minRequiredNonalphanumericCharacters=&amp;quot;1&amp;quot; passwordAttemptWindow=&amp;quot;10&amp;quot; passwordStrengthRegularExpression=&amp;quot;&amp;quot; name=&amp;quot;SqlProvider&amp;quot; type=&amp;quot;System.Web.Security.SqlMembershipProvider&amp;quot;/&amp;gt; &amp;lt;/providers&amp;gt; &amp;lt;/membership&amp;gt; &amp;lt;roleManager enabled=&amp;quot;true&amp;quot; cacheRolesInCookie=&amp;quot;true&amp;quot; defaultProvider=&amp;quot;SqlProvider&amp;quot;&amp;gt; &amp;lt;providers&amp;gt; &amp;lt;add connectionStringName=&amp;quot;thisHouseConnectionString&amp;quot; applicationName=&amp;quot;ThisHouse&amp;quot; name=&amp;quot;SqlProvider&amp;quot; type=&amp;quot;System.Web.Security.SqlRoleProvider&amp;quot;/&amp;gt; &amp;lt;/providers&amp;gt; &amp;lt;/roleManager&amp;gt; 我禁止User角色进入Admin文件夹，配置完&amp;quot;访问规则&amp;quot;后，会在Admin文件夹下生成相应web.config
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;system.web&amp;gt; &amp;lt;authorization&amp;gt; &amp;lt;allow roles=&amp;quot;User&amp;quot; /&amp;gt; &amp;lt;allow roles=&amp;quot;Admin&amp;quot; /&amp;gt; &amp;lt;deny users=&amp;quot;?&amp;quot; /&amp;gt; &amp;lt;/authorization&amp;gt; &amp;lt;/system.</description>
-    </item>
-    
-    <item>
-      <title>ThisHouse房屋销售系统</title>
-      <link>https://blog.alswl.com/2009/11/thishouse-housing-sales-system/</link>
-      <pubDate>Thu, 05 Nov 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/11/thishouse-housing-sales-system/</guid>
-      <description>呃，这是我在一个星期内搞鼓的一个Asp.NET课程设计，没有什么太多的内容，把它发布到了Csdn了，开了5分，嗯，对得起我一个星期拼命码代码。（哦，我很无耻
-的使用了MG12的iNove主题……）
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;system.web&amp;gt; &amp;lt;authorization&amp;gt; &amp;lt;allow roles=&amp;quot;User&amp;quot; /&amp;gt; &amp;lt;allow roles=&amp;quot;Admin&amp;quot; /&amp;gt; &amp;lt;deny users=&amp;quot;?&amp;quot; /&amp;gt; &amp;lt;/authorization&amp;gt; &amp;lt;/system.</description></item><item><title>ThisHouse房屋销售系统</title><link>https://blog.alswl.com/2009/11/thishouse-housing-sales-system/</link><pubDate>Thu, 05 Nov 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/11/thishouse-housing-sales-system/</guid><description>呃，这是我在一个星期内搞鼓的一个Asp.NET课程设计，没有什么太多的内容，把它发布到了Csdn了，开了5分，嗯，对得起我一个星期拼命码代码。（哦，我很无耻 的使用了MG12的iNove主题……）
 readme.txt内容： This House房屋销售系统 本人大四一个课程设计，大概花费1周时间，构架2天，编码3天，零碎程序1天，论文1天。
-程序写的不好不坏，是DAL+BLL+Model+Web三层架构，使用的动软生成器生成的简单三层框架。压缩包包括源码，数据库，一个star
-uml简单设计图，数据库文档，需求分析和论文。
-系统关键词是： Asp.NET; MemberShip;
-iBatisNet; AjaxControlToolkit; **房屋销售系统 **
-数据库使用的是一个完整的MemberShip 权限管理系统，而不是我自己写的简单User in Role，所以建议对这个MemberShip有一定了解。
-整个系统关注的是框架的使用，对于业务逻辑关注很少，实在是我时间有限，没有更多的精力搞.NET。（我学Asp.Net 3个月了，之前是搞Java的）
-如果有问题可以到http://log4d.com留言，本人大四，会在有时间前提下回答，毕竟现在我正在找工作。
-我写代码时候总结的一些资料 [AjaxControlToolKit控件介绍[转载]](http://log4d.com/2009/10/ajaxcontroltoolkit-
-controls-introduced-reproduced)
-[MemberShip在动软生成器下UserId的问题](http://log4d.com/2009/10/membership-moving-soft-
-issue-of-builder-under-the-userid)
-源码下载 点击这里到CSDN下载[5分]</description>
-    </item>
-    
-    <item>
-      <title>MemberShip在动软生成器下UserId的问题</title>
-      <link>https://blog.alswl.com/2009/10/membership-moving-soft-issue-of-builder-under-the-userid/</link>
-      <pubDate>Fri, 23 Oct 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/10/membership-moving-soft-issue-of-builder-under-the-userid/</guid>
-      <description>背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N
-ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)+Member
-Ship(微软推出的一个Asp.NET的权限系统)。
-我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是比较冒险的。呃```呵呵，这也比较符合我的风格，总是要学点东
-西的嘛。
-问题 MemberShip本身是一个很强大的权限管理系统，其中UserId使用的是uniqueidentifier这种值类型，对应到微软提出的一种标示类型GUID
-(System.GUID)。这是一种类似「9498ea1f-ce4e-4e6d-b636-1bbbe3db9bde」的非字符串。
-动软.NET代码生成器会根据建好的数据库生成相应的代码，可以选择三层模式（BLL+DAL+Model+Web），他会自动生成每层代码。一般来说，生成的项目可
-以编译完成，但是如果在其中存在uniqueidentifier这种类型的表，就会产生错误，无法通过编译，错误「找不到类型或命名空间名称「uniqueiden
-tifier」（是否缺少 using 指令或程序集引用？）」
+程序写的不好不坏，是DAL+BLL+Model+Web三层架构，使用的动软生成器生成的简单三层框架。压缩包包括源码，数据库，一个star uml简单设计图，数据库文档，需求分析和论文。
+系统关键词是： Asp.NET; MemberShip; iBatisNet; AjaxControlToolkit; **房屋销售系统 ** 数据库使用的是一个完整的MemberShip 权限管理系统，而不是我自己写的简单User in Role，所以建议对这个MemberShip有一定了解。
+整个系统关注的是框架的使用，对于业务逻辑关注很少，实在是我时间有限，没有更多的精力搞.NET。（我学Asp.Net 3个月了，之前是搞Java的） 如果有问题可以到http://log4d.com留言，本人大四，会在有时间前提下回答，毕竟现在我正在找工作。
+我写代码时候总结的一些资料 [AjaxControlToolKit控件介绍[转载]](http://log4d.com/2009/10/ajaxcontroltoolkit- controls-introduced-reproduced) [MemberShip在动软生成器下UserId的问题](http://log4d.com/2009/10/membership-moving-soft- issue-of-builder-under-the-userid)
+源码下载 点击这里到CSDN下载[5分]</description></item><item><title>MemberShip在动软生成器下UserId的问题</title><link>https://blog.alswl.com/2009/10/membership-moving-soft-issue-of-builder-under-the-userid/</link><pubDate>Fri, 23 Oct 2009 00:00:00 +0800</pubDate><guid>https://blog.alswl.com/2009/10/membership-moving-soft-issue-of-builder-under-the-userid/</guid><description>背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)+Member Ship(微软推出的一个Asp.NET的权限系统)。
+我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是比较冒险的。呃```呵呵，这也比较符合我的风格，总是要学点东 西的嘛。
+问题 MemberShip本身是一个很强大的权限管理系统，其中UserId使用的是uniqueidentifier这种值类型，对应到微软提出的一种标示类型GUID (System.GUID)。这是一种类似「9498ea1f-ce4e-4e6d-b636-1bbbe3db9bde」的非字符串。
+动软.NET代码生成器会根据建好的数据库生成相应的代码，可以选择三层模式（BLL+DAL+Model+Web），他会自动生成每层代码。一般来说，生成的项目可 以编译完成，但是如果在其中存在uniqueidentifier这种类型的表，就会产生错误，无法通过编译，错误「找不到类型或命名空间名称「uniqueiden tifier」（是否缺少 using 指令或程序集引用？）」
 解决 资料非常少，否则我就不会写日志了，直接转载了。
 参考一些零星的帖子+自己尝试，我把解决方法总结如下。
 1.修改Model中uniqueidentifier类型，因为C#中根本不存在这种类型，将相应的变量类型定义为Guid。
@@ -74,15 +21,8 @@ get{return _userid;}
 } 2.修改相应的Guid&amp;lt;-&amp;gt;string之间的转换，这个根据错误列表一一修改即可。
 this.lbluserId.Text=model.userId.ToString();//Guid拥有.ToString()方法 model.userId = new Guid(userId)//new Guid(string) 3.修改DAL中数据读取/写入部分，其实这一部分还是Guid&amp;lt;-&amp;gt;string转换
 //model.userId=ds.Tables[0].Rows[0][&amp;quot;userId&amp;quot;].ToString(); //原始的加上了注释 model.userId=new Guid(ds.Tables[0].Rows[0][&amp;quot;userId&amp;quot;].ToString()); //使用new Guid(string)进行转换 经过上面3个部分，代码应该基本没有问题了，其实关键的还是Guid&amp;lt;-&amp;gt;string转换，跟着错误列表走一边就基本没有问题了。
-新的问题 发现用动软生成的Web层中的Add.aspx文件中，如果相对应数据库表有DataTime字段，就会运行时错误「基类包括字段「txtdatetime」，但其类
-型(System.Web.UI.WebControls.TextBox)与控件(System.Web.UI.HtmlControls.HtmlInputTe
-xt)的类型不兼容。」。
-我将中id修改后，能够运行Add.aspx，但是还是无法post提交，我正在尝试解决这个问题。这个问题与MemberShip无关，放在这里只
-是希望如果有过客了解Asp.NET，那么就提出一些建议。
+新的问题 发现用动软生成的Web层中的Add.aspx文件中，如果相对应数据库表有DataTime字段，就会运行时错误「基类包括字段「txtdatetime」，但其类 型(System.Web.UI.WebControls.TextBox)与控件(System.Web.UI.HtmlControls.HtmlInputTe xt)的类型不兼容。」。
+我将中id修改后，能够运行Add.aspx，但是还是无法post提交，我正在尝试解决这个问题。这个问题与MemberShip无关，放在这里只 是希望如果有过客了解Asp.NET，那么就提出一些建议。
 相关链接 GUID_百度百科：http://baike.baidu.com/view/185358.htm
 SQL中的uniqueidentifier类型在c#中用什么类型表示：http://topic.csdn.net/t/20060918/17/5030341.html
-关于ASP.NET中C#处理uniqueidentifier数据类型的问题：http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html</description>
-    </item>
-    
-  </channel>
-</rss>
+关于ASP.NET中C#处理uniqueidentifier数据类型的问题：http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html</description></item></channel></rss>

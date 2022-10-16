@@ -1,494 +1,84 @@
-<!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>译文 | Log4D</title>
-<meta name="keywords" content="">
-<meta name="description" content="">
-<meta name="author" content="alswl">
-<link rel="canonical" href="https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css" integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://blog.alswl.com/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/atom.xml">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript>
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script><meta property="og:title" content="译文" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="译文"/>
-<meta name="twitter:description" content=""/>
-
-</head>
-
-<body class="list" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <ul id="menu">
-            <li>
-                <a href="https://blog.alswl.com/categories/" title="Categories">
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/tags/" title="Tags">
-                    <span>Tags</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/archives/" title="Archives">
-                    <span>Archives</span>
-                </a>
-            </li>
-            <li>
-                <a href="https://blog.alswl.com/about/" title="About">
-                    <span>About</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</header>
-<main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/tags/">Tags</a></div>
-  <h1>
-    译文
-  </h1>
-</header>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>服务性能监控：USE 方法（The USE Method）
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>本文首发在沪江技术学院公众号，小莞翻译，我做了校对。
-由于微信公众号的封闭性，我担心未来文章不容易被发现。
-为了避免沧海遗珠，特意转到这里。
+<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>译文 | Log4D</title><meta name=keywords content><meta name=description content><meta name=author content="alswl"><link rel=canonical href=https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/><link crossorigin=anonymous href=/assets/css/stylesheet.bc1149f4a72aa4858d3a9f71462f75e5884ffe8073ea9d6d5761d5663d651e20.css integrity="sha256-vBFJ9KcqpIWNOp9xRi915YhP/oBz6p1tV2HVZj1lHiA=" rel="preload stylesheet" as=style><link rel=icon href=https://blog.alswl.com/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://blog.alswl.com/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://blog.alswl.com/favicon-32x32.png><link rel=apple-touch-icon href=https://blog.alswl.com/apple-touch-icon.png><link rel=mask-icon href=https://blog.alswl.com/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate type=application/rss+xml href=https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/atom.xml><noscript><style>#theme-toggle,.top-link{display:none}</style><style>@media(prefers-color-scheme:dark){:root{--theme:rgb(29, 30, 32);--entry:rgb(46, 46, 51);--primary:rgb(218, 218, 219);--secondary:rgb(155, 156, 157);--tertiary:rgb(65, 66, 68);--content:rgb(196, 196, 197);--hljs-bg:rgb(46, 46, 51);--code-bg:rgb(55, 56, 62);--border:rgb(51, 51, 51)}.list{background:var(--theme)}.list:not(.dark)::-webkit-scrollbar-track{background:0 0}.list:not(.dark)::-webkit-scrollbar-thumb{border-color:var(--theme)}}</style></noscript><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(e,t,n,s,o,i,a){e.GoogleAnalyticsObject=o,e[o]=e[o]||function(){(e[o].q=e[o].q||[]).push(arguments)},e[o].l=1*new Date,i=t.createElement(n),a=t.getElementsByTagName(n)[0],i.async=1,i.src=s,a.parentNode.insertBefore(i,a)}(window,document,"script","https://www.google-analytics.com/analytics.js","ga"),ga("create","UA-8822123-3","auto"),ga("send","pageview"))</script><meta property="og:title" content="译文"><meta property="og:description" content><meta property="og:type" content="website"><meta property="og:url" content="https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/"><meta property="og:site_name" content="Log4D"><meta name=twitter:card content="summary"><meta name=twitter:title content="译文"><meta name=twitter:description content></head><body class=list id=top><script>localStorage.getItem("pref-theme")==="dark"?document.body.classList.add("dark"):localStorage.getItem("pref-theme")==="light"?document.body.classList.remove("dark"):window.matchMedia("(prefers-color-scheme: dark)").matches&&document.body.classList.add("dark")</script><header class=header><nav class=nav><div class=logo><a href=https://blog.alswl.com accesskey=h title="Log4D (Alt + H)">Log4D</a><div class=logo-switches><button id=theme-toggle accesskey=t title="(Alt + T)"><svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu><li><a href=https://blog.alswl.com/categories/ title=Categories><span>Categories</span></a></li><li><a href=https://blog.alswl.com/tags/ title=Tags><span>Tags</span></a></li><li><a href=https://blog.alswl.com/archives/ title=Archives><span>Archives</span></a></li><li><a href=https://blog.alswl.com/about/ title=About><span>About</span></a></li></ul></nav></header><main class=main><header class=page-header><div class=breadcrumbs><a href=https://blog.alswl.com>Home</a>&nbsp;»&nbsp;<a href=https://blog.alswl.com/tags/>Tags</a></div><h1>译文</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2>服务性能监控：USE 方法（The USE Method）</h2></header><div class=entry-content><p>本文首发在沪江技术学院公众号，小莞翻译，我做了校对。 由于微信公众号的封闭性，我担心未来文章不容易被发现。 为了避免沧海遗珠，特意转到这里。
 英文原文：The USE Method。
-USE 方法是一种能分析任何系统性能的方法论。
-我们可以根据能帮助系统分析的结构化清单，来迅速的定位资源的瓶颈和错误所在。
-它通常会先以列出问题为开始，然后再寻找适合的指标，而不是给你制定一些固定的指标，
-然后让你按部就班的执行下去。
-本页左侧下方，是我列出的，根据不同的操作系统（Linux、 Solaris 等）
-衍生的 USE 方法列表。（译者注：可以参考原文链接）
-我列出了为不同的操作系统而衍生的 USE 方法列表供大家参考，
-你们可以根据你的环境来为你的站点服务，选择适合的附加监控指标。
+USE 方法是一种能分析任何系统性能的方法论。 我们可以根据能帮助系统分析的结构化清单，来迅速的定位资源的瓶颈和错误所在。 它通常会先以列出问题为开始，然后再寻找适合的指标，而不是给你制定一些固定的指标， 然后让你按部就班的执行下去。
+本页左侧下方，是我列出的，根据不同的操作系统（Linux、 Solaris 等） 衍生的 USE 方法列表。（译者注：可以参考原文链接）
+我列出了为不同的操作系统而衍生的 USE 方法列表供大家参考， 你们可以根据你的环境来为你的站点服务，选择适合的附加监控指标。
 通过这个工具，可以很方便的筛选出适合不同的系统的建议 metrics：USE Method: Rosetta Stone of Performance Checklists
-Intro（Introduction） 如果你遇到一个很严重的性能问题升级的时候，并且你不能确定它是否由服务导致的，
-这时候你该怎么办？
+Intro（Introduction） 如果你遇到一个很严重的性能问题升级的时候，并且你不能确定它是否由服务导致的， 这时候你该怎么办？
 我们都说万事开头难。所以我开发出了 USE 方法，来帮助大家，如何去快速的解决常见的性能问题，而同时又不容易忽略重要的地方。
-USE 方法在设计之初就定位了简洁、明了、完整、快速的特性，
-就好像一本航天手册的紧急事项列表那样。
-（译者注：航天手册，介绍包括不限于飞机的各种特性、指标、性能等，
-用于帮助飞行学员学习驾驶飞机，或者是帮助那些希望提高他们的飞行潜能和航空知识的人了解的更全面）。
+USE 方法在设计之初就定位了简洁、明了、完整、快速的特性， 就好像一本航天手册的紧急事项列表那样。 （译者注：航天手册，介绍包括不限于飞机的各种特性、指标、性能等， 用于帮助飞行学员学习驾驶飞机，或者是帮助那些希望提高他们的飞行潜能和航空知识的人了解的更全面）。
 USE 方法已经在不同的企业、课堂（作为学习工具）以及最近的云计算等场景中，被成功应用了无数次。
-USE 方法基于 3&#43;1 模型（三种指标类型&#43;一种策略），来切入一个复杂的系统。我发现它仅仅发挥了
-5% 的力量，就解决了大概 80% 的服务器问题，并且正如我将证明的，它除了服务器以外，也同样适应于各种系统。
+USE 方法基于 3+1 模型（三种指标类型+一种策略），来切入一个复杂的系统。我发现它仅仅发挥了 5% 的力量，就解决了大概 80% 的服务器问题，并且正如我将证明的，它除了服务器以外，也同样适应于各种系统。
 它应当被理解为一种工具，一种很大的方法工具箱里面的工具。不过，它目前仍然还有很多问题类型以待解决，还需要点其他方法和更多的时间。
 Summary USE 方法可以概括为：检查所有的资源的利用率，饱和度，和错误信息。
 我们期望大家能尽早使用 USE 方法去做性能检查，或者是用它确定系统的瓶颈。
 名词定义：
 资源： 服务器功能性的物理组成硬件（CPU， 硬盘, 总线） 利用率： 资源执行某工作的平均时间 饱和：衡量资源超载工作的程度，往往会被塞入队列 错误： 错误事件的数量 分析软件资源，或者是软件的强制性限制（资源控制）也是很有用的，同时要关注哪些指标是处于正常的可接受范围之内的。这些指标通常用以下术语表示：
-利用率：
-以一个时间段内的百分比来表示，例如：一个硬盘以 90% 的利用率运行 饱和度： 一个队列的长度，例如：CPUs 平均的运行时队列长度是4 错误（数）： 可度量的数量，例如：这个网络接口有 50 次（超时？） 我们应该要调查那些错误，因为它们会降低系统的性能，并且当故障模型处于可回复模式的时候，它可能不会立刻被发现。...</p>
-  </div>
-  <footer class="entry-footer"><span title='2017-11-12 15:30:12 +0800 CST'>2017-11-12</span>&nbsp;·&nbsp;小莞</footer>
-  <a class="entry-link" aria-label="post link to 服务性能监控：USE 方法（The USE Method）" href="https://blog.alswl.com/2017/11/use-method/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Stack Overflow 的 HTTPS 化：漫漫长路的终点
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>原文作者：Nick Craver 翻译作者：罗晟 @luosheng &amp; @alswl 原文地址：Nick Craver - HTTPS on Stack Overflow: The End of a Long Road 本文为原创翻译文章，已经获得原作者授权，转载请注明作者及出处。 本文首发在「沪江技术学院」公众号 今天，我们默认在 Stack Overflow 上部署了 HTTPS。目前所有的流量都将跳转到 https:// 上。与此同时，Google 链接也会在接下去的几周内更改。启用的过程本身只是举手之劳，但在此之前我们却花了好几年的时间。到目前为止，HTTPS 在我们所有的 Q&amp;A 网站上都默认启用了。
+利用率： 以一个时间段内的百分比来表示，例如：一个硬盘以 90% 的利用率运行 饱和度： 一个队列的长度，例如：CPUs 平均的运行时队列长度是4 错误（数）： 可度量的数量，例如：这个网络接口有 50 次（超时？） 我们应该要调查那些错误，因为它们会降低系统的性能，并且当故障模型处于可回复模式的时候，它可能不会立刻被发现。...</p></div><footer class=entry-footer><span title='2017-11-12 15:30:12 +0800 +0800'>2017-11-12</span>&nbsp;·&nbsp;小莞</footer><a class=entry-link aria-label="post link to 服务性能监控：USE 方法（The USE Method）" href=https://blog.alswl.com/2017/11/use-method/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>Stack Overflow 的 HTTPS 化：漫漫长路的终点</h2></header><div class=entry-content><p>原文作者：Nick Craver 翻译作者：罗晟 @luosheng & @alswl 原文地址：Nick Craver - HTTPS on Stack Overflow: The End of a Long Road 本文为原创翻译文章，已经获得原作者授权，转载请注明作者及出处。 本文首发在「沪江技术学院」公众号 今天，我们默认在 Stack Overflow 上部署了 HTTPS。目前所有的流量都将跳转到 https:// 上。与此同时，Google 链接也会在接下去的几周内更改。启用的过程本身只是举手之劳，但在此之前我们却花了好几年的时间。到目前为止，HTTPS 在我们所有的 Q&A 网站上都默认启用了。
 在过去的两个月里，我们在 Stack Exchange 全网维持发布 HTTPS。Stack Overflow 是最后，也是迄今最大的的一个站点。这对我们来说是一个巨大里程碑，但决不意味着是终点。后文会提到，我们仍有很多需要做的事情。但现在我们总算能看得见终点了，耶！
 友情提示：这篇文章讲述的是一个漫长的旅程。非常漫长。你可能已经注意到你的滚动条现在非常小。我们遇到的问题并不是只在 Stack Exchange/Overflow 才有，但这些问题的组合还挺罕见。我在文章中会讲到我们的一些尝试、折腾、错误、成功，也会包括一些开源项目——希望这些细节对你们有所帮助。由于它们的关系错综复杂，我难以用时间顺序来组织这篇文章，所以我会将文章拆解成架构、应用层、错误等几个主题。
 首先，我们要提一下为什么我们的处境相对独特：
 我们有几百个域名（大量站点及服务） 大量二级域名（stackoverflow.com、stackexchange.com、askubuntu.com等） 大量四级域名（如 meta.gaming.stackexchange.com） 我们允许用户提交、嵌入内容（比如帖子中的图片和 YouTube 视频） 我们仅有一个数据中心（造成单源的延时） 我们有广告（及广告网络） 我们用 websockets，任何时刻的活跃数都不少于 50 万个（连接数问题） 我们会被 DDoSed 攻击（代理问题） 我们有不少站点及应用还是通过 HTTP API 通信的（代理问题） 我们热衷于性能（好像有点太过了） 由于这篇文章实在太长，我在这里先列出链接：
-开篇 懒人包 基础设施 证书 Meta 子域（meta....</p>
-  </div>
-  <footer class="entry-footer"><span title='2017-09-27 12:07:44 +0800 CST'>2017-09-27</span>&nbsp;·&nbsp;罗晟, alswl</footer>
-  <a class="entry-link" aria-label="post link to Stack Overflow 的 HTTPS 化：漫漫长路的终点" href="https://blog.alswl.com/2017/09/https-on-stack-overflow/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Redis 到底有多快[译文]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>原文地址 http://redis.io/topics/benchmarks。
+开篇 懒人包 基础设施 证书 Meta 子域（meta....</p></div><footer class=entry-footer><span title='2017-09-27 12:07:44 +0800 +0800'>2017-09-27</span>&nbsp;·&nbsp;罗晟, alswl</footer><a class=entry-link aria-label="post link to Stack Overflow 的 HTTPS 化：漫漫长路的终点" href=https://blog.alswl.com/2017/09/https-on-stack-overflow/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>Redis 到底有多快[译文]</h2></header><div class=entry-content><p>原文地址 http://redis.io/topics/benchmarks。
 拖了一个半月的稿子~
-Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。
-（类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。
-以下参数被支持： Usage: redis-benchmark [-h &lt;host&gt;] [-p &lt;port&gt;] [-c &lt;clients&gt;] [-n &lt;requests]&gt; [-k &lt;boolean&gt;] -h &lt;hostname&gt; Server hostname (default 127.0.0.1) -p &lt;port&gt; Server port (default 6379) -s &lt;socket&gt; Server socket (overrides host and port) -c &lt;clients&gt; Number of parallel connections (default 50) -n &lt;requests&gt; Total number of requests (default 10000) -d &lt;size&gt; Data size of SET/GET value in bytes (default 2) -k &lt;boolean&gt; 1=keep alive 0=reconnect (default 1) -r &lt;keyspacelen&gt; Use random keys for SET/GET/INCR, random values for SADD Using this option the benchmark will get/set keys in the form mykey_rand:000000012456 instead of constant keys, the &lt;keyspacelen&gt; argument determines the max number of values for the random number....</p>
-  </div>
-  <footer class="entry-footer"><span title='2014-02-23 22:38:00 +0800 CST'>2014-02-23</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to Redis 到底有多快[译文]" href="https://blog.alswl.com/2014/02/redis-benchmarks/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Postfix 基本配置[译文]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>原文地址：Postfix Basic Configuration 。
-有少许编译。
-介绍 Postfix 的配置文件 main.cf 有数百个配置参数，
-幸运的是，所有参数都有合理的默认配置项。
-大部分时候，只需要配置两三个参数即可。
+Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。 （类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。
+以下参数被支持： Usage: redis-benchmark [-h &lt;host>] [-p &lt;port>] [-c &lt;clients>] [-n &lt;requests]> [-k &lt;boolean>] -h &lt;hostname> Server hostname (default 127.0.0.1) -p &lt;port> Server port (default 6379) -s &lt;socket> Server socket (overrides host and port) -c &lt;clients> Number of parallel connections (default 50) -n &lt;requests> Total number of requests (default 10000) -d &lt;size> Data size of SET/GET value in bytes (default 2) -k &lt;boolean> 1=keep alive 0=reconnect (default 1) -r &lt;keyspacelen> Use random keys for SET/GET/INCR, random values for SADD Using this option the benchmark will get/set keys in the form mykey_rand:000000012456 instead of constant keys, the &lt;keyspacelen> argument determines the max number of values for the random number....</p></div><footer class=entry-footer><span title='2014-02-23 22:38:00 +0800 +0800'>2014-02-23</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Redis 到底有多快[译文]" href=https://blog.alswl.com/2014/02/redis-benchmarks/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>Postfix 基本配置[译文]</h2></header><div class=entry-content><p>原文地址：Postfix Basic Configuration 。 有少许编译。
+介绍 Postfix 的配置文件 main.cf 有数百个配置参数， 幸运的是，所有参数都有合理的默认配置项。 大部分时候，只需要配置两三个参数即可。
 安装 Postfix 的方法可以参见 安装方法。
-特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在
-标准配置说明 里面查看。
-Postfix 配置语法 Postfix 的配置文件默认在 /etc/postfix。主力配置文件是 main.cf 和
-master.cf。用户权限必须是 root 的。
+特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在 标准配置说明 里面查看。
+Postfix 配置语法 Postfix 的配置文件默认在 /etc/postfix。主力配置文件是 main.cf 和 master.cf。用户权限必须是 root 的。
 /etc/postfix/main.cf 配置语法有两个要点：不用引号，可以使用 $ 来引用参数。
 # 定义一个参数 /etc/postfix/main.cf: parameter = value # 引用一个已有参数 /etc/postfix/main.cf: other_parameter = $parameter 引用参数时候，可以再定义之前先引用（Postfix 使用延迟计算技术）。
 Postfix 使用数据文件来控制接入权限。详情请看 DATABASE 介绍，一般这样配置：
 /etc/postfix/main.cf: virtual_alias_maps = hash:/etc/postfix/virtual 修改 main.cf 或者 master.cf 之后，需要 postfix reload 重新载入配置文件。
-配置对外发送域名 myorigin 参数指定邮件中显示的发送域名，默认使用当前机器名 $myhostname。
-一般来说，我们会把 myorigin 设置成顶级域名 $mydomain。...</p>
-  </div>
-  <footer class="entry-footer"><span title='2013-11-09 14:59:00 +0800 CST'>2013-11-09</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to Postfix 基本配置[译文]" href="https://blog.alswl.com/2013/11/postfix-basic-configuration/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>在 Python 中使用 GDB 来调试[译文]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>大约一年前，我接触了 Java 中的 Btrace
-能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。
-另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。
-当时公司技术方面也遇到了一些瓶颈，一部分原因是 CPython 本身的 IO 模型问题，
-另一方面也和早期代码写的极不工整脱不了关系。万般无奈之下，我们用
-Jython 推翻重做了主要业务，效果立竿见影，但同时也把真实问题给规避掉了。
-在这之后我们在 JVM 的领导下，走上了康庄大道。但我心中始终还有一个梗，
-就是想对性能遇到瓶颈的 Python Process 进行线上侦测。
-这篇文章就是开始的第一步。
-PS:这篇文章理论上是可行的，但是在我机器（Ubuntu 12.04 / 系统自带 Python）
-无法正常执行，会爆出 unable to read python frame information
-的问题。解决方法我会在下篇文章中写出。这里只是单纯翻译一下原文。
+配置对外发送域名 myorigin 参数指定邮件中显示的发送域名，默认使用当前机器名 $myhostname。 一般来说，我们会把 myorigin 设置成顶级域名 $mydomain。...</p></div><footer class=entry-footer><span title='2013-11-09 14:59:00 +0800 +0800'>2013-11-09</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Postfix 基本配置[译文]" href=https://blog.alswl.com/2013/11/postfix-basic-configuration/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>在 Python 中使用 GDB 来调试[译文]</h2></header><div class=entry-content><p>大约一年前，我接触了 Java 中的 Btrace 能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。 另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。
+当时公司技术方面也遇到了一些瓶颈，一部分原因是 CPython 本身的 IO 模型问题， 另一方面也和早期代码写的极不工整脱不了关系。万般无奈之下，我们用 Jython 推翻重做了主要业务，效果立竿见影，但同时也把真实问题给规避掉了。
+在这之后我们在 JVM 的领导下，走上了康庄大道。但我心中始终还有一个梗， 就是想对性能遇到瓶颈的 Python Process 进行线上侦测。 这篇文章就是开始的第一步。
+PS:这篇文章理论上是可行的，但是在我机器（Ubuntu 12.04 / 系统自带 Python） 无法正常执行，会爆出 unable to read python frame information 的问题。解决方法我会在下篇文章中写出。这里只是单纯翻译一下原文。
 原文可以移步 https://wiki.python.org/moin/DebuggingWithGdb。
 有一些类型的 bugs 很难使用 Python 直接进行 debug，比如
 段错误（无法被捕捉的 Python 异常） 卡住的进程（这种情况下面没法使用 pdb 来进行跟踪） 控制之外的后台处理 daemon 进程 这些情况下，你可以使用尝试使用 gdb。
-准备 需要在系统安装 gdb 和 Python debug 扩展。
-Python debug 扩展包含了一些 debug 命令，并且添加了一些 Python 特定的命令到 gdb。...</p>
-  </div>
-  <footer class="entry-footer"><span title='2013-11-01 01:11:00 +0800 CST'>2013-11-01</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 在 Python 中使用 GDB 来调试[译文]" href="https://blog.alswl.com/2013/11/python-gdb/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>15 分钟学会 R 语言[译文]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>仗着自己有几门语言的基础，我在学新语言时候，都会选择一些快速入门教程。
-比如 Learn X in Y minuts 就是我经常光顾的站点。
-前段时间，小柒在用 R 写数据分析脚本，我就建议她把 Learn X in Y minuts 里面的
-R 语言教程翻译出来。话说 Learn X in Y minuts 里面的中文贡献还是非常多的，赞。
-Learn X in Y minuts 的源码托管在 Github。
-小柒被我逼着把这篇 R 语言教程
-翻译到 R 语言教程中文版。
+准备 需要在系统安装 gdb 和 Python debug 扩展。 Python debug 扩展包含了一些 debug 命令，并且添加了一些 Python 特定的命令到 gdb。 在主流的 Linux 发行版中，你可以轻松的安装他们：...</p></div><footer class=entry-footer><span title='2013-11-01 01:11:00 +0800 +0800'>2013-11-01</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 在 Python 中使用 GDB 来调试[译文]" href=https://blog.alswl.com/2013/11/python-gdb/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>15 分钟学会 R 语言[译文]</h2></header><div class=entry-content><p>仗着自己有几门语言的基础，我在学新语言时候，都会选择一些快速入门教程。 比如 Learn X in Y minuts 就是我经常光顾的站点。
+前段时间，小柒在用 R 写数据分析脚本，我就建议她把 Learn X in Y minuts 里面的 R 语言教程翻译出来。话说 Learn X in Y minuts 里面的中文贡献还是非常多的，赞。
+Learn X in Y minuts 的源码托管在 Github。 小柒被我逼着把这篇 R 语言教程 翻译到 R 语言教程中文版。
 下面是译文，有不妥的地方可以留言或者直接去 Github 上面 Pull request。
-R 是一门统计语言。它有很多数据分析和挖掘程序包。可以用来统计、分析和制图。
-你也可以在 LaTeX 文档中运行 R 命令。
-# 评论以 # 开始 # R 语言原生不支持 多行注释 # 但是你可以像这样来多行注释 # 在窗口里按回车键可以执行一条命令 ################################################################### # 不用懂编程就可以开始动手了 ################################################################### data()	# 浏览内建的数据集 data(rivers)	# 北美主要河流的长度（数据集） ls()	# 在工作空间中查看「河流」是否出现 head(rivers)	# 撇一眼数据集 # 735 320 325 392 524 450 length(rivers)	# 我们测量了多少条河流？ # 141 summary(rivers) # Min....</p>
-  </div>
-  <footer class="entry-footer"><span title='2013-10-29 22:32:00 +0800 CST'>2013-10-29</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 15 分钟学会 R 语言[译文]" href="https://blog.alswl.com/2013/10/r-tutorial/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>在 Python 中使用 epoll[译文]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>原文地址： http://scotdoyle.com/python-epoll-howto.html ，
-我这里取精简内容翻译过来。
+R 是一门统计语言。它有很多数据分析和挖掘程序包。可以用来统计、分析和制图。 你也可以在 LaTeX 文档中运行 R 命令。
+# 评论以 # 开始 # R 语言原生不支持 多行注释 # 但是你可以像这样来多行注释 # 在窗口里按回车键可以执行一条命令 ################################################################### # 不用懂编程就可以开始动手了 ################################################################### data() # 浏览内建的数据集 data(rivers) # 北美主要河流的长度（数据集） ls() # 在工作空间中查看「河流」是否出现 head(rivers) # 撇一眼数据集 # 735 320 325 392 524 450 length(rivers) # 我们测量了多少条河流？ # 141 summary(rivers) # Min....</p></div><footer class=entry-footer><span title='2013-10-29 22:32:00 +0800 +0800'>2013-10-29</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 15 分钟学会 R 语言[译文]" href=https://blog.alswl.com/2013/10/r-tutorial/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>在 Python 中使用 epoll[译文]</h2></header><div class=entry-content><p>原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。
 ============ 正文开始 ============
-介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API
-的 epoll 范例。
-阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient....</p>
-  </div>
-  <footer class="entry-footer"><span title='2013-01-12 00:01:00 +0800 CST'>2013-01-12</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 在 Python 中使用 epoll[译文]" href="https://blog.alswl.com/2013/01/python-epoll/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>如何让 Instagram 在一百多万用户爆炸后稳定运行
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>原文链接：Keeping Instagram up with over a million new users in twelve hours
-这周二我们发布了 Instagram for Android，反响空前强烈。
-最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。
-尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。
-在这里我们将分享一些帮助我们解决问题的工具和技术。
+介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。
+阻塞的 Socket 通信范例 import socket EOL1 = b'\n\n' EOL2 = b'\n\r\n' response = b'HTTP/1.0 200 OK\r\ndate: "2013-01-12T00:01:00+08:00" response += b'Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n' response += b'Hello, world!' serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind(('0.0.0.0', 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b'' while EOL1 not in request and EOL2 not in request: request += connectiontoclient....</p></div><footer class=entry-footer><span title='2013-01-12 00:01:00 +0800 +0800'>2013-01-12</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 在 Python 中使用 epoll[译文]" href=https://blog.alswl.com/2013/01/python-epoll/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>如何让 Instagram 在一百多万用户爆炸后稳定运行</h2></header><div class=entry-content><p>原文链接：Keeping Instagram up with over a million new users in twelve hours
+这周二我们发布了 Instagram for Android，反响空前强烈。 最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。 尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。 在这里我们将分享一些帮助我们解决问题的工具和技术。
 ##statsd##
-statsd 在 Instagram 很受欢迎。这是 Etsy 写的一个网络监控器，
-能够统计并图形化数据。它有两种核心的统计方式：计数器和计时器。
-我们用计数器来跟踪许多信息，从每秒钟注册数到喜欢数量统计。
-同时我们使用计时器来跟踪 feeds 变化，用户停留在 feeds 多久，和其他的主要操作。
-我们喜欢 statsd 的最大原因是它能迅速将状态显示并图形化出来。
-Stats 几乎是实时的（在我们系统中有 10 秒钟的延时）
-帮助我们评估系统状况和代码变化情况。
-Stats 可以随意启用，当我们需要跟踪时，能够快速启用它。
-你可以指定一个取样密度，来均匀的查看 web 应用概况，
-而不会影响它运行效率。
+statsd 在 Instagram 很受欢迎。这是 Etsy 写的一个网络监控器， 能够统计并图形化数据。它有两种核心的统计方式：计数器和计时器。 我们用计数器来跟踪许多信息，从每秒钟注册数到喜欢数量统计。 同时我们使用计时器来跟踪 feeds 变化，用户停留在 feeds 多久，和其他的主要操作。
+我们喜欢 statsd 的最大原因是它能迅速将状态显示并图形化出来。 Stats 几乎是实时的（在我们系统中有 10 秒钟的延时） 帮助我们评估系统状况和代码变化情况。 Stats 可以随意启用，当我们需要跟踪时，能够快速启用它。 你可以指定一个取样密度，来均匀的查看 web 应用概况， 而不会影响它运行效率。
 总结：实时统计可以动态添加，帮助你线上诊断而无须等待问题重现。
 ##Dogslow##
-Bitbucket 出品，Dogslow 是一个 Django middleware，它能监视运行的进程，
-当发现有进程运行时间超过 N 秒时，会保存当前进程信息的快照到磁盘。
-一直开着它很耗性能，但当去定位突发问题的瓶颈时，就会非常有用（我们在 web
-服务器上加了一个开关控制）。
-在发布那天，我们发现很多运行时间超过 1.5s 的进程都卡在 memcached 的 set()
-和 get_many() 方法上。我们使用 Munin 跟踪我们的机器状态，发现 memcached...</p>
-  </div>
-  <footer class="entry-footer"><span title='2012-11-19 00:06:00 +0800 CST'>2012-11-19</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 如何让 Instagram 在一百多万用户爆炸后稳定运行" href="https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Working with Python subprocess[译文]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。
-这篇文章是在写 Btrace 脚本时候查资料看到的，
-看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。
-熬了一个月才磨出来，媳妇都快成婆了有木有。
+Bitbucket 出品，Dogslow 是一个 Django middleware，它能监视运行的进程， 当发现有进程运行时间超过 N 秒时，会保存当前进程信息的快照到磁盘。 一直开着它很耗性能，但当去定位突发问题的瓶颈时，就会非常有用（我们在 web 服务器上加了一个开关控制）。
+在发布那天，我们发现很多运行时间超过 1.5s 的进程都卡在 memcached 的 set() 和 get_many() 方法上。我们使用 Munin 跟踪我们的机器状态，发现 memcached 每秒有 5 万次请求，因此，尽管还没到达 CPU 上限，却被 memcached 拖慢了应用服务器速度。...</p></div><footer class=entry-footer><span title='2012-11-19 00:06:00 +0800 +0800'>2012-11-19</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to 如何让 Instagram 在一百多万用户爆炸后稳定运行" href=https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>Working with Python subprocess[译文]</h2></header><div class=entry-content><p>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。
+这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。
 原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More
 注意
-关于「执行命令时候发生了什么」这个问题，可以在
-http://en.wikipedia.org/wiki/Redirection_(computing)
-找到更多最新信息。这篇文章遵循 GFDL 协议。
-在我的上一篇日志中，我写到如何
-build a command line interface with sub-commands in Python。
-这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。
+关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。
+在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。
 我想达到的目标是：
-查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序 执行程序时发生了什么 当你双击桌面上的终端程序图标时，就会打开一个载入 shell 的程序。
-你键入的命令不会直接在内核执行，而是先和 shell 进行交互。
-Command (eg. `ls -l&#39;) ↓ Terminal Program (eg. `gnome-terminal&#39;) ↓ Shell (eg Bash) ↓ Kernel (eg....</p>
-  </div>
-  <footer class="entry-footer"><span title='2012-10-16 00:42:00 +0800 CST'>2012-10-16</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to Working with Python subprocess[译文]" href="https://blog.alswl.com/2012/10/working-with-python-subprocess/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2>Flotr2 - 我最喜欢的 Javascript 图形库[译文]
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>原文地址：Flotr2 - my favorite javascript graph library
+查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序 执行程序时发生了什么 当你双击桌面上的终端程序图标时，就会打开一个载入 shell 的程序。 你键入的命令不会直接在内核执行，而是先和 shell 进行交互。
+Command (eg. `ls -l') ↓ Terminal Program (eg. `gnome-terminal') ↓ Shell (eg Bash) ↓ Kernel (eg....</p></div><footer class=entry-footer><span title='2012-10-16 00:42:00 +0800 +0800'>2012-10-16</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Working with Python subprocess[译文]" href=https://blog.alswl.com/2012/10/working-with-python-subprocess/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2>Flotr2 - 我最喜欢的 Javascript 图形库[译文]</h2></header><div class=entry-content><p>原文地址：Flotr2 - my favorite javascript graph library
 译者：alswl
-我研究了很久，得到的终极数据可视化方案是 javascript &#43; html ，这是唯一像样又好用的。
-Gnuplot 虽然看上去不错，但是不太漂亮。
-一些基于 Python 的图形化工具也有同样的问题。
-Mathematica 在我看来则太正式了，所以我不怎么用它。
-基于 javascript 的图形化工具其中一个巨大优势是易于共享。
-通过设置 Github Page、分享链接等方法，我们都可以很方便的获取最新图表数据，
-甚至可以进行交互。
+我研究了很久，得到的终极数据可视化方案是 javascript + html ，这是唯一像样又好用的。
+Gnuplot 虽然看上去不错，但是不太漂亮。 一些基于 Python 的图形化工具也有同样的问题。 Mathematica 在我看来则太正式了，所以我不怎么用它。
+基于 javascript 的图形化工具其中一个巨大优势是易于共享。 通过设置 Github Page、分享链接等方法，我们都可以很方便的获取最新图表数据， 甚至可以进行交互。
 那些基于 javascript 的图形化工具 有很多 javascript 图形化库，从极简到复杂绚丽的风格，都极为丰富。
-最流行的可能就是 d3.js 和 Raphael 了。
-他们用起来相当麻烦，但却能实现绚丽到超越你想象的可视化效果。
+最流行的可能就是 d3.js 和 Raphael 了。 他们用起来相当麻烦，但却能实现绚丽到超越你想象的可视化效果。
 Raphael 还一个 web 矢量库，外观同样很漂亮。
 Raphael 中的分析图表
 Raphael 中的气泡图
 Raphael 中的钟表时间图
-D3.js 的愿景是帮助人们轻松的完成数据可视化，可惜事与愿违，
-它弄得太复杂了。
+D3.js 的愿景是帮助人们轻松的完成数据可视化，可惜事与愿违， 它弄得太复杂了。
 Hacker News 文章标题的可视化数据
 用 d3.js 绘制购房信息
 用 d3.js 制作的散布图
-Flotr2 这些可视化工具，虽然看上去很华丽，但是难以使用。
-他们会很浪费时间，让人捣鼓到最后却发现什么都没弄出来。
-大部分 Raphael 和 d3 的功能矫正过枉了，有时我们只想要一个简单的绘图工具而已。
-为了将我去年的 750 个关键字数据可视化，我使用了 Flotr2。...</p>
-  </div>
-  <footer class="entry-footer"><span title='2012-06-19 07:03:00 +0800 CST'>2012-06-19</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to Flotr2 - 我最喜欢的 Javascript 图形库[译文]" href="https://blog.alswl.com/2012/06/flotr2/"></a>
-</article>
-<footer class="page-footer">
-  <nav class="pagination">
-    <a class="next" href="https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/page/2/">Next&nbsp;&nbsp;»
-    </a>
-  </nav>
-</footer>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2022 <a href="https://blog.alswl.com">Log4D</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
-</html>
+Flotr2 这些可视化工具，虽然看上去很华丽，但是难以使用。 他们会很浪费时间，让人捣鼓到最后却发现什么都没弄出来。 大部分 Raphael 和 d3 的功能矫正过枉了，有时我们只想要一个简单的绘图工具而已。
+为了将我去年的 750 个关键字数据可视化，我使用了 Flotr2。 只花费我数分钟，就能通过操作 javascript 将数据转化成 Flotr2 能理解的函数， 然后 Flotr2 就将数据转化成漂亮的图表。...</p></div><footer class=entry-footer><span title='2012-06-19 07:03:00 +0800 +0800'>2012-06-19</span>&nbsp;·&nbsp;alswl</footer><a class=entry-link aria-label="post link to Flotr2 - 我最喜欢的 Javascript 图形库[译文]" href=https://blog.alswl.com/2012/06/flotr2/></a></article><footer class=page-footer><nav class=pagination><a class=next href=https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/page/2/>Next&nbsp;&nbsp;»</a></nav></footer></main><footer class=footer><span>&copy; 2022 <a href=https://blog.alswl.com>Log4D</a></span>
+<span>Powered by
+<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
+        <a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentcolor"><path d="M12 6H0l6-6z"/></svg></a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script><script>document.getElementById("theme-toggle").addEventListener("click",()=>{document.body.className.includes("dark")?(document.body.classList.remove("dark"),localStorage.setItem("pref-theme","light")):(document.body.classList.add("dark"),localStorage.setItem("pref-theme","dark"))})</script></body></html>
