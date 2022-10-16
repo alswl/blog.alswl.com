@@ -16,13 +16,13 @@ categories: ["internet"]
 
 感觉这个创意很是不错，推广的才如此之快，而且在一个网站的亲和力和聚合力上的确起到了很大的作用
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png)
+![image](/images/upload_dropbox/201612/404.png)
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png)
+![image](/images/upload_dropbox/201612/404.png)
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png)
+![image](/images/upload_dropbox/201612/404.png)
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png)
+![image](/images/upload_dropbox/201612/404.png)
 
-![image](https://4ocf5n.dijingchao.com/upload_dropbox/201612/404.png)
+![image](/images/upload_dropbox/201612/404.png)
 

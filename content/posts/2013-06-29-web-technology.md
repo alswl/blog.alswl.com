@@ -15,7 +15,7 @@ categories: ["coding"]
 现在经历过 Python / Django / 烂代码的阵痛，开始有更多的想法，
 在整理这些粗糙的想法之前，我又把这本书翻了一遍，写个流水帐读书笔记。
 
-![大规模Web服务开发技术](https://4ocf5n.dijingchao.com/upload_dropbox/201306/s6818566.jpg)
+![大规模Web服务开发技术](/images/upload_dropbox/201306/s6818566.jpg)
 
 
 《大规模Web服务开发技术》@豆瓣： [http://book.douban.com/subject/6758780/](http://book.douban.com/subject/6758780/)

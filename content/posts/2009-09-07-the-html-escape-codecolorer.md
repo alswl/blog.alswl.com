@@ -19,13 +19,13 @@ categories: ["coding"]
 
 ## 症状
 
-[caption id="attachment_12631" align="alignnone" width="345" caption="开启CodeColorer+可视化界面编辑结果"][![Snap2](https://4ocf5n.dijingchao.com/upload_dropbox/200909/Snap2.jpg)](https://4ocf5n.dijingchao.com/upload_dropbox/200909/Snap2.jpg)[/caption]
+[caption id="attachment_12631" align="alignnone" width="345" caption="开启CodeColorer+可视化界面编辑结果"][![Snap2](/images/upload_dropbox/200909/Snap2.jpg)](/images/upload_dropbox/200909/Snap2.jpg)[/caption]
 
-[caption id="attachment_12632" align="alignnone" width="304" caption="关闭CodeColorer+HTML编辑结果在首页显示"][![关闭CodeColorer+HTML编辑结果](https://4ocf5n.dijingchao.com/upload_dropbox/200909/Snap3.jpg)](https://4ocf5n.dijingchao.com/upload_dropbox/200909/Snap3.jpg)[/caption]
+[caption id="attachment_12632" align="alignnone" width="304" caption="关闭CodeColorer+HTML编辑结果在首页显示"][![关闭CodeColorer+HTML编辑结果](/images/upload_dropbox/200909/Snap3.jpg)](/images/upload_dropbox/200909/Snap3.jpg)[/caption]
 
-[caption id="attachment_12633" align="alignnone" width="312" caption="关闭CodeColorer+HTML编辑结果在内容页"][![关闭CodeColorer+HTML编辑结果在内容页](https://4ocf5n.dijingchao.com/upload_dropbox/200909/Snap4.jpg)](https://4ocf5n.dijingchao.com/upload_dropbox/200909/Snap4.jpg)[/caption]
+[caption id="attachment_12633" align="alignnone" width="312" caption="关闭CodeColorer+HTML编辑结果在内容页"][![关闭CodeColorer+HTML编辑结果在内容页](/images/upload_dropbox/200909/Snap4.jpg)](/images/upload_dropbox/200909/Snap4.jpg)[/caption]
 
-[caption id="attachment_12634" align="alignnone" width="365" caption="正确显示"][![正确显示](https://4ocf5n.dijingchao.com/upload_dropbox/200909/Snap5.jpg)](https://4ocf5n.dijingchao.com/upload_dropbox/200909/Snap5.jpg)[/caption]
+[caption id="attachment_12634" align="alignnone" width="365" caption="正确显示"][![正确显示](/images/upload_dropbox/200909/Snap5.jpg)](/images/upload_dropbox/200909/Snap5.jpg)[/caption]
 
 ## 解决方法
 

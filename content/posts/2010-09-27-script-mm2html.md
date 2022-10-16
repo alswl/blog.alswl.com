@@ -179,7 +179,7 @@ html.close()
 
 脚本zip档点击这里下载，里面的CSS格式我用的我博客主题的reset.css，可以自行修改。
 
-传送门：点击这里[下载Boo2Html.zip](https://4ocf5n.dijingchao.com/upload_dropbox/201009/Boo2Html.zip)
+传送门：点击这里[下载Boo2Html.zip](/images/upload_dropbox/201009/Boo2Html.zip)
 
 oh， SB了，还没说怎么用：把zip档里面的两个文件放到有mm的文件夹里面，双击运行即可（需要Python环境）。
 

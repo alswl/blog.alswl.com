@@ -10,7 +10,7 @@ draft: true
 
 啊~~~~受不了了~~~~
 
-![B_0004](https://4ocf5n.dijingchao.com/upload_dropbox/200808/b_0004.gif)
+![B_0004](/images/upload_dropbox/200808/b_0004.gif)
 
 我承认我那天是过了点，一下子冲动加了黑名单，可是我当时就后悔了，第二天一醒来就跑去加好友，还特意刷新一下电脑QQ好友，眼睁睁的看着从好友里面消失。
 

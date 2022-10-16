@@ -19,5 +19,5 @@ XiaoneiCaiCai.jar"运行。
 
 纯属娱乐，水平很菜，大家不要喷我。
 
-[猛击这里下载xiaoneicaicai](https://4ocf5n.dijingchao.com/2009/06/xiaoneicaicai.rar)
+[猛击这里下载xiaoneicaicai](/images/2009/06/xiaoneicaicai.rar)
 

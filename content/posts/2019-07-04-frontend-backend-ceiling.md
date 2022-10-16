@@ -13,7 +13,7 @@ categories: ["thinking"]
 > \- 玉伯 2013 年 [阿里前端的困局与突围](https://github.com/lifesinger/blog/issues/141)
 
 
-![ceilling](https://4ocf5n.dijingchao.com/upload_dropbox/201907/ceilling.jpg)
+![ceilling](/images/upload_dropbox/201907/ceilling.jpg)
 
 <small>image from [Abbey Arches Architecture - Free photo on Pixabay](https://pixabay.com/photos/abbey-arches-architecture-building-1851493/)</small>
 

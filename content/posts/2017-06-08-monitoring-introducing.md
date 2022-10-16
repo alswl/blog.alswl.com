@@ -11,7 +11,7 @@ categories: ["coding"]
 其实做分享对分享者的作用往往大于参与者。
 这是一次将自己知识的梳理的过程，于是我将这次分享整理成这篇文章。
 
-![201706/stock-exchange.png](https://4ocf5n.dijingchao.com/upload_dropbox/201706/stock-exchange.png)
+![201706/stock-exchange.png](/images/upload_dropbox/201706/stock-exchange.png)
 
 <!-- more -->
 

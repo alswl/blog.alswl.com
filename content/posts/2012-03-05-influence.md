@@ -11,7 +11,7 @@ categories: ["thinking"]
   * 日常生活中有大量心理捷径。
   * 在某个环境下机械地回应某一信息的倾向叫做自动化反应或"按一下就播放"式反应； 对所有相关信息进行彻底分析后做出反应的倾向，则叫做可控式反应。
 
-![Influence](https://4ocf5n.dijingchao.com/upload_dropbox/201203/s1003546.jpg)[豆瓣链接](http://book.douban.com/subject/1005576/)
+![Influence](/images/upload_dropbox/201203/s1003546.jpg)[豆瓣链接](http://book.douban.com/subject/1005576/)
 
 ## 1. 互惠
 

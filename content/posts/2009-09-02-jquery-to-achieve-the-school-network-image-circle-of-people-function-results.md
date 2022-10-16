@@ -434,7 +434,7 @@ categories: ["coding"]
 
 ### 相关下载
 
-[DragResize.js](https://4ocf5n.dijingchao.com/upload_dropbox/200909/DragResize.js)
-[template.js](https://4ocf5n.dijingchao.com/upload_dropbox/200909/template.js)
-[css.css](https://4ocf5n.dijingchao.com/upload_dropbox/200909/css.css)
+[DragResize.js](/images/upload_dropbox/200909/DragResize.js)
+[template.js](/images/upload_dropbox/200909/template.js)
+[css.css](/images/upload_dropbox/200909/css.css)
 
