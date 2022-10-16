@@ -28,8 +28,8 @@ cdn: build-production
 	# echo "Copying files to server..."
 	# $(QSHELL) qupload2 --thread-count=5 --check-size --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
 
-	sed -i 's#src="/images/#src="$(CDN_HOST)/#g' $(shell grep -Rl 'src="/images/' public)
-	sed -i 's#href="/images/#href="$(CDN_HOST)/#g' $(shell grep -Rl 'href="/images/' public)
+	sed -i 's#src="/images/#src="$(CDN_HOST)/images/#g' $(shell grep -Rl 'src="/images/' public)
+	sed -i 's#href="/images/#href="$(CDN_HOST)/images/#g' $(shell grep -Rl 'href="/images/' public)
 
 
 	# curl --silent "http://www.google.com/ping?sitemap=$(SITEMAP_URL)"
