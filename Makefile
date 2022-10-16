@@ -22,7 +22,6 @@ deploy: build-production
 
 	gsed -i 's#src="/images/#src="$(CDN_HOST)/#g' $(shell grep -Rl 'src="/images/' public)
 	gsed -i 's#href="/images/#href="$(CDN_HOST)/#g' $(shell grep -Rl 'href="/images/' public)
-	gsed -i 's#href="/images/#alt="$(CDN_HOST)/#g' $(shell grep -Rl 'alt="/images/' public)
 
 
 	# curl --silent "http://www.google.com/ping?sitemap=$(SITEMAP_URL)"
