@@ -170,7 +170,7 @@ if (!doNotTrack) {
 3.之所以要买牙刷，是因为家里的牙刷毛太硬，早晨出了一嘴血。
 4.中午吃了葫芦，我很奇怪北方人都不吃葫芦，多好吃的东西啊，他们都以为只有葫芦娃那种宝葫芦啊~~~呃，如果你不懂，自个问知道去。
 Google图片都找不到合适的内容，刚才去冰箱取苹果，居然发现在冰箱有几根葫芦，就拍拍上图了
-[caption id=“attachment_12720” align=“alignnone” width=“480” caption=“葫芦”]{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} [/caption]
+[caption id=“attachment_12720” align=“alignnone” width=“480” caption=“葫芦”] [/caption]
 5.吃完午饭，下午又跑去找蕾玩，这个没良心的，有了男朋友，已经半年没联系我玩了，我居然都不知道她搬家了，和我仅仅相隔一条街。
 6.和蕾聊到下午4点多，太阳快落山了，我想起还有馄饨皮子要买，所以「依依不舍」的告别。
 7.买好馄饨皮回家，晚上我包馄饨时候被我妈挨骂，原来遇到奸商了：馄饨皮子分两种，自家吃的大皮子和酒店用的小皮子，那个奸商给我称了3斤小皮子。
@@ -279,18 +279,25 @@ MTV 中的M是代表MODLE层,T代表Template(模板层),V代表VIEW层....</p>
   </header>
   <div class="entry-content">
     <p>下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello World来介绍一个开发步骤。
-1.创建GAE应用 建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 {# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} App Engine ，激活这个服务，就可以创建新的应用。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 一个简单的App控制台
+1.创建GAE应用 建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 App Engine ，激活这个服务，就可以创建新的应用。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。
+一个简单的App控制台
 2.部署GAE App 刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置 ，所以Nothing,检查http状态会发现返回的是404状态）。
 这时候我们就要开始部署这个GAE App了：1.下载一个Google App Engine SDK for Python-Win，这样就可以在本地测试项目，然后发布到 GAE。
 用这个GAE Launcher在本地创建了一个Application，注意标识符和你网上申请的要一致。然后会自动生成一个包含&#34;」Hello Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。
 相关链接：app.yaml的具体设置
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。
+我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。
 在一切没有问题之后，我们就可以惦记Deploy部署这个项目了，这时候要输入帐号和密码，然后出现console控制台等待信息。出现下面提示时候，就说明上传成功 了。
 Closing update: new version is ready to start serving. Uploading index definitions. Password for alswlwangzi@gmail.com: 2009-09-27 16:00:36 (Process exited with code 0) 这时候我们就可以打开xxx.appspot.com查看刚才部署的网站。
 3.校内应用 拥有校内帐号，就可以创建校内应用。第一步是需要安装一个名为「开发者」 的应用。通过这个应用，可以链接到其他一些有帮助的内容：开放平台文档、测试工具、讨论区。
 第二步是创建一个新的应用，按部就班的填上相关资料。
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）...</p>
+校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）
+我的应用程序，在这里可以编辑应用的属性
+创建之后，就可以填上Canvas的基本选项中的「应用展示地址」和「Canvas Callback URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com这种形式的网址。
+最后测试自己的应用，也就是刚才「应用展示地址」，形式类似于apps.renren.com/xxx/，就可以看到我们的应用了，这时候基本框架就差不多了。
+4.噩耗 此时当满天欢喜时候打开刚才的「应用展示地址」，你会惊奇的发现校内居然报错了，直接报了405错误。什么是405错误，就是服务器没有权限访问。
+我花了一下午时间才解决这个问题，因为问题可能出在校内，也可能是GAE的功能限制上。
+在appspot上测试这个应用是没有任何问题的
+显示的源码，其中的xnml校内服务器自己可以解析出来的，这段代码在校内测试工具也能通过...</p>
   </div>
   <footer class="entry-footer"><span title='2009-09-28 00:00:00 +0800 +0800'>2009-09-28</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to GAE&#43;校内App初接触" href="https://blog.alswl.com/2009/09/gae-initial-contact-with-the-school-app/"></a>
@@ -314,7 +321,7 @@ Google App Engine相关下载：http://code.google.com/appengine/downloads.html
 Google App Engine SDK for Python-Win：GoogleAppEngine_1.2.5.msi
 Google App Engine SDK for Java：appengine-java- sdk-1.2.5.zip
 Google App Engine Documentation：google-appengine-docs-20090921.zip
-最后一个小图标：{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} ，呵呵，Google的图标都那么帅</p>
+最后一个小图标： ，呵呵，Google的图标都那么帅</p>
   </div>
   <footer class="entry-footer"><span title='2009-09-27 00:00:00 +0800 +0800'>2009-09-27</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 当Google APP Engine遇上校内" href="https://blog.alswl.com/2009/09/when-google-app-engine-encounter-campus/"></a>
@@ -327,7 +334,7 @@ Google App Engine Documentation：google-appengine-docs-20090921.zip
   </header>
   <div class="entry-content">
     <p>开始学Python大概有1个多月了，深深的被这门简单的语言所吸引着，简单却强大，是一门非常精彩的语言。特别是它的设计理念：「在允许性能牺牲的范围内，提高开发 效率，简化开发方法」。（呃…这个原文我找不到了，我自己总结了一下）
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 细细数来，我现在掌握的语言应该有C&#43;&#43;, Java, C#, Asp, Asp.Net, Python，我所说的掌握并不是具体到多细节，而是自己大概知道怎么去用，如果给我一本Manual，也能大概也一个小型的软件。
+细细数来，我现在掌握的语言应该有C&#43;&#43;, Java, C#, Asp, Asp.Net, Python，我所说的掌握并不是具体到多细节，而是自己大概知道怎么去用，如果给我一本Manual，也能大概也一个小型的软件。
 我以前经常和学弟学妹们说「语言不是问题」，当时面对的是学弟们对Java, .NET两大体系的选择。如果现在再让我对语言进行选择，我就会慎重的多了。在公司一个半月的实习后，我越来越觉得「语法不是问题，语言跨越是个问题」。
 之所以说语法不是问题，是因为我觉得如果掌握了C/C&#43;&#43;之后，其他的主流语言的语法都应该能够在短时期内学会，毕竟思想是相同的，只需要手头有一本Manual。特 别是Java/.NET，双方语法上面相似度，有时候看某一片代码段就分辨不出来。
 我觉得语言的跨度在开发系统的架构上面，比如JavaEE和Asp.NET开发模式上面有很多东西完全不同，Python作为一门解释性语言跟C/C&#43;&#43;相比也有很多 的区别（我很喜欢Python的动态执行，调试太爽了，完全没有内存报错啥的），这时候就显示出语言的不同。
@@ -348,10 +355,10 @@ Google App Engine Documentation：google-appengine-docs-20090921.zip
 这小门平时晚上10点关门，我们也翻的挺勤快的，现在完全封锁，翻都不让，拿树枝堵上了小门上的缝隙。
 虽然这个措施很影响我们生活，但是为了安全，我们还是能理解的。
 下面上几张图片。
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 隐约能看到外面很多移动饭店，现在卖饭的只能派专员在门口蹲点服务。机灵的已经把「菜单」挂到小门上了。
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 现在刚下课，还不是最高峰，很多人看了一眼，感觉人太多就犹豫了。
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 横幅是：台湾小吃：XX肉扣夹膜
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 门口的告示，门卫在预防同学翻墙。</p>
+隐约能看到外面很多移动饭店，现在卖饭的只能派专员在门口蹲点服务。机灵的已经把「菜单」挂到小门上了。
+现在刚下课，还不是最高峰，很多人看了一眼，感觉人太多就犹豫了。
+横幅是：台湾小吃：XX肉扣夹膜
+门口的告示，门卫在预防同学翻墙。</p>
   </div>
   <footer class="entry-footer"><span title='2009-09-24 00:00:00 +0800 +0800'>2009-09-24</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 某大H1N1中的某个小门" href="https://blog.alswl.com/2009/09/a-large-h1n1-in-a-door/"></a>

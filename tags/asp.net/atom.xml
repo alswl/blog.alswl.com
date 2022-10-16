@@ -14,10 +14,10 @@
       
       <guid>https://blog.alswl.com/2009/11/membership-the-use-of-experience/</guid>
       <description>花了很大一段时间在学习MemberShip，总是要留下一些纪念文章的。 我之前的日志提到过一个简单的用户权限设计：User+Role+UserInRole([http://log4d.com/2009/06/design-of-user-rights](http://log4d.com/2009/06/design-of-user- rights))，但是这样还是不够灵活，最好需要能够对每一个功能模块进行权限控制，而且需要符合开闭原则。 MemberShip呢，是微软推出的一套很强大的用 户权限管理系统。就我使用的两大部分，主要包括MemberShip和roleManager这两个模块，分别是对用户和角色进行管理。
-MemberShip对系统进行管理大致分为两个办法 1.可以通过&amp;quot;登录&amp;quot;系列用户控件的任务窗口中的&amp;quot;管理网站&amp;quot;打开&amp;quot;ASP.Net Web 应用程序管理&amp;quot;。 可以控制用户、角色、权限三个主要属性，另外还能选择 &amp;ldquo;提供程序&amp;rdquo;（这个provider分为MemberShip和RoleManager两种，如果同名的话，可以选择同一提供程序） {# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} {# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 2.使用Web.config进行配置 其实上面的可视化界面在配置提供程序和访问规则（权限设定）时候，本质上修改的是根目录web.config和各个文件夹下对应的web.config
+MemberShip对系统进行管理大致分为两个办法 1.可以通过&amp;quot;登录&amp;quot;系列用户控件的任务窗口中的&amp;quot;管理网站&amp;quot;打开&amp;quot;ASP.Net Web 应用程序管理&amp;quot;。 可以控制用户、角色、权限三个主要属性，另外还能选择 &amp;ldquo;提供程序&amp;rdquo;（这个provider分为MemberShip和RoleManager两种，如果同名的话，可以选择同一提供程序） 2.使用Web.config进行配置 其实上面的可视化界面在配置提供程序和访问规则（权限设定）时候，本质上修改的是根目录web.config和各个文件夹下对应的web.config
 我的根Web.config
 &amp;lt;authentication mode=&amp;quot;Forms&amp;quot;&amp;gt; &amp;lt;forms name=&amp;quot;ThisHouse&amp;quot; defaultUrl=&amp;quot;Default.aspx&amp;quot; loginUrl=&amp;quot;Signin.aspx&amp;quot; protection=&amp;quot;All&amp;quot; timeout=&amp;quot;30&amp;quot;/&amp;gt; &amp;lt;/authentication&amp;gt; &amp;lt;membership defaultProvider=&amp;quot;SqlProvider&amp;quot;&amp;gt; &amp;lt;providers&amp;gt; &amp;lt;add connectionStringName=&amp;quot;thisHouseConnectionString&amp;quot; enablePasswordRetrieval=&amp;quot;false&amp;quot; enablePasswordReset=&amp;quot;true&amp;quot; requiresQuestionAndAnswer=&amp;quot;true&amp;quot; applicationName=&amp;quot;ThisHouse&amp;quot; requiresUniqueEmail=&amp;quot;false&amp;quot; passwordFormat=&amp;quot;Clear&amp;quot; maxInvalidPasswordAttempts=&amp;quot;255&amp;quot; minRequiredPasswordLength=&amp;quot;1&amp;quot; minRequiredNonalphanumericCharacters=&amp;quot;1&amp;quot; passwordAttemptWindow=&amp;quot;10&amp;quot; passwordStrengthRegularExpression=&amp;quot;&amp;quot; name=&amp;quot;SqlProvider&amp;quot; type=&amp;quot;System.Web.Security.SqlMembershipProvider&amp;quot;/&amp;gt; &amp;lt;/providers&amp;gt; &amp;lt;/membership&amp;gt; &amp;lt;roleManager enabled=&amp;quot;true&amp;quot; cacheRolesInCookie=&amp;quot;true&amp;quot; defaultProvider=&amp;quot;SqlProvider&amp;quot;&amp;gt; &amp;lt;providers&amp;gt; &amp;lt;add connectionStringName=&amp;quot;thisHouseConnectionString&amp;quot; applicationName=&amp;quot;ThisHouse&amp;quot; name=&amp;quot;SqlProvider&amp;quot; type=&amp;quot;System.Web.Security.SqlRoleProvider&amp;quot;/&amp;gt; &amp;lt;/providers&amp;gt; &amp;lt;/roleManager&amp;gt; 我禁止User角色进入Admin文件夹，配置完&amp;quot;访问规则&amp;quot;后，会在Admin文件夹下生成相应web.config
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;system.web&amp;gt; &amp;lt;authorization&amp;gt; &amp;lt;allow roles=&amp;quot;User&amp;quot; /&amp;gt; &amp;lt;allow roles=&amp;quot;Admin&amp;quot; /&amp;gt; &amp;lt;deny users=&amp;quot;?</description>
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;utf-8&amp;quot;?&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;system.web&amp;gt; &amp;lt;authorization&amp;gt; &amp;lt;allow roles=&amp;quot;User&amp;quot; /&amp;gt; &amp;lt;allow roles=&amp;quot;Admin&amp;quot; /&amp;gt; &amp;lt;deny users=&amp;quot;?&amp;quot; /&amp;gt; &amp;lt;/authorization&amp;gt; &amp;lt;/system.</description>
     </item>
     
     <item>
@@ -27,7 +27,7 @@ MemberShip对系统进行管理大致分为两个办法 1.可以通过&amp;quot;
       
       <guid>https://blog.alswl.com/2009/11/thishouse-housing-sales-system/</guid>
       <description>呃，这是我在一个星期内搞鼓的一个Asp.NET课程设计，没有什么太多的内容，把它发布到了Csdn了，开了5分，嗯，对得起我一个星期拼命码代码。（哦，我很无耻 的使用了MG12的iNove主题……）
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} readme.txt内容： This House房屋销售系统 本人大四一个课程设计，大概花费1周时间，构架2天，编码3天，零碎程序1天，论文1天。
+readme.txt内容： This House房屋销售系统 本人大四一个课程设计，大概花费1周时间，构架2天，编码3天，零碎程序1天，论文1天。
 程序写的不好不坏，是DAL+BLL+Model+Web三层架构，使用的动软生成器生成的简单三层框架。压缩包包括源码，数据库，一个star uml简单设计图，数据库文档，需求分析和论文。
 系统关键词是： Asp.NET; MemberShip; iBatisNet; AjaxControlToolkit; **房屋销售系统 ** 数据库使用的是一个完整的MemberShip 权限管理系统，而不是我自己写的简单User in Role，所以建议对这个MemberShip有一定了解。
 整个系统关注的是框架的使用，对于业务逻辑关注很少，实在是我时间有限，没有更多的精力搞.NET。（我学Asp.Net 3个月了，之前是搞Java的） 如果有问题可以到http://log4d.com留言，本人大四，会在有时间前提下回答，毕竟现在我正在找工作。
@@ -41,7 +41,7 @@ MemberShip对系统进行管理大致分为两个办法 1.可以通过&amp;quot;
       <pubDate>Tue, 25 Aug 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/08/no-photo-caused-by-the/</guid>
-      <description>{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 某个系统，检查用户照片，如果发现用户并没有设定照片就返回一张No Photo的图片。
+      <description>某个系统，检查用户照片，如果发现用户并没有设定照片就返回一张No Photo的图片。
 返回数据库的图片代码比较格式化。
 int Id = Int32.Parse(Request.Params.Get(&amp;quot;Id&amp;quot;)); string type = Request.Params.Get(&amp;quot;type&amp;quot;); BLL.Student bll = new JznuManager.BLL.Student(); student = new JznuManager.Model.Student(); student = bll.GetModel(Id); Response.ContentType = &amp;quot;image/jpeg&amp;quot;; Response.Cache.SetCacheability(HttpCacheability.Public); Response.BufferOutput = false; //输出图片文件二进制数据 Response.OutputStream.Write(student.entryPhoto, 0, (int)student.entryPhoto.Length); Response.End(); 而如果返回的图片为空时候，就需要填充原先的图片Img。
 1.我起初设置了Img的默认背景background，当没有图片出来时候，就可以显示出原先背景，但很快发现这个办法的弊病，如果数据库图片过小则会导致背景图片 露出来。

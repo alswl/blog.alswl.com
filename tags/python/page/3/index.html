@@ -155,7 +155,7 @@ if (!doNotTrack) {
   </header>
   <div class="entry-content">
     <p>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 关于Pylons Pylons是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http: //www.makotemplates.org/)作为Template，SQLAlchemy作为 ORM映射。使用BSD作为授权协议。
+关于Pylons Pylons是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http: //www.makotemplates.org/)作为Template，SQLAlchemy作为 ORM映射。使用BSD作为授权协议。
 托WSGI的福，python的web框架超多，甚至高手5分钟可以自己手写一个web框架，这种情况也导致了Python web框架的纷杂。我这里选择Pylons（其实是被选择），并不是说Pylons一定最好，而是比较适合当前项目。更多的Python web框架对比建议看这篇[浅谈Python web框架](http://feilong.me/2011/01/talk-about-python-web- framework)，另外，这个Best Web- Framework有直观的对比。
 Pylons环境配置 因为开发机是刚到手的ThinkPad，没有冒险安装Linux，所以这里的安装环境是Win7 &#43; Python 2.6 &#43; MySQL5.1。
 1、安装Pylons Pylons似乎没有方便的easy_install，原因是由于Pylons在安装过程中，会生成一个目标环境。这个环境包括完整的Python环境，从而与系统自 带Python环境独立开来，防止第三方库的相互污染。Pylons官方提供了一个Python go- pylons.py脚本进行安装。
@@ -168,7 +168,8 @@ Pylons环境配置 因为开发机是刚到手的ThinkPad，没有冒险安装Li
 class Person(Base): __tablename__ = &#34;person&#34; id = Column(Integer, primary_key=True)
 name = Column(String(100))
 email = Column(String(100))
-def init(self, name=’’, email=’’):...</p>
+def init(self, name=’’, email=’’):
+self.name = name...</p>
   </div>
   <footer class="entry-footer"><span title='2011-05-16 00:00:00 +0800 +0800'>2011-05-16</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Pylons使用小记" href="https://blog.alswl.com/2011/05/pylons/"></a>
@@ -343,18 +344,25 @@ lst = &#39;{&#39; for i in range(int(&#39;0x00&#39;, 16), int(&#39;0xff&#39;, 16
   </header>
   <div class="entry-content">
     <p>下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello World来介绍一个开发步骤。
-1.创建GAE应用 建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 {# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} App Engine ，激活这个服务，就可以创建新的应用。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 一个简单的App控制台
+1.创建GAE应用 建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 App Engine ，激活这个服务，就可以创建新的应用。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。
+一个简单的App控制台
 2.部署GAE App 刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置 ，所以Nothing,检查http状态会发现返回的是404状态）。
 这时候我们就要开始部署这个GAE App了：1.下载一个Google App Engine SDK for Python-Win，这样就可以在本地测试项目，然后发布到 GAE。
 用这个GAE Launcher在本地创建了一个Application，注意标识符和你网上申请的要一致。然后会自动生成一个包含&#34;」Hello Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。
 相关链接：app.yaml的具体设置
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。
+我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。
 在一切没有问题之后，我们就可以惦记Deploy部署这个项目了，这时候要输入帐号和密码，然后出现console控制台等待信息。出现下面提示时候，就说明上传成功 了。
 Closing update: new version is ready to start serving. Uploading index definitions. Password for alswlwangzi@gmail.com: 2009-09-27 16:00:36 (Process exited with code 0) 这时候我们就可以打开xxx.appspot.com查看刚才部署的网站。
 3.校内应用 拥有校内帐号，就可以创建校内应用。第一步是需要安装一个名为「开发者」 的应用。通过这个应用，可以链接到其他一些有帮助的内容：开放平台文档、测试工具、讨论区。
 第二步是创建一个新的应用，按部就班的填上相关资料。
-{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）...</p>
+校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）
+我的应用程序，在这里可以编辑应用的属性
+创建之后，就可以填上Canvas的基本选项中的「应用展示地址」和「Canvas Callback URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com这种形式的网址。
+最后测试自己的应用，也就是刚才「应用展示地址」，形式类似于apps.renren.com/xxx/，就可以看到我们的应用了，这时候基本框架就差不多了。
+4.噩耗 此时当满天欢喜时候打开刚才的「应用展示地址」，你会惊奇的发现校内居然报错了，直接报了405错误。什么是405错误，就是服务器没有权限访问。
+我花了一下午时间才解决这个问题，因为问题可能出在校内，也可能是GAE的功能限制上。
+在appspot上测试这个应用是没有任何问题的
+显示的源码，其中的xnml校内服务器自己可以解析出来的，这段代码在校内测试工具也能通过...</p>
   </div>
   <footer class="entry-footer"><span title='2009-09-28 00:00:00 +0800 +0800'>2009-09-28</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to GAE&#43;校内App初接触" href="https://blog.alswl.com/2009/09/gae-initial-contact-with-the-school-app/"></a>
@@ -378,7 +386,7 @@ Google App Engine相关下载：http://code.google.com/appengine/downloads.html
 Google App Engine SDK for Python-Win：GoogleAppEngine_1.2.5.msi
 Google App Engine SDK for Java：appengine-java- sdk-1.2.5.zip
 Google App Engine Documentation：google-appengine-docs-20090921.zip
-最后一个小图标：{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} ，呵呵，Google的图标都那么帅</p>
+最后一个小图标： ，呵呵，Google的图标都那么帅</p>
   </div>
   <footer class="entry-footer"><span title='2009-09-27 00:00:00 +0800 +0800'>2009-09-27</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 当Google APP Engine遇上校内" href="https://blog.alswl.com/2009/09/when-google-app-engine-encounter-campus/"></a>
