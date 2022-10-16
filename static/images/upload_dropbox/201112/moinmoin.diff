@@ -1,0 +1,107 @@
+*** text_html_text_moin_wiki.py	2011-12-25 17:52:56.000000000 +0800
+--- text_html_text_moin_wiki.py.bak	2011-12-20 13:32:34.000000000 +0800
+***************
+*** 1,4 ****
+- # coding=utf-8
+  """
+      MoinMoin - convert from html to wiki markup
+  
+--- 1,3 ----
+***************
+*** 449,468 ****
+              if not node.hasChildNodes():
+                  node.parentNode.removeChild(node)
+  
+-         if node.localName == 'blockquote' and node.hasChildNodes() \
+-             and node.childNodes[0].nodeType == Node.TEXT_NODE:
+-                 # if blockquote has text, then the blockquote will change to p
+-                 # modify by alswl
+- 
+-                 #paragraphNode = xml.dom.minidom.Node()
+-                 #paragraphNode._node_type = Node.ELEMENT_NODE
+-                 #paragraphNode.localName = 'p'
+-                 #for x in node.childNodes:
+-                     #paragraphNode.appendChild(x) 
+-                     #node.removeChild(x)
+-                 #node.appendChild(paragraphNode)
+-                 node.localName = 'p'
+- 
+          if node.hasChildNodes():
+              self.visit_node_list(node.childNodes)
+  
+--- 448,453 ----
+***************
+*** 519,530 ****
+              elif text[i] is self.new_line_dont_remove:
+                  text[i] = "\n"
+                  i += 1
+-             elif text[i].startswith(u'　'):
+-                 # chinese whitespace by alswl
+-                 text[i] = re.sub(u'^　', '', text[i])
+-             #elif text[i].startswith(' '):
+-                 ## remove whitespace at start by alswl
+-                 #text[i] = re.sub('^ ', '', text[i])
+              else:
+                  i += 1
+  
+--- 504,509 ----
+***************
+*** 591,599 ****
+              #    self.text.append("\n")
+  
+      def process_br(self, node):
+!         #self.text.append(self.new_line) # without this, std multi-line text below some heading misses a whitespace
+                                          # when it gets merged to float text, like word word wordword word word
+-         self.text.append('<<BR>>') # modify by alswl 2011-12-20
+  
+      def process_heading(self, node):
+          text = self.node_list_text_only(node.childNodes).strip()
+--- 570,577 ----
+              #    self.text.append("\n")
+  
+      def process_br(self, node):
+!         self.text.append(self.new_line) # without this, std multi-line text below some heading misses a whitespace
+                                          # when it gets merged to float text, like word word wordword word word
+  
+      def process_heading(self, node):
+          text = self.node_list_text_only(node.childNodes).strip()
+***************
+*** 789,795 ****
+                      self.process_br(i)
+                  else:
+                      raise ConvertError("process_blockquote: Don't support %s element" % name)
+- 
+          self.depth -= 1
+  
+      def process_inline(self, node):
+--- 767,772 ----
+***************
+*** 942,953 ****
+  
+      def process_paragraph_item(self, node):
+          for i in node.childNodes:
+-             name = i.localName
+              if i.nodeType == Node.ELEMENT_NODE:
+!                 if name == 'br': # modify by alswl 2011-12-20
+!                     self.process_br(i)
+!                 else:
+!                     self.process_inline(i)
+              elif i.nodeType == Node.TEXT_NODE:
+                  self.text.append(i.data.strip('\n').replace('\n', ' '))
+  
+--- 919,926 ----
+  
+      def process_paragraph_item(self, node):
+          for i in node.childNodes:
+              if i.nodeType == Node.ELEMENT_NODE:
+!                 self.process_inline(i)
+              elif i.nodeType == Node.TEXT_NODE:
+                  self.text.append(i.data.strip('\n').replace('\n', ' '))
+  
+***************
+*** 1484,1486 ****
+--- 1457,1460 ----
+      text = '\n'.join([s.rstrip() for s in text.splitlines()] + ['']) # remove trailing blanks
+      return text
+  
++ 
