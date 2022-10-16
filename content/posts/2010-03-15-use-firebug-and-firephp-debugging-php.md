@@ -9,11 +9,9 @@ categories: ["coding"]
 
 这是我第一篇译文，在写WordPress 主题时候偶尔看到的FirePHP插件，看都这篇文章，不知道为什么，动了翻译的念头。
 
-原文链接：[Debug PHP with Firebug and
-FirePHP](http://www.sitepoint.com/blogs/2010/02/09/debug-php-firebug-firephp/)
+原文链接：[Debug PHP with Firebug and FirePHP](http://www.sitepoint.com/blogs/2010/02/09/debug-php-firebug-firephp/)
 
-译言的链接：[译言网 |
-使用Firebug和FirePHP调试PHP](http://article.yeeyan.org/view/119553/94520)
+译言的链接：[译言网 | 使用Firebug和FirePHP调试PHP](http://article.yeeyan.org/view/119553/94520)
 
 ×××××以下译文××××××
 
@@ -34,11 +32,8 @@ bug的控制台获得PHP脚本警告和错误，就感觉像直接调试JavaScri
 
 
 
-当然，这时候我们还无法做任何事，你还需要安装FirePHP的服务端，点击[这里](http://www.firephp.org/HQ/Install.htm
-)下载。这是一个独立的版本，你可以手动下载或者使用PEAR。装后之后，你可是轻松的将这个库加入你的代码。它被设计了很多版本来整合入多个框架或者管理系统，比如
-[WP-FirePHP plugin for WordPress](http://wordpress.org/extend/plugins/wp-
-firephp/) 和 [JFirePHP plugin for Joomla](http://joomlacode.org/gf/project/kune
-na/frs/?action=FrsReleaseView&release_id=11823)。暂时不管这些，我们将把精力集中在独立的功能上。
+当然，这时候我们还无法做任何事，你还需要安装FirePHP的服务端，点击[这里](http://www.firephp.org/HQ/Install.htm)下载。这是一个独立的版本，你可以手动下载或者使用PEAR。装后之后，你可是轻松的将这个库加入你的代码。它被设计了很多版本来整合入多个框架或者管理系统，比如
+[WP-FirePHP plugin for WordPress](http://wordpress.org/extend/plugins/wp-firephp/) 和 [JFirePHP plugin for Joomla](http://joomlacode.org/gf/project/kunena/frs/?action=FrsReleaseView&release_id=11823)。暂时不管这些，我们将把精力集中在独立的功能上。
 
 一旦你在你服务器上部署了FirePHP库，你还需要在你的代码中加入以下的代码：
 
@@ -52,6 +47,7 @@ start`来实现。
 当这些步骤完成后，你可以开始使用FirePHP了。你需要做的只是调用`fb`函数在任何你想要记录的地方。同时你也可以使用一个可选的标签和常量去定义预定义信息
 ，一个错误，一个警告，或者一条信息。
 
+```
 $var=array('a'=>'pizza',&nbsp_place_hold
 er;'b'=>'cookies','c'=>'celery');
 
@@ -69,6 +65,7 @@ ce_holder;FirePHP::ERROR);
 
     
     $var = array('a'=>'pizza', 'b'=>'cookies', 'c'=>'celery');fb($var);fb($var, "An array");fb($var, FirePHP::WARN);fb($var, FirePHP::INFO);fb($var, 'An array with an Error type', FirePHP::ERROR);
+```
 
 这些代码将在Firebug控制台输出如下所示
 
@@ -76,6 +73,7 @@ ce_holder;FirePHP::ERROR);
 
 你也可以使用FirePHP来跟踪你程序的执行情况：通过使用`FirePHP::TRACE常量，你可以在` `fb被调用的地方查看``行数、类名和方法名`
 
+```
 1
 
 functionhello(){
@@ -107,11 +105,11 @@ greet();
 
     
     function hello() { fb('Hello World!', FirePHP::TRACE);}function greet() { hello();}greet();
+```
 
 产生的输出如下
 
-![FirePHP Trace Output](http://www.sitepoint.com/blogs/wp-
-content/uploads/2010/02/Screen-shot-2010-02-09-at-3.00.40-PM.png)
+![FirePHP Trace Output](http://www.sitepoint.com/blogs/wp-content/uploads/2010/02/Screen-shot-2010-02-09-at-3.00.40-PM.png)
 
 这个跟踪功能可以完美的调试更复杂的代码，让你精确的知道你的方法是在哪里被调用的。
 

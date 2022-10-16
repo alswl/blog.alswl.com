@@ -12,13 +12,11 @@ Java，蛋疼啊～
 
 好了回正题，关于海扁王。
 
-[![image](https://4ocf5n.dijingchao.com/upload_dropbox/201005/s4145084.jpg)](http://img3.doubanio.com/lpic/s4
-145084.jpg)
+[![image](https://4ocf5n.dijingchao.com/upload_dropbox/201005/s4145084.jpg)](http://img3.doubanio.com/lpic/s4145084.jpg)
 
 海扁王是一部很不错的电影，特别是片中对于普通人梦想的描述，让人很感动。其次，影片中那个小萝莉真是。。。太High了，暴力和美学的结合啊～
 
-还记得小Loli杀人时候的啦啦啦音乐么，我在网上找到了歌词(via [《海扁王》----"控制住局面？你都他*妈去拿火箭筒了！"
-](http://www.mtime.com/my/1086467/blog/4307331/?mtime=93462))。
+还记得小Loli杀人时候的啦啦啦音乐么，我在网上找到了歌词(via [《海扁王》----"控制住局面？你都他*妈去拿火箭筒了！"](http://www.mtime.com/my/1086467/blog/4307331/?mtime=93462))。
 
 > 啦啦啦 啦啦啦啦！ 啦啦啦 啦啦啦啦！
 

@@ -20,17 +20,13 @@ categories: ["coding"]
 
 2.[dfBlog](http://wordpress.org/extend/themes/dfblog)
 
-[![image](https://4ocf5n.dijingchao.com/upload_dropbox/200907/screenshot.png)](http://wp-
-themes.com/wp-content/themes/dfblog/screenshot.png)
+[![image](https://4ocf5n.dijingchao.com/upload_dropbox/200907/screenshot.png)](http://wp-themes.com/wp-content/themes/dfblog/screenshot.png)
 
 3.[iNove](http://wordpress.org/extend/themes/inove)(小张的主机应该起手都是用的iNove吧……呵呵……)
 
-[![image](https://4ocf5n.dijingchao.com/upload_dropbox/200907/screenshot.png)](http://wp-
-themes.com/wp-content/themes/inove/screenshot.png)
+[![image](https://4ocf5n.dijingchao.com/upload_dropbox/200907/screenshot.png)](http://wp-themes.com/wp-content/themes/inove/screenshot.png)
 
-其他的主题有些虽然内置了mo/po文件，但没有中文对应的mo/po，需要自己修改，可以使用[poEdit](http://www.xdowns.com/so
-ft/38/103/2007/Soft_36710.html)编辑，我正在尝试汉化[Fusion](http://wordpress.org/extend/
-themes/fusion)，很喜欢这个主题，可惜没有中文汉化。
+其他的主题有些虽然内置了mo/po文件，但没有中文对应的mo/po，需要自己修改，可以使用[poEdit](http://www.xdowns.com/soft/38/103/2007/Soft_36710.html)编辑，我正在尝试汉化[Fusion](http://wordpress.org/extend/themes/fusion)，很喜欢这个主题，可惜没有中文汉化。
 
 另外，[WordPress中文论坛](http://wordpress.org.cn/)也有好多国人自己制作的优秀主题，那里的大部分都是中文的。
 
