@@ -17,6 +17,7 @@ build-production:
 
 
 .PHONY: sync-images
+sync-images:
 	echo "Copying files to server..."
 	$(QSHELL) qupload2 --thread-count=5 --check-size --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
 
