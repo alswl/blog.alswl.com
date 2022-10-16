@@ -154,7 +154,7 @@ if (!doNotTrack) {
     </h2>
   </header>
   <div class="entry-content">
-    <p>原文作者：Nick Craver 翻译作者：罗晟 @luosheng &amp; @alswl 原文地址：Nick Craver - HTTPS on Stack Overflow: The End of a Long Road 本文为原创翻译文章，已经获得原作者授权，转载请注明作者及出处。 本文首发在「沪江技术学院」公众号 今天，我们默认在 Stack Overflow 上部署了 HTTPS。目前所有的流量都将跳转到 https:// 上。与此同时，Google 链接也会在接下去的几周内更改。启用的过程本身只是举手之劳，但在此之前我们却花了好几年的时间。到目前为止，HTTPS 在我们所有的 Q&amp;A 网站上都默认启用了。
+    <p>{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 原文作者：Nick Craver 翻译作者：罗晟 @luosheng &amp; @alswl 原文地址：Nick Craver - HTTPS on Stack Overflow: The End of a Long Road 本文为原创翻译文章，已经获得原作者授权，转载请注明作者及出处。 本文首发在「沪江技术学院」公众号 今天，我们默认在 Stack Overflow 上部署了 HTTPS。目前所有的流量都将跳转到 https:// 上。与此同时，Google 链接也会在接下去的几周内更改。启用的过程本身只是举手之劳，但在此之前我们却花了好几年的时间。到目前为止，HTTPS 在我们所有的 Q&amp;A 网站上都默认启用了。
 在过去的两个月里，我们在 Stack Exchange 全网维持发布 HTTPS。Stack Overflow 是最后，也是迄今最大的的一个站点。这对我们来说是一个巨大里程碑，但决不意味着是终点。后文会提到，我们仍有很多需要做的事情。但现在我们总算能看得见终点了，耶！
 友情提示：这篇文章讲述的是一个漫长的旅程。非常漫长。你可能已经注意到你的滚动条现在非常小。我们遇到的问题并不是只在 Stack Exchange/Overflow 才有，但这些问题的组合还挺罕见。我在文章中会讲到我们的一些尝试、折腾、错误、成功，也会包括一些开源项目——希望这些细节对你们有所帮助。由于它们的关系错综复杂，我难以用时间顺序来组织这篇文章，所以我会将文章拆解成架构、应用层、错误等几个主题。
 首先，我们要提一下为什么我们的处境相对独特：
@@ -171,7 +171,7 @@ if (!doNotTrack) {
     </h2>
   </header>
   <div class="entry-content">
-    <p>(图片来自 茶杯中的可爱小白鼠 壁纸 - 2560x1920－堆糖，美好生活研究所)
+    <p>{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} (图片来自 茶杯中的可爱小白鼠 壁纸 - 2560x1920－堆糖，美好生活研究所)
 在上篇文章 🔒 也谈 HTTPS - HTTPDNS &#43; HTTPS 中， 我们谈了如何基于 HTTPDNS 来部署无坚不摧的 HTTPS 通信环境， 这次我们讨论另外一个比较头疼的问题：部署。
 小站点部署 HTTPS 相对成本低，改改前端代码，就可以上线了。 但作为业务有一定复杂度的大网站，就没办法这么暴力上线了。
 前端在基础库中调整 Scheme 之后，仍然可能存在很多边边角角没有覆盖到。 比如 JS 里面写死了 HTTP，那在 HTTPS 下请求 HTTP XHR 的话， 浏览器会将请求拦截掉。 一旦出现这种故障，用户就无法正常使用业务，小白用户往往也不懂得自己将 https:// 换成 http:// 使用。
@@ -192,7 +192,7 @@ if (!doNotTrack) {
   </header>
   <div class="entry-content">
     <p>最近谈论 HTTPS 的文章很多，其原因之一是运营商作恶底线越来越低，动不动就插播广告， 前两天小米还联合几家公司发文 关于抵制流量劫持等违法行为的联合声明 痛斥某些运营商。 另一方面也是苹果 ATS 政策的大力推动，逼迫大家在 APP 中全部使用 HTTPS 通信。 上 HTTPS 的好处很多：保护用户的数据不外泄，避免中间人篡改数据， 对企业信息进行鉴权。
-关于 HTTPS 如何购买证书，如何部署，网上的教程已经太多了，实践起来没有太大的难处。 我们在部署 HTTPS 的时候，遇到了一些新问题，首当其冲的就是 HTTPS 部分网络不可访问的问题：
+{# https://medium.com/@ardianta/writing-using-typora-on-hugo-based-blog-a1be8500774a #} 关于 HTTPS 如何购买证书，如何部署，网上的教程已经太多了，实践起来没有太大的难处。 我们在部署 HTTPS 的时候，遇到了一些新问题，首当其冲的就是 HTTPS 部分网络不可访问的问题：
 尽管使用了 HTTPS 技术，部分邪恶的运营商，仍然使用 DNS 污染技术，让域名指向的他们自己服务器 而这些服务器并没有部署 SSL 服务（就算部署了，也会触发 SSL 证书 Common name 不一致报警）， 导致 443 端口直接被拒绝。
 这个问题不解决，强行上 HTTPS 的话，会导致一部分用户出现无法访问网站 一旦用户不爽了，轻则对产品不信任，重则直接导致用户流失。
 运营商为了赚广告钱、省网间结算是不择手段的。 他们普遍使用的劫持手段是通过 ISP提供的 DNS 伪造域名。 那有没有什么方法可以解决 DNS 劫持呢？ 业界有一套解决这类场景的方案，即 HTTPDNS。
