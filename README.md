@@ -19,6 +19,9 @@ hugo new posts/new.md
 
 Asset prefix: `https://4ocf5n.dijingchao.com/upload_dropbox/`
 
+new for hugo
+d05fae.dijingchao.com
+
 Article footer:
 
 ```markdown
