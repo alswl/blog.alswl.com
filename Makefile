@@ -13,11 +13,19 @@ SITEMAP_URL = https://blog.alswl.com/sitemap.xml
 
 .PHONY: build-production
 build-production:
-	HUGO_ENV=production $(HUGO)
+	HUGO_ENV=production $(HUGO) --minify
 
-deploy: build-production
+
+.PHONY: sync-images
 	echo "Copying files to server..."
-	# $(QSHELL) s3 sync $(PUBLIC_FOLDER) $(BUCKET) --size-only --delete | tee -a $(DEPLOY_LOG)
+	$(QSHELL) qupload2 --thread-count=5 --check-size --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
+
+
+
+.PHONY: deploy
+deploy: build-production
+	# not works in github actions now
+	# echo "Copying files to server..."
 	# $(QSHELL) qupload2 --thread-count=5 --check-size --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
 
 	gsed -i 's#src="/images/#src="$(CDN_HOST)/#g' $(shell grep -Rl 'src="/images/' public)
