@@ -7,25 +7,25 @@ tags: ["excalidraw", "tool", "diagram", "frontend"]
 ---
 
 > 首先感谢岳父岳母带家中神兽去过暑假了，我才能有周末的时间来改这个系统。
-> 
+>
 > 另外感谢老婆，周末我两天都搞自己的事情，也没批评我。
-> 
+>
 > 最后感谢公司团建，提供酒店住，花了一个晚上时间搞定了中文手写体。
-> 
+>
 > 注：这是魔改私有化 excalidraw 开源版本，感谢社区
 
 
-## #1 Excalidraw 
+## #1 Excalidraw
 
 > 介绍一下 Excalidraw，产品特性
 
 什么是 Excalidraw，<mark>这（可能）是最强的在线协同画图工具</mark> ，你可以访问 [Excalidraw](https://excalidraw.com/) 试试看。
 
-![img](../../static/images/202210/anatomy_of_an_azure_function.png)
+![anatomy\_of\_an\_azure\_function.png](../../static/images/202210/anatomy_of_an_azure_function.png)
 
 如果你觉得打开来都是空白，那么也可以访问这个公共面板 [Excalidraw](https://excalidraw.com/#room=e630a562422e6e9d94db,IXndkz3JfOSGrlswJRC83Q) 参与一起创作。
 
-![image-20221017004248310](../../static/images/202210/excalidraw-share-room.png)
+![excalidraw-share-room.png](../../static/images/202210/excalidraw-share-room.png)
 
 Excalidraw 非常好用，我总结几个点：
 
@@ -33,7 +33,7 @@ Excalidraw 非常好用，我总结几个点：
 -   无延迟在线协作，非常适合后疫情时代的沟通协作
 -   产品素质过硬，快捷键、对象连接粘滞、选定文件直接存储到本地等细节都有，挑不出毛病
 
-![image.png](../../static/images/202210/excalidraw-homepage.png)
+![excalidraw-homepage.png](../../static/images/202210/excalidraw-homepage.png)
 
 这个产品我们经内部同学内部安利之后，大家迅速的喜欢上了，在 Excalidraw 上面了好多图，但也引来一个问题。
 
@@ -41,36 +41,36 @@ Excalidraw 非常好用，我总结几个点：
 
 <center><mark><b> 怎么办？我要把他私有化部署！</b></mark></center>
 
-## #2 部署之前，先来了解一下 Excalidraw 的工作原理 
+## #2 部署之前，先来了解一下 Excalidraw 的工作原理
 
 **Excalidraw 工作原理和私有化原理**：
 
-![image.png](../../static/images/202210/excalidraw-arch.png)
+![excalidraw-arch.png](../../static/images/202210/excalidraw-arch.png)
 
 那私有化的核心难点是什么：
 
 解决 excalidraw-storage 的数据存储问题，即替换掉 Google Cloud Platform 的 firebase 服务。
 
-## #3 私有化尝试 
+## #3 私有化尝试
 
 > 事有不顺反求诸己
-> 
-> - 孟子
-> 
+>
+> \- 孟子
+>
 > 求与诸己，不如求于 GayHub
-> 
-> - alswl
+>
+> \- alswl
 
 让我们先先研究 Excalidraw 的存储系统。
 Firebase 是 Google 的 Serverless 服务，以前是独立公司（还挺火），后来给 GCP 收购了。
 
-![image.png](../../static/images/202210/firebase.png)
+![firebase.png](../../static/images/202210/firebase.png)
 
-![image.png](../../static/images/202210/firebase-features.png)
+![firebase-features.png](../../static/images/202210/firebase-features.png)
 
 我一开始想法是替换 Firebase，找了一个社区服务 [Supabase](https://supabase.com/)（意外发现还有免费的 SaaS 服务，良心啊）
 
-![image.png](../../static/images/202210/supabase.png)
+![supabase.png](../../static/images/202210/supabase.png)
 
 但是仔细研究一下，发现 Supabase 的 API 和 firebase 不兼容，并 <mark>不能平替</mark>。
 
@@ -86,7 +86,7 @@ Excalidraw 还要靠 Excalidraw+ 卖钱（Plus 服务），怎么可能让你这
 
 于是我开始检视他们方案，打开代码一看，思路正确（替换 firebase 的几个接口），使用自己的 KV 存储（Redis / MySQL / Mongo）替换。
 
-![image.png](../../static/images/202210/jing-shen.png)
+![jing-shen.png](../../static/images/202210/jing-shen.png)
 
 尝试部署，立马遇到问题：
 
@@ -98,7 +98,7 @@ Excalidraw 还要靠 Excalidraw+ 卖钱（Plus 服务），怎么可能让你这
 
 怎么这么巧，我是 <mark><b> 前端实习生 // 社区打补丁专家 // Kubernetes 清洁工 // YAML 资深专家 </b></mark>，专治这么几个毛病。
 
-## #4 你让开，我来写 
+## #4 你让开，我来写
 
 
 -   [alswl/excalidraw-storage-backend: Excalidraw Backend](https://github.com/alswl/excalidraw-storage-backend)
@@ -110,13 +110,13 @@ Excalidraw 还要靠 Excalidraw+ 卖钱（Plus 服务），怎么可能让你这
 
 <center><mark><b> 改造代码设计图 </b></mark></center>
 
-![image.png](../../static/images/202210/self-hosted-excalidraw.png)
+![self-hosted-excalidraw.png](../../static/images/202210/self-hosted-excalidraw.png)
 
-## #5 未来（可能不存在） 
+## #5 未来（可能不存在）
 
 Excalidraw 是 SaaS 服务的免费版，<mark><b> Excalidraw+ 是付费版 </b></mark>，有什么区别呢
 
-![excalidraw-diff.png](../../static/images/202210/excalidraw-price.png)
+![excalidraw-price.png](../../static/images/202210/excalidraw-price.png)
 
 总结：
 
@@ -125,6 +125,9 @@ Excalidraw 是 SaaS 服务的免费版，<mark><b> Excalidraw+ 是付费版 </b>
 -   更个性化的权限控制（密码访问、定向分享）、租户控制、项目组控制
 -   域内共享的 Library
 -   跟其他系统集成（语雀、钉钉文档、飞书等等）
+
+或者还是直接购买 Excalidraw 企业版本服务吧，少折腾多享受。
+
 
 ## #6 中文手写体优化
 
@@ -135,13 +138,13 @@ macOS 支持的中文手写体：
 -   [https://support.apple.com/zh-cn/HT212587](https://support.apple.com/zh-cn/HT212587)
 -   [macOS Monterey 附带的字体 - 官方 Apple 支持 (中国)](https://support.apple.com/zh-cn/HT212587)
 
-cursive 家族
+cursive 家族：
 
 -   PanziPen
 -   LingWai
 -   Hannotate
 
-![image.png](../../static/images/202210/hanzipen-sc.png)
+![hanzipen-sc.png](../../static/images/202210/hanzipen-sc.png)
 
 windows 中文支持手写体比较差劲，必须安装 Office 才有更多选择：\
 华文行楷；方正舒体；（Office）
@@ -156,4 +159,4 @@ windows 中文支持手写体比较差劲，必须安装 Office 才有更多选�
 
 这是最终的效果：
 
-![image.png](../../static/images/202210/chinese-hand-writing.png)
+![chinese-hand-writing.png](../../static/images/202210/chinese-hand-writing.png)
