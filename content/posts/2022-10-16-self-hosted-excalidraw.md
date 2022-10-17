@@ -160,3 +160,6 @@ windows 中文支持手写体比较差劲，必须安装 Office 才有更多选�
 这是最终的效果：
 
 ![chinese-hand-writing.png](../../static/images/202210/chinese-hand-writing.png)
+
+可以访问 [excalidraw.alswl.com](https://excalidraw.alswl.com/) 查看效果，这是一个静态站点，
+支持中文字体，但是无法在线协作。
