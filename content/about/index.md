@@ -1,5 +1,5 @@
 ---
-title: "About"
+title: "关于我"
 slug: "about"
 author: "alswl"
 date: "2012-05-14T21:21:00+08:00"
