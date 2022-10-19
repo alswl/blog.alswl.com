@@ -170,6 +170,30 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>简单输入提示框实现
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>早期的输入框提示是这样的（via baidu）
+左边一个 label ，右边一个输入框。
+比较现代的方式是（via Discuz!）
+更漂亮的方式是（via 点点）
+登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。
+我需要达到几个要求：
+提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，我需要将提示信息暂存到某个地方。有3个地方可供选择： js 全局变量、输入框自定义属性、上下文 DOM 节点。
+js 全局变量比较难控制元素标识，并不是每个元素都可以精准的用 id 标记；输入框自定义属性会破坏语义；在上下文加入节点会破坏 DOM 树。
+权衡之后，我选择了使用 输入框自定义属性实现。
+demo 在这里。
+封装的方法代码如下
+$(&#39;.auto_clean&#39;).blur(function() { if ($.trim($(this).val()) === &#39;&#39;) { $(this).val($(this).attr(&#39;message&#39;)); } }).focus(function() { if ($(this).attr(&#39;message&#39;) === undefined) { $(this).attr(&#39;message&#39;, $(this).val()); } if ($(this).val() === $(this).attr(&#39;message&#39;)) { $(this).val(&#39;&#39;); } }); }); 使用方法如下
+&lt;input type=&#34;text&#34; class=&#34;auto_clean&#34; value=&#34;搜索用户&#34; /&gt; &lt;br/&gt; &lt;textarea class=&#34;auto_clean&#34;&gt;请在这里输入&lt;/textarea&gt; update2011/08/25： 感谢 @行者 提醒，使用 html5 的 placeholder 会更干净优美一些，参考见 Web Forms - Dive Into HTML5</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-08-18 00:00:00 +0800 +0800'>2011-08-18</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 简单输入提示框实现" href="https://blog.alswl.com/2011/08/auto-clean-input/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>get json failed in IE
     </h2>
   </header>
@@ -326,26 +350,6 @@ $ sudo apt-get install ssh 这样就完成了SSH服务的安装，用 service ss
   </div>
   <footer class="entry-footer"><span title='2011-06-12 00:00:00 +0800 +0800'>2011-06-12</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 使用DDNS&#43;SSH连通家庭/工作电脑" href="https://blog.alswl.com/2011/06/ddns-ssh/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>一个mako.vim
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>给Vim找了一个Mako的语法高亮，发现着色居然有问题。查看更新记录后发现作者Armin Ronacher只更新到08年9月份。之后Mako更新了一些少许细节，我修改了一下mako.vim，放在这里供下载。
-其实我只改了57/58行，增加一个block语法。
-点击这里下载：mako.vim
-使用方法，放入vimfiles/syntax
-相关链接：
-原始mako.vim：http://www.vim.org/scripts/script.php?script_id=1858
-另外一个mako.vim是缩进用的，放入vimfiles/syntax：http://www.vim.org/scripts/script.php?script_id=2663
-ps：Mako是一个Python下面的Template框架。
-pss：貌似服务器ip被认证了，讨厌~</p>
-  </div>
-  <footer class="entry-footer"><span title='2011-06-09 00:00:00 +0800 +0800'>2011-06-09</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 一个mako.vim" href="https://blog.alswl.com/2011/06/mako-vim/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
