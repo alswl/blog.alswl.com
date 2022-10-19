@@ -56,3 +56,10 @@ FOOTER=$(cat $MD | grep '\[.*\]\(.*\)' -oE | grep -v png | grep -v jpg | sed 's/
 
 echo $BODY $FOOTER | pbcopy
 ```
+
+Image size:
+
+```
+cd dir
+for i in $(ls); do convert $i -resize 1000x1000\> $i; donen
+```
