@@ -7,32 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>Java笔记 使用反射来改进BaseDao | Log4D</title>
 <meta name="keywords" content="java, dao, javase, 贴吧, 重构">
-<meta name="description" content="关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&quot;观察&ldquo;并且修改自己的行为。
-Java中的反射示例如下：
-package dddspace.job.exercise1116; public class Foo {
-public void fun(String str) {
-System.out.println(str);
-}
-}
-package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-public class ReflectionDemo {
-public static void main(String[] args) throws SecurityException,
-NoSuchMethodException, ClassNotFoundException, InstantiationException,
-IllegalAccessException, IllegalArgumentException,
-InvocationTargetException {
-// 不使用反射
-Foo foo = new Foo();
-foo.fun(&ldquo;no reflection&rdquo;);
-// 使用反射
-String className = &ldquo;dddspace.job.exercise1116.Foo&rdquo;;
-String funName = &ldquo;fun&rdquo;;
-// 获取类名
-Class cls = Class.forName(className);
-// 创建Object实例">
+<meta name="description" content="关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&quot;观察&ldquo;并且修改自己的行为。 Java中的反射示例如下： package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void main(String[] args) throws SecurityException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // 不使用反射 Foo foo = new Foo(); foo.fun(&ldquo;no reflection&rdquo;); // 使用反射 String className = &ldquo;dddspace.job.exercise1116.Foo&rdquo;; String funName = &ldquo;fun&rdquo;; // 获取类">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -91,29 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="Java笔记 使用反射来改进BaseDao" />
-<meta property="og:description" content="关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&quot;观察&ldquo;并且修改自己的行为。
-Java中的反射示例如下：
-package dddspace.job.exercise1116; public class Foo {
-public void fun(String str) {
-System.out.println(str);
-}
-}
-package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-public class ReflectionDemo {
-public static void main(String[] args) throws SecurityException,
-NoSuchMethodException, ClassNotFoundException, InstantiationException,
-IllegalAccessException, IllegalArgumentException,
-InvocationTargetException {
-// 不使用反射
-Foo foo = new Foo();
-foo.fun(&ldquo;no reflection&rdquo;);
-// 使用反射
-String className = &ldquo;dddspace.job.exercise1116.Foo&rdquo;;
-String funName = &ldquo;fun&rdquo;;
-// 获取类名
-Class cls = Class.forName(className);
-// 创建Object实例" />
+<meta property="og:description" content="关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&quot;观察&ldquo;并且修改自己的行为。 Java中的反射示例如下： package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void main(String[] args) throws SecurityException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // 不使用反射 Foo foo = new Foo(); foo.fun(&ldquo;no reflection&rdquo;); // 使用反射 String className = &ldquo;dddspace.job.exercise1116.Foo&rdquo;; String funName = &ldquo;fun&rdquo;; // 获取类" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2009-11-17T00:00:00+08:00" />
@@ -121,29 +77,7 @@ Class cls = Class.forName(className);
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Java笔记 使用反射来改进BaseDao"/>
-<meta name="twitter:description" content="关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&quot;观察&ldquo;并且修改自己的行为。
-Java中的反射示例如下：
-package dddspace.job.exercise1116; public class Foo {
-public void fun(String str) {
-System.out.println(str);
-}
-}
-package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-public class ReflectionDemo {
-public static void main(String[] args) throws SecurityException,
-NoSuchMethodException, ClassNotFoundException, InstantiationException,
-IllegalAccessException, IllegalArgumentException,
-InvocationTargetException {
-// 不使用反射
-Foo foo = new Foo();
-foo.fun(&ldquo;no reflection&rdquo;);
-// 使用反射
-String className = &ldquo;dddspace.job.exercise1116.Foo&rdquo;;
-String funName = &ldquo;fun&rdquo;;
-// 获取类名
-Class cls = Class.forName(className);
-// 创建Object实例"/>
+<meta name="twitter:description" content="关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&quot;观察&ldquo;并且修改自己的行为。 Java中的反射示例如下： package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void main(String[] args) throws SecurityException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // 不使用反射 Foo foo = new Foo(); foo.fun(&ldquo;no reflection&rdquo;); // 使用反射 String className = &ldquo;dddspace.job.exercise1116.Foo&rdquo;; String funName = &ldquo;fun&rdquo;; // 获取类"/>
 
 
 <script type="application/ld+json">
@@ -172,12 +106,12 @@ Class cls = Class.forName(className);
   "@type": "BlogPosting",
   "headline": "Java笔记 使用反射来改进BaseDao",
   "name": "Java笔记 使用反射来改进BaseDao",
-  "description": "关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够\u0026quot;观察\u0026ldquo;并且修改自己的行为。\nJava中的反射示例如下：\npackage dddspace.job.exercise1116; public class Foo {\npublic void fun(String str) {\nSystem.out.println(str);\n}\n}\npackage dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException;\nimport java.lang.reflect.Method;\npublic class ReflectionDemo {\npublic static void main(String[] args) throws SecurityException,\nNoSuchMethodException, ClassNotFoundException, InstantiationException,\nIllegalAccessException, IllegalArgumentException,\nInvocationTargetException {\n// 不使用反射\nFoo foo = new Foo();\nfoo.fun(\u0026ldquo;no reflection\u0026rdquo;);\n// 使用反射\nString className = \u0026ldquo;dddspace.job.exercise1116.Foo\u0026rdquo;;\nString funName = \u0026ldquo;fun\u0026rdquo;;\n// 获取类名\nClass cls = Class.forName(className);\n// 创建Object实例",
+  "description": "关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够\u0026quot;观察\u0026ldquo;并且修改自己的行为。 Java中的反射示例如下： package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void main(String[] args) throws SecurityException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // 不使用反射 Foo foo = new Foo(); foo.fun(\u0026ldquo;no reflection\u0026rdquo;); // 使用反射 String className = \u0026ldquo;dddspace.job.exercise1116.Foo\u0026rdquo;; String funName = \u0026ldquo;fun\u0026rdquo;; // 获取类",
   "keywords": [
     "java", "dao", "javase", "贴吧", "重构"
   ],
   "articleBody": "关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够\"观察“并且修改自己的行为。\nJava中的反射示例如下：\npackage dddspace.job.exercise1116; public class Foo {\npublic void fun(String str) {\nSystem.out.println(str);\n}\n}\npackage dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException;\nimport java.lang.reflect.Method;\npublic class ReflectionDemo {\npublic static void main(String[] args) throws SecurityException,\nNoSuchMethodException, ClassNotFoundException, InstantiationException,\nIllegalAccessException, IllegalArgumentException,\nInvocationTargetException {\n// 不使用反射\nFoo foo = new Foo();\nfoo.fun(“no reflection”);\n// 使用反射\nString className = “dddspace.job.exercise1116.Foo”;\nString funName = “fun”;\n// 获取类名\nClass cls = Class.forName(className);\n// 创建Object实例\nObject foo2 = cls.newInstance();\n// 创建Method hello\nMethod method = cls.getMethod(“fun”, String.class);\n// 使用反射来调用Method的invode方法，参数是目标对象+参数\nmethod.invoke(foo, “use reflection”);\n}\n}\n原始BaseDao设计 我先阐述一下BaseDao的设计想法：BaseDao是一个抽象类，提供一系列Dao方法”get()/getAll()/add()/update( )/delete()/getCount()\"，通过泛型匹配的获取类，我取出一个方法来做示例。\npublic int getCount() { int count = 0; Session session = null; Transaction tx = null; String Tstr = getClass().getSimpleName().substring (0, getClass().getSimpleName().length() - 3); String hql = \"select count(*) from \" + Tstr; try { session = HibernateSessionFactory.currentSession(); tx = session.beginTransaction(); Query query = session.createQuery(hql); count = Integer.parseInt(query.uniqueResult().toString()); query = null; tx.commit(); } catch (HibernateException e) { if (tx != null) { tx.rollback(); } throw e; } finally { HibernateSessionFactory.closeSession(); }\treturn count; } 其中有一段dirty work，就是TStr的获取，这段TStr是想从实现Dao类获取实体类的类型名称，也就是 从\"TopicDao\"获取\"Topic\"这个类型名称。整个BaseDao的泛型设计不错，但是在这一段上面存在一段dirty work，始终让我不爽。\n重构BaseDao和TopicDao 我今天复习完抽象类/接口/反射这些内容，又在纸上画了一个模型，觉得用这种新方法解决会更好一点。\n给抽象类BasoDao加入新的变量Class c，然后在TopicDao初始化时候对Class c进行设置为Topic.class，这样就比原来的拼字符串好的多。耦合也显得漂亮了\npublic abstract class BaseDAO { protected Class c; private Logger logger = Logger.getLogger(this.getClass()); /** * 根据某个Bean的beanId取出Bean * @param tId * @return Bean */ public T get(int tId) { T t=null; Session session = null; Transaction tx = null; // 原始设计 //\tString Tstr = getClass().getSimpleName().substring (0, //\tgetClass().getSimpleName().length() - 3); // 获取c的名称 String Tstr = c.getSimpleName(); String TstrId = Tstr+\"Id\"; String hql = \"from \" + Tstr + \" where \" + TstrId.substring(0, 1).toLowerCase() + TstrId.substring(1) + \" = ?\"; try { session = HibernateSessionFactory.currentSession(); tx = session.beginTransaction(); Query query = session.createQuery(hql); query.setInteger(0,tId); t = (T)query.uniqueResult(); query = null; tx.commit(); } catch (HibernateException e) { if (tx != null) { tx.rollback(); } throw e; } finally { HibernateSessionFactory.closeSession(); }\treturn t; } public class TopicDAO extends BaseDAO{ private Logger logger = Logger.getLogger(this.getClass()); /** * 根据froumId取出某一吧内的所有没被屏蔽的帖子 * @param froumId * @return ArrayList * @throws HibernateException */ // 在构造函数中进行c的设置 public TopicDAO () { c = Topic.class; } //doSomething } 这样完成之后，就完成了一次简单的重构，实现了变化点分离，而且不那么dirty。\n本文的代码来源自PostBar项目。这里有Google Code链接，v1.0.1的代码并没有上文的实现，本文中的修改还在trunk中。\n",
-  "wordCount" : "335",
+  "wordCount" : "1113",
   "inLanguage": "en",
   "datePublished": "2009-11-17T00:00:00+08:00",
   "dateModified": "2009-11-17T00:00:00+08:00",

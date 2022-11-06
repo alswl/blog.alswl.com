@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/tags/flex/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -165,22 +165,10 @@ if (!doNotTrack) {
     </h2>
   </header>
   <div class="entry-content">
-    <p>唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~
-一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（streaming）方式，具体两种实现方式可以参考Comet：基于 HTTP 长连接的&#34;服务器推&#34;技术。
-我计划把这个技术引入，成为一个亮点，第二种Comet实现方式过于复杂（GMail使用的就是这种），我就尝试第一种。我在测试环境测试了基于 AJAX 的长轮询 （long-polling）方式。这种方式说白了就是在Ajax获取返回数据时候，在状态吗为4（数据传输完成）情况随后进行下次查询。进行循环的查询。
-这种Long-polling的轮询方式有点伪Comet。相对于常见的定时查询，不同点是将&#34;查询-&gt;返回-&gt;再查询&#34;中间的一段断开时间进行重连接。最后因为技术 实现和开发时间，我决定放弃了Comet的实现。
-PS：一个系统应该不仅仅是技术的堆积，也应该考虑其他的一些因素，是否有确实需求，开发效率问题。虽然我做了一些前期准备，最终还是没有加入Comet，蛮可惜的。
-相关链接： 一步一步打造WebIM（1） - .net - dotnet - JavaEye论坛 （.net使用IHttpAsyncHandler的实现） Comet–“服务器推&#34;技术 - 搜狐UED（搜狐UED团队的一个小介绍） 二、用户状态的处理 开发时候遇到一个逻辑问题，具体描述如下：“一个用户登录长时间不活动（比如直接关闭浏览器），系统需要判定此用户为离线。“按照一般设计思路，这个动作应该由后台每 过一段时间自动（比如说5分钟）触发一次，如果用Java或.net实现，会考虑设计一个后台运行的进程进行管理。而现在用的PHP，我查了一下，似乎没有找到相应的 解决办法。
-我尝试在系统中设定一个页面每隔几分钟触发一个动作，放置在index.php页面中，但是感觉这个设计有点鸡肋。
-这个问题困惑我很久，最后参考了AJAX Chat的源码，它的思路是在一个新用户上线时候，进行检测所 有用户距离上次其活动的时间来判定每个用户的离线状态。这个也不是最优想法（万一长时间没有用户登录怎么办？），但是比上面那个定时页面要好多了。
-如果有PHP达人看到这个，望不惜赐教。
-三、RTMP RTPM是一个流媒体传输的协议，我在AzaAjaxChat中用它进行视频聊天画面和音频传输。这块内容可以洋洋洒洒的写一大篇日志，我在这里只是简单罗列一下我用 到的相关内容。
-Real Time Messaging Protocol（实时消息传送协议协议)概述，实时消息传送协议是Adobe Systems公司为Flash播放器和服务器之间音频、视频和数据传输开发的私有协议。它有三种变种： 1)工作在TCP之上的明文协议，使用端口1935； 2)RTMPT封装在HTTP请求之中，可穿越防火墙； 3)RTMPS类似RTMPT，但使用的是HTTPS连接；
-RTMP协议是被Flash用于对象，视频,音频的传输.该协议建立在TCP协议或者轮询 HTTP协议之上。
-RTMP协议就像一个用来装数据包的容器，这些数据可以是AMF格式的数据，也可以是FLV中的视/音频数据。一个单一的连接可以通过不同的通道传输多路网络流。 这些通道中的包都是按照固定大小的包传输的。
-我使用FMS作为RTPM容器，Adobe FMS（Flash Media Server）是一款能够提供出色的Flash Video流媒体播放功能的服务器软件。
-FMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过这个引擎，允许创建和交付面向互联网任何用户群体的交互媒体应用及服务。FMS还是Adobe公司 跨媒体解决方案中的一部分，针对诸如数据库连接访问、文件系统操作、服务访问等要求，可以同Adobe Flash Player与Adobe AIR一起来实现。
-四、基于Flex的流媒体传输 4.1 官方Sample-Stratus AzaAjaxChat中最技术含量的地方在于语音视频聊天。Adobe官网在Flex子类中提供了一个Demo名叫[Stratus](http://labs.a dobe.com/technologies/stratus/samples/)，正是一个聊天系统。从教程上看，Adobe公司目前开放的Stratus是同时支 持视频和语音P2P的，同时，未来的FMS也可能会支持P2P。...</p>
+    
+    
+    
+    <p>唔，继续整理笔记，这些是在代码编写中遇到的问题和解决办法的总结，不是Turtial，问题有针对性，内容枯燥，路人可以直接忽略~ 一、Comet服务器推技术 Comet推技术，一句话概括，就是形成一个不断开的连接，使得服务器能主动向客户端发送信息。这种技术在交互性强的Web产品中应用的非常多，比如GMail。Co met的实现方式有两种：基于 AJAX 的长轮询（long-polling）方式和基于 Iframe 及 htmlfile 的流（st...</p>
   </div>
   <footer class="entry-footer"><span title='2010-08-22 00:00:00 +0800 +0800'>2010-08-22</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to AzaAjaxChat笔记-实现" href="https://blog.alswl.com/2010/08/azaajaxchat-notes-implementation/"></a>
@@ -192,15 +180,12 @@ FMS提供一个强大Script可定制脚本的服务器流媒体引擎，通过�
     </h2>
   </header>
   <div class="entry-content">
-    <p>在Flex Builder3中，想运行或者调试一个Flex项目，有Run/Debug/Profile三种运行方式。当我点击这三种方式的按钮时，都会报出一下警告：
-Flash Player Not Found
-Flex Builder cannot locate the required version of Flash Player. You might need to install Flash Player 9 or reinstall Flex Builder.
-Do you want to try to run your application with the current version?
-大意就是说没有找到Flash Player，有两个选项Yes/No。如果是Yes，则开启FireFox打开一个html页面，其中内嵌着swf文件。这个警告框还给出一个&#34;Adobe Flash Player downloads“的下载链接。我下载安装后依然无法解决这个问题。
-每次点一下倒并不是很麻烦，可恶的是如果这样，就无法对项目进行调试，trace()输出也不会在Console输出。
-经过我尝试，我发现问题其实是出在项目的执行方式上，修改一下几个地方就可以了。
-点击菜单栏的Run-&gt;Run Configurations，在打开的对话框中找到Main中的URL or Path to launch，里面默认是Use defaults，现在我们把Debug/Profile/Run手工改成项目文件夹下对应的swf文件即可。
-这样修改之后，无论是运行还是调试，都能在一个Flash Player中进行，比在Firefox中方便的多了。</p>
+    
+    
+    <div class="thumbnail"><img src="https://d05fae.dijingchao.com/upload_dropbox/200911/flex_launch_path.jpg" alt="Thumbnail" /></div>
+    
+    
+    <p>在Flex Builder3中，想运行或者调试一个Flex项目，有Run/Debug/Profile三种运行方式。当我点击这三种方式的按钮时，都会报出一下警告： Flash Player Not Found Flex Builder cannot locate the required version of Flash Player. You might need to install Flash Player 9 or reinstall Flex Builder. Do you want to try to run your application with the current version? 大意就是说没有找到Flash Player，有两个选项Yes/No。如果是Yes，则开启FireFox打开一个html页面，其中内嵌着swf文件。这个警告框还给出一个...</p>
   </div>
   <footer class="entry-footer"><span title='2009-11-24 00:00:00 +0800 +0800'>2009-11-24</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Flex Builder3中的launch path设置" href="https://blog.alswl.com/2009/11/flex-builder3-in-the-launch-path-is-set/"></a>
@@ -212,26 +197,10 @@ Do you want to try to run your application with the current version?
     </h2>
   </header>
   <div class="entry-content">
-    <p>PylexChat介绍 PylexChat取名自Python&#43;Flex&#43;Chat部 分缩写，这就意味着这个系统是基于Python&#43;Flex的聊天系统。之所以做这个系统，源自我大学的最后一次课程设计，我不想浪费这最后一次可以供我发 挥自己想象力的机会。年后估计要参加工作了，毕业设计也不敢做这么有想法的课程设计。那就最后一次潇洒一下，做一个我完全没有接触过的东西。
-我几乎不会Python，是最近一个月迷上这门强悍而简单的语言，我完全不会Flex，是最近1周时间才开始接触Flex。这意味着这次课程设计的 风险挺大。我花了几天的时间做了详细的可行性分析，分析了系统框架和GAE能够提供的服务和限制以及Flex/AIR能做的内容，否决了几个方案，最后总 结了一篇简单可行性分析（本文是一周时间慢慢形成的，并没有遵循正规的开发文档风格）。
-几个基本的概念 内容出自维基百科
-Python Python，是一种面向对象、直译式计算机程序设计语言，也是一种功能强大而完善的通用型语言，已经具有十多年的发展历史，成熟且稳定。
-这种语言具有非常简捷而清晰的语法特点，适合完成各种高层任务，几乎可以在所有的操作系统中运行。
-目前，基于这种语言的相关技术正在飞速的发展，用户数量急剧扩大，相关的资源非常多。
-Flex Adobe Flex是最初由Macromedia公司在2004年3月发布的，基于其专有的Macromedia Flash平台，它是涵盖了支持RIA（Rich Internet Applications）的开发和部署的一系列技术组合。
-FLEX支持创建静态文件，该文件使用解释编译方式并且不需要购买服务器许可证就可以在线部署。
-Flex的目标是让程序员更快更简单地开发RIA应用。在多层式开发模型中，Flex应用属于表现层。
-Flex 采用GUI界面开发，使用基于XML的MXML语言。Flex 具有多种组件，可实现Web Services，远程对象，drag and drop，列排序，图表等功能；FLEX内建动画效果和其它简单互动界面等。相对于基于HTML的应用（如PHP、ASP、JSP、ColdFusion 及CFMX等）在每个请求时都需要执行服务器端的模板，由于客户端只需要载入一次，FLEX应用程序的工作流被大大改善。FLEX的语言和文件结构也试图 把应用程序的逻辑从设计中分离出来。
-Flex 服务器也是客户端和XML Web Services及远程对象（Coldfusion CFCs，或Java类，等支持Action Message Format的其他对象）之间通讯的通路。
-AIR dobe AIR（AIR＝Adobe Integrated Runtime），开发代号为Apollo，是一个跨操作系统runtime environment用来建造RIA，使用Flash、Flex、HTML与AJAX，可能部署为桌面应用程式。
-AIR是Adobe针对网络与桌面应用的结合所开发出来的技术，可以不必经由浏览器而对网络上的云端程式做控制，也由于这是Adobe所开发的技术，因此能很顺利的与 Adobe旗下的Photoshop、Flash、Firework等应用程式来进行开发。
-Google App Engine Google App Engine是一个开发、托管网络应用程序的平台，使用Google管理的数据中心。它在2008年4月发布了第一个beta版本。
-Google App Engine使用了云计算技术。它跨越多个服务器和数据中心来虚拟化应用程序。 其他基于云的平台还有Amazon Web Services和微软的Azure服务平台等。
-Google App Engine在用户使用一定的资源时是免费的。支付额外的费用可以获得应用程序所需的更多的存储空间、带宽或是CPU负载。
-系统需要实现的功能 我简单罗列一下：登录、群聊、私聊、注册（功能实现优先级由高到低排列）。
-功能着实有点简单，不过这个系统的亮点在于跨平台，而不是功能的强大。我在设计时候会尽量考虑多些东西，方便以后扩展。
-数据交互实现方案 系统最主要也最难实现的部分是数据交互如何进行有效的交互。我总结了一下几种方法。
-1.TCP/IP通信 一般的C/S模式程序都会考虑套接字连接方式，这是性能最高的交互方式。使用TCP/IP协议，能够有效的避免Python/Flex语言带来的数据交换问题。我查阅 了Flex文档，在flash.net.Socket下有套接字使用的API，这说明Flex在套接字支持上没有问题。接下来我查阅了GAE的文档，资料比较难找 ，最后我查阅了[沙盒](http://code.google.com/intl/zh-CN/appengine/docs/java/runtime.html #The_Sandbox)的定义、Python/Java在GAE的限制（参考文献-[Will it play in App Engine](http://groups....</p>
+    
+    
+    
+    <p>PylexChat介绍 PylexChat取名自Python&#43;Flex&#43;Chat部 分缩写，这就意味着这个系统是基于Python&#43;Flex的聊天系统。之所以做这个系统，源自我大学的最后一次课程设计，我不想浪费这最后一次可以供我发 挥自己想象力的机会。年后估计要参加工作了，毕业设计也不敢做这么有想法的课程设计。那就最后一次潇洒一下，做一个我完全没有接触过的东西。 我几乎不会Python，是最近一个月迷上这门...</p>
   </div>
   <footer class="entry-footer"><span title='2009-11-23 00:00:00 +0800 +0800'>2009-11-23</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to PylexChat可行性分析" href="https://blog.alswl.com/2009/11/pylexchat-feasibility-analysis/"></a>
@@ -243,14 +212,10 @@ Google App Engine在用户使用一定的资源时是免费的。支付额外的
     </h2>
   </header>
   <div class="entry-content">
-    <p>这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。
-我将系统命名为PylexChat，是一个基于Python&#43;Flex的聊天系统，架构在GAE&#43;AIR环境，支持多平台（Wi ndows&#43;Linux&#43;Web&#43;手机）客户端登录。开发IDE为Eclipse&#43;Flex Builder3插件，我的Eclipse Gelileo(v3.5)。在安装Flex Builder 3过程中就弹出需要3.4一下环境，我没在意，继续安装了。
-安装之后出现了问题，Eclipse插件根本没有加载，我在[Getting Flex Builder 3 plugin to survive a new Eclipse Version](http://greylurk.com/index.php/2009/06/getting-flex-builder-3 -plugin-to-survive-a-new-eclipse-version/)找到了相应解决方案。
-在Eclipselinks目录下面建立com.adobe.flexbuilder.feature.core.link文件，编辑内容为d:/Stud y/Flex Builder 3 Plug-in（记得修改目录），这样就可以正常加载并编写项目了。
-在使用过程中，如果代码没有写好，会出现An internal error occurred during: &#34;Removing compiler problem markers...&#34;.这样的提示，此时无论我做如何动作，保存代码/清理项目/新建文件，都会出现如上错误，根本没法继续。经过我尝试，除了将 项目删除重新建立，没有其他的办法彻底解决这个问题。
-这里有一个Adobe 官方论坛的讨论帖[http://forums.adobe.com/thread/90415](http://forums.adobe. com/thread/90415)，似乎这个问题在当时Flex Builder 2就出现，现在出现在Eclpse 3.5 &#43; Flex Builder 3下面。
-看来得等Flex Builder3之后的版本发布才能修复这个Bug，否则的话，还是得换回Eclpse 3.4……
-悲剧了，我刚使用Galileo一周时间……</p>
+    
+    
+    
+    <p>这次课程设计是我大学最后一次了，毕业设计会需要谨慎，所以这次课程设计我决定做一个新潮的系统。 我将系统命名为PylexChat，是一个基于Python&#43;Flex的聊天系统，架构在GAE&#43;AIR环境，支持多平台（Wi ndows&#43;Linux&#43;Web&#43;手机）客户端登录。开发IDE为Eclipse&#43;Flex Builder3插件，我的Eclipse Gelileo(v3.5)。在安装Flex Builder 3过程中就弹出需要...</p>
   </div>
   <footer class="entry-footer"><span title='2009-11-18 00:00:00 +0800 +0800'>2009-11-18</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 在Eclipse3.5下使用Flex Builder 3" href="https://blog.alswl.com/2009/11/the-eclipse3-5-using-flex-builder-3/"></a>

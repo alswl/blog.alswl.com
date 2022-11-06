@@ -7,23 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>在Eclipse中使用Maven | Log4D</title>
 <meta name="keywords" content="java, eclipse, maven">
-<meta name="description" content="一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。
-3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这里再简化一下，记录一下常用命令。
-#建立一个空项目，包含一个HelloWorld，可以通过 #-DarchetypeGroupId=&lt;archetype-groupId&gt; -DarchetypeArtifactId=&lt;archetype-artifactId&gt; #命令创建更多类型项目 mvn archetype:create -DgroupId=com.dddspace.java -DartifactId=helloworld #编译打包到jar或者war，根据pom中定义
-maven package
-#jUnit跑跑
-mvn test
-#神奇的命令，帮助创建Eclipse项目，配置path，默认使用M2_REPO这个变量作为目录
-mvn eclipse:eclipse
-大约跑完花费3分钟~嗯，有这几个命令，Maven简单操作就OK了，更多的话，去Maven文档溜溜吧。
-PS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MAVEN_OPTS=-Dfile.encoding=UTF-8 这样强制Maven使用UTF-8进行编码。
-配置Eclipse环境 加入M2_REPO 进入Eclipse-&gt;preferences-&gt;java-&gt;build path-&gt;classpath variables，添加M2_REPO这个变量，指向C:/Documents and Settings/userName/.m2/repository，这个 路径是默认的Maven仓库，如果你想搬到其他地方，需要修改mavenconfsetting.xml里面的localRepository。
-配置String Substitution 通过配置String Subsitution我们就可以使用Eclipse的lanuch来启动Maven，而不是Eclipse插件启动。首先我们要告诉Eclipse Maven在哪里。配置Eclipse-&gt;preferences-&gt;Run/Debug-&gt;String Subsitution，加入mvn =D:/dotj_dev/tools/apache-maven-2.2.1/bin/mvn.bat。
-建立Launch文件 Launch其实是Eclipse的Launcher框架的配置文件，可以定义Application的启动方式。新建一个mvn-war.launch如下：
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt; &lt;launchConfiguration type=&quot;org.eclipse.ui.externaltools.ProgramLaunchConfigurationType&quot;&gt; &lt;stringAttribute key=&quot;bad_container_name&quot; value=&quot;helloworldmvn-war.launch&quot;/&gt; &lt;stringAttribute key=&quot;org.eclipse.ui.externaltools.ATTR_LOCATION&quot; value=&quot;${mvn}&quot;/&gt; &lt;stringAttribute key=&quot;org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS&quot; value=&quot;clean compile war:war -U&quot;/&gt; &lt;stringAttribute key=&quot;org.">
+<meta name="description" content="一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。 3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2011/03/maven-eclipse/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -82,20 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="在Eclipse中使用Maven" />
-<meta property="og:description" content="一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。
-3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这里再简化一下，记录一下常用命令。
-#建立一个空项目，包含一个HelloWorld，可以通过 #-DarchetypeGroupId=&lt;archetype-groupId&gt; -DarchetypeArtifactId=&lt;archetype-artifactId&gt; #命令创建更多类型项目 mvn archetype:create -DgroupId=com.dddspace.java -DartifactId=helloworld #编译打包到jar或者war，根据pom中定义
-maven package
-#jUnit跑跑
-mvn test
-#神奇的命令，帮助创建Eclipse项目，配置path，默认使用M2_REPO这个变量作为目录
-mvn eclipse:eclipse
-大约跑完花费3分钟~嗯，有这几个命令，Maven简单操作就OK了，更多的话，去Maven文档溜溜吧。
-PS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MAVEN_OPTS=-Dfile.encoding=UTF-8 这样强制Maven使用UTF-8进行编码。
-配置Eclipse环境 加入M2_REPO 进入Eclipse-&gt;preferences-&gt;java-&gt;build path-&gt;classpath variables，添加M2_REPO这个变量，指向C:/Documents and Settings/userName/.m2/repository，这个 路径是默认的Maven仓库，如果你想搬到其他地方，需要修改mavenconfsetting.xml里面的localRepository。
-配置String Substitution 通过配置String Subsitution我们就可以使用Eclipse的lanuch来启动Maven，而不是Eclipse插件启动。首先我们要告诉Eclipse Maven在哪里。配置Eclipse-&gt;preferences-&gt;Run/Debug-&gt;String Subsitution，加入mvn =D:/dotj_dev/tools/apache-maven-2.2.1/bin/mvn.bat。
-建立Launch文件 Launch其实是Eclipse的Launcher框架的配置文件，可以定义Application的启动方式。新建一个mvn-war.launch如下：
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt; &lt;launchConfiguration type=&quot;org.eclipse.ui.externaltools.ProgramLaunchConfigurationType&quot;&gt; &lt;stringAttribute key=&quot;bad_container_name&quot; value=&quot;helloworldmvn-war.launch&quot;/&gt; &lt;stringAttribute key=&quot;org.eclipse.ui.externaltools.ATTR_LOCATION&quot; value=&quot;${mvn}&quot;/&gt; &lt;stringAttribute key=&quot;org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS&quot; value=&quot;clean compile war:war -U&quot;/&gt; &lt;stringAttribute key=&quot;org." />
+<meta property="og:description" content="一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。 3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2011/03/maven-eclipse/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2011-03-18T00:00:00+08:00" />
@@ -103,20 +77,7 @@ PS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MA
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在Eclipse中使用Maven"/>
-<meta name="twitter:description" content="一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。
-3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这里再简化一下，记录一下常用命令。
-#建立一个空项目，包含一个HelloWorld，可以通过 #-DarchetypeGroupId=&lt;archetype-groupId&gt; -DarchetypeArtifactId=&lt;archetype-artifactId&gt; #命令创建更多类型项目 mvn archetype:create -DgroupId=com.dddspace.java -DartifactId=helloworld #编译打包到jar或者war，根据pom中定义
-maven package
-#jUnit跑跑
-mvn test
-#神奇的命令，帮助创建Eclipse项目，配置path，默认使用M2_REPO这个变量作为目录
-mvn eclipse:eclipse
-大约跑完花费3分钟~嗯，有这几个命令，Maven简单操作就OK了，更多的话，去Maven文档溜溜吧。
-PS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MAVEN_OPTS=-Dfile.encoding=UTF-8 这样强制Maven使用UTF-8进行编码。
-配置Eclipse环境 加入M2_REPO 进入Eclipse-&gt;preferences-&gt;java-&gt;build path-&gt;classpath variables，添加M2_REPO这个变量，指向C:/Documents and Settings/userName/.m2/repository，这个 路径是默认的Maven仓库，如果你想搬到其他地方，需要修改mavenconfsetting.xml里面的localRepository。
-配置String Substitution 通过配置String Subsitution我们就可以使用Eclipse的lanuch来启动Maven，而不是Eclipse插件启动。首先我们要告诉Eclipse Maven在哪里。配置Eclipse-&gt;preferences-&gt;Run/Debug-&gt;String Subsitution，加入mvn =D:/dotj_dev/tools/apache-maven-2.2.1/bin/mvn.bat。
-建立Launch文件 Launch其实是Eclipse的Launcher框架的配置文件，可以定义Application的启动方式。新建一个mvn-war.launch如下：
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt; &lt;launchConfiguration type=&quot;org.eclipse.ui.externaltools.ProgramLaunchConfigurationType&quot;&gt; &lt;stringAttribute key=&quot;bad_container_name&quot; value=&quot;helloworldmvn-war.launch&quot;/&gt; &lt;stringAttribute key=&quot;org.eclipse.ui.externaltools.ATTR_LOCATION&quot; value=&quot;${mvn}&quot;/&gt; &lt;stringAttribute key=&quot;org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS&quot; value=&quot;clean compile war:war -U&quot;/&gt; &lt;stringAttribute key=&quot;org."/>
+<meta name="twitter:description" content="一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。 3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这"/>
 
 
 <script type="application/ld+json">
@@ -145,12 +106,12 @@ PS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MA
   "@type": "BlogPosting",
   "headline": "在Eclipse中使用Maven",
   "name": "在Eclipse中使用Maven",
-  "description": "一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。\n3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这里再简化一下，记录一下常用命令。\n#建立一个空项目，包含一个HelloWorld，可以通过 #-DarchetypeGroupId=\u0026lt;archetype-groupId\u0026gt; -DarchetypeArtifactId=\u0026lt;archetype-artifactId\u0026gt; #命令创建更多类型项目 mvn archetype:create -DgroupId=com.dddspace.java -DartifactId=helloworld #编译打包到jar或者war，根据pom中定义\nmaven package\n#jUnit跑跑\nmvn test\n#神奇的命令，帮助创建Eclipse项目，配置path，默认使用M2_REPO这个变量作为目录\nmvn eclipse:eclipse\n大约跑完花费3分钟~嗯，有这几个命令，Maven简单操作就OK了，更多的话，去Maven文档溜溜吧。\nPS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MAVEN_OPTS=-Dfile.encoding=UTF-8 这样强制Maven使用UTF-8进行编码。\n配置Eclipse环境 加入M2_REPO 进入Eclipse-\u0026gt;preferences-\u0026gt;java-\u0026gt;build path-\u0026gt;classpath variables，添加M2_REPO这个变量，指向C:/Documents and Settings/userName/.m2/repository，这个 路径是默认的Maven仓库，如果你想搬到其他地方，需要修改mavenconfsetting.xml里面的localRepository。\n配置String Substitution 通过配置String Subsitution我们就可以使用Eclipse的lanuch来启动Maven，而不是Eclipse插件启动。首先我们要告诉Eclipse Maven在哪里。配置Eclipse-\u0026gt;preferences-\u0026gt;Run/Debug-\u0026gt;String Subsitution，加入mvn =D:/dotj_dev/tools/apache-maven-2.2.1/bin/mvn.bat。\n建立Launch文件 Launch其实是Eclipse的Launcher框架的配置文件，可以定义Application的启动方式。新建一个mvn-war.launch如下：\n\u0026lt;?xml version=\u0026quot;1.0\u0026quot; encoding=\u0026quot;UTF-8\u0026quot; standalone=\u0026quot;no\u0026quot;?\u0026gt; \u0026lt;launchConfiguration type=\u0026quot;org.eclipse.ui.externaltools.ProgramLaunchConfigurationType\u0026quot;\u0026gt; \u0026lt;stringAttribute key=\u0026quot;bad_container_name\u0026quot; value=\u0026quot;helloworldmvn-war.launch\u0026quot;/\u0026gt; \u0026lt;stringAttribute key=\u0026quot;org.eclipse.ui.externaltools.ATTR_LOCATION\u0026quot; value=\u0026quot;${mvn}\u0026quot;/\u0026gt; \u0026lt;stringAttribute key=\u0026quot;org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS\u0026quot; value=\u0026quot;clean compile war:war -U\u0026quot;/\u0026gt; \u0026lt;stringAttribute key=\u0026quot;org.",
+  "description": "一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。 3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这",
   "keywords": [
     "java", "eclipse", "maven"
   ],
   "articleBody": "一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。\n3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这里再简化一下，记录一下常用命令。\n#建立一个空项目，包含一个HelloWorld，可以通过 #-DarchetypeGroupId= -DarchetypeArtifactId= #命令创建更多类型项目 mvn archetype:create -DgroupId=com.dddspace.java -DartifactId=helloworld #编译打包到jar或者war，根据pom中定义\nmaven package\n#jUnit跑跑\nmvn test\n#神奇的命令，帮助创建Eclipse项目，配置path，默认使用M2_REPO这个变量作为目录\nmvn eclipse:eclipse\n大约跑完花费3分钟~嗯，有这几个命令，Maven简单操作就OK了，更多的话，去Maven文档溜溜吧。\nPS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MAVEN_OPTS=-Dfile.encoding=UTF-8 这样强制Maven使用UTF-8进行编码。\n配置Eclipse环境 加入M2_REPO 进入Eclipse-\u003epreferences-\u003ejava-\u003ebuild path-\u003eclasspath variables，添加M2_REPO这个变量，指向C:/Documents and Settings/userName/.m2/repository，这个 路径是默认的Maven仓库，如果你想搬到其他地方，需要修改mavenconfsetting.xml里面的localRepository。\n配置String Substitution 通过配置String Subsitution我们就可以使用Eclipse的lanuch来启动Maven，而不是Eclipse插件启动。首先我们要告诉Eclipse Maven在哪里。配置Eclipse-\u003epreferences-\u003eRun/Debug-\u003eString Subsitution，加入mvn =D:/dotj_dev/tools/apache-maven-2.2.1/bin/mvn.bat。\n建立Launch文件 Launch其实是Eclipse的Launcher框架的配置文件，可以定义Application的启动方式。新建一个mvn-war.launch如下：\n\u003c?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?\u003e Update（2011/03/21）：后来测试发现bad_container_name没有也可以正常运行；${workspace_loc:/hello world}修改为${project_loc}更为方便。\n这个.launch文件内容其实是XML格式的，里面定义了几个属性，用来告诉Eclipse执行什么命令，重要的属性是ATTR_LOCATION和ATTR_TO OL_ARGUMENTS，我们分别赋值为${mvn}和Maven参数，就可以正确执行了。\n类似的，我们可以建立mvn eclipse:eclipse的Launch文件，用来生成Eclipse类型的项目。\nPS：使用Substitution的目的其实是为了避免不同开发环境下面Maven位置不相同，保持.launch文件统一。\n",
-  "wordCount" : "81",
+  "wordCount" : "1323",
   "inLanguage": "en",
   "datePublished": "2011-03-18T00:00:00+08:00",
   "dateModified": "2011-03-18T00:00:00+08:00",

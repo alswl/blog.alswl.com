@@ -13,11 +13,7 @@
       <pubDate>Sat, 22 Mar 2014 18:31:55 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2014/03/java-options/</guid>
-      <description>JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下：
-运行 java -h 可以看到 Java 运行可调整的参数。 运行 java -X 可以查看 Java 支持的额外参数。 注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update 也会有差异，运行 java -XX:+PrintFlagsFinal 查看默认的参数配置。
-参考： Java HotSpot VM Options The most complete list of -XX options for Java JVM Tuning JVM Garbage Collection for Production Deployments JVM -XX: 参数介绍
-以下是一些经验调整：
--d64 # 运行在 64 位数据模式下 -server # 选择 server VM -Xms1024m # 初始堆大小，直接固定到 Xmx -Xmx1024m # 最大堆大小，根据服务器性能和请求量调整，太大了会导致 GC 时间太长 -XX:+DoEscapeAnalysis: # 支持逃逸分析（将局部对象实例存储在栈上） # http://www.</description>
+      <description>JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下： 运行 java -h 可以看到 Java 运行可调整的参数。 运行 java -X 可以查看 Java 支持的额外参数。 注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update 也会有差异，运行 java -XX:+PrintFlagsFinal 查看默认的参数配置。 参考： Java HotSpot VM Options The most complete list of -XX options for Java JVM Tuning JVM Garbage Collection for Production Deployments JVM -XX: 参数介绍 以下是一些经验调整： -d64 # 运行在 64 位数据模式下 -server # 选择 server VM -Xms1024m # 初始堆大小，直接固定到 Xmx -Xmx1024m # 最大堆大小，根据服务器</description>
     </item>
     
     <item>
@@ -26,9 +22,7 @@
       <pubDate>Mon, 04 Apr 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/04/run-jetty-in-maven/</guid>
-      <description>部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。
-准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout
-src/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project&amp;rsquo;s license NOTICE.txt Notices and attributions required by libraries that the project depends on README.</description>
+      <description>部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。 准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout src/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project&amp;rsquo;s license NOTICE.txt Notices and attributions required by libraries that the project depends on README.txt Project&amp;rsquo;s readme 使用的 pom.xml 主要添加了 build- plugins 的 Jetty 插</description>
     </item>
     
     <item>
@@ -37,20 +31,7 @@ src/main/java Application/Library sources src/main/resources Application/Library
       <pubDate>Fri, 18 Mar 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/03/maven-eclipse/</guid>
-      <description>一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。
-3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这里再简化一下，记录一下常用命令。
-#建立一个空项目，包含一个HelloWorld，可以通过 #-DarchetypeGroupId=&amp;lt;archetype-groupId&amp;gt; -DarchetypeArtifactId=&amp;lt;archetype-artifactId&amp;gt; #命令创建更多类型项目 mvn archetype:create -DgroupId=com.dddspace.java -DartifactId=helloworld #编译打包到jar或者war，根据pom中定义
-maven package
-#jUnit跑跑
-mvn test
-#神奇的命令，帮助创建Eclipse项目，配置path，默认使用M2_REPO这个变量作为目录
-mvn eclipse:eclipse
-大约跑完花费3分钟~嗯，有这几个命令，Maven简单操作就OK了，更多的话，去Maven文档溜溜吧。
-PS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MAVEN_OPTS=-Dfile.encoding=UTF-8 这样强制Maven使用UTF-8进行编码。
-配置Eclipse环境 加入M2_REPO 进入Eclipse-&amp;gt;preferences-&amp;gt;java-&amp;gt;build path-&amp;gt;classpath variables，添加M2_REPO这个变量，指向C:/Documents and Settings/userName/.m2/repository，这个 路径是默认的Maven仓库，如果你想搬到其他地方，需要修改mavenconfsetting.xml里面的localRepository。
-配置String Substitution 通过配置String Subsitution我们就可以使用Eclipse的lanuch来启动Maven，而不是Eclipse插件启动。首先我们要告诉Eclipse Maven在哪里。配置Eclipse-&amp;gt;preferences-&amp;gt;Run/Debug-&amp;gt;String Subsitution，加入mvn =D:/dotj_dev/tools/apache-maven-2.2.1/bin/mvn.bat。
-建立Launch文件 Launch其实是Eclipse的Launcher框架的配置文件，可以定义Application的启动方式。新建一个mvn-war.launch如下：
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot; standalone=&amp;quot;no&amp;quot;?&amp;gt; &amp;lt;launchConfiguration type=&amp;quot;org.eclipse.ui.externaltools.ProgramLaunchConfigurationType&amp;quot;&amp;gt; &amp;lt;stringAttribute key=&amp;quot;bad_container_name&amp;quot; value=&amp;quot;helloworldmvn-war.launch&amp;quot;/&amp;gt; &amp;lt;stringAttribute key=&amp;quot;org.eclipse.ui.externaltools.ATTR_LOCATION&amp;quot; value=&amp;quot;${mvn}&amp;quot;/&amp;gt; &amp;lt;stringAttribute key=&amp;quot;org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS&amp;quot; value=&amp;quot;clean compile war:war -U&amp;quot;/&amp;gt; &amp;lt;stringAttribute key=&amp;quot;org.</description>
+      <description>一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。 3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这</description>
     </item>
     
     <item>
@@ -59,32 +40,7 @@ PS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MA
       <pubDate>Sun, 18 Apr 2010 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2010/04/recent-study-technologys/</guid>
-      <description>根据这篇日志的题目，必然是一篇水文，我思量再三，还是把它放出来，这些技术的接触把我带入了另一个广阔的天堂。这是我学Java以来的第二个里程碑。
-使用Java1年半，1年前开始JSP编程，一直是我和周围的朋友自己摸索，学校没有开Java课，也没有参加什么培训课程，面对庞大的Java开源分支，我一直摸索 ，不能登堂入室。
-万分感谢倪经理这1个月来的教导，他给了我一个不一样的Java。
-iBatis 如果说Hibernate是一款自动化的导弹，那么iBatis则是一款轻型的半自动步枪，简介、高效、方便配置。加上iBator这个神器，iBatis可以使开发 效率几倍提升。
-年前开始学习iBatis，想借其思想自己完成一个简单的ORM系统，3月份时候，公司的一个新框架采用了iBatis，更是给我提供了一个绝佳的Playgroun d。Hibernate和iBatis有各自的适合使用的领域，不能单纯的说谁好谁不好，不过iBatis绝对值得尝试。
-动软的.net生成器使用的DAL接入层也是使用的iBats.net做数据接入。
-Jaas 我对权限控制的理解，从最早的单表用户字段管理，到贴吧的基于角色权限控制，直到后来公司使用的基于权限+菜单控制，最好到现在的Jaas提供的资源-角色-权限- 菜单 控制体系。细化到原子级的权限控制带来了莫大的好处，这个很大程度归功于Jaas。
-Java Authentication Authorization Service（JAAS，Java验证和授权API）提供了灵活和可伸缩的机制来保证客 户端或服务器端的Java程序。Java早期的安全框架强调的是通过验证代码的来源和作者，保护用户避免受到下载下来的代码的攻击。JAAS强调的是通过验证谁在运行 代码以及他／她的权限来保护系统面受用户的攻击。它让你能够将一些标准的安全机制，例如Solaris NIS（网络信息服务）、Windows NT、LDAP（轻量目录存取协议），Kerberos等通过一种通用的，可配置的方式集成到系统中。
-我对这套权限系统的学习还不透彻，还有很多地方需要琢磨和研究，学无止境啊。
-ESB 很惭愧，知道现在才知道这个名词，ESB的思想其实在很多地方得到了灌输，我一直自认经常会跟进主流技术，现在才发现果然还是自己道行不够。
-ESB全称为Enterprise Service Bus，即企业服务总线。它是传统中间件技术与XML、Web服务等技术结合的产物。ESB提供了网络中最基本的连接中枢，是构筑企业神经系统的必要元素
-ESB的出现改变了传统的软件架构，可以提供比传统中间件产品更为廉价的解决方案，同时它还可以消除不同应用之间的技术差异，让不同的应用服务器协调运作，实现了 不同服务之间的通信与整合。从功能上看，ESB提供了事件驱动和文档导向的处理模式，以及分布式的运行管理机制，它支持基于内容的路由和过滤，具备了复杂数据的传输能 力，并可以提供一系列的标准接口。
-Mule Mule是一个企业服务总线(ESB)消息框架，也就是上面所说的ESB的一个开源框架实现。Mule的优势体现在：
-1.基于J2EE1.4的企业消息总线(ESB)和消息代理(broker).
-2.可插入的连接性:比如 Jms,jdbc,tcp,udp,multicast,http,servlet,smtp,pop3, file,xmpp等.
-3.支持任何传输之上的异步，同步和请求响应事件处理机制.
-4.支持Axis或者Glue的Web Service.
-5.灵活的部署结构 [Topologies]包括Client/Server, P2P, ESB 和Enterprise Service Network.
-与Spring 框架集成:可用作ESB 容器，也可以很容易的嵌入到Spring应用中. 7.使用基于SEDA处理模型的高度可伸缩的企业服务器.
-8.强大的基于EIP模式的事件路由机制等.
-Mule发布最新版本1.1，这个发布包括集成了JBI，对 BPEL的支持,还增加一些新的传输器(transport)Quartz,FTP,RMI与EJB等。
-Tiles 我之前认识是已经是一种比较好的页面实现方式，Tiles的出现粉碎了我的认识。Tiles框架提供了一种模板机制，模板定义了网页的布局，同一模 板可以被多个Web页面共用。通过配置文件进行协调，把页面文件的分层应用到极致。
-Apache Tiles 是一个创建简单的网络应用用户界面的模板框架，Tiles让用户可以在运行中使用定义好的小模块装配成完整的页面。
-采用基本的JSP语句创建复合式网页 -&amp;gt; 采用JSP的include指令创建复合式网页 -&amp;gt; 采用Tiles:Insert标签创建复合式网页 -&amp;gt; 采用Tiles模板创建复合式网页
-Web压力测试 这是我在翻阅大学里软件工程课孙老师给05届毕业生的PPT时候发现的内容。PPT体面推荐了3种Web压力测试工具。
-Web Application Stress Tool, Microsoft</description>
+      <description>根据这篇日志的题目，必然是一篇水文，我思量再三，还是把它放出来，这些技术的接触把我带入了另一个广阔的天堂。这是我学Java以来的第二个里程碑。 使用Java1年半，1年前开始JSP编程，一直是我和周围的朋友自己摸索，学校没有开Java课，也没有参加什么培训课程，面对庞大的Java开源分支，我一直摸索 ，不能登堂入室。 万分感谢倪经理这1个月来的教导，他给了我一个不一样的Java。 iBatis 如果说Hibernat</description>
     </item>
     
     <item>
@@ -93,10 +49,7 @@ Web Application Stress Tool, Microsoft</description>
       <pubDate>Sat, 06 Mar 2010 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2010/03/manage-weblogic-service/</guid>
-      <description>注册WebLogic成 windows服务 1、执行Domain目录下的 installService.cmd [USER_NAME] [PASSWORD]命令，就会在windows服务中生成一个beasvc domainname_adminservername的服务启动类型为&amp;quot;自动&amp;quot;，手动将它设置为启动就可以每次开机自动启动了。
-2、在创建新的域的时候有这个选项的，服务名字为beasvc domainname-servername。
-删除WebLogic服务 1.执行Domain目录下的 stopWebLogic.cmd命令就可以删除服务
-2.删除服务之后，可以直接删除Domain下的所有文件～</description>
+      <description>注册WebLogic成 windows服务 1、执行Domain目录下的 installService.cmd [USER_NAME] [PASSWORD]命令，就会在windows服务中生成一个beasvc domainname_adminservername的服务启动类型为&amp;quot;自动&amp;quot;，手动将它设置为启动就可以每次开机自动启动了。 2、在创建新的域的时候有这个选项的，服务名字为beasvc domainname-servername。 删除WebL</description>
     </item>
     
     <item>
@@ -105,21 +58,7 @@ Web Application Stress Tool, Microsoft</description>
       <pubDate>Mon, 01 Mar 2010 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2010/03/dwr2-0-jdk1-4-configuration/</guid>
-      <description>服务器的WebLogic版本是8.1，使用自带的JDK1.4
-MyEclipse版本是6.6，项目文件的Compiler compliance level设置为1.4
-MyEclipse自带Tomcat使用MyEclipse6.6自带的JDK5
-开发时候系统运行无误。
-部署到应用服务器之后，使用WebLogic自带的JDK1.4，登录之后的一些页面一旦访问，会导致服务器报错停止。我检查了一下错误信息。
-&amp;ldquo;ListenThread.Default&amp;rdquo; listening on port 7001, ip address .&amp;gt;
-DWR Version 2.0.5 starting.
-Servlet Engine: WebLogic XMLX Module 8.1 SP1 Fri Jun 20 23:06:40 PDT 2003 27
-1009 with Java Version: 1.4.1_03 Java Vendor: Sun Microsystems Inc. Line=19 The content of element type &amp;ldquo;dwr&amp;rdquo; must match &amp;ldquo;(init?,allow?,signatures
-?)&amp;rdquo;.
-Unexpected Signal : EXCEPTION_ACCESS_VIOLATION occurred at PC=0x6D3F8887
-Function=JVM_RegisterPerfMethods+0x11C42
-Library=C:beaJDK141~1jrebinclientjvm.dll
-Current Java thread:
-&amp;amp;n bsp_place_holder; at java.lang.Class.getName(Native Method)</description>
+      <description>服务器的WebLogic版本是8.1，使用自带的JDK1.4 MyEclipse版本是6.6，项目文件的Compiler compliance level设置为1.4 MyEclipse自带Tomcat使用MyEclipse6.6自带的JDK5 开发时候系统运行无误。 部署到应用服务器之后，使用WebLogic自带的JDK1.4，登录之后的一些页面一旦访问，会导致服务器报错停止。我检查了一下错误信息。 &amp;ldquo;ListenThread.Default&amp;rdquo; listening on port 7001, ip address .&amp;gt; DWR Version 2.0.5 starting. Servlet</description>
     </item>
     
     <item>
@@ -128,29 +67,7 @@ Current Java thread:
       <pubDate>Tue, 17 Nov 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/</guid>
-      <description>关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&amp;quot;观察&amp;ldquo;并且修改自己的行为。
-Java中的反射示例如下：
-package dddspace.job.exercise1116; public class Foo {
-public void fun(String str) {
-System.out.println(str);
-}
-}
-package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-public class ReflectionDemo {
-public static void main(String[] args) throws SecurityException,
-NoSuchMethodException, ClassNotFoundException, InstantiationException,
-IllegalAccessException, IllegalArgumentException,
-InvocationTargetException {
-// 不使用反射
-Foo foo = new Foo();
-foo.fun(&amp;ldquo;no reflection&amp;rdquo;);
-// 使用反射
-String className = &amp;ldquo;dddspace.job.exercise1116.Foo&amp;rdquo;;
-String funName = &amp;ldquo;fun&amp;rdquo;;
-// 获取类名
-Class cls = Class.forName(className);
-// 创建Object实例</description>
+      <description>关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&amp;quot;观察&amp;ldquo;并且修改自己的行为。 Java中的反射示例如下： package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void main(String[] args) throws SecurityException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // 不使用反射 Foo foo = new Foo(); foo.fun(&amp;ldquo;no reflection&amp;rdquo;); // 使用反射 String className = &amp;ldquo;dddspace.job.exercise1116.Foo&amp;rdquo;; String funName = &amp;ldquo;fun&amp;rdquo;; // 获取类</description>
     </item>
     
     <item>
@@ -159,25 +76,7 @@ Class cls = Class.forName(className);
       <pubDate>Mon, 16 Nov 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/11/getting-started-with-java-books-java-jdk6-study-notes/</guid>
-      <description>《Java JDK6学习笔记》(via 豆瓣，via ChinaPub)是我最近在看的一本书。虽然名为Java学习笔记，其实** 深入浅出的讲解了Java这门语言。书中的语言颇有白文风格**，适合没有语言基础的同学学习，也适合对一些概念不清楚的开发人员。
-我很快的翻阅了半本书，作者的范例代码简单精要(&amp;ldquo;Java笔记split/不定长度参数/泛型类型通配符&amp;rdquo;中示例代码就是改编自本书)。我现在正在阅读线程、反射和Annotation这三块内容，看得我酣畅淋漓啊。
-我算是概念模糊的开发者，现在准备笔试/面试所以恶补一下平时接触比较少的概念。我虽然也有《Think in Java》这本至尊级的书，但是显然这本书研究过深，不适合快速复习。《Java JDK6学习笔记》就成了我首选了。（感谢CUMT图书馆！）
-豆瓣简介：
-本书是作者良葛格本人近几年来学习Java的心得笔记，结构按照作者的学习脉络依次展开，从什么是Java、如何配置Java开发环境、基本的Java语法到程序 流程控制、管理类文件、异常处理、枚举类型、泛型、J2SE中标准的API等均进行了详细介绍。本书还安排了一个&amp;quot;文字编辑器&amp;quot;的专题制作。此外，Java SE6的新功能，对Java lang等套件的功能加强，以及JDBC4.0、Apache Derby纯Java数据库等新增功能，本书也都予以介绍。
-本书门槛很低，只要您了解Windows基本操作，无须有其他程序语言的基础，甚至没有接触过Java，都可以通过本书扎扎实实地学习Java。而对于一些曾经学 习过Java，但概念和基础仍不扎实的读者，本书也准备了一些面向对象的观点与进阶的议题可供参考。
-作者在书中其中有几句话我颇为欣赏：
-学习一个新的事物时，如果遇到一些概念无法很快理解，这可能是因为要理解概念会需要其他概念先建立起来，所以先暂时放下这个疑问也是一个学习方法，称之为&amp;quot;存疑&amp;quot; ，在以后的学习过程中待必要的概念学会后，目前的疑问自然也会解开。
-下面是豆瓣snable的评论，深得我心。
-每当有学习java的人让我推荐书籍的时候，我都会毫不犹豫地向他推荐《Java学习笔记》。这本书的上一版是前几年读的了，当时还是按jdk1.5写的。本书最 大特点是：
-1、内容翔实。说翔实不是说它厚，java书里有很多厚而无物的滥书，本书基本覆盖了javaSE的内容，总体说达到中偏高的层次，有些高级内容没有涉及。每一部 分都有其他书籍里没有介绍或者介绍不全面的东西，可以说言之有物。
-2、叙述清楚。对于一些易错或难易理解的概念，作者总是能用通俗的语言讲明白，而不像某些书那样&amp;quot;遮遮掩掩&amp;quot;。这对于初学者无疑是最有帮助的。我读这本书上一版时已经 学过java，当时的目的是为了了解jsk1.5的新变化，但在读的过程中才发现自己对很多点的理解是模糊的。所以个人认为这本书不止适合初学者。
-3、例题有力。例题是最容易帮助我们理解问题的工具，本书的例题都非常有针对性。所选例题有一定实用性，难度适中，不是Toy Program。
-每个人的理解方向不一样，不可能有一本书适合所有学习者，但我坚信好书最终总会被大多数人承认的，这也是我推荐此书的目的。书的价格略高，但物有所值，有条件可以 去图书馆借或者读电子版。
-另外再多写几句吧，其他推荐的java书籍还有两本：
-1、《Java2核心技术》，此书分上下两卷（基础、高级），优点在于层次比上边那本书要高，话说回来，书也厚了一倍，适合当手册用。此书版本变化频繁，现在已经 到了中文第八版，但个人感觉没有超越第六版翻译的高度。
-2、《Java编程思想》，大名鼎鼎，作者对java的理解程度让人五体投地，优点是就是内容相当深入。个人认为本书试图一次性全面解释清楚某些问题，不适合初学者读 。这种书必须长期反复地阅读，常读常新。
-再多说一句吧，有一本《JAVA实例技术手册》是我买过最失败的一本书，缺点在于：1、内容不深入；2实例没有想象中的实用，或者有的根本就没有实用价值。
-如果你还没有学过Java却想学，我强烈推荐此书。￥59.9绝对物有所值，呃，电子书嘛，给个Google搜索链接吧。</description>
+      <description>《Java JDK6学习笔记》(via 豆瓣，via ChinaPub)是我最近在看的一本书。虽然名为Java学习笔记，其实** 深入浅出的讲解了Java这门语言。书中的语言颇有白文风格**，适合没有语言基础的同学学习，也适合对一些概念不清楚的开发人员。 我很快的翻阅了半本书，作者的范例代码简单精要(&amp;ldquo;Java笔记split/不定长度参数/泛型类型通配符&amp;rdquo;中示例代码就是改编自本书)。</description>
     </item>
     
     <item>
@@ -186,15 +85,7 @@ Class cls = Class.forName(className);
       <pubDate>Sun, 15 Nov 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/11/java-notes-_split-variable-length-parameter-generic-type-wildcard/</guid>
-      <description>今天看了一下午《Java学习笔记》，作者林信良，花名良葛格。从书中所获颇 多，正所谓温故而知新，我就把今天的&amp;quot;新&amp;quot;总结一下，加深记忆。良葛格也提倡&amp;quot;在网上写文章是我记录所学的一种方式&amp;quot;。
-split的正则式和其中的正则式 C语言其中有函数strtok，就是按某些char对字符串进行切割。下面给出一个C下面的范例
-char str[] = &amp;quot;now # is the time for all # good men to come to the # aid of their country&amp;quot;; char delims[] = &amp;quot;#&amp;quot;; char *result = NULL; result = strtok( str, delims );
-while( result != NULL ) {
-printf( &amp;ldquo;result is &amp;ldquo;%s&amp;quot;n&amp;rdquo;, result );
-result = strtok( NULL, delims );
-}
-在Java中也有类似的StringTokenizer，但是在JDK5中，已经被标记为Legacy Class(遗产类)，推荐使用String.split(String regex)，可以接受正则表达式。范例如下。
-private void init() { Scanner scanner = new Scanner(System.</description>
+      <description>今天看了一下午《Java学习笔记》，作者林信良，花名良葛格。从书中所获颇 多，正所谓温故而知新，我就把今天的&amp;quot;新&amp;quot;总结一下，加深记忆。良葛格也提倡&amp;quot;在网上写文章是我记录所学的一种方式&amp;quot;。 split的正则式和其中的正则式 C语言其中有函数strtok，就是按某些char对字符串进行切割。下面给出一个C下面的范例 char str[] = &amp;quot;now # is the time for all # good men to come to the # aid of their country&amp;quot;; char delims[] = &amp;quot;#&amp;quot;; char</description>
     </item>
     
     <item>
@@ -203,14 +94,7 @@ private void init() { Scanner scanner = new Scanner(System.</description>
       <pubDate>Fri, 10 Jul 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/07/dao-design-the-use-of-generics-to-avoid-duplication-of-dao/</guid>
-      <description>DAO的全称是Data Access Object数据访问接口。数据访问：顾名思义就是与数据库打交道。夹在业务逻辑与数据库资源中间。
-我大二时候写的一个小型管理系统，那时候老师开始强调分层和MVC的思想，当时我将DAO层分了开来，把所有与数据库的交互操作封装成对应的DAO类，这样最大的好处 是实现了封装和隔离，方便系统的迁移和重构。
-分层、封装、接口化是一种基本的解决思路，无论是TCP/IP协议族，还是软件工程，都是很值得使用的方案。
-那么接下来的问题就是DAO类的设计，我当时遇到的问题就是DAO类之间存在大量的冗余代码，用敏捷的角度来思考，这绝对是不允许存在的。
-讲相同的方法抽象出来，这也是最常见的解决方案，最简单的例子就是函数的产生，其实也是对程序的一种抽象和提炼，避免冗余，达到复用效果。
-在Java1.5出来之前，用Object来操作对象，实现方法复用，就可以达到上面的目的，但是，存在类型安全的问题。Java1.5提出了泛型的概念，类似与C+ +中的Template，Java运行环境帮助会检查类型的安全。
-这里有一篇IBM资料库的文章，详细阐述了泛型在DAO设计的使用「不要重复DAO」&amp;lt;猛击这里打开&amp;gt;，作者PerMellqvist (per@mellqvist.name), 系统架构师, 自由作家
-我的贴吧里面DAO最后的UML类图设计如下：</description>
+      <description>DAO的全称是Data Access Object数据访问接口。数据访问：顾名思义就是与数据库打交道。夹在业务逻辑与数据库资源中间。 我大二时候写的一个小型管理系统，那时候老师开始强调分层和MVC的思想，当时我将DAO层分了开来，把所有与数据库的交互操作封装成对应的DAO类，这样最大的好处 是实现了封装和隔离，方便系统的迁移和重构。 分层、封装、接口化是一种基本的解决思路，无论是TCP/IP协议族，还是软件工程，都是</description>
     </item>
     
     <item>
@@ -219,15 +103,7 @@ private void init() { Scanner scanner = new Scanner(System.</description>
       <pubDate>Thu, 02 Jul 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/07/summary-report-of-post-bar/</guid>
-      <description>终于完成了这个贴吧系统，虽然还有很多地方不完善，但是却包含了我很多心血和精力，也实践了我的很多想法。
-具体的不说了，稍微说一下开发使用的技术：Java、Struts2、Hibernate、OGNL、Eclipse、Tomcat、MySQL、AJAX、jQue ry、SVN、UP开发模式、UML。
-之中学习了很多内容，我恨兴奋，说起来这是我第一个完整写的一个网站系统，之前的asp啊，asp.NET多多少少借鉴了别人的代码。
-终于知道其实资历代表着经验，很多东西只有自己试过才知道怎么做，这一块我太欠缺了，对于JaveEE开发，也终于开始有了接触，寒假回家3个星期，应该在Java的 本质技术上合Hibernate高级内容、设计模式上花时间了。
-09_11_16 Update:
-今天又check out了一下，然后加入About和Links，当初贴吧在课程设计之后就没有完善，现在加上这两个模块，也就能release了。
-相关链接：
-项目在Google Code托管 （你可以check out，不知道游客有没有权限，需要可以Mail我）
-相关开发博客链接 </description>
+      <description>终于完成了这个贴吧系统，虽然还有很多地方不完善，但是却包含了我很多心血和精力，也实践了我的很多想法。 具体的不说了，稍微说一下开发使用的技术：Java、Struts2、Hibernate、OGNL、Eclipse、Tomcat、MySQL、AJAX、jQue ry、SVN、UP开发模式、UML。 之中学习了很多内容，我恨兴奋，说起来这是我第一个完整写的一个网站系统，之前的asp啊，asp.NET多多少少</description>
     </item>
     
     <item>
@@ -236,11 +112,7 @@ private void init() { Scanner scanner = new Scanner(System.</description>
       <pubDate>Sun, 28 Jun 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/06/return-s-if-the-use-of/</guid>
-      <description>上次遇到过&amp;lt;s:if&amp;gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。
-&amp;lt;s:if test=&amp;quot;&amp;quot;&amp;gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。
-尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？
-其实使用&amp;lt;s:if test=&amp;lsquo;str==&amp;ldquo;中文&amp;rdquo;&amp;rsquo;&amp;gt;，就可以了，请注意，是单引号-双引号-中文-双引号- 单引号的顺序，这样才能够正确的解析中文字符串是否相等。
-唔。。。终于可以做下一个部分了</description>
+      <description>上次遇到过&amp;lt;s:if&amp;gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。 &amp;lt;s:if test=&amp;quot;&amp;quot;&amp;gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。 尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？ 其实使用&amp;lt;s:if test=&amp;lsquo;str==&amp;ldquo;中文&amp;rdqu</description>
     </item>
     
     <item>
@@ -249,16 +121,7 @@ private void init() { Scanner scanner = new Scanner(System.</description>
       <pubDate>Sat, 27 Jun 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/06/affixed-to-it-the-progress-report-on-the-medium-term/</guid>
-      <description>查看sql更新版本，我才发现这个项目已经做了将近2个月了。
-之前一个多月都是我有空就做做，一边要写OpenSSL的模型，还要应付平时学习和考试，最近的1个星期，才开始全身心投入的，使这个项目变成了一个课程设计，但决不 止于课程设计。
-由于鸡鸡的加入，而且对原先设计的一些不满意，我用UP的方式重新对系统进行了设计，从用例到实际类图，都重新设计并加以重构。
-这是一个很有意义的过程，我花了很多时间在UML的使用上，用的是StarUML（开始使用Rose，发现太难入门了），继烨负责用例，我是在设计完第一个迭代过程之 后进行编写代码的。
-原计划是尽量设计之后再编码，但是由于时间关系被迫提前编码，这样，整个过程相对的倾向于敏捷，这其实也是我最开始想要的效果。
-写着写着，越发的理解设计的重要性，往往一个小错误会影响很多改变，很多东西没有一定经验真的很难做优秀。
-今天的代码提交到Google Code之后，基本接近我之前自己完成的程度，但我觉得这次的重构，使我学到了很多平时没接触到的东西。两个人的协作也使我完全体会到SVN的好处。
-以上是贴吧中期报告。
-相关链接： PostBar in Google Project Host&amp;lt;猛击这里打开&amp;gt;
-PostBar svn-readonly&amp;lt;[猛击这里打开](http://postbar.googlecode.com/svn/trunk/ postbar-read-only)&amp;gt;</description>
+      <description>查看sql更新版本，我才发现这个项目已经做了将近2个月了。 之前一个多月都是我有空就做做，一边要写OpenSSL的模型，还要应付平时学习和考试，最近的1个星期，才开始全身心投入的，使这个项目变成了一个课程设计，但决不 止于课程设计。 由于鸡鸡的加入，而且对原先设计的一些不满意，我用UP的方式重新对系统进行了设计，从用例到实际类图，都重新设计并加以重构。 这是一个很有意义的过程，我花了很多时间在UML的使用</description>
     </item>
     
     <item>
@@ -267,12 +130,7 @@ PostBar svn-readonly&amp;lt;[猛击这里打开](http://postbar.googlecode.com/s
       <pubDate>Sun, 14 Jun 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/06/xiaoneicaicai-gadget-v0-1/</guid>
-      <description>明天要考数据库应用了，今天仍然忍不住把校内踩踩小工具写完。
-上次被打击了，人家刷人气的工具是建立一个平台进行互踩，但是安全性存在问题。我自己写的这个小东西能在校内限制范围内刷50个相同区域的页面(校内限制次数是100 ，可以执行两次，以后再执行就必须到网页输入验证码)，然后通过他人回踩来提高人气。
-纯粹是自己写着玩，几乎没有什么应用价值，不过既然写了这么久，也就放上来，大家把玩一下。
-压缩包内两个文件，一个xml保存帐号密码，用文本编辑器就可以编辑，另外一个是jar文件，在cmd下面用&amp;quot;java -jar XiaoneiCaiCai.jar&amp;quot;运行。
-纯属娱乐，水平很菜，大家不要喷我。
-猛击这里下载xiaoneicaicai</description>
+      <description>明天要考数据库应用了，今天仍然忍不住把校内踩踩小工具写完。 上次被打击了，人家刷人气的工具是建立一个平台进行互踩，但是安全性存在问题。我自己写的这个小东西能在校内限制范围内刷50个相同区域的页面(校内限制次数是100 ，可以执行两次，以后再执行就必须到网页输入验证码)，然后通过他人回踩来提高人气。 纯粹是自己写着玩，几乎没有什么应用价值，不过既然写了这么久，也就放上来，大家把玩一下。 压缩包内两个文件，一</description>
     </item>
     
     <item>
@@ -281,14 +139,7 @@ PostBar svn-readonly&amp;lt;[猛击这里打开](http://postbar.googlecode.com/s
       <pubDate>Fri, 12 Jun 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/06/xiaonei-gadgets-come-to-an-end/</guid>
-      <description>这段时间在写校内小工具，开心农场小外挂，刷刷人气的小外挂。
-结果开心农场的FramKey改了算法，由时间参数改为flash中(5, 3)这点RGB颜色，而且返回的JSON也重新加密了。我对AS3不懂，而且破解算法也不是我强项，就暂停开心农场外挂的开发。
-想把这个工具转为校内刷人气的，原理就是访问大量用户，可能会有一定几率其他用户回访。这个不难写，我只要用爬虫去爬就可以获得大量相关用户，但是爬着爬着，发现校内 只允许在一段时间内查看100用户页面，否则会有验证码，而且爬时候还不能并发。这样一来，就需要手工输入验证码，刷的效率会大打折扣。
-我同学下了一个刷人气的，输入帐号后几乎人气是1秒一个，把玩了一会，感觉是在服务器上存储了所有使用这个软件的人的账号，然后在服务器上进行互刷，这个想法相当于D ispatch刷人气了，那完全不是我这个单机小工具能够媲美的了。
-这种速度狠狠的打击了我，再继续开发就不得不加入图形界面来输入验证码，本来想写着玩的一个小工具，会成为一个复杂的开发。我只能暂时停止继续写这个工具，投身到课程 设计的洪流中去了。
-当然，这小东西花了我三天时间，也不是一点收获没有，我学会了用XOM持久化对象来保存信息，学会了用正则来获取Html中的信息，学会了用java.net.*操作 Get/Post，学会了操作cookie，学习正确使用I/O系统，学习操作文件，理解Try/Catch更深一点，学会使用注解生成javadoc。
-我所在的学校并没有开设Java课程，自己学习时候是直接写jsp的，通过这一次学习，掌握了很多原来不会的知识。
-好了，再写就成报告了，就这样了，美好的一天又开始了，海绵宝宝，我们去抓水母吧。</description>
+      <description>这段时间在写校内小工具，开心农场小外挂，刷刷人气的小外挂。 结果开心农场的FramKey改了算法，由时间参数改为flash中(5, 3)这点RGB颜色，而且返回的JSON也重新加密了。我对AS3不懂，而且破解算法也不是我强项，就暂停开心农场外挂的开发。 想把这个工具转为校内刷人气的，原理就是访问大量用户，可能会有一定几率其他用户回访。这个不难写，我只要用爬虫去爬就可以获得大量相关用户，但是爬着爬着，发现</description>
     </item>
     
     <item>
@@ -297,8 +148,7 @@ PostBar svn-readonly&amp;lt;[猛击这里打开](http://postbar.googlecode.com/s
       <pubDate>Wed, 10 Jun 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/06/xom-class-library-to-use-java-objects-serialization/</guid>
-      <description>校内工具需要保存用户名和帐号，我就想把帐号信息作为一个XiaoneiUser类，然后对其进行对象持久化。 Google下的方法有好几种方法进行持久化，JDOM， DOM4J, SAX等。我看了之后，感觉都比较麻烦，我个人比较喜欢使用jdk自带的工具，但是查阅jdk api之后，感觉使用 javax.xml.* 下工具开发更加困难。 我仅仅是需要对一个简单的对象进行持久化来保存数据，并不需要太多太复杂的功能。最后我决定使用《Thinking in Java》推荐的开源类库：XOM 猛击这里打开www.xom.nu 友情提示一下，网站可以打开，但是下载的连接貌似被墙了，至少我教育网连不上去。推荐 一个在线代理服务器古狗在线代理（猛击这里打开），通过它就可以下载类库了。 使用类库非常简单，我这里提供个小例子。XiaoneiUser类
-package cn.dddspace.xiaonei.bean; import java.io.OutputStream; import nu.xom.*; public class XiaoneiUser { /** * 用户Email */ private String userEmail; /** * 用户Password */ private String userPassword; public String getUserEmail() { return userEmail; } public void setUserEmail(String userEmail) { this.userEmail = userEmail; } public String getUserPassword() { return userPassword; } public void setUserPassword(String userPassword) { this.userPassword = userPassword; } /** * 将类转换为XML * * @return */ public Element getXML() { Element userE = new Element(&amp;#34;xiaoneiUser&amp;#34;); Element userEmailE = new Element(&amp;#34;userEmail&amp;#34;); userEmailE.</description>
+      <description>校内工具需要保存用户名和帐号，我就想把帐号信息作为一个XiaoneiUser类，然后对其进行对象持久化。 Google下的方法有好几种方法进行持久化，JDOM， DOM4J, SAX等。我看了之后，感觉都比较麻烦，我个人比较喜欢使用jdk自带的工具，但是查阅jdk api之后，感觉使用 javax.xml.* 下工具开发更加困难。 我仅仅是需要对一个简单的对象进行持久化来保存数据，并不需要太多太复杂的功能。最后我决定使用《Thinking in</description>
     </item>
     
     <item>
@@ -307,21 +157,7 @@ package cn.dddspace.xiaonei.bean; import java.io.OutputStream; import nu.xom.*; 
       <pubDate>Tue, 09 Jun 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/06/java-net-operation-session-get-post-method/</guid>
-      <description>终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具- 全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统 的浏览器或者之间创建一个Browser。
-开始写了自己的第一个版本。
-import java.io.BufferedReader; import java.io.IOException; import java.io.InputStreamReader; import java.net.MalformedURLException; import java.net.ProtocolException; import java.net.URL; import java.net.HttpURLConnection; public class FarmerHelper {
-/**
-@param args @throws ProtocolException
-*/
-public static void main(String[] args) throws ProtocolException { String loginUrlStr = &amp;ldquo;http://login.xiaonei.com/Login.do&amp;quot;;
-String homeUrlStr = &amp;ldquo;http://home.xiaonei.com/Home.do&amp;quot;;
-URL loginUrl = null;
-URL homeUrl = null;
-HttpURLConnection loginConn = null;
-HttpURLConnection homeConn = null;
-try {
-loginUrl = new URL(loginUrlStr);
-homeUrl = new URL(homeUrlStr);</description>
+      <description>终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具- 全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统 的浏览器或者之间创建一个Browser。 开始写了自己的第一个版本。 import java.io.BufferedReader; import java.io.IOException; import java.io.InputStreamReader; import java.net.MalformedURLException; import java.net.ProtocolException; import java.net.URL;</description>
     </item>
     
     <item>
@@ -330,11 +166,7 @@ homeUrl = new URL(homeUrlStr);</description>
       <pubDate>Tue, 26 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/the-executable-file-mp3lrc/</guid>
-      <description>早上把代码输出成了Runnable Jar，生成一个jar格式的文件，只要是有JavaSE的电脑都可以运行了。
-当然，不是双击运行，进入CMD，然后进入jar文件所在文件夹，运行＂java -jar Mp3Lrc.jar＂
-就会出来提示输入Mp3根目录和歌词根目录，把两个目录输入就可以运行了。
-猛击这里下载Mp3Lrc.rar
-这个程序是自己用的，可能存在Bug，由于会操作文件，请在使用前备份重要资料（虽然根本没有删除命令，只有复制命令）</description>
+      <description>早上把代码输出成了Runnable Jar，生成一个jar格式的文件，只要是有JavaSE的电脑都可以运行了。 当然，不是双击运行，进入CMD，然后进入jar文件所在文件夹，运行＂java -jar Mp3Lrc.jar＂ 就会出来提示输入Mp3根目录和歌词根目录，把两个目录输入就可以运行了。 猛击这里下载Mp3Lrc.rar 这个程序是自己用的，可能存在Bug，由于会操作文件，请在使用前备份重要资料（虽然根本没有删</description>
     </item>
     
     <item>
@@ -343,26 +175,7 @@ homeUrl = new URL(homeUrlStr);</description>
       <pubDate>Mon, 25 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/lyrics-written-in-java-replicator-mp3/</guid>
-      <description>大家可能会遇到这样的情况，Mp3里有很多歌，电脑上也有很多相同的歌，但是有歌词。把歌词同步到Mp3播放器非常麻烦，我以前用千千静听导入目录，然后逐个播放，或 者用一个软件从网上搜索到Mp3播放器。 千千静听或者其他播放器都会有一个选项是设置歌词存储位置的，一般来说，我们听过的歌都是会自动下载歌词到这个文件夹，其实 我们完全可以不必大费周折去找lrc，只要把这个歌词文件夹和Mp3播放器同步就可以了。 以前就想写一个东西完成这个麻烦的工程，现在贴吧1.0完成了，可以休息几天，晚上花了一点时间用Java写了一个这样的小东西。 如果大家碰到和我一样的麻烦，可以试试。呃，时间仓促，没有图形界面，而且必须是Java程序员才能用，因为我这儿只提供了源码&amp;hellip;.
-package ddd; import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-public class App {
-/**
-@author alswl @site dddspace.cn @param args @throws IOException
-*/
-public static void main(String[] args) throws IOException { String pathMp3;
-String pathLrc;
-BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-print(&amp;ldquo;请输入Mp3根目录&amp;rdquo;);
-pathMp3 = in.readLine();
-print(&amp;ldquo;请输入Lrc目录&amp;rdquo;);
-pathLrc = in.readLine();
-copyLrc(pathMp3, pathLrc);
-}
-private static void copyLrc(String mp3sPath, String lrcsPath) {
-String pathMp3 = mp3sPath;</description>
+      <description>大家可能会遇到这样的情况，Mp3里有很多歌，电脑上也有很多相同的歌，但是有歌词。把歌词同步到Mp3播放器非常麻烦，我以前用千千静听导入目录，然后逐个播放，或 者用一个软件从网上搜索到Mp3播放器。 千千静听或者其他播放器都会有一个选项是设置歌词存储位置的，一般来说，我们听过的歌都是会自动下载歌词到这个文件夹，其实 我们完全可以不必大费周折去找lrc，只要把这个歌词文件夹和Mp3播放器同步就可以了。 以前就</description>
     </item>
     
     <item>
@@ -371,21 +184,7 @@ String pathMp3 = mp3sPath;</description>
       <pubDate>Sat, 23 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/struts2-in-the-use-of-ajax/</guid>
-      <description>贴吧1.0差不多可以完成了，进入界面美化，我服务器验证写完之后，开始用jQuery写js。
-使用了jQuery的UI，后来想加入Ajax验证，但是遇到了问题：
-09-05-23 07:53 WARN [org.apache.struts2.dispatcher.Dispatcher] - Could not find action or result
-There is no Action mapped for namespace / and action name AjaxLogin. - [unknown location]
-我整整找了一个多小时，曾以为是action name的问题或者是package name, package namespace 的问题，为此我特意重新学习了一下他们的使用方法，但是仍然没有效果。
-最后，终于在Google找到了一些资料：
-struts2 json jquery 集成详解来自 户起龙的博客
-我本来以为Struts/lib下面的json-lib-2.1.jar就可以了，而且启动Tomcat没有任何报错，居然要另外一个jar，叫做json- plugin
-下载地址：猛击这里下载
-使用这个插件之后，本以为轻松搞定，但是仍然还是这个错误！！！
-怎么可能？！我怒了，翻开Struts2的文档，文档用的是DWR，已经使用taglib封装了，再查看json-plugin的文档，仍然未果！！
-最后逼急了，使用这篇文章 《在Struts 2中使用JSON Ajax支持》猛击这里打开，重新写了一个Action和一个简单的jsp页面，使用最淳朴的提交。终于可以成功了，数据交 换能够明显的在FireBug下看到。
-这种情况的话，据我猜测，应该是我原来使用的&amp;lt;s:form&amp;gt;标签的问题，如果使用简单的就应该可以避免了。
-09_05_24修正
-之前说是&amp;lt;s:form&amp;gt;的问题，而用可以解决，结果我发现也不行，直接返回当前页面，这就比较郁闷了，最后，我把去除，只留下 就可以了，不好意思，让Strut2蒙冤了。</description>
+      <description>贴吧1.0差不多可以完成了，进入界面美化，我服务器验证写完之后，开始用jQuery写js。 使用了jQuery的UI，后来想加入Ajax验证，但是遇到了问题： 09-05-23 07:53 WARN [org.apache.struts2.dispatcher.Dispatcher] - Could not find action or result There is no Action mapped for namespace / and action name AjaxLogin. - [unknown location] 我整整找了一个多小时，曾以为是action name的问题或者是package name, package namespace 的问题，为此我特意重新学习了一下他们的使用方法，但是仍然没有效果。 最后，终于在Google找到了一些资料： struts2 json</description>
     </item>
     
     <item>
@@ -394,15 +193,7 @@ struts2 json jquery 集成详解来自 户起龙的博客
       <pubDate>Fri, 22 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/battle-of-garbled/</guid>
-      <description>今天重新设计了贴吧的数据库，参考了WordPress的无外键，设置default的值，我取消了两个外键，仅保留一个对应CategoryId的外键。
-修改数据库时候发现MySQL的charset还是&amp;rsquo;latin&amp;rsquo;，就顺手修改成&amp;rsquo;utf-8&amp;rsquo;来保证统一，结果就出事了。
-因为我修改了DAO，单元测试之后重新走一遍网页测试流程，结果发帖时候遇到乱码。
-一回生两回熟，咱也不怕。
-在Action里面设置logger，输出相应的数据，发现那里就是乱码，说明在Severlet或者Interceptor那里就出了问题。
-仿照上次设置Tomcat字符集，详情见Eclipse中开发的Jave EE项目在Tomcat的部署 ，但是测试发现没有效果。
-接着查看web.xml，发现里面还有Spring的filter，贴吧现阶段还没有加入Spring，删除，有一个编码过滤器org.apache.struts2 .dispatcher.FilterDispatcher，采用org.apache.struts2.dispatcher.FilterDispatcher可 以不适用，删除。
-这么一删，就发现乱码问题解决了。
-呵呵，只要人类还有很多语言，乱码仍然会存在，遇到了不要怕，慢慢调试就出来了</description>
+      <description>今天重新设计了贴吧的数据库，参考了WordPress的无外键，设置default的值，我取消了两个外键，仅保留一个对应CategoryId的外键。 修改数据库时候发现MySQL的charset还是&amp;rsquo;latin&amp;rsquo;，就顺手修改成&amp;rsquo;utf-8&amp;rsquo;来保证统一，结果就出事了。 因为我修改了DAO，单元测试之后重新走一遍网页测试流程，结果发帖时候遇到乱码。 一回生两回熟</description>
     </item>
     
     <item>
@@ -411,13 +202,7 @@ struts2 json jquery 集成详解来自 户起龙的博客
       <pubDate>Thu, 21 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/struts2-tags-the-curve-of-the-bug-and-the-use-of/</guid>
-      <description>贴吧的用户状态显示，登录和未登录应该是不同的div显示，我决定用做标签。
-本来应该很简单的事情，却没有我预想中的情形出现，检查后发现失效了，代码如下：
-&amp;lt;li&amp;gt;${session.userName}欢迎你&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;Logout.action&amp;quot;&amp;gt;注销&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; Struts2的官方文档中标签库介绍写的很清楚，官方示例文档如下
-&amp;lt;s:if test=&amp;quot;%{false}&amp;quot;&amp;gt; &amp;lt;div&amp;gt;Will Not Be Executed&amp;lt;/div&amp;gt; &amp;lt;/s:if&amp;gt; &amp;lt;s:elseif test=&amp;quot;%{true}&amp;quot;&amp;gt; &amp;lt;div&amp;gt;Will Be Executed&amp;lt;/div&amp;gt; &amp;lt;/s:elseif&amp;gt; &amp;lt;s:else&amp;gt; &amp;lt;div&amp;gt;Will Not Be Executed&amp;lt;/div&amp;gt; &amp;lt;/s:else&amp;gt; 我现在敢打包票，这个示例无法成功运行。
-OGNL有三种取值方式，%,$和#，我之前已经转载过一篇小介绍，按官方文档，这里的$是应该起作用的，但是很可惜，这儿出现了错误。
-网友阿木的博客讨论了相关问题：[struts2的if标签](http://blog.sina.com.cn/s/blog_5cecbc550100ck4f. html)，我没有像他那样详细测试，尝试几次后，代码修改为：
-&amp;lt;li&amp;gt;${session.userName}欢迎你&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;Logout.action&amp;quot;&amp;gt;注销&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; 使用#选择符，而不是其他的，这样就可以正确运行了。</description>
+      <description>贴吧的用户状态显示，登录和未登录应该是不同的div显示，我决定用做标签。 本来应该很简单的事情，却没有我预想中的情形出现，检查后发现失效了，代码如下： &amp;lt;li&amp;gt;${session.userName}欢迎你&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;Logout.action&amp;quot;&amp;gt;注销&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; Struts2的官方文档中标签库介绍写的很清楚，官</description>
     </item>
     
     <item>
@@ -426,20 +211,7 @@ OGNL有三种取值方式，%,$和#，我之前已经转载过一篇小介绍，
       <pubDate>Wed, 20 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/eclipse-in-the-development-of-jave-ee-projects-in-the-deployment-of-tomcat/</guid>
-      <description>贴吧最基本的功能写完了，正好可以应付数据库设计课的实验。于是我准备把贴吧的项目从Eclipse的开发环境中移植出来，在Tomcat中进行部署。
-也许是习惯了Eclipse提供的便利，这个小小的移植，居然难倒了我，直接把Eclipse里的PostBar考出，根本不能运行，直接报404错误。Google 上也没有提供详细的步骤，也许大家都觉得这个问题很简单吧，呵呵。
-我琢磨了一会，终于整理出了头绪。
-1.修改Apache-conf-server.xml这个文件，修改其中一段&amp;hellip;如下所示
-&amp;lt;host appbase=&amp;quot;webapps&amp;quot; name=&amp;quot;localhost&amp;quot; unpackWARs=&amp;quot;true&amp;quot; autoDeploy=&amp;quot;true&amp;quot; xmlValidation=&amp;quot;false&amp;quot; xmlNamespaceAware=&amp;quot;false&amp;quot;&amp;gt; &amp;lt;context debug=&amp;quot;0&amp;quot; docbase=&amp;quot;F:T3&amp;quot; path=&amp;quot;/postbar&amp;quot;&amp;gt; reloadable=&amp;quot;true&amp;quot; crossContext=&amp;quot;true&amp;quot;&amp;gt; &amp;lt;/context&amp;gt; &amp;lt;/host&amp;gt; 这一段的作用是在原先webapps的目录下添加虚拟目录/postbar，并且指定实际目录是&amp;quot;F:T3&amp;quot;
-2.打开目录listtings功能，这样能帮助调试，正式发布可以关闭。 在Apache-conf-web.xml中找到
-&amp;lt;init-param&amp;gt; &amp;lt;param-name&amp;gt;listings&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;false&amp;lt;/param-value&amp;gt; &amp;lt;/init-param&amp;gt; 把其中的false改为true就可以了。
-3.打包Java EE项目。其实与其我们花时间考虑classes的位置，tld文件位置等繁琐的问题，可以直接使用Eclipse的输出功能，具体是项目右键- Export 然后选择WAR file，就可以输出一个打包的项目文件。
-4.在Tomcat的index.jsp里有stauts，输入管理密码后，可以进入一个状态页面，这里提供上传WAR文件并配置，可以这么做，但是其实可以直接用W inRAR解压缩WAR文件，然后复制到之前设置的目录中。
-这样，就可以再Tomcat使用项目，而不用考虑太多的部署问题了。 当然，我更建议初学者好好研究一下Java EE项目的部署要求，而不是简单的会用。 我也该认真看看孙鑫大大的Java EE前面的基础章节了&amp;hellip;
-本以为这样就可以使用项目，结果半路杀出一个程咬金，表单提交的中文都是乱码。
-又遇到乱码问题了，呵呵，幸好不是初哥，我用Log4j调试一下，查看Tomcat/logs/，检查下面相应的txt文件，发现Action读取时候就出现了乱码， 数据库也是乱码，说明乱码产生原因在服务器端获取数据时候，我Google一下，发现Connector可以设置编码集，具体设置是Tomcat/conf/serv er.xml
-&amp;lt;Connector port=&amp;quot;8080&amp;quot; protocol=&amp;quot;HTTP/1.1&amp;quot; connectionTimeout=&amp;quot;20000&amp;quot;/&amp;gt; 将其修改为
-&amp;lt;Connector port=&amp;quot;8080&amp;quot; protocol=&amp;quot;HTTP/1.1&amp;quot; connectionTimeout=&amp;quot;20000&amp;quot; redirectPort=&amp;quot;8443&amp;quot; URIEncoding=&amp;quot;utf-8&amp;quot; /&amp;gt; 重新测试表单数据发送，一切没有问题了。 细节决定一切啊.</description>
+      <description>贴吧最基本的功能写完了，正好可以应付数据库设计课的实验。于是我准备把贴吧的项目从Eclipse的开发环境中移植出来，在Tomcat中进行部署。 也许是习惯了Eclipse提供的便利，这个小小的移植，居然难倒了我，直接把Eclipse里的PostBar考出，根本不能运行，直接报404错误。Google 上也没有提供详细的步骤，也许大家都觉得这个问题很简单吧，呵呵。 我琢磨了一会，终于整理出了头绪。 1.修改</description>
     </item>
     
     <item>
@@ -448,14 +220,7 @@ OGNL有三种取值方式，%,$和#，我之前已经转载过一篇小介绍，
       <pubDate>Sun, 10 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/ognl-operators-in/</guid>
-      <description>&amp;lt;s:textfield name=&amp;ldquo;loginName&amp;rdquo; value=&amp;quot;%{#request.loginNames}&amp;quot;/&amp;gt;
-使用此表达式，会生成一个文本框，并且，如果request.attribute中有loginNames属性，将会做为些文本框的默认值。
-如果只使用#request.loginNames在struts2的标签内部，是不会显示任何值的，注意外面加上的%{}附号，才会被正常的使用。
-如果希望如EL语言一样直接输出文件，如在一个之间的innerHTML文本为#request.loginNames的值，我们只要使用：&amp;lt;s:pr operty value=&amp;quot;#request.loginNames&amp;quot; /&amp;gt;使可以正常使用！
-注：
-1.${}是EL语言的 %{}这样的形式是ognl表过式语言的，在struts2的标签内部，使用%{}这样的形式，在标签外部可以使用${}EL语言的方式。如 果在struts2的标签内部使用${}这样的方式，会出现以下的错误提示：
-According to TLD or attribute directive in tag file, attribute value does not accept any expressions
-2.很多时候，我们使用struts2的一些标签，属性是需要接受集合的，如果集合是保存在request,session，或者是值栈(非根对象的栈顶)，可以使用 #变量名的方式，如果获取的值是在Action中通过特定的方法来获取，就需要使用如 value=&amp;ldquo;userList&amp;quot;这样的方式，只是去掉了前面的#。</description>
+      <description>&amp;lt;s:textfield name=&amp;ldquo;loginName&amp;rdquo; value=&amp;quot;%{#request.loginNames}&amp;quot;/&amp;gt; 使用此表达式，会生成一个文本框，并且，如果request.attribute中有loginNames属性，将会做为些文本框的默认值。 如果只使用#request.loginNames在struts2的标签内部，是不会显示任何值的，注意外面加上的%{}附号，才会被正常的使用。 如果希望如EL语言一样直接输出文件，如在一个之间的innerHTML文本为#request.loginNames的值，我们</description>
     </item>
     
     <item>
@@ -464,10 +229,7 @@ According to TLD or attribute directive in tag file, attribute value does not ac
       <pubDate>Sat, 09 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/to-submit-the-issue-of-an-action/</guid>
-      <description>贴吧在提交帖子时候必须提供贴吧分类id categoryId，但是怎么把这个id提交到PostAction就比较麻烦了，在jsp页面中我试了好多办法，尝试使 用param和hidden（baidu用的hidden）标签，但是都不能读出cagegory.jsp页面的categoryId值。
-最后我索性用试所有的表达式
-&amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;%{#categoryId}&amp;quot; /&amp;gt; &amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;#categoryId&amp;quot; /&amp;gt; &amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;%{categoryId}&amp;quot; /&amp;gt; 最后一个果然有效。。。
-貌似记得这是OPGL表达式？****</description>
+      <description>贴吧在提交帖子时候必须提供贴吧分类id categoryId，但是怎么把这个id提交到PostAction就比较麻烦了，在jsp页面中我试了好多办法，尝试使 用param和hidden（baidu用的hidden）标签，但是都不能读出cagegory.jsp页面的categoryId值。 最后我索性用试所有的表达式 &amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;%{#categoryId}&amp;quot; /&amp;gt; &amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;#categoryId&amp;quot; /&amp;gt; &amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;%{categoryId}&amp;quot; /&amp;gt; 最后一个果然有效。。。 貌似记得这是OPGL表达式？****</description>
     </item>
     
     <item>
@@ -476,15 +238,7 @@ According to TLD or attribute directive in tag file, attribute value does not ac
       <pubDate>Sat, 09 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/garbled-see-also-garbled/</guid>
-      <description>今天解决了贴吧发帖的问题，可以正确的发送到正确的分类了。
-随后遇到的问题是发帖完毕返回 Category.action 时候，无法读取争取的贴吧分类数据，经过在 struts.xml 里的Category.action 里的 result 后面的url加入参数，可以读取正确categoryId了
-本来想在result中加入param元素而不是在url后面加 ？categoryId=0来实现，但是尝试了好久，Google和官方文档都没有什么解决方案
-其中遇到的一个问题是「&amp;amp;」这个符号不能直接使用，需要进行转义，用「&amp;amp;」来替代。
-最后是categoryName的问题了，本来以为很简单，却遇到了编码问题，之前从Home.action转到Category.action能正确编码，像 ht tp://localhost:8080/PostBar/Category.action?categoryId=4&amp;amp;categoryName=%E9%9F%B 3%E4%B9%90 ，而现在的categoryName后面却有乱码
-最恨乱码问题，整整花了我将近2小时，仍然没有完美解决方法，只能勉强在PostTopic.action转到Category.action时进行Encode编码 ，但是这十足dirty work，而且不方便再次读取categoryName。
-我尝试在struts.xml用OGNL语言进行转换，但是却无法运行，找不出问题。
-实在没有办法了，现在我准备用Baidu这种url形式，只传递categoryId，而在此用Hibernate读取数据库去除categoryName来获得内容
-当初之所以考虑多次传递时怕读取数据库会导致性能大幅度下降，今天又学习了一下Hibernate的缓存机制，感觉是我多虑了，二级缓存应该能大大缓解多次读取的问题 。</description>
+      <description>今天解决了贴吧发帖的问题，可以正确的发送到正确的分类了。 随后遇到的问题是发帖完毕返回 Category.action 时候，无法读取争取的贴吧分类数据，经过在 struts.xml 里的Category.action 里的 result 后面的url加入参数，可以读取正确categoryId了 本来想在result中加入param元素而不是在url后面加 ？categoryId=0来实现，但是尝试了好久，Google和官方文档都没有什么解决方案 其中遇到的一个问题是「&amp;a</description>
     </item>
     
     <item>
@@ -493,14 +247,7 @@ According to TLD or attribute directive in tag file, attribute value does not ac
       <pubDate>Fri, 08 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/struts2-encoding-problem/</guid>
-      <description>继续昨天的编码问题 我一直全部采用UTF-8格式，而且在jUnit测试中并没有问题，说明是在Struts进行数据收集时候出错。
-Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效果。
-网上建议在web.xml中添加 ：
-&amp;lt;filter&amp;gt; &amp;lt;filter-name&amp;gt;struts-cleanup&amp;lt;/filter-name&amp;gt; &amp;lt;filter-class&amp;gt;org.apache.struts2.dispatcher.ActionContextCleanUp &amp;lt;/filter-class&amp;gt; &amp;lt;/filter&amp;gt; &amp;lt;filter-mapping&amp;gt; &amp;lt;filter-name&amp;gt;struts-cleanup&amp;lt;/filter-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/filter-mapping&amp;gt; 来设定本地化和编码，然后在struts.xml中添加过滤器
-&amp;lt;constant value=&amp;quot;UTF-8&amp;quot; name=&amp;quot;struts.i18n.encoding&amp;quot;&amp;gt;&amp;lt;/constant&amp;gt; &amp;lt;constant value=&amp;quot;UTF-8&amp;quot; name=&amp;quot;struts.locale&amp;quot;&amp;gt;&amp;lt;/constant&amp;gt; 根据我测试，都没有效果。
-我检查完JSP页面编码和本地文件编码，也都不存在问题。 最后我在一片帖子中看到讲WebWork2和Struts2的一些过滤器不一样，那位高手遇到和我几乎一样的问题，然后他使用另外一个Filter ：
-&amp;lt;filter&amp;gt; &amp;lt;filter-name&amp;gt;struts2&amp;lt;/filter-name&amp;gt; &amp;lt;filter-class&amp;gt;org.apache.struts2.dispatcher.FilterDispatcher &amp;lt;/filter-class&amp;gt; &amp;lt;/filter&amp;gt; 在Struts2中War文件解压出来的.xml中使用的是 org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter 我并不清楚两者的区别，但是在采用 org.apache.struts2.dispatcher.FilterDispatcher 之后，问题迎刃而解。 然后查看手头的Struts2书，上面也是用的org.apache.struts2.dispatcher.FilterDispatcher 嗯，自己水平实在太菜，继续努力。
--技术改变世界，创新驱动中国-</description>
+      <description>继续昨天的编码问题 我一直全部采用UTF-8格式，而且在jUnit测试中并没有问题，说明是在Struts进行数据收集时候出错。 Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效果。 网上建议在web.xml中添加 ： &amp;lt;filter&amp;gt; &amp;lt;filter-name&amp;gt;struts-cleanup&amp;lt;/filter-name&amp;gt; &amp;lt;filter-class&amp;gt;org.apache.struts2.dispatcher.ActionContextCleanUp &amp;lt;/filter-class&amp;gt; &amp;lt;/filter&amp;gt; &amp;lt;filter-mapping&amp;gt; &amp;lt;filter-name&amp;gt;struts-cleanup&amp;lt;/filter-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/filter-mapping&amp;gt; 来设定本地化和编码，然后在struts.xml中添加过滤器 &amp;lt;constant value=&amp;quot;UTF-8&amp;quot; name=&amp;quot;struts.i18n.encoding&amp;quot;&amp;gt;&amp;lt;/constant&amp;gt; &amp;lt;constant value=&amp;quot;UTF-8&amp;quot; name=&amp;quot;struts.locale&amp;quot;&amp;gt;&amp;lt;/constant&amp;gt; 根据我测试，都没有效果。 我检查完JSP页面编码和本地文件编码，也都不存在问题。 最后我在一</description>
     </item>
     
     <item>
@@ -509,13 +256,7 @@ Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效�
       <pubDate>Fri, 08 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/solve-the-null-value-was-assigned-to-a-property/</guid>
-      <description>晚上开始写贴吧分类，把class改成category，规避了关键字class，也显得更合理，百度的分类就是ct
-然后在分类上遇到一个小问题，category_father在数据库是integer类型，可以为null，因为存在根分类，在这种情况下用Hibernate读取 Category时会产生错误
-在jUnit单元测试中就通不过，错误为 org.hibernate.PropertyAccessException: Null value was assigned to a property
-Google后，发现Category中定义categoryFather为int类型，是不支持null的，需要改为Wrapper类Interger
-有人说只需要设定setXXX和getXXX的Integer的类型和.hbm.xml文件中个Type=&amp;ldquo;java.lang.Integer&amp;quot;就可以了
-但是经过我测试发现，categoryFather 这个成员也要定义成Interger，否则会报错 org.hibernate.PropertyAccessException: Exception occurred inside setter of &amp;hellip;
-晚上写完分类，感慨到：框架先行，功能其后，界面殿后。由于我home.jsp和category.jsp没有安排好，导致了很多问题。尽管有Eclipse的ren ame功能，把class改为category依然很麻烦</description>
+      <description>晚上开始写贴吧分类，把class改成category，规避了关键字class，也显得更合理，百度的分类就是ct 然后在分类上遇到一个小问题，category_father在数据库是integer类型，可以为null，因为存在根分类，在这种情况下用Hibernate读取 Category时会产生错误 在jUnit单元测试中就通不过，错误为 org.hibernate.PropertyAccessException: Null value was assigned to a property Google后，发现Category中定义categ</description>
     </item>
     
     <item>
@@ -524,17 +265,7 @@ Google后，发现Category中定义categoryFather为int类型，是不支持null
       <pubDate>Thu, 07 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/learning-to-use-log4j/</guid>
-      <description>今天用Log4j时候，感觉只显示message讯息太少了，直觉上这些流行的工具应该会提供更强大的定制功能，就去google了一下
-果不其然：相关配置参数如下
-Pattern to output the caller&amp;rsquo;s file name and line number. %m 输出代码中指定的消息 %p 输出优先级，即DEBUG，INFO，WARN，ERROR，FATAL %r 输出自应用启动到输出该log信息耗费的毫秒数 %c 输出所属的类目，通常就是所在类的全名 %t 输出产生该日志事件的线程名 %n 输出一个回车换行符，Windows平台为「rn」，Unix平台为「n」 %d 输出日志时间点的日期或时间，默认格式为ISO8601，也可以在其后指定格式，比如：%d{yyy MMM dd HH:mm:ss,SSS}，输出类似：2002年10月18日 22：10：28，921
-%l 输出日志事件的发生位置，包括类目名、发生的线程，以及在代码中的行数。 通过配置这些参数可以定制自己想要的记录。
-我修改 log4j.properties 文件后却没有得到我预想的效果，经过检查，发现在 appender 的定义名与下面使用的不一致，唉，也不知道当初哪里拷贝来的代码
-并且如果想使用定制模式，应该设定log4j.appender.A1.layout=org.apache.log4j.PatternLayout （其中A1为上面设定的输出位置，我使用的是ConsoleAppender）
-下面是我完整的 log4j.properties
-Set root logger level to DEBUG and its only appender to A1. log4j.rootLogger=INFO,A1
-A1 is set to be a ConsoleAppender. log4j.appender.A1=org.apache.log4j.ConsoleAppender
-A1 uses PatternLayout. log4j.appender.A1.layout=org.apache.log4j.PatternLayout
-log4j.appender.A1.layout.ConversionPattern=%d{yy-MM-dd hh:mm} %p [%c] - %m%n</description>
+      <description>今天用Log4j时候，感觉只显示message讯息太少了，直觉上这些流行的工具应该会提供更强大的定制功能，就去google了一下 果不其然：相关配置参数如下 Pattern to output the caller&amp;rsquo;s file name and line number. %m 输出代码中指定的消息 %p 输出优先级，即DEBUG，INFO，WARN，ERROR，FATAL %r 输出自应用启动到输出该log信息耗费的毫秒数 %c 输出所属的类目，通常就是所在类的全名 %t 输出产生该日志事件的线程名 %n 输出一个回车换行符，</description>
     </item>
     
     <item>
@@ -543,12 +274,7 @@ log4j.appender.A1.layout.ConversionPattern=%d{yy-MM-dd hh:mm} %p [%c] - %m%n</de
       <pubDate>Thu, 07 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/post-bar-progress-09-05-07/</guid>
-      <description>今天写到创建帖子，在编码上遇到问题，jUnit下调用函数没有任何问题，那就表示问题出在Struts Filter捕获的文本上。
-找了好几个方法都没有奏效。
-游客登录情况下的Session还存在一点问题，原因是session类型转换上的问题，今天还没有好好的研究一下。
-至此为止，登录注册写完了，静态校验写了一个毛胚，今天写完的现实帖子的列表，表现层用OGNL完成的，终于脱离开代码混杂的页面。
-解决了一个tx.commit的错误，原来是《开发者突击》书上的代码有问题，我参考了Hibernate的官方文档，终于发现了错误的原因，tx.rollback ()应该在catch里面而不是final里面。
-写着写着就感觉自己太多的不足，太多要学习的地方，加油！</description>
+      <description>今天写到创建帖子，在编码上遇到问题，jUnit下调用函数没有任何问题，那就表示问题出在Struts Filter捕获的文本上。 找了好几个方法都没有奏效。 游客登录情况下的Session还存在一点问题，原因是session类型转换上的问题，今天还没有好好的研究一下。 至此为止，登录注册写完了，静态校验写了一个毛胚，今天写完的现实帖子的列表，表现层用OGNL完成的，终于脱离开代码混杂的页面。 解决了一个tx.</description>
     </item>
     
     <item>
@@ -557,11 +283,7 @@ log4j.appender.A1.layout.ConversionPattern=%d{yy-MM-dd hh:mm} %p [%c] - %m%n</de
       <pubDate>Tue, 05 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/no-configuration-found-for-the-specified-action/</guid>
-      <description>Tomcat 控制台打出如下警告：
-WARN - No configuration found for the specified action: ‘xxxxx’in namespace: ‘/’. Form action defaulting to ‘action’ attribute’s literal value.
-主要由于在写struts2表单时有给action指定全名，如:&amp;lt;s:form action=」xxxAction.do」…&amp;gt;,直接写成&amp;lt;s:form action=」xxxAction」…&amp;gt;即可,因为在struts.xml中struts.action.extension属性有指定啦。
-有一个关于在namespace上的设置在 hi.baidu.com/mum0532/blog/item/128f9a64fa8594f5f6365457. html 。这位朋友讲的很透彻很详细
-关于Struts2 的 namespace 详细解释 www.javaeye.com/topic/125743</description>
+      <description>Tomcat 控制台打出如下警告： WARN - No configuration found for the specified action: ‘xxxxx’in namespace: ‘/’. Form action defaulting to ‘action’ attribute’s literal value. 主要由于在写struts2表单时有给action指定全名，如:&amp;lt;s:form action=」xxxAction.do」…&amp;gt;,直接写成&amp;lt;s:form action=」xxxAction」…&amp;gt;即可,因为在struts.xml中struts.action.exten</description>
     </item>
     
     <item>
@@ -570,33 +292,7 @@ WARN - No configuration found for the specified action: ‘xxxxx’in namespace:
       <pubDate>Wed, 18 Feb 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/02/servlet-jsp-s-java-type-of-the-most-simple-mvc-model/</guid>
-      <description>来自Head First Servlet and JSP
-XML语言: web.xml
-&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &amp;lt;web-app xmlns=&amp;ldquo;http://java.sun.com/xml/ns/j2ee&amp;quot;
-xmlns:xsi=&amp;ldquo;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
-xsi:schemaLocation=&amp;ldquo;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot;
-version=&amp;ldquo;2.4&amp;rdquo;&amp;gt; &amp;ndash;&amp;gt;
-Ch3 Beer
-com.example.web.BeerSelect
-Ch3 Beer
-/SelectBeer.do
-HTML语言: form.html
-Beer Selection Page Beer Selection Page select beer characteristics
-Color:
-light amber brown dark Java语言: BeerSelect
-package com.example.web;
-import com.example.model.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.io.*;
-import java.util.*;
-public class BeerSelect extends HttpServlet
-{
-public void doPost(HttpServletRequest request,
-HttpServletResponse response)
-throws IOException, ServletException
-{
-// response.</description>
+      <description>来自Head First Servlet and JSP XML语言: web.xml &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &amp;lt;web-app xmlns=&amp;ldquo;http://java.sun.com/xml/ns/j2ee&amp;quot; xmlns:xsi=&amp;ldquo;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;ldquo;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot; version=&amp;ldquo;2.4&amp;rdquo;&amp;gt; &amp;ndash;&amp;gt; Ch3 Beer com.example.web.BeerSelect Ch3 Beer /SelectBeer.do HTML语言: form.html Beer Selection Page Beer Selection Page select beer characteristics Color: light amber brown dark Java语言: BeerSelect package com.example.web; import com.example.model.*; import javax.servlet.*; import javax.servlet.http.*; import java.io.*; import java.util.*; public class BeerSelect extends HttpServlet { public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException { // response.setContentType(&amp;ldquo;text/html&amp;rdquo;); // PrintWriter out = response.getWriter(); // out.println(&amp;ldquo;Beer Selection Advice &amp;rdquo;); String c = request.getParameter(&amp;ldquo;color&amp;rdquo;); // out.println(&amp;quot; Got beer color &amp;quot; + c); BeerExpert be = new BeerExpert(); List result = be.getBrands(c); // Iterator it = result.iterator(); // while (it.hasNext()) // { // out.print(&amp;quot; try: &amp;quot; + it.next()); // } request.setAttribute(&amp;ldquo;styles&amp;rdquo;, result); RequestDispatcher view = request.getRequestDispatcher(&amp;ldquo;result.jsp&amp;rdquo;); view.forward(request, response); } } Java语言: BeerExpert package com.example.model; import java.util.*; public class BeerExpert { public List getBrands (String color) { List brands = new ArrayList(); if (color.equals(&amp;ldquo;amber&amp;rdquo;)) { brands.add(&amp;ldquo;Jack Amber&amp;rdquo;); brands.add(&amp;ldquo;Red Moose&amp;rdquo;); } else { brands.add(&amp;ldquo;Jail Pale Ale&amp;rdquo;); brands.add(&amp;ldquo;Gout Stout&amp;rdquo;); } return brands; } } Java</description>
     </item>
     
     <item>
@@ -605,36 +301,7 @@ throws IOException, ServletException
       <pubDate>Thu, 05 Feb 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/02/java-triggered-by-the-post/</guid>
-      <description>因为一直想写一个刷人气的工具，其中最基本的就是post方法了，然后再收集页面中的元素。今天我就开始着手写Java的POST方法。
-在Java.net.*;中用URL构造地址，然后用流写入，似乎应该是很简单的方案，我却一直没成功。我百度Google了很久，参考了很多别人代码，似乎很容易实 现，可是我的一直问题，而我觉得和网上提供的一样。我的代码如下
-package netStudy01;
-import java.io.*;
-import java.net.*;
-public class PostBaidu
-{
-public static void main(String[] args)
-{
-try
-{
-URL url = new URL(&amp;quot;[ http://localhost/xhpx_web/gradequery.asp](http://localhost/xhpx_web/gradequery .asp)&amp;quot;);
-try
-{
-HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-HttpURLConnection.setFollowRedirects(false);
-conn.setInstanceFollowRedirects(false);
-conn.setRequestMethod(&amp;ldquo;POST&amp;rdquo;);
-conn.setDoOutput(true);
-conn.setDoInput(true);
-conn.setRequestProperty(&amp;ldquo;User-Agent&amp;rdquo;,
-&amp;amp;n bsp_place_holder; &amp;ldquo;Mozilla/5.0 (compatible; MSIE 6.0; Windows NT)&amp;rdquo;);
-conn.setRequestProperty(&amp;ldquo;Content-Type&amp;rdquo;,
-&amp;amp;n bsp_place_holder; &amp;ldquo;application/x-www-form-urlencoded&amp;rdquo;);
-OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(),&amp;ldquo;ASCII&amp;rdquo;);
-String request = &amp;ldquo;exam_id=123&amp;amp;submit=%CC%E1%BD%BB&amp;rdquo;;
-out.write(request);
-out.flush();
-out.close();
-BufferedReader in = new BufferedReader(new InputStreamReader(conn.</description>
+      <description>因为一直想写一个刷人气的工具，其中最基本的就是post方法了，然后再收集页面中的元素。今天我就开始着手写Java的POST方法。 在Java.net.*;中用URL构造地址，然后用流写入，似乎应该是很简单的方案，我却一直没成功。我百度Google了很久，参考了很多别人代码，似乎很容易实 现，可是我的一直问题，而我觉得和网上提供的一样。我的代码如下 package netStudy01; import java.io.*; import java.net.*; public class PostBaidu { public static void main(String[] args) { try { URL url = new URL(&amp;quot;[ http://localhost/xhpx_web/gradequery.asp](http://localhost/xhpx_web/gradequery .asp)&amp;quot;); try { HttpURLConnection</description>
     </item>
     
   </channel>

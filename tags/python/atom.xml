@@ -13,17 +13,7 @@
       <pubDate>Tue, 23 Jun 2020 17:54:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2020/06/type-safe-python/</guid>
-      <description>image from pixabay.com
-静态类型正在逐渐成为潮流， 2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。 过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。
-我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难： 在重构阶段代码回归成本异常之高，很多历史代码不敢动。 后来技术栈转到 Java，被类型系统怀抱让人产生安全感。
-最近一年在一个面向稳定性的运维系统耕耘。系统选型之初使用了 Python。 我在项目中力推了 Python 3.7，并大规模使用了 Python 的类型系统来降低潜在风险。
-追根溯源，我花了一些时间了解 Python 在类型系统的设计和实现， 本文以 PEP 提案介绍一下 Python 在类型系统上面走过的路。
-类型系统 谈类型系统之前，要厘定两个概念，动态语言和动态类型。
-动态语言（Dynamic Programming Language）则是指程序在运行时可以改变结构。 这个结构可以包含函数、对象、变量类型、程序结构。 动态类型是类型系统（Type System）其中一类，即程序在运行期间可以修改变量类型。 另外一种是静态类型：在编译期就决定了变量类型，运行期不允许发生变化。 类型系统还有一种分法是强类型和弱类型，强类型是指禁止类型不匹配的指令，弱类型反之。
-动态语言和动态类型这两个概念切入点不一样， Python 是一门动态语言，也是动态类型语言，还是强类型的动态类型。 这篇文章主要讨论 Python 语言的类型系统，不会涉及动态语言特性。
-类型安全之路 行业里面一直有一个争论：动态类型和静态类型哪一种更强大。 静态类型的支持者认为三个方面具备优势：性能、错误发现、高效重构。 静态类型通过编译期决定具体类型可以显著的提高运行期效率； 编译期就能够发现错误，在工程规模逐步变大时候尤其明显； 类型系统可以帮助 IDE 提示，高效重构。 动态类型的支持者则认为分析代码会更简单，减少出错机会，写起来也更为快速。
-Python 开发者们并非没有看到这个痛点， 一系列 PEP 提案应运而生。 在保留 Python 动态类型系统优势前提，通过语法、特性增强，将类型系统引入 Python。
-Python 在 2014 年即提出了 PEP 484，随后提出一个精粹版 PEP 483（The Theory of Type Hints）， 其工程实现 typing 模块在 3.</description>
+      <description>image from pixabay.com 静态类型正在逐渐成为潮流， 2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。 过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。 我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难： 在重构阶段代码回归成本异常之高，很多历史代码不敢动。 后来技术栈转到</description>
     </item>
     
     <item>
@@ -32,14 +22,7 @@ Python 在 2014 年即提出了 PEP 484，随后提出一个精粹版 PEP 483（
       <pubDate>Fri, 01 Nov 2013 01:11:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2013/11/python-gdb/</guid>
-      <description>大约一年前，我接触了 Java 中的 Btrace 能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。 另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。
-当时公司技术方面也遇到了一些瓶颈，一部分原因是 CPython 本身的 IO 模型问题， 另一方面也和早期代码写的极不工整脱不了关系。万般无奈之下，我们用 Jython 推翻重做了主要业务，效果立竿见影，但同时也把真实问题给规避掉了。
-在这之后我们在 JVM 的领导下，走上了康庄大道。但我心中始终还有一个梗， 就是想对性能遇到瓶颈的 Python Process 进行线上侦测。 这篇文章就是开始的第一步。
-PS:这篇文章理论上是可行的，但是在我机器（Ubuntu 12.04 / 系统自带 Python） 无法正常执行，会爆出 unable to read python frame information 的问题。解决方法我会在下篇文章中写出。这里只是单纯翻译一下原文。
-原文可以移步 https://wiki.python.org/moin/DebuggingWithGdb。
-有一些类型的 bugs 很难使用 Python 直接进行 debug，比如
-段错误（无法被捕捉的 Python 异常） 卡住的进程（这种情况下面没法使用 pdb 来进行跟踪） 控制之外的后台处理 daemon 进程 这些情况下，你可以使用尝试使用 gdb。
-准备 需要在系统安装 gdb 和 Python debug 扩展。 Python debug 扩展包含了一些 debug 命令，并且添加了一些 Python 特定的命令到 gdb。 在主流的 Linux 发行版中，你可以轻松的安装他们：</description>
+      <description>大约一年前，我接触了 Java 中的 Btrace 能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。 另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。 当时公司技术方面也遇到了一些瓶颈，一部分原因是 CPython 本身的 IO 模型问题， 另一方面也和早期代码写的极不工整脱不了关系。万般无奈之下，我们用 Jython 推翻重做了主要业务，效果立竿见影，但同时也把真实问题给规避掉了。 在这之后我们在 JVM 的领导下，走上了康庄大道。但我心中始终还有</description>
     </item>
     
     <item>
@@ -48,10 +31,7 @@ PS:这篇文章理论上是可行的，但是在我机器（Ubuntu 12.04 / 系�
       <pubDate>Sat, 12 Jan 2013 00:01:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2013/01/python-epoll/</guid>
-      <description>原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。
-============ 正文开始 ============
-介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。
-阻塞的 Socket 通信范例 import socket EOL1 = b&amp;#39;\n\n&amp;#39; EOL2 = b&amp;#39;\n\r\n&amp;#39; response = b&amp;#39;HTTP/1.0 200 OK\r\ndate: &amp;#34;2013-01-12T00:01:00+08:00&amp;#34; response += b&amp;#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&amp;#39; response += b&amp;#39;Hello, world!&amp;#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&amp;#39;0.0.0.0&amp;#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&amp;#39;&amp;#39; while EOL1 not in request and EOL2 not in request: request += connectiontoclient.</description>
+      <description>原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b&amp;#39;\n\n&amp;#39; EOL2 = b&amp;#39;\n\r\n&amp;#39; response = b&amp;#39;HTTP/1.0 200 OK\r\ndate: &amp;#34;2013-01-12T00:01:00+08:00&amp;#34; response += b&amp;#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&amp;#39; response += b&amp;#39;Hello, world!&amp;#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&amp;#39;0.0.0.0&amp;#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&amp;#39;&amp;#39; while EOL1 not in request and EOL2 not in request: request += connectiontoclient.recv(1024) print(&amp;#39;-&amp;#39;*40 + &amp;#39;\n&amp;#39; + request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将</description>
     </item>
     
     <item>
@@ -60,15 +40,7 @@ PS:这篇文章理论上是可行的，但是在我机器（Ubuntu 12.04 / 系�
       <pubDate>Mon, 19 Nov 2012 00:06:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/</guid>
-      <description>原文链接：Keeping Instagram up with over a million new users in twelve hours
-这周二我们发布了 Instagram for Android，反响空前强烈。 最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。 尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。 在这里我们将分享一些帮助我们解决问题的工具和技术。
-##statsd##
-statsd 在 Instagram 很受欢迎。这是 Etsy 写的一个网络监控器， 能够统计并图形化数据。它有两种核心的统计方式：计数器和计时器。 我们用计数器来跟踪许多信息，从每秒钟注册数到喜欢数量统计。 同时我们使用计时器来跟踪 feeds 变化，用户停留在 feeds 多久，和其他的主要操作。
-我们喜欢 statsd 的最大原因是它能迅速将状态显示并图形化出来。 Stats 几乎是实时的（在我们系统中有 10 秒钟的延时） 帮助我们评估系统状况和代码变化情况。 Stats 可以随意启用，当我们需要跟踪时，能够快速启用它。 你可以指定一个取样密度，来均匀的查看 web 应用概况， 而不会影响它运行效率。
-总结：实时统计可以动态添加，帮助你线上诊断而无须等待问题重现。
-##Dogslow##
-Bitbucket 出品，Dogslow 是一个 Django middleware，它能监视运行的进程， 当发现有进程运行时间超过 N 秒时，会保存当前进程信息的快照到磁盘。 一直开着它很耗性能，但当去定位突发问题的瓶颈时，就会非常有用（我们在 web 服务器上加了一个开关控制）。
-在发布那天，我们发现很多运行时间超过 1.5s 的进程都卡在 memcached 的 set() 和 get_many() 方法上。我们使用 Munin 跟踪我们的机器状态，发现 memcached 每秒有 5 万次请求，因此，尽管还没到达 CPU 上限，却被 memcached 拖慢了应用服务器速度。</description>
+      <description>原文链接：Keeping Instagram up with over a million new users in twelve hours 这周二我们发布了 Instagram for Android，反响空前强烈。 最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。 尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。 在这里我们将分享一些帮助我们解决问题的工具和技术。 ##statsd## statsd 在 Instagram 很受欢迎。这是 Etsy 写的一个网络监控器， 能够统计并图形化数据。它有两种核心的统计方式：计数器和</description>
     </item>
     
     <item>
@@ -77,11 +49,7 @@ Bitbucket 出品，Dogslow 是一个 Django middleware，它能监视运行的�
       <pubDate>Sun, 18 Nov 2012 22:31:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2012/11/kuku/</guid>
-      <description>一个小小的 Weekend Project，基于 web.py。 代码在 alswl / kuku ，很简陋，属于差不多能用阶段。
-基于以下原因开发：
-想把服务器去 PHP 化，以前的 upload.log4d.com 是基于 PHP 的， 详情请见 使用独立图床子域名。 刚买的 Linode VPS，终于从 128MB 内存解放出来了，赶紧放个 Python 程序跑跑。 想些 Python 了，手痒，想看看写这么简单的功能需要多长时间， 弥补上次没能参加黑客马拉松的遗憾。 KuKu 的发音是我家乡话的「看看」。
-KuKu 中比较有趣的地方是，用了 Foundation 这个流式 Web 前端框架， 用了 Foundation Icons Fonts，将 js 库全部托管在 Google Hosted Libaries 和 cdnjs 上。
-这篇文章我看着都觉得水。</description>
+      <description>一个小小的 Weekend Project，基于 web.py。 代码在 alswl / kuku ，很简陋，属于差不多能用阶段。 基于以下原因开发： 想把服务器去 PHP 化，以前的 upload.log4d.com 是基于 PHP 的， 详情请见 使用独立图床子域名。 刚买的 Linode VPS，终于从 128MB 内存解放出来了，赶紧放个 Python 程序跑跑。 想些 Python 了，手痒，想看看写这么简单的功能需要多长时间， 弥补上次没能参加黑客马拉松的遗憾。 KuKu 的发音是我家乡话的「看看」。 KuKu 中比较有趣的地方是，用了 Foundation 这个流式 Web 前端框架， 用了</description>
     </item>
     
     <item>
@@ -90,10 +58,7 @@ KuKu 中比较有趣的地方是，用了 Foundation 这个流式 Web 前端框�
       <pubDate>Sun, 21 Oct 2012 21:15:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2012/10/pycon-2012/</guid>
-      <description>PyCon 是 Python 领域最著名的技术会议，从 2011 年开始，中国区开始举办自己的 PyCon 大会。这次 PyCon 2012 分成两个场地同时进行，北京和上海， 并且在网上提供同步转播，各地也有组织线下收看的。
-去年时候我很遗憾的不能跑到上海来参加，现在我人就在上海， 怎能错过 Pythoner 的饕餮大餐呢？早就眼巴巴的买票准备参加了。
-上海这边的主题如下：
-《Python 产品构建与发布指南》- 沈崴 《实战游戏客户端》 - 林伟 《让程序运行更快》- 李小红 《演进或革命 - 选型和架构的实践经验谈》 - 潘俊勇 《网游开发中的 Python 组件》- 赖勇浩 《自动化即时战斗游戏解决方案》 - 王健 《人人可以化半小时开发一个全功能OpenERP模块》 - Tony Gu 《元编程在redis orm中的应用》 - 许智翔 《OpenERP即将推出的第7版的功能和新的编程框架介绍》- Eric Caudal 《Python如何帮助「逆转三国」获得成功》- 车蕙怡 《Pyramid Web Framework for Advanced Web Applications》- 黄峥峼 （Mark Huang） 《用Tornado开发RESTful API应用》- 飞龙非龙 《NOSQL和MySQL在django上的混合使用》- 黄昶 《网页游戏的跨界开发》 - 董诣 《阿里云之移动开发者上云》 - 刘飞 《使用 Python 和 Django 建设维护学校门户》- 于夏桥 《python在linux运维中的应用》 - 吴晗 《用Python替换C代码——A Python Successful Story》- Adieu（刁立知） 《 Python in Gentoo Linux》- Patrick Lauer 《基于nova的自动扩展和负载均衡》- 刘明华 《用myTestCase模块来做python的UT》- 陈钢 我最喜欢的是 许智翔（shell） / 沈崴 / 林伟 / 黄峥峼 / 李小红 / 赖勇浩 的 Topic。其中尤其是沈崴关于输入处理的准则，解开我一个很久的疑惑。 沈崴这个 Python 编程艺术 是赖勇浩提到的幻灯片，强烈推荐观看。</description>
+      <description>PyCon 是 Python 领域最著名的技术会议，从 2011 年开始，中国区开始举办自己的 PyCon 大会。这次 PyCon 2012 分成两个场地同时进行，北京和上海， 并且在网上提供同步转播，各地也有组织线下收看的。 去年时候我很遗憾的不能跑到上海来参加，现在我人就在上海， 怎能错过 Pythoner 的饕餮大餐呢？早就眼巴巴的买票准备参加了。 上海这边的主题如下： 《Python 产品构建与发布指南》- 沈崴 《实战游戏客户端》 - 林伟 《让程序运行更快》- 李小红 《演进或革命 - 选型和架构</description>
     </item>
     
     <item>
@@ -102,15 +67,7 @@ KuKu 中比较有趣的地方是，用了 Foundation 这个流式 Web 前端框�
       <pubDate>Tue, 16 Oct 2012 00:42:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2012/10/working-with-python-subprocess/</guid>
-      <description>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。
-这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。
-原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More
-注意
-关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。
-在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。
-我想达到的目标是：
-查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序 执行程序时发生了什么 当你双击桌面上的终端程序图标时，就会打开一个载入 shell 的程序。 你键入的命令不会直接在内核执行，而是先和 shell 进行交互。
-Command (eg. `ls -l&amp;#39;) ↓ Terminal Program (eg. `gnome-terminal&amp;#39;) ↓ Shell (eg Bash) ↓ Kernel (eg.</description>
+      <description>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。 这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。 原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More 注意 关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。 在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次</description>
     </item>
     
     <item>
@@ -119,9 +76,7 @@ Command (eg. `ls -l&amp;#39;) ↓ Terminal Program (eg. `gnome-terminal&amp;#39;
       <pubDate>Fri, 27 Jul 2012 09:02:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2012/07/moin2txt/</guid>
-      <description>我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考 [使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 data 目录链接到 Dropbox 同步目录下面，从而可以备份并查看我的知识库。
-我想同步阅读 KMS 数据 想在移动设备阅读 KMS 数据时，我遇到一个麻烦，MoinMoin 使用文件来保存 wiki 数据， 比如「28个Unix.Linux的命令行神器」这篇 wiki 目录在 data/28(e4b8aa)Unix(2e)Linux(e79a84e591bde4bba4e8a18ce7a59ee599a8) 中， 结构如下：
-|---revisions | |---00000002 | |---00000001 |---edit-log |---current |---attachments | |---http___coolshell.cn_wp-content_uploads_2012_07_xargs_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_sl.jpg | |---http___coolshell.cn_wp-content_uploads_2012_07_mtr_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_lftp_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_htop_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_calcurse_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_multitail_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_ack_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_tpp_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_powertop_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_newsbeuter_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_socat_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_siege_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_duplicity_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_ipbt_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_iftop_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_curl_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_iptraf-tcpudp.gif | |---http___coolshell.</description>
+      <description>我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考 [使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 data 目录链接到 Dropbox 同步目录下面，从而可以备份并查看我的知识库。 我想同步阅读 KMS 数据 想在移动设备阅读 KMS 数据时，我遇到一个麻烦，MoinMoin 使用文件来保存 wiki 数据， 比如「28个Unix.Linux的命令行神器」这篇 wiki 目录在 data/28(e4b8aa)Unix(2e)Linux(e79a84e591bde4bba4e8a18ce7a59ee599a8) 中， 结构如下： |---revisions | |---00000002 | |---00000001 |---edit-log |---current |---attachments | |---http___coolshell.cn_wp-content_uploads_2012_07_xargs_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_sl.jpg | |---http___coolshell.cn_wp-content_uploads_2012_07_mtr_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_lftp_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_htop_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_calcurse_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_multitail_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_ack_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_tpp_screenshot.png</description>
     </item>
     
     <item>
@@ -130,12 +85,7 @@ Command (eg. `ls -l&amp;#39;) ↓ Terminal Program (eg. `gnome-terminal&amp;#39;
       <pubDate>Sat, 24 Mar 2012 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2012/03/gae/</guid>
-      <description>GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也假模假样的看文档， 就是没有什么产出。
-去年写了一个小应用 dbevent2gc ， 期间发现 GAE 和普通程序开发的诸多不同，又遭遇 GAE 配额大幅缩水， 写出来的应用运转的不太稳定。在南京图书馆的架上看见这本《GAE 编程指南读书笔记》， 立即借回家仔细阅读。
-GAE 的简介
-运行时环境 Python / Java 数据存储 Datastore（实体 / 查询 / 索引 / 事务） 服务（Memcache / GAccount / 任务队列 / 计划任务） 工具（SDK / appcfg / dev_appserver / 控制台） 入门（安装 / GAccount / webapp / app.yaml / /_ah/admin / 注册部署 / login:required）
-处理流程：请求 - 前端 - 引用服务器 / 静态文件服务器 - 服务
-配额限制：请求限制 / CPU 限制 / 服务限制 / 部署限制 （最新配额：http://code.</description>
+      <description>GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也假模假样的看文档， 就是没有什么产出。 去年写了一个小应用 dbevent2gc ， 期间发现 GAE 和普通程序开发的诸多不同，又遭遇 GAE 配额大幅缩水， 写出来的应用运转的不太稳定。在南京图书馆的架上看见这本《GAE 编程指南读书笔记》， 立即借回家仔细阅读。 GAE 的简介 运行时环境 Python / Java 数据存储 Datastore（实体 / 查询 / 索引 / 事务</description>
     </item>
     
     <item>
@@ -144,14 +94,7 @@ GAE 的简介
       <pubDate>Tue, 20 Mar 2012 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2012/03/python-debug/</guid>
-      <description>撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。
-吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。
-在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。
-import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。
-参考链接：
-用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。
-安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。
-ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core.</description>
+      <description>撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。 吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。 在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。 import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c /</description>
     </item>
     
     <item>
@@ -160,17 +103,7 @@ ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报
       <pubDate>Fri, 10 Feb 2012 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/</guid>
-      <description>1. 使用 MoinMoin 前些日子，我写了一篇使用MoinMoin作为个人KMS 大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源， 我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。
-MoinMoin开发者wiki地址 MoinMoin开发API文档（这个官方wiki居然很少提及） MoinMoin的多国语翻译组wiki地址 我在使用MoinMoin过程中，有一个急迫需要的功能：
-保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。
-这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供， 我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。
-MoinMoin插件库 image2attach在MoinMoin官方Wiki的地址 现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。
-以下内容需要Python编程基础～
-2. MoinMoin 系统结构 MoinMoin的UML图：
-3. MoinMoin 常用对象 3.1. request 这个request和普通jsp/asp中request很类似（实际上这个request就是继承 werkzeug的Request）。
-除了正常的web request功能，Moin的request还带了Wiki自身的信息。
-request.getText # 多国语函数，经常使用 _ = request.getText 来简化代码 request.dicts # 获取定义在页面中的Dict，参见http://moinmo.in/HelpOnDictionaries request.groups # 获取权限管理中的组别 request.user.may # 检查用户权限 3.2. Page Page是最常见的类，它代表某个Wiki页面，通过它可以获取某个页面所有信息。 age本身是只读的，如果需要编辑需要使用PageEditor。
-Page.exists() # 是否存在 Page.getRevList() # 版本列表 Page.current_rev() # 当前版本 Page.getPagePath() # 存储路径 Page.get_raw_body() # 获取存储的数据 Page.send_page() # 发送格式化好页面 3.</description>
+      <description>1. 使用 MoinMoin 前些日子，我写了一篇使用MoinMoin作为个人KMS 大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源， 我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。 MoinMoin开发者wiki地址 MoinMoin开发API文档（这个官方wiki居然很少提及） MoinMoin的多国语翻译组wiki地址 我在使用MoinMoi</description>
     </item>
     
     <item>
@@ -179,19 +112,7 @@ Page.exists() # 是否存在 Page.getRevList() # 版本列表 Page.current_rev()
       <pubDate>Tue, 03 Jan 2012 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2012/01/tingdownload/</guid>
-      <description>度娘终于干了一件好事，Baidu Ting上线了， 正版音乐免费下载，类似于谷歌音乐。 关于音乐版权和免费的问题， 有很多问题需要取讨论， 比如说这种商业模式是否对传统唱片业产生冲击又或是有积极影响？ 作为普通消费者，暂时不用考虑这些问题，先享受这些服务好了。
-Baidu Ting的音乐质量是128KBps，音质算好，里面的idv3信息也勉强可以，有:
-歌名 歌手 部分专辑名（偶尔也出现&amp;quot;201-8月新歌快递&amp;quot;这种比较山寨的字） 部分唱片封面图片 虽然比不上谷歌音乐连歌曲风格都准备好了，但是比杂乱无章的那些音乐mp3要好太多了。
-自动下载脚本tingdownload 早上下了几首音乐，就顺手写了一个脚本，用来批量从Badu Ting下载音乐。
-代码在github-tingdownload
-需要 Python 2 (仅在Python2.7下测试) BeautifulSoup(已包含在目录下) simplejson（已包含在目录下) 一点点Python基础 Linux/Windows（我在Linux没问题，Windows应该也可以） 使用方法 在Shell(命令行)里输入下面随便一个命令，就会在当前目录下面出现 musics 文件夹， 里面就有下载好的音乐。
-# 使用说明 usage: tingdownload.py [-h] [--input INPUT] [Keyword [Keyword ...]] A script to download music from ting.baidu.com.
-positional arguments:
-Keyword
-optional arguments:
--h, &amp;ndash;help show this help message and exit
-&amp;ndash;input INPUT, -i INPUT
-a list file to input musics</description>
+      <description>度娘终于干了一件好事，Baidu Ting上线了， 正版音乐免费下载，类似于谷歌音乐。 关于音乐版权和免费的问题， 有很多问题需要取讨论， 比如说这种商业模式是否对传统唱片业产生冲击又或是有积极影响？ 作为普通消费者，暂时不用考虑这些问题，先享受这些服务好了。 Baidu Ting的音乐质量是128KBps，音质算好，里面的idv3信息也勉强可以，有: 歌名 歌手 部分专辑名（偶尔也出现&amp;quot;201-8月新歌快递&amp;quo</description>
     </item>
     
     <item>
@@ -200,8 +121,13 @@ a list file to input musics</description>
       <pubDate>Sun, 18 Dec 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/12/moinmoin-plugin-image2attach/</guid>
-      <description>What&amp;rsquo;s this Image2Attach is a extension for MoinMoin. It can create a page action to save images from web to page&amp;rsquo;s attachments.
-Requirment MoinMoin 1.9 (I only test in this version.) Install copy action/Image2Attach.py to data/plugin/action/ restart python server Usage Go into a page, click more action - Image2Attach . It will take a while to fetch the images, after that it will save the image to attachments and replace the image&amp;rsquo;s link with attachment&amp;rsquo;s link.</description>
+      <description> What&amp;rsquo;s this Image2Attach is a extension for MoinMoin. It can create a page action to save images from web to page&amp;rsquo;s attachments.
+Requirment MoinMoin 1.9 (I only test in this version.) Install copy action/Image2Attach.py to data/plugin/action/ restart python server Usage Go into a page, click more action - Image2Attach . It will take a while to fetch the images, after that it will save the image to attachments and replace the image&amp;rsquo;s link with attachment&amp;rsquo;s link. Finnally it will commit a change with message internet image save to attachment to wiki.
+Enjoy it, any bugs can report to Issue Report.
+Support You can get some develop infomation in Image2attach - Log4D
+Licence Distributed under the GPL v2
+Source code powered by https://github.com/alswl/image2attach.
+update 2012-05-28 fix url catch bug(Issue 4 / Issue 6) 2011-12-25 support link([[http://xxx.com/xxx.jpg|) fix url has &amp;lsquo;attachment&amp;rsquo; string bug. support image attachment rewrite. </description>
     </item>
     
     <item>
@@ -210,19 +136,7 @@ Requirment MoinMoin 1.9 (I only test in this version.) Install copy action/Image
       <pubDate>Fri, 25 Nov 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/11/dbevent2gc-v0-1-released/</guid>
-      <description>重要通知：Log4D的域名由 http://dddspace.com 迁移到 http://log4d.com 。
-订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner的地址未发生变化）
-http://feed.dddspace.com 弃用
-请订阅我博客的朋友更新一下订阅地址。
-关于dbevent2gc A application to sync douban.com events to Google Calendar.
-dbevent2gc是一个GAE应用，它将豆瓣同城的活动同步到Google Calendar的日历， 允许用户订阅活动而知道最近几周周边将发生活动。
-dbevent2gc是基于Python/web.py/mako/iCalendar的，源代码地址在 https://github.com/alswl/dbevent2gc
-使用方法 目前dbevent2gc运行在GAE上面，地址是 http://dbevent2gc.appspot.com （墙外） http://dbevent2gc.log4d.com/ （我做的本地反向代理） 登录这个地址可以选择需要订阅的城市和活动类型，然后会生成一个按钮， 点击这个按钮可以直接将选择的活动订阅到Google日历。
-如果你无法翻墙，可以使用 [http://dbevent2gc.appspot.com/event/location/beijing?type=all](h ttp://dbevent2gc.appspot.com/event/location/beijing?type=all) 这样的地址添加到你的Google Calender里面。
-接受的参数：
-城市（把最后的beijing替换成你想要的城市拼音， 更多城市拼音查看这里 活动类型 type，支持all, commonweal, drama, exhibition, film, music, others, party, salon, sports, travel. 可选参数,默认为all 安装方法 如果想自己搭建GAE应用，也很简单，直接使用 git://github.com/alswl/dbevent2gc.git 就可以获取最新代码， 然后嘛去GAE注册一个应用，上传即可运行了。
-dbevent2gc看上去可以用了，我昨晚发布了v0.1版本。
-感兴趣的同学可以试试，现在的问题是获取的活动可能太多了，我后期会加上过滤功能（update 2011-11-26，我已经添加了活动类型选择功能）。</description>
+      <description>重要通知：Log4D的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner的地址未发生变化） http://feed.dddspace.com 弃用 请订阅我博客的朋友更新一下订阅地址。 关于dbevent2gc A application to sync douban.com events to Google Calendar. dbevent2gc是一个GAE应用，它将豆瓣同城的活动同步到Google Calendar的日历， 允许用户订阅活动而知道最近几周周边将发生活动。 dbevent2gc是基于Python/web.py/mako/iC</description>
     </item>
     
     <item>
@@ -231,13 +145,7 @@ dbevent2gc看上去可以用了，我昨晚发布了v0.1版本。
       <pubDate>Thu, 22 Sep 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/09/nose/</guid>
-      <description>不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用 nose 做单元测试，颇有心得， 在这里分享一下。
-1. Pylons中依赖包 先简单介绍一下Pylons, Pylons与其说是一个框架，不如说是一堆框架的组合， Pylons在其中做到一个胶水的作用。Pylons依赖的包如下。
-breaker，缓存和Session FormEncode，用户输入检查 Mako，模板渲染 nose，自动化测试 Paste，服务器 Routes, 路由 Tempita，Paste的模板 Weberror WebOb，提供WSGI请求响应等对象 WebTest，Paste自带的测试小框架， 提供TestResponse和TestRequest两个有用的小东西 Pylons的测试主要使用的其中的 Paste / nose / WebOb / WebTest。 遇到问题的时候，可以去翻一翻上面的文档。
-2. Pylons中测试目录结构 目录结构如下
-├─config ├─controllers ├─lib ├─model ├─public ├─templates └─tests └─functional 目录中的 config / controllers / lib / model / public 在不同的web框架下面可能会略有差别，在这里我不关注他们，我关注 tests / functional 中存放相应的测试脚本，比如 test_user.py
-3. 第一个简单的测试用例 3.1. 撰写单元测试文件 最简单的test脚本如下
-from myb.tests import * class TestIndexController(TestController): def test_index(self): pass # Test response.</description>
+      <description>不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用 nose 做单元测试，颇有心得， 在这里分享一下。 1. Pylons中依赖包 先简单介绍一下Pylons, Pylons与其说是一个框架，不如说是一堆框架的组合， Pylons在其中做到一个胶水的作用。Pylons依赖的包如下。 breaker，缓存和Session FormEncode，用户输入检查 Mako，模板渲染 nose，自动化测试 Paste，服</description>
     </item>
     
     <item>
@@ -246,18 +154,7 @@ from myb.tests import * class TestIndexController(TestController): def test_inde
       <pubDate>Thu, 25 Aug 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/08/mako-typeerror/</guid>
-      <description>Mako 下面开发时候，遇到这个问题
-TypeError: sequence item : expected string or Unicode, long found
-Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息）
-File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&amp;rsquo;, line 239 in staticpage
-return render(&amp;rsquo;/pages/%s.html&amp;rsquo; % name)
-File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 274 in render_mako
-cache_type=cache_type, cache_expire=cache_expire)
-File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 249 in cached_template
-return render_func()
-File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 271 in render_template
-return literal(template.render_unicode(**globs))
-File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/template.py&amp;rsquo;, line 138 in render_unicode return runtime.render(self, self.callable, args, data, as_unicode=True) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&amp;rsquo;, line 348 in _render</description>
+      <description>Mako 下面开发时候，遇到这个问题 TypeError: sequence item : expected string or Unicode, long found Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息） File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&amp;rsquo;, line 239 in staticpage return render(&amp;rsquo;/pages/%s.html&amp;rsquo; % name) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 274 in render_mako cache_type=cache_type, cache_expire=cache_expire) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 249 in cached_template return render_func() File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 271 in render_template return literal(template.render_unicode(**globs)) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/template.py&amp;rsquo;, line 138 in render_unicode return runtime.render(self, self.callable, args, data, as_unicode=True) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&amp;rsquo;, line 348 in _render return context._pop_buffer().getvalue() File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/util.py&amp;rsquo;, line 74 in getvalue return self.delim.join(self.data) TypeError: sequence item 68: expected string or Unicode, NoneType found Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylon</description>
     </item>
     
     <item>
@@ -266,8 +163,7 @@ File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packag
       <pubDate>Tue, 02 Aug 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/</guid>
-      <description>当使用 Python2.7 + go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。
-[alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&amp;quot;, line 67, in &amp;lt;module&amp;gt; import os File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&amp;quot;, line 398, in &amp;lt;module&amp;gt; import UserDict File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&amp;quot;, line 83, in &amp;lt;module&amp;gt; import _abcoll File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&amp;quot;, line 11, in &amp;lt;module&amp;gt; from abc import ABCMeta, abstractmethod File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&amp;quot;, line 8, in &amp;lt;module&amp;gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.</description>
+      <description>当使用 Python2.7 + go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。 [alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&amp;quot;, line 67, in &amp;lt;module&amp;gt; import os File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&amp;quot;, line 398, in &amp;lt;module&amp;gt; import UserDict File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&amp;quot;, line 83, in &amp;lt;module&amp;gt; import _abcoll File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&amp;quot;, line 11, in &amp;lt;module&amp;gt; from abc import ABCMeta, abstractmethod File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&amp;quot;, line 8, in &amp;lt;module&amp;gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;) ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。 #!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 +0200 +++ b/virtualenv.py 2010-09-14 21:46:20.650769346 +0200 @@ -51,6 +51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config if sys.version_info[:2] &amp;gt;= (2, 6): REQUIRED_MODULES.extend([&amp;lsquo;warnings&amp;rsquo;, &amp;rsquo;linecache&amp;rsquo;, &amp;lsquo;_abcoll&amp;rsquo;, &amp;lsquo;abc&amp;rsquo;]) if sys.version_info[:2] &amp;gt;= (2, 7): REQUIRED_MODULES.extend([&amp;rsquo;_weakrefset&amp;rsquo;]) if sys.version_info[:2] &amp;lt;= (2, 3): REQUIRED_MODULES.extend([&amp;lsquo;sets&amp;rsquo;, &amp;lsquo;future&amp;rsquo;]) if is_pypy: 懒人可以点击</description>
     </item>
     
     <item>
@@ -276,9 +172,7 @@ File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packag
       <pubDate>Tue, 14 Jun 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/</guid>
-      <description>在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。
-Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完Python字符串的encode与decode 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。
-Traceback (most recent call last): File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1, in &amp;lt;module&amp;gt; File &amp;quot;/usr/lib/python2.6/urllib2.py&amp;quot;, line 126, in urlopen return _opener.open(url, data, timeout) File &amp;quot;/usr/lib/python2.6/urllib2.py&amp;quot;, line 391, in open response = self._open(req, data) File &amp;quot;/usr/lib/python2.6/urllib2.py&amp;quot;, line 409, in _open &#39;_open&#39;, req) File &amp;quot;/usr/lib/python2.6/urllib2.py&amp;quot;, line 369, in _call_chain result = func(*args) File &amp;quot;/usr/lib/python2.6/urllib2.py&amp;quot;, line 1170, in http_open return self.do_open(httplib.HTTPConnection, req) File &amp;quot;/usr/lib/python2.6/urllib2.py&amp;quot;, line 1142, in do_open h.request(req.get_method(), req.</description>
+      <description>在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。 Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完Python字符串的encode与decode 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。 Traceback (most recent call last): File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1, in</description>
     </item>
     
     <item>
@@ -287,15 +181,7 @@ Traceback (most recent call last): File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot
       <pubDate>Thu, 09 Jun 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/06/mako-vim/</guid>
-      <description>给Vim找了一个Mako的语法高亮，发现着色居然有问题。查看更新记录后发现作者Armin Ronacher只更新到08年9月份。之后Mako更新了一些少许细节，我修改了一下mako.vim，放在这里供下载。
-其实我只改了57/58行，增加一个block语法。
-点击这里下载：mako.vim
-使用方法，放入vimfiles/syntax
-相关链接：
-原始mako.vim：http://www.vim.org/scripts/script.php?script_id=1858
-另外一个mako.vim是缩进用的，放入vimfiles/syntax：http://www.vim.org/scripts/script.php?script_id=2663
-ps：Mako是一个Python下面的Template框架。
-pss：貌似服务器ip被认证了，讨厌~</description>
+      <description>给Vim找了一个Mako的语法高亮，发现着色居然有问题。查看更新记录后发现作者Armin Ronacher只更新到08年9月份。之后Mako更新了一些少许细节，我修改了一下mako.vim，放在这里供下载。 其实我只改了57/58行，增加一个block语法。 点击这里下载：mako.vim 使用方法，放入vimfiles/syntax 相关链接： 原始mako.vim：http://www.vim.org/s</description>
     </item>
     
     <item>
@@ -304,15 +190,7 @@ pss：貌似服务器ip被认证了，讨厌~</description>
       <pubDate>Mon, 16 May 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/05/run-pylons-in-eclipse/</guid>
-      <description>官方中pylons都是通过在shell中运行paster serve &amp;ndash;reload development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤可以在Eclipse中运行pylons。
-配置Run Configuration - Python Run如下。
-Main页签中Main Module指向paster-script.py，可以使用绝对路径。
-配置Arguments页签的参数，添加serve &amp;ndash;reload development.ini，后面的ini配置文件可以使用绝对路径。
-勾选Common下的Allocate Console来进行paster调试信息输出。
-在Windows - Preference - Pydev - Interpreter - Python中的PYTHONPATH加入pylons目标环境 ，报过site-packages目录和site-packages目录下面的egg文件（理解为jar包，称之为蟒蛇蛋）。
-不出意外的话，就可以通过Run跑起整个应用了。
-很可惜的是，这样做还是不能对应用进行Debug，pylons的debug依然依赖于pylons的&amp;quot;交互调试页面&amp;quot;。
-参考[http://stackoverflow.com/questions/147650/debug-pylons-application-through- eclipse](http://stackoverflow.com/questions/147650/debug-pylons-application- through-eclipse)</description>
+      <description>官方中pylons都是通过在shell中运行paster serve &amp;ndash;reload development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤可以在Eclipse中运行pylons。 配置Run Configuration - Python Run如下。 Main页签中Main Module指向paster-script.py，可以使用绝对路径。 配置Arguments页签的参数，添加serve &amp;ndash;reload development.i</description>
     </item>
     
     <item>
@@ -321,22 +199,7 @@ Main页签中Main Module指向paster-script.py，可以使用绝对路径。
       <pubDate>Mon, 16 May 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/05/pylons/</guid>
-      <description>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。
-关于Pylons Pylons是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http: //www.makotemplates.org/)作为Template，SQLAlchemy作为 ORM映射。使用BSD作为授权协议。
-托WSGI的福，python的web框架超多，甚至高手5分钟可以自己手写一个web框架，这种情况也导致了Python web框架的纷杂。我这里选择Pylons（其实是被选择），并不是说Pylons一定最好，而是比较适合当前项目。更多的Python web框架对比建议看这篇[浅谈Python web框架](http://feilong.me/2011/01/talk-about-python-web- framework)，另外，这个Best Web- Framework有直观的对比。
-Pylons环境配置 因为开发机是刚到手的ThinkPad，没有冒险安装Linux，所以这里的安装环境是Win7 + Python 2.6 + MySQL5.1。
-1、安装Pylons Pylons似乎没有方便的easy_install，原因是由于Pylons在安装过程中，会生成一个目标环境。这个环境包括完整的Python环境，从而与系统自 带Python环境独立开来，防止第三方库的相互污染。Pylons官方提供了一个Python go- pylons.py脚本进行安装。
-通过在shell键入命令python go-pylons.py myb_env安装，其中myb_env代表目标环境，会在当前目录下面生成一个myb_en v文件夹，myb_env也可以使用绝对路径代替。在生成完之后请不要随意移动这个目录，因为环境里生成的Python脚本硬编码了绝对路径。
-2、安装mysql-python驱动 我使用的是MySQL数据库，使用mysql-python驱动，windows下具体安装过程可以参见[http://fendou.org/2010/06/17 /install-python26-mysql-python-on-windows/](http://fendou.org/2010/06/17 /install-python26-mysql-python-on-windows/) 需要修改一下源码和加入几个dll。
-3、生成egg包，下载第三方依赖 在目标项目下面，执行python setup.py develop，这将执行项目需要的三方依赖，设定依赖可以到setup.py中install_req uires进行配置。这个步骤用到了easy_install，所以请确保python/script下面有easy_install的可执行文件。windows 下安装easy_install可以参考这里[http://thinkhole.org/wp/2007/02/01/howto-install- setuptools-in-windows/](http://thinkhole.org/wp/2007/02/01/howto-install- setuptools-in-windows/)。
-呼啦啦一大串命令跑完之后，就ok了。
-4、安装额外的三方依赖（可选） 根据实际情况操作吧，我这里使用了easy_install python-memcached和easy_install pil，前者是memcache的python驱动，后者是python图形库。
-5、初始化数据库 托SQLAlchemy的福，我们可以让它自动给我们创建映射表。首先确保在model下面配置好model类。
-class Person(Base): __tablename__ = &amp;quot;person&amp;quot; id = Column(Integer, primary_key=True)
-name = Column(String(100))
-email = Column(String(100))
-def init(self, name=&amp;rsquo;&amp;rsquo;, email=&amp;rsquo;&amp;rsquo;):
-self.name = name</description>
+      <description>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。 关于Pylons Pylons是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http: //www.makotemplates.org/)作为Template，SQLAlchemy作为 ORM映射。使用BSD作为授权协议。 托WSGI的福，pyth</description>
     </item>
     
     <item>
@@ -345,31 +208,7 @@ self.name = name</description>
       <pubDate>Tue, 11 Jan 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/01/a-simple-gae-proxy/</guid>
-      <description>年前换了一次服务器，之后发现Lifestream的Errors飙升到1000+错误，检查一下，发现是获 取不了豆瓣的rss链接。正好这台主机支持SSH，连入之后CURL了一下豆瓣服务器，发现Time out。
-紧接着发现中国内的所有域名都无法使用CURL获取，联系小张之后，得知该主机曾经被入侵过，于是屏蔽了中国大陆的ip段（囧~入侵和中国ip有毛关系）
-遂想用GAE做个代理服务器，反正获取RSS也只要Get一下，代码没几句。把这项任务放入Toodledo之后，就一直没去弄，今天发现GAE Laucher升级了，就部署到自己GAE上了。
-地址格式如http://jasontiproxy.appspot.com/proxy?url=www.douban. com/feed/people/alswl/interests，url参数名后面跟着具体的url。
-代码其实就是用urllib2获取一下html，核心如下。
-#!/usr/bin/env python from google.appengine.ext import webapp
-from google.appengine.ext.webapp import util
-import urllib2
-class MainHandler(webapp.RequestHandler):
-def get(self):
-url = self.request.get(&amp;lsquo;url&amp;rsquo;)
-if url.find(&amp;lsquo;http://&amp;rsquo;) &amp;lt; 0:
-url = &amp;lsquo;http://&amp;rsquo; + url
-conn = urllib2.urlopen(url)
-html = conn.read()
-encoding = conn.headers[&amp;lsquo;content-type&amp;rsquo;].split(&amp;lsquo;charset=&amp;rsquo;)[-1]
-html = html.decode(encoding).encode(&amp;lsquo;utf-8&amp;rsquo;)
-self.response.out.write(html)
-def main():
-application = webapp.WSGIApplication([(&amp;rsquo;/proxy&amp;rsquo;, MainHandler)],
-debug=True)
-util.run_wsgi_app(application)
-if name == &amp;lsquo;main&amp;rsquo;:
-main()
-申请一个空间，部署上去就行了，这个小应用可以临时获取一下网页内容，不支持Post和替换url，所以称之为&amp;quot;最简陋的GAE代理&amp;quot;。</description>
+      <description>年前换了一次服务器，之后发现Lifestream的Errors飙升到1000+错误，检查一下，发现是获 取不了豆瓣的rss链接。正好这台主机支持SSH，连入之后CURL了一下豆瓣服务器，发现Time out。 紧接着发现中国内的所有域名都无法使用CURL获取，联系小张之后，得知该主机曾经被入侵过，于是屏蔽了中国大陆的ip段（囧~入侵和中国ip有毛关系） 遂想用GAE做个代理服务器，反正获取RSS也只要Ge</description>
     </item>
     
     <item>
@@ -378,33 +217,7 @@ main()
       <pubDate>Tue, 09 Nov 2010 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2010/11/a-week-python/</guid>
-      <description>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。
-一、配置文件 1、YAML格式 数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。
-YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成对应的格式变量。
-之所以选择YAML，是看中它对语言的亲和性和可读性，GAE的配置文件就是YAML格式。YAML的语法相当简单，用:来分隔key: value，用 - 来分隔列表，注意点是缩进需要用空格，关键符号和内容之间要加上一个空格。我的配置文件如下：
-taskId: PQMI06 taskName: 测试建制作业 author: alswl confirmId: 20101025xxx headFiles:
-head1.txt
-head2.txt
-head3.txt
-bodyFiles:
-body1.txt
-body2.txt
-body3.txt
-qbe: qbe.txt
-qbeGrid: qbegrid.txt
-server: 172.16.1.20
-user: sa
-dbpassword: 518518
-databaseSys: ebChainSys30_0
-databaseSyn: ebChainSyn30_0
-YAML可以用VIM或者notepad++进行编辑，两者都对YAML提供语法高亮支持（博客的SyantaxHighLighter不支持~）。
-相关链接：YAML的官方网站（网站的分隔就是YAML格式，相当有趣） YAML简介（来自IBM）
-2、PyYAML
-Python有几种YAML的实现，我这里推荐使用PyYAML，比较流行的模块，毕竟我这里只需要简单的读写操作。
-PyYAML通过官方宣称的神奇的yaml.load()方法载入YAML文件，可以将列表识别为list和dictionary，通过key可以直接读取对应的值。
-我的Demo代码如下：
-#coding=utf-8 &#39;&#39;&#39; 全局配置文件 alswl 20101026 &#39;&#39;&#39; import os import yaml rootPath = os.path.normpath(os.path.dirname(file) + &amp;lsquo;..&amp;rsquo;)
-configFile = open(rootPath + &amp;lsquo;&amp;lsquo;&amp;lsquo;inconfig.yaml&amp;rsquo;&amp;rsquo;&amp;rsquo;)</description>
+      <description>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。 一、配置文件 1、YAML格式 数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。 YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成</description>
     </item>
     
     <item>
@@ -413,14 +226,7 @@ configFile = open(rootPath + &amp;lsquo;&amp;lsquo;&amp;lsquo;inconfig.yaml&amp;
       <pubDate>Sat, 23 Oct 2010 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2010/10/python-clipboard/</guid>
-      <description>最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。
-由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。
-#coding=utf-8 &amp;#39;&amp;#39;&amp;#39; 读写剪贴板 &amp;#39;&amp;#39;&amp;#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。
-如果双击 .py 文件调用可能产生无效的情况，测试发现在IDE环境下有效，如果想完成一键转换，就需要一个bat执行一下。
-@echo off python sql2.py 通过执行双击这个脚本，就可以完成读写剪贴板了（记得在系统Path路径加入python所在目录，否则又要报错）。
-友情提示，这个脚本需要 win32clipboard 这个模块，这个模块装完 pywin 就可以加载了。
-我使用的环境是Python2.6 + PyWin， 因为我的Python2.7+pywin32-214.win32-py2.7会出现一个&amp;quot;Still can&amp;rsquo;t get my hands on win32ui&amp;quot;。 托上篇文章的福，我安装PyWin时候选择&amp;quot;管理员身份安装&amp;quot;即可。
-PS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个flag参数，让我搞鼓了好一会。</description>
+      <description>最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。 由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。 #coding=utf-8 &amp;#39;&amp;#39;&amp;#39; 读写剪贴板 &amp;#39;&amp;#39;&amp;#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。 如果双击 .py</description>
     </item>
     
     <item>
@@ -429,25 +235,7 @@ PS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个fl
       <pubDate>Mon, 27 Sep 2010 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2010/09/script-mm2html/</guid>
-      <description>我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote &amp;amp; 我所使用的知识管理系统。
-我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。
-BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入-，这种简单的txt不能满足我的要求。于是我花了点时间写了一个mm文件到ht ml的转换脚本。
-BooguNote的文件格式是boo，可以转换成FreeMind的思维导图格式.mm，我认为用mm作为源数据格式适用范围更大。
-#coding=utf-8 from xml.dom import minidom import sys import os class MM2Html:
-&amp;lsquo;转换MM-&amp;gt;Html类&amp;rsquo;
-def init(self):
-self.html = &amp;lsquo;&amp;rsquo;&amp;rsquo;&lt;!DOCTYPE html PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; &#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34;&gt;
-&#39;&#39;&#39; self.level = 0
-self.pos = [0 for x in range(0, 10)]
-def procRoot(self, root):
-&amp;lsquo;处理root节点&amp;rsquo;
-for i in root.childNodes:
-if i.nodeName == &amp;rsquo;node&amp;rsquo;:
-self.procNode(i)
-self.html += &amp;ldquo;&amp;rdquo;
-def procNode(self, node):
-&amp;lsquo;处理Node节点&amp;rsquo;
-if node.nodeName == &amp;rsquo;node&#39;:</description>
+      <description>我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote &amp;amp; 我所使用的知识管理系统。 我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。 BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入</description>
     </item>
     
     <item>
@@ -456,15 +244,7 @@ if node.nodeName == &amp;rsquo;node&#39;:</description>
       <pubDate>Mon, 19 Jul 2010 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2010/07/get-daily-bing-picture/</guid>
-      <description>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。
-放狗搜索，发现一篇文章 抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客，文中提供了抓取程式的Python代码，我摘录如下。
-import urllib import time def main(): url = &amp;#39;http://www.bing.com&amp;#39; f = urllib.urlopen(url) html = f.read() f.close() a = html[html.index(&amp;#39;/fd/hpk2&amp;#39;):] data = a[:a.index(&amp;#39;&amp;#39;,id:&amp;#39;)] url = data.replace(&amp;#39;\&amp;#39;, &amp;#39;&amp;#39;) url = &amp;#39;http://www.bing.com&amp;#39;+url name=time.strftime(&amp;#34;%Y%m%d&amp;#34;, time.localtime()) name=name+&amp;#34;.jpg&amp;#34; urllib.urlretrieve(url,name) if __name__ == &amp;#34;__main__&amp;#34;: main() 关键的步骤是MS修改了jpg的url方式，用g_img={url:&amp;rsquo;/fd/hpk2/BambooBoat_ZH- CN1057817945.jpg&amp;rsquo;这样的字符串躲避机器人的抓取。简单的替换即可完成。
-我用C#重写了代码实现，如下所示。
-using System; using System.Collections.Generic; using System.Text; using System.Net; using System.IO; namespace com.dddspace.GetBingImg
-{ #region 获取Bing图片
-class GetBingImg
-{
-static void Main(string[] args)</description>
+      <description>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。 放狗搜索，发现一篇文章 抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客，文中提供了抓取程式的Python代码，我摘录如下。 import urllib import time def main(): url = &amp;#39;http://www.bing.com&amp;#39; f = urllib.urlopen(url) html = f.read() f.close() a = html[html.index(&amp;#39;/fd/hpk2&amp;#39;):] data = a[:a.index(&amp;#39;&amp;#39;,id:&amp;#39;)] url = data.replace(&amp;#39;\&amp;#39;, &amp;#39;&amp;#39;) url = &amp;#39;http://www.bing.com&amp;#39;+url name=time.strftime(&amp;#34;%Y%m%d&amp;#34;, time.localtime()) name=name+&amp;#34;.jpg&amp;#34; urllib.urlretrieve(url,name) if __name__ == &amp;#34;__main__&amp;#34;: main() 关键的步骤是MS修改了jpg的url方式，用g_img={</description>
     </item>
     
     <item>
@@ -473,18 +253,7 @@ static void Main(string[] args)</description>
       <pubDate>Sun, 01 Nov 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/</guid>
-      <description>上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt&amp;lt;-&amp;gt;Txt转换器，我前前后后大约三个星期完成 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高 人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。 一些关于程序说明，zwwooooo原文，更详细可以联系zwwooooo本人：
-edt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规律的，我把一些规律和流程说一下
-一、从 edt 提取出对话部分文本，然后转换并输出为 ansi 码文本，用附件的 000.edt 为例说明
-把 000.edt 文件用16进制方式打开，对话从&amp;quot;0&amp;quot;处开始，结束标志是2个16进制字节：00 00
-000.edt 里面每个/每段对话/说明相隔 640 个字节，即&amp;quot;0&amp;quot;开始为第一段，直到16进制双字节出现&amp;quot;00 00&amp;quot;结束，然后第2段话在第 640 字节处开始，也是以&amp;quot;00 00&amp;quot;表示结束，后面的以此类推。 （因为有几种edt文件，每种edt文件的对话间隔不同，所以这个&amp;quot;间隔&amp;quot;最好设个参数，可以在转换前自定义输入。）
-然后把提取出的16进制数全部按UTF-16的双字节（或者转为对应的十进制） -1 处理，如：0~1字节处的双字节值为02 1E（1E为高位，02为地位 &amp;mdash;-哈哈，这个我好想说多余了），那么进行 -1 处理后得到：01 1E。然后把所有 -1 处理好的数据转换为 ansi 码（注：不转也可以 ，直接用UTF-16无bom格式做文本文件&amp;mdash;-不过这样不太方便编辑），那么文本就出来了
-每段话提取并转换后按 000.txt 一样显示，方便修改
-对话中的一些特殊字符说明（都是双字节16进制），有些提取转换时需要特殊处理的（不能直接 -1 处理）： 1）就是刚才说的&amp;quot;00 00&amp;quot;，它是每个对话的结束标志。
-2）&amp;ldquo;20 00&amp;rdquo;：UTF-16编码&amp;rsquo;空格&amp;rsquo;的编码，这个是保持不变的，不用 -1 处理。
-3）&amp;ldquo;B3 00&amp;rdquo; 和 &amp;ldquo;B4 00&amp;rdquo;：这两个是游戏专用的特殊控制符，用来控制文本高亮和居中，这个也要 -1 处理，-1 处理后为：B2 00 和 B3 00，但因为ansi码里面没有这个字符，所以要用ansi码里面的2个不常用的字符表示，例如&amp;quot;㈡&amp;quot; &amp;ldquo;㈢&amp;rdquo;。
-这样就能修改对话了/提取出的英文翻译成中文。
-二、把 txt 转换回 edt（直接修改原 edt 文件或者新建一个edt文件，对话部分以外部分用&amp;quot;00 00&amp;quot;填充），当然最好两个方式都行</description>
+      <description>上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt&amp;lt;-&amp;gt;Txt转换器，我前前后后大约三个星期完成 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高 人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。 一些关于程序说明，zw</description>
     </item>
     
     <item>
@@ -493,9 +262,7 @@ edt（后缀） 是游戏对话文件，游戏里有很多种，但都是有规�
       <pubDate>Wed, 07 Oct 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/10/python-enter-the-16-hex-save-to-file/</guid>
-      <description>（题目有点勉强，不过问题真的很难描述，希望Google/Baidu到这里的童鞋不要失望） 前几天给zwwooooo写一个 小工具，其中遇到一个输入的问题。具体描述就是：&amp;ldquo;输入4个16进制的数字，如&#39;00a0&amp;rsquo;，输入之后必须能够把这个输入给保存到文件中存为2进制格式，必须是原始的 16进制，而不是字符串类型。如&amp;rsquo;x00xa0&amp;rsquo;&amp;quot;。（其实这是用在处理文本上的） 不知道各位大大有没有明白我的意思，我花了很长时间没有一个好的解决方案。 第一种方案，先用int()转换，然后转换hex()，直接失败，hex()转换后格式为&#39;0x00a0&amp;rsquo;，是字符串格式，根本不是我需要的内容。 我苦思冥想三天，终于找到一个最傻，也最好用的方法，用list进行匹配。 下面是生成匹配list的脚本：
-lst = &#39;{&#39; for i in range(int(&#39;0x00&#39;, 16), int(&#39;0xff&#39;, 16) + 1): hv = hex(i).replace(&#39;0x&#39;, &#39;&#39;) if len(hv) == 1: hv = &#39;0&#39; + hv lst += &#39;&#39;&#39; + hv + &#39;&#39;: &#39;\x&#39; + hv + &#39;&#39;, &#39; lst += &#39;}&#39; print lst 下面是生成的list:
-{&#39;00&#39;: &#39;x00&#39;, &#39;01&#39;: &#39;x01&#39;, &#39;02&#39;: &#39;x02&#39;, &#39;03&#39;: &#39;x03&#39;, &#39;04&#39;: &#39;x04&#39;, &#39;05&#39;: &#39;x05&#39;, &#39;06&#39;: &#39;x06&#39;, &#39;07&#39;: &#39;x07&#39;, &#39;08&#39;: &#39;x08&#39;, &#39;09&#39;: &#39;x09&#39;, &#39;0a&#39;: &#39;x0a&#39;, &#39;0b&#39;: &#39;x0b&#39;, &#39;0c&#39;: &#39;x0c&#39;, &#39;0d&#39;: &#39;x0d&#39;, &#39;0e&#39;: &#39;x0e&#39;, &#39;0f&#39;: &#39;x0f&#39;, &#39;10&#39;: &#39;x10&#39;, &#39;11&#39;: &#39;x11&#39;, &#39;12&#39;: &#39;x12&#39;, &#39;13&#39;: &#39;x13&#39;, &#39;14&#39;: &#39;x14&#39;, &#39;15&#39;: &#39;x15&#39;, &#39;16&#39;: &#39;x16&#39;, &#39;17&#39;: &#39;x17&#39;, &#39;18&#39;: &#39;x18&#39;, &#39;19&#39;: &#39;x19&#39;, &#39;1a&#39;: &#39;x1a&#39;, &#39;1b&#39;: &#39;x1b&#39;, &#39;1c&#39;: &#39;x1c&#39;, &#39;1d&#39;: &#39;x1d&#39;, &#39;1e&#39;: &#39;x1e&#39;, &#39;1f&#39;: &#39;x1f&#39;, &#39;20&#39;: &#39;x20&#39;, &#39;21&#39;: &#39;x21&#39;, &#39;22&#39;: &#39;x22&#39;, &#39;23&#39;: &#39;x23&#39;, &#39;24&#39;: &#39;x24&#39;, &#39;25&#39;: &#39;x25&#39;, &#39;26&#39;: &#39;x26&#39;, &#39;27&#39;: &#39;x27&#39;, &#39;28&#39;: &#39;x28&#39;, &#39;29&#39;: &#39;x29&#39;, &#39;2a&#39;: &#39;x2a&#39;, &#39;2b&#39;: &#39;x2b&#39;, &#39;2c&#39;: &#39;x2c&#39;, &#39;2d&#39;: &#39;x2d&#39;, &#39;2e&#39;: &#39;x2e&#39;, &#39;2f&#39;: &#39;x2f&#39;, &#39;30&#39;: &#39;x30&#39;, &#39;31&#39;: &#39;x31&#39;, &#39;32&#39;: &#39;x32&#39;, &#39;33&#39;: &#39;x33&#39;, &#39;34&#39;: &#39;x34&#39;, &#39;35&#39;: &#39;x35&#39;, &#39;36&#39;: &#39;x36&#39;, &#39;37&#39;: &#39;x37&#39;, &#39;38&#39;: &#39;x38&#39;, &#39;39&#39;: &#39;x39&#39;, &#39;3a&#39;: &#39;x3a&#39;, &#39;3b&#39;: &#39;x3b&#39;, &#39;3c&#39;: &#39;x3c&#39;, &#39;3d&#39;: &#39;x3d&#39;, &#39;3e&#39;: &#39;x3e&#39;, &#39;3f&#39;: &#39;x3f&#39;, &#39;40&#39;: &#39;x40&#39;, &#39;41&#39;: &#39;x41&#39;, &#39;42&#39;: &#39;x42&#39;, &#39;43&#39;: &#39;x43&#39;, &#39;44&#39;: &#39;x44&#39;, &#39;45&#39;: &#39;x45&#39;, &#39;46&#39;: &#39;x46&#39;, &#39;47&#39;: &#39;x47&#39;, &#39;48&#39;: &#39;x48&#39;, &#39;49&#39;: &#39;x49&#39;, &#39;4a&#39;: &#39;x4a&#39;, &#39;4b&#39;: &#39;x4b&#39;, &#39;4c&#39;: &#39;x4c&#39;, &#39;4d&#39;: &#39;x4d&#39;, &#39;4e&#39;: &#39;x4e&#39;, &#39;4f&#39;: &#39;x4f&#39;, &#39;50&#39;: &#39;x50&#39;, &#39;51&#39;: &#39;x51&#39;, &#39;52&#39;: &#39;x52&#39;, &#39;53&#39;: &#39;x53&#39;, &#39;54&#39;: &#39;x54&#39;, &#39;55&#39;: &#39;x55&#39;, &#39;56&#39;: &#39;x56&#39;, &#39;57&#39;: &#39;x57&#39;, &#39;58&#39;: &#39;x58&#39;, &#39;59&#39;: &#39;x59&#39;, &#39;5a&#39;: &#39;x5a&#39;, &#39;5b&#39;: &#39;x5b&#39;, &#39;5c&#39;: &#39;x5c&#39;, &#39;5d&#39;: &#39;x5d&#39;, &#39;5e&#39;: &#39;x5e&#39;, &#39;5f&#39;: &#39;x5f&#39;, &#39;60&#39;: &#39;x60&#39;, &#39;61&#39;: &#39;x61&#39;, &#39;62&#39;: &#39;x62&#39;, &#39;63&#39;: &#39;x63&#39;, &#39;64&#39;: &#39;x64&#39;, &#39;65&#39;: &#39;x65&#39;, &#39;66&#39;: &#39;x66&#39;, &#39;67&#39;: &#39;x67&#39;, &#39;68&#39;: &#39;x68&#39;, &#39;69&#39;: &#39;x69&#39;, &#39;6a&#39;: &#39;x6a&#39;, &#39;6b&#39;: &#39;x6b&#39;, &#39;6c&#39;: &#39;x6c&#39;, &#39;6d&#39;: &#39;x6d&#39;, &#39;6e&#39;: &#39;x6e&#39;, &#39;6f&#39;: &#39;x6f&#39;, &#39;70&#39;: &#39;x70&#39;, &#39;71&#39;: &#39;x71&#39;, &#39;72&#39;: &#39;x72&#39;, &#39;73&#39;: &#39;x73&#39;, &#39;74&#39;: &#39;x74&#39;, &#39;75&#39;: &#39;x75&#39;, &#39;76&#39;: &#39;x76&#39;, &#39;77&#39;: &#39;x77&#39;, &#39;78&#39;: &#39;x78&#39;, &#39;79&#39;: &#39;x79&#39;, &#39;7a&#39;: &#39;x7a&#39;, &#39;7b&#39;: &#39;x7b&#39;, &#39;7c&#39;: &#39;x7c&#39;, &#39;7d&#39;: &#39;x7d&#39;, &#39;7e&#39;: &#39;x7e&#39;, &#39;7f&#39;: &#39;x7f&#39;, &#39;80&#39;: &#39;x80&#39;, &#39;81&#39;: &#39;x81&#39;, &#39;82&#39;: &#39;x82&#39;, &#39;83&#39;: &#39;x83&#39;, &#39;84&#39;: &#39;x84&#39;, &#39;85&#39;: &#39;x85&#39;, &#39;86&#39;: &#39;x86&#39;, &#39;87&#39;: &#39;x87&#39;, &#39;88&#39;: &#39;x88&#39;, &#39;89&#39;: &#39;x89&#39;, &#39;8a&#39;: &#39;x8a&#39;, &#39;8b&#39;: &#39;x8b&#39;, &#39;8c&#39;: &#39;x8c&#39;, &#39;8d&#39;: &#39;x8d&#39;, &#39;8e&#39;: &#39;x8e&#39;, &#39;8f&#39;: &#39;x8f&#39;, &#39;90&#39;: &#39;x90&#39;, &#39;91&#39;: &#39;x91&#39;, &#39;92&#39;: &#39;x92&#39;, &#39;93&#39;: &#39;x93&#39;, &#39;94&#39;: &#39;x94&#39;, &#39;95&#39;: &#39;x95&#39;, &#39;96&#39;: &#39;x96&#39;, &#39;97&#39;: &#39;x97&#39;, &#39;98&#39;: &#39;x98&#39;, &#39;99&#39;: &#39;x99&#39;, &#39;9a&#39;: &#39;x9a&#39;, &#39;9b&#39;: &#39;x9b&#39;, &#39;9c&#39;: &#39;x9c&#39;, &#39;9d&#39;: &#39;x9d&#39;, &#39;9e&#39;: &#39;x9e&#39;, &#39;9f&#39;: &#39;x9f&#39;, &#39;a0&#39;: &#39;xa0&#39;, &#39;a1&#39;: &#39;xa1&#39;, &#39;a2&#39;: &#39;xa2&#39;, &#39;a3&#39;: &#39;xa3&#39;, &#39;a4&#39;: &#39;xa4&#39;, &#39;a5&#39;: &#39;xa5&#39;, &#39;a6&#39;: &#39;xa6&#39;, &#39;a7&#39;: &#39;xa7&#39;, &#39;a8&#39;: &#39;xa8&#39;, &#39;a9&#39;: &#39;xa9&#39;, &#39;aa&#39;: &#39;xaa&#39;, &#39;ab&#39;: &#39;xab&#39;, &#39;ac&#39;: &#39;xac&#39;, &#39;ad&#39;: &#39;xad&#39;, &#39;ae&#39;: &#39;xae&#39;, &#39;af&#39;: &#39;xaf&#39;, &#39;b0&#39;: &#39;xb0&#39;, &#39;b1&#39;: &#39;xb1&#39;, &#39;b2&#39;: &#39;xb2&#39;, &#39;b3&#39;: &#39;xb3&#39;, &#39;b4&#39;: &#39;xb4&#39;, &#39;b5&#39;: &#39;xb5&#39;, &#39;b6&#39;: &#39;xb6&#39;, &#39;b7&#39;: &#39;xb7&#39;, &#39;b8&#39;: &#39;xb8&#39;, &#39;b9&#39;: &#39;xb9&#39;, &#39;ba&#39;: &#39;xba&#39;, &#39;bb&#39;: &#39;xbb&#39;, &#39;bc&#39;: &#39;xbc&#39;, &#39;bd&#39;: &#39;xbd&#39;, &#39;be&#39;: &#39;xbe&#39;, &#39;bf&#39;: &#39;xbf&#39;, &#39;c0&#39;: &#39;xc0&#39;, &#39;c1&#39;: &#39;xc1&#39;, &#39;c2&#39;: &#39;xc2&#39;, &#39;c3&#39;: &#39;xc3&#39;, &#39;c4&#39;: &#39;xc4&#39;, &#39;c5&#39;: &#39;xc5&#39;, &#39;c6&#39;: &#39;xc6&#39;, &#39;c7&#39;: &#39;xc7&#39;, &#39;c8&#39;: &#39;xc8&#39;, &#39;c9&#39;: &#39;xc9&#39;, &#39;ca&#39;: &#39;xca&#39;, &#39;cb&#39;: &#39;xcb&#39;, &#39;cc&#39;: &#39;xcc&#39;, &#39;cd&#39;: &#39;xcd&#39;, &#39;ce&#39;: &#39;xce&#39;, &#39;cf&#39;: &#39;xcf&#39;, &#39;d0&#39;: &#39;xd0&#39;, &#39;d1&#39;: &#39;xd1&#39;, &#39;d2&#39;: &#39;xd2&#39;, &#39;d3&#39;: &#39;xd3&#39;, &#39;d4&#39;: &#39;xd4&#39;, &#39;d5&#39;: &#39;xd5&#39;, &#39;d6&#39;: &#39;xd6&#39;, &#39;d7&#39;: &#39;xd7&#39;, &#39;d8&#39;: &#39;xd8&#39;, &#39;d9&#39;: &#39;xd9&#39;, &#39;da&#39;: &#39;xda&#39;, &#39;db&#39;: &#39;xdb&#39;, &#39;dc&#39;: &#39;xdc&#39;, &#39;dd&#39;: &#39;xdd&#39;, &#39;de&#39;: &#39;xde&#39;, &#39;df&#39;: &#39;xdf&#39;, &#39;e0&#39;: &#39;xe0&#39;, &#39;e1&#39;: &#39;xe1&#39;, &#39;e2&#39;: &#39;xe2&#39;, &#39;e3&#39;: &#39;xe3&#39;, &#39;e4&#39;: &#39;xe4&#39;, &#39;e5&#39;: &#39;xe5&#39;, &#39;e6&#39;: &#39;xe6&#39;, &#39;e7&#39;: &#39;xe7&#39;, &#39;e8&#39;: &#39;xe8&#39;, &#39;e9&#39;: &#39;xe9&#39;, &#39;ea&#39;: &#39;xea&#39;, &#39;eb&#39;: &#39;xeb&#39;, &#39;ec&#39;: &#39;xec&#39;, &#39;ed&#39;: &#39;xed&#39;, &#39;ee&#39;: &#39;xee&#39;, &#39;ef&#39;: &#39;xef&#39;, &#39;f0&#39;: &#39;xf0&#39;, &#39;f1&#39;: &#39;xf1&#39;, &#39;f2&#39;: &#39;xf2&#39;, &#39;f3&#39;: &#39;xf3&#39;, &#39;f4&#39;: &#39;xf4&#39;, &#39;f5&#39;: &#39;xf5&#39;, &#39;f6&#39;: &#39;xf6&#39;, &#39;f7&#39;: &#39;xf7&#39;, &#39;f8&#39;: &#39;xf8&#39;, &#39;f9&#39;: &#39;xf9&#39;, &#39;fa&#39;: &#39;xfa&#39;, &#39;fb&#39;: &#39;xfb&#39;, &#39;fc&#39;: &#39;xfc&#39;, &#39;fd&#39;: &#39;xfd&#39;, &#39;fe&#39;: &#39;xfe&#39;, &#39;ff&#39;: &#39;xff&#39;, } 其实看这个list，可以发现，其实是对字符串进行替换，使其对应到各自的原始16进制表示方式。 我刚学Python不足一个月，这只是我曲线救国的方法，求教更好的方法。</description>
+      <description>（题目有点勉强，不过问题真的很难描述，希望Google/Baidu到这里的童鞋不要失望） 前几天给zwwooooo写一个 小工具，其中遇到一个输入的问题。具体描述就是：&amp;ldquo;输入4个16进制的数字，如&#39;00a0&amp;rsquo;，输入之后必须能够把这个输入给保存到文件中存为2进制格式，必须是原始的 16进制，而不是字符串类型。如&amp;rsquo;x00xa0&amp;rsquo;&amp;quot;。（其实这是用在处理</description>
     </item>
     
     <item>
@@ -504,26 +271,7 @@ lst = &#39;{&#39; for i in range(int(&#39;0x00&#39;, 16), int(&#39;0xff&#39;, 16
       <pubDate>Mon, 28 Sep 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/09/gae-initial-contact-with-the-school-app/</guid>
-      <description>下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello World来介绍一个开发步骤。
-1.创建GAE应用 建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 App Engine ，激活这个服务，就可以创建新的应用。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。
-一个简单的App控制台
-2.部署GAE App 刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置 ，所以Nothing,检查http状态会发现返回的是404状态）。
-这时候我们就要开始部署这个GAE App了：1.下载一个Google App Engine SDK for Python-Win，这样就可以在本地测试项目，然后发布到 GAE。
-用这个GAE Launcher在本地创建了一个Application，注意标识符和你网上申请的要一致。然后会自动生成一个包含&amp;quot;」Hello Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。
-相关链接：app.yaml的具体设置
-我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。
-在一切没有问题之后，我们就可以惦记Deploy部署这个项目了，这时候要输入帐号和密码，然后出现console控制台等待信息。出现下面提示时候，就说明上传成功 了。
-Closing update: new version is ready to start serving. Uploading index definitions. Password for alswlwangzi@gmail.com: 2009-09-27 16:00:36 (Process exited with code 0) 这时候我们就可以打开xxx.appspot.com查看刚才部署的网站。
-3.校内应用 拥有校内帐号，就可以创建校内应用。第一步是需要安装一个名为「开发者」 的应用。通过这个应用，可以链接到其他一些有帮助的内容：开放平台文档、测试工具、讨论区。
-第二步是创建一个新的应用，按部就班的填上相关资料。
-校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）
-我的应用程序，在这里可以编辑应用的属性
-创建之后，就可以填上Canvas的基本选项中的「应用展示地址」和「Canvas Callback URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com这种形式的网址。
-最后测试自己的应用，也就是刚才「应用展示地址」，形式类似于apps.renren.com/xxx/，就可以看到我们的应用了，这时候基本框架就差不多了。
-4.噩耗 此时当满天欢喜时候打开刚才的「应用展示地址」，你会惊奇的发现校内居然报错了，直接报了405错误。什么是405错误，就是服务器没有权限访问。
-我花了一下午时间才解决这个问题，因为问题可能出在校内，也可能是GAE的功能限制上。
-在appspot上测试这个应用是没有任何问题的
-显示的源码，其中的xnml校内服务器自己可以解析出来的，这段代码在校内测试工具也能通过</description>
+      <description>下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello World来介绍一个开发步骤。 1.创建GAE应用 建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 App Engine ，激活这个服务，就可以创建新的应用。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。 一个简单的App控制台</description>
     </item>
     
     <item>
@@ -532,19 +280,7 @@ Closing update: new version is ready to start serving. Uploading index definitio
       <pubDate>Sun, 27 Sep 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/09/when-google-app-engine-encounter-campus/</guid>
-      <description>昨天看《程序员》时候看到一篇讲开放接口的文章，是FaceBook的一个开发人员写的，讲了很多关于开放平台的东西 。其中提到Google App Engine的云计算支持，FaceBook的FBML（校内的称为XNML，一种标记性语言）。
-Google App Engine(GAE) Google App Engine让用户可以在 Google 的基础架构上运行的网络应用程序。Google App Engine 应用程序易于构建和维护，并可根据用户的访问量和数据存储需要的增长轻松扩展。使用 Google App Engine，将不再需要维护服务器：用户只需上传用户的应用程序，它便可立即为用户的用户提供服务。
-通俗的说，App Engine就像是免费提供的一个500M高性能的空间，和一个appspot.com二级域名。在Google强大的云计算能力下，服务器的速度 和质量毋容置疑。现在App Engine支持Python和Java（似乎Java有些限制，具体的细节我没有看）。
-XNML XNML（xiao nei market language）是以种标记性语言，如果学过JavaEE，就会发现它和OGNL语言很像。XNML大概的形式是&amp;lt;xnml:iframe ….&amp;gt;这种形式，校内服务器会负责解析这种格式的语法生成相应的内容。其实这是把一些功能性内容封装成接口，为了安全和方便。
-在校内提供的开发平台写应用需要自己的一个地址，肯定不能是192.168.0.X这种本机地址了。这时候Google App Engine就派上了大用场，把应用的文件和数据存储在GAE里，那是相当的爽，可以放心的开发自己的第三方应用了。
-我一直对开放平台的开发有兴趣，现在有了GAE这个利器，正好写一个自己的小应用玩玩，顺便练习练习自己的Python。
-相关链接： 校内开发者（校内开发人员必须安装的应用）：http://app.renren.com/developers/home.do
-校内开放平台文档：http://wiki.dev.renren.com/wiki/%E9%A6%96%E9%A1%B5
-Google App Engine相关下载：http://code.google.com/appengine/downloads.html
-Google App Engine SDK for Python-Win：GoogleAppEngine_1.2.5.msi
-Google App Engine SDK for Java：appengine-java- sdk-1.2.5.zip
-Google App Engine Documentation：google-appengine-docs-20090921.zip
-最后一个小图标： ，呵呵，Google的图标都那么帅</description>
+      <description>昨天看《程序员》时候看到一篇讲开放接口的文章，是FaceBook的一个开发人员写的，讲了很多关于开放平台的东西 。其中提到Google App Engine的云计算支持，FaceBook的FBML（校内的称为XNML，一种标记性语言）。 Google App Engine(GAE) Google App Engine让用户可以在 Google 的基础架构上运行的网络应用程序。Google App Engine 应用程序易于构建和维护，并可根据用户的访问量和数据存储需要的增长轻松扩展。使用 Google App Engi</description>
     </item>
     
     <item>
@@ -553,56 +289,7 @@ Google App Engine Documentation：google-appengine-docs-20090921.zip
       <pubDate>Wed, 16 Sep 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/09/python-in-the-directory-and-file-operations/</guid>
-      <description>本文来源：[python:目录与文件操作_浸在苏打水里的玩偶](http://hi.baidu.com/javalang/blog/item/6ce3293 f866596ee55e72334.html)
-os和os.path模块
-os.listdir(dirname)：列出dirname下的目录和文件
-os.getcwd()：获得当前工作目录
-os.curdir:返回但前目录（&amp;rsquo;.&#39;)
-os.chdir(dirname):改变工作目录到dirname
-os.path.isdir(name):判断name是不是一个目录，name不是目录就返回false
-os.path.isfile(name):判断name是不是一个文件，不存在name也返回false
-os.path.exists(name):判断是否存在文件或目录name
-os.path.getsize(name):获得文件大小，如果name是目录返回0L
-os.path.abspath(name):获得绝对路径
-os.path.normpath(path):规范path字符串形式
-os.path.split(name):分割文件名与目录（事实上，如果你完全使用目录，它也会将最后一个目录作为文件名而分离，同时它不会判断文件或目录是否存在 ）
-os.path.splitext():分离文件名与扩展名
-os.path.join(path,name):连接目录与文件名或目录
-os.path.basename(path):返回文件名
-os.path.dirname(path):返回文件路径
-&amp;gt;&amp;gt;&amp;gt; import os &amp;gt;&amp;gt;&amp;gt; os.getcwd() &#39;C:\Python25&#39; os.chdir(r&amp;rsquo;C:temp&#39;)
-os.getcwd()
-&amp;lsquo;C:\temp&amp;rsquo;
-os.listdir(&amp;rsquo;.&#39;)
-[&amp;rsquo;temp.txt&amp;rsquo;, &amp;rsquo;test.py&amp;rsquo;, &amp;rsquo;testdir&amp;rsquo;, &amp;rsquo;tt&#39;]
-os.listdir(os.curdir)
-[&amp;rsquo;temp.txt&amp;rsquo;, &amp;rsquo;test.py&amp;rsquo;, &amp;rsquo;testdir&amp;rsquo;, &amp;rsquo;tt&#39;]
-os.path.getsize(&amp;rsquo;test.py&#39;)
-38L
-os.path.isdir(&amp;rsquo;tt&#39;)
-True
-os.path.getsize(&amp;rsquo;tt&#39;)
-0L
-os.path.abspath(&amp;rsquo;tt&#39;)
-&amp;lsquo;c:\temp\tt&amp;rsquo;
-os.path.abspath(&amp;rsquo;test.py&#39;)
-&amp;lsquo;c:\temp\test.py&amp;rsquo;
-os.path.abspath(&amp;rsquo;.&#39;)
-&amp;lsquo;c:\temp&amp;rsquo;
-os.path.split(r&amp;rsquo;.tt&#39;)
-(&amp;rsquo;.&amp;rsquo;, &amp;rsquo;tt&#39;)
-os.path.split(r&amp;rsquo;c:temptest.py&#39;)
-(&amp;lsquo;c:\temp&amp;rsquo;, &amp;rsquo;test.py&amp;rsquo;)
-os.path.split(r&amp;rsquo;c:temptest.dpy&#39;)
-(&amp;lsquo;c:\temp&amp;rsquo;, &amp;rsquo;test.dpy&amp;rsquo;
-os.path.splitext(r&amp;rsquo;c:temptest.py&#39;)
-(&amp;lsquo;c:\temp\test&amp;rsquo;, &amp;lsquo;.py&amp;rsquo;)
-os.path.splitext(r&amp;rsquo;c:temptst.py&amp;rsquo;)
-(&amp;lsquo;c:\temp\tst&amp;rsquo;, &amp;lsquo;.py&amp;rsquo;)
-os.path.basename(r&amp;rsquo;c:temptst.py&amp;rsquo;)
-&amp;rsquo;tst.py&#39;
-os.path.dirname(r&amp;rsquo;c:temptst.py&#39;)
-&amp;lsquo;c:\temp&amp;rsquo;</description>
+      <description>本文来源：[python:目录与文件操作_浸在苏打水里的玩偶](http://hi.baidu.com/javalang/blog/item/6ce3293 f866596ee55e72334.html) os和os.path模块 os.listdir(dirname)：列出dirname下的目录和文件 os.getcwd()：获得当前工作目录 os.curdir:返回但前目录（&amp;rsquo;.&#39;) os.chdir(dirname):改变工作目录到d</description>
     </item>
     
     <item>
@@ -611,22 +298,7 @@ os.path.dirname(r&amp;rsquo;c:temptst.py&#39;)
       <pubDate>Tue, 15 Sep 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/09/python-program-will-be-compiled-into-an-executable-program-exe/</guid>
-      <description>Python很强大，这个py2exe程序能够把.py文件编译为.exe可执行文件，真是如虎添翼啊。
-我注意到这个细节：这篇文章发表于 2005-6-5 23:34作者wolfg太犀利了。
-原文出处：py2exe初接触（一） - Python - ChinaUnix.net
-py2exe是什么？ py2exe是一种python发布工具，可以把python脚本转换成windows下的可执行程序，不需要安装python便可运行。
-py2exe现在可以用来创建使用了wxPython, Tkinter, Pmw, PyGTK, pygame, win32com client and server 等模块的程序。
-详细介绍可以看它的官方网站 http://starship.python.net/crew/theller/py2exe/
-1. 下载安装py2exe py2exe目前的版本是0.5.4，根据你安装的python的版本选择下载的文件
-[py2exe-0.5.4.win32-py2.3.exe](http://prdownloads.sourceforge.net/py2exe/py2ex e-0.5.4.win32-py2.3.exe?download) (现在是0.6.9-alswl)
-或
-[py2exe-0.5.4.win32-py2.4.exe](http://prdownloads.sourceforge.net/py2exe/py2ex e-0.5.4.win32-py2.4.exe?download)
-安装后的文件应该在你的python安装目录下的Libsite-packagespy2exe
-2. 使用py2exe 我们先准备一个简单的python程序hello.py
-# hello.py def main(): print &amp;quot;Hello, World!&amp;quot; if __name__ == &#39;__main__&#39;: main() 然后为使用py2exe写一个脚本setup.py
-# setup.py from distutils.core import setup import py2exe setup(console=[&amp;quot;hello.py&amp;quot;]) 运行setup.py，记得要传一个参数给它
-python setup.py py2exe 应该看到一些输出信息
-running py2exe creating E:ProjectsWorkSpacePythonbuild creating E:ProjectsWorkSpacePythonbuildbdist.win32 creating E:ProjectsWorkSpacePythonbuildbdist.</description>
+      <description>Python很强大，这个py2exe程序能够把.py文件编译为.exe可执行文件，真是如虎添翼啊。 我注意到这个细节：这篇文章发表于 2005-6-5 23:34作者wolfg太犀利了。 原文出处：py2exe初接触（一） - Python - ChinaUnix.net py2exe是什么？ py2exe是一种python发布工具，可以把python脚本转换成windows下的可执行程序，不需要安装python便可运行。 py2exe现在可以用来创建使用了wxPy</description>
     </item>
     
     <item>
@@ -635,17 +307,7 @@ running py2exe creating E:ProjectsWorkSpacePythonbuild creating E:ProjectsWorkSp
       <pubDate>Mon, 14 Sep 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/09/python-data-format-conversion-using-struct/</guid>
-      <description>本文来源：Python模块学习 &amp;mdash;- struct 数据格式转换 - JGood的专栏 - CSDN博客
-Python是一门非常简洁的语言，对于数据类型的表示，不像其他语言预定义了许多类型（如：在C#中，光整型就定义了8种），它只定义了六种基本类型：字符串，整数 ，浮点数，元组，列表，字典。通过这六种数据类型，我们可以完成大部分工作。但当Python需要通过网络与其他的平台进行交互的时候，必须考虑到将这些数据类型与其 他平台或语言之间的类型进行互相转换问题。打个比方：C++写的客户端发送一个int型(4字节)变量的数据到 Python写的服务器，Python接收到表示这个整数的4个字节数据，怎么解析成Python认识的整数呢？ Python的标准模块struct就用来解决这个问题。
-struct模块的内容不多，也不是太难，下面对其中最常用的方法进行介绍：
-struct.pack struct.pack用于将Python的值根据格式符，转换为字符串（因为Python中没有字节(Byte)类型，可以把这里的字符串理解为字节流，或字节数组 ）。其函数原型为：struct.pack(fmt, v1, v2, &amp;hellip;)，参数fmt是格式字符串，关于格式字符串的相关信息在[下面](http://bl og.csdn.net/JGood/archive/2009/06/22/4290158.aspx#fmt)有所介绍。v1, v2, &amp;hellip;表示要转换的python值。下面的例子将两个整数转换为字符串（字节流）:
-import struct a = 20 b = 400 str = struct.pack(&amp;ldquo;ii&amp;rdquo;, a, b) #转换后的str虽然是字符串类型，但相当于其他语言中的字节流（字节数组），可以在网络上传输 print &amp;rsquo;length:&amp;rsquo;, len(str) print str print repr(str)
-#&amp;mdash;- result
-#length: 8
-&amp;mdash;-这里是乱码 #&amp;lsquo;x14x00x00x00x90x01x00x00&amp;rsquo;
-格式符&amp;quot;i&amp;quot;表示转换为int，&amp;lsquo;ii&amp;rsquo;表示有两个int变量。进行转换后的结果长度为8个字节（int类型占用4个字节，两个int为8个字节），可以看到输出的结 果是乱码，因为结果是二进制数据，所以显示为乱码。可以使用python的内置函数repr来获取可识别的字符串，其中十六进制的 0x00000014, 0x00001009分别表示20和400。
-struct.unpack struct.unpack做的工作刚好与struct.pack相反，用于将字节流转换成python数据类型。它的函数原型为：struct.unpack(fm t, string)，该函数返回一个元组。 下面是一个简单的例子：
-str = struct.pack(&amp;quot;ii&amp;quot;, 20, 400) a1, a2 = struct.unpack(&amp;quot;ii&amp;quot;, str) print &#39;a1:&#39;, a1 print &#39;a2:&#39;, a2 #---- result: #a1: 20 #a2: 400 struct.</description>
+      <description>本文来源：Python模块学习 &amp;mdash;- struct 数据格式转换 - JGood的专栏 - CSDN博客 Python是一门非常简洁的语言，对于数据类型的表示，不像其他语言预定义了许多类型（如：在C#中，光整型就定义了8种），它只定义了六种基本类型：字符串，整数 ，浮点数，元组，列表，字典。通过这六种数据类型，我们可以完成大部分工作。但当Python需要通过网络与其他的平台进行交互的时候，必须考虑到将这些数据类型与其 他平台或语</description>
     </item>
     
     <item>
@@ -654,12 +316,7 @@ str = struct.pack(&amp;quot;ii&amp;quot;, 20, 400) a1, a2 = struct.unpack(&amp;q
       <pubDate>Sat, 12 Sep 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/09/python-to-read-and-write-files/</guid>
-      <description>本文来源：Python天天美味(17) - open读写文件 - CoderZh的技术博客 - 博客园
-「我本来想加上看到这篇文章的博客链接，结果粘贴时候发现了图片来源居然是cnblogs，这才反应过来这不是那个博客的原创。我不反对转载，看到的好文章我自己也会 收藏下来，转载能帮助更多需要的人，可是，至少加上人家原作者的地址呀……」-alswl
-Python中文件操作可以通过open函数，这的确很像C语言中的fopen。通过open函数获取一个file object，然后调用read()，write()等方法对文件进行读写操作。
-1.open 使用open打开文件后一定要记得调用文件对象的close()方法。比如可以用try/finally语句来确保最后能关闭文件。
-file_object = open(&#39;thefile.txt&#39;) try: all_the_text = file_object.read( ) finally: file_object.close( ) 注：不能把open语句放在try块里，因为当打开文件出现异常时，文件对象file_object无法执行close()方法。
-2.读文件 读文本文件 input = open(&#39;data&#39;, &#39;r&#39;) #第二个参数默认为r input = open(&#39;data&#39;) 读二进制文件 input = open(&#39;data&#39;, &#39;rb&#39;) 读取所有内容 file_object = open(&#39;thefile.txt&#39;) try: all_the_text = file_object.read( ) finally: file_object.close( ) 读固定字节 file_object = open(&#39;abinfile&#39;, &#39;rb&#39;) try: while True: chunk = file_object.read(100) if not chunk: break do_something_with(chunk) finally: file_object.close( ) 读每行 list_of_all_the_lines = file_object.</description>
+      <description>本文来源：Python天天美味(17) - open读写文件 - CoderZh的技术博客 - 博客园 「我本来想加上看到这篇文章的博客链接，结果粘贴时候发现了图片来源居然是cnblogs，这才反应过来这不是那个博客的原创。我不反对转载，看到的好文章我自己也会 收藏下来，转载能帮助更多需要的人，可是，至少加上人家原作者的地址呀……」-alswl Python中文件操作可以通过open函数，这的确很像C语言中的fop</description>
     </item>
     
     <item>
@@ -668,27 +325,7 @@ file_object = open(&#39;thefile.txt&#39;) try: all_the_text = file_object.read( 
       <pubDate>Fri, 04 Sep 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/09/python-code-to-read-and-write-txt/</guid>
-      <description>09_09_09在Windows Live Writer下修正
-一直有学Python或者Perl的想法，不过没有规划到日程来，最近打算辞职专心考驾照，正好每天都有点时间来学Python。
-关于Python和Perl，我并没有什么谁优谁劣的看法，只是感觉Python可能资料会多一点，而且Google App Enginee支持Python,所以选择了Python。
-OK，这几天写的两段小代码，来自《Python核心编程（第二版）》（原书中写这段有错误，我这儿也算勘误了）
-makeTextFile.py
-&#39;makeTextFile.py -- create text file&#39; import os ls = os.linesep
-#get filename
-while True:
-fname = raw_input(&amp;rsquo;&amp;gt; a txt file path&#39;)
-if os.path.exists(fname):
-print &amp;ldquo;Error: &amp;lsquo;%s&amp;rsquo; already exists&amp;rdquo; % fname
-else:
-break
-all = [] print &amp;ldquo;nEnter lines {&amp;rsquo;.&amp;rsquo; by itself to quit).n&amp;rdquo;
-#loop until user terminates input
-while True:
-entry = raw_input(&amp;rsquo;&amp;gt; &amp;lsquo;)
-if entry == &amp;lsquo;.&amp;rsquo;:
-break;
-else:
-all.append(entry)</description>
+      <description>09_09_09在Windows Live Writer下修正 一直有学Python或者Perl的想法，不过没有规划到日程来，最近打算辞职专心考驾照，正好每天都有点时间来学Python。 关于Python和Perl，我并没有什么谁优谁劣的看法，只是感觉Python可能资料会多一点，而且Google App Enginee支持Python,所以选择了Python。 OK，这几天写的两段小代码，来自《Python核心编程（第</description>
     </item>
     
   </channel>

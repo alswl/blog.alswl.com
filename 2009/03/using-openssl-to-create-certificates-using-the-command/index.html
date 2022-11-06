@@ -7,22 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>用OpenSSL创建证书时用到的命令【原创】 | Log4D</title>
 <meta name="keywords" content="c, openssl, ssl">
-<meta name="description" content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
-这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。
-1.生成CA中心的私钥
-openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
-2.生成CA中心的自签证书
-openssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem
-3.生成A分支机构的私钥和认证请求
-openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem
-PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件
-那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf
-注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。
-4.由CA中心为A分支机构签发证书
-openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.">
+<meta name="description" content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。 这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。 1.生成CA中心的私钥 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem 2.生成">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -81,19 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="用OpenSSL创建证书时用到的命令【原创】" />
-<meta property="og:description" content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
-这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。
-1.生成CA中心的私钥
-openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
-2.生成CA中心的自签证书
-openssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem
-3.生成A分支机构的私钥和认证请求
-openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem
-PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件
-那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf
-注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。
-4.由CA中心为A分支机构签发证书
-openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert." />
+<meta property="og:description" content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。 这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。 1.生成CA中心的私钥 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem 2.生成" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2009-03-17T00:00:00+08:00" />
@@ -101,19 +77,7 @@ openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert." />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="用OpenSSL创建证书时用到的命令【原创】"/>
-<meta name="twitter:description" content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
-这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。
-1.生成CA中心的私钥
-openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
-2.生成CA中心的自签证书
-openssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem
-3.生成A分支机构的私钥和认证请求
-openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem
-PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件
-那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf
-注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。
-4.由CA中心为A分支机构签发证书
-openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert."/>
+<meta name="twitter:description" content="这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。 这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。 1.生成CA中心的私钥 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem 2.生成"/>
 
 
 <script type="application/ld+json">
@@ -142,12 +106,12 @@ openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert."/>
   "@type": "BlogPosting",
   "headline": "用OpenSSL创建证书时用到的命令【原创】",
   "name": "用OpenSSL创建证书时用到的命令【原创】",
-  "description": "这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。\n这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章\u0026quot;利用OpenSSL实现安全的Web Server\u0026quot;中找到自己需要的内容，现在分享一下。\n1.生成CA中心的私钥\nopenssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem\n2.生成CA中心的自签证书\nopenssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem\n3.生成A分支机构的私钥和认证请求\nopenssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem\nPS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件\n那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf\n注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。\n4.由CA中心为A分支机构签发证书\nopenssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.",
+  "description": "这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。 这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章\u0026quot;利用OpenSSL实现安全的Web Server\u0026quot;中找到自己需要的内容，现在分享一下。 1.生成CA中心的私钥 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem 2.生成",
   "keywords": [
     "c", "openssl", "ssl"
   ],
   "articleBody": "这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。\n这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章\"利用OpenSSL实现安全的Web Server\"中找到自己需要的内容，现在分享一下。\n1.生成CA中心的私钥\nopenssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem\n2.生成CA中心的自签证书\nopenssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem\n3.生成A分支机构的私钥和认证请求\nopenssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem\nPS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件\n那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf\n注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。\n4.由CA中心为A分支机构签发证书\nopenssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.pem -CAkey rootkey.pem -CAcreateserial -out Acert.pem\n5.用x509命令查看生成的证书\nopenssl x509 -subject -issuer -noout -in rootcert.pem\n这样之后，Acert.pem就是所要使用的证书文件，Akey.pem是私钥文件，rootcert.pem是信任CA\n供朋友们参考\n",
-  "wordCount" : "89",
+  "wordCount" : "469",
   "inLanguage": "en",
   "datePublished": "2009-03-17T00:00:00+08:00",
   "dateModified": "2009-03-17T00:00:00+08:00",

@@ -7,17 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>Python读写剪贴板 | Log4D</title>
 <meta name="keywords" content="python, pywin">
-<meta name="description" content="最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。
-由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。
-#coding=utf-8 &#39;&#39;&#39; 读写剪贴板 &#39;&#39;&#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。
-如果双击 .py 文件调用可能产生无效的情况，测试发现在IDE环境下有效，如果想完成一键转换，就需要一个bat执行一下。
-@echo off python sql2.py 通过执行双击这个脚本，就可以完成读写剪贴板了（记得在系统Path路径加入python所在目录，否则又要报错）。
-友情提示，这个脚本需要 win32clipboard 这个模块，这个模块装完 pywin 就可以加载了。
-我使用的环境是Python2.6 &#43; PyWin， 因为我的Python2.7&#43;pywin32-214.win32-py2.7会出现一个&quot;Still can&rsquo;t get my hands on win32ui&quot;。 托上篇文章的福，我安装PyWin时候选择&quot;管理员身份安装&quot;即可。
-PS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个flag参数，让我搞鼓了好一会。">
+<meta name="description" content="最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。 由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。 #coding=utf-8 &#39;&#39;&#39; 读写剪贴板 &#39;&#39;&#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。 如果双击 .py">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2010/10/python-clipboard/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -76,14 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="Python读写剪贴板" />
-<meta property="og:description" content="最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。
-由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。
-#coding=utf-8 &#39;&#39;&#39; 读写剪贴板 &#39;&#39;&#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。
-如果双击 .py 文件调用可能产生无效的情况，测试发现在IDE环境下有效，如果想完成一键转换，就需要一个bat执行一下。
-@echo off python sql2.py 通过执行双击这个脚本，就可以完成读写剪贴板了（记得在系统Path路径加入python所在目录，否则又要报错）。
-友情提示，这个脚本需要 win32clipboard 这个模块，这个模块装完 pywin 就可以加载了。
-我使用的环境是Python2.6 &#43; PyWin， 因为我的Python2.7&#43;pywin32-214.win32-py2.7会出现一个&quot;Still can&rsquo;t get my hands on win32ui&quot;。 托上篇文章的福，我安装PyWin时候选择&quot;管理员身份安装&quot;即可。
-PS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个flag参数，让我搞鼓了好一会。" />
+<meta property="og:description" content="最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。 由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。 #coding=utf-8 &#39;&#39;&#39; 读写剪贴板 &#39;&#39;&#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。 如果双击 .py" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2010/10/python-clipboard/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2010-10-23T00:00:00+08:00" />
@@ -91,14 +77,7 @@ PS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个fl
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Python读写剪贴板"/>
-<meta name="twitter:description" content="最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。
-由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。
-#coding=utf-8 &#39;&#39;&#39; 读写剪贴板 &#39;&#39;&#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。
-如果双击 .py 文件调用可能产生无效的情况，测试发现在IDE环境下有效，如果想完成一键转换，就需要一个bat执行一下。
-@echo off python sql2.py 通过执行双击这个脚本，就可以完成读写剪贴板了（记得在系统Path路径加入python所在目录，否则又要报错）。
-友情提示，这个脚本需要 win32clipboard 这个模块，这个模块装完 pywin 就可以加载了。
-我使用的环境是Python2.6 &#43; PyWin， 因为我的Python2.7&#43;pywin32-214.win32-py2.7会出现一个&quot;Still can&rsquo;t get my hands on win32ui&quot;。 托上篇文章的福，我安装PyWin时候选择&quot;管理员身份安装&quot;即可。
-PS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个flag参数，让我搞鼓了好一会。"/>
+<meta name="twitter:description" content="最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。 由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。 #coding=utf-8 &#39;&#39;&#39; 读写剪贴板 &#39;&#39;&#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。 如果双击 .py"/>
 
 
 <script type="application/ld+json">
@@ -127,12 +106,12 @@ PS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个fl
   "@type": "BlogPosting",
   "headline": "Python读写剪贴板",
   "name": "Python读写剪贴板",
-  "description": "最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。\n由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。\n#coding=utf-8 \u0026#39;\u0026#39;\u0026#39; 读写剪贴板 \u0026#39;\u0026#39;\u0026#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。\n如果双击 .py 文件调用可能产生无效的情况，测试发现在IDE环境下有效，如果想完成一键转换，就需要一个bat执行一下。\n@echo off python sql2.py 通过执行双击这个脚本，就可以完成读写剪贴板了（记得在系统Path路径加入python所在目录，否则又要报错）。\n友情提示，这个脚本需要 win32clipboard 这个模块，这个模块装完 pywin 就可以加载了。\n我使用的环境是Python2.6 + PyWin， 因为我的Python2.7+pywin32-214.win32-py2.7会出现一个\u0026quot;Still can\u0026rsquo;t get my hands on win32ui\u0026quot;。 托上篇文章的福，我安装PyWin时候选择\u0026quot;管理员身份安装\u0026quot;即可。\nPS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个flag参数，让我搞鼓了好一会。",
+  "description": "最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。 由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。 #coding=utf-8 \u0026#39;\u0026#39;\u0026#39; 读写剪贴板 \u0026#39;\u0026#39;\u0026#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。 如果双击 .py",
   "keywords": [
     "python", "pywin"
   ],
   "articleBody": "最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。\n由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。\n#coding=utf-8 ''' 读写剪贴板 ''' import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。\n如果双击 .py 文件调用可能产生无效的情况，测试发现在IDE环境下有效，如果想完成一键转换，就需要一个bat执行一下。\n@echo off python sql2.py 通过执行双击这个脚本，就可以完成读写剪贴板了（记得在系统Path路径加入python所在目录，否则又要报错）。\n友情提示，这个脚本需要 win32clipboard 这个模块，这个模块装完 pywin 就可以加载了。\n我使用的环境是Python2.6 + PyWin， 因为我的Python2.7+pywin32-214.win32-py2.7会出现一个\"Still can’t get my hands on win32ui\"。 托上篇文章的福，我安装PyWin时候选择\"管理员身份安装\"即可。\nPS:恨死Python版本控制了，中午弄一个re.sub()，2.6/2.7相差一个flag参数，让我搞鼓了好一会。\n",
-  "wordCount" : "54",
+  "wordCount" : "536",
   "inLanguage": "en",
   "datePublished": "2010-10-23T00:00:00+08:00",
   "dateModified": "2010-10-23T00:00:00+08:00",

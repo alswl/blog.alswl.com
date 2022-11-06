@@ -7,27 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>MemberShip在动软生成器下UserId的问题 | Log4D</title>
 <meta name="keywords" content="dotnet, codematic, membership">
-<meta name="description" content="背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)&#43;Member Ship(微软推出的一个Asp.NET的权限系统)。
-我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是比较冒险的。呃```呵呵，这也比较符合我的风格，总是要学点东 西的嘛。
-问题 MemberShip本身是一个很强大的权限管理系统，其中UserId使用的是uniqueidentifier这种值类型，对应到微软提出的一种标示类型GUID (System.GUID)。这是一种类似「9498ea1f-ce4e-4e6d-b636-1bbbe3db9bde」的非字符串。
-动软.NET代码生成器会根据建好的数据库生成相应的代码，可以选择三层模式（BLL&#43;DAL&#43;Model&#43;Web），他会自动生成每层代码。一般来说，生成的项目可 以编译完成，但是如果在其中存在uniqueidentifier这种类型的表，就会产生错误，无法通过编译，错误「找不到类型或命名空间名称「uniqueiden tifier」（是否缺少 using 指令或程序集引用？）」
-解决 资料非常少，否则我就不会写日志了，直接转载了。
-参考一些零星的帖子&#43;自己尝试，我把解决方法总结如下。
-1.修改Model中uniqueidentifier类型，因为C#中根本不存在这种类型，将相应的变量类型定义为Guid。
-private Guid _userid; public Guid userId
-{ set{ _userid=value;}
-get{return _userid;}
-} 2.修改相应的Guid&lt;-&gt;string之间的转换，这个根据错误列表一一修改即可。
-this.lbluserId.Text=model.userId.ToString();//Guid拥有.ToString()方法 model.userId = new Guid(userId)//new Guid(string) 3.修改DAL中数据读取/写入部分，其实这一部分还是Guid&lt;-&gt;string转换
-//model.userId=ds.Tables[0].Rows[0][&quot;userId&quot;].ToString(); //原始的加上了注释 model.userId=new Guid(ds.Tables[0].Rows[0][&quot;userId&quot;].ToString()); //使用new Guid(string)进行转换 经过上面3个部分，代码应该基本没有问题了，其实关键的还是Guid&lt;-&gt;string转换，跟着错误列表走一边就基本没有问题了。
-新的问题 发现用动软生成的Web层中的Add.aspx文件中，如果相对应数据库表有DataTime字段，就会运行时错误「基类包括字段「txtdatetime」，但其类 型(System.Web.UI.WebControls.TextBox)与控件(System.Web.UI.HtmlControls.HtmlInputTe xt)的类型不兼容。」。
-我将中id修改后，能够运行Add.aspx，但是还是无法post提交，我正在尝试解决这个问题。这个问题与MemberShip无关，放在这里只 是希望如果有过客了解Asp.NET，那么就提出一些建议。
-相关链接 GUID_百度百科：http://baike.baidu.com/view/185358.htm
-SQL中的uniqueidentifier类型在c#中用什么类型表示：http://topic.csdn.net/t/20060918/17/5030341.html
-关于ASP.NET中C#处理uniqueidentifier数据类型的问题：http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html">
+<meta name="description" content="背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)&#43;Member Ship(微软推出的一个Asp.NET的权限系统)。 我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/10/membership-moving-soft-issue-of-builder-under-the-userid/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -86,24 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="MemberShip在动软生成器下UserId的问题" />
-<meta property="og:description" content="背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)&#43;Member Ship(微软推出的一个Asp.NET的权限系统)。
-我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是比较冒险的。呃```呵呵，这也比较符合我的风格，总是要学点东 西的嘛。
-问题 MemberShip本身是一个很强大的权限管理系统，其中UserId使用的是uniqueidentifier这种值类型，对应到微软提出的一种标示类型GUID (System.GUID)。这是一种类似「9498ea1f-ce4e-4e6d-b636-1bbbe3db9bde」的非字符串。
-动软.NET代码生成器会根据建好的数据库生成相应的代码，可以选择三层模式（BLL&#43;DAL&#43;Model&#43;Web），他会自动生成每层代码。一般来说，生成的项目可 以编译完成，但是如果在其中存在uniqueidentifier这种类型的表，就会产生错误，无法通过编译，错误「找不到类型或命名空间名称「uniqueiden tifier」（是否缺少 using 指令或程序集引用？）」
-解决 资料非常少，否则我就不会写日志了，直接转载了。
-参考一些零星的帖子&#43;自己尝试，我把解决方法总结如下。
-1.修改Model中uniqueidentifier类型，因为C#中根本不存在这种类型，将相应的变量类型定义为Guid。
-private Guid _userid; public Guid userId
-{ set{ _userid=value;}
-get{return _userid;}
-} 2.修改相应的Guid&lt;-&gt;string之间的转换，这个根据错误列表一一修改即可。
-this.lbluserId.Text=model.userId.ToString();//Guid拥有.ToString()方法 model.userId = new Guid(userId)//new Guid(string) 3.修改DAL中数据读取/写入部分，其实这一部分还是Guid&lt;-&gt;string转换
-//model.userId=ds.Tables[0].Rows[0][&quot;userId&quot;].ToString(); //原始的加上了注释 model.userId=new Guid(ds.Tables[0].Rows[0][&quot;userId&quot;].ToString()); //使用new Guid(string)进行转换 经过上面3个部分，代码应该基本没有问题了，其实关键的还是Guid&lt;-&gt;string转换，跟着错误列表走一边就基本没有问题了。
-新的问题 发现用动软生成的Web层中的Add.aspx文件中，如果相对应数据库表有DataTime字段，就会运行时错误「基类包括字段「txtdatetime」，但其类 型(System.Web.UI.WebControls.TextBox)与控件(System.Web.UI.HtmlControls.HtmlInputTe xt)的类型不兼容。」。
-我将中id修改后，能够运行Add.aspx，但是还是无法post提交，我正在尝试解决这个问题。这个问题与MemberShip无关，放在这里只 是希望如果有过客了解Asp.NET，那么就提出一些建议。
-相关链接 GUID_百度百科：http://baike.baidu.com/view/185358.htm
-SQL中的uniqueidentifier类型在c#中用什么类型表示：http://topic.csdn.net/t/20060918/17/5030341.html
-关于ASP.NET中C#处理uniqueidentifier数据类型的问题：http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html" />
+<meta property="og:description" content="背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)&#43;Member Ship(微软推出的一个Asp.NET的权限系统)。 我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2009/10/membership-moving-soft-issue-of-builder-under-the-userid/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2009-10-23T00:00:00+08:00" />
@@ -111,24 +77,7 @@ SQL中的uniqueidentifier类型在c#中用什么类型表示：http://topic.csdn
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="MemberShip在动软生成器下UserId的问题"/>
-<meta name="twitter:description" content="背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)&#43;Member Ship(微软推出的一个Asp.NET的权限系统)。
-我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是比较冒险的。呃```呵呵，这也比较符合我的风格，总是要学点东 西的嘛。
-问题 MemberShip本身是一个很强大的权限管理系统，其中UserId使用的是uniqueidentifier这种值类型，对应到微软提出的一种标示类型GUID (System.GUID)。这是一种类似「9498ea1f-ce4e-4e6d-b636-1bbbe3db9bde」的非字符串。
-动软.NET代码生成器会根据建好的数据库生成相应的代码，可以选择三层模式（BLL&#43;DAL&#43;Model&#43;Web），他会自动生成每层代码。一般来说，生成的项目可 以编译完成，但是如果在其中存在uniqueidentifier这种类型的表，就会产生错误，无法通过编译，错误「找不到类型或命名空间名称「uniqueiden tifier」（是否缺少 using 指令或程序集引用？）」
-解决 资料非常少，否则我就不会写日志了，直接转载了。
-参考一些零星的帖子&#43;自己尝试，我把解决方法总结如下。
-1.修改Model中uniqueidentifier类型，因为C#中根本不存在这种类型，将相应的变量类型定义为Guid。
-private Guid _userid; public Guid userId
-{ set{ _userid=value;}
-get{return _userid;}
-} 2.修改相应的Guid&lt;-&gt;string之间的转换，这个根据错误列表一一修改即可。
-this.lbluserId.Text=model.userId.ToString();//Guid拥有.ToString()方法 model.userId = new Guid(userId)//new Guid(string) 3.修改DAL中数据读取/写入部分，其实这一部分还是Guid&lt;-&gt;string转换
-//model.userId=ds.Tables[0].Rows[0][&quot;userId&quot;].ToString(); //原始的加上了注释 model.userId=new Guid(ds.Tables[0].Rows[0][&quot;userId&quot;].ToString()); //使用new Guid(string)进行转换 经过上面3个部分，代码应该基本没有问题了，其实关键的还是Guid&lt;-&gt;string转换，跟着错误列表走一边就基本没有问题了。
-新的问题 发现用动软生成的Web层中的Add.aspx文件中，如果相对应数据库表有DataTime字段，就会运行时错误「基类包括字段「txtdatetime」，但其类 型(System.Web.UI.WebControls.TextBox)与控件(System.Web.UI.HtmlControls.HtmlInputTe xt)的类型不兼容。」。
-我将中id修改后，能够运行Add.aspx，但是还是无法post提交，我正在尝试解决这个问题。这个问题与MemberShip无关，放在这里只 是希望如果有过客了解Asp.NET，那么就提出一些建议。
-相关链接 GUID_百度百科：http://baike.baidu.com/view/185358.htm
-SQL中的uniqueidentifier类型在c#中用什么类型表示：http://topic.csdn.net/t/20060918/17/5030341.html
-关于ASP.NET中C#处理uniqueidentifier数据类型的问题：http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html"/>
+<meta name="twitter:description" content="背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)&#43;Member Ship(微软推出的一个Asp.NET的权限系统)。 我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是"/>
 
 
 <script type="application/ld+json">
@@ -157,12 +106,12 @@ SQL中的uniqueidentifier类型在c#中用什么类型表示：http://topic.csdn
   "@type": "BlogPosting",
   "headline": "MemberShip在动软生成器下UserId的问题",
   "name": "MemberShip在动软生成器下UserId的问题",
-  "description": "背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)+Member Ship(微软推出的一个Asp.NET的权限系统)。\n我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是比较冒险的。呃```呵呵，这也比较符合我的风格，总是要学点东 西的嘛。\n问题 MemberShip本身是一个很强大的权限管理系统，其中UserId使用的是uniqueidentifier这种值类型，对应到微软提出的一种标示类型GUID (System.GUID)。这是一种类似「9498ea1f-ce4e-4e6d-b636-1bbbe3db9bde」的非字符串。\n动软.NET代码生成器会根据建好的数据库生成相应的代码，可以选择三层模式（BLL+DAL+Model+Web），他会自动生成每层代码。一般来说，生成的项目可 以编译完成，但是如果在其中存在uniqueidentifier这种类型的表，就会产生错误，无法通过编译，错误「找不到类型或命名空间名称「uniqueiden tifier」（是否缺少 using 指令或程序集引用？）」\n解决 资料非常少，否则我就不会写日志了，直接转载了。\n参考一些零星的帖子+自己尝试，我把解决方法总结如下。\n1.修改Model中uniqueidentifier类型，因为C#中根本不存在这种类型，将相应的变量类型定义为Guid。\nprivate Guid _userid; public Guid userId\n{ set{ _userid=value;}\nget{return _userid;}\n} 2.修改相应的Guid\u0026lt;-\u0026gt;string之间的转换，这个根据错误列表一一修改即可。\nthis.lbluserId.Text=model.userId.ToString();//Guid拥有.ToString()方法 model.userId = new Guid(userId)//new Guid(string) 3.修改DAL中数据读取/写入部分，其实这一部分还是Guid\u0026lt;-\u0026gt;string转换\n//model.userId=ds.Tables[0].Rows[0][\u0026quot;userId\u0026quot;].ToString(); //原始的加上了注释 model.userId=new Guid(ds.Tables[0].Rows[0][\u0026quot;userId\u0026quot;].ToString()); //使用new Guid(string)进行转换 经过上面3个部分，代码应该基本没有问题了，其实关键的还是Guid\u0026lt;-\u0026gt;string转换，跟着错误列表走一边就基本没有问题了。\n新的问题 发现用动软生成的Web层中的Add.aspx文件中，如果相对应数据库表有DataTime字段，就会运行时错误「基类包括字段「txtdatetime」，但其类 型(System.Web.UI.WebControls.TextBox)与控件(System.Web.UI.HtmlControls.HtmlInputTe xt)的类型不兼容。」。\n我将中id修改后，能够运行Add.aspx，但是还是无法post提交，我正在尝试解决这个问题。这个问题与MemberShip无关，放在这里只 是希望如果有过客了解Asp.NET，那么就提出一些建议。\n相关链接 GUID_百度百科：http://baike.baidu.com/view/185358.htm\nSQL中的uniqueidentifier类型在c#中用什么类型表示：http://topic.csdn.net/t/20060918/17/5030341.html\n关于ASP.NET中C#处理uniqueidentifier数据类型的问题：http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html",
+  "description": "背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)+Member Ship(微软推出的一个Asp.NET的权限系统)。 我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是",
   "keywords": [
     "dotnet", "codematic", "membership"
   ],
   "articleBody": "背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)+Member Ship(微软推出的一个Asp.NET的权限系统)。\n我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是比较冒险的。呃```呵呵，这也比较符合我的风格，总是要学点东 西的嘛。\n问题 MemberShip本身是一个很强大的权限管理系统，其中UserId使用的是uniqueidentifier这种值类型，对应到微软提出的一种标示类型GUID (System.GUID)。这是一种类似「9498ea1f-ce4e-4e6d-b636-1bbbe3db9bde」的非字符串。\n动软.NET代码生成器会根据建好的数据库生成相应的代码，可以选择三层模式（BLL+DAL+Model+Web），他会自动生成每层代码。一般来说，生成的项目可 以编译完成，但是如果在其中存在uniqueidentifier这种类型的表，就会产生错误，无法通过编译，错误「找不到类型或命名空间名称「uniqueiden tifier」（是否缺少 using 指令或程序集引用？）」\n解决 资料非常少，否则我就不会写日志了，直接转载了。\n参考一些零星的帖子+自己尝试，我把解决方法总结如下。\n1.修改Model中uniqueidentifier类型，因为C#中根本不存在这种类型，将相应的变量类型定义为Guid。\nprivate Guid _userid; public Guid userId\n{ set{ _userid=value;}\nget{return _userid;}\n} 2.修改相应的Guid\u003c-\u003estring之间的转换，这个根据错误列表一一修改即可。\nthis.lbluserId.Text=model.userId.ToString();//Guid拥有.ToString()方法 model.userId = new Guid(userId)//new Guid(string) 3.修改DAL中数据读取/写入部分，其实这一部分还是Guid\u003c-\u003estring转换\n//model.userId=ds.Tables[0].Rows[0][\"userId\"].ToString(); //原始的加上了注释 model.userId=new Guid(ds.Tables[0].Rows[0][\"userId\"].ToString()); //使用new Guid(string)进行转换 经过上面3个部分，代码应该基本没有问题了，其实关键的还是Guid\u003c-\u003estring转换，跟着错误列表走一边就基本没有问题了。\n新的问题 发现用动软生成的Web层中的Add.aspx文件中，如果相对应数据库表有DataTime字段，就会运行时错误「基类包括字段「txtdatetime」，但其类 型(System.Web.UI.WebControls.TextBox)与控件(System.Web.UI.HtmlControls.HtmlInputTe xt)的类型不兼容。」。\n我将中id修改后，能够运行Add.aspx，但是还是无法post提交，我正在尝试解决这个问题。这个问题与MemberShip无关，放在这里只 是希望如果有过客了解Asp.NET，那么就提出一些建议。\n相关链接 GUID_百度百科：http://baike.baidu.com/view/185358.htm\nSQL中的uniqueidentifier类型在c#中用什么类型表示：http://topic.csdn.net/t/20060918/17/5030341.html\n关于ASP.NET中C#处理uniqueidentifier数据类型的问题：http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html\n",
-  "wordCount" : "57",
+  "wordCount" : "1469",
   "inLanguage": "en",
   "datePublished": "2009-10-23T00:00:00+08:00",
   "dateModified": "2009-10-23T00:00:00+08:00",

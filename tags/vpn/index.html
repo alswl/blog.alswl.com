@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/tags/vpn/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -165,20 +165,10 @@ if (!doNotTrack) {
     </h2>
   </header>
   <div class="entry-content">
-    <p>最近在ddwrt配置vpn，参考了arch的pptpclient配置文档[Microsoft VPN client setup with pptpclien t](https://wiki.archlinux.org/index.php/Microsoft_VPN_client_setup_with_pptpcl ient)，同时顺便花了一点时间翻译成中文，正文如下（使用wiky.js转换pe diawiki到html，原文会有更多的wiki模板样式便于查看，有问题请参照原文）。
-pptpclient是一个实现Microsoft PPTP协议的程序。因此它能够被用来接入另一个Microsoft VPN网络，比如学校和单位。
-安装PPTPClient pptpclient由安装包pptpclient提供，运行下列命令可以安装：
-pacman -S pptpclient 配置 你需要从网络管理员获取以下信息来配置pptpclient:
-VPN服务器的ip或者域名 VPN隧道名称 Windows域（不是所有网络都需要） VPN用户名 VPN密码 编辑配置文件 用你称手的编辑器打开/etc/ppp/options.pptp。这个文件为你的VPN连接启用了一系列默认安全设置。如果你连接时候出现问题，你可以自定义配置。 你的options.pptp文件最少需要包含以下内容：
-lock noauth nobsdcomp nodeflate 编辑密码文件 下一步，打开或者创建/etc/ppp/chap- secrets。我们将在这个文件里面存储你的密码，记得修改权限让除root之外所有用户不能访问它。这个文件的格式如下：
-&lt;DOMAIN&gt;\&lt;USERNAME&gt; PPTP &lt;PASSWORD&gt; * 如果你的服务器不要求域，则配置如下：
-&lt;USERNAME&gt; PPTP &lt;PASSWORD&gt; * 替换掉上文中范例中的占位符。注意，如果你的密码包含特殊字符，比如&#34;$&#34;，你需要用双引号把它们包起来。
-命名你的VPN隧道 用你称手的编辑器创建类似/etc/ppp/peers/的文件，把这里替换成你的VPN连接名。这个文件设置之后看起来如下：
-pty &#34;pptp &lt;SERVER&gt; --nolaunchpppd&#34; name &lt;DOMAIN&gt;\&lt;USERNAME&gt; remotename PPTP require-mppe-128 file /etc/ppp/options.pptp ipparam &lt;TUNNEL&gt; {{Note|跟刚才一样，如果你的连接不要求域，忽略范例中的&#34;&#34;}} {{Note|PPTP远程主机使用Chap-Secrets文件中的}}
-是VPN服务器的地址，是你所属的域，是你将要用来连接服务器的用户名，是连接的名称。
-{{Note|如果你不需要使用MPPE，你应当从/etc/ppp/options.pptp中移除require-mppe-128这个选项}}
-创建你的连接
-用root执行以下命令来确保配置是正确的： # pon $TUNNEL debug dump logfd 2 nodetach 如果一切都配置好了，pon命令应当不会自动结束。一旦你感觉差不多OK了，就可以终止这个命令。 {{Note|另一个用来确保配置正确的命令是ifconfig -a，看看里面时候有一个名叫ppp0的新驱动，并且还是可用的}} 执行以下命令来连接VPN隧道： # pon 是你之前命名过的VPN隧道名称。注意使用root命令执行。...</p>
+    
+    
+    
+    <p>最近在ddwrt配置vpn，参考了arch的pptpclient配置文档[Microsoft VPN client setup with pptpclien t](https://wiki.archlinux.org/index.php/Microsoft_VPN_client_setup_with_pptpcl ient)，同时顺便花了一点时间翻译成中文，正文如下（使用wiky.js转换pe diawiki到html，原文会有更多的wiki模板样式便于查看，有问题请参照原文）。 pptpclient是一个实现Microsoft PPTP协议的程序。因此它能够被用来接入另一个Microsoft VPN网络，比如学...</p>
   </div>
   <footer class="entry-footer"><span title='2011-09-04 00:00:00 +0800 +0800'>2011-09-04</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 使用pptpclient连接vpn网络[译文]" href="https://blog.alswl.com/2011/09/pptpclient/"></a>
@@ -190,30 +180,12 @@ pty &#34;pptp &lt;SERVER&gt; --nolaunchpppd&#34; name &lt;DOMAIN&gt;\&lt;USERNAM
     </h2>
   </header>
   <div class="entry-content">
-    <p>以前一直使用SSH进行翻墙，后来在人人看到一位朋友推荐LavaVPN，就过去试用一下，效果的确不错。
-LavaVPN支持各种系统，在Windows下面有专用的客户端接入程序，通过这个客户端可以实现选择性加速，而不需要全局加速。在Android和Linux上面 测试都可以。
-官方的介绍如下：
-LAVAVPN网络加速器是专为各类网游玩家、软件发烧友、网络办公、影音冲浪网虫等个人用户提供网络加速服务的新型产品，能有效减少网络延时，使网络互访再无拥 挤的感觉，让您在任何情况下都能体验上网加速的快乐！多地服务器节点可以选择，一个账号即可使用全部节点，随时任意切换，软件自带服务器测速工具，自动选择最快的节点 。
-服务器目前有大陆、台湾、香港和美国，我个人比较喜欢香港的服务器，速度快，畅游无限。根据我的实际使用，速度都不错，几乎都可无延迟的看Youtube。国内的服务 器则是我在上班时候听音乐用的。
-由于VPN的全局性，导致连接上VPN后无法连接上内网数据库等服务器，我的解决方案是在虚拟机上跑VPN，采用Bridge桥接接入网络。
-目前LavaVPN在推广阶段，包月是16元，包3月是44元，半年80元，还是很超值的。
-最后分享3个推广链接，使用邀请码注册可以获得额外1天的免费使用时间。首次充值（30天及以上）可获额外3天时间赠送。（普通用户注册只能使用6小时）。Lava也 推出了免费的VPN，限制是30分钟使用一次，偶尔翻墙也能接受。
-http://www.lavavpn.com/index-invite-ykfFcKHAIVXkfKOO
-http://www.lavavpn.com/index-invite-8xCUQDst8cShyBGe
-http://www.lavavpn.com/index-invite-xGHJB0OHCJnUxsPu
-请拿走的兄弟在下面留言说明一下，谢谢~
-Update 2011-02-18 (新的邀请码，请随意~):
-http://www.lavavpn.com/index-invite-rCSCF5jer7wUAcUP
-http://www.lavavpn.com/index-invite-0BGjgZYa0m5BSA0o
-http://www.lavavpn.com/index-invite-QhMy38ZqbOBoSMCp
-http://www.lavavpn.com/index-invite-9rVRbK0YSiTwJXeA
-http://www.lavavpn.com/index-invite-rI4qGK62NbNwXv8n
-http://www.lavavpn.com/index-invite-wp7dktqK2qHwNBCQ
-http://www.lavavpn.com/index-invite-ehgmFX4tgwiZ36E9
-http://www.lavavpn.com/index-invite-3Na6QkvzRjJ9xry2
-http://www.lavavpn.com/index-invite-jMysmc5HDNz9qZcA
-http://www.lavavpn.com/index-invite-PZzyCEJYOF2ZBqoG
-http://www.lavavpn.com/index-invite-JuvEgCJKizwKj6ho</p>
+    
+    
+    <div class="thumbnail"><img src="https://d05fae.dijingchao.com/upload_dropbox/201012/banner.jpg" alt="Thumbnail" /></div>
+    
+    
+    <p>以前一直使用SSH进行翻墙，后来在人人看到一位朋友推荐LavaVPN，就过去试用一下，效果的确不错。 LavaVPN支持各种系统，在Windows下面有专用的客户端接入程序，通过这个客户端可以实现选择性加速，而不需要全局加速。在Android和Linux上面 测试都可以。 官方的介绍如下： LAVAVPN网络加速器是专为各类网游玩家、软件发烧友、网络办公、影音冲浪网虫等个人用户提供网络加速服务的新型产品，...</p>
   </div>
   <footer class="entry-footer"><span title='2010-12-23 00:00:00 +0800 +0800'>2010-12-23</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to LavaVPN推广链接" href="https://blog.alswl.com/2010/12/lavavpn/"></a>

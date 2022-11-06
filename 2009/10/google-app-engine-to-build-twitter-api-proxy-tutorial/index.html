@@ -7,21 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>Google App Engine搭建Twitter API Proxy教程 | Log4D</title>
 <meta name="keywords" content="关注互联网, gae, twitter">
-<meta name="description" content="来源：Google App Engine搭建Twitter API Proxy教程
-alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。
-本文将介绍如何通过Google App Engine搭建基于Python 2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。
-环境准备：Google App Engine 先要注册Google App Engine，注册地址 http://appengine.google.com/ ，然后建立一个applicatio n，目前第一次使用需要验证用户手机，输入手机号码就收验证码即可，之后，就可以用yourid.appspot.com来访问你的app应用。
-此外，还需要下载安装Google APP Engine的开发环境，注意Python的版本，需要是2.5系列的，不能使用2.6或更高的版本，否则运行会出错。
-Google App Engine SDK 下载地址 [http://code.google.com/intl/zh- CN/appengine/downloads.html](http://code.google.com/intl/zh- CN/appengine/downloads.html)
-Python 2.5.4 下载地址 [http://www.python.org/download/releases/2.5.4/](http://www. python.org/download/releases/2.5.4/)
-关于Google App Engine的详细使用说明请参见[这个地址](http://www.williamlong.info/archives/1880. html)，这里我就不再累赘。
-环境准备：BirdNest 下载birdnest要注意是下载[分支branches/gae](http://birdnest.googlecode.com/svn/branches/g ae)，别下载主干trunk，否则更新到GAE上也不能用，会报错。可以使用一个SVN工具下载。例如[TortoiseSVN](http://www.will iamlong.info/archives/1878.html)等。将其放到一个目录中，进入目录，编辑app.yaml文件，将第一行的application 里的参数修改为自己的应用名。（alswl:我使用Eclipse获取了SVN的内容）
-发布应用到GAE 准备好了上面的一切后，就可以发布这个应用到自己的Appspot上了，执行 appcfg.py update 目录名，中间会要求输入Gmail的用户名和密码，之后就可以使用了。你创建的API地址应该是yourid.appspot.com/api/ 。
-使用BirdNest 在twhirl里的使用方法是，打开账号管理Accounts manager，选择laconi.ca账户类型，输入：[你的twitter帐号名]@yourid .appspot.com，密码为Twitter密码，即可使用。（alswl:我使用的是twhirl，需要安装Adobe AIR环境）
-在twitterfox里的使用方法是，打开 C:Documents and SettingsAdministratorApplication DataMozillaFirefoxProfiles 随机信息 .defaultextensionstwitternotifier@naan.netcomponents目录，编辑 nsTwitterFox.js文件，找不到的话直接在Documents and Settings中搜索nsTwitterFox.js文件，编辑该文件的38行，将其修改为 var TWITTER_API_URL = http://yourid.">
+<meta name="description" content="来源：Google App Engine搭建Twitter API Proxy教程 alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。 本文将介绍如何通过Google">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/10/google-app-engine-to-build-twitter-api-proxy-tutorial/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -80,18 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="Google App Engine搭建Twitter API Proxy教程" />
-<meta property="og:description" content="来源：Google App Engine搭建Twitter API Proxy教程
-alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。
-本文将介绍如何通过Google App Engine搭建基于Python 2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。
-环境准备：Google App Engine 先要注册Google App Engine，注册地址 http://appengine.google.com/ ，然后建立一个applicatio n，目前第一次使用需要验证用户手机，输入手机号码就收验证码即可，之后，就可以用yourid.appspot.com来访问你的app应用。
-此外，还需要下载安装Google APP Engine的开发环境，注意Python的版本，需要是2.5系列的，不能使用2.6或更高的版本，否则运行会出错。
-Google App Engine SDK 下载地址 [http://code.google.com/intl/zh- CN/appengine/downloads.html](http://code.google.com/intl/zh- CN/appengine/downloads.html)
-Python 2.5.4 下载地址 [http://www.python.org/download/releases/2.5.4/](http://www. python.org/download/releases/2.5.4/)
-关于Google App Engine的详细使用说明请参见[这个地址](http://www.williamlong.info/archives/1880. html)，这里我就不再累赘。
-环境准备：BirdNest 下载birdnest要注意是下载[分支branches/gae](http://birdnest.googlecode.com/svn/branches/g ae)，别下载主干trunk，否则更新到GAE上也不能用，会报错。可以使用一个SVN工具下载。例如[TortoiseSVN](http://www.will iamlong.info/archives/1878.html)等。将其放到一个目录中，进入目录，编辑app.yaml文件，将第一行的application 里的参数修改为自己的应用名。（alswl:我使用Eclipse获取了SVN的内容）
-发布应用到GAE 准备好了上面的一切后，就可以发布这个应用到自己的Appspot上了，执行 appcfg.py update 目录名，中间会要求输入Gmail的用户名和密码，之后就可以使用了。你创建的API地址应该是yourid.appspot.com/api/ 。
-使用BirdNest 在twhirl里的使用方法是，打开账号管理Accounts manager，选择laconi.ca账户类型，输入：[你的twitter帐号名]@yourid .appspot.com，密码为Twitter密码，即可使用。（alswl:我使用的是twhirl，需要安装Adobe AIR环境）
-在twitterfox里的使用方法是，打开 C:Documents and SettingsAdministratorApplication DataMozillaFirefoxProfiles 随机信息 .defaultextensionstwitternotifier@naan.netcomponents目录，编辑 nsTwitterFox.js文件，找不到的话直接在Documents and Settings中搜索nsTwitterFox.js文件，编辑该文件的38行，将其修改为 var TWITTER_API_URL = http://yourid." />
+<meta property="og:description" content="来源：Google App Engine搭建Twitter API Proxy教程 alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。 本文将介绍如何通过Google" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2009/10/google-app-engine-to-build-twitter-api-proxy-tutorial/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2009-10-14T00:00:00+08:00" />
@@ -99,18 +77,7 @@ Python 2.5.4 下载地址 [http://www.python.org/download/releases/2.5.4/](http:
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Google App Engine搭建Twitter API Proxy教程"/>
-<meta name="twitter:description" content="来源：Google App Engine搭建Twitter API Proxy教程
-alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。
-本文将介绍如何通过Google App Engine搭建基于Python 2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。
-环境准备：Google App Engine 先要注册Google App Engine，注册地址 http://appengine.google.com/ ，然后建立一个applicatio n，目前第一次使用需要验证用户手机，输入手机号码就收验证码即可，之后，就可以用yourid.appspot.com来访问你的app应用。
-此外，还需要下载安装Google APP Engine的开发环境，注意Python的版本，需要是2.5系列的，不能使用2.6或更高的版本，否则运行会出错。
-Google App Engine SDK 下载地址 [http://code.google.com/intl/zh- CN/appengine/downloads.html](http://code.google.com/intl/zh- CN/appengine/downloads.html)
-Python 2.5.4 下载地址 [http://www.python.org/download/releases/2.5.4/](http://www. python.org/download/releases/2.5.4/)
-关于Google App Engine的详细使用说明请参见[这个地址](http://www.williamlong.info/archives/1880. html)，这里我就不再累赘。
-环境准备：BirdNest 下载birdnest要注意是下载[分支branches/gae](http://birdnest.googlecode.com/svn/branches/g ae)，别下载主干trunk，否则更新到GAE上也不能用，会报错。可以使用一个SVN工具下载。例如[TortoiseSVN](http://www.will iamlong.info/archives/1878.html)等。将其放到一个目录中，进入目录，编辑app.yaml文件，将第一行的application 里的参数修改为自己的应用名。（alswl:我使用Eclipse获取了SVN的内容）
-发布应用到GAE 准备好了上面的一切后，就可以发布这个应用到自己的Appspot上了，执行 appcfg.py update 目录名，中间会要求输入Gmail的用户名和密码，之后就可以使用了。你创建的API地址应该是yourid.appspot.com/api/ 。
-使用BirdNest 在twhirl里的使用方法是，打开账号管理Accounts manager，选择laconi.ca账户类型，输入：[你的twitter帐号名]@yourid .appspot.com，密码为Twitter密码，即可使用。（alswl:我使用的是twhirl，需要安装Adobe AIR环境）
-在twitterfox里的使用方法是，打开 C:Documents and SettingsAdministratorApplication DataMozillaFirefoxProfiles 随机信息 .defaultextensionstwitternotifier@naan.netcomponents目录，编辑 nsTwitterFox.js文件，找不到的话直接在Documents and Settings中搜索nsTwitterFox.js文件，编辑该文件的38行，将其修改为 var TWITTER_API_URL = http://yourid."/>
+<meta name="twitter:description" content="来源：Google App Engine搭建Twitter API Proxy教程 alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。 本文将介绍如何通过Google"/>
 
 
 <script type="application/ld+json">
@@ -139,12 +106,12 @@ Python 2.5.4 下载地址 [http://www.python.org/download/releases/2.5.4/](http:
   "@type": "BlogPosting",
   "headline": "Google App Engine搭建Twitter API Proxy教程",
   "name": "Google App Engine搭建Twitter API Proxy教程",
-  "description": "来源：Google App Engine搭建Twitter API Proxy教程\nalswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。\n本文将介绍如何通过Google App Engine搭建基于Python 2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。\n环境准备：Google App Engine 先要注册Google App Engine，注册地址 http://appengine.google.com/ ，然后建立一个applicatio n，目前第一次使用需要验证用户手机，输入手机号码就收验证码即可，之后，就可以用yourid.appspot.com来访问你的app应用。\n此外，还需要下载安装Google APP Engine的开发环境，注意Python的版本，需要是2.5系列的，不能使用2.6或更高的版本，否则运行会出错。\nGoogle App Engine SDK 下载地址 [http://code.google.com/intl/zh- CN/appengine/downloads.html](http://code.google.com/intl/zh- CN/appengine/downloads.html)\nPython 2.5.4 下载地址 [http://www.python.org/download/releases/2.5.4/](http://www. python.org/download/releases/2.5.4/)\n关于Google App Engine的详细使用说明请参见[这个地址](http://www.williamlong.info/archives/1880. html)，这里我就不再累赘。\n环境准备：BirdNest 下载birdnest要注意是下载[分支branches/gae](http://birdnest.googlecode.com/svn/branches/g ae)，别下载主干trunk，否则更新到GAE上也不能用，会报错。可以使用一个SVN工具下载。例如[TortoiseSVN](http://www.will iamlong.info/archives/1878.html)等。将其放到一个目录中，进入目录，编辑app.yaml文件，将第一行的application 里的参数修改为自己的应用名。（alswl:我使用Eclipse获取了SVN的内容）\n发布应用到GAE 准备好了上面的一切后，就可以发布这个应用到自己的Appspot上了，执行 appcfg.py update 目录名，中间会要求输入Gmail的用户名和密码，之后就可以使用了。你创建的API地址应该是yourid.appspot.com/api/ 。\n使用BirdNest 在twhirl里的使用方法是，打开账号管理Accounts manager，选择laconi.ca账户类型，输入：[你的twitter帐号名]@yourid .appspot.com，密码为Twitter密码，即可使用。（alswl:我使用的是twhirl，需要安装Adobe AIR环境）\n在twitterfox里的使用方法是，打开 C:Documents and SettingsAdministratorApplication DataMozillaFirefoxProfiles 随机信息 .defaultextensionstwitternotifier@naan.netcomponents目录，编辑 nsTwitterFox.js文件，找不到的话直接在Documents and Settings中搜索nsTwitterFox.js文件，编辑该文件的38行，将其修改为 var TWITTER_API_URL = http://yourid.",
+  "description": "来源：Google App Engine搭建Twitter API Proxy教程 alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。 本文将介绍如何通过Google",
   "keywords": [
     "关注互联网", "gae", "twitter"
   ],
   "articleBody": "来源：Google App Engine搭建Twitter API Proxy教程\nalswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。\n本文将介绍如何通过Google App Engine搭建基于Python 2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。\n环境准备：Google App Engine 先要注册Google App Engine，注册地址 http://appengine.google.com/ ，然后建立一个applicatio n，目前第一次使用需要验证用户手机，输入手机号码就收验证码即可，之后，就可以用yourid.appspot.com来访问你的app应用。\n此外，还需要下载安装Google APP Engine的开发环境，注意Python的版本，需要是2.5系列的，不能使用2.6或更高的版本，否则运行会出错。\nGoogle App Engine SDK 下载地址 [http://code.google.com/intl/zh- CN/appengine/downloads.html](http://code.google.com/intl/zh- CN/appengine/downloads.html)\nPython 2.5.4 下载地址 [http://www.python.org/download/releases/2.5.4/](http://www. python.org/download/releases/2.5.4/)\n关于Google App Engine的详细使用说明请参见[这个地址](http://www.williamlong.info/archives/1880. html)，这里我就不再累赘。\n环境准备：BirdNest 下载birdnest要注意是下载[分支branches/gae](http://birdnest.googlecode.com/svn/branches/g ae)，别下载主干trunk，否则更新到GAE上也不能用，会报错。可以使用一个SVN工具下载。例如[TortoiseSVN](http://www.will iamlong.info/archives/1878.html)等。将其放到一个目录中，进入目录，编辑app.yaml文件，将第一行的application 里的参数修改为自己的应用名。（alswl:我使用Eclipse获取了SVN的内容）\n发布应用到GAE 准备好了上面的一切后，就可以发布这个应用到自己的Appspot上了，执行 appcfg.py update 目录名，中间会要求输入Gmail的用户名和密码，之后就可以使用了。你创建的API地址应该是yourid.appspot.com/api/ 。\n使用BirdNest 在twhirl里的使用方法是，打开账号管理Accounts manager，选择laconi.ca账户类型，输入：[你的twitter帐号名]@yourid .appspot.com，密码为Twitter密码，即可使用。（alswl:我使用的是twhirl，需要安装Adobe AIR环境）\n在twitterfox里的使用方法是，打开 C:Documents and SettingsAdministratorApplication DataMozillaFirefoxProfiles 随机信息 .defaultextensionstwitternotifier@naan.netcomponents目录，编辑 nsTwitterFox.js文件，找不到的话直接在Documents and Settings中搜索nsTwitterFox.js文件，编辑该文件的38行，将其修改为 var TWITTER_API_URL = http://yourid.appspot.com/api/ 即可。\n",
-  "wordCount" : "73",
+  "wordCount" : "1297",
   "inLanguage": "en",
   "datePublished": "2009-10-14T00:00:00+08:00",
   "dateModified": "2009-10-14T00:00:00+08:00",

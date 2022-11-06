@@ -7,22 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>简单输入提示框实现 | Log4D</title>
 <meta name="keywords" content="webfront">
-<meta name="description" content="早期的输入框提示是这样的（via baidu）
-左边一个 label ，右边一个输入框。
-比较现代的方式是（via Discuz!）
-更漂亮的方式是（via 点点）
-登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。
-我需要达到几个要求：
-提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，我需要将提示信息暂存到某个地方。有3个地方可供选择： js 全局变量、输入框自定义属性、上下文 DOM 节点。
-js 全局变量比较难控制元素标识，并不是每个元素都可以精准的用 id 标记；输入框自定义属性会破坏语义；在上下文加入节点会破坏 DOM 树。
-权衡之后，我选择了使用 输入框自定义属性实现。
-demo 在这里。
-封装的方法代码如下
-$(&#39;.auto_clean&#39;).blur(function() { if ($.trim($(this).val()) === &#39;&#39;) { $(this).val($(this).attr(&#39;message&#39;)); } }).focus(function() { if ($(this).attr(&#39;message&#39;) === undefined) { $(this).attr(&#39;message&#39;, $(this).val()); } if ($(this).val() === $(this).attr(&#39;message&#39;)) { $(this).val(&#39;&#39;); } }); }); 使用方法如下
-&lt;input type=&quot;text&quot; class=&quot;auto_clean&quot; value=&quot;搜索用户&quot; /&gt; &lt;br/&gt; &lt;textarea class=&quot;auto_clean&quot;&gt;请在这里输入&lt;/textarea&gt; update2011/08/25： 感谢 @行者 提醒，使用 html5 的 placeholder 会更干净优美一些，参考见 Web Forms - Dive Into HTML5">
+<meta name="description" content="早期的输入框提示是这样的（via baidu） 左边一个 label ，右边一个输入框。 比较现代的方式是（via Discuz!） 更漂亮的方式是（via 点点） 登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。 我需要达到几个要求： 提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2011/08/auto-clean-input/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -81,19 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="简单输入提示框实现" />
-<meta property="og:description" content="早期的输入框提示是这样的（via baidu）
-左边一个 label ，右边一个输入框。
-比较现代的方式是（via Discuz!）
-更漂亮的方式是（via 点点）
-登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。
-我需要达到几个要求：
-提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，我需要将提示信息暂存到某个地方。有3个地方可供选择： js 全局变量、输入框自定义属性、上下文 DOM 节点。
-js 全局变量比较难控制元素标识，并不是每个元素都可以精准的用 id 标记；输入框自定义属性会破坏语义；在上下文加入节点会破坏 DOM 树。
-权衡之后，我选择了使用 输入框自定义属性实现。
-demo 在这里。
-封装的方法代码如下
-$(&#39;.auto_clean&#39;).blur(function() { if ($.trim($(this).val()) === &#39;&#39;) { $(this).val($(this).attr(&#39;message&#39;)); } }).focus(function() { if ($(this).attr(&#39;message&#39;) === undefined) { $(this).attr(&#39;message&#39;, $(this).val()); } if ($(this).val() === $(this).attr(&#39;message&#39;)) { $(this).val(&#39;&#39;); } }); }); 使用方法如下
-&lt;input type=&quot;text&quot; class=&quot;auto_clean&quot; value=&quot;搜索用户&quot; /&gt; &lt;br/&gt; &lt;textarea class=&quot;auto_clean&quot;&gt;请在这里输入&lt;/textarea&gt; update2011/08/25： 感谢 @行者 提醒，使用 html5 的 placeholder 会更干净优美一些，参考见 Web Forms - Dive Into HTML5" />
+<meta property="og:description" content="早期的输入框提示是这样的（via baidu） 左边一个 label ，右边一个输入框。 比较现代的方式是（via Discuz!） 更漂亮的方式是（via 点点） 登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。 我需要达到几个要求： 提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2011/08/auto-clean-input/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2011-08-18T00:00:00+08:00" />
@@ -101,19 +77,7 @@ $(&#39;.auto_clean&#39;).blur(function() { if ($.trim($(this).val()) === &#39;&#
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="简单输入提示框实现"/>
-<meta name="twitter:description" content="早期的输入框提示是这样的（via baidu）
-左边一个 label ，右边一个输入框。
-比较现代的方式是（via Discuz!）
-更漂亮的方式是（via 点点）
-登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。
-我需要达到几个要求：
-提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，我需要将提示信息暂存到某个地方。有3个地方可供选择： js 全局变量、输入框自定义属性、上下文 DOM 节点。
-js 全局变量比较难控制元素标识，并不是每个元素都可以精准的用 id 标记；输入框自定义属性会破坏语义；在上下文加入节点会破坏 DOM 树。
-权衡之后，我选择了使用 输入框自定义属性实现。
-demo 在这里。
-封装的方法代码如下
-$(&#39;.auto_clean&#39;).blur(function() { if ($.trim($(this).val()) === &#39;&#39;) { $(this).val($(this).attr(&#39;message&#39;)); } }).focus(function() { if ($(this).attr(&#39;message&#39;) === undefined) { $(this).attr(&#39;message&#39;, $(this).val()); } if ($(this).val() === $(this).attr(&#39;message&#39;)) { $(this).val(&#39;&#39;); } }); }); 使用方法如下
-&lt;input type=&quot;text&quot; class=&quot;auto_clean&quot; value=&quot;搜索用户&quot; /&gt; &lt;br/&gt; &lt;textarea class=&quot;auto_clean&quot;&gt;请在这里输入&lt;/textarea&gt; update2011/08/25： 感谢 @行者 提醒，使用 html5 的 placeholder 会更干净优美一些，参考见 Web Forms - Dive Into HTML5"/>
+<meta name="twitter:description" content="早期的输入框提示是这样的（via baidu） 左边一个 label ，右边一个输入框。 比较现代的方式是（via Discuz!） 更漂亮的方式是（via 点点） 登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。 我需要达到几个要求： 提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，"/>
 
 
 <script type="application/ld+json">
@@ -142,12 +106,12 @@ $(&#39;.auto_clean&#39;).blur(function() { if ($.trim($(this).val()) === &#39;&#
   "@type": "BlogPosting",
   "headline": "简单输入提示框实现",
   "name": "简单输入提示框实现",
-  "description": "早期的输入框提示是这样的（via baidu）\n左边一个 label ，右边一个输入框。\n比较现代的方式是（via Discuz!）\n更漂亮的方式是（via 点点）\n登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。\n我需要达到几个要求：\n提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，我需要将提示信息暂存到某个地方。有3个地方可供选择： js 全局变量、输入框自定义属性、上下文 DOM 节点。\njs 全局变量比较难控制元素标识，并不是每个元素都可以精准的用 id 标记；输入框自定义属性会破坏语义；在上下文加入节点会破坏 DOM 树。\n权衡之后，我选择了使用 输入框自定义属性实现。\ndemo 在这里。\n封装的方法代码如下\n$('.auto_clean').blur(function() { if ($.trim($(this).val()) === '') { $(this).val($(this).attr('message')); } }).focus(function() { if ($(this).attr('message') === undefined) { $(this).attr('message', $(this).val()); } if ($(this).val() === $(this).attr('message')) { $(this).val(''); } }); }); 使用方法如下\n\u0026lt;input type=\u0026quot;text\u0026quot; class=\u0026quot;auto_clean\u0026quot; value=\u0026quot;搜索用户\u0026quot; /\u0026gt; \u0026lt;br/\u0026gt; \u0026lt;textarea class=\u0026quot;auto_clean\u0026quot;\u0026gt;请在这里输入\u0026lt;/textarea\u0026gt; update2011/08/25： 感谢 @行者 提醒，使用 html5 的 placeholder 会更干净优美一些，参考见 Web Forms - Dive Into HTML5",
+  "description": "早期的输入框提示是这样的（via baidu） 左边一个 label ，右边一个输入框。 比较现代的方式是（via Discuz!） 更漂亮的方式是（via 点点） 登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。 我需要达到几个要求： 提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，",
   "keywords": [
     "webfront"
   ],
   "articleBody": "早期的输入框提示是这样的（via baidu）\n左边一个 label ，右边一个输入框。\n比较现代的方式是（via Discuz!）\n更漂亮的方式是（via 点点）\n登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。\n我需要达到几个要求：\n提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，我需要将提示信息暂存到某个地方。有3个地方可供选择： js 全局变量、输入框自定义属性、上下文 DOM 节点。\njs 全局变量比较难控制元素标识，并不是每个元素都可以精准的用 id 标记；输入框自定义属性会破坏语义；在上下文加入节点会破坏 DOM 树。\n权衡之后，我选择了使用 输入框自定义属性实现。\ndemo 在这里。\n封装的方法代码如下\n$('.auto_clean').blur(function() { if ($.trim($(this).val()) === '') { $(this).val($(this).attr('message')); } }).focus(function() { if ($(this).attr('message') === undefined) { $(this).attr('message', $(this).val()); } if ($(this).val() === $(this).attr('message')) { $(this).val(''); } }); }); 使用方法如下\n请在这里输入 update2011/08/25： 感谢 @行者 提醒，使用 html5 的 placeholder 会更干净优美一些，参考见 Web Forms - Dive Into HTML5\n",
-  "wordCount" : "89",
+  "wordCount" : "510",
   "inLanguage": "en",
   "datePublished": "2011-08-18T00:00:00+08:00",
   "dateModified": "2011-08-18T00:00:00+08:00",

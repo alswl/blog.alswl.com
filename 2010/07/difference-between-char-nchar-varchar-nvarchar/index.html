@@ -7,37 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>char nchar varchar nvarchar 区别 | Log4D</title>
 <meta name="keywords" content="综合技术">
-<meta name="description" content="在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。
-私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。
-原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园
-联机帮助上的：
-char(n)
-定长
-索引效率高 程序里面使用trim去除多余的空白
-n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节
-varchar(n)
-变长
-效率没char高 灵活
-n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节
-text(n)
-变长
-非Unicode数据
-nchar(n)
-定长
-处理unicode数据类型(所有的字符使用两个字节表示)
-n 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍
-nvarchar(n)
-变长
-处理unicode数据类型(所有的字符使用两个字节表示)
-n 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零
-ntext(n)
-变长
-处理unicode数据类型(所有的字符使用两个字节表示)
-1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足 的自动用空格填充，所以在读取的时候可能要多次用到trim（）。
-2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。 VARCHAR类型的实际长度是它的值的实际长度&#43;1。为什么&quot;&#43;1&quot;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考 虑，用char合适，关键是根据实际情况找到权衡点。">
+<meta name="description" content="在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。 私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。 原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园 联机帮助上的： char(n) 定长 索引效">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -96,34 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="char nchar varchar nvarchar 区别" />
-<meta property="og:description" content="在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。
-私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。
-原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园
-联机帮助上的：
-char(n)
-定长
-索引效率高 程序里面使用trim去除多余的空白
-n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节
-varchar(n)
-变长
-效率没char高 灵活
-n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节
-text(n)
-变长
-非Unicode数据
-nchar(n)
-定长
-处理unicode数据类型(所有的字符使用两个字节表示)
-n 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍
-nvarchar(n)
-变长
-处理unicode数据类型(所有的字符使用两个字节表示)
-n 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零
-ntext(n)
-变长
-处理unicode数据类型(所有的字符使用两个字节表示)
-1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足 的自动用空格填充，所以在读取的时候可能要多次用到trim（）。
-2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。 VARCHAR类型的实际长度是它的值的实际长度&#43;1。为什么&quot;&#43;1&quot;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考 虑，用char合适，关键是根据实际情况找到权衡点。" />
+<meta property="og:description" content="在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。 私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。 原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园 联机帮助上的： char(n) 定长 索引效" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2010/07/difference-between-char-nchar-varchar-nvarchar/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2010-07-16T00:00:00+08:00" />
@@ -131,34 +77,7 @@ ntext(n)
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="char nchar varchar nvarchar 区别"/>
-<meta name="twitter:description" content="在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。
-私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。
-原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园
-联机帮助上的：
-char(n)
-定长
-索引效率高 程序里面使用trim去除多余的空白
-n 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节
-varchar(n)
-变长
-效率没char高 灵活
-n 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节
-text(n)
-变长
-非Unicode数据
-nchar(n)
-定长
-处理unicode数据类型(所有的字符使用两个字节表示)
-n 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍
-nvarchar(n)
-变长
-处理unicode数据类型(所有的字符使用两个字节表示)
-n 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零
-ntext(n)
-变长
-处理unicode数据类型(所有的字符使用两个字节表示)
-1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足 的自动用空格填充，所以在读取的时候可能要多次用到trim（）。
-2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。 VARCHAR类型的实际长度是它的值的实际长度&#43;1。为什么&quot;&#43;1&quot;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考 虑，用char合适，关键是根据实际情况找到权衡点。"/>
+<meta name="twitter:description" content="在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。 私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。 原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园 联机帮助上的： char(n) 定长 索引效"/>
 
 
 <script type="application/ld+json">
@@ -187,12 +106,12 @@ ntext(n)
   "@type": "BlogPosting",
   "headline": "char nchar varchar nvarchar 区别",
   "name": "char nchar varchar nvarchar 区别",
-  "description": "在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。\n私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。\n原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园\n联机帮助上的：\nchar(n)\n定长\n索引效率高 程序里面使用trim去除多余的空白\nn 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节\nvarchar(n)\n变长\n效率没char高 灵活\nn 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节\ntext(n)\n变长\n非Unicode数据\nnchar(n)\n定长\n处理unicode数据类型(所有的字符使用两个字节表示)\nn 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍\nnvarchar(n)\n变长\n处理unicode数据类型(所有的字符使用两个字节表示)\nn 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零\nntext(n)\n变长\n处理unicode数据类型(所有的字符使用两个字节表示)\n1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足 的自动用空格填充，所以在读取的时候可能要多次用到trim（）。\n2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。 VARCHAR类型的实际长度是它的值的实际长度+1。为什么\u0026quot;+1\u0026quot;呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考 虑，用char合适，关键是根据实际情况找到权衡点。",
+  "description": "在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。 私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。 原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园 联机帮助上的： char(n) 定长 索引效",
   "keywords": [
     "综合技术"
   ],
   "articleBody": "在开发时候，发现数据库的一个字段用的是nchar(16)，让我感觉很奇怪，我知道nvarchar可以变长，nchar会用空格填充，这在存取时候需要Trim( )操作，所以我一直不用nchar。而现在在产品中发现nchar的使用，不由觉得很奇怪。\n私底下认为是效率的问题，一番Google之后发现一段文章详述了几种数据库文字类型存储的差异。\n原文出处：char nchar varchar nvarchar 区别 - Rainbow - 博客园\n联机帮助上的：\nchar(n)\n定长\n索引效率高 程序里面使用trim去除多余的空白\nn 必须是一个介于 1 和 8,000 之间的数值,存储大小为 n 个字节\nvarchar(n)\n变长\n效率没char高 灵活\nn 必须是一个介于 1 和 8,000 之间的数值。存储大小为输入数据的字节的实际长度，而不是 n 个字节\ntext(n)\n变长\n非Unicode数据\nnchar(n)\n定长\n处理unicode数据类型(所有的字符使用两个字节表示)\nn 的值必须介于 1 与 4,000 之间。存储大小为 n 字节的两倍\nnvarchar(n)\n变长\n处理unicode数据类型(所有的字符使用两个字节表示)\nn 的值必须介于 1 与 4,000 之间。字节的存储大小是所输入字符个数的两倍。所输入的数据字符长度可以为零\nntext(n)\n变长\n处理unicode数据类型(所有的字符使用两个字节表示)\n1、CHAR。 CHAR存储定长数据很方便，CHAR字段上的索引效率级高，比如定义char(10)，那么不论你存储的数据是否达到了10个字节，都要占去10个字节的空间,不足 的自动用空格填充，所以在读取的时候可能要多次用到trim（）。\n2、VARCHAR。 存储变长数据，但存储效率没有CHAR高。如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为 VARCHAR(10)是最合算的。 VARCHAR类型的实际长度是它的值的实际长度+1。为什么\"+1\"呢？这一个字节用于保存实际使用了多大的长度。从空间上考虑，用varchar合适；从效率上考 虑，用char合适，关键是根据实际情况找到权衡点。\n3、TEXT。 text存储可变长度的非Unicode数据，最大长度为2^31-1(2,147,483,647)个字符。\n4、NCHAR、NVARCHAR、NTEXT。 这三种从名字上看比前面三种多了个\"N\"。它表示存储的是Unicode数据类型的字符。我们知道字符中，英文字符只需要一个字节存储就足够了，但汉字众多，需要两个 字节存储，英文与汉字同时存在时容易造成混乱，Unicode字符集就是为了解决字符集这种不兼容的问题而产生的，它所有的字符都用两个字节表示，即英文字符也是用两 个字节表示。nchar、nvarchar的长度是在1到4000之间。和char、varchar比较起来，nchar、nvarchar则最多存储4000个字符 ，不论是英文还是汉字；而char、varchar最多能存储8000个英文，4000个汉字。可以看出使用nchar、nvarchar数据类型时不用担心输入的字 符是英文还是汉字，较为方便，但在存储英文时数量上有些损失。\n所以一般来说，如果含有中文字符，用nchar/nvarchar，如果纯英文和数字，用char/varchar\n我把他们的区别概括成：\nCHAR，NCHAR 定长，速度快，占空间大，需处理\nVARCHAR，NVARCHAR，TEXT 不定长，空间小，速度慢，无需处理\nNCHAR、NVARCHAR、NTEXT处理Unicode码\n",
-  "wordCount" : "86",
+  "wordCount" : "1382",
   "inLanguage": "en",
   "datePublished": "2010-07-16T00:00:00+08:00",
   "dateModified": "2010-07-16T00:00:00+08:00",

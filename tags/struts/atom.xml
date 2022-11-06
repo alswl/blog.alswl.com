@@ -13,11 +13,7 @@
       <pubDate>Sun, 28 Jun 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/06/return-s-if-the-use-of/</guid>
-      <description>上次遇到过&amp;lt;s:if&amp;gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。
-&amp;lt;s:if test=&amp;quot;&amp;quot;&amp;gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。
-尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？
-其实使用&amp;lt;s:if test=&amp;lsquo;str==&amp;ldquo;中文&amp;rdquo;&amp;rsquo;&amp;gt;，就可以了，请注意，是单引号-双引号-中文-双引号- 单引号的顺序，这样才能够正确的解析中文字符串是否相等。
-唔。。。终于可以做下一个部分了</description>
+      <description>上次遇到过&amp;lt;s:if&amp;gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。 &amp;lt;s:if test=&amp;quot;&amp;quot;&amp;gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。 尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？ 其实使用&amp;lt;s:if test=&amp;lsquo;str==&amp;ldquo;中文&amp;rdqu</description>
     </item>
     
     <item>
@@ -26,21 +22,7 @@
       <pubDate>Sat, 23 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/struts2-in-the-use-of-ajax/</guid>
-      <description>贴吧1.0差不多可以完成了，进入界面美化，我服务器验证写完之后，开始用jQuery写js。
-使用了jQuery的UI，后来想加入Ajax验证，但是遇到了问题：
-09-05-23 07:53 WARN [org.apache.struts2.dispatcher.Dispatcher] - Could not find action or result
-There is no Action mapped for namespace / and action name AjaxLogin. - [unknown location]
-我整整找了一个多小时，曾以为是action name的问题或者是package name, package namespace 的问题，为此我特意重新学习了一下他们的使用方法，但是仍然没有效果。
-最后，终于在Google找到了一些资料：
-struts2 json jquery 集成详解来自 户起龙的博客
-我本来以为Struts/lib下面的json-lib-2.1.jar就可以了，而且启动Tomcat没有任何报错，居然要另外一个jar，叫做json- plugin
-下载地址：猛击这里下载
-使用这个插件之后，本以为轻松搞定，但是仍然还是这个错误！！！
-怎么可能？！我怒了，翻开Struts2的文档，文档用的是DWR，已经使用taglib封装了，再查看json-plugin的文档，仍然未果！！
-最后逼急了，使用这篇文章 《在Struts 2中使用JSON Ajax支持》猛击这里打开，重新写了一个Action和一个简单的jsp页面，使用最淳朴的提交。终于可以成功了，数据交 换能够明显的在FireBug下看到。
-这种情况的话，据我猜测，应该是我原来使用的&amp;lt;s:form&amp;gt;标签的问题，如果使用简单的就应该可以避免了。
-09_05_24修正
-之前说是&amp;lt;s:form&amp;gt;的问题，而用可以解决，结果我发现也不行，直接返回当前页面，这就比较郁闷了，最后，我把去除，只留下 就可以了，不好意思，让Strut2蒙冤了。</description>
+      <description>贴吧1.0差不多可以完成了，进入界面美化，我服务器验证写完之后，开始用jQuery写js。 使用了jQuery的UI，后来想加入Ajax验证，但是遇到了问题： 09-05-23 07:53 WARN [org.apache.struts2.dispatcher.Dispatcher] - Could not find action or result There is no Action mapped for namespace / and action name AjaxLogin. - [unknown location] 我整整找了一个多小时，曾以为是action name的问题或者是package name, package namespace 的问题，为此我特意重新学习了一下他们的使用方法，但是仍然没有效果。 最后，终于在Google找到了一些资料： struts2 json</description>
     </item>
     
     <item>
@@ -49,15 +31,7 @@ struts2 json jquery 集成详解来自 户起龙的博客
       <pubDate>Fri, 22 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/battle-of-garbled/</guid>
-      <description>今天重新设计了贴吧的数据库，参考了WordPress的无外键，设置default的值，我取消了两个外键，仅保留一个对应CategoryId的外键。
-修改数据库时候发现MySQL的charset还是&amp;rsquo;latin&amp;rsquo;，就顺手修改成&amp;rsquo;utf-8&amp;rsquo;来保证统一，结果就出事了。
-因为我修改了DAO，单元测试之后重新走一遍网页测试流程，结果发帖时候遇到乱码。
-一回生两回熟，咱也不怕。
-在Action里面设置logger，输出相应的数据，发现那里就是乱码，说明在Severlet或者Interceptor那里就出了问题。
-仿照上次设置Tomcat字符集，详情见Eclipse中开发的Jave EE项目在Tomcat的部署 ，但是测试发现没有效果。
-接着查看web.xml，发现里面还有Spring的filter，贴吧现阶段还没有加入Spring，删除，有一个编码过滤器org.apache.struts2 .dispatcher.FilterDispatcher，采用org.apache.struts2.dispatcher.FilterDispatcher可 以不适用，删除。
-这么一删，就发现乱码问题解决了。
-呵呵，只要人类还有很多语言，乱码仍然会存在，遇到了不要怕，慢慢调试就出来了</description>
+      <description>今天重新设计了贴吧的数据库，参考了WordPress的无外键，设置default的值，我取消了两个外键，仅保留一个对应CategoryId的外键。 修改数据库时候发现MySQL的charset还是&amp;rsquo;latin&amp;rsquo;，就顺手修改成&amp;rsquo;utf-8&amp;rsquo;来保证统一，结果就出事了。 因为我修改了DAO，单元测试之后重新走一遍网页测试流程，结果发帖时候遇到乱码。 一回生两回熟</description>
     </item>
     
     <item>
@@ -66,13 +40,7 @@ struts2 json jquery 集成详解来自 户起龙的博客
       <pubDate>Thu, 21 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/struts2-tags-the-curve-of-the-bug-and-the-use-of/</guid>
-      <description>贴吧的用户状态显示，登录和未登录应该是不同的div显示，我决定用做标签。
-本来应该很简单的事情，却没有我预想中的情形出现，检查后发现失效了，代码如下：
-&amp;lt;li&amp;gt;${session.userName}欢迎你&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;Logout.action&amp;quot;&amp;gt;注销&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; Struts2的官方文档中标签库介绍写的很清楚，官方示例文档如下
-&amp;lt;s:if test=&amp;quot;%{false}&amp;quot;&amp;gt; &amp;lt;div&amp;gt;Will Not Be Executed&amp;lt;/div&amp;gt; &amp;lt;/s:if&amp;gt; &amp;lt;s:elseif test=&amp;quot;%{true}&amp;quot;&amp;gt; &amp;lt;div&amp;gt;Will Be Executed&amp;lt;/div&amp;gt; &amp;lt;/s:elseif&amp;gt; &amp;lt;s:else&amp;gt; &amp;lt;div&amp;gt;Will Not Be Executed&amp;lt;/div&amp;gt; &amp;lt;/s:else&amp;gt; 我现在敢打包票，这个示例无法成功运行。
-OGNL有三种取值方式，%,$和#，我之前已经转载过一篇小介绍，按官方文档，这里的$是应该起作用的，但是很可惜，这儿出现了错误。
-网友阿木的博客讨论了相关问题：[struts2的if标签](http://blog.sina.com.cn/s/blog_5cecbc550100ck4f. html)，我没有像他那样详细测试，尝试几次后，代码修改为：
-&amp;lt;li&amp;gt;${session.userName}欢迎你&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;Logout.action&amp;quot;&amp;gt;注销&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; 使用#选择符，而不是其他的，这样就可以正确运行了。</description>
+      <description>贴吧的用户状态显示，登录和未登录应该是不同的div显示，我决定用做标签。 本来应该很简单的事情，却没有我预想中的情形出现，检查后发现失效了，代码如下： &amp;lt;li&amp;gt;${session.userName}欢迎你&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;quot;Logout.action&amp;quot;&amp;gt;注销&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; Struts2的官方文档中标签库介绍写的很清楚，官</description>
     </item>
     
     <item>
@@ -81,14 +49,7 @@ OGNL有三种取值方式，%,$和#，我之前已经转载过一篇小介绍，
       <pubDate>Sun, 10 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/ognl-operators-in/</guid>
-      <description>&amp;lt;s:textfield name=&amp;ldquo;loginName&amp;rdquo; value=&amp;quot;%{#request.loginNames}&amp;quot;/&amp;gt;
-使用此表达式，会生成一个文本框，并且，如果request.attribute中有loginNames属性，将会做为些文本框的默认值。
-如果只使用#request.loginNames在struts2的标签内部，是不会显示任何值的，注意外面加上的%{}附号，才会被正常的使用。
-如果希望如EL语言一样直接输出文件，如在一个之间的innerHTML文本为#request.loginNames的值，我们只要使用：&amp;lt;s:pr operty value=&amp;quot;#request.loginNames&amp;quot; /&amp;gt;使可以正常使用！
-注：
-1.${}是EL语言的 %{}这样的形式是ognl表过式语言的，在struts2的标签内部，使用%{}这样的形式，在标签外部可以使用${}EL语言的方式。如 果在struts2的标签内部使用${}这样的方式，会出现以下的错误提示：
-According to TLD or attribute directive in tag file, attribute value does not accept any expressions
-2.很多时候，我们使用struts2的一些标签，属性是需要接受集合的，如果集合是保存在request,session，或者是值栈(非根对象的栈顶)，可以使用 #变量名的方式，如果获取的值是在Action中通过特定的方法来获取，就需要使用如 value=&amp;ldquo;userList&amp;quot;这样的方式，只是去掉了前面的#。</description>
+      <description>&amp;lt;s:textfield name=&amp;ldquo;loginName&amp;rdquo; value=&amp;quot;%{#request.loginNames}&amp;quot;/&amp;gt; 使用此表达式，会生成一个文本框，并且，如果request.attribute中有loginNames属性，将会做为些文本框的默认值。 如果只使用#request.loginNames在struts2的标签内部，是不会显示任何值的，注意外面加上的%{}附号，才会被正常的使用。 如果希望如EL语言一样直接输出文件，如在一个之间的innerHTML文本为#request.loginNames的值，我们</description>
     </item>
     
     <item>
@@ -97,10 +58,7 @@ According to TLD or attribute directive in tag file, attribute value does not ac
       <pubDate>Sat, 09 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/to-submit-the-issue-of-an-action/</guid>
-      <description>贴吧在提交帖子时候必须提供贴吧分类id categoryId，但是怎么把这个id提交到PostAction就比较麻烦了，在jsp页面中我试了好多办法，尝试使 用param和hidden（baidu用的hidden）标签，但是都不能读出cagegory.jsp页面的categoryId值。
-最后我索性用试所有的表达式
-&amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;%{#categoryId}&amp;quot; /&amp;gt; &amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;#categoryId&amp;quot; /&amp;gt; &amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;%{categoryId}&amp;quot; /&amp;gt; 最后一个果然有效。。。
-貌似记得这是OPGL表达式？****</description>
+      <description>贴吧在提交帖子时候必须提供贴吧分类id categoryId，但是怎么把这个id提交到PostAction就比较麻烦了，在jsp页面中我试了好多办法，尝试使 用param和hidden（baidu用的hidden）标签，但是都不能读出cagegory.jsp页面的categoryId值。 最后我索性用试所有的表达式 &amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;%{#categoryId}&amp;quot; /&amp;gt; &amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;#categoryId&amp;quot; /&amp;gt; &amp;lt;s:hidden name=&amp;quot;topicCategoryId&amp;quot; value=&amp;quot;%{categoryId}&amp;quot; /&amp;gt; 最后一个果然有效。。。 貌似记得这是OPGL表达式？****</description>
     </item>
     
     <item>
@@ -109,15 +67,7 @@ According to TLD or attribute directive in tag file, attribute value does not ac
       <pubDate>Sat, 09 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/garbled-see-also-garbled/</guid>
-      <description>今天解决了贴吧发帖的问题，可以正确的发送到正确的分类了。
-随后遇到的问题是发帖完毕返回 Category.action 时候，无法读取争取的贴吧分类数据，经过在 struts.xml 里的Category.action 里的 result 后面的url加入参数，可以读取正确categoryId了
-本来想在result中加入param元素而不是在url后面加 ？categoryId=0来实现，但是尝试了好久，Google和官方文档都没有什么解决方案
-其中遇到的一个问题是「&amp;amp;」这个符号不能直接使用，需要进行转义，用「&amp;amp;」来替代。
-最后是categoryName的问题了，本来以为很简单，却遇到了编码问题，之前从Home.action转到Category.action能正确编码，像 ht tp://localhost:8080/PostBar/Category.action?categoryId=4&amp;amp;categoryName=%E9%9F%B 3%E4%B9%90 ，而现在的categoryName后面却有乱码
-最恨乱码问题，整整花了我将近2小时，仍然没有完美解决方法，只能勉强在PostTopic.action转到Category.action时进行Encode编码 ，但是这十足dirty work，而且不方便再次读取categoryName。
-我尝试在struts.xml用OGNL语言进行转换，但是却无法运行，找不出问题。
-实在没有办法了，现在我准备用Baidu这种url形式，只传递categoryId，而在此用Hibernate读取数据库去除categoryName来获得内容
-当初之所以考虑多次传递时怕读取数据库会导致性能大幅度下降，今天又学习了一下Hibernate的缓存机制，感觉是我多虑了，二级缓存应该能大大缓解多次读取的问题 。</description>
+      <description>今天解决了贴吧发帖的问题，可以正确的发送到正确的分类了。 随后遇到的问题是发帖完毕返回 Category.action 时候，无法读取争取的贴吧分类数据，经过在 struts.xml 里的Category.action 里的 result 后面的url加入参数，可以读取正确categoryId了 本来想在result中加入param元素而不是在url后面加 ？categoryId=0来实现，但是尝试了好久，Google和官方文档都没有什么解决方案 其中遇到的一个问题是「&amp;a</description>
     </item>
     
     <item>
@@ -126,14 +76,7 @@ According to TLD or attribute directive in tag file, attribute value does not ac
       <pubDate>Fri, 08 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/struts2-encoding-problem/</guid>
-      <description>继续昨天的编码问题 我一直全部采用UTF-8格式，而且在jUnit测试中并没有问题，说明是在Struts进行数据收集时候出错。
-Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效果。
-网上建议在web.xml中添加 ：
-&amp;lt;filter&amp;gt; &amp;lt;filter-name&amp;gt;struts-cleanup&amp;lt;/filter-name&amp;gt; &amp;lt;filter-class&amp;gt;org.apache.struts2.dispatcher.ActionContextCleanUp &amp;lt;/filter-class&amp;gt; &amp;lt;/filter&amp;gt; &amp;lt;filter-mapping&amp;gt; &amp;lt;filter-name&amp;gt;struts-cleanup&amp;lt;/filter-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/filter-mapping&amp;gt; 来设定本地化和编码，然后在struts.xml中添加过滤器
-&amp;lt;constant value=&amp;quot;UTF-8&amp;quot; name=&amp;quot;struts.i18n.encoding&amp;quot;&amp;gt;&amp;lt;/constant&amp;gt; &amp;lt;constant value=&amp;quot;UTF-8&amp;quot; name=&amp;quot;struts.locale&amp;quot;&amp;gt;&amp;lt;/constant&amp;gt; 根据我测试，都没有效果。
-我检查完JSP页面编码和本地文件编码，也都不存在问题。 最后我在一片帖子中看到讲WebWork2和Struts2的一些过滤器不一样，那位高手遇到和我几乎一样的问题，然后他使用另外一个Filter ：
-&amp;lt;filter&amp;gt; &amp;lt;filter-name&amp;gt;struts2&amp;lt;/filter-name&amp;gt; &amp;lt;filter-class&amp;gt;org.apache.struts2.dispatcher.FilterDispatcher &amp;lt;/filter-class&amp;gt; &amp;lt;/filter&amp;gt; 在Struts2中War文件解压出来的.xml中使用的是 org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter 我并不清楚两者的区别，但是在采用 org.apache.struts2.dispatcher.FilterDispatcher 之后，问题迎刃而解。 然后查看手头的Struts2书，上面也是用的org.apache.struts2.dispatcher.FilterDispatcher 嗯，自己水平实在太菜，继续努力。
--技术改变世界，创新驱动中国-</description>
+      <description>继续昨天的编码问题 我一直全部采用UTF-8格式，而且在jUnit测试中并没有问题，说明是在Struts进行数据收集时候出错。 Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效果。 网上建议在web.xml中添加 ： &amp;lt;filter&amp;gt; &amp;lt;filter-name&amp;gt;struts-cleanup&amp;lt;/filter-name&amp;gt; &amp;lt;filter-class&amp;gt;org.apache.struts2.dispatcher.ActionContextCleanUp &amp;lt;/filter-class&amp;gt; &amp;lt;/filter&amp;gt; &amp;lt;filter-mapping&amp;gt; &amp;lt;filter-name&amp;gt;struts-cleanup&amp;lt;/filter-name&amp;gt; &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt; &amp;lt;/filter-mapping&amp;gt; 来设定本地化和编码，然后在struts.xml中添加过滤器 &amp;lt;constant value=&amp;quot;UTF-8&amp;quot; name=&amp;quot;struts.i18n.encoding&amp;quot;&amp;gt;&amp;lt;/constant&amp;gt; &amp;lt;constant value=&amp;quot;UTF-8&amp;quot; name=&amp;quot;struts.locale&amp;quot;&amp;gt;&amp;lt;/constant&amp;gt; 根据我测试，都没有效果。 我检查完JSP页面编码和本地文件编码，也都不存在问题。 最后我在一</description>
     </item>
     
     <item>
@@ -142,12 +85,7 @@ Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效�
       <pubDate>Thu, 07 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/post-bar-progress-09-05-07/</guid>
-      <description>今天写到创建帖子，在编码上遇到问题，jUnit下调用函数没有任何问题，那就表示问题出在Struts Filter捕获的文本上。
-找了好几个方法都没有奏效。
-游客登录情况下的Session还存在一点问题，原因是session类型转换上的问题，今天还没有好好的研究一下。
-至此为止，登录注册写完了，静态校验写了一个毛胚，今天写完的现实帖子的列表，表现层用OGNL完成的，终于脱离开代码混杂的页面。
-解决了一个tx.commit的错误，原来是《开发者突击》书上的代码有问题，我参考了Hibernate的官方文档，终于发现了错误的原因，tx.rollback ()应该在catch里面而不是final里面。
-写着写着就感觉自己太多的不足，太多要学习的地方，加油！</description>
+      <description>今天写到创建帖子，在编码上遇到问题，jUnit下调用函数没有任何问题，那就表示问题出在Struts Filter捕获的文本上。 找了好几个方法都没有奏效。 游客登录情况下的Session还存在一点问题，原因是session类型转换上的问题，今天还没有好好的研究一下。 至此为止，登录注册写完了，静态校验写了一个毛胚，今天写完的现实帖子的列表，表现层用OGNL完成的，终于脱离开代码混杂的页面。 解决了一个tx.</description>
     </item>
     
     <item>
@@ -156,11 +94,7 @@ Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效�
       <pubDate>Tue, 05 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/no-configuration-found-for-the-specified-action/</guid>
-      <description>Tomcat 控制台打出如下警告：
-WARN - No configuration found for the specified action: ‘xxxxx’in namespace: ‘/’. Form action defaulting to ‘action’ attribute’s literal value.
-主要由于在写struts2表单时有给action指定全名，如:&amp;lt;s:form action=」xxxAction.do」…&amp;gt;,直接写成&amp;lt;s:form action=」xxxAction」…&amp;gt;即可,因为在struts.xml中struts.action.extension属性有指定啦。
-有一个关于在namespace上的设置在 hi.baidu.com/mum0532/blog/item/128f9a64fa8594f5f6365457. html 。这位朋友讲的很透彻很详细
-关于Struts2 的 namespace 详细解释 www.javaeye.com/topic/125743</description>
+      <description>Tomcat 控制台打出如下警告： WARN - No configuration found for the specified action: ‘xxxxx’in namespace: ‘/’. Form action defaulting to ‘action’ attribute’s literal value. 主要由于在写struts2表单时有给action指定全名，如:&amp;lt;s:form action=」xxxAction.do」…&amp;gt;,直接写成&amp;lt;s:form action=」xxxAction」…&amp;gt;即可,因为在struts.xml中struts.action.exten</description>
     </item>
     
   </channel>

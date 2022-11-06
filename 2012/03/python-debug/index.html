@@ -7,17 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>在Python中调试代码 | Log4D</title>
 <meta name="keywords" content="python, ipdb, paster, pdb, pylons">
-<meta name="description" content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。
-吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。
-在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。
-import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。
-参考链接：
-用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。
-安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。
-ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core.">
+<meta name="description" content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。 吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。 在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。 import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c /">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2012/03/python-debug/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -76,14 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="在Python中调试代码" />
-<meta property="og:description" content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。
-吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。
-在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。
-import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。
-参考链接：
-用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。
-安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。
-ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core." />
+<meta property="og:description" content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。 吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。 在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。 import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c /" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2012/03/python-debug/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2012-03-20T00:00:00+08:00" />
@@ -91,14 +77,7 @@ ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在Python中调试代码"/>
-<meta name="twitter:description" content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。
-吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。
-在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。
-import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。
-参考链接：
-用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。
-安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。
-ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core."/>
+<meta name="twitter:description" content="撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。 吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。 在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。 import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c /"/>
 
 
 <script type="application/ld+json">
@@ -127,12 +106,12 @@ ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报
   "@type": "BlogPosting",
   "headline": "在Python中调试代码",
   "name": "在Python中调试代码",
-  "description": "撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。\n吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。\n在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。\nimport pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。\n参考链接：\n用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。\n安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。\nps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core.",
+  "description": "撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。 吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。 在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。 import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c /",
   "keywords": [
     "python", "ipdb", "paster", "pdb", "pylons"
   ],
   "articleBody": "撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。\n吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。\n在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。\nimport pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j / a / p / ! / q 这些命令所代表的含义可以通过 h(elp) 打印出来。\n参考链接：\n用PDB库调试Python程序 ipdb 比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。\n安装 ipdb: easy_install ipdb ， 使用方法依然是 import ipdb;ipdb.set_trace() 。\nps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 ImportError: No module named core.debugger 错误，请尝试使用 ipython 0.10 或者更新版本。这个错误在 ipdb 官网有 issue 描述 （link）。\n使用 embed python shell 除了特定代码的调试，有时候我们还需要在开发一个功能之前进行尝试性代码撰写， 这点在 web 开发时候尤其有用。托 Python 动态语言特性的福，我们可以很方便的使用 Interactivate Shell 进行开发。\n在项目的根目录建立一个 Python 脚本，比如 shell.py ，其中代码如下：\n#!/usr/bin/env python #coding=utf-8 desc: 这个shell提供Python上下文环境，方便调试 author: alswl date: 2012-03-20 def main():\nDo something for init here. try:\nfrom IPython.frontend.terminal.embed import InteractiveShellEmbed\nipshell = InteractiveShellEmbed()\nipshell()\nexcept ImportError:\nimport code\npyshell = code.InteractiveConsole(locals=locals())\npyshell.interact()\nif name == ‘main’:\nmain()\n这段代码先尝试使用 IPython 作为交互 shell，如果没有安装就使用原生 Python 作为 交互 Shell。(强烈建议使用 IPython)。\n请在 main() 方法开始时候做一些初始化动作，比如载入 webapp 的实例并初始化各路config， 这样就能实现即时代码测试功能，提高开发效率，不用一遍遍地跑流程。\n参考链接\nhttp://qixinglu.com/archives/embed_python_shell_in_code （注意， 这篇文章是2011年的，其中引入 IPython 的 InteractiveShellEmbed 的方法已经过期，请参考上面的代码） GAE 中的 pdb 有一些特定系统，比如 GAE 和 nosetests，他们会重定向 std:in 和 std:out ， 造成 pdb 无法正确输入和输出，在使用的使用，需要用以下代码做个 hack。\nimport sys import pdb for attr in ('stdin', 'stdout', 'stderr'): setattr(sys, attr, getattr(sys, '__%s__' % attr)) pdb.set_trace() Pylons 调试 Paster 的 Shell 交互式调试更显犀利（官方所称杀手级功能）， 可以直接使用 paster shell dev.ini 命令启用交互界面，默认会先尝试载入 IPython，不存在就载入原生 Shell。\n我当前使用的 Paster 版本为 1.7.5,无法正确识 IPython 0.11及以上版本， 请使用0.9.1或者0.10。\n参考链接：\nHow can I use “paster shell” to develop doctest tests? stackoverflow 上关于 IPython 版本的问题 ",
-  "wordCount" : "230",
+  "wordCount" : "952",
   "inLanguage": "en",
   "datePublished": "2012-03-20T00:00:00+08:00",
   "dateModified": "2012-03-20T00:00:00+08:00",

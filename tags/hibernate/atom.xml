@@ -13,15 +13,7 @@
       <pubDate>Sat, 09 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/garbled-see-also-garbled/</guid>
-      <description>今天解决了贴吧发帖的问题，可以正确的发送到正确的分类了。
-随后遇到的问题是发帖完毕返回 Category.action 时候，无法读取争取的贴吧分类数据，经过在 struts.xml 里的Category.action 里的 result 后面的url加入参数，可以读取正确categoryId了
-本来想在result中加入param元素而不是在url后面加 ？categoryId=0来实现，但是尝试了好久，Google和官方文档都没有什么解决方案
-其中遇到的一个问题是「&amp;amp;」这个符号不能直接使用，需要进行转义，用「&amp;amp;」来替代。
-最后是categoryName的问题了，本来以为很简单，却遇到了编码问题，之前从Home.action转到Category.action能正确编码，像 ht tp://localhost:8080/PostBar/Category.action?categoryId=4&amp;amp;categoryName=%E9%9F%B 3%E4%B9%90 ，而现在的categoryName后面却有乱码
-最恨乱码问题，整整花了我将近2小时，仍然没有完美解决方法，只能勉强在PostTopic.action转到Category.action时进行Encode编码 ，但是这十足dirty work，而且不方便再次读取categoryName。
-我尝试在struts.xml用OGNL语言进行转换，但是却无法运行，找不出问题。
-实在没有办法了，现在我准备用Baidu这种url形式，只传递categoryId，而在此用Hibernate读取数据库去除categoryName来获得内容
-当初之所以考虑多次传递时怕读取数据库会导致性能大幅度下降，今天又学习了一下Hibernate的缓存机制，感觉是我多虑了，二级缓存应该能大大缓解多次读取的问题 。</description>
+      <description>今天解决了贴吧发帖的问题，可以正确的发送到正确的分类了。 随后遇到的问题是发帖完毕返回 Category.action 时候，无法读取争取的贴吧分类数据，经过在 struts.xml 里的Category.action 里的 result 后面的url加入参数，可以读取正确categoryId了 本来想在result中加入param元素而不是在url后面加 ？categoryId=0来实现，但是尝试了好久，Google和官方文档都没有什么解决方案 其中遇到的一个问题是「&amp;a</description>
     </item>
     
     <item>
@@ -30,13 +22,7 @@
       <pubDate>Fri, 08 May 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/05/solve-the-null-value-was-assigned-to-a-property/</guid>
-      <description>晚上开始写贴吧分类，把class改成category，规避了关键字class，也显得更合理，百度的分类就是ct
-然后在分类上遇到一个小问题，category_father在数据库是integer类型，可以为null，因为存在根分类，在这种情况下用Hibernate读取 Category时会产生错误
-在jUnit单元测试中就通不过，错误为 org.hibernate.PropertyAccessException: Null value was assigned to a property
-Google后，发现Category中定义categoryFather为int类型，是不支持null的，需要改为Wrapper类Interger
-有人说只需要设定setXXX和getXXX的Integer的类型和.hbm.xml文件中个Type=&amp;ldquo;java.lang.Integer&amp;quot;就可以了
-但是经过我测试发现，categoryFather 这个成员也要定义成Interger，否则会报错 org.hibernate.PropertyAccessException: Exception occurred inside setter of &amp;hellip;
-晚上写完分类，感慨到：框架先行，功能其后，界面殿后。由于我home.jsp和category.jsp没有安排好，导致了很多问题。尽管有Eclipse的ren ame功能，把class改为category依然很麻烦</description>
+      <description>晚上开始写贴吧分类，把class改成category，规避了关键字class，也显得更合理，百度的分类就是ct 然后在分类上遇到一个小问题，category_father在数据库是integer类型，可以为null，因为存在根分类，在这种情况下用Hibernate读取 Category时会产生错误 在jUnit单元测试中就通不过，错误为 org.hibernate.PropertyAccessException: Null value was assigned to a property Google后，发现Category中定义categ</description>
     </item>
     
   </channel>

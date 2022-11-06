@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/categories/coding/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -165,15 +165,12 @@ if (!doNotTrack) {
     </h2>
   </header>
   <div class="entry-content">
-    <p>官方中pylons都是通过在shell中运行paster serve –reload development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤可以在Eclipse中运行pylons。
-配置Run Configuration - Python Run如下。
-Main页签中Main Module指向paster-script.py，可以使用绝对路径。
-配置Arguments页签的参数，添加serve –reload development.ini，后面的ini配置文件可以使用绝对路径。
-勾选Common下的Allocate Console来进行paster调试信息输出。
-在Windows - Preference - Pydev - Interpreter - Python中的PYTHONPATH加入pylons目标环境 ，报过site-packages目录和site-packages目录下面的egg文件（理解为jar包，称之为蟒蛇蛋）。
-不出意外的话，就可以通过Run跑起整个应用了。
-很可惜的是，这样做还是不能对应用进行Debug，pylons的debug依然依赖于pylons的&#34;交互调试页面&#34;。
-参考[http://stackoverflow.com/questions/147650/debug-pylons-application-through- eclipse](http://stackoverflow.com/questions/147650/debug-pylons-application- through-eclipse)</p>
+    
+    
+    <div class="thumbnail"><img src="https://d05fae.dijingchao.com/upload_dropbox/201105/eclipse-main.png" alt="Thumbnail" /></div>
+    
+    
+    <p>官方中pylons都是通过在shell中运行paster serve –reload development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤可以在Eclipse中运行pylons。 配置Run Configuration - Python Run如下。 Main页签中Main Module指向paster-script.py，可以使用绝对路径。 配置Arguments页签的参数，添加serve –reload development.i...</p>
   </div>
   <footer class="entry-footer"><span title='2011-05-16 00:00:00 +0800 +0800'>2011-05-16</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Eclipse中运行Pylons" href="https://blog.alswl.com/2011/05/run-pylons-in-eclipse/"></a>
@@ -185,22 +182,12 @@ Main页签中Main Module指向paster-script.py，可以使用绝对路径。
     </h2>
   </header>
   <div class="entry-content">
-    <p>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。
-关于Pylons Pylons是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http: //www.makotemplates.org/)作为Template，SQLAlchemy作为 ORM映射。使用BSD作为授权协议。
-托WSGI的福，python的web框架超多，甚至高手5分钟可以自己手写一个web框架，这种情况也导致了Python web框架的纷杂。我这里选择Pylons（其实是被选择），并不是说Pylons一定最好，而是比较适合当前项目。更多的Python web框架对比建议看这篇[浅谈Python web框架](http://feilong.me/2011/01/talk-about-python-web- framework)，另外，这个Best Web- Framework有直观的对比。
-Pylons环境配置 因为开发机是刚到手的ThinkPad，没有冒险安装Linux，所以这里的安装环境是Win7 &#43; Python 2.6 &#43; MySQL5.1。
-1、安装Pylons Pylons似乎没有方便的easy_install，原因是由于Pylons在安装过程中，会生成一个目标环境。这个环境包括完整的Python环境，从而与系统自 带Python环境独立开来，防止第三方库的相互污染。Pylons官方提供了一个Python go- pylons.py脚本进行安装。
-通过在shell键入命令python go-pylons.py myb_env安装，其中myb_env代表目标环境，会在当前目录下面生成一个myb_en v文件夹，myb_env也可以使用绝对路径代替。在生成完之后请不要随意移动这个目录，因为环境里生成的Python脚本硬编码了绝对路径。
-2、安装mysql-python驱动 我使用的是MySQL数据库，使用mysql-python驱动，windows下具体安装过程可以参见[http://fendou.org/2010/06/17 /install-python26-mysql-python-on-windows/](http://fendou.org/2010/06/17 /install-python26-mysql-python-on-windows/) 需要修改一下源码和加入几个dll。
-3、生成egg包，下载第三方依赖 在目标项目下面，执行python setup.py develop，这将执行项目需要的三方依赖，设定依赖可以到setup.py中install_req uires进行配置。这个步骤用到了easy_install，所以请确保python/script下面有easy_install的可执行文件。windows 下安装easy_install可以参考这里[http://thinkhole.org/wp/2007/02/01/howto-install- setuptools-in-windows/](http://thinkhole.org/wp/2007/02/01/howto-install- setuptools-in-windows/)。
-呼啦啦一大串命令跑完之后，就ok了。
-4、安装额外的三方依赖（可选） 根据实际情况操作吧，我这里使用了easy_install python-memcached和easy_install pil，前者是memcache的python驱动，后者是python图形库。
-5、初始化数据库 托SQLAlchemy的福，我们可以让它自动给我们创建映射表。首先确保在model下面配置好model类。
-class Person(Base): __tablename__ = &#34;person&#34; id = Column(Integer, primary_key=True)
-name = Column(String(100))
-email = Column(String(100))
-def init(self, name=’’, email=’’):
-self.name = name...</p>
+    
+    
+    <div class="thumbnail"><img src="https://d05fae.dijingchao.com/upload_dropbox/201105/pylons.png" alt="Thumbnail" /></div>
+    
+    
+    <p>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。 关于Pylons Pylons是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http: //www.makotemplates.org/)作为Template，SQLAlchemy作为 ORM映射。使用BSD作为授权协议。 托WSGI的福，pyth...</p>
   </div>
   <footer class="entry-footer"><span title='2011-05-16 00:00:00 +0800 +0800'>2011-05-16</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Pylons使用小记" href="https://blog.alswl.com/2011/05/pylons/"></a>
@@ -212,20 +199,10 @@ self.name = name...</p>
     </h2>
   </header>
   <div class="entry-content">
-    <p>前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。
-这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。
-= init Linux programs and setting = :author: alswl :email: alswlx#gmail.com :toc: :numbered: == first of all ==
-.update (打补丁、升级)
-sudo apt-get update
-Update System(fix bugs for sercurity): 299.0MB
-.reset permission(谨慎使用，设定文件为644,设定文件夹为755)
-find /home/XXX -type d -exec chmod 755 {} ;
-find /home/XXX -type f -exec chmod 644 {} ;
-.nautilus (给鹦鹉螺加上open as administrator, open terminal)
-sudo apt-get install nautilus-open-terminal nautilus-gksu
-.pdf (我使用Foxit)
-@see http://www.fuxinsoftware.com.cn/downloads/
-== application ==...</p>
+    
+    
+    
+    <p>前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。 这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。 = init Linux programs and setting = :author: alswl :email: alswlx#gmail.com :toc: :numbered: == first of all == .update (打补丁、升级) sudo apt-get update Update System(fix bugs for sercurity): 299.0MB .reset permission(谨慎使用，设定文件为644,设定文件夹为755) find /home/XXX -type d -exec chmod 755 {} ; find /home/XXX -type f -exec chmod 644 {} ; .nautilus (给鹦鹉螺加上o...</p>
   </div>
   <footer class="entry-footer"><span title='2011-04-07 00:00:00 +0800 +0800'>2011-04-07</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Ubuntu安装之后设定操作" href="https://blog.alswl.com/2011/04/ubuntu-setup/"></a>
@@ -237,9 +214,12 @@ sudo apt-get install nautilus-open-terminal nautilus-gksu
     </h2>
   </header>
   <div class="entry-content">
-    <p>部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。
-准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout
-src/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project’s license NOTICE.txt Notices and attributions required by libraries that the project depends on README....</p>
+    
+    
+    <div class="thumbnail"><img src="https://d05fae.dijingchao.com/upload_dropbox/201104/run_configurations.png" alt="Thumbnail" /></div>
+    
+    
+    <p>部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。 准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout src/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project’s license NOTICE.txt Notices and attributions required by libraries that the project depends on README.txt Project’s readme 使用的 pom.xml 主要添加了 build- plugins 的 Jetty 插...</p>
   </div>
   <footer class="entry-footer"><span title='2011-04-04 00:00:00 +0800 +0800'>2011-04-04</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Maven 下 Jetty 启动" href="https://blog.alswl.com/2011/04/run-jetty-in-maven/"></a>
@@ -251,13 +231,12 @@ src/main/java Application/Library sources src/main/resources Application/Library
     </h2>
   </header>
   <div class="entry-content">
-    <p>GNOME桌面系统可以使用一系列的图片作为背景，每过一段时间能够自动更换。这个功能核Win7下面自动换背景效果一致。不过很可惜，系统自带的可自动更换图片集只 有几张，也找不到什么按钮可以直接设定。
-下图就是系统自带的两个图片集（第二行第一组和第二组）。
-我们可以通过撰写xml自己制作图片集，xml格式模板在/usr/share/gnome-background-properties/cosmos.xml ，实际的xml存放在类似于/usr/share/backgrounds/cosmos/background-1.xml的配置文档里面。
-除了手工撰写xml，我们还可以通过crebs小软件来自动生成xml文件。
-官方介绍如下：
-A background slideshow creator for the GNOME desktop wallpaper.
-The GNOME desktop is able to use a sequence of images for its background wallpaper, changing them automatically over time, but does not include an interface for specifying which images should constitute such a slideshow. Create Background Slideshow (CreBS) is a small Python/GTK application that provides such an interface, saving users from having to manually edit XML files....</p>
+    
+    
+    <div class="thumbnail"><img src="https://d05fae.dijingchao.com/upload_dropbox/201104/appearance_preferences.png" alt="Thumbnail" /></div>
+    
+    
+    <p>GNOME桌面系统可以使用一系列的图片作为背景，每过一段时间能够自动更换。这个功能核Win7下面自动换背景效果一致。不过很可惜，系统自带的可自动更换图片集只 有几张，也找不到什么按钮可以直接设定。 下图就是系统自带的两个图片集（第二行第一组和第二组）。 我们可以通过撰写xml自己制作图片集，xml格式模板在/usr/share/gnome-background-properties/cosmos.xml...</p>
   </div>
   <footer class="entry-footer"><span title='2011-04-03 00:00:00 +0800 +0800'>2011-04-03</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Ubuntu桌面自动换背景" href="https://blog.alswl.com/2011/04/ubuntu-crebs/"></a>
@@ -269,12 +248,12 @@ The GNOME desktop is able to use a sequence of images for its background wallpap
     </h2>
   </header>
   <div class="entry-content">
-    <p>之前写过一个Java的小工具叫做Mp3Lrc歌词复制器，用来复制歌词到Mp3播放器中的对应目录下面。之前的文章参见[Mp3Lrc的可执行文件](http://log4d.com/2009/05/the-executable-file- mp3lrc)和[Java写的Mp3歌词复制器](http://log4d.com/2009/05/lyrics-written-in-java- replicator-mp3)。
-这几天整理硬盘时候发现大四时候还用Delphi写了一个完整的GUI界面的Mp3歌词复制工具叫做PLrcMatch4D。
-源码已经丢失，只剩下可执行文件，T_T。
-如果非要定义以下这个工具的作用，就是从某个固定文件夹（歌词文件夹）复制对应Mp3播放器中歌曲的lrc文件到目标文件夹，从而让Mp3播放器可以正常显示歌词。
-下载点击这里，PLrcMatch4D.zip
-界面比较实在，大致是这样：</p>
+    
+    
+    <div class="thumbnail"><img src="https://d05fae.dijingchao.com/upload_dropbox/201103/plrcmatch4d.jpg" alt="Thumbnail" /></div>
+    
+    
+    <p>之前写过一个Java的小工具叫做Mp3Lrc歌词复制器，用来复制歌词到Mp3播放器中的对应目录下面。之前的文章参见[Mp3Lrc的可执行文件](http://log4d.com/2009/05/the-executable-file- mp3lrc)和[Java写的Mp3歌词复制器](http://log4d.com/2009/05/lyrics-written-in-java- replicator...</p>
   </div>
   <footer class="entry-footer"><span title='2011-03-29 00:00:00 +0800 +0800'>2011-03-29</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 历史记录-歌词复制器" href="https://blog.alswl.com/2011/03/plrcmatch4d/"></a>
@@ -286,20 +265,10 @@ The GNOME desktop is able to use a sequence of images for its background wallpap
     </h2>
   </header>
   <div class="entry-content">
-    <p>一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。
-3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这里再简化一下，记录一下常用命令。
-#建立一个空项目，包含一个HelloWorld，可以通过 #-DarchetypeGroupId=&lt;archetype-groupId&gt; -DarchetypeArtifactId=&lt;archetype-artifactId&gt; #命令创建更多类型项目 mvn archetype:create -DgroupId=com.dddspace.java -DartifactId=helloworld #编译打包到jar或者war，根据pom中定义
-maven package
-#jUnit跑跑
-mvn test
-#神奇的命令，帮助创建Eclipse项目，配置path，默认使用M2_REPO这个变量作为目录
-mvn eclipse:eclipse
-大约跑完花费3分钟~嗯，有这几个命令，Maven简单操作就OK了，更多的话，去Maven文档溜溜吧。
-PS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MAVEN_OPTS=-Dfile.encoding=UTF-8 这样强制Maven使用UTF-8进行编码。
-配置Eclipse环境 加入M2_REPO 进入Eclipse-&gt;preferences-&gt;java-&gt;build path-&gt;classpath variables，添加M2_REPO这个变量，指向C:/Documents and Settings/userName/.m2/repository，这个 路径是默认的Maven仓库，如果你想搬到其他地方，需要修改mavenconfsetting.xml里面的localRepository。
-配置String Substitution 通过配置String Subsitution我们就可以使用Eclipse的lanuch来启动Maven，而不是Eclipse插件启动。首先我们要告诉Eclipse Maven在哪里。配置Eclipse-&gt;preferences-&gt;Run/Debug-&gt;String Subsitution，加入mvn =D:/dotj_dev/tools/apache-maven-2.2.1/bin/mvn.bat。
-建立Launch文件 Launch其实是Eclipse的Launcher框架的配置文件，可以定义Application的启动方式。新建一个mvn-war.launch如下：
-&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; standalone=&#34;no&#34;?&gt; &lt;launchConfiguration type=&#34;org.eclipse.ui.externaltools.ProgramLaunchConfigurationType&#34;&gt; &lt;stringAttribute key=&#34;bad_container_name&#34; value=&#34;helloworldmvn-war.launch&#34;/&gt; &lt;stringAttribute key=&#34;org.eclipse.ui.externaltools.ATTR_LOCATION&#34; value=&#34;${mvn}&#34;/&gt; &lt;stringAttribute key=&#34;org.eclipse.ui.externaltools.ATTR_TOOL_ARGUMENTS&#34; value=&#34;clean compile war:war -U&#34;/&gt; &lt;stringAttribute key=&#34;org....</p>
+    
+    
+    
+    <p>一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。 3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这...</p>
   </div>
   <footer class="entry-footer"><span title='2011-03-18 00:00:00 +0800 +0800'>2011-03-18</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 在Eclipse中使用Maven" href="https://blog.alswl.com/2011/03/maven-eclipse/"></a>
@@ -311,15 +280,12 @@ PS：为了防止Maven编码错误，建议在bin/mvn里面加入一句话set MA
     </h2>
   </header>
   <div class="entry-content">
-    <p>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方 法来动态生成连接字符串，这种方法充满了Bad Smell。
-昨天用CodeSmith时候，看到它的数据连接配置界面，如此的眼熟，如下图。
-Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命名空间为Microsoft.VisualStudio.Data。
-使用的方法也很简单，引用Microsoft.Data.ConnectionUI.dll和Microsoft.Data.ConnectionUI.Dialog .dll，这两个文件位于Microsoft Visual Studio 9.0Common7IDE下面。
-这两个dll并没有其他依赖关系，可以放心的放到自己的程序中使用。
-使用代码如下
-DataConnectionDialog dataConnectionDialog = new DataConnectionDialog(); DataSource.AddStandardDataSources(dataConnectionDialog); if (DataConnectionDialog.Show(dataConnectionDialog) == DialogResult.OK) { targetDBConnectionString = dataConnectionDialog.ConnectionString; } dataConnectionDialog.ConnectionString是完整的连接字符串，这样就可以比较优美的动态获取连接字符串了。
-参考文章
-DataConnectionDialog 旧事重提 - 名牌热狗 - 博客园 C#–WinForm系统平台之登录界面及数据连接 - 天高行健，地厚载物 - 51CTO技术博客 DataConnectionDialog Class (Microsoft.VisualStudio.Data) 最后给大家拜个晚年，祝大家新年新气象。。。（此处省略1000字）</p>
+    
+    
+    <div class="thumbnail"><img src="https://d05fae.dijingchao.com/upload_dropbox/201102/DataConnectionDialog.jpg" alt="Thumbnail" /></div>
+    
+    
+    <p>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方 法来动态生成连接字符串，这种方法充满了Bad Smell。 昨天用CodeSmith时候，看到它的数据连接配置界面，如此的眼熟，如下图。 Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命名空间为Microsof...</p>
   </div>
   <footer class="entry-footer"><span title='2011-02-15 00:00:00 +0800 +0800'>2011-02-15</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 使用DataConnectionDialog来获取连接字符串" href="https://blog.alswl.com/2011/02/dataconnectiondialog/"></a>
@@ -331,25 +297,12 @@ DataConnectionDialog 旧事重提 - 名牌热狗 - 博客园 C#–WinForm系统�
     </h2>
   </header>
   <div class="entry-content">
-    <p>GAC GAC是什么？是用来干嘛的？GAC的全称叫做全局程序集缓存，通俗的理解就是存放各种.net平台下面需要使用的dll的地方。GAC的具体目录在windows/ assembly。
-喜欢使用破解软件的朋友可能会经常使用替换DLL这招，这个DLL虽然和.net下面的DLL有所不同，但大致起的作用还是一样的：使用共同的动态链接库来提高库复用 ，减少文件体积。在.net平台之前，程序们都把可能用到的公共DLL存放到system32文件夹下。由于版本的不一致及其他原因（将控制信息存放到注册表），造成 了很有名的DLL Hell。
-最近在读俞甲子的《程序员的自我修养》，中间花了很大的篇幅描述程序编译中 的链接这个过程。而比较巧合的是，我的《C#与.NET 3.5高级程序设计》也正好读到程序集这一块。微软使用了GAC来避免DLL重蹈覆辙。现在，我就来部署一个简单的通用类库到GAC中。
-获取强名称（签名） 并不是随便一个DLL都可以放到GAC中，如果这样的话，和之前的DLL Hell也没什么区别了。GAC使用一个强名称（签名）的方式来区分不同的DLL。每个签名 都是独一无二的公钥私钥对。现在我们使用SDK的sn工具为我的DUtil库生成一个snk签名。
-打开SDK中的Visual Studio 2008 命令提示，键入sn -k DUtil.snk，结果如下：
-F:WorkSpace.netDUtilbinDebug&gt;sn -k DUtil.snk Microsoft (R) .NET Framework 强名称实用工具 版本 3.5.21022.8
-Copyright (c) Microsoft Corporation. All rights reserved.
-密钥对被写入 DUtil.snk
-这样我们就得到了一个snk签名文件。
-为程序集设置签名 现在我们得到了一个签名文件，但是还没有把这个签名应用到程序中，在程序的assembly.cs文件中加入[assembly: AssemblyKeyFile(“dutil.snk”)]，这个dutil.snk可以是绝对路径，我使用的是主目录中的snk文件。
-编译解决方案，生成的.dll文件就包含了签名。
-此时编译器会出现一个警告：
-警告 1 使用命令行选项&#34;/keyfile&#34;或适当的项目设置代替&#34;AssemblyKeyFile&#34; F:WorkSpace.netDUtilPropertiesAssemblyInfo.cs 38 12 DUtil
-既然VS建议我们用选项设定，那我们就用项目选项页设定key。如下图所示：
-PS：我测试过，生成DLL之后，就算删除签名使用的snk文件，依然可以正常使用。即snk文件只有在编译时候使用。
-安装到GAC 安装到GAC有两种办法，一种是把DLL拖入windows/assembly目录下（不是复制粘贴，是拖动），另外一种是使用gacutil。
-在Win7下，拖动的话会遇到权限问题，如下图所示
-在gacutil下面也会遇到如下错误
-F:WorkSpace.netDUtilbinDebug&gt;gacutil -i DUtil.dll Microsoft (R) .NET Global Assembly Cache Utility. Version 3.5.21022.8 Copyright (c) Microsoft Corporation....</p>
+    
+    
+    <div class="thumbnail"><img src="https://4ocf5n.dijingchao.com/upload_dropbox/201101/snk.jpg" alt="Thumbnail" /></div>
+    
+    
+    <p>GAC GAC是什么？是用来干嘛的？GAC的全称叫做全局程序集缓存，通俗的理解就是存放各种.net平台下面需要使用的dll的地方。GAC的具体目录在windows/ assembly。 喜欢使用破解软件的朋友可能会经常使用替换DLL这招，这个DLL虽然和.net下面的DLL有所不同，但大致起的作用还是一样的：使用共同的动态链接库来提高库复用 ，减少文件体积。在.net平台之前，程序们都把可能用到的公共DLL存...</p>
   </div>
   <footer class="entry-footer"><span title='2011-01-23 00:00:00 +0800 +0800'>2011-01-23</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 在.net中使用GAC" href="https://blog.alswl.com/2011/01/gac/"></a>
@@ -361,19 +314,10 @@ F:WorkSpace.netDUtilbinDebug&gt;gacutil -i DUtil.dll Microsoft (R) .NET Global A
     </h2>
   </header>
   <div class="entry-content">
-    <p>问题情境 需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,“total”, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,“total”, Parameters!Language.Value, “ReportConnection0107”)。
-思路 使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。
-Vim实现 %s/GetComment(((sw&#43;!w&#43;.w&#43;s,){2}s*“w&#43;“s*,sw&#43;!w&#43;.w&#43;s))/GetCommentForReport(1 , “ReportConnection0107”)/gc
-解释：%为全局替换，s为替换。后面则是表达式，和正则表达式差不多，注意是*不需要转义，&#43; 和 .需要转义，最后的g代表当前行替换，c代表每次替换需要确认。
-目标表达式中有1，代表抓获的第一个字符串，多个字符串抓获则依次往下排列。�表示原始字符串。
-NotePad&#43;&#43;/EditPlus实现 GetComment(( *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *, *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *, *&#34;[a-zA-Z0-9]&#43;” *, *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *))
-替换为GetCommentForReport(1, “ReportConnection0107”)
-解释：不知道为何，我无法使用ws匹配文字和空格，只能使用[a-zA-Z0-9]表示（完整的是[a-zA-Z0-9_]）w，用空格表示s。
-VisualStudio 由于RDL开发必然使用VisualStudio，所以用VS替换更方便。
-GetComment({ *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *, *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *, *&#34;[a-zA-Z0-9]&#43;” *, *[a-zA-Z0-9]&#43;![a-zA-Z0-9]&#43;.[a-zA-Z0-9]&#43; *})
-依旧替换为GetCommentForReport(1, “ReportConnection0107”)
-解释：VS除了NotePad&#43;&#43;/EditPlus的问题外，还有一个严重的问题就是他抓取的不是分组()，而是抓获的花括号{}抓捕的字符串，官方的称呼叫做&#34;带 标记的表达式&#34;，详情可以参考MSDN正则表达式 (Visual Studio)。
-PS 所以咯，Vimer，你懂的~</p>
+    
+    
+    
+    <p>问题情境 需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,“total”, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,“total”, Parameters!Language.Value, “ReportConnection0107”)。 思路 使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。 Vim实现 %s/GetComment(((sw&#43;!w&#43;.w&#43;s,){2}s*“w&#43;“s*,sw&#43;!w&#43;.w&#43;s))/GetCommentForReport(1 , “ReportConnection0107”)/gc 解释：%为全局替换，s为替换。后面则是表达式，和正则表达式...</p>
   </div>
   <footer class="entry-footer"><span title='2011-01-19 00:00:00 +0800 +0800'>2011-01-19</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 正则表达式抓捕替换" href="https://blog.alswl.com/2011/01/regex-group-catch/"></a>

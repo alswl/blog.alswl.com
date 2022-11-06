@@ -13,19 +13,7 @@
       <pubDate>Wed, 19 Jan 2011 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2011/01/regex-group-catch/</guid>
-      <description>问题情境 需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value, &amp;ldquo;ReportConnection0107&amp;rdquo;)。
-思路 使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。
-Vim实现 %s/GetComment(((sw+!w+.w+s,){2}s*&amp;ldquo;w+&amp;ldquo;s*,sw+!w+.w+s))/GetCommentForReport(1 , &amp;ldquo;ReportConnection0107&amp;rdquo;)/gc
-解释：%为全局替换，s为替换。后面则是表达式，和正则表达式差不多，注意是*不需要转义，+ 和 .需要转义，最后的g代表当前行替换，c代表每次替换需要确认。
-目标表达式中有1，代表抓获的第一个字符串，多个字符串抓获则依次往下排列。�表示原始字符串。
-NotePad++/EditPlus实现 GetComment(( *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *&amp;quot;[a-zA-Z0-9]+&amp;rdquo; *, *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *))
-替换为GetCommentForReport(1, &amp;ldquo;ReportConnection0107&amp;rdquo;)
-解释：不知道为何，我无法使用ws匹配文字和空格，只能使用[a-zA-Z0-9]表示（完整的是[a-zA-Z0-9_]）w，用空格表示s。
-VisualStudio 由于RDL开发必然使用VisualStudio，所以用VS替换更方便。
-GetComment({ *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *&amp;quot;[a-zA-Z0-9]+&amp;rdquo; *, *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *})
-依旧替换为GetCommentForReport(1, &amp;ldquo;ReportConnection0107&amp;rdquo;)
-解释：VS除了NotePad++/EditPlus的问题外，还有一个严重的问题就是他抓取的不是分组()，而是抓获的花括号{}抓捕的字符串，官方的称呼叫做&amp;quot;带 标记的表达式&amp;quot;，详情可以参考MSDN正则表达式 (Visual Studio)。
-PS 所以咯，Vimer，你懂的~</description>
+      <description>问题情境 需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value, &amp;ldquo;ReportConnection0107&amp;rdquo;)。 思路 使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。 Vim实现 %s/GetComment(((sw+!w+.w+s,){2}s*&amp;ldquo;w+&amp;ldquo;s*,sw+!w+.w+s))/GetCommentForReport(1 , &amp;ldquo;ReportConnection0107&amp;rdquo;)/gc 解释：%为全局替换，s为替换。后面则是表达式，和正则表达式</description>
     </item>
     
     <item>
@@ -34,22 +22,7 @@ PS 所以咯，Vimer，你懂的~</description>
       <pubDate>Tue, 26 Jan 2010 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2010/01/regular-expressions-in-the-zero-width-assertion/</guid>
-      <description>这文是上个月开始写的，本来想深入的分析一下零宽断言，可惜工作一直忙，现在又要去转战DWR&amp;hellip;OMG~~
-起因 将要上线的系统中有一个字符规则：&amp;ldquo;13位的字符串，其中有8位连续数字&amp;rdquo;，需要用这则表达式对这个字符串进行判断。而我之前对正则的认识仅仅停留在匹配固定的字符上 ，对这个问题一筹莫展。
-这时候热心的小邪出现了，我在他的博客 邪罗刹的菠萝阁 留下这个[问题](http://www.evlos.org/2010/01/05/use-regex-to-clear-the-mix-of-tag- img/#comment-5968)
-小邪很热心的撰写了一篇文章给出回答： 一个杯具和一个洗具与最近学习手记 : 邪罗刹的菠萝阁。
-解答 核心字符串如下： &amp;lsquo;/^(?!(.?d){9,})(?!(.?D){6,}).{13}$/&amp;rsquo;;
-小邪的文章给了很详细的解答，比我自己解释要好得多～我就索性copy过来，如下：
-小邪是这个样子解答的，首先两边的斜杠是 Perl 正则式的要求。
-然后两边的 ^ 和 $ 用来表示对应的是字符串的开始和结束。
-接着 .{13}，. 表示除了换行以外的所有字符，13 规定了匹配长度。
-我们这里前面用了两次零宽断言，第一次，(?!exp) 这里的 exp 是 (.*?d){9,}。
-表示数字的个数大于等于 9，零宽断言把它反过来就是数字的个数小于 9。
-第二次 exp 是 (.*?D){6,} 表示非数字大于等于 6 个以上。
-即表示非数字的个数大于等于 6，把它反过来就是非数字的个数小于 6。
-而这里.*表示 ?d 和 ?D 的前面可能有零次或更多次的其他字符。
-而这里的 ? 表示这段连续的字符会重复零次或一次。
-Python下的实现和测试代码 import re def fun(p, datas): for data in datas: print p.match(data) if __name__ == &amp;#39;__main__&amp;#39;: p = re.</description>
+      <description>这文是上个月开始写的，本来想深入的分析一下零宽断言，可惜工作一直忙，现在又要去转战DWR&amp;hellip;OMG~~ 起因 将要上线的系统中有一个字符规则：&amp;ldquo;13位的字符串，其中有8位连续数字&amp;rdquo;，需要用这则表达式对这个字符串进行判断。而我之前对正则的认识仅仅停留在匹配固定的字符上 ，对这个问题一筹莫展。 这时候热心的小邪出现了，我在他的博客 邪罗刹的菠萝阁 留下这个[问题](http:/</description>
     </item>
     
   </channel>

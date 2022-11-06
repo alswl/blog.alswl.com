@@ -7,20 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>MailToCommenter的垃圾邮件问题 | Log4D</title>
 <meta name="keywords" content="建站心得, wordpress">
-<meta name="description" content="Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。
-于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。
-代码部分分别参考[修改 mail to commenter,让邮件通知更加友好 | Simple happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more- user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 » 如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of- mailtocomments/#comment-1278)，html部分代码是模仿邪 罗刹的回复修改。
-修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php
-function mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option(&#39;home&#39;); preg_match(&quot;/^(http://)?([^/]&#43;)/i&quot;,$hostname, $matches); $blogname = get_option(&#39;blogname&#39;); $blognameO = $blogname; $blogname .= &quot; &lt;no-reply@&quot;; $blogname .= $matches[2]; $blogname .= &quot;&gt;&quot;; $charset = get_option(&lsquo;blog_charset&rsquo;);
-$headers = &ldquo;From: $blognameO &lt;no-reply@$matches[2]&gt; n&rdquo; ;
-$headers .= &ldquo;MIME-Version: 1.0n&rdquo;;
-$headers .= &ldquo;Content-Type: text/html;charset=&quot;$charset&quot;n&rdquo;;
-$to = strtolower($to);
-return @wp_mail($to, $subject, $message, $headers);
-}">
+<meta name="description" content="Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。 于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。 代码部分分别参考[修改 mail to commen">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -79,17 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="MailToCommenter的垃圾邮件问题" />
-<meta property="og:description" content="Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。
-于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。
-代码部分分别参考[修改 mail to commenter,让邮件通知更加友好 | Simple happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more- user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 » 如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of- mailtocomments/#comment-1278)，html部分代码是模仿邪 罗刹的回复修改。
-修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php
-function mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option(&#39;home&#39;); preg_match(&quot;/^(http://)?([^/]&#43;)/i&quot;,$hostname, $matches); $blogname = get_option(&#39;blogname&#39;); $blognameO = $blogname; $blogname .= &quot; &lt;no-reply@&quot;; $blogname .= $matches[2]; $blogname .= &quot;&gt;&quot;; $charset = get_option(&lsquo;blog_charset&rsquo;);
-$headers = &ldquo;From: $blognameO &lt;no-reply@$matches[2]&gt; n&rdquo; ;
-$headers .= &ldquo;MIME-Version: 1.0n&rdquo;;
-$headers .= &ldquo;Content-Type: text/html;charset=&quot;$charset&quot;n&rdquo;;
-$to = strtolower($to);
-return @wp_mail($to, $subject, $message, $headers);
-}" />
+<meta property="og:description" content="Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。 于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。 代码部分分别参考[修改 mail to commen" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2009-11-17T00:00:00+08:00" />
@@ -97,17 +77,7 @@ return @wp_mail($to, $subject, $message, $headers);
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="MailToCommenter的垃圾邮件问题"/>
-<meta name="twitter:description" content="Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。
-于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。
-代码部分分别参考[修改 mail to commenter,让邮件通知更加友好 | Simple happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more- user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 » 如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of- mailtocomments/#comment-1278)，html部分代码是模仿邪 罗刹的回复修改。
-修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php
-function mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option(&#39;home&#39;); preg_match(&quot;/^(http://)?([^/]&#43;)/i&quot;,$hostname, $matches); $blogname = get_option(&#39;blogname&#39;); $blognameO = $blogname; $blogname .= &quot; &lt;no-reply@&quot;; $blogname .= $matches[2]; $blogname .= &quot;&gt;&quot;; $charset = get_option(&lsquo;blog_charset&rsquo;);
-$headers = &ldquo;From: $blognameO &lt;no-reply@$matches[2]&gt; n&rdquo; ;
-$headers .= &ldquo;MIME-Version: 1.0n&rdquo;;
-$headers .= &ldquo;Content-Type: text/html;charset=&quot;$charset&quot;n&rdquo;;
-$to = strtolower($to);
-return @wp_mail($to, $subject, $message, $headers);
-}"/>
+<meta name="twitter:description" content="Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。 于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。 代码部分分别参考[修改 mail to commen"/>
 
 
 <script type="application/ld+json">
@@ -136,12 +106,12 @@ return @wp_mail($to, $subject, $message, $headers);
   "@type": "BlogPosting",
   "headline": "MailToCommenter的垃圾邮件问题",
   "name": "MailToCommenter的垃圾邮件问题",
-  "description": "Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。\n于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。\n代码部分分别参考[修改 mail to commenter,让邮件通知更加友好 | Simple happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more- user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 » 如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of- mailtocomments/#comment-1278)，html部分代码是模仿邪 罗刹的回复修改。\n修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php\nfunction mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option('home'); preg_match(\u0026quot;/^(http://)?([^/]+)/i\u0026quot;,$hostname, $matches); $blogname = get_option('blogname'); $blognameO = $blogname; $blogname .= \u0026quot; \u0026lt;no-reply@\u0026quot;; $blogname .= $matches[2]; $blogname .= \u0026quot;\u0026gt;\u0026quot;; $charset = get_option(\u0026lsquo;blog_charset\u0026rsquo;);\n$headers = \u0026ldquo;From: $blognameO \u0026lt;no-reply@$matches[2]\u0026gt; n\u0026rdquo; ;\n$headers .= \u0026ldquo;MIME-Version: 1.0n\u0026rdquo;;\n$headers .= \u0026ldquo;Content-Type: text/html;charset=\u0026quot;$charset\u0026quot;n\u0026rdquo;;\n$to = strtolower($to);\nreturn @wp_mail($to, $subject, $message, $headers);\n}",
+  "description": "Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。 于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。 代码部分分别参考[修改 mail to commen",
   "keywords": [
     "建站心得", "wordpress"
   ],
   "articleBody": "Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。\n于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。\n代码部分分别参考[修改 mail to commenter,让邮件通知更加友好 | Simple happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more- user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 » 如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of- mailtocomments/#comment-1278)，html部分代码是模仿邪 罗刹的回复修改。\n修改wp-content/plugins/mailtocommenter下面的mailtocommenter_functions.php\nfunction mailtocommenter_send_email($to,$subject,$message){ $hostname = get_option('home'); preg_match(\"/^(http://)?([^/]+)/i\",$hostname, $matches); $blogname = get_option('blogname'); $blognameO = $blogname; $blogname .= \" ",
-  "wordCount" : "155",
+  "wordCount" : "836",
   "inLanguage": "en",
   "datePublished": "2009-11-17T00:00:00+08:00",
   "dateModified": "2009-11-17T00:00:00+08:00",

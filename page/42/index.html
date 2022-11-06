@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -174,53 +174,10 @@ if (!doNotTrack) {
     </h2>
   </header>
   <div class="entry-content">
-    <p>主要介绍openssl进行SSL通信的一些函数以及过程，主要是初始化过程，至于数据的接收以及后续处理可以具体问题具体分析。
-load所有的SSL算法
-OpenSSL_add_ssl_algorithms();
-建立SSL所用的method
-SSL_METHOD *meth=SSLv23_method();
-初始化上下文情景
-SSL_CTX *ctx=SSL_CTX_new(meth);
-ret-&gt;quiet_shutdown=1;默认的是ret-&gt;quiet_shutdown=0;他相当于SSL_set_shutdown函数将参数设置为SS L_SENT_SHUTDOWN|SSL_RECEIVED_SHUTDOWN
-当设置为1时，假如关闭后，不通知对方，这样不适合TLS标准
-SSL_CTX_set_quiet_shutdown(ctx,1);
-ctx-&gt;options|=SSL_OP_ALL，SSL/TLS有几个公认的bug,这样设置会使出错的可能更小
-SSL_CTX_set_options(ctx,SSL_OP_ALL);
-设置cache的大小，默认的为1024*20=20000，这个也就是可以存多少个session_id，一般都不需要更改的。假如为0的话将是无限
-SSL_CTX_sess_set_cache_size(ctx,128);
-SSL_CTX_load_verify_locations用于加载受信任的CA证书，CAfile如果不为NULL，则他指向的文件包含PEM编码格式的一个或多 个证书，可以用e.g.来简要介绍证书内容
-CApath如果不为NULL，则它指向一个包含PEM格式的CA证书的目录，目录中每个文件包含一份CA证书，文件名是证书中CA名的HASH值
-可以用c-rehash来建立该目录，如cd /some/where/certs（包含了很多可信任的CA证书） c_rehash .。返回一成功，0 失败。SSL_CTX_set_default_verify_paths找寻默认的验证路径，在这里肯定找不到的。
-这里主要set cert_store
-char *CAfile=NULL,*CApath=NULL;
-SSL_CTX_load_verify_locations(ctx,CAfile,CApath);
-当需要客户端验证的时候，服务器把CAfile里面的可信任CA证书发往客户端。
-if(CAfile !=NULL )SSL_CTX_set_client_CA_list(ctx,SSL_load_client_CA_file(CAfile));
-设置最大的验证用户证书的上级数。
-SSL_CTX_set_verify_depth(ctx,10);
-当使用RSA算法鉴别的时候，会有一个临时的DH密钥磋商发生。这样会话数据将用这个临时的密钥加密，而证书中的密钥中做为签名。
-所以这样增强了安全性，临时密钥是在会话结束消失的，所以就是获取了全部信息也无法把通信内容给解密出来。
-static unsigned char dh512_p[]={
-0xDA,0x58,0x3C,0x16,0xD9,0x85,0x22,0x89,0xD0,0xE4,0xAF,0x75,
-0x6F,0x4C,0xCA,0x92,0xDD,0x4B,0xE5,0x33,0xB8,0x04,0xFB,0x0F,
-0xED,0x94,0xEF,0x9C,0x8A,0x44,0x03,0xED,0x57,0x46,0x50,0xD3,
-0x69,0x99,0xDB,0x29,0xD7,0x76,0x27,0x6B,0xA2,0xD3,0xD4,0x12,
-0xE2,0x18,0xF4,0xDD,0x1E,0x08,0x4C,0xF6,0xD8,0x00,0x3E,0x7C,
-0x47,0x74,0xE8,0x33,
-};
-static unsigned char dh512_g[]={0x02,};
-DH *dh=DH_new();
-dh-&gt;p=BN_bin2bn(dh512_p,sizeof(dh512_p),NULL);
-dh-&gt;g=BN_bin2bn(dh512_g,sizeof(dh512_g),NULL);
-SSL_CTX_set_tmp_dh(ctx,dh);
-下面加载服务器的证书和私钥，私钥可以和证书在一个文件之中。判断私钥和证书是否匹配。
-char *s_cert_file=“server.pem”;
-char *s_key_file=NULL;
-SSL_CTX_use_certificate_file(ctx,s_cert_file,SSL_FILETYPE_PEM);
-获取私钥之前先把私钥的密码给写上
-char *pKeyPasswd=“serve”;
-SSL_CTX_set_default_passwd_cb_userdata(ctx, pKeyPasswd);
-SSL_CTX_use_PrivateKey_file(ctx,s_cert_file,SSL_FILETYPE_PEM);...</p>
+    
+    
+    
+    <p>主要介绍openssl进行SSL通信的一些函数以及过程，主要是初始化过程，至于数据的接收以及后续处理可以具体问题具体分析。 load所有的SSL算法 OpenSSL_add_ssl_algorithms(); 建立SSL所用的method SSL_METHOD *meth=SSLv23_method(); 初始化上下文情景 SSL_CTX *ctx=SSL_CTX_new(meth); ret-&gt;quiet_shutdown=1;默认的是ret-&gt;quiet_shutdown=0;他相当于SSL_set_shutdown函数将参数设置为SS L_SENT_SHUTDOWN|SSL_RECEIVED_SHUTDOWN 当设置为1时，假如关闭后，不通...</p>
   </div>
   <footer class="entry-footer"><span title='2009-03-18 00:00:00 +0800 +0800'>2009-03-18</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 用openssl进行SSL编程【转载-月光】" href="https://blog.alswl.com/2009/03/programming-with-openssl-for-ssl/"></a>
@@ -232,15 +189,10 @@ SSL_CTX_use_PrivateKey_file(ctx,s_cert_file,SSL_FILETYPE_PEM);...</p>
     </h2>
   </header>
   <div class="entry-content">
-    <p>使用 OpenSSL API 进行安全编程
-创建基本的安全连接和非安全连接
-级别： 初级
-Kenneth Ballard (kenneth.ballard@ptk.org), 自由程序员
-2004 年 8 月 09 日
-学习如何使用 OpenSSL —- 用于安全通信的最著名的开放库 —- 的 API 有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的 BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。
-OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL 使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。
-学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但 OpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？
-OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&#34;SSL library&#34;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于 1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General Public License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的 参考资料 ，以获得其他信息）。...</p>
+    
+    
+    
+    <p>使用 OpenSSL API 进行安全编程 创建基本的安全连接和非安全连接 级别： 初级 Kenneth Ballard (kenneth.ballard@ptk.org), 自由程序员 2004 年 8 月 09 日 学习如何使用 OpenSSL —- 用于安全通信的最著名的开放库 —- 的 API 有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的 BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。 OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL 使用的教...</p>
   </div>
   <footer class="entry-footer"><span title='2009-03-17 00:00:00 +0800 +0800'>2009-03-17</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 使用 OpenSSL API 进行安全编程【转载】" href="https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/"></a>
@@ -252,19 +204,10 @@ OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&#34
     </h2>
   </header>
   <div class="entry-content">
-    <p>这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
-这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&#34;利用OpenSSL实现安全的Web Server&#34;中找到自己需要的内容，现在分享一下。
-1.生成CA中心的私钥
-openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
-2.生成CA中心的自签证书
-openssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem
-3.生成A分支机构的私钥和认证请求
-openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem
-PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件
-那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf
-注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。
-4.由CA中心为A分支机构签发证书
-openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert....</p>
+    
+    
+    
+    <p>这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。 这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&#34;利用OpenSSL实现安全的Web Server&#34;中找到自己需要的内容，现在分享一下。 1.生成CA中心的私钥 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem 2.生成...</p>
   </div>
   <footer class="entry-footer"><span title='2009-03-17 00:00:00 +0800 +0800'>2009-03-17</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 用OpenSSL创建证书时用到的命令【原创】" href="https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/"></a>
@@ -276,25 +219,10 @@ openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert....</p>
     </h2>
   </header>
   <div class="entry-content">
-    <p>这些文字都是转来转去，都找不到原作者是谁，唉````
-仍然感谢作者的贡献….
-PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。 常用的有：
-PKCS#7 Cryptographic Message Syntax Standard
-PKCS#10 Certification Request Standard
-PKCS#12 Personal Information Exchange Syntax Standard
-X.509是常见通用的证书格式。所有的证书都符合为Public Key Infrastructure (PKI) 制定的 ITU-T X509 国际标准。
-PKCS#7 常用的后缀是： .P7B .P7C .SPC
-PKCS#12 常用的后缀有： .P12 .PFX
-X.509 DER 编码(ASCII)的后缀是： .DER .CER .CRT
-X.509 PAM 编码(Base64)的后缀是： .PEM .CER .CRT
-.cer/.crt是用于存放证书，它是2进制形式存放的，不含私钥。
-.pem跟crt/cer的区别是它以Ascii来表示。
-pfx/p12用于存放个人证书/私钥，他通常包含保护密码，2进制方式
-p10是证书请求
-p7r是CA对证书请求的回复，只用于导入
-p7b以树状展示证书链(certificate chain)，同时也支持单个证书，不含私钥。
-一 用openssl创建CA证书的RSA密钥(PEM格式)：
-openssl genrsa -des3 -out ca....</p>
+    
+    
+    
+    <p>这些文字都是转来转去，都找不到原作者是谁，唉```` 仍然感谢作者的贡献…. PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。 常用的有： PKCS#7 Cryptographic Message Syntax Standard PKCS#10 Certification Request Standard PKCS#12 Personal Information Exchange Syntax Standard X.509是常见通用的证书格式。所有的证书都符合为Public Key Infrastructure (PKI) 制定的 ITU-T X509 国际标准。 PKCS#7 常用的后缀是： .P7B .P7C .SPC PKCS#12 常用的后缀有： .P12 .PFX X.509 DER 编码(ASCII)的...</p>
   </div>
   <footer class="entry-footer"><span title='2009-03-15 00:00:00 +0800 +0800'>2009-03-15</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 常见证书格式和转换【转载】" href="https://blog.alswl.com/2009/03/common-certificate-format-and-conversion/"></a>
@@ -306,19 +234,10 @@ openssl genrsa -des3 -out ca....</p>
     </h2>
   </header>
   <div class="entry-content">
-    <p>这些命令虽然是linux下面的，但是在windows下面也能用
-我遇到I am unable to access the ./demoCA/newcerts directory ./demoCA/newcerts: No such file or directory 然后找到这篇文章，只要用生成相应的目录就可以了。
-我遇到的第二个问题是TXT_DB error number 2 在redhat的网站[kbase.redhat.com/faq/docs/DOC-3624] (http://kbase.redhat.com/faq/docs/DOC-3624)这篇文章。
-我将原来index.txt里面的内容剪切出，然后重新签证，再把剪切出的内容粘贴到后来生成文件之前，就解决了那个问题。
-下面是网上的资料：OpenSSL相关命令hi.baidu.com/kobetec/blog/item/706fc0440ff3b44a510ffe0b.html
-这个是一个不错的资料参考，就转载过来，谢谢原作者
-命令操作：
-1、生成普通私钥：
-[weigw@TEST src]$ openssl genrsa -out privatekey.key 1024
-Generating RSA private key, 1024 bit long modulus ….&#43;&#43;&#43;&#43;&#43;&#43; …….&#43;&#43;&#43;&#43;&#43;&#43; e is 65537 (0x10001)
-2、生成带加密口令的密钥：
-[weigw@TEST src]$ openssl genrsa -des3 -out privatekey.key 1024
-Generating RSA private key, 1024 bit long modulus …………&#43;&#43;&#43;&#43;&#43;&#43; …………………&#43;&#43;&#43;&#43;&#43;&#43; e is 65537 (0x10001) Enter pass phrase for privatekey....</p>
+    
+    
+    
+    <p>这些命令虽然是linux下面的，但是在windows下面也能用 我遇到I am unable to access the ./demoCA/newcerts directory ./demoCA/newcerts: No such file or directory 然后找到这篇文章，只要用生成相应的目录就可以了。 我遇到的第二个问题是TXT_DB error number 2 在redhat的网站[kbase.redhat.com/faq/docs/DOC-3624] (http://kbase.redhat.com/faq/docs/DOC-3624)这篇文章。 我将原来index.txt里面...</p>
   </div>
   <footer class="entry-footer"><span title='2009-03-15 00:00:00 +0800 +0800'>2009-03-15</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 用OpenSSL生成证书" href="https://blog.alswl.com/2009/03/using-openssl-to-generate-certificates/"></a>
@@ -330,10 +249,12 @@ Generating RSA private key, 1024 bit long modulus …………&#43;&#43;&#43;&#4
     </h2>
   </header>
   <div class="entry-content">
-    <p>今天登录CSDN时候发现右下角有个聊天工具，试了试，用户UI做的还不错，最近在做Ajax，就连接到这个公司看看，产品名称叫做Ntalker
-校内很久之前就做了类似的东西，不过那个功能相对于这个产品略微显得弱小，特别是与网站整合能力上。
-一看Ntalker，还略感惊讶，这个公司的产品是2008年8月推出1.0，而到了9月，就与天涯社区合作，推出2.0，我登录了一下我久已不上的天涯帐号，发现天 涯的Ntalker与天涯系统结合更加紧密，用户体验很不错。
-感觉这个创意很是不错，推广的才如此之快，而且在一个网站的亲和力和聚合力上的确起到了很大的作用</p>
+    
+    
+    <div class="thumbnail"><img src="https://d05fae.dijingchao.com/upload_dropbox/201612/404.png" alt="Thumbnail" /></div>
+    
+    
+    <p>今天登录CSDN时候发现右下角有个聊天工具，试了试，用户UI做的还不错，最近在做Ajax，就连接到这个公司看看，产品名称叫做Ntalker 校内很久之前就做了类似的东西，不过那个功能相对于这个产品略微显得弱小，特别是与网站整合能力上。 一看Ntalker，还略感惊讶，这个公司的产品是2008年8月推出1.0，而到了9月，就与天涯社区合作，推出2.0，我登录了一下我久已不上的天涯帐号，发现天 涯的Ntal...</p>
   </div>
   <footer class="entry-footer"><span title='2009-03-12 00:00:00 +0800 +0800'>2009-03-12</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 做个广告：Ntalker 站内聊天系统" href="https://blog.alswl.com/2009/03/to-be-ad-ntalker-station-chat-system/"></a>
@@ -345,25 +266,10 @@ Generating RSA private key, 1024 bit long modulus …………&#43;&#43;&#43;&#4
     </h2>
   </header>
   <div class="entry-content">
-    <p>Boss昨个儿说，这两天把SSL上面的相关东西给他去看一下
-苦命啊，最近都在做Ajax，SSL几乎没有什么动静。唉，今天中午没吃饭，没睡觉，就开始做SSL
-耗费了很多时间，才正确的编译完OpenSSL
-要做的东西是基于C#的、利用OpenSSL开源代码完成的SSL分级服务器，很是麻烦，要用C#来调用C程序，而且OpenSSL本来就很难使用，唉，残念啊。
-下面把我今天的成果分享一下：
-[C#]用HttpWebRequest加载证书建立SSL通道时发生异常的解决办法- 旁观 …
-OpenSSL- .net，C&#43;&#43;/CLI语言的一次实践
-OpenSSL: The Open Source toolkit for SSL/TLS
-使用OpenSSL API 进行安全编程
-[在C#工程中使用OPENSSL](http://www.cnblogs.com/sleepingwit/archive/2008/11/03/132333 4.html)
-本文介绍在VC 6.0中编译和使用OpenSSL的过程- 微光的闪现- 博客园
-深信服SSL VPN M4.0正式发布
-这些是我使用的资料，搜集了好几天的
-关于OpenSSL编译，源码文件夹下的INSTALL.W32就说的很清楚
-本文介绍在VC 6.0中_编译_和使用_OpenSSL_的过程- 微光的闪现- 博客园
-_openssl编译_步骤- 太郎之石的专栏- CSDNBlog
-在Windows下使用汇编方式_编译OpenSSL_方法- rabbit729的专栏- CSDNBlog
-在Windows下_编译OpenSSL_（VS2005） - shootingstars - 博客园
-之前我按照官方做法编译失败了，后来安装了VS2005之后就成功了，可能是环境配置的问题，如果VC6.0的朋友遇到和我一样的原因，可以换Visual Studio下面的&#34;Visual Studio 2005 命令提示&#34;试试</p>
+    
+    
+    
+    <p>Boss昨个儿说，这两天把SSL上面的相关东西给他去看一下 苦命啊，最近都在做Ajax，SSL几乎没有什么动静。唉，今天中午没吃饭，没睡觉，就开始做SSL 耗费了很多时间，才正确的编译完OpenSSL 要做的东西是基于C#的、利用OpenSSL开源代码完成的SSL分级服务器，很是麻烦，要用C#来调用C程序，而且OpenSSL本来就很难使用，唉，残念啊。 下面把我今天的成果分享一下： [C#]用HttpWeb...</p>
   </div>
   <footer class="entry-footer"><span title='2009-03-05 00:00:00 +0800 +0800'>2009-03-05</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to OpenSSL初接触" href="https://blog.alswl.com/2009/03/early-contact-with-openssl/"></a>
@@ -375,12 +281,10 @@ _openssl编译_步骤- 太郎之石的专栏- CSDNBlog
     </h2>
   </header>
   <div class="entry-content">
-    <p>本来关于Ajax的学习可以告一段落，原因是看的一本国内的教材有点错误，耗了好多时间才改对，让我对Ajax的热情稍微降低
-不过很&#34;可惜&#34;的是，今天在China-pub上看到一本五星评价的书，《Ajax实战》，抱着试一试的态度，居然在图书馆找到了这本书。
-略微一看，是ajaxcn.org做的翻译，还是不错的，而且是Ajax领域的开山之作，读完前言，又激发我读下去的乐趣。
-在此感谢矿大的图书馆，总是留下最后一本书给我借，谢谢````
-链接地址：
-Ajax实战:实例详解 全场购物满58元免配送费！ </p>
+    
+    
+    
+    <p>本来关于Ajax的学习可以告一段落，原因是看的一本国内的教材有点错误，耗了好多时间才改对，让我对Ajax的热情稍微降低 不过很&#34;可惜&#34;的是，今天在China-pub上看到一本五星评价的书，《Ajax实战》，抱着试一试的态度，居然在图书馆找到了这本书。 略微一看，是ajaxcn.org做的翻译，还是不错的，而且是Ajax领域的开山之作，读完前言，又激发我读下去的乐趣。 在此感谢矿大的图...</p>
   </div>
   <footer class="entry-footer"><span title='2009-03-03 00:00:00 +0800 +0800'>2009-03-03</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 继续推荐书：Ajax实战" href="https://blog.alswl.com/2009/03/continue-to-recommend-the-book-ajax-in-action/"></a>
@@ -392,21 +296,12 @@ Ajax实战:实例详解 全场购物满58元免配送费！ </p>
     </h2>
   </header>
   <div class="entry-content">
-    <p>在China-pub首页上看到深入浅出Ext JS这本书，China-pub推荐为09年最值得期待的Ajax技术图书感觉这本书挺不错，就关注了一下Ext JS
-1、ExtJS可以用来开发RIA也即富客户端的AJAX应用，是一个用javascript写的，主要用于创建前端用户界面，是一个与后台技术无关的前端ajax框 架。因此，可以把ExtJS用在.Net、Java、Php等各种开发语言开发的应用中。ExtJs最开始基于YUI技术，由开发人员JackSlocum开发，通过 参考JavaSwing等机制来组织可视化组件，无论从UI界面上CSS样式的应用，到数据解析上的异常处理，都可算是一款不可多得的JavaScript客户端技术 的精品。
-2、Ext的UI组件模型和开发理念脱胎、成型于Yahoo组件库YUI和Java平台上Swing两者，并为开发者屏蔽了大量跨浏览器方面的处理。相对来说，EXT 要比开发者直接针对DOM、W3C对象模型开发UI组件轻松。
-Ajax主流框架与ExtJS JQuery、 Prototype和YUI都属于非常核心的JS库。虽然YUI，还有最近的JQuery，都给自己构建了一系列的UI器件（Widget），不过却 没有一个真正的整合好的和完整的程序开发平台。哪怕是这些低层的核心库已经非常不错了，但当投入到真正的开发环境中，依然需要开发者做大量的工作去完善很多缺失之处。 而Ext就是要填补这些缺口。主流开源框架中只有Dojo像Ext一样，尝试着提供整合的开发平台。相比Dojo这个出色的工具包，我们认为 Ext能提供一个粘合度 更高的应用程序框架。Ext的各个组件在设计之时就要求和其它Ext组件组合一起工作是无缝合作的。这种流畅的互通性，离不开一个紧密合作的团队，还必须时刻强调设计 和开发这两方面目标上的统一，而这点是很多开源项目未能做到的。从构建每一个组件开始，我们始终都强调组件的外观、性能、互通性和可扩展性，而我们认为组件已经达到了 这几点的要求。
-Ext绝对可以单独使用。实际上，除了有特定的要求，推荐单独使用Ext，这样的话文件占位更小，支持和整合也更紧密。我们也支持与jQuery、 YUI或Prot otype整合使用，作为低层库的角色出现，以提供处理各种核心的服务，如DOM和事件处理，Ajax连接和动画特效。使用整合方式的一个原因是它们已具备了一些特定 的器件而Ext并没有原生支持—-像YUI的History控件便是一个典型的例子。这时，Ext需要依赖YUI这个库的底层来实现History控件，这样一来 的话也可免去Ext自身底层库，从而减少了整个程序的内存占用。另一个使用整合方式的原因是，对于许多已在使用其他底层库的程序，你可能希望逐步加入Ext。总之，如 果已经有了其他库，Ext可已利用它们。我们的宗旨是为用户提供各种可能性和性能上的优化。而事实是，只要实现了相对应的底层库接口，为任意一个框架添加上适配器是没 有问题的—-人们可以轻松地将Dojo、Moo、Ajax.NET，或其它JS库转变为 Ext的底层。
-Ext从2.x开始收费，这给他的应用前景带来一些问题。不过对国内开发人员的影响不大，毕竟是客户付款。
-深入浅出Ext JS(china-pub 2.20日全国独家首发） 【市场价】￥49.00 【PUB价】￥36.75 本书是国内Ext JS先驱者的智慧结晶。内容翔实、示例丰富，包含大量示例代码，可操作性极强。不仅全面地阐述了Ext JS的基础知识，而且深入浅出地讲解了Ext JS开发中的高级技巧，同时还给出了大量专家级的建议。通过学习本书，读者将感受到Ext JS的无穷魅力和Ajax技术带来的完美体验。 【新书预告】Dojo之父力作[《Mastering Dojo》](http://www.dojochina.com/index.php?q=no de/1287)中文版（Dojo中国翻译）即将由图灵公司出版，敬请关注！ 【媒体评论】
-“本书是非常急缺的全面讲解Ext JS的图书，弥补了Ajax社区的一大空白。”
-—-Ajax中国，国内权威的Ajax专业门户
-“要想全面了解和掌握Ext JS，强烈推荐阅读《深入浅出Ext JS》。从各方面来看，这本书都非常优秀！”
-—-Dojo中国，Dojo中文官方网站
-本书样章发布后好评如潮，经仔细研读，果然名副其实。内容翔实，示例丰富，叙述风趣幽默，可操作性极强……Ext JS开发者必备！
-—-Family 168，中国专业的Ajax解决方案提供商
-“Ext JS是最炫丽的Ajax框架，开源人网站开发了大量基于Ext JS的应用，本书将是2009年最值得期待的Ajax技术图书之一。相信它一定会受到开源技术爱好者的欢迎，也一定可以为所有爱好Ext JS的开发者带来价值。”
-—-开源人，专注于为开源人士服务的互动平台</p>
+    
+    
+    <div class="thumbnail"><img src="https://d05fae.dijingchao.com/upload_dropbox/200903/zcover.jpg" alt="Thumbnail" /></div>
+    
+    
+    <p>在China-pub首页上看到深入浅出Ext JS这本书，China-pub推荐为09年最值得期待的Ajax技术图书感觉这本书挺不错，就关注了一下Ext JS 1、ExtJS可以用来开发RIA也即富客户端的AJAX应用，是一个用javascript写的，主要用于创建前端用户界面，是一个与后台技术无关的前端ajax框 架。因此，可以把ExtJS用在.Net、Java、Php等各种开发语言开发的应用中。ExtJ...</p>
   </div>
   <footer class="entry-footer"><span title='2009-03-02 00:00:00 +0800 +0800'>2009-03-02</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 关注一下Ext JS" href="https://blog.alswl.com/2009/03/look-at-ext-js/"></a>
@@ -418,7 +313,10 @@ Ext从2.x开始收费，这给他的应用前景带来一些问题。不过对�
     </h2>
   </header>
   <div class="entry-content">
-    <p>大一时候就接触了《程序员》这本杂志，不过当时眼界很浅，浮光掠影的看了一点，觉得都是业界信息，对自己没什么用处。 今年开学后，忙忙碌碌的过了一学期，忙着jav a和j2ee的网络学习，ssl的开发，还得边带着学linux，很是吃力，但想到9个月后就要找工作了，不得不逼着自己去做。以至于宿舍的同学都看不到我，电脑也一 个星期没回宿舍，都扔在工作室了。 忙碌的生活让我很不适应，不知道自己投资的方向是不是正确的。正在我烦恼的时刻，《程序员》中一篇文章《最具挑战的经济形势，最具 机遇的时代》，出自微软亚洲研究院院长洪小文之手，彻底坚定了我的信心。 《双城记》中说it was the worst of times， it was also the best of times。 ps：高端视点是指大大们的视点，不是我的…</p>
+    
+    
+    
+    <p>大一时候就接触了《程序员》这本杂志，不过当时眼界很浅，浮光掠影的看了一点，觉得都是业界信息，对自己没什么用处。 今年开学后，忙忙碌碌的过了一学期，忙着jav a和j2ee的网络学习，ssl的开发，还得边带着学linux，很是吃力，但想到9个月后就要找工作了，不得不逼着自己去做。以至于宿舍的同学都看不到我，电脑也一 个星期没回宿舍，都扔在工作室了。 忙碌的生活让我很不适应，不知道自己投资的方向是不是正确的。...</p>
   </div>
   <footer class="entry-footer"><span title='2009-02-28 00:00:00 +0800 +0800'>2009-02-28</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 高端视点" href="https://blog.alswl.com/2009/02/e9-ab-98-e7-ab-af-e8-a7-86-e7-82-b9/"></a>

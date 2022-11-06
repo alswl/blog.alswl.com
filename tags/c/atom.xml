@@ -13,11 +13,7 @@
       <pubDate>Sun, 30 Mar 2014 15:41:43 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2014/03/hiredis/</guid>
-      <description>前段时间学习 Redis 时候，听到 hiredis 的大名，正好也在做异步的学习，就找来代码学习一下。 我几乎不太会 C，仅限于最简单的语法，完全没有在生产环境中写过， 所以先看个 Client 简单代码，下次看 Memcached 代码应该会更顺畅一些。
-Hiredis 是用 C 写的 Redis 客户端，对 Redis 协议进行了简单的封装， 同时提供了同步和异步的两种 API。Hiredis 的代码位于 https://github.com/redis/hiredis。
-一分钟使用入门 同步 API 的调用方法：
-redisContext *context = redisConnect(&amp;#34;127.0.0.1&amp;#34;, 6379); reply = redisCommand(context, &amp;#34;SET foo %s&amp;#34;, value);	printf(&amp;#34;PING: %s\n&amp;#34;, reply-&amp;gt;str); freeReplyObject(reply) redisFree(context); Redis ae 异步 API 的调用方法，使用 Redis 自己的 ae 事件库， 至于为什么 Redis 没有使用 libevent 或者 libev，可以参考 Reason， 中文翻译：
-void connectCallback(const redisAsyncContext *c, int status) { printf(&amp;#34;Connected...\n&amp;#34;); } void disconnectCallback(const redisAsyncContext *c, int status) { printf(&amp;#34;Disconnected.</description>
+      <description>前段时间学习 Redis 时候，听到 hiredis 的大名，正好也在做异步的学习，就找来代码学习一下。 我几乎不太会 C，仅限于最简单的语法，完全没有在生产环境中写过， 所以先看个 Client 简单代码，下次看 Memcached 代码应该会更顺畅一些。 Hiredis 是用 C 写的 Redis 客户端，对 Redis 协议进行了简单的封装， 同时提供了同步和异步的两种 API。Hiredis 的代码位于 https://github.com/redis/hiredis。 一分钟使用入门 同步 API 的调用方法： redisContext *context =</description>
     </item>
     
     <item>
@@ -26,9 +22,7 @@ void connectCallback(const redisAsyncContext *c, int status) { printf(&amp;#34;C
       <pubDate>Tue, 31 Mar 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming-part-2-security-handshake/</guid>
-      <description>原文链接：[http://www.ibm.com/developerworks/cn/linux/l-openssl2.html](http://www.i bm.com/developerworks/cn/linux/l-openssl2.html)
-怎么都复制不过来，提示含有敏感字眼，我晕，这是IBM文档库里的啊，崩溃了
-我都不要言论自由，只想保存一些经典的文章而已，河蟹啊````</description>
+      <description>原文链接：[http://www.ibm.com/developerworks/cn/linux/l-openssl2.html](http://www.i bm.com/developerworks/cn/linux/l-openssl2.html) 怎么都复制不过来，提示含有敏感字眼，我晕，这是IBM文档库里的啊，崩溃了 我都不要言论自由，只想保存一些经典的文章而已，河蟹啊````</description>
     </item>
     
     <item>
@@ -37,19 +31,7 @@ void connectCallback(const redisAsyncContext *c, int status) { printf(&amp;#34;C
       <pubDate>Thu, 19 Mar 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/03/introduction-to-openssl-programming/</guid>
-      <description>**OpenSSL **编程入门
-作者:Eric Rescorla on Sat, 2001-09-01 01:0
-如果你急切的想构建一个简单的Web客户端和服务器对,这时你就需要使用SSL了..
-SSL是一种保护基于TCP协议的网络应用最快而且最简单的的方法,如果你正在用C语言做开发,那么对于你来说,最好的选择可能就是使用OpenSSL了. OpenSSL是在Eric Young的SSLeay包的基础上对TSL/SSL的一个免费的执行(类似于BSD方式的License).然而, 不幸运的事情是, 伴随OpenSSL一起发布的文档和示例代码并不是很完全, 使用它的人需要更多的东西.在OpenSSL被使用之处, man手册都相当优秀,可是这些手册失去了大的背景 因为它们只是参考资料而不是教程.
-OpenSSL的API多而复杂, 因此我们在此并不会作出一个完整的讲述. 相反,我的目的只是教会你如何去高效的使用man手册.在本文中, 我们将会通过构建一个简单的Web客户端和服务器来演示OpenSSL的基本特点. 而在后续的第二篇中我们将会介绍OpenSSL的一些高级特性, 比如会话恢复和客户端认证等.
-在话题开始之前, 我会认为你已经熟悉SSL和HTTP了, 或者最起码在概念层上应该有一些了解. 如果你对此一无所知, 推荐一个比较好的方法,那就是参考RFC(参见附录).
-由于篇幅原因, 本文只包涵了源代码的一些摘录, 完整的代码可以从作者的站点http://www.rtfm.com/openssl- examples/上下载.
-程序
-我们的客户端是一个简单的HTTPS(见 RFC 281![image](/DOCUME~1/%E7%8B%84%E6%95%AC%E8%B6%85/LOCALS~1/ Temp/msohtml1/01/clip_image001.gif)客户端,它在初始化了一个到达服务器的SSL连接之后便通过这个连接将HTTP请求传送给H TTP服务器. 然后等待服务器端的响应,并将响应信息打印在屏幕上.这是对通常那些&amp;quot;获取并且打印信息&amp;quot;的程序功能更简化的一个例子.
-服务器端程序是一个简单的HTTPS 服务器, 它等待从客户端发出的TCP连接, 每当接收到一个连接时,它会磋商这个连接(的合法性). 一旦这个连接被确定下来, 它会读取客户端的HTTP请求, 并将HTTP请求的响应信息传输给客户端. 当响应传输完毕时它会关闭这个连接.
-我们的第一个任务就是建立一个上下文对象(一个SSL_CTX), 这个上下文对象会在每次需要建立新的SSL连接的时候被用来创建一个新的连接对象. 而这些连接对象则用于SSL的握手,读和写.
-(使用上下文对象)这种方法有两个优点: 首先, 上下文对象允许一次初始化多个结构体, 这样就提提高了性能. 在大多数应用中, 每一个SSL连接都使用相同的加密算法(keying material)和CA(certificate authority)列表等. 而采用上面这种方法, 我们就不需要在每次连接的时都去加载这些信息(加密算法和证书), 而只需要在程序启动时将它们加载进上下文对象中. 然后,当我们需要创建一个新的连接时, 只需要将新的连接简单的指向这个上下文对象就可以了. 使用一个简单的上下文对象的第二个好处就是它允许多个SSL连接之间共享数据, 比如用于SSL会话恢复的SSL缓冲(cache). 上下文初始化由主要的四个任务组成, 通过列表1所示的initialize_ctx()函数来完成.
-列表** 1 initialize_ctx()**</description>
+      <description>**OpenSSL **编程入门 作者:Eric Rescorla on Sat, 2001-09-01 01:0 如果你急切的想构建一个简单的Web客户端和服务器对,这时你就需要使用SSL了.. SSL是一种保护基于TCP协议的网络应用最快而且最简单的的方法,如果你正在用C语言做开发,那么对于你来说,最好的选择可能就是使用OpenSSL了. OpenSSL是在Eric Young的SSLeay包的基础上对TSL/SSL的一个免费的执行(类似于BSD方式的License).然而,</description>
     </item>
     
     <item>
@@ -58,35 +40,7 @@ OpenSSL的API多而复杂, 因此我们在此并不会作出一个完整的讲�
       <pubDate>Thu, 19 Mar 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/03/openssl-s-bio/</guid>
-      <description>SSL类型的BIO
-&amp;mdash;根据openssl doccryptobio_f_ssl.pod翻译和自己的理解写成
-（作者：DragonKing, Mail: wzhah@263.net ,发布于：http://openssl.126.com 之openssl专业论坛）
-从名字就可以看出，这是一个非常重要的BI O类型，它封装了openssl里面的ssl规则和函数，相当于提供了一个使用SSL很好的有效工具，一个很好的助手。其定义（opensslbio.h,opens slssl.h）如下：
-BIO_METHOD *BIO_f_ssl(void);
-#define BIO_set_ssl(b,ssl,c) BIO_ctrl(b,BIO_C_SET_SSL,c,(char *)ssl)
-#define BIO_get_ssl(b,sslp) BIO_ctrl(b,BIO_C_GET_SSL,0,(char *)sslp)
-#define BIO_set_ssl_mode(b,client) BIO_ctrl(b,BIO_C_SSL_MODE,client,NULL)
-#define BIO_set_ssl_renegotiate_bytes(b,num) BIO_ctrl(b,BIO_C_SET_SSL_RENEGOTIATE_BYTES,num,NULL);
-#define BIO_set_ssl_renegotiate_timeout(b,seconds) BIO_ctrl(b,BIO_C_SET_SSL_RENEGOTIATE_TIMEOUT,seconds,NULL);
-#define BIO_get_num_renegotiates(b) BIO_ctrl(b,BIO_C_SET_SSL_NUM_RENEGOTIATES,0,NULL);
-BIO *BIO_new_ssl(SSL_CTX *ctx,int client);
-BIO *BIO_new_ssl_connect(SSL_CTX *ctx);
-BIO *BIO_new_buffer_ssl_connect(SSL_CTX *ctx);
-int BIO_ssl_copy_session_id(BIO *to,BIO *from);
-void BIO_ssl_shutdown(BIO *bio);
-#define BIO_do_handshake(b) BIO_ctrl(b,BIO_C_DO_STATE_MACHINE,0,NULL)
-该类型BIO的实现文件在sslbio_ssl.c里面，大家可以参看这个文件得到详细的函数实现信息。
-【BIO_f_ssl】
-该函数返回一个SSL类型的BIO_METHOD结构，其定义如下：
-static BIO_METHOD methods_sslp=
-{
-BIO_TYPE_SSL,&amp;ldquo;ssl&amp;rdquo;,
-ssl_write,
-ssl_read,
-ssl_puts,
-NULL, /* ssl_gets, */
-ssl_ctrl,
-ssl_new,</description>
+      <description>SSL类型的BIO &amp;mdash;根据openssl doccryptobio_f_ssl.pod翻译和自己的理解写成 （作者：DragonKing, Mail: wzhah@263.net ,发布于：http://openssl.126.com 之openssl专业论坛） 从名字就可以看出，这是一个非常重要的BI O类型，它封装了openssl里面的ssl规则和函数，相当于提供了一个使用SSL很好的有效工具，一个很好的助手。其定义（openss</description>
     </item>
     
     <item>
@@ -95,44 +49,7 @@ ssl_new,</description>
       <pubDate>Wed, 18 Mar 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/03/openssl-prepared-using-ssl-tls-instance/</guid>
-      <description>◆ 用openssl编写ssl,tls程序
-作者：yawl(yawl@nsfocus.com)
-日期：2000-8-15
-一:简介:
-ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可以保证应用层数据在互联网络传输不被监听,伪造和窜改.
-openssl(www.openssl.org)是sslv2,sslv3,tlsv1的一份完整实现,内部包含了大量加密算法程序.其命令行提供了丰富的加密,验 证,证书生成等功能,甚至可以用其建立一个完整的ca.与其同时,它也提供了一套完整的库函数,可用开发用ssl/tls的通信程序. apache的https两种 版本mod_ssl和apachessl均基于它实现的.openssl继承于ssleay,并做了一定的扩展,当前的版本是0.9.5a.
-openssl的缺点是文档太少,连一份完整的函数说明都没有,man page也至今没做完整:-(,如果想用它编程序,除了熟悉已有的文档(包括ssleay,m od_ssl,apachessl的文档)外,可以到它的maillist上找相关的帖子,许多问题可以在以前的文章中找到答案.
-编程:
-程序分为两部分,客户端和服务器端,我们的目的是利用ssl/tls的特性保证通信双方能够互相验证对方身份(真实性),并保证数据的完整性,私密性.
-1.客户端程序的框架为:
-/生成一个ssl结构/
-meth = sslv23_client_method();
-ctx = ssl_ctx_new (meth);
-ssl = ssl_new(ctx);
-/下面是正常的socket过程/
-fd = socket();
-connect();
-/把建立好的socket和ssl结构联系起来/
-ssl_set_fd(ssl,fd);
-/ssl的握手过程/
-ssl_connect(ssl);
-/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/
-ssl_write(ssl,&amp;ldquo;hello world&amp;rdquo;,strlen(&amp;ldquo;hello world!&amp;rdquo;));
-2.服务端程序的框架为:
-/生成一个ssl结构/
-meth = sslv23_server_method();
-ctx = ssl_ctx_new (meth);
-ssl = ssl_new(ctx);
-/下面是正常的socket过程/
-fd = socket();
-bind();
-listen();
-accept();
-/把建立好的socket和ssl结构联系起来/
-ssl_set_fd(ssl,fd);
-/ssl的握手过程/
-ssl_connect(ssl);
-/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/</description>
+      <description>◆ 用openssl编写ssl,tls程序 作者：yawl(yawl@nsfocus.com) 日期：2000-8-15 一:简介: ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可</description>
     </item>
     
     <item>
@@ -141,53 +58,7 @@ ssl_connect(ssl);
       <pubDate>Wed, 18 Mar 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/03/programming-with-openssl-for-ssl/</guid>
-      <description>主要介绍openssl进行SSL通信的一些函数以及过程，主要是初始化过程，至于数据的接收以及后续处理可以具体问题具体分析。
-load所有的SSL算法
-OpenSSL_add_ssl_algorithms();
-建立SSL所用的method
-SSL_METHOD *meth=SSLv23_method();
-初始化上下文情景
-SSL_CTX *ctx=SSL_CTX_new(meth);
-ret-&amp;gt;quiet_shutdown=1;默认的是ret-&amp;gt;quiet_shutdown=0;他相当于SSL_set_shutdown函数将参数设置为SS L_SENT_SHUTDOWN|SSL_RECEIVED_SHUTDOWN
-当设置为1时，假如关闭后，不通知对方，这样不适合TLS标准
-SSL_CTX_set_quiet_shutdown(ctx,1);
-ctx-&amp;gt;options|=SSL_OP_ALL，SSL/TLS有几个公认的bug,这样设置会使出错的可能更小
-SSL_CTX_set_options(ctx,SSL_OP_ALL);
-设置cache的大小，默认的为1024*20=20000，这个也就是可以存多少个session_id，一般都不需要更改的。假如为0的话将是无限
-SSL_CTX_sess_set_cache_size(ctx,128);
-SSL_CTX_load_verify_locations用于加载受信任的CA证书，CAfile如果不为NULL，则他指向的文件包含PEM编码格式的一个或多 个证书，可以用e.g.来简要介绍证书内容
-CApath如果不为NULL，则它指向一个包含PEM格式的CA证书的目录，目录中每个文件包含一份CA证书，文件名是证书中CA名的HASH值
-可以用c-rehash来建立该目录，如cd /some/where/certs（包含了很多可信任的CA证书） c_rehash .。返回一成功，0 失败。SSL_CTX_set_default_verify_paths找寻默认的验证路径，在这里肯定找不到的。
-这里主要set cert_store
-char *CAfile=NULL,*CApath=NULL;
-SSL_CTX_load_verify_locations(ctx,CAfile,CApath);
-当需要客户端验证的时候，服务器把CAfile里面的可信任CA证书发往客户端。
-if(CAfile !=NULL )SSL_CTX_set_client_CA_list(ctx,SSL_load_client_CA_file(CAfile));
-设置最大的验证用户证书的上级数。
-SSL_CTX_set_verify_depth(ctx,10);
-当使用RSA算法鉴别的时候，会有一个临时的DH密钥磋商发生。这样会话数据将用这个临时的密钥加密，而证书中的密钥中做为签名。
-所以这样增强了安全性，临时密钥是在会话结束消失的，所以就是获取了全部信息也无法把通信内容给解密出来。
-static unsigned char dh512_p[]={
-0xDA,0x58,0x3C,0x16,0xD9,0x85,0x22,0x89,0xD0,0xE4,0xAF,0x75,
-0x6F,0x4C,0xCA,0x92,0xDD,0x4B,0xE5,0x33,0xB8,0x04,0xFB,0x0F,
-0xED,0x94,0xEF,0x9C,0x8A,0x44,0x03,0xED,0x57,0x46,0x50,0xD3,
-0x69,0x99,0xDB,0x29,0xD7,0x76,0x27,0x6B,0xA2,0xD3,0xD4,0x12,
-0xE2,0x18,0xF4,0xDD,0x1E,0x08,0x4C,0xF6,0xD8,0x00,0x3E,0x7C,
-0x47,0x74,0xE8,0x33,
-};
-static unsigned char dh512_g[]={0x02,};
-DH *dh=DH_new();
-dh-&amp;gt;p=BN_bin2bn(dh512_p,sizeof(dh512_p),NULL);
-dh-&amp;gt;g=BN_bin2bn(dh512_g,sizeof(dh512_g),NULL);
-SSL_CTX_set_tmp_dh(ctx,dh);
-下面加载服务器的证书和私钥，私钥可以和证书在一个文件之中。判断私钥和证书是否匹配。
-char *s_cert_file=&amp;ldquo;server.pem&amp;rdquo;;
-char *s_key_file=NULL;
-SSL_CTX_use_certificate_file(ctx,s_cert_file,SSL_FILETYPE_PEM);
-获取私钥之前先把私钥的密码给写上
-char *pKeyPasswd=&amp;ldquo;serve&amp;rdquo;;
-SSL_CTX_set_default_passwd_cb_userdata(ctx, pKeyPasswd);
-SSL_CTX_use_PrivateKey_file(ctx,s_cert_file,SSL_FILETYPE_PEM);</description>
+      <description>主要介绍openssl进行SSL通信的一些函数以及过程，主要是初始化过程，至于数据的接收以及后续处理可以具体问题具体分析。 load所有的SSL算法 OpenSSL_add_ssl_algorithms(); 建立SSL所用的method SSL_METHOD *meth=SSLv23_method(); 初始化上下文情景 SSL_CTX *ctx=SSL_CTX_new(meth); ret-&amp;gt;quiet_shutdown=1;默认的是ret-&amp;gt;quiet_shutdown=0;他相当于SSL_set_shutdown函数将参数设置为SS L_SENT_SHUTDOWN|SSL_RECEIVED_SHUTDOWN 当设置为1时，假如关闭后，不通</description>
     </item>
     
     <item>
@@ -196,15 +67,7 @@ SSL_CTX_use_PrivateKey_file(ctx,s_cert_file,SSL_FILETYPE_PEM);</description>
       <pubDate>Tue, 17 Mar 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/</guid>
-      <description>使用 OpenSSL API 进行安全编程
-创建基本的安全连接和非安全连接
-级别： 初级
-Kenneth Ballard (kenneth.ballard@ptk.org), 自由程序员
-2004 年 8 月 09 日
-学习如何使用 OpenSSL &amp;mdash;- 用于安全通信的最著名的开放库 &amp;mdash;- 的 API 有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的 BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。
-OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL 使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。
-学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但 OpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？
-OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&amp;quot;SSL library&amp;quot;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于 1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General Public License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的 参考资料 ，以获得其他信息）。</description>
+      <description>使用 OpenSSL API 进行安全编程 创建基本的安全连接和非安全连接 级别： 初级 Kenneth Ballard (kenneth.ballard@ptk.org), 自由程序员 2004 年 8 月 09 日 学习如何使用 OpenSSL &amp;mdash;- 用于安全通信的最著名的开放库 &amp;mdash;- 的 API 有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的 BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。 OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL 使用的教</description>
     </item>
     
     <item>
@@ -213,19 +76,7 @@ OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&amp
       <pubDate>Tue, 17 Mar 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/</guid>
-      <description>这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。
-这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&amp;quot;利用OpenSSL实现安全的Web Server&amp;quot;中找到自己需要的内容，现在分享一下。
-1.生成CA中心的私钥
-openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
-2.生成CA中心的自签证书
-openssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey rootkey.pem -out rootcert.pem
-3.生成A分支机构的私钥和认证请求
-openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem
-PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件
-那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf
-注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。
-4.由CA中心为A分支机构签发证书
-openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.</description>
+      <description>这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。 这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&amp;quot;利用OpenSSL实现安全的Web Server&amp;quot;中找到自己需要的内容，现在分享一下。 1.生成CA中心的私钥 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem 2.生成</description>
     </item>
     
     <item>
@@ -234,25 +85,7 @@ openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.</descrip
       <pubDate>Sun, 15 Mar 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/03/common-certificate-format-and-conversion/</guid>
-      <description>这些文字都是转来转去，都找不到原作者是谁，唉````
-仍然感谢作者的贡献&amp;hellip;.
-PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。 常用的有：
-PKCS#7 Cryptographic Message Syntax Standard
-PKCS#10 Certification Request Standard
-PKCS#12 Personal Information Exchange Syntax Standard
-X.509是常见通用的证书格式。所有的证书都符合为Public Key Infrastructure (PKI) 制定的 ITU-T X509 国际标准。
-PKCS#7 常用的后缀是： .P7B .P7C .SPC
-PKCS#12 常用的后缀有： .P12 .PFX
-X.509 DER 编码(ASCII)的后缀是： .DER .CER .CRT
-X.509 PAM 编码(Base64)的后缀是： .PEM .CER .CRT
-.cer/.crt是用于存放证书，它是2进制形式存放的，不含私钥。
-.pem跟crt/cer的区别是它以Ascii来表示。
-pfx/p12用于存放个人证书/私钥，他通常包含保护密码，2进制方式
-p10是证书请求
-p7r是CA对证书请求的回复，只用于导入
-p7b以树状展示证书链(certificate chain)，同时也支持单个证书，不含私钥。
-一 用openssl创建CA证书的RSA密钥(PEM格式)：
-openssl genrsa -des3 -out ca.</description>
+      <description>这些文字都是转来转去，都找不到原作者是谁，唉```` 仍然感谢作者的贡献&amp;hellip;. PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。 常用的有： PKCS#7 Cryptographic Message Syntax Standard PKCS#10 Certification Request Standard PKCS#12 Personal Information Exchange Syntax Standard X.509是常见通用的证书格式。所有的证书都符合为Public Key Infrastructure (PKI) 制定的 ITU-T X509 国际标准。 PKCS#7 常用的后缀是： .P7B .P7C .SPC PKCS#12 常用的后缀有： .P12 .PFX X.509 DER 编码(ASCII)的</description>
     </item>
     
     <item>
@@ -261,19 +94,7 @@ openssl genrsa -des3 -out ca.</description>
       <pubDate>Sun, 15 Mar 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/03/using-openssl-to-generate-certificates/</guid>
-      <description>这些命令虽然是linux下面的，但是在windows下面也能用
-我遇到I am unable to access the ./demoCA/newcerts directory ./demoCA/newcerts: No such file or directory 然后找到这篇文章，只要用生成相应的目录就可以了。
-我遇到的第二个问题是TXT_DB error number 2 在redhat的网站[kbase.redhat.com/faq/docs/DOC-3624] (http://kbase.redhat.com/faq/docs/DOC-3624)这篇文章。
-我将原来index.txt里面的内容剪切出，然后重新签证，再把剪切出的内容粘贴到后来生成文件之前，就解决了那个问题。
-下面是网上的资料：OpenSSL相关命令hi.baidu.com/kobetec/blog/item/706fc0440ff3b44a510ffe0b.html
-这个是一个不错的资料参考，就转载过来，谢谢原作者
-命令操作：
-1、生成普通私钥：
-[weigw@TEST src]$ openssl genrsa -out privatekey.key 1024
-Generating RSA private key, 1024 bit long modulus &amp;hellip;.++++++ &amp;hellip;&amp;hellip;.++++++ e is 65537 (0x10001)
-2、生成带加密口令的密钥：
-[weigw@TEST src]$ openssl genrsa -des3 -out privatekey.key 1024
-Generating RSA private key, 1024 bit long modulus &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;++++++ &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;++++++ e is 65537 (0x10001) Enter pass phrase for privatekey.</description>
+      <description>这些命令虽然是linux下面的，但是在windows下面也能用 我遇到I am unable to access the ./demoCA/newcerts directory ./demoCA/newcerts: No such file or directory 然后找到这篇文章，只要用生成相应的目录就可以了。 我遇到的第二个问题是TXT_DB error number 2 在redhat的网站[kbase.redhat.com/faq/docs/DOC-3624] (http://kbase.redhat.com/faq/docs/DOC-3624)这篇文章。 我将原来index.txt里面</description>
     </item>
     
     <item>
@@ -282,25 +103,7 @@ Generating RSA private key, 1024 bit long modulus &amp;hellip;&amp;hellip;&amp;h
       <pubDate>Thu, 05 Mar 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/03/early-contact-with-openssl/</guid>
-      <description>Boss昨个儿说，这两天把SSL上面的相关东西给他去看一下
-苦命啊，最近都在做Ajax，SSL几乎没有什么动静。唉，今天中午没吃饭，没睡觉，就开始做SSL
-耗费了很多时间，才正确的编译完OpenSSL
-要做的东西是基于C#的、利用OpenSSL开源代码完成的SSL分级服务器，很是麻烦，要用C#来调用C程序，而且OpenSSL本来就很难使用，唉，残念啊。
-下面把我今天的成果分享一下：
-[C#]用HttpWebRequest加载证书建立SSL通道时发生异常的解决办法- 旁观 &amp;hellip;
-OpenSSL- .net，C++/CLI语言的一次实践
-OpenSSL: The Open Source toolkit for SSL/TLS
-使用OpenSSL API 进行安全编程
-[在C#工程中使用OPENSSL](http://www.cnblogs.com/sleepingwit/archive/2008/11/03/132333 4.html)
-本文介绍在VC 6.0中编译和使用OpenSSL的过程- 微光的闪现- 博客园
-深信服SSL VPN M4.0正式发布
-这些是我使用的资料，搜集了好几天的
-关于OpenSSL编译，源码文件夹下的INSTALL.W32就说的很清楚
-本文介绍在VC 6.0中_编译_和使用_OpenSSL_的过程- 微光的闪现- 博客园
-_openssl编译_步骤- 太郎之石的专栏- CSDNBlog
-在Windows下使用汇编方式_编译OpenSSL_方法- rabbit729的专栏- CSDNBlog
-在Windows下_编译OpenSSL_（VS2005） - shootingstars - 博客园
-之前我按照官方做法编译失败了，后来安装了VS2005之后就成功了，可能是环境配置的问题，如果VC6.0的朋友遇到和我一样的原因，可以换Visual Studio下面的&amp;quot;Visual Studio 2005 命令提示&amp;quot;试试</description>
+      <description>Boss昨个儿说，这两天把SSL上面的相关东西给他去看一下 苦命啊，最近都在做Ajax，SSL几乎没有什么动静。唉，今天中午没吃饭，没睡觉，就开始做SSL 耗费了很多时间，才正确的编译完OpenSSL 要做的东西是基于C#的、利用OpenSSL开源代码完成的SSL分级服务器，很是麻烦，要用C#来调用C程序，而且OpenSSL本来就很难使用，唉，残念啊。 下面把我今天的成果分享一下： [C#]用HttpWeb</description>
     </item>
     
     <item>
@@ -309,36 +112,7 @@ _openssl编译_步骤- 太郎之石的专栏- CSDNBlog
       <pubDate>Tue, 28 Oct 2008 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/</guid>
-      <description>转来的，最近对MFC很关注&amp;hellip;
-WPF简介
-WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示， 所以叫Presentation（呈现）。
-作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
-微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。
-在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本&amp;ndash; 你可以使用它来开发你的下一代用户界面程序了。
-那么，WPF是什么，为什么它那么重要呢？
-首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：
-•将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。
-•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关 键逻辑而不干扰设计过程。
-•它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。
-•它支持软件的&amp;quot;空标签&amp;quot;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。
-WPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。
-其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素 只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的 浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管 理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立 于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易 于操作。
-作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置 的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。
-&amp;amp; nbsp_place_holder;&amp;amp;nb sp_place_holder;&amp;amp;nbsp _place_holder;&amp;amp;nbsp_p lace_holder;&amp;amp;nbsp_pla ce_holder;&amp;amp;nbsp_place _holder;&amp;amp;nbsp_place_h older;&amp;amp;nbsp_place_hol der;&amp;amp;nbsp_place_holde r; &amp;amp;n bsp_place_holder; WPF前景分析
-WPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是 界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的） ，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基 于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！ ），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景 应该是一片光明。
-目前开发界的对WPF响应程度
-目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本 都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是 刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。
-目前微软针对WPF提供的服务和支持
-随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主 要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。
-1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载
-2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方 技术支持网站发布的信息为准）
-3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS 2005中进行所见即所得的WPF开发。
-对比MFC，winform，wpf
-分析：
-MFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，
-winform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。
-wpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的 显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）
-&amp;amp; nbsp_place_holder;&amp;amp;nb sp_place_holder;&amp;amp;nbsp _place_holder;&amp;amp;nbsp_p lace_holder;&amp;amp;nbsp_pla ce_holder;&amp;amp;nbsp_place _holder;&amp;amp;nbsp_place_h older;&amp;amp;nbsp_place_hol der;&amp;amp;nbsp_place_holde r; MFC，winform，wpf</description>
+      <description>转来的，最近对MFC很关注&amp;hellip; WPF简介 WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示， 所以叫Presentation（呈现）。 作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持</description>
     </item>
     
     <item>
@@ -347,11 +121,7 @@ wpf是一种新的模型，不再使用win32模型，自己新建模型，使用
       <pubDate>Mon, 27 Oct 2008 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2008/10/mfc/</guid>
-      <description>刚开始似乎不太对MFC敏感，觉得现在导出讨论Java和.Net，很少看到MFC的身影，唔，当然了，是在我这只菜鸟看来
-后来慢慢写在WinAPI上的程序，都是在命令提示符里面完成代码，界面很不友好，这才翻出MFC的书看。觉得写起来不太容易，逻辑和实现有点差距，就放下了几天。
-这几天网络编程想写人性化一点的VC界面，还是得使用MFC。
-我到今天才稍微弄清楚MFC和WinAPI窗体之间的关系，一方面开始感慨微软的MFC类库的强大&amp;hellip;
-嗯，继续fighting&amp;hellip;</description>
+      <description>刚开始似乎不太对MFC敏感，觉得现在导出讨论Java和.Net，很少看到MFC的身影，唔，当然了，是在我这只菜鸟看来 后来慢慢写在WinAPI上的程序，都是在命令提示符里面完成代码，界面很不友好，这才翻出MFC的书看。觉得写起来不太容易，逻辑和实现有点差距，就放下了几天。 这几天网络编程想写人性化一点的VC界面，还是得使用MFC。 我到今天才稍微弄清楚MFC和WinAPI窗体之间的关系，一方面开始感慨微</description>
     </item>
     
     <item>
@@ -360,37 +130,7 @@ wpf是一种新的模型，不再使用win32模型，自己新建模型，使用
       <pubDate>Thu, 25 Sep 2008 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/</guid>
-      <description>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
-网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义
-玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的
-首先是ARP的接收，来看一下程序的流程
-获取网络设备列表
-pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;amp;alldevs, errbuf)
-然后人机交互一下，获得需要工作的网卡
-打开需要的网卡
-(adhandle= pcap_open(d-&amp;gt;name, // 设备名
-65536, // 要捕捉的数据包的部分
-// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
-PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式
-1000, // 读取超时时间
-NULL, // 远程机器验证
-errbuf // 错误缓冲池
-)
-检查数据链路层，我们只考虑以太网
-pcap_datalink(adhandle) != DLT_EN10MB
-编译过滤器
-pcap_compile(adhandle, &amp;amp;fcode, packet_filter, 1, netmask)
-设置过滤器
-pcap_setfilter(adhandle, &amp;amp;fcode)
-开始捕捉数据包
-pcap_loop(adhandle, 0, packet_handler, NULL)
-packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数
-/* 回调函数，当收到每一个数据包时会被libpcap所调用 */
-void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_char *pkt_data)
-这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束
-我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点
-源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的
-整个程序的注意点</description>
+      <description>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的 首先是ARP的接收，来看一下程序的流程 获取网络设备列表 pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;amp;alldevs, errbuf) 然后人机交互一下，获得需要工作的网卡 打开需要的网</description>
     </item>
     
     <item>
@@ -399,17 +139,7 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
       <pubDate>Tue, 23 Sep 2008 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2008/09/arp/</guid>
-      <description>挺累的，连续两天忙到3点睡觉，早上9点起来继续做
-开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。
-这是网络编程，也就是我的专业方向课的第一份作业，我特别看中这次，当初分方向时候，鑫爷和大妈都去了软件，我留在网络了。似乎都觉得网络好学，简单，不要写程序
-那么我就写
-第一次将c++与系统底层结合起来，去操作网络上的数据包，感觉真是，太perfect了，不再是呆板的代码，而是真实的数据，真实的操作，甚至我感觉通过键盘，我能 控制一切的感觉
-从连接网卡，获取数据，过滤数据包，容错纠正，类型匹配，发送数据，匹配数据包，发送伪装数据攻击，我甚至写出了一套简单的ARP病毒…
-其实说起来也不难，只要稍微组合一下几个函数而已
-呵呵，挺开心的，自己做东西真好，真实在
-唔…睡觉了…
-手机打字还是挺累的…
-待会儿放上详细流程</description>
+      <description>挺累的，连续两天忙到3点睡觉，早上9点起来继续做 开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。 这是网络编程，也就是我的专业方向课的第一份作业，我特别看中这次，当初分方向时候，鑫爷和大妈都去了软件，我留在网络了。似乎都觉得网络好学，简单，不要写程序 那么我就写 第一次将c++与系统底层结合起来，去操作网络上的数据包，感觉真是，太perfect了，不再是呆板的代码</description>
     </item>
     
     <item>
@@ -418,31 +148,7 @@ void packet_handler(u_char *param, const struct pcap_pkthdr *header, const u_cha
       <pubDate>Sun, 14 Sep 2008 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/</guid>
-      <description>1.编译时候会出现函数问题
-&amp;lsquo;pcap_findalldevs_ex&amp;rsquo; : undeclared identifier
-&amp;lsquo;PCAP_SRC_IF_STRING&amp;rsquo; : undeclared identifier
-&amp;lsquo;pcap_open&amp;rsquo; : undeclared identifier
-&amp;lsquo;PCAP_OPENFLAG_PROMISCUOUS&amp;rsquo; : undeclared identifier
-&amp;lsquo;=&amp;rsquo; : cannot convert from &amp;lsquo;int&amp;rsquo; to &amp;lsquo;struct pcap *&amp;rsquo;
-等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个
-头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在
-#include &amp;ldquo;pcap.h&amp;quot;后面加上
-#include &amp;ldquo;remote-ext.h&amp;rdquo;
-就可以编译通过了。
-网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了
-= =#
-2.出现连接错误
-Cpp3.obj : error LNK2001: unresolved external symbol __imp__ntohs@4
-Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals
-一般添加工程只需要添加wpcap.lib这个库文件，而在分析数据包这段代码里，光这个头文件
-已经不够了，需要再添加ws2_32.lib这个头文件。其实这个在WinPcap的配置VC里有说明，但
-是以前懒，都只用wpcap.lib
-3.关于程序运行时候是否需要WinPcap的支持，我无法测试出结果，因为学校上网方式的限制
-，所有系统都是有WinPcap运行库文件的，待会儿去网上找找相关资料呢
-4.暑假一直看的是英文说明文档，很吃力，最近在搜狗随便一搜，居然发现了有现成翻译好的
-中文说明文档，翻译挺不错的，可以去搜索下一下。
-终于开始开网络编程课，感叹一下WinPcap的强大，还是停留在用户层的编程，完全没能力看
-核心的源代码。。。</description>
+      <description>1.编译时候会出现函数问题 &amp;lsquo;pcap_findalldevs_ex&amp;rsquo; : undeclared identifier &amp;lsquo;PCAP_SRC_IF_STRING&amp;rsquo; : undeclared identifier &amp;lsquo;pcap_open&amp;rsquo; : undeclared identifier &amp;lsquo;PCAP_OPENFLAG_PROMISCUOUS&amp;rsquo; : undeclared identifier &amp;lsquo;=&amp;rsquo; : cannot convert from &amp;lsquo;int&amp;rsquo; to &amp;lsquo;struct pcap *&amp;rsquo; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &amp;ldquo;pcap.h&amp;quot;后面加上 #include &amp;ldquo;remote-ext.h&amp;rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#</description>
     </item>
     
     <item>
@@ -451,27 +157,7 @@ Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals
       <pubDate>Thu, 21 Aug 2008 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2008/08/learning-network-programming-diary-1-_winpcap-and-vc-configuration/</guid>
-      <description>下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这 种书，叹一个。
-直接导致了我很多东西都得一点一点去网上查找。
-很多函数都是用的WinPcap的，所以我又抓紧时间看WinPcap的入门知识。
-WinPcap开发包下载：[http://www.winpcap.org/install/default.htm](http://www.winpcap.o rg/install/default.htm)
-里面有开发者包Developer&amp;rsquo;s Pack和普通使用的安装程序，宽带上网助手就是普通的安装包，而开发要使用的则是Developer&amp;rsquo;s Pack。
-下来之后，安装到某个目录，然后配置VC，把那个目录的include和lib两个目录放到VC的选项-&amp;gt;目录里面。
-WinPcap目录下有doc文档，里面的东西相当全面。我运行了两个，都不能直接运行。
-第一个简单程序是获取网卡适配器信息，里面一个函数pcap_findalldevs_ex找不到，网上资料说是因为这个函数属于远程网卡获取，它的声明在#incl ude &amp;ldquo;remote-ext.h&amp;quot;里面，加上去就可以运行了。
-第二个程序错误更多，
-F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: &amp;lsquo;socklen_t&amp;rsquo; : undeclared identifier
-F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2146: syntax error : missing &amp;lsquo;;&amp;rsquo; before identifier &amp;lsquo;sockaddrlen&amp;rsquo;
-F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: &amp;lsquo;sockaddrlen&amp;rsquo; : undeclared identifier
-F:学习网络WiPcap8_08_202Cpp1.cpp(164) : error C2065: &amp;lsquo;getnameinfo&amp;rsquo; : undeclared identifier
-F:学习网络WiPcap8_08_202Cpp1.cpp(170) : error C2065: &amp;lsquo;NI_NUMERICHOST&amp;rsquo; : undeclared identifier
-错误根由是因为WinPcap支持ipv6,而VC的winsock2.h太老了，很多结构都没有被支持，所以产生错误。网上有人说可以用VS新版本调试，我电脑里面 是VS2008，但是仍然产生错误
-_vsnprintf属性与生命不匹配，网上没有合适的解决方案，我感觉是WinPcap的某个头文件与stdio.h参数不匹配。
-既然VS也无法通过，我实在没能力去修改WinPcap的头文件，所以就用最后一个方案，使用VC6.0的最新的PlatForm SDK开发包，里面包含了新的头文件，就可以支持WinPcap了。
-有人说PSDK只有Windows2003的版本，我在微软里面找到了WinXPSP2的PSDK。
-网址如下
-[http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.ht m](http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall. htm)
-里面好几个Cab，网页里面有完整的安装说明。</description>
+      <description>下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这 种书，叹一个。 直接导致了我很多东西都得一点一点去网上查找。 很多函数都是用的WinPcap的，所以我又抓紧时间看WinPcap的入门知识。 WinPcap开发包下载：[http://www.winpcap.org/install/default.h</description>
     </item>
     
   </channel>

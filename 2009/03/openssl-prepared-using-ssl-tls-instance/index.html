@@ -7,47 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】 | Log4D</title>
 <meta name="keywords" content="c, openssl, ssl">
-<meta name="description" content="◆ 用openssl编写ssl,tls程序
-作者：yawl(yawl@nsfocus.com)
-日期：2000-8-15
-一:简介:
-ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可以保证应用层数据在互联网络传输不被监听,伪造和窜改.
-openssl(www.openssl.org)是sslv2,sslv3,tlsv1的一份完整实现,内部包含了大量加密算法程序.其命令行提供了丰富的加密,验 证,证书生成等功能,甚至可以用其建立一个完整的ca.与其同时,它也提供了一套完整的库函数,可用开发用ssl/tls的通信程序. apache的https两种 版本mod_ssl和apachessl均基于它实现的.openssl继承于ssleay,并做了一定的扩展,当前的版本是0.9.5a.
-openssl的缺点是文档太少,连一份完整的函数说明都没有,man page也至今没做完整:-(,如果想用它编程序,除了熟悉已有的文档(包括ssleay,m od_ssl,apachessl的文档)外,可以到它的maillist上找相关的帖子,许多问题可以在以前的文章中找到答案.
-编程:
-程序分为两部分,客户端和服务器端,我们的目的是利用ssl/tls的特性保证通信双方能够互相验证对方身份(真实性),并保证数据的完整性,私密性.
-1.客户端程序的框架为:
-/生成一个ssl结构/
-meth = sslv23_client_method();
-ctx = ssl_ctx_new (meth);
-ssl = ssl_new(ctx);
-/下面是正常的socket过程/
-fd = socket();
-connect();
-/把建立好的socket和ssl结构联系起来/
-ssl_set_fd(ssl,fd);
-/ssl的握手过程/
-ssl_connect(ssl);
-/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/
-ssl_write(ssl,&ldquo;hello world&rdquo;,strlen(&ldquo;hello world!&rdquo;));
-2.服务端程序的框架为:
-/生成一个ssl结构/
-meth = sslv23_server_method();
-ctx = ssl_ctx_new (meth);
-ssl = ssl_new(ctx);
-/下面是正常的socket过程/
-fd = socket();
-bind();
-listen();
-accept();
-/把建立好的socket和ssl结构联系起来/
-ssl_set_fd(ssl,fd);
-/ssl的握手过程/
-ssl_connect(ssl);
-/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/">
+<meta name="description" content="◆ 用openssl编写ssl,tls程序 作者：yawl(yawl@nsfocus.com) 日期：2000-8-15 一:简介: ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/03/openssl-prepared-using-ssl-tls-instance/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -106,44 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】" />
-<meta property="og:description" content="◆ 用openssl编写ssl,tls程序
-作者：yawl(yawl@nsfocus.com)
-日期：2000-8-15
-一:简介:
-ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可以保证应用层数据在互联网络传输不被监听,伪造和窜改.
-openssl(www.openssl.org)是sslv2,sslv3,tlsv1的一份完整实现,内部包含了大量加密算法程序.其命令行提供了丰富的加密,验 证,证书生成等功能,甚至可以用其建立一个完整的ca.与其同时,它也提供了一套完整的库函数,可用开发用ssl/tls的通信程序. apache的https两种 版本mod_ssl和apachessl均基于它实现的.openssl继承于ssleay,并做了一定的扩展,当前的版本是0.9.5a.
-openssl的缺点是文档太少,连一份完整的函数说明都没有,man page也至今没做完整:-(,如果想用它编程序,除了熟悉已有的文档(包括ssleay,m od_ssl,apachessl的文档)外,可以到它的maillist上找相关的帖子,许多问题可以在以前的文章中找到答案.
-编程:
-程序分为两部分,客户端和服务器端,我们的目的是利用ssl/tls的特性保证通信双方能够互相验证对方身份(真实性),并保证数据的完整性,私密性.
-1.客户端程序的框架为:
-/生成一个ssl结构/
-meth = sslv23_client_method();
-ctx = ssl_ctx_new (meth);
-ssl = ssl_new(ctx);
-/下面是正常的socket过程/
-fd = socket();
-connect();
-/把建立好的socket和ssl结构联系起来/
-ssl_set_fd(ssl,fd);
-/ssl的握手过程/
-ssl_connect(ssl);
-/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/
-ssl_write(ssl,&ldquo;hello world&rdquo;,strlen(&ldquo;hello world!&rdquo;));
-2.服务端程序的框架为:
-/生成一个ssl结构/
-meth = sslv23_server_method();
-ctx = ssl_ctx_new (meth);
-ssl = ssl_new(ctx);
-/下面是正常的socket过程/
-fd = socket();
-bind();
-listen();
-accept();
-/把建立好的socket和ssl结构联系起来/
-ssl_set_fd(ssl,fd);
-/ssl的握手过程/
-ssl_connect(ssl);
-/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/" />
+<meta property="og:description" content="◆ 用openssl编写ssl,tls程序 作者：yawl(yawl@nsfocus.com) 日期：2000-8-15 一:简介: ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2009/03/openssl-prepared-using-ssl-tls-instance/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2009-03-18T00:00:00+08:00" />
@@ -151,44 +77,7 @@ ssl_connect(ssl);
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】"/>
-<meta name="twitter:description" content="◆ 用openssl编写ssl,tls程序
-作者：yawl(yawl@nsfocus.com)
-日期：2000-8-15
-一:简介:
-ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可以保证应用层数据在互联网络传输不被监听,伪造和窜改.
-openssl(www.openssl.org)是sslv2,sslv3,tlsv1的一份完整实现,内部包含了大量加密算法程序.其命令行提供了丰富的加密,验 证,证书生成等功能,甚至可以用其建立一个完整的ca.与其同时,它也提供了一套完整的库函数,可用开发用ssl/tls的通信程序. apache的https两种 版本mod_ssl和apachessl均基于它实现的.openssl继承于ssleay,并做了一定的扩展,当前的版本是0.9.5a.
-openssl的缺点是文档太少,连一份完整的函数说明都没有,man page也至今没做完整:-(,如果想用它编程序,除了熟悉已有的文档(包括ssleay,m od_ssl,apachessl的文档)外,可以到它的maillist上找相关的帖子,许多问题可以在以前的文章中找到答案.
-编程:
-程序分为两部分,客户端和服务器端,我们的目的是利用ssl/tls的特性保证通信双方能够互相验证对方身份(真实性),并保证数据的完整性,私密性.
-1.客户端程序的框架为:
-/生成一个ssl结构/
-meth = sslv23_client_method();
-ctx = ssl_ctx_new (meth);
-ssl = ssl_new(ctx);
-/下面是正常的socket过程/
-fd = socket();
-connect();
-/把建立好的socket和ssl结构联系起来/
-ssl_set_fd(ssl,fd);
-/ssl的握手过程/
-ssl_connect(ssl);
-/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/
-ssl_write(ssl,&ldquo;hello world&rdquo;,strlen(&ldquo;hello world!&rdquo;));
-2.服务端程序的框架为:
-/生成一个ssl结构/
-meth = sslv23_server_method();
-ctx = ssl_ctx_new (meth);
-ssl = ssl_new(ctx);
-/下面是正常的socket过程/
-fd = socket();
-bind();
-listen();
-accept();
-/把建立好的socket和ssl结构联系起来/
-ssl_set_fd(ssl,fd);
-/ssl的握手过程/
-ssl_connect(ssl);
-/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/"/>
+<meta name="twitter:description" content="◆ 用openssl编写ssl,tls程序 作者：yawl(yawl@nsfocus.com) 日期：2000-8-15 一:简介: ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可"/>
 
 
 <script type="application/ld+json">
@@ -217,12 +106,12 @@ ssl_connect(ssl);
   "@type": "BlogPosting",
   "headline": "用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】",
   "name": "用openssl编写ssl,tls程序实例【转载-作者：yawl(yawl@nsfocus.com) 】",
-  "description": "◆ 用openssl编写ssl,tls程序\n作者：yawl(yawl@nsfocus.com)\n日期：2000-8-15\n一:简介:\nssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可以保证应用层数据在互联网络传输不被监听,伪造和窜改.\nopenssl(www.openssl.org)是sslv2,sslv3,tlsv1的一份完整实现,内部包含了大量加密算法程序.其命令行提供了丰富的加密,验 证,证书生成等功能,甚至可以用其建立一个完整的ca.与其同时,它也提供了一套完整的库函数,可用开发用ssl/tls的通信程序. apache的https两种 版本mod_ssl和apachessl均基于它实现的.openssl继承于ssleay,并做了一定的扩展,当前的版本是0.9.5a.\nopenssl的缺点是文档太少,连一份完整的函数说明都没有,man page也至今没做完整:-(,如果想用它编程序,除了熟悉已有的文档(包括ssleay,m od_ssl,apachessl的文档)外,可以到它的maillist上找相关的帖子,许多问题可以在以前的文章中找到答案.\n编程:\n程序分为两部分,客户端和服务器端,我们的目的是利用ssl/tls的特性保证通信双方能够互相验证对方身份(真实性),并保证数据的完整性,私密性.\n1.客户端程序的框架为:\n/生成一个ssl结构/\nmeth = sslv23_client_method();\nctx = ssl_ctx_new (meth);\nssl = ssl_new(ctx);\n/下面是正常的socket过程/\nfd = socket();\nconnect();\n/把建立好的socket和ssl结构联系起来/\nssl_set_fd(ssl,fd);\n/ssl的握手过程/\nssl_connect(ssl);\n/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/\nssl_write(ssl,\u0026ldquo;hello world\u0026rdquo;,strlen(\u0026ldquo;hello world!\u0026rdquo;));\n2.服务端程序的框架为:\n/生成一个ssl结构/\nmeth = sslv23_server_method();\nctx = ssl_ctx_new (meth);\nssl = ssl_new(ctx);\n/下面是正常的socket过程/\nfd = socket();\nbind();\nlisten();\naccept();\n/把建立好的socket和ssl结构联系起来/\nssl_set_fd(ssl,fd);\n/ssl的握手过程/\nssl_connect(ssl);\n/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/",
+  "description": "◆ 用openssl编写ssl,tls程序 作者：yawl(yawl@nsfocus.com) 日期：2000-8-15 一:简介: ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可",
   "keywords": [
     "c", "openssl", "ssl"
   ],
   "articleBody": "◆ 用openssl编写ssl,tls程序\n作者：yawl(yawl@nsfocus.com)\n日期：2000-8-15\n一:简介:\nssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可以保证应用层数据在互联网络传输不被监听,伪造和窜改.\nopenssl(www.openssl.org)是sslv2,sslv3,tlsv1的一份完整实现,内部包含了大量加密算法程序.其命令行提供了丰富的加密,验 证,证书生成等功能,甚至可以用其建立一个完整的ca.与其同时,它也提供了一套完整的库函数,可用开发用ssl/tls的通信程序. apache的https两种 版本mod_ssl和apachessl均基于它实现的.openssl继承于ssleay,并做了一定的扩展,当前的版本是0.9.5a.\nopenssl的缺点是文档太少,连一份完整的函数说明都没有,man page也至今没做完整:-(,如果想用它编程序,除了熟悉已有的文档(包括ssleay,m od_ssl,apachessl的文档)外,可以到它的maillist上找相关的帖子,许多问题可以在以前的文章中找到答案.\n编程:\n程序分为两部分,客户端和服务器端,我们的目的是利用ssl/tls的特性保证通信双方能够互相验证对方身份(真实性),并保证数据的完整性,私密性.\n1.客户端程序的框架为:\n/生成一个ssl结构/\nmeth = sslv23_client_method();\nctx = ssl_ctx_new (meth);\nssl = ssl_new(ctx);\n/下面是正常的socket过程/\nfd = socket();\nconnect();\n/把建立好的socket和ssl结构联系起来/\nssl_set_fd(ssl,fd);\n/ssl的握手过程/\nssl_connect(ssl);\n/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/\nssl_write(ssl,“hello world”,strlen(“hello world!”));\n2.服务端程序的框架为:\n/生成一个ssl结构/\nmeth = sslv23_server_method();\nctx = ssl_ctx_new (meth);\nssl = ssl_new(ctx);\n/下面是正常的socket过程/\nfd = socket();\nbind();\nlisten();\naccept();\n/把建立好的socket和ssl结构联系起来/\nssl_set_fd(ssl,fd);\n/ssl的握手过程/\nssl_connect(ssl);\n/接下来用ssl_write(), ssl_read()代替原有的write(),read()即可/\nssl_read (ssl, buf, sizeof(buf));\n根据rfc2246(tls1.0)整个tls(ssl)的流程如下:\nclient server\nclienthello ——–\u003e\nserverhello\ncertificate*\nserverkeyexchange*\ncertificaterequest*\n\u003c——– serverhellodone\ncertificate*\nclientkeyexchange\ncertificateverify*\n[changecipherspec]\nfinished ——–\u003e\n[changecipherspec]\n\u003c——– finished\napplication data \u003c——-\u003e application data\n对程序来说,openssl将整个握手过程用一对函数体现,即客户端的ssl_connect和服务端的ssl_accept.而后的应用层数据交换则用ssl_re ad和ssl_write来完成.\n二:证书文件生成\n除将程序编译成功外,还需生成必要的证书和私钥文件使双方能够成功验证对方,步骤如下:\n1.首先要生成服务器端的私钥(key文件):\nopenssl genrsa -des3 -out server.key 1024\n运行时会提示输入密码,此密码用于加密key文件(参数des3便是指加密算法,当然也可以选用其他你认为安全的算法.),以后每当需读取此文件(通过openssl 提供的命令或api)都需输入口令.如果觉得不方便,也可以去除这个口令,但一定要采取其他的保护措施!\n去除key文件口令的命令:\nopenssl rsa -in server.key -out server.key\n2.openssl req -new -key server.key -out server.csr\n生成certificate signing request,生成的csr文件交给ca签名后形成服务端自己的证书.屏幕上将有提示,依照其指示一步一步输入要求的个人信息即可.\n3.对客户端也作同样的命令生成key及csr文件:\nopenssl genrsa -des3 -out client.key 1024\nopenssl req -new -key client.key -out client.csr\n4.csr文件必须有ca的签名才可形成证书.可将此文件发送到verisign等地方由它验证,要交一大笔钱,何不自己做ca呢.\n首先生成ca的key文件:\nopenssl -des3 -out ca.key 1024\n在生成ca自签名的证书:\nopenssl req -new -x509 -key ca.key -out ca.crt\n如果想让此证书有个期限,如一年,则加上\"-days 365\".\n(“如果非要为这个证书加上一个期限,我情愿是..一万年”)\n5.用生成的ca的证书为刚才生成的server.csr,client.csr文件签名:\n可以用openssl中ca系列命令,但不是很好用(也不是多难,唉,一言难尽),一篇文章中推荐用mod_ssl中的sign.sh脚本,试了一下,确实方便了不少 ,如果ca.csr存在的话,只需:\n./sigh.sh server.csr\n./sign.sh client.csr\n相应的证书便生成了(后缀.crt).\n现在我们所需的全部文件便生成了.\n其实openssl中还附带了一个叫ca.pl的文件(在安装目录中的misc子目录下),可用其生成以上的文件,使用也比较方便,但此处就不作介绍了.\n三:需要了解的一些函数:\n1.int ssl_ctx_set_cipher_list(ssl_ctx *,const char *str);\n根据ssl/tls规范,在clienthello中,客户端会提交一份自己能够支持的加密方法的列表,由服务端选择一种方法后在serverhello中通知服务端 ,从而完成加密算法的协商.\n可用的算法为:\nedh-rsa-des-cbc3-sha\nedh-dss-des-cbc3-sha\ndes-cbc3-sha\ndhe-dss-rc4-sha\nidea-cbc-sha\nrc4-sha\nrc4-md5\nexp1024-dhe-dss-rc4-sha\nexp1024-rc4-sha\nexp1024-dhe-dss-des-cbc-sha\nexp1024-des-cbc-sha\nexp1024-rc2-cbc-md5\nexp1024-rc4-md5\nedh-rsa-des-cbc-sha\nedh-dss-des-cbc-sha\ndes-cbc-sha\nexp-edh-rsa-des-cbc-sha\nexp-edh-dss-des-cbc-sha\nexp-des-cbc-sha\nexp-rc2-cbc-md5\nexp-rc4-md5\n这些算法按一定优先级排列,如果不作任何指定,将选用des- cbc3-sha.用ssl_ctx_set_cipher_list可以指定自己希望用的算法(实际上只是提高其优先级,是否能使用还要看对方是否支持).\n我们在程序中选用了rc4做加密,md5做消息摘要(先进行md5运算,后进行rc4加密).即\nssl_ctx_set_cipher_list(ctx,“rc4-md5”);\n在消息传输过程中采用对称加密(比公钥加密在速度上有极大的提高),其所用秘钥(shared secret)在握手过程中中协商(每次对话过程均不同,在一次对话中都有可能有几次改变),并通过公钥加密的手段由客户端提交服务端.\n2.void ssl_ctx_set_verify(ssl_ctx *ctx,int mode,int (*callback)(int, x509_store_ctx *));\n缺省mode是ssl_verify_none,如果想要验证对方的话,便要将此项变成ssl_verify_peer.ssl/tls中缺省只验证server,如 果没有设置ssl_verify_peer的话,客户端连证书都不会发过来.\n3.int ssl_ctx_load_verify_locations(ssl_ctx *ctx, const char *cafile,const char *capath);\n要验证对方的话,当然装要有ca的证书了,此函数用来便是加载ca的证书文件的.\n4.int ssl_ctx_use_certificate_file(ssl_ctx *ctx, const char *file, int type);\n加载自己的证书文件.\n5.int ssl_ctx_use_privatekey_file(ssl_ctx *ctx, const char *file, int type);\n加载自己的私钥,以用于签名.\n6.int ssl_ctx_check_private_key(ssl_ctx *ctx);\n调用了以上两个函数后,自己检验一下证书与私钥是否配对.\n7.void rand_seed(const void *buf,int num);\n在win32的环境中client程序运行时出错(ssl_connect返回-1)的一个主要机制便是与unix平台下的随机数生成机制不同(握手的时候用的到). 具体描述可见mod_ssl的faq.解决办法就是调用此函数,其中buf应该为一随机的字符串,作为\"seed\".\n还可以采用一下两个函数:\nvoid rand_screen(void);\nint rand_event(uint, wparam, lparam);\n其中rand_screen()以屏幕内容作为\"seed\"产生随机数,rand_event可以捕获windows中的事件(event),以此为基础产生随机数. 如果一直有用户干预的话,用这种办法产生的随机数能够\"更加随机\",但如果机器一直没人理(如总停在登录画面),则每次都将产生同样的数字.\n这几个函数都只在win32环境下编译时有用,各种unix下就不必调了.\n大量其他的相关函数原型,见cryptorandrand.h.\n8.openssl_add_ssl_algorithms()或ssleay_add_ssl_algorithms()\n其实都是调用int ssl_library_init(void)\n进行一些必要的初始化工作,用openssl编写ssl/tls程序的话第一句便应是它.\n9.void ssl_load_error_strings(void );\n如果想打印出一些方便阅读的调试信息的话,便要在一开始调用此函数.\n10.void err_print_errors_fp(file *fp);\n如果调用了ssl_load_error_strings()后,便可以随时用err_print_errors_fp()来打印错误信息了.\n11.x509 *ssl_get_peer_certificate(ssl *s);\n握手完成后,便可以用此函数从ssl结构中提取出对方的证书(此时证书得到且已经验证过了)整理成x509结构.\n12.x509_name *x509_get_subject_name(x509 *a);\n得到证书所有者的名字,参数可用通过ssl_get_peer_certificate()得到的x509对象.\n13.x509_name *x509_get_issuer_name(x509 *a)\n得到证书签署者(往往是ca)的名字,参数可用通过ssl_get_peer_certificate()得到的x509对象.\n14.char *x509_name_oneline(x509_name *a,char *buf,int size);\n将以上两个函数得到的对象变成字符型,以便打印出来.\n15.ssl_method的构造函数,包括\nssl_method *tls\n发表者：colorrain\n/*****************************************************************************\neof - cli.cpp ***************************************************************************************/\n/*****************************************************************************\n*ssl/tls服务端程序win32版(以demos/server.cpp为基础)\n*需要用到动态连接库libeay32.dll,ssleay.dll,\n*同时在setting中加入ws2_32.lib libeay32.lib ssleay32.lib,\n*以上库文件在编译openssl后可在out32dll目录下找到,\n*所需证书文件请参照文章自行生成.\n***************************************************************************************/\n#include #include #include #include #include #include #include “openssl/rsa.h”\n#include “openssl/crypto.h”\n#include “openssl/x509.h”\n#include “openssl/pem.h”\n#include “openssl/ssl.h”\n#include “openssl/err.h”\n/所有需要的参数信息都在此处以#define的形式提供/\n#define certf “server.crt” /服务端的证书(需经ca签名)/\n#define keyf “server.key” /服务端的私钥(建议加密存储)/\n#define cacert “ca.crt” /ca 的证书/\n#define port 1111 /准备绑定的端口/\n#define chk_null(x) if ((x)==null) exit (1)\n#define chk_err(err,s) if ((err)==-1) { perror(s); exit(1); }\n#define chk_ssl(err) if ((err)==-1) { err_print_errors_fp(stderr); exit(2); }\nint main ()\n{\nint err;\nint listen_sd;\nint sd;\nstruct sockaddr_in sa_serv;\nstruct sockaddr_in sa_cli;\nint client_len;\nssl_ctx* ctx;\nssl* ssl;\nx509* client_cert;\nchar* str;\nchar buf [4096];\nssl_method *meth;\nwsadata wsadata;\nif(wsastartup(makeword(2,2),\u0026wsadata) != 0){\nprintf(“wsastartup()fail:%dn”,getlasterror());\nreturn -1;\n}\nssl_load_error_strings(); /为打印调试信息作准备/\nopenssl_add_ssl_algorithms(); /初始化/\nmeth = tlsv1_server_method(); /采用什么协议(sslv2/sslv3/tlsv1)在此指定/\nctx = ssl_ctx_new (meth);\nchk_null(ctx);\nssl_ctx_set_verify(ctx,ssl_verify_peer,null); /验证与否/\nssl_ctx_load_verify_locations(ctx,cacert,null); /若验证,则放置ca证书/\nif (ssl_ctx_use_certificate_file(ctx, certf, ssl_filetype_pem) \u003c= 0) {\nerr_print_errors_fp(stderr);\nexit(3);\n}\nif (ssl_ctx_use_privatekey_file(ctx, keyf, ssl_filetype_pem) \u003c= 0) {\nerr_print_errors_fp(stderr);\nexit(4);\n}\nif (!ssl_ctx_check_private_key(ctx)) {\nprintf(“private key does not match the certificate public keyn”);\nexit(5);\n}\nssl_ctx_set_cipher_list(ctx,“rc4-md5”);\n/开始正常的tcp socket过程……………………………/\nprintf(“begin tcp socket…n”);\nlisten_sd = socket (af_inet, sock_stream, 0);\nchk_err(listen_sd, “socket”);\nmemset (\u0026sa_serv, , sizeof(sa_serv));\nsa_serv.sin_family = af_inet;\nsa_serv.sin_addr.s_addr = inaddr_any;\nsa_serv.sin_port = htons (port);\nerr = bind(listen_sd, (struct sockaddr*) \u0026sa_serv,\nsizeof (sa_serv));\nchk_err(err, “bind”);\n/接受tcp链接/\nerr = listen (listen_sd, 5);\nchk_err(err, “listen”);\nclient_len = sizeof(sa_cli);\nsd = accept (listen_sd, (struct sockaddr*) \u0026sa_cli, \u0026client_len);\nchk_err(sd, “accept”);\nclosesocket (listen_sd);\nprintf (“connection from %lx, port %xn”,\nsa_cli.sin_addr.s_addr, sa_cli.sin_port);\n/*tcp连接已建立,进行服务端的ssl过程. */\nprintf(“begin server side ssln”);\nssl = ssl_new (ctx);\nchk_null(ssl);\nssl_set_fd (ssl, sd);\nerr = ssl_accept (ssl);\nprintf(“ssl_accept finishedn”);\nchk_ssl(err);\n/打印所有加密算法的信息(可选)/\nprintf (“ssl connection using %sn”, ssl_get_cipher (ssl));\n/*得到服务端的证书并打印些信息(可选) */\nclient_cert = ssl_get_peer_certificate (ssl);\nif (client_cert != null) {\nprintf (“client certificate:n”);\nstr = x509_name_oneline (x509_get_subject_name (client_cert), 0, 0);\nchk_null(str);\nprintf (“t subject: %sn”, str);\nfree (str);\nstr = x509_name_oneline (x509_get_issuer_name (client_cert), 0, 0);\nchk_null(str);\nprintf (“t issuer: %sn”, str);\nfree (str);\nx509_free (client_cert);/*如不再需要,需将证书释放 */\n}\nelse\nprintf (“client does not have certificate.n”);\n/* 数据交换开始,用ssl_write,ssl_read代替write,read */\nerr = ssl_read (ssl, buf, sizeof(buf) - 1);\nchk_ssl(err);\nbuf[err] = ;\nprintf (“got %d chars:%sn”, err, buf);\nerr = ssl_write (ssl, “i hear you.”, strlen(“i hear you.”));\nchk_ssl(err);\n/* 收尾工作*/\nshutdown (sd,2);\nssl_free (ssl);\nssl_ctx_free (ctx);\nreturn 0;\n}\n/*****************************************************************\neof - serv.cpp *****************************************************************/\n五.参考文献\n1.ssl规范(draft302)\n2.tls标准(rfc2246)\n3.openssl源程序及文档\n4.ssleay programmer reference\n5.introducing ssl and certificates using ssleay\n",
-  "wordCount" : "684",
+  "wordCount" : "4284",
   "inLanguage": "en",
   "datePublished": "2009-03-18T00:00:00+08:00",
   "dateModified": "2009-03-18T00:00:00+08:00",

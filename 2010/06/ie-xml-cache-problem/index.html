@@ -7,30 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>IE XML 缓存问题 | Log4D</title>
 <meta name="keywords" content="webfront, azaajaxchat, ie, javascript">
-<meta name="description" content="明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。
-PS:之前已经有过3篇相关毕设的文章：
-[CakePHP的全局变量
-](http://log4d.com/2010/05/cakephp-global-variables)
-[FMS的80端口占用
-](http://log4d.com/2010/05/fms-80-port-used)
-[SWFObject 一款JavaScript的Flash检测与插入模块
-](http://log4d.com/2010/05/swfobject)
-&mdash;- 正文开始 &mdash;-
-问题背景 系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即时生成的。当用FireFox或者Chro me请求时候都能获得正确的数据，而IE则常常出现无法获取实时的XML数据。
-而如果在地址栏中填入 http://localhost/AzaAjaxChat/src/Chat/getXml?messageId=41 这个原始的XML文件地址，就可以获取正确的XML文件。并且在下次IE 的 HTTPRequest请求时候就正常了。看来问题出在IE自身的缓存上面。
-解决方法 1.使用URL参数随机事件 在AJAX请求的页面后加个随机函数,我们可以使用随机时间函数，在javascript发送的URL后加上t=Math.random()。
-当然，不是直接把t=Math.random()拷贝到URL后面,应该像这样:
-url = url &#43; &quot;&amp; amp;&quot; &#43; &quot;t=&quot; &#43; Math.random(); 2.修改Header缓存时间 在XMLHttpRequest发送请求之前加上 XMLHttpRequest.setRequestHeader(&ldquo;If-Modified- Since&rdquo;,&ldquo;0&rdquo;)。一般情况下,这里的 XMLHttpRequest 不会直接使用。
-你应该可以找到这样的代码
-XXXXX.send(YYYYYY);
-那么,就把它变成
-XXXXX.setRequestHeader(&ldquo;If-Modified-Since&rdquo;,&ldquo;0&rdquo;);
-XXXXX.send(YYYYYY);
-a Sample 我选择的是第一种方法，我觉得这种更为直观。我的具体代码如下（使用jQuery）：
-jQuery.get(&quot;http://localhost/AzaAjaxChat/src/Chat/getXml&quot;, { messageId: aacGlobal.currentMessageId, version: Math.random() }, getRemoteDataCallBack); ">
+<meta name="description" content="明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。 PS:之前已经有过3篇相关毕设的文章： [CakePHP的全局变量 ](http://log4d.com/2010/05/cakephp-global-variables) [FMS的80端口占用 ](http://log4d.com/2010/05/fms-80-port-used) [SWFObject 一款JavaScript的Flash检测与插入模块 ](http://log4d.com/2010/05/swfobject) &mdash;- 正文开始 &mdash;- 问题背景 系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2010/06/ie-xml-cache-problem/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -89,27 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="IE XML 缓存问题" />
-<meta property="og:description" content="明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。
-PS:之前已经有过3篇相关毕设的文章：
-[CakePHP的全局变量
-](http://log4d.com/2010/05/cakephp-global-variables)
-[FMS的80端口占用
-](http://log4d.com/2010/05/fms-80-port-used)
-[SWFObject 一款JavaScript的Flash检测与插入模块
-](http://log4d.com/2010/05/swfobject)
-&mdash;- 正文开始 &mdash;-
-问题背景 系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即时生成的。当用FireFox或者Chro me请求时候都能获得正确的数据，而IE则常常出现无法获取实时的XML数据。
-而如果在地址栏中填入 http://localhost/AzaAjaxChat/src/Chat/getXml?messageId=41 这个原始的XML文件地址，就可以获取正确的XML文件。并且在下次IE 的 HTTPRequest请求时候就正常了。看来问题出在IE自身的缓存上面。
-解决方法 1.使用URL参数随机事件 在AJAX请求的页面后加个随机函数,我们可以使用随机时间函数，在javascript发送的URL后加上t=Math.random()。
-当然，不是直接把t=Math.random()拷贝到URL后面,应该像这样:
-url = url &#43; &quot;&amp; amp;&quot; &#43; &quot;t=&quot; &#43; Math.random(); 2.修改Header缓存时间 在XMLHttpRequest发送请求之前加上 XMLHttpRequest.setRequestHeader(&ldquo;If-Modified- Since&rdquo;,&ldquo;0&rdquo;)。一般情况下,这里的 XMLHttpRequest 不会直接使用。
-你应该可以找到这样的代码
-XXXXX.send(YYYYYY);
-那么,就把它变成
-XXXXX.setRequestHeader(&ldquo;If-Modified-Since&rdquo;,&ldquo;0&rdquo;);
-XXXXX.send(YYYYYY);
-a Sample 我选择的是第一种方法，我觉得这种更为直观。我的具体代码如下（使用jQuery）：
-jQuery.get(&quot;http://localhost/AzaAjaxChat/src/Chat/getXml&quot;, { messageId: aacGlobal.currentMessageId, version: Math.random() }, getRemoteDataCallBack); " />
+<meta property="og:description" content="明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。 PS:之前已经有过3篇相关毕设的文章： [CakePHP的全局变量 ](http://log4d.com/2010/05/cakephp-global-variables) [FMS的80端口占用 ](http://log4d.com/2010/05/fms-80-port-used) [SWFObject 一款JavaScript的Flash检测与插入模块 ](http://log4d.com/2010/05/swfobject) &mdash;- 正文开始 &mdash;- 问题背景 系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2010/06/ie-xml-cache-problem/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2010-06-02T00:00:00+08:00" />
@@ -117,27 +77,7 @@ jQuery.get(&quot;http://localhost/AzaAjaxChat/src/Chat/getXml&quot;, { messageId
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="IE XML 缓存问题"/>
-<meta name="twitter:description" content="明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。
-PS:之前已经有过3篇相关毕设的文章：
-[CakePHP的全局变量
-](http://log4d.com/2010/05/cakephp-global-variables)
-[FMS的80端口占用
-](http://log4d.com/2010/05/fms-80-port-used)
-[SWFObject 一款JavaScript的Flash检测与插入模块
-](http://log4d.com/2010/05/swfobject)
-&mdash;- 正文开始 &mdash;-
-问题背景 系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即时生成的。当用FireFox或者Chro me请求时候都能获得正确的数据，而IE则常常出现无法获取实时的XML数据。
-而如果在地址栏中填入 http://localhost/AzaAjaxChat/src/Chat/getXml?messageId=41 这个原始的XML文件地址，就可以获取正确的XML文件。并且在下次IE 的 HTTPRequest请求时候就正常了。看来问题出在IE自身的缓存上面。
-解决方法 1.使用URL参数随机事件 在AJAX请求的页面后加个随机函数,我们可以使用随机时间函数，在javascript发送的URL后加上t=Math.random()。
-当然，不是直接把t=Math.random()拷贝到URL后面,应该像这样:
-url = url &#43; &quot;&amp; amp;&quot; &#43; &quot;t=&quot; &#43; Math.random(); 2.修改Header缓存时间 在XMLHttpRequest发送请求之前加上 XMLHttpRequest.setRequestHeader(&ldquo;If-Modified- Since&rdquo;,&ldquo;0&rdquo;)。一般情况下,这里的 XMLHttpRequest 不会直接使用。
-你应该可以找到这样的代码
-XXXXX.send(YYYYYY);
-那么,就把它变成
-XXXXX.setRequestHeader(&ldquo;If-Modified-Since&rdquo;,&ldquo;0&rdquo;);
-XXXXX.send(YYYYYY);
-a Sample 我选择的是第一种方法，我觉得这种更为直观。我的具体代码如下（使用jQuery）：
-jQuery.get(&quot;http://localhost/AzaAjaxChat/src/Chat/getXml&quot;, { messageId: aacGlobal.currentMessageId, version: Math.random() }, getRemoteDataCallBack); "/>
+<meta name="twitter:description" content="明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。 PS:之前已经有过3篇相关毕设的文章： [CakePHP的全局变量 ](http://log4d.com/2010/05/cakephp-global-variables) [FMS的80端口占用 ](http://log4d.com/2010/05/fms-80-port-used) [SWFObject 一款JavaScript的Flash检测与插入模块 ](http://log4d.com/2010/05/swfobject) &mdash;- 正文开始 &mdash;- 问题背景 系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即"/>
 
 
 <script type="application/ld+json">
@@ -166,12 +106,12 @@ jQuery.get(&quot;http://localhost/AzaAjaxChat/src/Chat/getXml&quot;, { messageId
   "@type": "BlogPosting",
   "headline": "IE XML 缓存问题",
   "name": "IE XML 缓存问题",
-  "description": "明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。\nPS:之前已经有过3篇相关毕设的文章：\n[CakePHP的全局变量\n](http://log4d.com/2010/05/cakephp-global-variables)\n[FMS的80端口占用\n](http://log4d.com/2010/05/fms-80-port-used)\n[SWFObject 一款JavaScript的Flash检测与插入模块\n](http://log4d.com/2010/05/swfobject)\n\u0026mdash;- 正文开始 \u0026mdash;-\n问题背景 系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即时生成的。当用FireFox或者Chro me请求时候都能获得正确的数据，而IE则常常出现无法获取实时的XML数据。\n而如果在地址栏中填入 http://localhost/AzaAjaxChat/src/Chat/getXml?messageId=41 这个原始的XML文件地址，就可以获取正确的XML文件。并且在下次IE 的 HTTPRequest请求时候就正常了。看来问题出在IE自身的缓存上面。\n解决方法 1.使用URL参数随机事件 在AJAX请求的页面后加个随机函数,我们可以使用随机时间函数，在javascript发送的URL后加上t=Math.random()。\n当然，不是直接把t=Math.random()拷贝到URL后面,应该像这样:\nurl = url + \u0026quot;\u0026amp; amp;\u0026quot; + \u0026quot;t=\u0026quot; + Math.random(); 2.修改Header缓存时间 在XMLHttpRequest发送请求之前加上 XMLHttpRequest.setRequestHeader(\u0026ldquo;If-Modified- Since\u0026rdquo;,\u0026ldquo;0\u0026rdquo;)。一般情况下,这里的 XMLHttpRequest 不会直接使用。\n你应该可以找到这样的代码\nXXXXX.send(YYYYYY);\n那么,就把它变成\nXXXXX.setRequestHeader(\u0026ldquo;If-Modified-Since\u0026rdquo;,\u0026ldquo;0\u0026rdquo;);\nXXXXX.send(YYYYYY);\na Sample 我选择的是第一种方法，我觉得这种更为直观。我的具体代码如下（使用jQuery）：\njQuery.get(\u0026quot;http://localhost/AzaAjaxChat/src/Chat/getXml\u0026quot;, { messageId: aacGlobal.currentMessageId, version: Math.random() }, getRemoteDataCallBack); ",
+  "description": "明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。 PS:之前已经有过3篇相关毕设的文章： [CakePHP的全局变量 ](http://log4d.com/2010/05/cakephp-global-variables) [FMS的80端口占用 ](http://log4d.com/2010/05/fms-80-port-used) [SWFObject 一款JavaScript的Flash检测与插入模块 ](http://log4d.com/2010/05/swfobject) \u0026mdash;- 正文开始 \u0026mdash;- 问题背景 系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即",
   "keywords": [
     "webfront", "azaajaxchat", "ie", "javascript"
   ],
   "articleBody": "明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。\nPS:之前已经有过3篇相关毕设的文章：\n[CakePHP的全局变量\n](http://log4d.com/2010/05/cakephp-global-variables)\n[FMS的80端口占用\n](http://log4d.com/2010/05/fms-80-port-used)\n[SWFObject 一款JavaScript的Flash检测与插入模块\n](http://log4d.com/2010/05/swfobject)\n—- 正文开始 —-\n问题背景 系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即时生成的。当用FireFox或者Chro me请求时候都能获得正确的数据，而IE则常常出现无法获取实时的XML数据。\n而如果在地址栏中填入 http://localhost/AzaAjaxChat/src/Chat/getXml?messageId=41 这个原始的XML文件地址，就可以获取正确的XML文件。并且在下次IE 的 HTTPRequest请求时候就正常了。看来问题出在IE自身的缓存上面。\n解决方法 1.使用URL参数随机事件 在AJAX请求的页面后加个随机函数,我们可以使用随机时间函数，在javascript发送的URL后加上t=Math.random()。\n当然，不是直接把t=Math.random()拷贝到URL后面,应该像这样:\nurl = url + \"\u0026 amp;\" + \"t=\" + Math.random(); 2.修改Header缓存时间 在XMLHttpRequest发送请求之前加上 XMLHttpRequest.setRequestHeader(“If-Modified- Since”,“0”)。一般情况下,这里的 XMLHttpRequest 不会直接使用。\n你应该可以找到这样的代码\nXXXXX.send(YYYYYY);\n那么,就把它变成\nXXXXX.setRequestHeader(“If-Modified-Since”,“0”);\nXXXXX.send(YYYYYY);\na Sample 我选择的是第一种方法，我觉得这种更为直观。我的具体代码如下（使用jQuery）：\njQuery.get(\"http://localhost/AzaAjaxChat/src/Chat/getXml\", { messageId: aacGlobal.currentMessageId, version: Math.random() }, getRemoteDataCallBack); ",
-  "wordCount" : "58",
+  "wordCount" : "629",
   "inLanguage": "en",
   "datePublished": "2010-06-02T00:00:00+08:00",
   "dateModified": "2010-06-02T00:00:00+08:00",

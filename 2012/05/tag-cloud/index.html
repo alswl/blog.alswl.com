@@ -7,14 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>给 Octopress 加上标签功能 | Log4D</title>
 <meta name="keywords" content="建站, octopress">
-<meta name="description" content="上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。
-我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。
-只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。 一篇文章只能属于一个 category，但可以同时属于多个 tag。 Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。
-ps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件， 但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag 概念。更多官方插件可以查看 3rd party plugins。
-就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件： robbyedwards / octopress-tag-pages和 robbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。">
+<meta name="description" content="上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。 我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。 只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2012/05/tag-cloud/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -73,11 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="给 Octopress 加上标签功能" />
-<meta property="og:description" content="上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。
-我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。
-只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。 一篇文章只能属于一个 category，但可以同时属于多个 tag。 Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。
-ps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件， 但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag 概念。更多官方插件可以查看 3rd party plugins。
-就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件： robbyedwards / octopress-tag-pages和 robbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。" />
+<meta property="og:description" content="上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。 我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。 只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2012/05/tag-cloud/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2012-05-21T15:17:00+08:00" />
@@ -85,11 +77,7 @@ ps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件�
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="给 Octopress 加上标签功能"/>
-<meta name="twitter:description" content="上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。
-我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。
-只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。 一篇文章只能属于一个 category，但可以同时属于多个 tag。 Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。
-ps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件， 但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag 概念。更多官方插件可以查看 3rd party plugins。
-就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件： robbyedwards / octopress-tag-pages和 robbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。"/>
+<meta name="twitter:description" content="上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。 我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。 只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是"/>
 
 
 <script type="application/ld+json">
@@ -118,12 +106,12 @@ ps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件�
   "@type": "BlogPosting",
   "headline": "给 Octopress 加上标签功能",
   "name": "给 Octopress 加上标签功能",
-  "description": "上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。\n我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。\n只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。 一篇文章只能属于一个 category，但可以同时属于多个 tag。 Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。\nps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件， 但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag 概念。更多官方插件可以查看 3rd party plugins。\n就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件： robbyedwards / octopress-tag-pages和 robbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。",
+  "description": "上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。 我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。 只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是",
   "keywords": [
     "建站", "octopress"
   ],
   "articleBody": "上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。\n我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。\n只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。 一篇文章只能属于一个 category，但可以同时属于多个 tag。 Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。\nps：Octopress 官方也推荐了一个所谓「octopress-tagcloud」的插件， 但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag 概念。更多官方插件可以查看 3rd party plugins。\n就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件： robbyedwards / octopress-tag-pages和 robbyedwards / octopress-tag-cloud。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。\n这两个插件使用很简单，将插件文件放入对应的目录（注意备份，存在覆盖的情况）。 然后再给插件「octopress-tag-cloud」添加一个专属页面存放标签云即可。 这个标签云生成的标记是 li...li ，需要在 sass/custom/_styles.scss 添加对应的样式：\n#content article .cloud li{ display: inline; list-style: none outside none; padding: 0 4px; } 第二个插件 octopress-tag-cloud 会和 Octopress 官方推荐的所谓「Octopress Tag Cloud」 文件 / tag 标记 冲突，我建议修改官方的那个插件。\n我修改过的 octopress-tagcloud 在这里，被重命名为 alswl / octopress-category-list。\n这个版本同时参考了 pf_miles 的 utf-8 修改，以修复问题 Liquid error: incompatible encoding regexp match (ASCII-8BIT regexp with UTF-8 string) 。\n最后 Show 一下我的一坨标签云， 等有时间我再将标签和类别精简一下，以适应 Octopress。\n",
-  "wordCount" : "132",
+  "wordCount" : "808",
   "inLanguage": "en",
   "datePublished": "2012-05-21T15:17:00+08:00",
   "dateModified": "2012-05-21T15:17:00+08:00",

@@ -7,18 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>Working with Python subprocess[译文] | Log4D</title>
 <meta name="keywords" content="python, subprocess, bash, shell, 译文">
-<meta name="description" content="8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。
-这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。
-原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More
-注意
-关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。
-在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。
-我想达到的目标是：
-查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序 执行程序时发生了什么 当你双击桌面上的终端程序图标时，就会打开一个载入 shell 的程序。 你键入的命令不会直接在内核执行，而是先和 shell 进行交互。
-Command (eg. `ls -l&#39;) ↓ Terminal Program (eg. `gnome-terminal&#39;) ↓ Shell (eg Bash) ↓ Kernel (eg.">
+<meta name="description" content="8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。 这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。 原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More 注意 关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。 在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2012/10/working-with-python-subprocess/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -77,15 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="Working with Python subprocess[译文]" />
-<meta property="og:description" content="8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。
-这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。
-原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More
-注意
-关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。
-在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。
-我想达到的目标是：
-查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序 执行程序时发生了什么 当你双击桌面上的终端程序图标时，就会打开一个载入 shell 的程序。 你键入的命令不会直接在内核执行，而是先和 shell 进行交互。
-Command (eg. `ls -l&#39;) ↓ Terminal Program (eg. `gnome-terminal&#39;) ↓ Shell (eg Bash) ↓ Kernel (eg." />
+<meta property="og:description" content="8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。 这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。 原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More 注意 关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。 在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2012/10/working-with-python-subprocess/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2012-10-16T00:42:00+08:00" />
@@ -93,15 +77,7 @@ Command (eg. `ls -l&#39;) ↓ Terminal Program (eg. `gnome-terminal&#39;) ↓ Sh
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Working with Python subprocess[译文]"/>
-<meta name="twitter:description" content="8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。
-这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。
-原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More
-注意
-关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。
-在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。
-我想达到的目标是：
-查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序 执行程序时发生了什么 当你双击桌面上的终端程序图标时，就会打开一个载入 shell 的程序。 你键入的命令不会直接在内核执行，而是先和 shell 进行交互。
-Command (eg. `ls -l&#39;) ↓ Terminal Program (eg. `gnome-terminal&#39;) ↓ Shell (eg Bash) ↓ Kernel (eg."/>
+<meta name="twitter:description" content="8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。 这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。 原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More 注意 关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。 在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次"/>
 
 
 <script type="application/ld+json">
@@ -130,12 +106,12 @@ Command (eg. `ls -l&#39;) ↓ Terminal Program (eg. `gnome-terminal&#39;) ↓ Sh
   "@type": "BlogPosting",
   "headline": "Working with Python subprocess[译文]",
   "name": "Working with Python subprocess[译文]",
-  "description": "8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。\n这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。\n原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More\n注意\n关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。\n在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。\n我想达到的目标是：\n查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序 执行程序时发生了什么 当你双击桌面上的终端程序图标时，就会打开一个载入 shell 的程序。 你键入的命令不会直接在内核执行，而是先和 shell 进行交互。\nCommand (eg. `ls -l\u0026#39;) ↓ Terminal Program (eg. `gnome-terminal\u0026#39;) ↓ Shell (eg Bash) ↓ Kernel (eg.",
+  "description": "8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。 这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。 原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More 注意 关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。 在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次",
   "keywords": [
     "python", "subprocess", "bash", "shell", "译文"
   ],
   "articleBody": "8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。\n这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。\n原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More\n注意\n关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。\n在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次我来尝试如何通过 Python 的 subprocess 模块来和命令行指令进行交互。\n我想达到的目标是：\n查看当你键入命令时究竟发生了什么 如何确认一个命令是否存在并找出到底在哪 通过 Python 或 shell 执行命令 向一个运行中的进程读取 STDOUT 或写入 STDIN 检查进程的退出返回状态 理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序 执行程序时发生了什么 当你双击桌面上的终端程序图标时，就会打开一个载入 shell 的程序。 你键入的命令不会直接在内核执行，而是先和 shell 进行交互。\nCommand (eg. `ls -l') ↓ Terminal Program (eg. `gnome-terminal') ↓ Shell (eg Bash) ↓ Kernel (eg. Linux 2.6.24) 更多关于 shell 的信息：\nhttp://en.wikipedia.org/wiki/Unix_shell 更多关于进程如何运行的信息：\nhttp://pangea.stanford.edu/computerinfo/unix/shell/processes/processes.html 当你通过 Python 执行程序时候，你可以选择直接从内核执行或者通过 shell。 如果你选择直接执行，你就没办法和 bash 同样方式执行命令。\n我们先看看怎么使用 shell 和那些好玩的特性功能， 然后再通过 subprocess 来实现同样的功能，\n数据流 在 UNIX 和 Linux 下，有三个被称作 流 的 I/O 通道，它们通过文本终端 （比如用 gnome-terminal 运行 Bash）和其他应用程序（比如通过 Python 的 subprocess ）这类环境来连接程序。 这几个 I/O 通道分别称为 标准输入， 标准输出，和 标准错误输出 , 它们的 文件描述符 分别为 0，1，2。\n句柄 名称 描述 0 stdin 标准输入 1 stdout 标准输出 2 stderr 标准错误输出 这里你能看到标准输入叫做 stdin，标准输出称作 stdout，标准错误输出叫做 stderr 。\n流是这样工作的：从终端输出获取输入并通过标准输入发送到程序， 程序返回的正常输出从标准输出输出，错误则返回到环境上下文的标准错误输出。 维基百科有幅图将描述这个过程：\n如果你想将流从一个程序重定向到另一个地方，请看下文分解。\n使用 Shell 重定向标准输入和输出到文件 你可以在 Bash 中使用 \u003e 操作符将一个程序的标准输出重定向到一个文件 （在其他 Shell 也许略有语法差异）。这里有个范例：\nprogram1 \u003e file1 program1 执行后的输出结果从标准输出流写入 file1，并将 file1 其中现有的内容所替换。如果你只是想追加内容，你可以使用 \u003e\u003e 操作符：\nprogram1 \u003e\u003e file1 \u003c 操作符可以被用来从文件中读取数据并传输到程序的标准输入流：\nprogram1 \u003c file1 同样的，program1 会被执行，但是此时 file1 取代了键盘， 成为了标准输入的数据源。\n你可以组合 shell 操作符以完成更复杂的操作。 下面这个范例中，program1 从 file1 获取数据并发送到标准输入。标准输出则从 program1 输出到 file2。\nprogram1 \u003c file1 \u003e file2 也许有时候你需要从一个程序获取输出并将其作为另一个程序的输入。 你可以通过一个临时文件来实现这个操作：\nprogram1 \u003e tempfile1 program2 \u003c tempfile1 rm tempfile1 这种方法有点累赘，因此 shell 提供了方便的机制，称为 管道\n管道 管道允许一个程序的标准输出直接输入到另一个程序的标准输入流中， 而无须创建临时文件：\nprogram1 | program2 操作符 | 被称作 管道 符号，因此这种操作就被称为 管道。\n这里有一幅来自维基百科的图片来描述管道：\n这里有个使用 find .（遍历当前目录下的文件和目录）的例子，将输出定向到 grep 程序来查找特定文件：\nfind . | grep \"The file I'm after.txt\" 第一个程序产生的数据是一行一行地导向第二个程序的，所以在第一个程序运行结束之前， 第二个程序就可以开始使用它们。\n从文件重定向标准输入和输出 在重定向标准输出的同时，你也可以重定向其他流， 比如重定向标准错误输出到标准输出。我们已经讨论过在 Bash 中， 可以在文件描述符之前使用 \u003e，\u003c 和 \u003e\u003e 操作符来重定向数据流 （还记得之前讨论的数字 0，1，2 么）。如果把标准输出代表的数字 1 省略掉看， 会发现我们一直在使用标准输出。\n下面这条命令执行 program1 并将所有标准 错误 数据输出到 file1。\nprogram1 2\u003e file1 执行 program1，错误信息就被重定向到 file 了。\n这里有个范例程序让你来测试，将它保存成 redirect1.py：\nimport sys while 1: try: input = sys.stdin.readline() if input: sys.stdout.write('Echo to stdout: %s'%input) sys.stderr.write('Echo to stderr: %s'%input) except KeyboardError: sys.exit() 这个程序始终将接受到的输入数据并同时输出到 stdout 和 stderr 。\n在 csh 衍生出来的 shell 中，语法则是在重定向符号之后加上 \u0026 符号， 可以达到同样的效果。（译者注：即 |\u0026）\n另一个常用的特性是将一个输出流重定向到定一个。 最常见的用法是将标准错误输出重定向到标准输出， 这样就可以把错误信息和正确信息合并在一起，比如：\nfind / -name .profile \u003e results 2\u003e\u00261 命令将会找出所有名叫 .profile 的文件。 如果没有重定向，它将输出命中信息到 stdout，错误信息到 stderr （比如有些目录无权限访问）。如果标准输出定向到文件，错误信息则会显示在命令行上。 为了在结果文件中可以同时看到命中信息和错误信息，我们需要使用 2\u003e\u00261 将标准错误输出（2）输出到标准输出（1）。（这次即使在 Bash 中也需要 \u0026 符。）\n虽然语法上可以将 2\u003e\u00261 放到 \u003e 前面，但这样不能正常工作。 事实上，当解析器读取 2\u003e\u00261 时候，它还不知道标准输出将重定向到哪里， 所以标准错误输出就不会被合并。\n如果使用管道合并输出流，那么合并符号 2\u003e\u00261 需要在管道符号 | 之前。比如：\nfind / -name .profile 2\u003e\u00261 | less Bash 中的合并输出简写形式是：\ncommand \u003e file 2\u003e\u00261 为：\ncommand \u0026\u003efile 或者：\ncommand \u003e\u0026file 但是最好别用简写形式，否则你会弄糊涂。我提倡宁愿麻烦但是要清晰。\n\u0026\u003e 操作符同时重定向标准输出和标准错误输出。 它的作用和在 Bourne Shell 中的 command \u003e file 2\u003e\u00261 一样。\n管道链 重定向可以和管道连接起来组成复杂的命令，比如：\nls | grep '\\.sh' | sort \u003e shlist 列出当前目录下所有文件，然后过滤剩下仅包含 .sh 的内容，根据文字编码排序， 然后将最终结果输出到 shlist。这种类型的命令经常在 shell 脚本和批处理文件中使用。\n多重输出重定向 标准命令 tee 可以重定向一个命令到多个地方。\nls -lrt | tee xyz 这将文件列表同时输出到标准输出和文件 xyz 中。\nHere 文档 大部分 Shell，包括 Bash 都支持 Here 文档，它允许你使用 \u003c\u003c 操作符和一些文本作为分隔符将文本块嵌入到命令之中。\n在下面的范例中，文本块被传送给 tr 命令，同时使用 END_TEXT 作为 Here 文档分隔符来指明文本的开始和结束。\n$ tr a-z A-Z \u003c",
-  "wordCount" : "1467",
+  "wordCount" : "6235",
   "inLanguage": "en",
   "datePublished": "2012-10-16T00:42:00+08:00",
   "dateModified": "2012-10-16T00:42:00+08:00",

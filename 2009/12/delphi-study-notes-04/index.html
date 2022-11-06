@@ -7,41 +7,10 @@
 <meta name="robots" content="index, follow">
 <title>Delphi学习笔记04 | Log4D</title>
 <meta name="keywords" content="delphi">
-<meta name="description" content="今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。
-1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。
-2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C&#43;&#43;/Java那种inner类定义，写起来难免缚手缚脚 。
-3.大小写的语法规范很麻烦，像Integer/String这些关键词，我真不知道该不该首字母大写。还有变量的定义，按照&quot;Delphi编码规范&quot;是应该大写 ，可是这样就需要频繁的使用Shift，还是喜欢Java的那种首字符小写的驼峰式，能够清楚地把函数/过程/变量区分开。
-4.fuction/procedure除了返回值又没什么大区别，现在想来真爱死void了。
-下面上今天学习的代码，是类的定义、继承、多态这些。
-1.类的使用 unit USharp; {接口定义}
-interface
-type
-{定义类TSharp}
-TSharp = class(TObject)
-private
-FWeight : Double;
-procedure SetWeight(Weight : Double);
-public
-{定义属性Weight}
-property Weight : Double read FWeight write SetWeight;
-procedure Display();
-procedure Draw() ;virtual;
-end;
-{实现}
-implementation
-procedure TSharp.SetWeight(Weight : Double);
-begin
-FWeight := Weight;
-end;
-procedure TSharp.Display();
-begin
-{Self.ClassName获取当前类名}
-Writeln(&lsquo;Im &lsquo;, Self.ClassName, &rsquo; , my weight is &lsquo;, FWeight);
-end;
-{空方法，我不明白虚方法为什么还需要在基类实现…}">
+<meta name="description" content="今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。 1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。 2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C&#43;&#43;/Java那种inner类定义，写起来难免缚手缚脚 。 3.大小写的语法规范很麻烦，像Int">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/12/delphi-study-notes-04/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.fcb8ff387cda8551f3867e8c0e2af5aae9b5df9ce2e143e58af5cd709b4e94a3.css" integrity="sha256-/Lj/OHzahVHzhn6MDir1qum135zi4UPlivXNcJtOlKM=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b4176fe24f954318947863bc4a703e5b86d642300d1dc9491350526795f68bd4.css" integrity="sha256-tBdv4k&#43;VQxiUeGO8SnA&#43;W4bWQjANHclJE1BSZ5X2i9Q=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -100,38 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="Delphi学习笔记04" />
-<meta property="og:description" content="今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。
-1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。
-2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C&#43;&#43;/Java那种inner类定义，写起来难免缚手缚脚 。
-3.大小写的语法规范很麻烦，像Integer/String这些关键词，我真不知道该不该首字母大写。还有变量的定义，按照&quot;Delphi编码规范&quot;是应该大写 ，可是这样就需要频繁的使用Shift，还是喜欢Java的那种首字符小写的驼峰式，能够清楚地把函数/过程/变量区分开。
-4.fuction/procedure除了返回值又没什么大区别，现在想来真爱死void了。
-下面上今天学习的代码，是类的定义、继承、多态这些。
-1.类的使用 unit USharp; {接口定义}
-interface
-type
-{定义类TSharp}
-TSharp = class(TObject)
-private
-FWeight : Double;
-procedure SetWeight(Weight : Double);
-public
-{定义属性Weight}
-property Weight : Double read FWeight write SetWeight;
-procedure Display();
-procedure Draw() ;virtual;
-end;
-{实现}
-implementation
-procedure TSharp.SetWeight(Weight : Double);
-begin
-FWeight := Weight;
-end;
-procedure TSharp.Display();
-begin
-{Self.ClassName获取当前类名}
-Writeln(&lsquo;Im &lsquo;, Self.ClassName, &rsquo; , my weight is &lsquo;, FWeight);
-end;
-{空方法，我不明白虚方法为什么还需要在基类实现…}" />
+<meta property="og:description" content="今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。 1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。 2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C&#43;&#43;/Java那种inner类定义，写起来难免缚手缚脚 。 3.大小写的语法规范很麻烦，像Int" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2009/12/delphi-study-notes-04/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2009-12-01T00:00:00+08:00" />
@@ -139,38 +77,7 @@ end;
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Delphi学习笔记04"/>
-<meta name="twitter:description" content="今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。
-1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。
-2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C&#43;&#43;/Java那种inner类定义，写起来难免缚手缚脚 。
-3.大小写的语法规范很麻烦，像Integer/String这些关键词，我真不知道该不该首字母大写。还有变量的定义，按照&quot;Delphi编码规范&quot;是应该大写 ，可是这样就需要频繁的使用Shift，还是喜欢Java的那种首字符小写的驼峰式，能够清楚地把函数/过程/变量区分开。
-4.fuction/procedure除了返回值又没什么大区别，现在想来真爱死void了。
-下面上今天学习的代码，是类的定义、继承、多态这些。
-1.类的使用 unit USharp; {接口定义}
-interface
-type
-{定义类TSharp}
-TSharp = class(TObject)
-private
-FWeight : Double;
-procedure SetWeight(Weight : Double);
-public
-{定义属性Weight}
-property Weight : Double read FWeight write SetWeight;
-procedure Display();
-procedure Draw() ;virtual;
-end;
-{实现}
-implementation
-procedure TSharp.SetWeight(Weight : Double);
-begin
-FWeight := Weight;
-end;
-procedure TSharp.Display();
-begin
-{Self.ClassName获取当前类名}
-Writeln(&lsquo;Im &lsquo;, Self.ClassName, &rsquo; , my weight is &lsquo;, FWeight);
-end;
-{空方法，我不明白虚方法为什么还需要在基类实现…}"/>
+<meta name="twitter:description" content="今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。 1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。 2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C&#43;&#43;/Java那种inner类定义，写起来难免缚手缚脚 。 3.大小写的语法规范很麻烦，像Int"/>
 
 
 <script type="application/ld+json">
@@ -199,12 +106,12 @@ end;
   "@type": "BlogPosting",
   "headline": "Delphi学习笔记04",
   "name": "Delphi学习笔记04",
-  "description": "今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。\n1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。\n2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C++/Java那种inner类定义，写起来难免缚手缚脚 。\n3.大小写的语法规范很麻烦，像Integer/String这些关键词，我真不知道该不该首字母大写。还有变量的定义，按照\u0026quot;Delphi编码规范\u0026quot;是应该大写 ，可是这样就需要频繁的使用Shift，还是喜欢Java的那种首字符小写的驼峰式，能够清楚地把函数/过程/变量区分开。\n4.fuction/procedure除了返回值又没什么大区别，现在想来真爱死void了。\n下面上今天学习的代码，是类的定义、继承、多态这些。\n1.类的使用 unit USharp; {接口定义}\ninterface\ntype\n{定义类TSharp}\nTSharp = class(TObject)\nprivate\nFWeight : Double;\nprocedure SetWeight(Weight : Double);\npublic\n{定义属性Weight}\nproperty Weight : Double read FWeight write SetWeight;\nprocedure Display();\nprocedure Draw() ;virtual;\nend;\n{实现}\nimplementation\nprocedure TSharp.SetWeight(Weight : Double);\nbegin\nFWeight := Weight;\nend;\nprocedure TSharp.Display();\nbegin\n{Self.ClassName获取当前类名}\nWriteln(\u0026lsquo;Im \u0026lsquo;, Self.ClassName, \u0026rsquo; , my weight is \u0026lsquo;, FWeight);\nend;\n{空方法，我不明白虚方法为什么还需要在基类实现…}",
+  "description": "今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。 1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。 2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C++/Java那种inner类定义，写起来难免缚手缚脚 。 3.大小写的语法规范很麻烦，像Int",
   "keywords": [
     "delphi"
   ],
   "articleBody": "今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。\n1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。\n2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C++/Java那种inner类定义，写起来难免缚手缚脚 。\n3.大小写的语法规范很麻烦，像Integer/String这些关键词，我真不知道该不该首字母大写。还有变量的定义，按照\"Delphi编码规范\"是应该大写 ，可是这样就需要频繁的使用Shift，还是喜欢Java的那种首字符小写的驼峰式，能够清楚地把函数/过程/变量区分开。\n4.fuction/procedure除了返回值又没什么大区别，现在想来真爱死void了。\n下面上今天学习的代码，是类的定义、继承、多态这些。\n1.类的使用 unit USharp; {接口定义}\ninterface\ntype\n{定义类TSharp}\nTSharp = class(TObject)\nprivate\nFWeight : Double;\nprocedure SetWeight(Weight : Double);\npublic\n{定义属性Weight}\nproperty Weight : Double read FWeight write SetWeight;\nprocedure Display();\nprocedure Draw() ;virtual;\nend;\n{实现}\nimplementation\nprocedure TSharp.SetWeight(Weight : Double);\nbegin\nFWeight := Weight;\nend;\nprocedure TSharp.Display();\nbegin\n{Self.ClassName获取当前类名}\nWriteln(‘Im ‘, Self.ClassName, ’ , my weight is ‘, FWeight);\nend;\n{空方法，我不明白虚方法为什么还需要在基类实现…}\nprocedure TSharp.Draw();\nbegin\nend;\nend.\n2.类的继承和多态 unit UCircle; {Circle类模块} interface uses\nUSharp;\ntype\nTCircle = class(TSharp)\nprivate\nFR : Double;\nprocedure SetR (R : Double);\npublic\nproperty R : Double read FR write SetR;\n{重载父类Display方法}\nprocedure Display();\n{重写父类Draw虚方法，关键词override}\nprocedure Draw(); override;\nend;\nimplementation\nprocedure TCircle.SetR(R : Double);\nbegin\nFR := R;\nend;\nprocedure TCircle.Display();\nbegin\nWriteln(‘Im ‘, Self.ClassName, ’ , I am in TCircle.’);\nend;\nprocedure TCircle.Draw();\nbegin\nWriteln(‘Draw a Circle.’);\nend;\nend.\nunit USquare; interface\nuses\nUSharp;\ntype\n{定义类TSharp}\nTSquare = class(TSharp)\nprivate\nFX : Double;\nFY : Double;\nprocedure SetX(X : Double);\nprocedure SetY(Y : Double);\npublic\n{定义属性Weight}\nproperty X : Double read FX write SetX;\nproperty Y : Double read FY write SetY;\nprocedure Display();\n{重写父类Draw虚方法，关键词override}\nprocedure Draw(); override;\nend;\n{实现}\nimplementation\nprocedure TSquare.SetX(X : Double);\nbegin\nFX := X;\nend;\nprocedure TSquare.SetY(Y : Double);\nbegin\nFY := Y;\nend;\nprocedure TSquare.Display();\nbegin\n{Self.ClassName获取当前类名}\nWriteln(‘Im ‘, Self.ClassName, ’ , my x is ‘, X, ‘, y is ‘, Y);\nend;\nprocedure TSquare.Draw();\nbegin\nWriteln(‘Draw a Square.’);\nend;\nend.\nprogram P2; {使用类继承和多.pas文件} {$APPTYPE CONSOLE}\nuses\nSysUtils,\nUSharp in ‘USharp.pas’,\nUCircle in ‘UCircle.pas’,\nUSquare in ‘USquare.pas’;\nvar\nSharp : TSharp;\nCircle : TCircle;\nSquare : TSquare;\n{用来进行多态的TSharp}\nSharpVirtual : TSharp;\n{用来进行类型转换的TSquare}\nSquareForAs : TSquare;\nbegin\nSharp := TSharp.Create();\nSharp.Weight := 1.3;\nSharp.Display();\nCircle := TCircle.Create();\nCircle.Weight := 2.2;\nCircle.R := 1.2;\nCircle.Display();\nSquare := TSquare.Create();\nSquare.Weight := 4.5;\nSquare.X := 2;\nSquare.Y := 3;\nSquare.Display();\n{将变量分别指向TCicle和TSquare，运行Draw实现多态}\nSharpVirtual := TCircle.Create();\nSharpVirtual.Draw();\nSharpVirtual := TSquare.Create();\nSharpVirtual.Draw();\n{is操作符}\nWriteln(Circle is TCircle);\nWriteln(SharpVirtual is TCircle);\nWriteln(SharpVirtual is TSquare);\n{as类转换操作符}\nSquareForAs := SharpVirtual as TSquare;\nSquareForAs.Draw;\nReadln;\nend.\n本来准备入手VCL，结果事情太多，下午党员会议，晚上我又提前1个月过生日请朋友吃饭唱歌，耽误了```\n",
-  "wordCount" : "335",
+  "wordCount" : "1068",
   "inLanguage": "en",
   "datePublished": "2009-12-01T00:00:00+08:00",
   "dateModified": "2009-12-01T00:00:00+08:00",

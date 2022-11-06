@@ -13,15 +13,7 @@
       <pubDate>Mon, 19 Nov 2012 00:06:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/</guid>
-      <description>原文链接：Keeping Instagram up with over a million new users in twelve hours
-这周二我们发布了 Instagram for Android，反响空前强烈。 最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。 尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。 在这里我们将分享一些帮助我们解决问题的工具和技术。
-##statsd##
-statsd 在 Instagram 很受欢迎。这是 Etsy 写的一个网络监控器， 能够统计并图形化数据。它有两种核心的统计方式：计数器和计时器。 我们用计数器来跟踪许多信息，从每秒钟注册数到喜欢数量统计。 同时我们使用计时器来跟踪 feeds 变化，用户停留在 feeds 多久，和其他的主要操作。
-我们喜欢 statsd 的最大原因是它能迅速将状态显示并图形化出来。 Stats 几乎是实时的（在我们系统中有 10 秒钟的延时） 帮助我们评估系统状况和代码变化情况。 Stats 可以随意启用，当我们需要跟踪时，能够快速启用它。 你可以指定一个取样密度，来均匀的查看 web 应用概况， 而不会影响它运行效率。
-总结：实时统计可以动态添加，帮助你线上诊断而无须等待问题重现。
-##Dogslow##
-Bitbucket 出品，Dogslow 是一个 Django middleware，它能监视运行的进程， 当发现有进程运行时间超过 N 秒时，会保存当前进程信息的快照到磁盘。 一直开着它很耗性能，但当去定位突发问题的瓶颈时，就会非常有用（我们在 web 服务器上加了一个开关控制）。
-在发布那天，我们发现很多运行时间超过 1.5s 的进程都卡在 memcached 的 set() 和 get_many() 方法上。我们使用 Munin 跟踪我们的机器状态，发现 memcached 每秒有 5 万次请求，因此，尽管还没到达 CPU 上限，却被 memcached 拖慢了应用服务器速度。</description>
+      <description>原文链接：Keeping Instagram up with over a million new users in twelve hours 这周二我们发布了 Instagram for Android，反响空前强烈。 最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。 尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。 在这里我们将分享一些帮助我们解决问题的工具和技术。 ##statsd## statsd 在 Instagram 很受欢迎。这是 Etsy 写的一个网络监控器， 能够统计并图形化数据。它有两种核心的统计方式：计数器和</description>
     </item>
     
   </channel>
