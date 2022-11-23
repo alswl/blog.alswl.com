@@ -2,6 +2,8 @@
 title: "码转电子厂 - 教你修键盘"
 slug: fix-keyboard
 date: 2022-10-19T10:51:01+08:00
+categories: ["fun"]
+tags: ["keyboard", "ergodox"]
 ---
 
 ![fu-tu-kang](../../static/images/202210/fu-tu-kang.png)
