@@ -2,7 +2,7 @@
 title: "读《历代经济变革得失》"
 slug: economic-revolution-in-china
 date: 2022-11-24T00:07:25+08:00
-category: investing
+categories: [investing]
 tags: ["book", "经济"]
 ---
 
