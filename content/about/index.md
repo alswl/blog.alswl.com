@@ -30,14 +30,14 @@ menu: "main"
 - 2016-04-26 使用 HTTPS
 - 2016-04-25 使用 AWS EC2 作为服务器
 - 2014-12-23 使用 GitCafe 提供的 Pages 服务
-- 2014-01-24 使用 VPS [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f)
-- 2013-12-03 更换博客系统 Pelican [Commit](https://github.com/alswl/blog.alswl.com/commit/71249a8ba7aa0e9298600a720de3b40fe8d8edab)
+- 2014-01-24 使用 [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f) 托管
+- 2013-12-03 更换博客系统 Pelican，并使用 Git 管理博客 [Commit](https://github.com/alswl/blog.alswl.com/commit/71249a8ba7aa0e9298600a720de3b40fe8d8edab)
 - 2012-05-14 更换博客系统 Octopress
 - 2012-01-01 使用 VPS [Linode](https://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c)
 - 2011-11-02 更换域名 log4d.com
-- 2009-12-24 更换域名 ~~[dddspace.com](http://dddspace.com]~~
-- 2009-05-14 使用域名 ~~[dddspace.cn](http://dddspace.cn]~~
-- 2008 使用 Yo2
+- 2009-12-24 更换域名 ~~[dddspace.com](http://dddspace.com)~~
+- 2009-05-14 使用自建 WordPress 并启用域名 ~~[dddspace.cn](http://dddspace.cn)~~
+- 2008 使用 Wordpress on ~~Yo2~~
 - 2007 使用 ~~[Baidu Hi](http://hi.baidu.com/alswl)~~
 - 2005-05-30 在 MSN Space 创建 ~~[博客](http://alswl.spaces.live.com)~~
 
