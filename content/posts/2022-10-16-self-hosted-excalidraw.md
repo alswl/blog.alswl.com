@@ -163,3 +163,10 @@ windows 中文支持手写体比较差劲，必须安装 Office 才有更多选�
 
 可以访问 [excalidraw.alswl.com](https://excalidraw.alswl.com/) 查看效果，这是一个静态站点，
 支持中文字体，但是无法在线协作。
+
+----
+
+## Update 2022-12
+
+有几个网友来咨询如何进行部署。于是基于上述的方案，我提供了一套基于 Docker Compose 的一键拉起服务：带协作、中文字体支持。
+仓库见 [alswl/excalidraw-collaboration: excalidraw with collaboration feature, one-click deploy](https://github.com/alswl/excalidraw-collaboration)。
