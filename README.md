@@ -2,7 +2,9 @@
 
 - https://blog.alswl.com/
 - https://www.zhihu.com/column/alswl
-- https://www.jianshu.com/u/90d9cec0f932
+- https://juejin.cn/user/1380642333663671
+- https://segmentfault.com/u/alswl/articles
+- <del>https://www.jianshu.com/u/90d9cec0f932</del>
 
 This is my blog.
 
@@ -10,6 +12,7 @@ This is my blog.
 ## Command
 
 ```
+# upload images
 make sync-images
 
 hugo serve -D
@@ -23,7 +26,7 @@ hugo new posts/new.md
 
 Asset prefix: 
 
-- ~~ https://4ocf5n.dijingchao.com/upload_dropbox/ ~~
+- <del>https://4ocf5n.dijingchao.com/upload_dropbox/</del>
 - https://d05fae.dijingchao.com
 
 
@@ -76,4 +79,5 @@ for i in $(ls); do convert $i -resize 1000x1000\> $i; donen
 
 ```
 c content/posts/your.md | gsed 's#../../static/images#https://d05fae.dijingchao.com#g' C
+c content/posts/your.md | gsed 's#../../static/images#https://d05fae.dijingchao.com#g' | pandoc -f markdown_mmd -t gfm --wrap=none C
 ```
