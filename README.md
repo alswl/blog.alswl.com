@@ -10,6 +10,8 @@ This is my blog.
 ## Command
 
 ```
+make sync-images
+
 hugo serve -D
 hugo
 hugo new posts/new.md
