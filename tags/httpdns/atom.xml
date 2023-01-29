@@ -14,6 +14,111 @@
       
       <guid>https://blog.alswl.com/2016/12/https-2/</guid>
       <description>(图片来自 茶杯中的可爱小白鼠 壁纸 - 2560x1920－堆糖，美好生活研究所) 在上篇文章 🔒 也谈 HTTPS - HTTPDNS + HTTPS 中， 我们谈了如何基于 HTTPDNS 来部署无坚不摧的 HTTPS 通信环境， 这次我们讨论另外一个比较头疼的问题：部署。 小站点部署 HTTPS 相对成本低，改改前端代码，就可以上线了。 但作为业务有一定复杂度的大网站，就没办法这么暴力上线了。 前端在基础库中调整 Scheme 之后，仍然可能存在很多边边角角没有覆盖到。 比如 JS 里面写死了 HTTP，那在 HTTPS 下请</description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201612/mouse.jpeg" alt="201612/mouse.jpeg"  />
+
+
+(图片来自 <a href="https://www.duitang.com/blog/?id=48013745">茶杯中的可爱小白鼠 壁纸 - 2560x1920－堆糖，美好生活研究所</a>)</p>
+<p>在上篇文章 <a href="https://blog.alswl.com/2016/11/https-1/">🔒 也谈 HTTPS - HTTPDNS + HTTPS</a> 中，
+我们谈了如何基于 HTTPDNS 来部署无坚不摧的 HTTPS 通信环境，
+这次我们讨论另外一个比较头疼的问题：部署。</p>
+<!-- more -->
+<p>小站点部署 HTTPS 相对成本低，改改前端代码，就可以上线了。
+但作为业务有一定复杂度的大网站，就没办法这么暴力上线了。</p>
+<p>前端在基础库中调整 Scheme 之后，仍然可能存在很多边边角角没有覆盖到。
+比如 JS 里面写死了 HTTP，那在 HTTPS 下请求 HTTP XHR 的话，
+浏览器会将请求拦截掉。
+一旦出现这种故障，用户就无法正常使用业务，小白用户往往也不懂得自己将 <code>https://</code> 换成 <code>http://</code> 使用。</p>
+<p>解决的思路是足够的内测，找一群人帮我在 HTTPS 环境下使用足够长时间。
+让他们当小白鼠，提前发现问题并解决。
+于是，我把目光转向了身边的一大大群小白鼠，整个办公室的同事~😄</p>
+<p>没错，<strong><strong>我要强制所有同事使用 HTTPS 的公司网站</strong></strong>，从而靠他们帮我发现问题。</p>
+<p>靠发邮件、QQ 广播呼吁大家使用 HTTPS 站点的方法，估计是不行的。
+没有利益驱动，推动力是不足的，我必须想点强制的手段让他们使用 HTTPS。</p>
+<p>有三种方法来达到这个效果：</p>
+<ol>
+<li>业务系统内入口判断用户身份，是雇员的话，切换到 HTTPS</li>
+<li>Nginx 入口系统判断 IP 来源，办公室 IP 则切换到 HTTPS</li>
+<li>改造办公室网络，访问站点时候，自动切换到 HTTPS</li>
+</ol>
+<p>为了避免对线上业务系统、基础设施造成影响，我采用了第三条方案。</p>
+<p>说干就干，直接对公司网络出口设备是 ROS<a href="http://wiki.mikrotik.com/wiki/Main_Page">via</a> 动起刀子。</p>
+<p>实现的原理如下：</p>
+<ul>
+<li>A：办公室网络的 🐁 们请求站点 <a href="http://www.duitang.com">http://www.duitang.com</a></li>
+<li>B：操作 RouterOS 的防火墙，将 dst 为 <a href="https://www.duitang.com">www.duitang.com</a> IP 的 TCP 请求都 dst-nat 到新的一台 Nginx 服务器 proxy.duitang.com</li>
+<li>C：这台 proxy.duitang.com 做过特别定制，将所有针对 *.duitang.com 请做一次 302 请求，将 <a href="http://www.duitang.com">http://www.duitang.com</a> 请求都转发到 <a href="https://www.duitang.com">https://www.duitang.com</a></li>
+<li>D：Client 收到 302 请求，重新请求 <a href="https://www.duitang.com">https://www.duitang.com</a></li>
+<li>E：同 B</li>
+<li>F：proxy.duitang.com 将请求转发到真正的 <a href="https://www.duitang.com">www.duitang.com</a> 服务器</li>
+</ul>
+<p>PS：这里要小心的是，需要配置 proxy.duitang.com 的 <code>resolver</code> 避免 Nginx 内部请求。</p>
+<p>流程图：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201612/https_ros_process.jpg" alt="201612/https_ros_process.jpg"  />
+
+</p>
+<p>这样操作之后，在办公室网络下，所有访问公司网站的 HTTP 流量都会跳转到 HTTPS。</p>
+<p>PS：我原始方案想使用 ROS 的 L7 防火墙 直接抓 HTTP 包，match HTTP 头数据，
+再修改返回的 TCP 包。
+但测试下来发现 ROS L7 Firewall 不支持写 TCP 数据。
+所以我最后只能使用中间跳转的方案。</p>
+<p>如果不是使用 ROS 的朋友也不用担心，原理和流程已经讲清楚了，
+无非是使用 Cisco / Huawei 网络设备的防火墙命令实现需要的功能。</p>
+<hr />
+<p>上篇文章发完之后，好几个朋友问我 IP 证书供应商的事情。我就简单说一下我了解的情况。</p>
+<p>国内 SSL 证书供应商们会给他们兜售的产品起各种各样花里胡哨的名字，
+什么超真、超强、超安、超快，国外有些企业也会搞什么 Pro / Super / Premium / Essential，
+其实 SSL 证书的区分，笼统来说就三种类型：DV / OV / EV，
+Domain Validation / Orgnization Validation / Extented Validation。
+他们区别除了字面意思，就是所有权审核流程一个比一个麻烦。</p>
+<p>想基于 IP 直接搞所有权审核，要看对应供应商的证书是否支持。
+去年年底我做了一个调查，支持 IP 证书的厂家如下：</p>
+<ul>
+<li>Rapid SSL 不支持 ip</li>
+<li>wosign OV 级别支持
+<ul>
+<li>OV 需要验证 需要验证申请单位的营业执照、等其他证明文件</li>
+<li>浏览器支持情况
+<ul>
+<li>Firefox 32 <a href="https://mozillacaprogram.secure.force.com/CA/IncludedCACertificateReport">https://mozillacaprogram.secure.force.com/CA/IncludedCACertificateReport</a></li>
+<li>交叉认证了 Startcom 的证书，可以支持老版本</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>GlobalSign OV 支持
+<ul>
+<li>$349 * 6 * 8 = 16752</li>
+<li><a href="https://support.globalsign.com/customer/portal/articles/1216536-securing-a-public-ip-address---ssl-certificates">https://support.globalsign.com/customer/portal/articles/1216536-securing-a-public-ip-address&mdash;ssl-certificates</a></li>
+<li>需要认证 RIPE ip， <a href="https://apps.db.ripe.net/search/query.html?searchtext=221.228.82.178#resultsAnchor">https://apps.db.ripe.net/search/query.html?searchtext=221.228.82.178#resultsAnchor</a></li>
+</ul>
+</li>
+<li>Geotrust 明确表示不支持 <a href="https://www.geocerts.com/faq#Q47">https://www.geocerts.com/faq#Q47</a></li>
+</ul>
+<p>现在 Wosign 爆了丑闻，于是支持 IP SSL 又少了一家。
+只剩下 GlobalSign 了，但是 GlobalSign OV 又贵审核又麻烦，
+不知道看到此文的大神们有没有更好的推荐。</p>
+<hr />
+<p>参考链接：</p>
+<ul>
+<li><a href="http://serverfault.com/questions/193775/ssl-certificate-for-a-public-ip-address">domain name - SSL certificate for a public IP address? - Server Fault</a></li>
+<li><a href="http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/Filter">ROS Filter</a></li>
+<li><a href="http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/NAT">ROS NAT</a></li>
+<li><a href="http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/L7">ROS Firewall L7</a></li>
+<li><a href="http://forum.mikrotik.com/viewtopic.php?f=13&amp;t=62152">How to block and redirect website - MikroTik RouterOS</a></li>
+<li><a href="http://forum.mikrotik.com/viewtopic.php?t=39837">Mikrotik IP REDIRECT using firewall - MikroTik RouterOS</a></li>
+<li><a href="http://forum.mikrotik.com/viewtopic.php?t=88049">Redirect all traffic from a spesific ip number to a web page - MikroTik RouterOS</a></li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -23,6 +128,92 @@
       
       <guid>https://blog.alswl.com/2016/11/https-1/</guid>
       <description>最近谈论 HTTPS 的文章很多，其原因之一是运营商作恶底线越来越低，动不动就插播广告， 前两天小米还联合几家公司发文 关于抵制流量劫持等违法行为的联合声明 痛斥某些运营商。 另一方面也是苹果 ATS 政策的大力推动，逼迫大家在 APP 中全部使用 HTTPS 通信。 上 HTTPS 的好处很多：保护用户的数据不外泄，避免中间人篡改数据， 对企业信息进行鉴权。 关于 HTTPS 如何购买证书，如何部署，网上的教程已经太多了，实践起来没有太大的难处。 我们在部署 HTTPS 的时候，遇到了</description>
+      <content:encoded><![CDATA[<p>最近谈论 HTTPS 的文章很多，其原因之一是运营商作恶底线越来越低，动不动就插播广告，
+前两天小米还联合几家公司发文 <a href="http://weibo.com/1771925961/Da1aopxLQ?refer_flag=1001030103_&amp;type=comment#_rnd1480392491936">关于抵制流量劫持等违法行为的联合声明</a> 痛斥某些运营商。
+另一方面也是苹果 <a href="https://techcrunch.com/2016/06/14/apple-will-require-https-connections-for-ios-apps-by-the-end-of-2016/">ATS</a> 政策的大力推动，逼迫大家在 APP 中全部使用 HTTPS 通信。
+上 HTTPS 的好处很多：保护用户的数据不外泄，避免中间人篡改数据，
+对企业信息进行鉴权。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201611/https.png" alt="201611/https.png"  />
+
+</p>
+<p>关于 HTTPS 如何购买证书，如何部署，网上的教程已经太多了，实践起来没有太大的难处。
+我们在部署 HTTPS 的时候，遇到了一些新问题，首当其冲的就是 HTTPS 部分网络不可访问的问题：</p>
+<blockquote>
+<p>尽管使用了 HTTPS 技术，部分邪恶的运营商，仍然使用 DNS 污染技术，让域名指向的他们自己服务器
+而这些服务器并没有部署 SSL 服务（就算部署了，也会触发 SSL 证书 Common name 不一致报警），
+导致 443 端口直接被拒绝。</p>
+</blockquote>
+<!-- more -->
+<p>这个问题不解决，强行上 HTTPS 的话，会导致一部分用户出现无法访问网站
+一旦用户不爽了，轻则对产品不信任，重则直接导致用户流失。</p>
+<p>运营商为了赚广告钱、省网间结算是不择手段的。
+他们普遍使用的劫持手段是通过 ISP提供的 DNS 伪造域名。
+那有没有什么方法可以解决 DNS 劫持呢？
+业界有一套解决这类场景的方案，即 HTTPDNS。</p>
+<p>HTTPDNS 的原理很简单，将 DNS 这种容易被劫持的协议，转为使用 HTTP 协议请求 Domain &lt;-&gt; IP 映射。
+获得正确 IP 之后，Client 自己组装 HTTP 协议，从而避免 ISP 篡改数据。</p>
+<p>有两篇文章很清晰的讲解了 HTTPDNS 的细节：</p>
+<ul>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzA3ODgyNzcwMw==&amp;mid=201837080&amp;idx=1&amp;sn=b2a152b84df1c7dbd294ea66037cf262&amp;scene=2&amp;from=timeline&amp;isappinstalled=0#rd">【鹅厂网事】全局精确流量调度新思路-HttpDNS服务详解</a>
+<ul>
+<li>腾讯这篇文章时间点是 2014 年，说明这个方案上线更早，也较为成熟</li>
+</ul>
+</li>
+<li><a href="https://developers.google.com/speed/public-dns/docs/dns-over-https">DNS-over-HTTPS  |  Public DNS  |  Google Developers</a>
+<ul>
+<li>该方案更为先进，使用 HTTP 替换为 HTTPS，减少一个隐患点</li>
+</ul>
+</li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201611/httpdnsjbyl.png" alt="201611/httpdnsjbyl.png"  />
+
+</p>
+<p>点击 <a href="https://dns.google.com/resolve?name=www.duitang.com">https://dns.google.com/resolve?name=www.duitang.com</a> /
+<a href="http://119.29.29.29/d?dn=www.duitang.com">http://119.29.29.29/d?dn=www.duitang.com</a> 感受一下 DNS-over-HTTPS / HTTPDNS。</p>
+<h2 id="单-ip-多域名支持">单 IP 多域名支持</h2>
+<p>这个方案看似完美，但是在实际生产中，会遇到一个问题。</p>
+<p>Android / iOS 在操作系统级别对 HTTPS 通信是提供了封装。
+APP 无法在发起连接时候，也没有权限直接操作 socket。
+所以尽管 APP 拿到了域名对应的 IP，却没有办法让这个 IP 在 HTTPS 里生效。</p>
+<p>解决的思路很暴力：<strong>彻底放弃域名系统，完全使用基于 IP 系统的通讯。</strong></p>
+<p>原本请求 <code>https://www.duitang.com</code> 的 request，
+调整为请求 <code>https://221.228.82.181</code>。</p>
+<p>OK，做到这一步，我们就可以跟运营商劫持说拜拜了。</p>
+<p>不，还没结束。</p>
+<p>完全搞定运营商之后，这 IP 方案给我们自己带来一个困扰：
+<strong>Nginx 服务器无法通过 Host 来识别不同域名下面的请求了！！！</strong>
+在由于使用一个独立 IP，会导致所有域名请求混在一起，无法分别。
+大公司可以 dedicated IP，小公司就玩不起了。</p>
+<p>为了解决同一个 IP 下面多个域名的问题，我们引入了一个URL参数： <code>__domain</code>。
+当请求 IP 域名时候，必须带着这个参数，服务器会将请求域名解析出来，再分发到对应的域名。</p>
+<p>实现这个逻辑的 Nginx 核心代码：</p>
+<pre tabindex="0"><code>set $query_domain $arg___domain;
+if ($query_domain !~ &#39;(www|a|b)\.example\.com&#39;) {
+    rewrite ^ http://www.example.com/404/ redirect;
+}
+set $my_host $query_domain;
+location / {
+    proxy_set_header Host $my_host;
+    proxy_set_header X-REAL-IP $remote_addr;
+    proxy_pass $scheme://127.0.0.1;
+}
+</code></pre><p>最后一个注意事项是，记得调整 Nginx 配置的 remote_addr，否则都变成了 127.0.0.1，
+也许会导致其他一些策略失效。</p>
+<p>完美收工，效果如下：<a href="https://221.228.82.181/?__domain=www.duitang.com">https://221.228.82.181/?__domain=www.duitang.com</a>。</p>
+<p>恭喜你，已经掌握核心科技了，再也不怕运营商瞎折腾了，从此走上了业务蓬勃发展的金光大道……☀️</p>
+<p>下一篇文章，我会再谈谈如何做 HTTPS 的「内测」，避免将线上业务一次性切到 HTTPS 导致不少边边角角业务无法正常使用。</p>
+<hr />
+]]></content:encoded>
     </item>
     
   </channel>

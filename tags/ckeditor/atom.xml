@@ -14,6 +14,32 @@
       
       <guid>https://blog.alswl.com/2010/03/dean-s-fckeditor-upload-directory-modify/</guid>
       <description>一直喜欢WorePress默认的上传文件方法，通过WP-content/uploads/年/月分组。 网站改版时候果断的把[Dean&amp;rsquo;s FCKEditor With pwwang&amp;rsquo;s Code Plugin For Wordpress](http://wordpress.org/extend/plugins/deans-fckeditor-with-pwwangs- code-plugin-for-wordpress/)换成了[Dean&amp;rsquo;s FCKEditor For Wordpress](http://wordpress.org/extend/plugins/deans-fckeditor-for-wordpress- plugin/)，Dean&amp;rsquo;s FCKEditor With pwwang&amp;rsquo;s Code Plugin For Wordpress是带一个代码编辑器的CKEditor插件，和WP-Syntax配合很好用，而</description>
+      <content:encoded><![CDATA[<p>一直喜欢WorePress默认的上传文件方法，通过<code>WP-content/uploads/年/月</code>分组。</p>
+<p>网站改版时候果断的把[Dean&rsquo;s FCKEditor With pwwang&rsquo;s Code Plugin For Wordpress](<a href="http://wordpress.org/extend/plugins/deans-fckeditor-with-pwwangs-">http://wordpress.org/extend/plugins/deans-fckeditor-with-pwwangs-</a>
+code-plugin-for-wordpress/)换成了[Dean&rsquo;s FCKEditor For Wordpress](<a href="http://wordpress.org/extend/plugins/deans-fckeditor-for-wordpress-">http://wordpress.org/extend/plugins/deans-fckeditor-for-wordpress-</a> plugin/)，Dean&rsquo;s FCKEditor With pwwang&rsquo;s Code Plugin For
+Wordpress是带一个代码编辑器的CKEditor插件，和WP-Syntax配合很好用，而Dean&rsquo;s FCKEditor For
+Wordpress是常规的CKEditor。</p>
+<p>PS:为神马要用两款插件呢，其实都是为了代码高亮，现在我发现Dean&rsquo;s FCKEditor For
+Wordpress+<a href="http://github.com/RichGuk/syntaxhl">SyntaxHL</a>才是王道啊～</p>
+<p>这两款插件都会把文件上传到<code>/wp- content/uploads/image</code>(file/flash子文件夹)。这点让我很不喜欢，我还是喜欢默认的WordPress上传路径。</p>
+<p>修改<code>wp-contentpluginsfckeditor-for-wordpress- pluginfilemanagerconnectorsphpconfig.php</code>如下。其实就是声明一个变量，然后替换掉文件路径。</p>
+<pre><code>$Config['Enabled'] = $deans_fckeditor-&gt;can_upload();
+$dateMonth = date('Y/m/');
+$Config['UserFilesPath'] = $deans_fckeditor-&gt;user_files_url . $dateMonth;
+$Config['UserFilesAbsolutePath'] = $deans_fckeditor-&gt;user_files_absolute_path . $dateMonth;
+
+
+$Config['AllowedExtensions']['File']	= array('7z', 'aiff', 'asf', 'avi', 'bmp', 'csv', 'doc', 'fla', 'flv', 'gif', 'gz', 'gzip', 'jpeg', 'jpg', 'mid', 'mov', 'mp3', 'mp4', 'mpc', 'mpeg', 'mpg', 'ods', 'odt', 'pdf', 'png', 'ppt', 'pxd', 'qt', 'ram', 'rar', 'rm', 'rmi', 'rmvb', 'rtf', 'sdc', 'sitd', 'swf', 'sxc', 'sxw', 'tar', 'tgz', 'tif', 'tiff', 'txt', 'vsd', 'wav', 'wma', 'wmv', 'xls', 'xml', 'zip') ;
+$Config['DeniedExtensions']['File']		= array() ;
+$Config['FileTypesPath']['File']		= $Config['UserFilesPath']  ;
+$Config['FileTypesAbsolutePath']['File']= ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'] ;
+$Config['QuickUploadPath']['File']		= $Config['UserFilesPath'] ;
+$Config['QuickUploadAbsolutePath']['File']= $Config['UserFilesAbsolutePath'] ;
+</code></pre>
+<p>呃，懒孩子们我就直接提供下载了。</p>
+<p>config.php文件下载：<a href="../../static/images/upload_dropbox/201003/fckeditor-for-wordpress-plugin_config.zip">fckeditor-for-wordpress-plugin_config.zip</a></p>
+<p>看不懂的就算了～</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -23,6 +49,51 @@
       
       <guid>https://blog.alswl.com/2009/05/fckeditor-browse-server-function-is-disabled/</guid>
       <description>FCKeditor应该是功能最强大的网页编辑器了，提供js版本和java版本，而且功能特别丰富。 猛击这里打开FCKeditor的主页 正是因为功能太丰富，所以往往带来安全原因，用这个可以随意上传图片和文件，还能浏览服务器？！ 不行不行，这一定得禁用，否则就是给脚本小子提供工具了嘛。 配置fckconfig.js 118行左右，修改Basic模板，加入图片和表情功能 FCKConfig.ToolbarSets[&amp;quot;Basic&amp;quot;] = [ [&#39;Bold&#39;,&#39;Italic&#39;,&#39;-&#39;,&#39;OrderedList&#39;,&#39;UnorderedList&#39;,&#39;-&#39;,&#39;Link&#39;,&#39;Unlink&#39;,&#39;-&#39;,&#39;Image&#39;,&#39;Smiley&#39;] ] ; 继续修改tckconfig.j</description>
+      <content:encoded><![CDATA[<p>FCKeditor应该是功能最强大的网页编辑器了，提供js版本和java版本，而且功能特别丰富。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200905/logotop.gif" alt="image"  />
+
+</p>
+<p><a href="http://www.fckeditor.net/">猛击这里打开</a>FCKeditor的主页</p>
+<p>正是因为功能太丰富，所以往往带来安全原因，用这个可以随意上传图片和文件，还能浏览服务器？！</p>
+<p>不行不行，这一定得禁用，否则就是给脚本小子提供工具了嘛。</p>
+<p>配置fckconfig.js 118行左右，修改Basic模板，加入图片和表情功能</p>
+<pre><code>FCKConfig.ToolbarSets[&quot;Basic&quot;] = [
+['Bold','Italic','-','OrderedList','UnorderedList','-','Link','Unlink','-','Image','Smiley']
+] ;
+</code></pre>
+<p>继续修改tckconfig.js 284左右，去除一些浏览功能，修改为false</p>
+<pre><code>FCKConfig.LinkBrowser = false ;//关闭增加连接中浏览服务器功能
+FCKConfig.LinkBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Connector=' + encodeURIComponent( FCKConfig.BasePath + 'filemanager/connectors/' + _FileBrowserLanguage + '/connector.' + _FileBrowserExtension ) ;
+FCKConfig.LinkBrowserWindowWidth    = FCKConfig.ScreenWidth * 0.7 ;        // 70%
+FCKConfig.LinkBrowserWindowHeight    = FCKConfig.ScreenHeight * 0.7 ;    // 70%
+FCKConfig.ImageBrowser = false ;//关闭增加图片中浏览服务器功能
+FCKConfig.ImageBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Image&amp;amp;Connector=' + encodeURIComponent( FCKConfig.BasePath + 'filemanager/connectors/' + _FileBrowserLanguage + '/connector.' + _FileBrowserExtension ) ;
+FCKConfig.ImageBrowserWindowWidth  = FCKConfig.ScreenWidth * 0.7 ;    // 70% ;
+FCKConfig.ImageBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ;    // 70% ;
+FCKConfig.FlashBrowser = false ;
+FCKConfig.FlashBrowserURL = FCKConfig.BasePath + 'filemanager/browser/default/browser.html?Type=Flash&amp;amp;Connector=' + encodeURIComponent( FCKConfig.BasePath + 'filemanager/connectors/' + _FileBrowserLanguage + '/connector.' + _FileBrowserExtension ) ;
+FCKConfig.FlashBrowserWindowWidth  = FCKConfig.ScreenWidth * 0.7 ;    //70% ;
+FCKConfig.FlashBrowserWindowHeight = FCKConfig.ScreenHeight * 0.7 ;    //70% ;
+FCKConfig.LinkUpload = false ;
+FCKConfig.LinkUploadURL = FCKConfig.BasePath + 'filemanager/connectors/' + _QuickUploadLanguage + '/upload.' + _QuickUploadExtension ;
+FCKConfig.LinkUploadAllowedExtensions    = &quot;.(7z|aiff|asf|avi|bmp|csv|doc|fla|flv|gif|gz|gzip|jpeg|jpg|mid|mov|mp3|mp4|mpc|mpeg|mpg|ods|odt|pdf|png|ppt|pxd|qt|ram|rar|rm|rmi|rmvb|rtf|sdc|sitd|swf|sxc|sxw|tar|tgz|tif|tiff|txt|vsd|wav|wma|wmv|xls|xml|zip)$&quot; ;            // empty for all
+FCKConfig.LinkUploadDeniedExtensions    = &quot;&quot; ;    // empty for no one
+FCKConfig.ImageUpload = false ;
+FCKConfig.ImageUploadURL = FCKConfig.BasePath + 'filemanager/connectors/' + _QuickUploadLanguage + '/upload.' + _QuickUploadExtension + '?Type=Image' ;
+FCKConfig.ImageUploadAllowedExtensions    = &quot;.(jpg|gif|jpeg|png|bmp)$&quot; ;        // empty for all
+FCKConfig.ImageUploadDeniedExtensions    = &quot;&quot; ;                            // empty for no one
+FCKConfig.FlashUpload = false ;
+FCKConfig.FlashUploadURL = FCKConfig.BasePath + 'filemanager/connectors/' + _QuickUploadLanguage + '/upload.' + _QuickUploadExtension + '?Type=Flash' ;
+FCKConfig.FlashUploadAllowedExtensions    = &quot;.(swf|flv)$&quot; ;        // empty for all
+FCKConfig.FlashUploadDeniedExtensions    = &quot;&quot; ;                    // empty for no one
+</code></pre>
+<p>OK，世界清净了</p>
+]]></content:encoded>
     </item>
     
   </channel>

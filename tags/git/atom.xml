@@ -14,6 +14,36 @@
       
       <guid>https://blog.alswl.com/2014/01/renamed-svn-to-git/</guid>
       <description>前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题： 有一个小伙伴使用 git-svn 做 rename 操作时候，将一个目录 svn mv 了， 导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言， 历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。 # 找出丢失之前的版本，列出丢失目录上层的操作记录。 svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less # 将重命名之前的版本拷贝到一个临时目录 svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost # 准备现有代码到 Git git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami #</description>
+      <content:encoded><![CDATA[<p>前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题：
+有一个小伙伴使用 git-svn 做 <code>rename</code> 操作时候，将一个目录 <code>svn mv</code> 了，
+导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言，
+历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。</p>
+<!-- more -->
+<pre tabindex="0"><code># 找出丢失之前的版本，列出丢失目录上层的操作记录。
+svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less
+
+# 将重命名之前的版本拷贝到一个临时目录
+svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost
+
+# 准备现有代码到 Git
+git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami
+
+# 修改 .git/config 来加入丢失的历史数据 Remote
+[svn-remote &#34;svn-lost&#34;]
+	url = svn://log4d.com
+	fetch = trunk/apps/ios/nami_lost:refs/remotes/trunk-lost
+
+# 并抓取 Remote 内容
+git svn fetch
+
+# Rebase 新代码到恢复过来的历史记录上
+git checkout master
+git rebase --committer-date-is-author-date trunk-lost
+</code></pre><p>其中注意的是手动添加一个 <code>svn-remote</code> 地址为历史数据副本地址。
+还有就是 <code>rebase</code> 时候参数 <code>--committer-date-is-author-date</code>
+可以保证 <code>rebase</code> 不会造成提交时间被修改，方便回溯。</p>
+<p>整整搞了一天，说出来都是泪，希望看到的人用不到，搜到的人用得到。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -23,6 +53,49 @@
       
       <guid>https://blog.alswl.com/2012/06/vundle-submodule/</guid>
       <description>问题背景 Vundle 是个好东西，可以用来管理 vim 配置和 vim 插件。Vundle 会将所有插件管理在 .vim/bundle/ 中，详情可看 使用 Vundle 管理 Vim 插件。 官方安装 Vundle 方法如下： $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 我的 Vundle 的版本是 59bff0c457f68c3d52bcebbf6068ea01ac8f5dac， git 版本是 git version 1.7.10.2 。 使用 BundleInstall 可以安装 .vimrc 中配置的插件， 我使用 git 控制 .vim 和 .vimrc 版本。在 BundleInstall 之后会导致 vundle 目录项目状态混乱，要么形成一个无法追踪的 submodule 比如 .vim/bundle/The-NERD-Commenter (untracked content) ，要么变成一个普通的文件</description>
+      <content:encoded><![CDATA[<h2 id="问题背景">问题背景</h2>
+<p>Vundle 是个好东西，可以用来管理 vim 配置和 vim 插件。Vundle
+会将所有插件管理在 <code>.vim/bundle/</code> 中，详情可看
+<a href="/2012/04/vundle/">使用 Vundle 管理 Vim 插件</a>。</p>
+<p>官方安装 Vundle 方法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+</span></span></code></pre></div><p>我的 Vundle 的版本是 <code>59bff0c457f68c3d52bcebbf6068ea01ac8f5dac</code>，
+git 版本是 <code>git version 1.7.10.2</code> 。
+使用 <code>BundleInstall</code> 可以安装 <code>.vimrc</code> 中配置的插件，</p>
+<p>我使用 git 控制 <code>.vim</code> 和 <code>.vimrc</code> 版本。在 <code>BundleInstall</code>
+之后会导致 vundle 目录项目状态混乱，要么形成一个无法追踪的
+submodule 比如 <code>.vim/bundle/The-NERD-Commenter (untracked content)</code>
+，要么变成一个普通的文件夹 <code>.vim/bundle/vim-markdown</code>。</p>
+<!-- more -->
+<h2 id="使用-submodule-管理-插件">使用 Submodule 管理 插件</h2>
+<p>为了解决这个问题，我们需要先了解一点 Git 中 Submodule 的知识，详情可以查看
+<a href="http://gitbook.liuhui998.com/5_10.html">Git Book 中文版 - 子模块</a>。</p>
+<p>用 Submodule 来初始化 Vundle ，使用下面的语句：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git submodule add  https://github.com/gmarik/vundle.git .vim/bundle/vundle
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">git submodule status <span class="c1"># 查看子模块状态</span>
+</span></span><span class="line"><span class="cl"> 59bff0c457f68c3d52bcebbf6068ea01ac8f5dac .vim/bundle/vundle <span class="o">(</span>0.9.1-18-g59bff0c<span class="o">)</span>
+</span></span></code></pre></div><p>Submodule 的映射是被记录在 .gitmodules 文件中的，初始化完 Vundle 之后如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[submodule &#34;.vim/bundle/vundle&#34;]</span>
+</span></span><span class="line"><span class="cl">        <span class="na">path</span> <span class="o">=</span> <span class="s">.vim/bundle/vundle
+</span></span></span><span class="line"><span class="cl"><span class="s">        url = https://github.com/gmarik/vundle.git</span>
+</span></span></code></pre></div><h2 id="最佳实践">最佳实践</h2>
+<p>使用 Submodule 能够很完美的控制 Vundle 管理下的 Vim 插件。
+可惜 Vundle 无法自动帮我们初始化插件的 Submodule。曾经也有热心用户建议 Vundle
+加上这个功能：[https://github.com/gmarik/vundle/pull/41](Init/update submodules in git bundles)。
+不过 Vundle 的作者很残暴的拒绝了，他认为 Vim 插件可能需要深入定制，
+因此不希望使用 Submodule 来管理插件。</p>
+<p>我崇尚自动化构建，甚至宁愿牺牲一些所谓的定制，
+少量的修改我可以放弃 Vundle 而手工管理。我琢磨了一下我的最佳实践：</p>
+<p>使用 Submodule 来初始化 <code>.vim/bundle/vundle</code>，然后在使用 <code>BundleInstall</code>
+来安装其它插件。两个步骤分别为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git submodule add  https://github.com/gmarik/vundle.git .vim/bundle/vundle
+</span></span><span class="line"><span class="cl">vim +BundleInstall
+</span></span></code></pre></div><p>大功告成，既能享受插件升级带来的优势，又可以使用 Vundle 统一管理，管理 vim
+环境甚为方便。我的 Vim 配置文件在
+[https://github.com/alswl/dotfiles](alswl / dotfiles)，还包括 Awesome
+/ 按键映射等等配置。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -32,6 +105,37 @@
       
       <guid>https://blog.alswl.com/2011/11/gource/</guid>
       <description>昨天我在sunng 那里看到一个非常好玩的东西Gource。 Gource可以将代码版本控制系统里面的日志全部可视化， 所谓可视化就是可以看见每个成员在系统里面提交代码的行为。 Gource目前支持git/hg/svn，cvs通过一个简单的脚本也可以被Gource支持。 官方视频在这里[Gource - Software Version Control Visualization Tool](http://www.youtu be.com/watch?v=E5xPMW5fg48&amp;amp;feature=player_emb</description>
+      <content:encoded><![CDATA[<p>昨天我在<a href="http://sunng.info/blog/2011/10/clojalk-scm-visualization/">sunng</a>
+那里看到一个非常好玩的东西<a href="http://code.google.com/p/gource/">Gource</a>。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/gource-logo.png" alt="gource"  />
+
+</p>
+<p>Gource可以将代码版本控制系统里面的日志全部可视化， 所谓可视化就是可以看见每个成员在系统里面提交代码的行为。
+Gource目前支持git/hg/svn，cvs通过一个简单的脚本也可以被Gource支持。</p>
+<p>官方视频在这里[Gource - Software Version Control Visualization Tool](<a href="http://www.youtu">http://www.youtu</a>
+be.com/watch?v=E5xPMW5fg48&amp;feature=player_embedded)，里面有Moodle/Git/Drupal/Postg
+reSQL/Ruby on Rails/Linux/VLC Player这几个非常漂亮的开源软件视频。Ruby on Rails那一段特别帅有没有。</p>
+<p>使用下列命令可以将视频录制下来(via <a href="http://code.google.com/p/gource/wiki/Videos">wiki</a>)：</p>
+<pre><code>pacman -S x264 #在archlinux下安装H264支持
+gource -1280x720 -o gource.ppm #在项目目录下运行，生成ppm文件
+#生成mp4文件，官方文档里面有-vpre slow项，会报错，去掉即可
+ffmpeg -y -b 10000K -r 60 -f image2pipe -vcodec ppm -i gource.ppm -vcodec libx264 -threads 0 -bf 0 gource.x264.mp4
+</code></pre>
+<p>使用<a href="http://www.red-bean.com/cvs2cl/">cvs2cl</a>来支持CVS （via
+<a href="http://code.google.com/p/gource/wiki/CVS">wiki</a>)：</p>
+<pre><code>cd my-cvs-project
+cvs2cl --chrono --stdout --xml -g-q &gt; my-cvs-project.xml
+gource my-cvs-project.xml
+</code></pre>
+<p>Gource里面有几个快捷键，我常用的有<code>[</code>放大，<code>]</code>缩小，方向键移动，<code>+</code>加速，<code>-</code>减速。</p>
+<p>我本来想把我的dbevent2gc拿来凑了一个热闹，结果h264编码传到要哭土豆似乎一直有问题，只能作罢。ps：3分钟的视频，生成的ppm有1.2个G，转换
+成mp4是1.2M。</p>
+]]></content:encoded>
     </item>
     
   </channel>

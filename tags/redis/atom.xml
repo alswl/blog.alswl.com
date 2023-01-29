@@ -14,6 +14,86 @@
       
       <guid>https://blog.alswl.com/2015/07/redis-migration/</guid>
       <description>几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。 主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、 存储结构丰富、有持久化功能。 我大堆糖的 Session 存储系统也正是基于 Redis。 可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication 也是在逐步完善完善过程中 （2.4 支持 Replication，2.8 加入 Replication partial resynchronization 功能）。 纵观当下流行的 DB 系统，哪个不</description>
+      <content:encoded><![CDATA[<p>几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。
+主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、
+存储结构丰富、有持久化功能。
+我大堆糖的 Session 存储系统也正是基于 Redis。</p>
+<p>可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication
+也是在逐步完善完善过程中
+（2.4 支持 <code>Replication</code>，2.8 加入 <code>Replication partial resynchronization</code> 功能）。
+纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。
+而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding 特性要等到何年马月。</p>
+<p>随着业务规模的扩大，单台 Redis 实例不能满足需求。
+考虑到 Redis 也是久经考验的战士，替换掉他成本比较高，那就对 Redis 进行扩容。</p>
+<p>扩容的基本要求是：</p>
+<ul>
+<li>扩大系统容量，成为分布式系统，未来有横向扩展</li>
+<li>业务不中断</li>
+<li>保证原始数据的可用性</li>
+</ul>
+<p>Google 了一下，有两个项目可以参考：
+<a href="https://github.com/idning/redis-mgr">https://github.com/idning/redis-mgr</a>
+和豌豆荚的 <a href="https://github.com/wandoulabs/codis">Codis</a>。</p>
+<p>研究了这两项目的代码之后，发现前者存在几个问题：
+需要停机进行操作。
+后者提供了完整一套解决方案，Server/Proxy/Config Manage，对我这次迁移来说，太重了，
+而且项目比较新，风险高，只能用来参考实现方法。</p>
+<p>最后我决定参考 redis-mgr 的方案，然后使用两种方式同步数据：
+系统运行中打上 patch 完成数据的动态迁移；后台跑迁移数据脚本。</p>
+<h2 id="方案的关键词">方案的关键词</h2>
+<h3 id="dump--restore--pttl"><code>dump</code> / <code>restore</code> / <code>pttl</code></h3>
+<p>核心的操作流程是：
+使用 <code>dump</code> 命令导出数据，<code>restore</code> 命令恢复数据，<code>pttl</code> 命令获取设置 TTL。</p>
+<h3 id="presharding">Presharding</h3>
+<p>Redis 官方没有 sharding 方案，但提供一种策略 presharding。
+Redis 作者写了一篇<a href="http://oldblog.antirez.com/post/redis-presharding.html">Redis Presharding</a>。核心是：
+提前做 2^n 个实例，避免扩容时候数据迁移，一般使用 2^n 个实例，
+目的是为了能够自然地乘以 2 进行拆分。
+这些实例可以分开放，也可以放在同一台机器上面。</p>
+<p>我这次操作，将 <code>OLD_CLUSTER</code> 的一个实例拆分为了 <code>NEW_CLUSTER</code> 的 32 个实例，
+跑在 4 台服务器上面。</p>
+<h3 id="twemproxy">Twemproxy</h3>
+<p>Redis 的 经典款 Proxy，用来实现对多个 Redis 实例 sharding，
+Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p>
+<h3 id="一致性-hash">一致性 Hash</h3>
+<p>传统的 Hash 方法是 <code>hash(key) = value % nodes.length</code>，
+当加入、减少 Hash 节点时候，会导致 <code>hash(key)</code> 的全部失效。
+典型的一致性 Hash 算法，<a href="https://github.com/RJ/ketama">Ketama</a> 通过环状 node 分布，解决了这个问题。</p>
+<p>Twemproxy 还提供 <code>modula</code> 和 random 两种分布式方案。</p>
+<h3 id="db-大小预估">db 大小预估</h3>
+<p>Redis 只能查看整个实例内存尺寸。不能查看单个 db。
+使用 <code>ramdomkey</code> 做抽样检查，取 1% key 抽样，估计单个 key 大小，
+然后做 benchmark 估算操作性能，估算操作时间。</p>
+<h3 id="动态迁移数据">动态迁移数据</h3>
+<p>为了在迁移过程中保证服务可用，需要将数据兼容 Redis 集群 <code>OLD_CLUSTER</code> / <code>NEW_CLUSTER</code>，
+业务代码必须同时支持访问两个集群，做法也很简单</p>
+<ul>
+<li>访问 <code>NEW_CLUSTER</code></li>
+<li>有数据则继续操作，无数据则访问 <code>OLD_CLUSTER</code>，获取数据 <code>DATA</code></li>
+<li>将数据和 TTL 保存到 <code>NEW_CLUSTER</code></li>
+</ul>
+<p>将这个逻辑封装成一个 client，替换掉原来 Redis Client 即可。</p>
+<p>注意，这个点可能产生幻读，读取 key 和写入 key 有个时间差，
+但是我处理的 session 是 immutable 数据，不会出现问题。
+而如果将 Redis 用作 Persistence，就要评估对业务的影响了。</p>
+<h3 id="后台迁移数据">后台迁移数据</h3>
+<p>依赖用户访问来进行迁移，效率太低了，这个迁移时间和最长 TTL 时间相当，
+需要主动将这个数据从 <code>OLD_CLUSTER</code> 迁移到 <code>NEW_CLUSTER</code>。</p>
+<p>方案也很简单，使用 <code>randomkey</code> 获取一批数据，然后按动态迁移数据方法进行迁移。</p>
+<h3 id="pipeline">pipeline</h3>
+<p>如果在业务逻辑中使用了 PIPELINE，就会遇到问题，需要改写掉业务方案，
+待迁移完成之后，再进行恢复。</p>
+<h3 id="multikey">multikey</h3>
+<p><code>mget</code> / <code>mset</code> 等多键操作方法需要注意拆解 key，然后一一 <code>dump</code> / <code>restore</code> /
+<code>ttl</code>。</p>
+<h2 id="正式操作">正式操作</h2>
+<p>线上操作的数据：</p>
+<pre tabindex="0"><code># 0.483 g db0
+12:05:19,444 - __main__ - INFO - v, dumps keys 1014/1375371/..., time: 974.183676004
+# 4.552 g db1
+17:38:36,422 - __main__ - INFO - v, dumps keys 1392/7711834/..., time: 3076.41647506
+</code></pre><p>附上 Migration Script：<a href="https://gist.github.com/alswl/e96a5308ebac4f69f809f9ba56dfe168">https://blog.alswl.com/2015/07/redis-migration/ Redis Cluster Migration</a></p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -23,6 +103,130 @@
       
       <guid>https://blog.alswl.com/2014/03/hiredis/</guid>
       <description>前段时间学习 Redis 时候，听到 hiredis 的大名，正好也在做异步的学习，就找来代码学习一下。 我几乎不太会 C，仅限于最简单的语法，完全没有在生产环境中写过， 所以先看个 Client 简单代码，下次看 Memcached 代码应该会更顺畅一些。 Hiredis 是用 C 写的 Redis 客户端，对 Redis 协议进行了简单的封装， 同时提供了同步和异步的两种 API。Hiredis 的代码位于 https://github.com/redis/hiredis。 一分钟使用入门 同步 API 的调用方法： redisContext *context =</description>
+      <content:encoded><![CDATA[<p>前段时间学习 Redis 时候，听到 hiredis 的大名，正好也在做异步的学习，就找来代码学习一下。
+我几乎不太会 C，仅限于最简单的语法，完全没有在生产环境中写过，
+所以先看个 Client 简单代码，下次看 Memcached 代码应该会更顺畅一些。</p>
+<p>Hiredis 是用 C 写的 Redis 客户端，对 Redis 协议进行了简单的封装，
+同时提供了同步和异步的两种 API。Hiredis 的代码位于
+<a href="https://github.com/redis/hiredis">https://github.com/redis/hiredis</a>。</p>
+<!-- more -->
+<h2 id="一分钟使用入门">一分钟使用入门</h2>
+<p>同步 API 的调用方法：</p>
+<pre tabindex="0"><code>redisContext *context = redisConnect(&#34;127.0.0.1&#34;, 6379);
+reply = redisCommand(context, &#34;SET foo %s&#34;, value);	
+printf(&#34;PING: %s\n&#34;, reply-&gt;str);
+freeReplyObject(reply)
+redisFree(context);
+</code></pre><p>Redis ae 异步 API 的调用方法，使用 Redis 自己的 ae 事件库，
+至于为什么 Redis 没有使用 libevent 或者 libev，可以参考
+<a href="http://groups.google.com/group/redis-db/browse_thread/thread/b52814e9ef15b8d0/">Reason</a>，
+<a href="http://blog.csdn.net/archimedes_zht/article/details/6909074">中文翻译</a>：</p>
+<pre tabindex="0"><code>void connectCallback(const redisAsyncContext *c, int status) {
+    printf(&#34;Connected...\n&#34;);
+}
+
+void disconnectCallback(const redisAsyncContext *c, int status) {
+    printf(&#34;Disconnected...\n&#34;);
+}
+void getCallback(redisAsyncContext *c, void *r, void *privdata) {
+    redisReply *reply = r;
+    if (reply == NULL) return;
+    printf(&#34;argv[%s]: %s\n&#34;, (char*)privdata, reply-&gt;str);
+    redisAsyncDisconnect(c);
+}
+
+redisAsyncContext *c = redisAsyncConnect(&#34;127.0.0.1&#34;, 6379);
+loop = aeCreateEventLoop();
+redisAeAttach(loop, c);
+redisAsyncSetConnectCallback(c,connectCallback);
+redisAsyncSetDisconnectCallback(c,disconnectCallback);
+
+redisAsyncCommand(c, getCallback, (char*)&#34;end-1&#34;, &#34;GET key&#34;);
+</code></pre><p>Libev 异步 API 调用，因为 <code>adapters/*.h</code> 封装的好，所以几乎和 ae 调用一致：</p>
+<pre tabindex="0"><code>void connectCallback(const redisAsyncContext *c, int status) {
+    printf(&#34;Connected...\n&#34;);
+}
+void disconnectCallback(const redisAsyncContext *c, int status) {
+    printf(&#34;Disconnected...\n&#34;);
+}
+void getCallback(redisAsyncContext *c, void *r, void *privdata) {
+    redisReply *reply = r;
+    if (reply == NULL) return;
+    printf(&#34;argv[%s]: %s\n&#34;, (char*)privdata, reply-&gt;str);
+
+    /* Disconnect after receiving the reply to GET */
+    redisAsyncDisconnect(c);
+}
+
+redisAsyncContext *c = redisAsyncConnect(&#34;127.0.0.1&#34;, 6379);
+redisLibevAttach(EV_DEFAULT_ c);
+redisAsyncSetConnectCallback(c,connectCallback);
+redisAsyncSetDisconnectCallback(c,disconnectCallback);
+redisAsyncCommand(c, getCallback, (char*)&#34;end-1&#34;, &#34;GET key&#34;);
+</code></pre><p>Hiredis 还支持使用 libevent，我就不列出来了。</p>
+<p>详细的使用 example 可以看
+<a href="https://github.com/redis/hiredis/tree/master/examples">https://github.com/redis/hiredis/tree/master/examples</a>。</p>
+<h2 id="主要结构">主要结构</h2>
+<ul>
+<li>redisReply</li>
+<li>redisReader</li>
+<li>redisContext</li>
+</ul>
+<h2 id="流程">流程</h2>
+<h3 id="同步连接">同步连接</h3>
+<p>同步连接的代码在 <code>hiredis.c</code> 和 <code>net.c</code> 中。</p>
+<p><code>redisConnect</code> / <code>redisConnectWithTimeout</code> / <code>redisConnectNonBlock</code> 都调用了
+<code>net.c</code> 里面的 <code>redisContextConnectTcp</code>。使用 <code>fcntl(fd, F_SETFL, flags)</code>
+设置是否阻塞连接。</p>
+<p><code>O_NONBLOCK</code> 即 Socket 非阻塞模式，但仍然是同步的哦。</p>
+<p>事实上，无论阻塞还是非阻塞，hiredis 都会使用非阻塞（poll）来
+<code>connect</code> 连接服务器，会返回 -1，并且 <code>errno</code>
+为 <code>EINPROGRESS</code>，这是非阻塞模式正常的表现。
+为什么阻塞模式也会强制使用非阻塞的 <code>poll</code> 连接？其实是为了能够支持 timeout 功能。
+hiredis 在连接成功之后，按照之前需求重新设定为阻塞或者非阻塞模式。</p>
+<p>关于如何设计超时功能，可以参考 <a href="http://blog.csdn.net/ast_224/article/details/2957294">http://blog.csdn.net/ast_224/article/details/2957294</a>。</p>
+<h3 id="命令">命令</h3>
+<p>使用 va_list 解决变参问题（C 也支持变长参数，被惊呆了，我果然是 C 盲啊）。</p>
+<pre tabindex="0"><code>int redisFormatCommand(char **target, const char *format, ...) {
+	va_list ap;
+	int len;
+	va_start(ap,format);
+}
+</code></pre><p><code>redisvCommand</code> 用来执行阻塞Redis 命令，它会调用 <code>__redisBlockForReply</code>，
+内部调用 <code>redisBufferWrite</code> 从 socket 写 buffer，然后同步等待，从
+<code>redisBufferRead</code> 读数据，用 <code>redisGetReplyFromReader</code> 解析返回数据。</p>
+<h3 id="异步连接">异步连接</h3>
+<p>异步调用的代码在 <code>async.c</code> 中，我先看 ae 库。</p>
+<p>重要的结构是 <code>redisAsyncContext</code> 和 <code>redisAeEvents</code>，前者重要的方法是注册回调函数：
+<code>addRead</code> / <code>delRead</code> / <code>addWrite</code> / <code>delWrite</code>，后者是用来存放 loop / fd / event stream
+的。</p>
+<p>异步连接时候，仍然使用 <code>redisContextConnectTcp</code> 来发起到服务器的非阻塞连接。</p>
+<p>使用 <code>aeCreateEventLoop</code> 创建一个事件循环，然后使用 <code>redisAeAttach</code> 给
+<code>context</code> 注册事件，比如说 <code>aeCreateFileEvent(loop,e-&gt;fd,AE_READABLE,redisAeReadEvent,e)</code>
+就注册了一个 <code>read</code> 事件，并将 callback 调用设置到 <code>redisAeReadEvent</code>，
+<code>redisAeReadEvent</code> 再将这个事件托管给 <code>redisAsyncHandleRead</code>（定义在 async.c 里面，
+被三个 event 库调用）。</p>
+<p>所以，hiredis 通过 adapter 的封装，屏蔽了 ae / libevent / libev 的 API 差异，
+从而可以灵活的选择。据说 ae 是从两个 libevent 库重写过来的，可是我觉得 ae
+的风格和 libev 比较像，而 libevent 的风格比较好理解。</p>
+<p>如果拿这段代码的复杂度和 Tornado 的 IOLoop 进行对比，真实感觉 Tornado 那段 API
+封装太人性化了，C 的代码写起来好复杂，系统 API、资源控制、错误控制都挺麻烦。</p>
+<p>Redis ae 事件库的分析可以参考 <a href="http://my.oschina.net/u/917596/blog/161077#OSC_h4_6">http://my.oschina.net/u/917596/blog/161077#OSC_h4_6</a>。
+Libevent 的一个简单教程 <a href="http://www.wangafu.net/~nickm/libevent-book/01_intro.html">http://www.wangafu.net/~nickm/libevent-book/01_intro.html</a>。</p>
+<h2 id="关于-c">关于 C</h2>
+<p>作为 C 渣的我，勉强读完 hiredis，感觉那点 C 基础完全不够用，
+稍微将学习过程中疑惑的地方罗列一下：</p>
+<ul>
+<li><code>IFDEF</code> 使用，可以防止重复导入同一个头文件定义，这里有一个详细的解释
+<a href="http://faculty.cs.niu.edu/~mcmahon/CS241/c241man/node90.html">http://faculty.cs.niu.edu/~mcmahon/CS241/c241man/node90.html</a></li>
+<li><code>__cplusplus</code>: C++ 里面定义了这个变量，而 C 没有定义，所以当 C++ 编译器识别
+source 时候，通过这个加上 <code>ifdef</code> 来使用 <code>extern</code> 编译 C 代码。</li>
+<li>long long: long 只能存放 32 位，long long 可以存放 64 位长度，即 0 - 2^64-1。</li>
+<li><code>c-&gt;flags |= REDIS_BLOCK</code> / <code>c-&gt;flags &amp;= ~REDIS_BLOCK;</code> 简洁的位操作。</li>
+<li>sds（simple dynamic string）是 Redis 自己实现的 C String 字符串结构。</li>
+<li><code>((void)fd)</code> 好像是将 fd 指针转成无类型的指针，不知道有什么用处。</li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -32,6 +236,408 @@
       
       <guid>https://blog.alswl.com/2014/02/redis-benchmarks/</guid>
       <description>原文地址 http://redis.io/topics/benchmarks。 拖了一个半月的稿子~ Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。 （类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。 以下参数被支持： Usage: redis-benchmark [-h &amp;lt;host&amp;gt;] [-p &amp;lt;port&amp;gt;] [-c &amp;lt;clients&amp;gt;] [-n &amp;lt;requests]&amp;gt; [-k &amp;lt;boolean&amp;gt;] -h &amp;lt;hostname&amp;gt; Server hostname (default 127.0.0.1) -p &amp;lt;port&amp;gt; Server port (default 6379) -s &amp;lt;socket&amp;gt; Server socket (overrides host and port) -c &amp;lt;clients&amp;gt; Number of parallel connections (default 50) -n &amp;lt;requests&amp;gt; Total number of requests (default 10000) -d &amp;lt;size&amp;gt; Data size of SET/GET value in bytes (default 2) -k &amp;lt;boolean&amp;gt; 1=keep alive 0=reconnect (default 1) -r &amp;lt;keyspacelen&amp;gt; Use random keys for SET/GET/INCR, random values for SADD Using this option the benchmark will get/set keys in the form mykey_rand:000000012456 instead of</description>
+      <content:encoded><![CDATA[<p>原文地址 <a href="http://redis.io/topics/benchmarks">http://redis.io/topics/benchmarks</a>。</p>
+<p>拖了一个半月的稿子~</p>
+<hr />
+<p>Redis 自带了一个叫 <code>redis-benchmark</code> 的工具来模拟 N 个客户端同时发出 M 个请求。
+（类似于 Apache <code>ab</code> 程序）。你可以使用 <code>redis-benchmark -h</code> 来查看基准参数。</p>
+<!-- more -->
+<pre tabindex="0"><code>以下参数被支持：
+
+    Usage: redis-benchmark [-h &lt;host&gt;] [-p &lt;port&gt;] [-c &lt;clients&gt;] [-n &lt;requests]&gt; [-k &lt;boolean&gt;]
+
+     -h &lt;hostname&gt;      Server hostname (default 127.0.0.1)
+     -p &lt;port&gt;          Server port (default 6379)
+     -s &lt;socket&gt;        Server socket (overrides host and port)
+     -c &lt;clients&gt;       Number of parallel connections (default 50)
+     -n &lt;requests&gt;      Total number of requests (default 10000)
+     -d &lt;size&gt;          Data size of SET/GET value in bytes (default 2)
+     -k &lt;boolean&gt;       1=keep alive 0=reconnect (default 1)
+     -r &lt;keyspacelen&gt;   Use random keys for SET/GET/INCR, random values for SADD
+      Using this option the benchmark will get/set keys
+      in the form mykey_rand:000000012456 instead of constant
+      keys, the &lt;keyspacelen&gt; argument determines the max
+      number of values for the random number. For instance
+      if set to 10 only rand:000000000000 - rand:000000000009
+      range will be allowed.
+     -P &lt;numreq&gt;        Pipeline &lt;numreq&gt; requests. Default 1 (no pipeline).
+     -q                 Quiet. Just show query/sec values
+     --csv              Output in CSV format
+     -l                 Loop. Run the tests forever
+     -t &lt;tests&gt;         Only run the comma separated list of tests. The test
+                        names are the same as the ones produced as output.
+     -I                 Idle mode. Just open N idle connections and wait.
+</code></pre><p>你需要在基准测试之前启动一个 Redis 实例。一般这样启动测试：</p>
+<pre tabindex="0"><code>redis-benchmark -q -n 100000
+</code></pre><p>这个工具使用起来非常方便，同时你可以使用自己的基准测试工具，
+不过开始基准测试时候，我们需要注意一些细节。</p>
+<h2 id="只运行一些测试用例的子集">只运行一些测试用例的子集</h2>
+<p>你不必每次都运行 redis-benchmark 默认的所有测试。
+使用 <code>-t</code> 参数可以选择你需要运行的测试用例，比如下面的范例：</p>
+<pre><code>$ redis-benchmark -t set,lpush -n 100000 -q
+SET: 74239.05 requests per second
+LPUSH: 79239.30 requests per second
+</code></pre>
+<p>在上面的测试中，我们只运行了 SET 和 LPUSH 命令，
+并且运行在安静模式中（使用 <code>-q</code> 参数）。</p>
+<p>也可以直接指定命令来直接运行，比如下面的范例：</p>
+<pre><code>$ redis-benchmark -n 100000 -q script load &quot;redis.call('set','foo','bar')&quot;
+script load redis.call('set','foo','bar'): 69881.20 requests per second
+</code></pre>
+<h2 id="选择测试键的范围大小">选择测试键的范围大小</h2>
+<p>默认情况下面，基准测试使用单一的 key。在一个基于内存的数据库里，
+单一 key 测试和真实情况下面不会有巨大变化。当然，使用一个大的 key 范围空间，
+可以模拟现实情况下面的缓存不命中情况。</p>
+<p>这时候我们可以使用 <code>-r</code> 命令。比如，假设我们想设置 10 万随机 key
+连续 SET 100 万次，我们可以使用下列的命令：</p>
+<pre><code>$ redis-cli flushall
+OK
+
+$ redis-benchmark -t set -r 100000 -n 1000000
+====== SET ======
+  1000000 requests completed in 13.86 seconds
+  50 parallel clients
+  3 bytes payload
+  keep alive: 1
+
+99.76% `&lt;=` 1 milliseconds
+99.98% `&lt;=` 2 milliseconds
+100.00% `&lt;=` 3 milliseconds
+100.00% `&lt;=` 3 milliseconds
+72144.87 requests per second
+
+$ redis-cli dbsize
+(integer) 99993
+</code></pre>
+<h2 id="使用-pipelining">使用 pipelining</h2>
+<p>默认情况下，每个客户端都是在一个请求完成之后才发送下一个请求
+（benchmark 会模拟 50 个客户端除非使用 <code>-c</code> 指定特别的数量），
+这意味着服务器几乎是按顺序读取每个客户端的命令。Also RTT is payed as well.</p>
+<p>真实世界会更复杂，Redis 支持
+<a href="pipelining">/topics/pipelining</a>，使得可以一次性执行多条命令成为可能。
+Redis pipelining 可以提高服务器的 TPS。</p>
+<p>下面这个案例是在 Macbook air 11&quot; 上使用 pipelining 组织
+16 条命令的测试范例：</p>
+<pre><code>$ redis-benchmark -n 1000000 -t set,get -P 16 -q
+SET: 403063.28 requests per second
+GET: 508388.41 requests per second
+</code></pre>
+<p>记得在多条命令需要处理时候使用 pipelining。</p>
+<h2 id="陷阱和错误的认识">陷阱和错误的认识</h2>
+<p>第一点是显而易见的：基准测试的黄金准则是使用相同的标准。
+用相同的任务量测试不同版本的 Redis，或者用相同的参数测试测试不同版本 Redis。
+如果把 Redis 和其他工具测试，那就需要小心功能细节差异。</p>
+<ul>
+<li>Redis 是一个服务器：所有的命令都包含网络或 IPC 消耗。这意味着和它和 SQLite，
+Berkeley DB， Tokyo/Kyoto Cabinet 等比较起来无意义，
+因为大部分的消耗都在网络协议上面。</li>
+<li>Redis 的大部分常用命令都有确认返回。有些数据存储系统则没有（比如 MongoDB
+的写操作没有返回确认）。把 Redis 和其他单向调用命令存储系统比较意义不大。</li>
+<li>简单的循环操作 Redis 其实不是对 Redis 进行基准测试，而是测试你的网络（或者
+IPC）延迟。想要真正测试 Redis，需要使用多个连接（比如 redis-benchmark)，
+或者使用 pipelining 来聚合多个命令，另外还可以采用多线程或多进程。</li>
+<li>Redis 是一个内存数据库，同时提供一些可选的持久化功能。
+如果你想和一个持久化服务器（MySQL, PostgreSQL 等等） 对比的话，
+那你需要考虑启用 AOF 和适当的 fsync 策略。</li>
+<li>Redis 是单线程服务。它并没有设计为多 CPU 进行优化。如果想要从多核获取好处，
+那就考虑启用多个实例吧。将单实例 Redis 和多线程数据库对比是不公平的。</li>
+</ul>
+<p>一个普遍的误解是 redis-benchmark 特意让基准测试看起来更好，
+所表现出来的数据像是人造的，而不是真实产品下面的。</p>
+<p>Redis-benchmark 程序可以简单快捷的对给定硬件条件下面的机器计算出性能参数。
+但是，通常情况下面这并不是 Redis 服务器可以达到的最大吞吐量。
+事实上，使用 pipelining 和更快的客户端（hiredis）可以达到更大的吞吐量。
+redis-benchmark 默认情况下面仅仅使用并发来提高吞吐量（创建多条连接）。
+它并没有使用 pipelining 或者其他并行技术（仅仅多条连接，而不是多线程）。</p>
+<p>如果想使用 pipelining 模式来进行基准测试（了达到更高吞吐量），可以使用 <code>-P</code>
+参数。这种方案的确可以提高性能，有很多使用 Redis 的应用在生产环境中这样做。</p>
+<p>最后，基准测试需要使用相同的操作和数据来对比，如果这些不一样，
+那么基准测试是无意义的。</p>
+<p>比如，Redis 和 memcached 可以在单线程模式下面对比 GET/SET 操作。
+两者都是内存数据库，协议也基本相同，甚至把多个请求合并为一条请求的方式也类似
+（pipelining）。在使用相同数量的连接后，这个对比是很有意义的。</p>
+<p>下面这个很不错例子是在 Redis（antirez）和 memcached（dormando）测试的。</p>
+<p><a href="http://antirez.com/post/redis-memcached-benchmark.html">antirez 1 - On Redis, Memcached, Speed, Benchmarks and The Toilet</a></p>
+<p><a href="http://dormando.livejournal.com/525147.html">dormando - Redis VS Memcached (slightly better bench)</a></p>
+<p><a href="http://antirez.com/post/update-on-memcached-redis-benchmark.html">antirez 2 - An update on the Memcached/Redis benchmark</a></p>
+<p>你可以发现相同条件下面最终结果是两者差别不大。请注意最终测试时候，
+两者都经过了充分优化。</p>
+<p>最后，当特别高性能的服务器在基准测试时候（比如 Redis、memcached 这类），
+很难让服务器性能充分发挥，通常情况下，客户端回事瓶颈限制而不是服务器端。
+在这种情况下面，客户端（比如 benchmark 程序自身）需要优化，或者使用多实例，
+从而能达到最大的吞吐量。</p>
+<h2 id="影响-redis-性能的因素">影响 Redis 性能的因素</h2>
+<p>有几个因素直接决定 Redis 的性能。它们能够改变基准测试的结果，
+所以我们必须注意到它们。一般情况下，Redis 默认参数已经可以提供足够的性能，
+不需要调优。</p>
+<ul>
+<li>网络带宽和延迟通常是最大短板。建议在基准测试之前使用
+ping 来检查服务端到客户端的延迟。根据带宽，可以计算出最大吞吐量。
+比如将 4 KB 的字符串塞入 Redis，吞吐量是 100000 q/s，那么实际需要 3.2 Gbits/s
+的带宽，所以需要 10 GBits/s 网络连接， 1 Gbits/s 是不够的。
+在很多线上服务中，Redis 吞吐会先被网络带宽限制住，而不是 CPU。
+为了达到高吞吐量突破 TCP/IP 限制，最后采用 10 Gbits/s 的网卡，
+或者多个 1 Gbits/s 网卡。</li>
+<li>CPU 是另外一个重要的影响因素，由于是单线程模型，Redis 更喜欢大缓存快速 CPU，
+而不是多核。这种场景下面，比较推荐 Intel CPU。AMD CPU 可能只有 Intel CPU
+的一半性能（通过对 Nehalem EP/Westmere EP/Sandy 平台的对比）。
+当其他条件相当时候，CPU 就成了 redis-benchmark 的限制因素。</li>
+<li>在小对象存取时候，内存速度和带宽看上去不是很重要，但是对大对象（&gt; 10 KB），
+它就变得重要起来。不过通常情况下面，倒不至于为了优化 Redis 而购买更高性能的内存模块。</li>
+<li>Redis 在 VM 上会变慢。虚拟化对普通操作会有额外的消耗，Redis
+对系统调用和网络终端不会有太多的 overhead。建议把 Redis 运行在物理机器上，
+特别是当你很在意延迟时候。在最先进的虚拟化设备（VMWare）上面，redis-benchmark
+的测试结果比物理机器上慢了一倍，很多 CPU 时间被消费在系统调用和中断上面。</li>
+<li>如果服务器和客户端都运行在同一个机器上面，那么 TCP/IP loopback 和 unix domain sockets
+都可以使用。对 Linux 来说，使用 unix socket 可以比 TCP/IP loopback 快 50%。
+默认 redis-benchmark 是使用 TCP/IP loopback。</li>
+<li>当大量使用 pipelining 时候，unix domain sockets 的优势就不那么明显了。</li>
+<li>当使用网络连接时，并且以太网网数据包在 1500 bytes 以下时，
+将多条命令包装成 pipelining 可以大大提高效率。事实上，处理 10 bytes，100 bytes，
+1000 bytes 的请求时候，吞吐量是差不多的，详细可以见下图。</li>
+</ul>
+<p>
+
+
+<img loading="lazy" src="https://raw.githubusercontent.com/dspezia/redis-doc/client_command/topics/Data_size.png" alt="Data size impact"  />
+
+
+</p>
+<ul>
+<li>在多核 CPU 服务器上面，Redis 的性能还依赖 NUMA 配置和 处理器绑定位置。
+最明显的影响是 redis-benchmark 会随机使用 CPU 内核。为了获得精准的结果，
+需要使用固定处理器工具（在 Linux 上可以使用 taskset 或 numactl）。
+最有效的办法是将客户端和服务端分离到两个不同的 CPU 来高校使用三级缓存。
+这里有一些使用 4 KB 数据 SET 的基准测试，针对三种 CPU（AMD Istanbul,
+Intel Nehalem EX， 和 Intel Westmere）使用不同的配置。请注意，
+这不是针对 CPU 的测试。</li>
+</ul>
+<p>
+
+
+<img loading="lazy" src="https://raw.githubusercontent.com/dspezia/redis-doc/6374a07f93e867353e5e946c1e39a573dfc83f6c/topics/NUMA_chart.gif" alt="NUMA chart"  />
+
+
+</p>
+<ul>
+<li>在高配置下面，客户端的连接数也是一个重要的因素。得益于 epoll/kqueue，
+Redis 的事件循环具有相当可扩展性。Redis 已经在超过 60000 连接下面基准测试过，
+仍然可以维持 50000 q/s。一条经验法则是，30000 的连接数只有 100 连接的一半吞吐量。
+下面有一个关于连接数和吞吐量的测试。</li>
+</ul>
+<p>
+
+
+<img loading="lazy" src="https://raw.githubusercontent.com/dspezia/redis-doc/system_info/topics/Connections_chart.png" alt="connections chart"  />
+
+
+</p>
+<ul>
+<li>在高配置下面，可以通过调优 NIC 来获得更高性能。最高性能在绑定 Rx/Tx 队列和
+CPU 内核下面才能达到，还需要开启 RPS（网卡中断负载均衡）。更多信息可以在
+<a href="https://groups.google.com/forum/#!msg/redis-db/gUhc19gnYgc/BruTPCOroiMJ">thread</a>
+。Jumbo frames 还可以在大对象使用时候获得更高性能。</li>
+<li>在不同平台下面，Redis 可以被编译成不同的内存分配方式（libc malloc, jemalloc,
+tcmalloc），他们在不同速度、连续和非连续片段下会有不一样的表现。
+如果你不是自己编译的 Redis，可以使用 INFO 命令来检查内存分配方式。
+请注意，大部分基准测试不会长时间运行来感知不同分配模式下面的差异，
+只能通过生产环境下面的 Redis 实例来查看。</li>
+</ul>
+<h2 id="其他需要注意的点">其他需要注意的点</h2>
+<p>任何基准测试的一个重要目标是获得可重现的结果，这样才能将此和其他测试进行对比。</p>
+<ul>
+<li>一个好的实践是尽可能在隔离的硬件上面测试。如果没法实现，那就需要检测
+benchmark 没有受其他服务器活动影响。</li>
+<li>有些配置（桌面环境和笔记本，有些服务器也会）会使用可变的 CPU 分配策略。
+这种策略可以在 OS 层面配置。有些 CPU 型号相对其他能更好的调整 CPU 负载。
+为了达到可重现的测试结果，最好在做基准测试时候设定 CPU 到最高使用限制。</li>
+<li>一个重要因素是配置尽可能大内存，千万不要使用 SWAP。注意 32 位和 64
+位 Redis 有不同的内存限制。</li>
+<li>如果你计划在基准测试时候使用 RDB 或 AOF，请注意不要让系统同时有其他 I/O 操作。
+避免将 RDB 或 AOF 文件放到 NAS 或 NFS 共享或其他依赖网络的存储设备上面（比如
+Amazon EC2 上 的 EBS）。</li>
+<li>将 Redis 日志级别设置到 warning 或者 notice。避免将日志放到远程文件系统。</li>
+<li>避免使用检测工具，它们会影响基准测试结果。使用 INFO 来查看服务器状态没问题，
+但是使用 MONITOR 将大大影响测试准确度。</li>
+</ul>
+<h1 id="不同云主机和物理机器上的基准测试结果">不同云主机和物理机器上的基准测试结果</h1>
+<ul>
+<li>这些测试模拟了 50 客户端和 200w 请求。</li>
+<li>使用了 Redis 2.6.14。</li>
+<li>使用了 loopback 网卡。</li>
+<li>key 的范围是 100 w。</li>
+<li>同时测试了 有 pipelining 和没有的情况（16 条命令使用 pipelining）。</li>
+</ul>
+<p><strong>Intel(R) Xeon(R) CPU E5520  @ 2.27GHz (with pipelining)</strong></p>
+<pre><code>$ ./redis-benchmark -r 1000000 -n 2000000 -t get,set,lpush,lpop -P 16 -q
+SET: 552028.75 requests per second
+GET: 707463.75 requests per second
+LPUSH: 767459.75 requests per second
+LPOP: 770119.38 requests per second
+</code></pre>
+<p><strong>Intel(R) Xeon(R) CPU E5520  @ 2.27GHz (without pipelining)</strong></p>
+<pre><code>$ ./redis-benchmark -r 1000000 -n 2000000 -t get,set,lpush,lpop -q
+SET: 122556.53 requests per second
+GET: 123601.76 requests per second
+LPUSH: 136752.14 requests per second
+LPOP: 132424.03 requests per second
+</code></pre>
+<p><strong>Linode 2048 instance (with pipelining)</strong></p>
+<pre><code>$ ./redis-benchmark -r 1000000 -n 2000000 -t get,set,lpush,lpop -q -P 16
+SET: 195503.42 requests per second
+GET: 250187.64 requests per second
+LPUSH: 230547.55 requests per second
+LPOP: 250815.16 requests per second
+</code></pre>
+<p><strong>Linode 2048 instance (without pipelining)</strong></p>
+<pre><code>$ ./redis-benchmark -r 1000000 -n 2000000 -t get,set,lpush,lpop -q
+SET: 35001.75 requests per second
+GET: 37481.26 requests per second
+LPUSH: 36968.58 requests per second
+LPOP: 35186.49 requests per second
+</code></pre>
+<h2 id="更多使用-pipeline-的测试">更多使用 pipeline 的测试</h2>
+<pre><code>$ redis-benchmark -n 100000
+
+====== SET ======
+  100007 requests completed in 0.88 seconds
+  50 parallel clients
+  3 bytes payload
+  keep alive: 1
+
+58.50% &lt;= 0 milliseconds
+99.17% &lt;= 1 milliseconds
+99.58% &lt;= 2 milliseconds
+99.85% &lt;= 3 milliseconds
+99.90% &lt;= 6 milliseconds
+100.00% &lt;= 9 milliseconds
+114293.71 requests per second
+
+====== GET ======
+  100000 requests completed in 1.23 seconds
+  50 parallel clients
+  3 bytes payload
+  keep alive: 1
+
+43.12% &lt;= 0 milliseconds
+96.82% &lt;= 1 milliseconds
+98.62% &lt;= 2 milliseconds
+100.00% &lt;= 3 milliseconds
+81234.77 requests per second
+
+====== INCR ======
+  100018 requests completed in 1.46 seconds
+  50 parallel clients
+  3 bytes payload
+  keep alive: 1
+
+32.32% &lt;= 0 milliseconds
+96.67% &lt;= 1 milliseconds
+99.14% &lt;= 2 milliseconds
+99.83% &lt;= 3 milliseconds
+99.88% &lt;= 4 milliseconds
+99.89% &lt;= 5 milliseconds
+99.96% &lt;= 9 milliseconds
+100.00% &lt;= 18 milliseconds
+68458.59 requests per second
+
+====== LPUSH ======
+  100004 requests completed in 1.14 seconds
+  50 parallel clients
+  3 bytes payload
+  keep alive: 1
+
+62.27% &lt;= 0 milliseconds
+99.74% &lt;= 1 milliseconds
+99.85% &lt;= 2 milliseconds
+99.86% &lt;= 3 milliseconds
+99.89% &lt;= 5 milliseconds
+99.93% &lt;= 7 milliseconds
+99.96% &lt;= 9 milliseconds
+100.00% &lt;= 22 milliseconds
+100.00% &lt;= 208 milliseconds
+88109.25 requests per second
+
+====== LPOP ======
+  100001 requests completed in 1.39 seconds
+  50 parallel clients
+  3 bytes payload
+  keep alive: 1
+
+54.83% &lt;= 0 milliseconds
+97.34% &lt;= 1 milliseconds
+99.95% &lt;= 2 milliseconds
+99.96% &lt;= 3 milliseconds
+99.96% &lt;= 4 milliseconds
+100.00% &lt;= 9 milliseconds
+100.00% &lt;= 208 milliseconds
+71994.96 requests per second
+</code></pre>
+<p>注意：包大小从 256 到 1024 或者 4096 bytes 不会改变结果的量级
+（但是到 1024 bytes 后，GETs 操作会变慢）。同样的，50 到 256 客户端的测试结果相同。
+10 个客户端时候，吞吐量会变小（译者按：总量到不了最大吞吐量）。</p>
+<p>不同机器可以获的不一样的结果，下面是 <em>Intel T5500 1.66 GHz 在 Linux 2.6</em>
+下面的结果：</p>
+<pre><code>$ ./redis-benchmark -q -n 100000
+SET: 53684.38 requests per second
+GET: 45497.73 requests per second
+INCR: 39370.47 requests per second
+LPUSH: 34803.41 requests per second
+LPOP: 37367.20 requests per second
+</code></pre>
+<p>另外一个是 64 位 Xeon L5420 2.5 GHz 的结果：</p>
+<pre><code>$ ./redis-benchmark -q -n 100000
+PING: 111731.84 requests per second
+SET: 108114.59 requests per second
+GET: 98717.67 requests per second
+INCR: 95241.91 requests per second
+LPUSH: 104712.05 requests per second
+LPOP: 93722.59 requests per second
+</code></pre>
+<h1 id="高性能硬件下面的基准测试">高性能硬件下面的基准测试</h1>
+<ul>
+<li>Redis <strong>2.4.2</strong>。</li>
+<li>默认连接数，数据包大小 256 bytes。</li>
+<li>Linux 是 <em>SLES10 SP3 2.6.16.60-0.54.5-smp</em>，CPU 是 2 x <em>Intel X5670 @ 2.93 GHz</em>。</li>
+<li>固定 CPU，但是使用不同 CPU 内核。</li>
+</ul>
+<p>使用 unix domain socket：</p>
+<pre><code>$ numactl -C 6 ./redis-benchmark -q -n 100000 -s /tmp/redis.sock -d 256
+PING (inline): 200803.22 requests per second
+PING: 200803.22 requests per second
+MSET (10 keys): 78064.01 requests per second
+SET: 198412.69 requests per second
+GET: 198019.80 requests per second
+INCR: 200400.80 requests per second
+LPUSH: 200000.00 requests per second
+LPOP: 198019.80 requests per second
+SADD: 203665.98 requests per second
+SPOP: 200803.22 requests per second
+LPUSH (again, in order to bench LRANGE): 200000.00 requests per second
+LRANGE (first 100 elements): 42123.00 requests per second
+LRANGE (first 300 elements): 15015.02 requests per second
+LRANGE (first 450 elements): 10159.50 requests per second
+LRANGE (first 600 elements): 7548.31 requests per second
+</code></pre>
+<p>使用 TCP loopback：</p>
+<pre><code>$ numactl -C 6 ./redis-benchmark -q -n 100000 -d 256
+PING (inline): 145137.88 requests per second
+PING: 144717.80 requests per second
+MSET (10 keys): 65487.89 requests per second
+SET: 142653.36 requests per second
+GET: 142450.14 requests per second
+INCR: 143061.52 requests per second
+LPUSH: 144092.22 requests per second
+LPOP: 142247.52 requests per second
+SADD: 144717.80 requests per second
+SPOP: 143678.17 requests per second
+LPUSH (again, in order to bench LRANGE): 143061.52 requests per second
+LRANGE (first 100 elements): 29577.05 requests per second
+LRANGE (first 300 elements): 10431.88 requests per second
+LRANGE (first 450 elements): 7010.66 requests per second
+LRANGE (first 600 elements): 5296.61 requests per second
+</code></pre>
+]]></content:encoded>
     </item>
     
   </channel>

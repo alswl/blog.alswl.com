@@ -14,6 +14,164 @@
       
       <guid>https://blog.alswl.com/2011/06/ddns-ssh/</guid>
       <description>1. 背景 我目前有两台电脑，一台是家里使用的Linux笔记本（Dell 6400，4年）， 一台是公司使用的Windows笔记本（IBM X201，1个月）。 我有时候需要在办公室连入家庭电脑，进行一些操作，比如同步，比如使用linux特定服务。 完成这项工作需要两个条件，ip互通+对应通讯协议。被连接的服务器需要一个公网地址， 而非局域网的192.x.x.x。可供选择的协议比较多，http/ftp/ssh等常规</description>
+      <content:encoded><![CDATA[<h2 id="1-背景">1. 背景</h2>
+<p>我目前有两台电脑，一台是家里使用的Linux笔记本（Dell 6400，4年）， 一台是公司使用的Windows笔记本（IBM X201，1个月）。
+我有时候需要在办公室连入家庭电脑，进行一些操作，比如同步，比如使用linux特定服务。</p>
+<p>完成这项工作需要两个条件，ip互通+对应通讯协议。被连接的服务器需要一个公网地址，
+而非局域网的192.x.x.x。可供选择的协议比较多，http/ftp/ssh等常规协议都可以使用。</p>
+<blockquote>
+<p><strong>什么是<a href="http://www.oray.com/peanuthull/">花生壳</a></strong></p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>花生壳动态域名是全球用户量最大的完全免费的动态域名解析软件。当您使用花生壳服务，
+无论您在任何地点、任何时间、任何线路，均可通过固定的花生壳域名访问您的远程主机服务。</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>现在花生壳为千万的域名提供动态域名解析服务，并广泛应用于网站建设、视频监控、 遥感测绘、FTP、VPN、企业OA、ERP等应用领域。</p>
+</blockquote>
+<p>ps：除了花生壳，还有很多DDNS服务可以供选择。由于TP-Link和D-Link都默认内置花生壳， 我这里用花生壳做范例。而我使用的<a href="http://www.dd-wrt.com/">DD-
+WRT</a>不支持花生壳，</p>
+<p><strong>我列出DD-WRT支持的DDNS服务。</strong></p>
+<ul>
+<li>DynDNS</li>
+<li>3322.org（中国的，目前我在使用）</li>
+<li>freedns.afraid.org</li>
+<li>ZoneEdit.com</li>
+<li>No-IP.com</li>
+<li>easyDNS.com</li>
+<li>TZO.com</li>
+<li>DynSIP.org</li>
+</ul>
+<p>通俗的讲，花生壳提供一种动态DNS解析服务，可以让你用一个域名来替代随时会发生变化 的家庭拨号上网用户自动获取的ip。</p>
+<p>如果自己有域名的话，也可以查看自己ADSL公网ip地址，然后在DNS管理系统里面配置上
+这个ip，这样也可以在公网访问自己电脑。但是同时会带来一个问题，每当ADSL拨号
+之后，会更换新的ip，人工维护域名-&gt;ip太耗费精力，花生壳就是提供动态维护这种 对应关系的服务。</p>
+<blockquote>
+<p><strong>什么是<a href="http://zh.wikipedia.org/wiki/SSH">SSH</a></strong></p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>SSH为Secure Shell的缩写，由IETF的网络工作小组（Network Working Group）所制定；
+SSH为创建在应用层和传输层基础上的安全协议。</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>传统的网络服务程序，如FTP、POP和Telnet其本质上都是不安全的；因为它们在网络上用 明文传送数据、用户帐号和用户口令，很容易受到中间人（man-
+in-the-middle）攻击方式的攻击。 就是存在另一个人或者一台机器冒充真正的服务器接收用户传给服务器的数据， 然后再冒充用户把数据传给真正的服务器。</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>而SSH是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议。
+利用SSH协议可以有效防止远程管理过程中的信息泄露问题。通过SSH可以对所有传输的数据进行加密， 也能够防止DNS欺骗和IP欺骗。</p>
+</blockquote>
+<h2 id="2-准备工具">2. 准备工具</h2>
+<ul>
+<li>
+<p>服务器/客户端需要是Linux或者Windows+SSH客户端，如果双方都是Linux那当然最好， 而如果都是Window+SSH客户端则稍微麻烦一些。</p>
+</li>
+<li>
+<p>公网ip</p>
+<ul>
+<li>如果是客户机ADSL直接拨号上网，那获取的ip就是公网ip</li>
+<li>如果使用路由器，则需要建立一个端口映射</li>
+</ul>
+</li>
+<li>
+<p>花生壳帐号，到<a href="http://www.oray.com/peanuthull/">花生壳网站</a>注册一个账号</p>
+<ul>
+<li>使用路由器的用户，需要查看路由器是否支持花生壳，普通TP-Link/D-Link都支持， DD-WRT不支持，电信提供的宽带猫可能不支持</li>
+<li>直接ADSL拨号上网用户，需要在服务器上去花生壳官网下一款 <a href="http://www.oray.com/peanuthull/download.php">后台软件</a>。目前Windows/Linux都支持</li>
+<li>如果使用DD-WRT系列路由器系统，推荐使用<a href="http://www.3322.org/">3322</a>服务。</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-服务器配置">3. 服务器配置</h2>
+<p><strong>安装服务器SSH服务</strong><br />
+连接到服务器，需要服务器安装并启动SSH服务。Ubuntu下安装很简单。</p>
+<pre><code>$ sudo apt-get install ssh
+</code></pre>
+<p>这样就完成了SSH服务的安装，用 <code>service ssh status</code> 可以检查一下当前服务状态。</p>
+<p>Windows下面我用cygwin成功安装过一次，使用命令 <code>ssh-host-config</code> 具体细节请Google之。</p>
+<h2 id="4-客户机配置">4. 客户机配置</h2>
+<p>连接到服务器端的SSH服务器，我们可以使用SSH命令，Linux是原生支持的。Windows下面可以使用
+Putty或者cygwin解决。这里我强烈推荐cygwin，会省去很多麻烦。</p>
+<p><strong>检查服务器是否连通</strong><br />
+使用命令 <code>ping xxx.xxx.xxx.xxx</code> ，里面一串数字是服务器的公网ip，可以在路由器状态页面查找到， 如果ADSL直连用户
+<code>ipconfig</code> 或者 <code>ip addr</code> 也可以看到。</p>
+<p><strong>检查服务器SSH服务是否可用</strong><br />
+在cygwin下面键入 <code>ssh xxx.xxx.xxx.xxx</code> ，服务器有提示输入密码就证明SSH服务可用。
+如果是路由器用户，可能被直接拒绝，这是因为这个ip其实是路由器ip，路由器并不提供SSH服务， 我们需要配置路由器转发SSH请求到服务器上。</p>
+<h3 id="41-路由器虚拟端口配置">4.1. 路由器虚拟端口配置</h3>
+<p>下面就可以配置路由器的映射了。如果你没有路由器而直接使用电脑拨号，可以跳过这步，</p>
+<ul>
+<li>进入192.168.*.1，路由器管理界面（TP-Link默认为192.168.1.1，D-Link为192.168.0.1）</li>
+<li>进入 <code>端口转发</code> 或者类似功能菜单</li>
+<li>给22端口配置转发到服务器内网ip如192.168.1.105</li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201106/virtual-server.png" alt="虚拟端口配置"  />
+
+</p>
+<h2 id="5-花生壳配置">5. 花生壳配置</h2>
+<p>我们不能每次都获取一下路由器或者服务器公网ip再去连接服务器，这时候就轮到DDNS服务上场了。</p>
+<p>直接拨号上网的话，花生壳官网上面有服务器使用 <a href="http://service.oray.com/question/133.html">软件的说明</a></p>
+<p>路由器就可以直接在里面进行设定</p>
+<ul>
+<li>进入192.168.*.1，路由器管理界面（TP-Link默认为192.168.1.1，D-Link为192.168.0.1）</li>
+<li>找到 <code>动态DNS</code> 或者类似功能菜单</li>
+<li>填入申请好的花生壳帐号</li>
+<li>可能需要重新启动路由器</li>
+<li>稍过几分钟，等待DNS更新，ping 自己的域名，如 <code>ping dddspace.gicp.net</code> ，查看返回的ip 是否是自己路由器公网ip，ping成功就说明映射成功了</li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201106/tp-link.png" alt="tp-link"  />
+
+</p>
+<blockquote>
+<p><strong>DD-WRT的会有如下日程</strong></p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>Sun Jun 12 07:56:24 2011: INADYN: Started <em>INADYN Advanced version 1.96-ADV</em></p>
+</blockquote>
+<ul>
+<li>dynamic DNS updater.</li>
+</ul>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>Sun Jun 12 07:56:24 2011: INADYN: IP read from cache file is
+<em>114.221.117.88</em>. No update required.</p>
+</blockquote>
+<h2 id="6-安装公钥密钥">6. 安装公钥密钥</h2>
+<p>默认SSH登录，每次都要输入密码，这样会很麻烦，特别在使用 <code>scp</code> 这些SSH命令的时候。通过在 服务器上安装信任公钥，就可以免去登录这个环节</p>
+<p><strong>在客户机上运行这个命令</strong></p>
+<pre><code>$ ssh-keygen -t rsa
+scp /home/alswl/id_rsa.pub alswl@dddspace.gcip.net:/home/alswl/.ssh/authorized_keys
+</code></pre>
+<p>第一行是生成公钥密钥，第二行是将公钥发放到服务器上面，从而实现登录免密码。</p>
+<p>A生成的公钥/密钥，作用就是让别人知道A是A，让他人无法冒充A。</p>
+<h2 id="7-end">7. End</h2>
+<p>经过折返折腾之后，我们就能够在客户机上访问服务器的资源了。甚至还可以做一些规避公司防火墙 的事情。</p>
+<p>当然，我这么做并不是为了跳过公司防火墙，我有自己的VPN，何况公司网络环境很好， 我耗费力气打造这么一个环境，其实是为了下一步数据交互
+<strong>两台电脑双向同步</strong> 。</p>
+]]></content:encoded>
     </item>
     
   </channel>

@@ -14,6 +14,133 @@
       
       <guid>https://blog.alswl.com/2013/11/postfix-basic-configuration/</guid>
       <description>原文地址：Postfix Basic Configuration 。 有少许编译。 介绍 Postfix 的配置文件 main.cf 有数百个配置参数， 幸运的是，所有参数都有合理的默认配置项。 大部分时候，只需要配置两三个参数即可。 安装 Postfix 的方法可以参见 安装方法。 特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在 标准配置说明 里面查看。 Postfix 配置语法 Postfix 的配置文件默认在 /etc/postfix。主力配置文件是 main.cf 和 master.cf。用户权限必须是 root 的。 /etc/postfix/main.cf 配置语法</description>
+      <content:encoded><![CDATA[<p>原文地址：<a href="http://www.postfix.org/BASIC_CONFIGURATION_README.html#syntax">Postfix Basic Configuration </a>。
+有少许编译。</p>
+<h2 id="介绍">介绍</h2>
+<p>Postfix 的配置文件 <a href="http://www.postfix.org/postconf.5.html">main.cf</a> 有数百个配置参数，
+幸运的是，所有参数都有合理的默认配置项。
+大部分时候，只需要配置两三个参数即可。</p>
+<p>安装 Postfix 的方法可以参见 <a href="http://www.postfix.org/INSTALL.html">安装方法</a>。</p>
+<p>特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在
+<a href="http://www.postfix.org/STANDARD_CONFIGURATION_README.html">标准配置说明</a> 里面查看。</p>
+<!-- more -->
+<h2 id="postfix-配置语法">Postfix 配置语法</h2>
+<p>Postfix 的配置文件默认在 <code>/etc/postfix</code>。主力配置文件是 <a href="http://www.postfix.org/postconf.5.html">main.cf</a> 和
+<a href="http://www.postfix.org/master.5.html">master.cf</a>。用户权限必须是 root 的。</p>
+<p><code>/etc/postfix/main.cf</code> 配置语法有两个要点：不用引号，可以使用 <code>$</code> 来引用参数。</p>
+<pre tabindex="0"><code># 定义一个参数
+/etc/postfix/main.cf:
+    parameter = value
+# 引用一个已有参数
+/etc/postfix/main.cf:
+    other_parameter = $parameter
+</code></pre><p>引用参数时候，可以再定义之前先引用（Postfix 使用延迟计算技术）。</p>
+<p>Postfix 使用数据文件来控制接入权限。详情请看 <a href="http://www.postfix.org/DATABASE_README.html">DATABASE 介绍</a>，一般这样配置：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    virtual_alias_maps = hash:/etc/postfix/virtual
+</code></pre><p>修改 <code>main.cf</code> 或者 <code>master.cf</code> 之后，需要 <code>postfix reload</code> 重新载入配置文件。</p>
+<h2 id="配置对外发送域名">配置对外发送域名</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#myorigin">myorigin</a> 参数指定邮件中显示的发送域名，默认使用当前机器名 <code>$myhostname</code>。
+一般来说，我们会把 <code>myorigin</code> 设置成顶级域名 <code>$mydomain</code>。</p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    myorigin = $myhostname (default: send mail as &#34;user@$myhostname&#34;)
+    myorigin = $mydomain   (probably desirable: &#34;user@$mydomain&#34;)
+</code></pre><h2 id="配置接收域名">配置接收域名</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#mynetworks">mydestination</a> 参数配置了本地直接接收的域名，而不会再对外发送。</p>
+<p>这个参数可以使用文件配置，也可以使用 <code>type:table</code>，比如 hash / btree / ldap
+/ mysql 等等。</p>
+<p>范例：</p>
+<pre tabindex="0"><code># 默认配置
+/etc/postfix/main.cf:
+    mydestination = $myhostname localhost.$mydomain localhost
+
+# 对整个域名生效
+/etc/postfix/main.cf:
+    mydestination = $myhostname localhost.$mydomain localhost $mydomain
+
+# 对多个 DNS 域名生效
+/etc/postfix/main.cf:
+    mydestination = $myhostname localhost.$mydomain localhost 
+        www.$mydomain ftp.$mydomain
+</code></pre><h2 id="配置允许从哪些地方接收">配置允许从哪些地方接收</h2>
+<p>默认情况下面，Postfix 仅发送信任网络的邮件。信任网络配置在 <a href="http://www.postfix.org/postconf.5.html#mynetworks">mynetworks</a> 参数中。</p>
+<p>范例（使用下列任意一个）：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    mynetworks_style = subnet  (default: authorize subnetworks)
+    mynetworks_style = host    (safe: authorize local machine only)
+    mynetworks = 127.0.0.0/8   (safe: authorize local machine only)
+    mynetworks = 127.0.0.0/8 168.100.189.2/32 (authorize local machine) 
+</code></pre><p>还可以这样配置：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    mynetworks = 168.100.189.0/28, 127.0.0.0/8
+</code></pre><h2 id="配置允许发送到的域名">配置允许发送到的域名</h2>
+<p>默认情况下，非信任网络仅仅被允许从发送邮件到特定域名。默认值是
+<a href="http://www.postfix.org/postconf.5.html#mynetworks">mydestination</a> 下面的所有域名（包括子域名）。</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    relay_domains = $mydestination (default)
+    relay_domains =           (safe: never forward mail from strangers)
+    relay_domains = $mydomain (forward mail to my domain and subdomains)
+</code></pre><h2 id="配置递送方式直接或间接">配置递送方式：直接或间接</h2>
+<p>默认情况下，Postfix 会直接递送邮件到因特网。有时候你的服务器在防火墙后面或者
+无法直接连接互联网，那就需要将邮件递送到另外一个 <a href="http://www.postfix.org/postconf.5.html#relayhost">relay host</a>。</p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    relayhost =                   (default: direct delivery to Internet)
+    relayhost = $mydomain         (deliver via local mailhub)
+    relayhost = [mail.$mydomain]  (deliver via local mailhub)
+    relayhost = [mail.isp.tld]    (deliver via provider mailhub)
+</code></pre><h2 id="配置报告错误">配置报告错误</h2>
+<p>可以通过配置 <a href="http://www.postfix.org/aliases.5.html">aliases</a> 来将错误报告邮件转发给其他人。</p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/aliases:
+    postmaster: you
+    root: you
+</code></pre><p>默认情况下面，只会报告严重错误（资源错误和软件错误）：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    notify_classes = resource, software
+</code></pre><p>其他错误还有：bounce 拒收 / 2bounce 错误报告拒收 / delay 延迟 / policy 策略未通过
+/ protocol 协议错误 / resouce 资源错误 / software 软件错误</p>
+<h2 id="代理nat-配置">代理/NAT 配置</h2>
+<p>有时候需要通过代理或者 NAT 连接互联网。参考 <a href="http://www.postfix.org/postconf.5.html#proxy_interfaces">proxy_interfaces</a></p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    proxy_interfaces = 1.2.3.4 (the proxy/NAT external network address)
+</code></pre><h2 id="postfix-日志分布情况">Postfix 日志分布情况</h2>
+<p>日志路径配置在 <code>/etc/syslog.conf</code> 中：</p>
+<pre tabindex="0"><code>etc/syslog.conf:
+    mail.err                                    /dev/console
+    mail.debug                                  /var/log/maillog
+</code></pre><p>建议经常这样做日志审核：</p>
+<pre tabindex="0"><code># postfix check
+# egrep &#39;(reject|warning|error|fatal|panic):&#39; /some/log/file
+</code></pre><h2 id="在-chorooted-状态下运行-postfix">在 chorooted 状态下运行 Postfix</h2>
+<p>初学者就不用管这个了。</p>
+<h2 id="配置机器名">配置机器名</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#myhostname">myhostname</a> 手工指定了 FQDN。它被其他好几个域名相关的地方引用。</p>
+<p>一般来说，如果指定了 <code>mydomain</code>，就会自动通过它生成 <code>myhostname</code>。</p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    myhostname = host.local.domain (machine name is not FQDN)
+    myhostname = host.virtual.domain (virtual interface)
+    myhostname = virtual.domain (virtual interface)
+</code></pre><h2 id="配置域名">配置域名</h2>
+<p>使用 <a href="http://www.postfix.org/postconf.5.html#mydomain">mydomain</a> 配置，这个参数被很多地方引用。</p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    mydomain = local.domain
+    mydomain = virtual.domain (virtual interface)
+</code></pre><h2 id="配置网络地址">配置网络地址</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#inet_interfaces">inet_interfaces</a> 配置监听网络。</p>
+<p>默认配置：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    inet_interfaces = all
+</code></pre><p>多个虚拟邮件服务器配置：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    inet_interfaces = virtual.host.tld         (virtual Postfix)
+    inet_interfaces = $myhostname localhost... (non-virtual Postfix)
+</code></pre><p>注意，这项参数配置完之后需要重启。</p>
+]]></content:encoded>
     </item>
     
   </channel>

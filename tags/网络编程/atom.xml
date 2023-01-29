@@ -14,6 +14,15 @@
       
       <guid>https://blog.alswl.com/2009/06/xiaoneicaicai-gadget-v0-1/</guid>
       <description>明天要考数据库应用了，今天仍然忍不住把校内踩踩小工具写完。 上次被打击了，人家刷人气的工具是建立一个平台进行互踩，但是安全性存在问题。我自己写的这个小东西能在校内限制范围内刷50个相同区域的页面(校内限制次数是100 ，可以执行两次，以后再执行就必须到网页输入验证码)，然后通过他人回踩来提高人气。 纯粹是自己写着玩，几乎没有什么应用价值，不过既然写了这么久，也就放上来，大家把玩一下。 压缩包内两个文件，一</description>
+      <content:encoded><![CDATA[<p>明天要考数据库应用了，今天仍然忍不住把校内踩踩小工具写完。</p>
+<p>上次被打击了，人家刷人气的工具是建立一个平台进行互踩，但是安全性存在问题。我自己写的这个小东西能在校内限制范围内刷50个相同区域的页面(校内限制次数是100
+，可以执行两次，以后再执行就必须到网页输入验证码)，然后通过他人回踩来提高人气。</p>
+<p>纯粹是自己写着玩，几乎没有什么应用价值，不过既然写了这么久，也就放上来，大家把玩一下。</p>
+<p>压缩包内两个文件，一个xml保存帐号密码，用文本编辑器就可以编辑，另外一个是jar文件，在cmd下面用&quot;java -jar
+XiaoneiCaiCai.jar&quot;运行。</p>
+<p>纯属娱乐，水平很菜，大家不要喷我。</p>
+<p><a href="../../static/images/2009/06/xiaoneicaicai.rar">猛击这里下载xiaoneicaicai</a></p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -23,6 +32,102 @@
       
       <guid>https://blog.alswl.com/2009/06/java-net-operation-session-get-post-method/</guid>
       <description>终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具- 全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统 的浏览器或者之间创建一个Browser。 开始写了自己的第一个版本。 import java.io.BufferedReader; import java.io.IOException; import java.io.InputStreamReader; import java.net.MalformedURLException; import java.net.ProtocolException; import java.net.URL;</description>
+      <content:encoded><![CDATA[<p>终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具-
+全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统
+的浏览器或者之间创建一个Browser。</p>
+<p>开始写了自己的第一个版本。</p>
+<pre><code>import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.HttpURLConnection;
+</code></pre>
+<p>public class FarmerHelper {</p>
+<p>/**</p>
+<ul>
+<li>@param args</li>
+<li>@throws ProtocolException<br />
+*/<br />
+public static void main(String[] args) throws ProtocolException {</li>
+</ul>
+<p>String loginUrlStr = &ldquo;<a href="http://login.xiaonei.com/Login.do%22;">http://login.xiaonei.com/Login.do&quot;;</a></p>
+<p>String homeUrlStr = &ldquo;<a href="http://home.xiaonei.com/Home.do%22;">http://home.xiaonei.com/Home.do&quot;;</a></p>
+<p>URL loginUrl = null;</p>
+<p>URL homeUrl = null;</p>
+<p>HttpURLConnection loginConn = null;</p>
+<p>HttpURLConnection homeConn = null;</p>
+<p>try {</p>
+<p>loginUrl = new URL(loginUrlStr);</p>
+<p>homeUrl = new URL(homeUrlStr);</p>
+<p>try {</p>
+<p>loginConn = (HttpURLConnection) loginUrl.openConnection();</p>
+<p>homeConn = (HttpURLConnection) homeUrl.openConnection();</p>
+<p>} catch (IOException e) {</p>
+<p>print(&ldquo;Conn&rsquo;t open the url connection!&rdquo;);</p>
+<p>e.printStackTrace();</p>
+<p>}</p>
+<p>} catch (MalformedURLException e) {</p>
+<p>print(&ldquo;Illegal URL!&rdquo;);</p>
+<p>e.printStackTrace();</p>
+<p>return;</p>
+<p>}</p>
+<p>loginConn.setRequestMethod(&ldquo;POST&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;User-Agent&rdquo;,</p>
+<p>&ldquo;Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.0.10)&rdquo;</p>
+<ul>
+<li>&quot; Gecko/2009042316 Firefox/3.0.10&rdquo;);</li>
+</ul>
+<p>loginConn.setRequestProperty(&ldquo;Keep-Alive&rdquo;, &ldquo;300&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;Connection&rdquo;, &ldquo;keep-alive&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;email&rdquo;, &ldquo;<a href="mailto:alswlwangzi@163.com">alswlwangzi@163.com</a>&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;password&rdquo;, &ldquo;xh77Gffb_i&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;submit&rdquo;, &ldquo;登录&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;Keep-Alive&rdquo;, &ldquo;300&rdquo;);</p>
+<p>try {</p>
+<p>loginConn.connect();</p>
+<p>String headerName = null;</p>
+<p>String cookie = &ldquo;&rdquo;;</p>
+<p>/*</p>
+<ul>
+<li>for (int i=0; (headerName =</li>
+<li>loginConn.getHeaderFieldKey(i))!=null; i++) { if</li>
+<li>(headerName.equals(&ldquo;Set-Cookie&rdquo;)) { cookie =</li>
+<li>loginConn.getHeaderField(i); print(cookie); } }<br />
+*/<br />
+cookie = loginConn.getHeaderField(&ldquo;Set-Cookie&rdquo;);</li>
+</ul>
+<p>print(cookie);</p>
+<p>homeConn.setRequestProperty(&ldquo;Cookie&rdquo;, cookie);</p>
+<p>homeConn.setRequestMethod(&ldquo;GET&rdquo;);</p>
+<p>homeConn.connect();</p>
+<p>BufferedReader in = new BufferedReader(new InputStreamReader(</p>
+<p>homeConn.getInputStream()));</p>
+<p>String lineStr = null;</p>
+<p>while ((lineStr = in.readLine()) != null) {</p>
+<p>// print(lineStr);</p>
+<p>print(new String(lineStr.getBytes(&ldquo;GBK&rdquo;), &ldquo;UTF-8&rdquo;));</p>
+<p>}</p>
+<p>} catch (IOException e) {</p>
+<p>print(&ldquo;conn&rsquo;t connect to the server!&rdquo;);</p>
+<p>e.printStackTrace();</p>
+<p>}</p>
+<p>}</p>
+<p>private static void print(Object o) {</p>
+<p>System.out.println(o);</p>
+<p>}</p>
+<p>}</p>
+<p>想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length
+Required错误，这个比较头疼，我感觉是我session传递的问题（其实不是，后来发现是Post的格式问题），于是网上找来一个Session操作类。</p>
+<p><a href="../../static/images/upload_dropbox/200906/cookiemanager.java">猛击这里下载cookiemanager</a> 同时你可以参考这个类作者的文章
+<a href="http://www.hccp.org/java-net-cookie-how-to.html">猛击这里打开HOW-TO: Handling cookies using the java.net.* API</a>，谢谢这位外国朋友的帮助。 可惜尽管有这个外国朋友帮助，我写了第二个版本，仍然遇到了相同问题，Length
+Required&hellip; 崩溃了，开始查找网络编程书，同时参考WireShark的抓包，我惊讶的发现，我把数据域写到了Headers里面去了。
+这个致命性的错误导致服务器不能找到正确的数据，并且没有提供数据域的大小Content-Length，所以导致服务器报错。
+最后再借花献佛，送上一个完整操作Http GET/POST的类<a href="../../static/images/upload_dropbox/200906/httprequestproxy.java">猛击这里下载httprequestproxy</a>依然感谢原作者，</p>
+<p><a href="http://benlsoft.javaeye.com/blog/97059">猛击这里打开原文链接</a>友情提示一下，这个类是07年写的，里面有一些注释说明在1.4和1.5下几个参数不一样，我没有亲测，建议使用1.5
+的设置 嗯，有这两个类，明天工作应该会轻松一些，继续fighting!</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -32,6 +137,75 @@
       
       <guid>https://blog.alswl.com/2009/02/java-triggered-by-the-post/</guid>
       <description>因为一直想写一个刷人气的工具，其中最基本的就是post方法了，然后再收集页面中的元素。今天我就开始着手写Java的POST方法。 在Java.net.*;中用URL构造地址，然后用流写入，似乎应该是很简单的方案，我却一直没成功。我百度Google了很久，参考了很多别人代码，似乎很容易实 现，可是我的一直问题，而我觉得和网上提供的一样。我的代码如下 package netStudy01; import java.io.*; import java.net.*; public class PostBaidu { public static void main(String[] args) { try { URL url = new URL(&amp;quot;[ http://localhost/xhpx_web/gradequery.asp](http://localhost/xhpx_web/gradequery .asp)&amp;quot;); try { HttpURLConnection</description>
+      <content:encoded><![CDATA[<p>因为一直想写一个刷人气的工具，其中最基本的就是post方法了，然后再收集页面中的元素。今天我就开始着手写Java的POST方法。</p>
+<p>在Java.net.*;中用URL构造地址，然后用流写入，似乎应该是很简单的方案，我却一直没成功。我百度Google了很久，参考了很多别人代码，似乎很容易实
+现，可是我的一直问题，而我觉得和网上提供的一样。我的代码如下</p>
+<p>package netStudy01;</p>
+<p>import java.io.*;</p>
+<p>import java.net.*;</p>
+<p>public class PostBaidu</p>
+<p>{</p>
+<p>public static void main(String[] args)</p>
+<p>{</p>
+<p>try</p>
+<p>{</p>
+<p>URL url = new URL(&quot;[
+http://localhost/xhpx_web/gradequery.asp](http://localhost/xhpx_web/gradequery
+.asp)&quot;);</p>
+<p>try</p>
+<p>{</p>
+<p>HttpURLConnection conn = (HttpURLConnection) url.openConnection();</p>
+<p>HttpURLConnection.setFollowRedirects(false);</p>
+<p>conn.setInstanceFollowRedirects(false);</p>
+<p>conn.setRequestMethod(&ldquo;POST&rdquo;);</p>
+<p>conn.setDoOutput(true);</p>
+<p>conn.setDoInput(true);</p>
+<p>conn.setRequestProperty(&ldquo;User-Agent&rdquo;,</p>
+<p>&amp;n
+bsp_place_holder; &ldquo;Mozilla/5.0 (compatible; MSIE 6.0;
+Windows NT)&rdquo;);</p>
+<p>conn.setRequestProperty(&ldquo;Content-Type&rdquo;,</p>
+<p>&amp;n
+bsp_place_holder; &ldquo;application/x-www-form-urlencoded&rdquo;);</p>
+<p>OutputStreamWriter out = new
+OutputStreamWriter(conn.getOutputStream(),&ldquo;ASCII&rdquo;);</p>
+<p>String request = &ldquo;exam_id=123&amp;submit=%CC%E1%BD%BB&rdquo;;</p>
+<p>out.write(request);</p>
+<p>out.flush();</p>
+<p>out.close();</p>
+<p>BufferedReader in = new BufferedReader(new
+InputStreamReader(conn.getInputStream()));</p>
+<p>String line;</p>
+<p>StringBuffer content = new StringBuffer();</p>
+<p>while ((line = in.readLine()) != null)</p>
+<p>{</p>
+<p>&amp;n
+bsp_place_holder; content.append(line + &ldquo;n&rdquo;);</p>
+<p>}</p>
+<p>System.out.print(content);</p>
+<p>} catch (IOException
+e)</p>
+<p>{</p>
+<p>e.printStackTrace();</p>
+<p>}</p>
+<p>} catch (MalformedURLException e)</p>
+<p>{</p>
+<p>e.printStackTrace();</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>很不幸，返回的数据一直还是这个提交页面，我尝试了好多方法，甚至用ethereal截取POST信息，用IE的POST信息和JVM的POST信息一一对比并增加信
+息，包括&quot;User-Agent&quot;,&ldquo;Mozilla/5.0 (compatible; MSIE 6.0; Windows NT)&ldquo;&ldquo;Content-
+Type&rdquo;, &ldquo;application/x-www-form-urlencoded&quot;都没有什么效果。</p>
+<p>如果POST百度，甚至直接都运行时错误，我Java学的太少，完全不知道错误缘由。再加上本来java.net功能就很弱，我想使用Apache.commons
+.html-client.*的包来完成，这样也能捕获到网页元素。</p>
+<p>Goolge了一会才从Apache的项目列表中找到[http://hc.apache.org/downloads.cgi](<a href="http://hc.apache">http://hc.apache</a>
+.org/downloads.cgi)这个组件，呵呵，居然是校内网提供的镜像站点，看来校内的架构也用到了Apache的开源阿。</p>
+<p>1.7M下完，配好ClassPath和项目jar，打开java文档，也就是API说明吧，铺天盖地的英文有点怕&hellip;呵呵，慢慢看吧，压缩包内还有几个小例子，可
+以供参考。</p>
+<p>网上详细的资料不多了，得研读好一会，继续学习，Lingoes开着，英语果然很重要阿````</p>
+<p>想起以前在.NET平台下面做，轻松容易很多，不用自己辛苦的找组件，MS的实力摆在哪里，全都提供好了。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -41,6 +215,77 @@
       
       <guid>https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/</guid>
       <description>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的 首先是ARP的接收，来看一下程序的流程 获取网络设备列表 pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;amp;alldevs, errbuf) 然后人机交互一下，获得需要工作的网卡 打开需要的网</description>
+      <content:encoded><![CDATA[<p>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受</p>
+<p>网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节
+的含义</p>
+<p>玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的</p>
+<p>首先是ARP的接收，来看一下程序的流程</p>
+<p>获取网络设备列表</p>
+<p>pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)</p>
+<p>然后人机交互一下，获得需要工作的网卡</p>
+<p>打开需要的网卡</p>
+<p>(adhandle= pcap_open(d-&gt;name, // 设备名</p>
+<p>65536, // 要捕捉的数据包的部分</p>
+<p>// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容</p>
+<p>PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式</p>
+<p>1000, // 读取超时时间</p>
+<p>NULL, // 远程机器验证</p>
+<p>errbuf // 错误缓冲池</p>
+<p>)</p>
+<p>检查数据链路层，我们只考虑以太网</p>
+<p>pcap_datalink(adhandle) != DLT_EN10MB</p>
+<p>编译过滤器</p>
+<p>pcap_compile(adhandle, &amp;fcode, packet_filter, 1, netmask)</p>
+<p>设置过滤器</p>
+<p>pcap_setfilter(adhandle, &amp;fcode)</p>
+<p>开始捕捉数据包</p>
+<p>pcap_loop(adhandle, 0, packet_handler, NULL)</p>
+<p>packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数</p>
+<p>/* 回调函数，当收到每一个数据包时会被libpcap所调用 */</p>
+<p>void packet_handler(u_char *param, const struct pcap_pkthdr *header, const
+u_char *pkt_data)</p>
+<p>这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束</p>
+<p>我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点</p>
+<p>源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的</p>
+<p>整个程序的注意点</p>
+<ol>
+<li>
+<p>结构的定义，写完整个程序，包括ARP接受，发送，欺骗，我最大的感觉就是关于数据长度的重要性，以前不以为意，只是觉得可以省空间，也不觉得64位和32位有
+什么区别，不过写完网络数据包的分析，就觉得数据长度控制很重要，所以就算有指针，也是需要定义被指向目标的长度。因为指针的出现，数据的转换实在是变得太方便了。可
+以直接把WinPcap捕捉到的数据直接往后移动14个单位长度，获得ip头，而忽略前面14字节的以太网头部。</p>
+</li>
+<li>
+<p>unsigned char, unsigned short, unsigned int等非负数据的使用和转换必须非常小心，因为插入断电看到的数据未必就
+是真实的数据，压根看不出真实数据，我后来使用Ethereal来进行数据包的监控，非常有效，Ethereal是一款GUI界面的网络数据包监控软件，非常好用，他
+本身也是基于WinPcap的。</p>
+</li>
+<li>
+<p>安全性的控制，程序的框架，其实我是使用的WinPcap自带代码的框架，安全控制几乎是步步为营，刚开始我认为有点大题小做，后来把程序移植到别的机子上运行
+，真的发现安全控制做的真好，每一步都可以知道问题出在哪里，防止更多错误出现。</p>
+</li>
+<li>
+<p>有一个MacToStr()的函数写的非常巧妙，是课本上面的事例程序，使用了位运算，本来还有一个IpToStr()，不过似乎出现了一些问题，于是我的Ma
+c地址存储在u_char[6]里面，而Ip地址存储在ip_address里面，自定义了一个结构，这个也是学习WinPcap示例代码的。我觉得自定义结构使用更
+方便高效。</p>
+</li>
+<li>
+<p>网络存储字节高地位和本地存储高地位是相反的，有几个函数专门用来转换的,我直接使用的自己人工把那几个自己转换的</p>
+</li>
+<li>
+<p>printf使用很方便，这点要感谢暑假Acm训练…</p>
+</li>
+</ol>
+<p>接受数据包其实非常简单，几乎就是简单的把WinPcap使用了一下</p>
+<p>本程序源代码的下载地址（[http://download.csdn.net/source/647852](<a href="http://download.csdn.net/">http://download.csdn.net/</a>
+source/647852)）其实很简单，如果有WinPcap开发文档，自己写也差不多</p>
+<p>我现在已经写完了欺骗了，会逐渐把自己的心的经验拿上来分享一下</p>
+<p>这几天看MFC图形界面，网络编程方面在看使用WinAPI来发送数据包，这样就可以不用装WinPcap了</p>
+<p>想不适用WinPcap就直接使用WinPcap的函数，我正在尝试，光考出几个dll还不够，还要一个npf.sys支持，我也是今天刚看到资料，待会儿在机房做完
+测试会写个帖子的。</p>
+<p>呼呼，就写这么点了，晚上图形实验课在机房做ARP欺骗，老师的防火墙一直叫，嘿嘿，不过大家都有360防火墙，倒没什么事故。</p>
+<p>系统重装了，打好多补丁啊，还有好多软件重装…郁闷…</p>
+<p>老系统用了2年没重装了，也到寿命了…</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -50,6 +295,19 @@
       
       <guid>https://blog.alswl.com/2008/09/arp/</guid>
       <description>挺累的，连续两天忙到3点睡觉，早上9点起来继续做 开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。 这是网络编程，也就是我的专业方向课的第一份作业，我特别看中这次，当初分方向时候，鑫爷和大妈都去了软件，我留在网络了。似乎都觉得网络好学，简单，不要写程序 那么我就写 第一次将c++与系统底层结合起来，去操作网络上的数据包，感觉真是，太perfect了，不再是呆板的代码</description>
+      <content:encoded><![CDATA[<p>挺累的，连续两天忙到3点睡觉，早上9点起来继续做</p>
+<p>开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。</p>
+<p>这是网络编程，也就是我的专业方向课的第一份作业，我特别看中这次，当初分方向时候，鑫爷和大妈都去了软件，我留在网络了。似乎都觉得网络好学，简单，不要写程序</p>
+<p>那么我就写</p>
+<p>第一次将c++与系统底层结合起来，去操作网络上的数据包，感觉真是，太perfect了，不再是呆板的代码，而是真实的数据，真实的操作，甚至我感觉通过键盘，我能
+控制一切的感觉</p>
+<p>从连接网卡，获取数据，过滤数据包，容错纠正，类型匹配，发送数据，匹配数据包，发送伪装数据攻击，我甚至写出了一套简单的ARP病毒…</p>
+<p>其实说起来也不难，只要稍微组合一下几个函数而已</p>
+<p>呵呵，挺开心的，自己做东西真好，真实在</p>
+<p>唔…睡觉了…</p>
+<p>手机打字还是挺累的…</p>
+<p>待会儿放上详细流程</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -59,6 +317,33 @@
       
       <guid>https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/</guid>
       <description>1.编译时候会出现函数问题 &amp;lsquo;pcap_findalldevs_ex&amp;rsquo; : undeclared identifier &amp;lsquo;PCAP_SRC_IF_STRING&amp;rsquo; : undeclared identifier &amp;lsquo;pcap_open&amp;rsquo; : undeclared identifier &amp;lsquo;PCAP_OPENFLAG_PROMISCUOUS&amp;rsquo; : undeclared identifier &amp;lsquo;=&amp;rsquo; : cannot convert from &amp;lsquo;int&amp;rsquo; to &amp;lsquo;struct pcap *&amp;rsquo; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &amp;ldquo;pcap.h&amp;quot;后面加上 #include &amp;ldquo;remote-ext.h&amp;rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#</description>
+      <content:encoded><![CDATA[<p>1.编译时候会出现函数问题</p>
+<p>&lsquo;pcap_findalldevs_ex&rsquo; : undeclared identifier</p>
+<p>&lsquo;PCAP_SRC_IF_STRING&rsquo; : undeclared identifier</p>
+<p>&lsquo;pcap_open&rsquo; : undeclared identifier</p>
+<p>&lsquo;PCAP_OPENFLAG_PROMISCUOUS&rsquo; : undeclared identifier</p>
+<p>&lsquo;=&rsquo; : cannot convert from &lsquo;int&rsquo; to &lsquo;struct pcap *&rsquo;</p>
+<p>等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个</p>
+<p>头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在</p>
+<p>#include &ldquo;pcap.h&quot;后面加上</p>
+<p>#include &ldquo;remote-ext.h&rdquo;</p>
+<p>就可以编译通过了。</p>
+<p>网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了</p>
+<p>= =#</p>
+<p>2.出现连接错误</p>
+<p>Cpp3.obj : error LNK2001: unresolved external symbol
+<a href="mailto:__imp__ntohs@4">__imp__ntohs@4</a></p>
+<p>Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals</p>
+<p>一般添加工程只需要添加wpcap.lib这个库文件，而在分析数据包这段代码里，光这个头文件</p>
+<p>已经不够了，需要再添加ws2_32.lib这个头文件。其实这个在WinPcap的配置VC里有说明，但</p>
+<p>是以前懒，都只用wpcap.lib</p>
+<p>3.关于程序运行时候是否需要WinPcap的支持，我无法测试出结果，因为学校上网方式的限制</p>
+<p>，所有系统都是有WinPcap运行库文件的，待会儿去网上找找相关资料呢</p>
+<p>4.暑假一直看的是英文说明文档，很吃力，最近在搜狗随便一搜，居然发现了有现成翻译好的</p>
+<p>中文说明文档，翻译挺不错的，可以去搜索下一下。</p>
+<p>终于开始开网络编程课，感叹一下WinPcap的强大，还是停留在用户层的编程，完全没能力看</p>
+<p>核心的源代码。。。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -68,6 +353,48 @@
       
       <guid>https://blog.alswl.com/2008/08/learning-network-programming-diary-1-_winpcap-and-vc-configuration/</guid>
       <description>下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这 种书，叹一个。 直接导致了我很多东西都得一点一点去网上查找。 很多函数都是用的WinPcap的，所以我又抓紧时间看WinPcap的入门知识。 WinPcap开发包下载：[http://www.winpcap.org/install/default.h</description>
+      <content:encoded><![CDATA[<p>下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这
+种书，叹一个。</p>
+<p>直接导致了我很多东西都得一点一点去网上查找。</p>
+<p>很多函数都是用的WinPcap的，所以我又抓紧时间看WinPcap的入门知识。</p>
+<p>WinPcap开发包下载：[http://www.winpcap.org/install/default.htm](<a href="http://www.winpcap.o">http://www.winpcap.o</a>
+rg/install/default.htm)</p>
+<p>里面有开发者包Developer&rsquo;s Pack和普通使用的安装程序，宽带上网助手就是普通的安装包，而开发要使用的则是Developer&rsquo;s Pack。</p>
+<p>下来之后，安装到某个目录，然后配置VC，把那个目录的include和lib两个目录放到VC的选项-&gt;目录里面。</p>
+<p>WinPcap目录下有doc文档，里面的东西相当全面。我运行了两个，都不能直接运行。</p>
+<p>第一个简单程序是获取网卡适配器信息，里面一个函数pcap_findalldevs_ex找不到，网上资料说是因为这个函数属于远程网卡获取，它的声明在#incl
+ude &ldquo;remote-ext.h&quot;里面，加上去就可以运行了。</p>
+<p>第二个程序错误更多，</p>
+<p>F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: &lsquo;socklen_t&rsquo; : undeclared
+identifier</p>
+<p>F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2146: syntax error : missing &lsquo;;&rsquo;
+before identifier &lsquo;sockaddrlen&rsquo;</p>
+<p>F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: &lsquo;sockaddrlen&rsquo; : undeclared
+identifier</p>
+<p>F:学习网络WiPcap8_08_202Cpp1.cpp(164) : error C2065: &lsquo;getnameinfo&rsquo; : undeclared
+identifier</p>
+<p>F:学习网络WiPcap8_08_202Cpp1.cpp(170) : error C2065: &lsquo;NI_NUMERICHOST&rsquo; : undeclared
+identifier</p>
+<p>错误根由是因为WinPcap支持ipv6,而VC的winsock2.h太老了，很多结构都没有被支持，所以产生错误。网上有人说可以用VS新版本调试，我电脑里面
+是VS2008，但是仍然产生错误</p>
+<p>_vsnprintf属性与生命不匹配，网上没有合适的解决方案，我感觉是WinPcap的某个头文件与stdio.h参数不匹配。</p>
+<p>既然VS也无法通过，我实在没能力去修改WinPcap的头文件，所以就用最后一个方案，使用VC6.0的最新的PlatForm
+SDK开发包，里面包含了新的头文件，就可以支持WinPcap了。</p>
+<p>有人说PSDK只有Windows2003的版本，我在微软里面找到了WinXPSP2的PSDK。</p>
+<p>网址如下</p>
+<p>[http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.ht
+m](<a href="http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall">http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall</a>.
+htm)</p>
+<p>里面好几个Cab，网页里面有完整的安装说明。</p>
+<p>我正在下，搞好之后如果能用再说。</p>
+<p>弄好了，下面是PlatFormSDK安装步骤</p>
+<p>(1)安装过程:</p>
+<p>CMD运行PSDK-FULL.bat，参数为一个目录，里面会被解压缩安装包，然后Setup，一路Next就可以了。</p>
+<p>(2)配置过程</p>
+<p>打开Visual C++6.0，在选项里面连接，把PSDK安装后的include和lib加入相应的位置。</p>
+<p>特别注意，要把这些目录的顺序调高，我直接放到了最高层去了。</p>
+<p>呵呵，编译一下，通过了，好Happy啊。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -77,6 +404,145 @@
       
       <guid>https://blog.alswl.com/2008/07/course-design-works-great-debut/</guid>
       <description>本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉 这个系统我还是很得意的，是我大二时候学C#时候巅峰之作，那时候刚学完网络， 还没开任何网络编程，那时候第一次接触SourceForge，参考了好多英文资料。 AzaChat管理系统 Powered by DDD &amp;amp; King ZD 系统功能 登录，注册，群聊，私聊，踢人，聊天字体设置，字体颜色，图片插入，图文混编，音效播放，抖动窗体(模仿QQ) 聊天人员管理，数据库</description>
+      <content:encoded><![CDATA[<p>本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉</p>
+<p>这个系统我还是很得意的，是我大二时候学C#时候巅峰之作，那时候刚学完网络，
+还没开任何网络编程，那时候第一次接触SourceForge，参考了好多英文资料。</p>
+<hr />
+<h1 id="azachat管理系统">AzaChat管理系统</h1>
+<p>Powered by DDD &amp; King ZD</p>
+<h2 id="系统功能">系统功能</h2>
+<ul>
+<li>登录，注册，群聊，私聊，踢人，聊天字体设置，字体颜色，图片插入，图文混编，音效播放，抖动窗体(模仿QQ)</li>
+<li>聊天人员管理，数据库管理，数据库查找功能</li>
+<li>皮肤更换功能</li>
+</ul>
+<h2 id="系统说明">系统说明</h2>
+<p>这个系统是我这个学期课程设计，花了我将近一个多月的时间(期末考试阶段，很忙 - -#)，在写之前，我完全不懂数据库和网络传输，C#和面向对象思想也是这学期刚开的。虽然Bug还很多，但我仍然写出来了，很是开心。</p>
+<p>上传到CSDN，希望对大家有帮助。
+Aza的来源是因为一个笑话，一个女人是500只鸭子，我想到聊天室就应该那种AzaAza的聊天声音，嘿嘿。</p>
+<p>代码我给，论文自己写。。。看懂了别人的代码就是你的，看不懂，还是我的。。。
+写了很多注释，相信对大家有帮助的</p>
+<h2 id="版本">版本</h2>
+<p>我是在VS2008下面开发的，下载包里面自带转换器可以将项目文件转换到VS2005。
+Sql server的版本是vs自带的sql server 2005 express</p>
+<h2 id="数据库说明">数据库说明</h2>
+<ol>
+<li>将自带的两个数据库文件User.mdf和Server_log附加到数据库</li>
+<li>将数据库登录方式打开为Windows身份验证和Sql Server验证</li>
+<li>sa的密码可以自己改</li>
+<li>如果想在数据库服务器和聊天服务器分开的话，必须将数据库服务器的远程连接选项打开</li>
+</ol>
+<p>更详细的设置方式可以去查CSDN</p>
+<pre tabindex="0"><code>服务器帐号：sa
+密码：123456
+
+管理员帐号：admin
+密码：admin
+
+用户帐号：123
+密码：123
+</code></pre><p>更多帐号可以注册和去服务器端管理。</p>
+<p>客户端普通帐号可以随时注册，服务器端必须是管理员帐号登录。
+用起来很简单，登录进去就知道了。</p>
+<p>PS:程序在.Net Framework2.0下写，请确保电脑已经有.Net Framework2.0或者更高版本，否则会报错</p>
+<p>Powered by DDD</p>
+<p>E-mail:alswlwangzi(a)163.com</p>
+<h2 id="更新">更新</h2>
+<p>2008.7.11更新</p>
+<p>更新内容：</p>
+<p>V1.3版本更新：修改图片传输大小限制Bug,增强数据管理删选功能，修改在线用户查看，增加查看对方IP地址和连接端口功能</p>
+<p>V1.2」版本更新：加入远程数据库登录管理功能</p>
+<p>V1.1版本更新：加入服务器数据管理，修改增加删除数据保存的一些Bug</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A972857781312POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A983104784976POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A979487865902POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A976688814655POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A039328251736CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A037255836541CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A016564641801CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A014442672895CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A009044384619CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A004793674766CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A002612293529CUC.jpg" alt="img"  />
+
+</p>
+<p>终于写完了，虽然很累，不过真的很开心。</p>
+]]></content:encoded>
     </item>
     
   </channel>

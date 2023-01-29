@@ -14,6 +14,130 @@
       
       <guid>https://blog.alswl.com/2014/03/hiredis/</guid>
       <description>前段时间学习 Redis 时候，听到 hiredis 的大名，正好也在做异步的学习，就找来代码学习一下。 我几乎不太会 C，仅限于最简单的语法，完全没有在生产环境中写过， 所以先看个 Client 简单代码，下次看 Memcached 代码应该会更顺畅一些。 Hiredis 是用 C 写的 Redis 客户端，对 Redis 协议进行了简单的封装， 同时提供了同步和异步的两种 API。Hiredis 的代码位于 https://github.com/redis/hiredis。 一分钟使用入门 同步 API 的调用方法： redisContext *context =</description>
+      <content:encoded><![CDATA[<p>前段时间学习 Redis 时候，听到 hiredis 的大名，正好也在做异步的学习，就找来代码学习一下。
+我几乎不太会 C，仅限于最简单的语法，完全没有在生产环境中写过，
+所以先看个 Client 简单代码，下次看 Memcached 代码应该会更顺畅一些。</p>
+<p>Hiredis 是用 C 写的 Redis 客户端，对 Redis 协议进行了简单的封装，
+同时提供了同步和异步的两种 API。Hiredis 的代码位于
+<a href="https://github.com/redis/hiredis">https://github.com/redis/hiredis</a>。</p>
+<!-- more -->
+<h2 id="一分钟使用入门">一分钟使用入门</h2>
+<p>同步 API 的调用方法：</p>
+<pre tabindex="0"><code>redisContext *context = redisConnect(&#34;127.0.0.1&#34;, 6379);
+reply = redisCommand(context, &#34;SET foo %s&#34;, value);	
+printf(&#34;PING: %s\n&#34;, reply-&gt;str);
+freeReplyObject(reply)
+redisFree(context);
+</code></pre><p>Redis ae 异步 API 的调用方法，使用 Redis 自己的 ae 事件库，
+至于为什么 Redis 没有使用 libevent 或者 libev，可以参考
+<a href="http://groups.google.com/group/redis-db/browse_thread/thread/b52814e9ef15b8d0/">Reason</a>，
+<a href="http://blog.csdn.net/archimedes_zht/article/details/6909074">中文翻译</a>：</p>
+<pre tabindex="0"><code>void connectCallback(const redisAsyncContext *c, int status) {
+    printf(&#34;Connected...\n&#34;);
+}
+
+void disconnectCallback(const redisAsyncContext *c, int status) {
+    printf(&#34;Disconnected...\n&#34;);
+}
+void getCallback(redisAsyncContext *c, void *r, void *privdata) {
+    redisReply *reply = r;
+    if (reply == NULL) return;
+    printf(&#34;argv[%s]: %s\n&#34;, (char*)privdata, reply-&gt;str);
+    redisAsyncDisconnect(c);
+}
+
+redisAsyncContext *c = redisAsyncConnect(&#34;127.0.0.1&#34;, 6379);
+loop = aeCreateEventLoop();
+redisAeAttach(loop, c);
+redisAsyncSetConnectCallback(c,connectCallback);
+redisAsyncSetDisconnectCallback(c,disconnectCallback);
+
+redisAsyncCommand(c, getCallback, (char*)&#34;end-1&#34;, &#34;GET key&#34;);
+</code></pre><p>Libev 异步 API 调用，因为 <code>adapters/*.h</code> 封装的好，所以几乎和 ae 调用一致：</p>
+<pre tabindex="0"><code>void connectCallback(const redisAsyncContext *c, int status) {
+    printf(&#34;Connected...\n&#34;);
+}
+void disconnectCallback(const redisAsyncContext *c, int status) {
+    printf(&#34;Disconnected...\n&#34;);
+}
+void getCallback(redisAsyncContext *c, void *r, void *privdata) {
+    redisReply *reply = r;
+    if (reply == NULL) return;
+    printf(&#34;argv[%s]: %s\n&#34;, (char*)privdata, reply-&gt;str);
+
+    /* Disconnect after receiving the reply to GET */
+    redisAsyncDisconnect(c);
+}
+
+redisAsyncContext *c = redisAsyncConnect(&#34;127.0.0.1&#34;, 6379);
+redisLibevAttach(EV_DEFAULT_ c);
+redisAsyncSetConnectCallback(c,connectCallback);
+redisAsyncSetDisconnectCallback(c,disconnectCallback);
+redisAsyncCommand(c, getCallback, (char*)&#34;end-1&#34;, &#34;GET key&#34;);
+</code></pre><p>Hiredis 还支持使用 libevent，我就不列出来了。</p>
+<p>详细的使用 example 可以看
+<a href="https://github.com/redis/hiredis/tree/master/examples">https://github.com/redis/hiredis/tree/master/examples</a>。</p>
+<h2 id="主要结构">主要结构</h2>
+<ul>
+<li>redisReply</li>
+<li>redisReader</li>
+<li>redisContext</li>
+</ul>
+<h2 id="流程">流程</h2>
+<h3 id="同步连接">同步连接</h3>
+<p>同步连接的代码在 <code>hiredis.c</code> 和 <code>net.c</code> 中。</p>
+<p><code>redisConnect</code> / <code>redisConnectWithTimeout</code> / <code>redisConnectNonBlock</code> 都调用了
+<code>net.c</code> 里面的 <code>redisContextConnectTcp</code>。使用 <code>fcntl(fd, F_SETFL, flags)</code>
+设置是否阻塞连接。</p>
+<p><code>O_NONBLOCK</code> 即 Socket 非阻塞模式，但仍然是同步的哦。</p>
+<p>事实上，无论阻塞还是非阻塞，hiredis 都会使用非阻塞（poll）来
+<code>connect</code> 连接服务器，会返回 -1，并且 <code>errno</code>
+为 <code>EINPROGRESS</code>，这是非阻塞模式正常的表现。
+为什么阻塞模式也会强制使用非阻塞的 <code>poll</code> 连接？其实是为了能够支持 timeout 功能。
+hiredis 在连接成功之后，按照之前需求重新设定为阻塞或者非阻塞模式。</p>
+<p>关于如何设计超时功能，可以参考 <a href="http://blog.csdn.net/ast_224/article/details/2957294">http://blog.csdn.net/ast_224/article/details/2957294</a>。</p>
+<h3 id="命令">命令</h3>
+<p>使用 va_list 解决变参问题（C 也支持变长参数，被惊呆了，我果然是 C 盲啊）。</p>
+<pre tabindex="0"><code>int redisFormatCommand(char **target, const char *format, ...) {
+	va_list ap;
+	int len;
+	va_start(ap,format);
+}
+</code></pre><p><code>redisvCommand</code> 用来执行阻塞Redis 命令，它会调用 <code>__redisBlockForReply</code>，
+内部调用 <code>redisBufferWrite</code> 从 socket 写 buffer，然后同步等待，从
+<code>redisBufferRead</code> 读数据，用 <code>redisGetReplyFromReader</code> 解析返回数据。</p>
+<h3 id="异步连接">异步连接</h3>
+<p>异步调用的代码在 <code>async.c</code> 中，我先看 ae 库。</p>
+<p>重要的结构是 <code>redisAsyncContext</code> 和 <code>redisAeEvents</code>，前者重要的方法是注册回调函数：
+<code>addRead</code> / <code>delRead</code> / <code>addWrite</code> / <code>delWrite</code>，后者是用来存放 loop / fd / event stream
+的。</p>
+<p>异步连接时候，仍然使用 <code>redisContextConnectTcp</code> 来发起到服务器的非阻塞连接。</p>
+<p>使用 <code>aeCreateEventLoop</code> 创建一个事件循环，然后使用 <code>redisAeAttach</code> 给
+<code>context</code> 注册事件，比如说 <code>aeCreateFileEvent(loop,e-&gt;fd,AE_READABLE,redisAeReadEvent,e)</code>
+就注册了一个 <code>read</code> 事件，并将 callback 调用设置到 <code>redisAeReadEvent</code>，
+<code>redisAeReadEvent</code> 再将这个事件托管给 <code>redisAsyncHandleRead</code>（定义在 async.c 里面，
+被三个 event 库调用）。</p>
+<p>所以，hiredis 通过 adapter 的封装，屏蔽了 ae / libevent / libev 的 API 差异，
+从而可以灵活的选择。据说 ae 是从两个 libevent 库重写过来的，可是我觉得 ae
+的风格和 libev 比较像，而 libevent 的风格比较好理解。</p>
+<p>如果拿这段代码的复杂度和 Tornado 的 IOLoop 进行对比，真实感觉 Tornado 那段 API
+封装太人性化了，C 的代码写起来好复杂，系统 API、资源控制、错误控制都挺麻烦。</p>
+<p>Redis ae 事件库的分析可以参考 <a href="http://my.oschina.net/u/917596/blog/161077#OSC_h4_6">http://my.oschina.net/u/917596/blog/161077#OSC_h4_6</a>。
+Libevent 的一个简单教程 <a href="http://www.wangafu.net/~nickm/libevent-book/01_intro.html">http://www.wangafu.net/~nickm/libevent-book/01_intro.html</a>。</p>
+<h2 id="关于-c">关于 C</h2>
+<p>作为 C 渣的我，勉强读完 hiredis，感觉那点 C 基础完全不够用，
+稍微将学习过程中疑惑的地方罗列一下：</p>
+<ul>
+<li><code>IFDEF</code> 使用，可以防止重复导入同一个头文件定义，这里有一个详细的解释
+<a href="http://faculty.cs.niu.edu/~mcmahon/CS241/c241man/node90.html">http://faculty.cs.niu.edu/~mcmahon/CS241/c241man/node90.html</a></li>
+<li><code>__cplusplus</code>: C++ 里面定义了这个变量，而 C 没有定义，所以当 C++ 编译器识别
+source 时候，通过这个加上 <code>ifdef</code> 来使用 <code>extern</code> 编译 C 代码。</li>
+<li>long long: long 只能存放 32 位，long long 可以存放 64 位长度，即 0 - 2^64-1。</li>
+<li><code>c-&gt;flags |= REDIS_BLOCK</code> / <code>c-&gt;flags &amp;= ~REDIS_BLOCK;</code> 简洁的位操作。</li>
+<li>sds（simple dynamic string）是 Redis 自己实现的 C String 字符串结构。</li>
+<li><code>((void)fd)</code> 好像是将 fd 指针转成无类型的指针，不知道有什么用处。</li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -23,6 +147,11 @@
       
       <guid>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming-part-2-security-handshake/</guid>
       <description>原文链接：[http://www.ibm.com/developerworks/cn/linux/l-openssl2.html](http://www.i bm.com/developerworks/cn/linux/l-openssl2.html) 怎么都复制不过来，提示含有敏感字眼，我晕，这是IBM文档库里的啊，崩溃了 我都不要言论自由，只想保存一些经典的文章而已，河蟹啊````</description>
+      <content:encoded><![CDATA[<p>原文链接：[http://www.ibm.com/developerworks/cn/linux/l-openssl2.html](<a href="http://www.i">http://www.i</a>
+bm.com/developerworks/cn/linux/l-openssl2.html)</p>
+<p>怎么都复制不过来，提示含有敏感字眼，我晕，这是IBM文档库里的啊，崩溃了</p>
+<p>我都不要言论自由，只想保存一些经典的文章而已，河蟹啊````</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -32,6 +161,228 @@
       
       <guid>https://blog.alswl.com/2009/03/introduction-to-openssl-programming/</guid>
       <description>**OpenSSL **编程入门 作者:Eric Rescorla on Sat, 2001-09-01 01:0 如果你急切的想构建一个简单的Web客户端和服务器对,这时你就需要使用SSL了.. SSL是一种保护基于TCP协议的网络应用最快而且最简单的的方法,如果你正在用C语言做开发,那么对于你来说,最好的选择可能就是使用OpenSSL了. OpenSSL是在Eric Young的SSLeay包的基础上对TSL/SSL的一个免费的执行(类似于BSD方式的License).然而,</description>
+      <content:encoded><![CDATA[<p>**OpenSSL **<strong>编程入门</strong></p>
+<p>作者:Eric Rescorla on Sat, 2001-09-01 01:0</p>
+<p>如果你急切的想构建一个简单的Web客户端和服务器对,这时你就需要使用SSL了..</p>
+<p>SSL是一种保护基于TCP协议的网络应用最快而且最简单的的方法,如果你正在用C语言做开发,那么对于你来说,最好的选择可能就是使用OpenSSL了.
+OpenSSL是在Eric Young的SSLeay包的基础上对TSL/SSL的一个免费的执行(类似于BSD方式的License).然而, 不幸运的事情是,
+伴随OpenSSL一起发布的文档和示例代码并不是很完全, 使用它的人需要更多的东西.在OpenSSL被使用之处,
+man手册都相当优秀,可是这些手册失去了大的背景 因为它们只是参考资料而不是教程.</p>
+<p>OpenSSL的API多而复杂, 因此我们在此并不会作出一个完整的讲述. 相反,我的目的只是教会你如何去高效的使用man手册.在本文中,
+我们将会通过构建一个简单的Web客户端和服务器来演示OpenSSL的基本特点. 而在后续的第二篇中我们将会介绍OpenSSL的一些高级特性,
+比如会话恢复和客户端认证等.</p>
+<p>在话题开始之前, 我会认为你已经熟悉SSL和HTTP了, 或者最起码在概念层上应该有一些了解. 如果你对此一无所知,
+推荐一个比较好的方法,那就是参考RFC(参见附录).</p>
+<p>由于篇幅原因, 本文只包涵了源代码的一些摘录, 完整的代码可以从作者的站点<a href="http://www.rtfm.com/openssl-examples/">http://www.rtfm.com/openssl-
+examples/</a>上下载.</p>
+<p><strong>程序</strong><br />
+我们的客户端是一个简单的HTTPS(见 RFC 281![image](/DOCUME~1/%E7%8B%84%E6%95%AC%E8%B6%85/LOCALS~1/
+Temp/msohtml1/01/clip_image001.gif)客户端,它在初始化了一个到达服务器的SSL连接之后便通过这个连接将HTTP请求传送给H
+TTP服务器. 然后等待服务器端的响应,并将响应信息打印在屏幕上.这是对通常那些&quot;获取并且打印信息&quot;的程序功能更简化的一个例子.</p>
+<p>服务器端程序是一个简单的HTTPS 服务器, 它等待从客户端发出的TCP连接, 每当接收到一个连接时,它会磋商这个连接(的合法性).
+一旦这个连接被确定下来, 它会读取客户端的HTTP请求, 并将HTTP请求的响应信息传输给客户端. 当响应传输完毕时它会关闭这个连接.</p>
+<p>我们的第一个任务就是建立一个上下文对象(一个SSL_CTX), 这个上下文对象会在每次需要建立新的SSL连接的时候被用来创建一个新的连接对象.
+而这些连接对象则用于SSL的握手,读和写.</p>
+<p>(使用上下文对象)这种方法有两个优点: 首先, 上下文对象允许一次初始化多个结构体, 这样就提提高了性能. 在大多数应用中,
+每一个SSL连接都使用相同的加密算法(keying material)和CA(certificate authority)列表等. 而采用上面这种方法,
+我们就不需要在每次连接的时都去加载这些信息(加密算法和证书), 而只需要在程序启动时将它们加载进上下文对象中. 然后,当我们需要创建一个新的连接时,
+只需要将新的连接简单的指向这个上下文对象就可以了. 使用一个简单的上下文对象的第二个好处就是它允许多个SSL连接之间共享数据,
+比如用于SSL会话恢复的SSL缓冲(cache). 上下文初始化由主要的四个任务组成, 通过列表1所示的initialize_ctx()函数来完成.</p>
+<p><strong>列表</strong>** 1 initialize_ctx()**<br />
+在应用OpenSSL之前, 整个库需要进行初始化, 这个过程通过SSL_library_init()函数来完成,它主要加载OpenSSL将会用到的算法,
+如果我们想要很好的报告差错信息, 同样需要通过SSL_load_error_strings()来加载错误字符串, 否则,
+就不能够将OpenSSL的错误映射为字符串.</p>
+<p>我们同样需要创建一个对象来作为错误打印的上下文.
+OpenSSL为输入和输出抽象了一个叫做BIO对象的概念.这样可以使得程序员针对不同种类的IO通道(socket, 中断,内存缓冲等)使用相同的函数,而唯一
+的差别就是在函数中使用的是不同种类的BIO对象.在本例中,我们通过将一个BIO对象与标准错误stderr绑定来打印错误信息.</p>
+<p>如果你正在写一个能够执行客户端认证的服务器或者客户端程序, 你就需要加载自己的公钥或者私钥以及相关的证书.证书存储空隙中,
+并且通过SSL_CTX_use_certificate_chain_file()函数与CA证书一起被加载形成证书链表.
+SSL_CTX_use_PrivateKey_file()函数用来加载私钥.出于安全原因, 私钥通常通过密码来加密, 如果使用密码加密的话,
+密码回调函数(通过SSL_CTX_set_default_passwd_cb()来设置)将会在获取密码时被调用的.</p>
+<p>如果你需要认证已经连接到你的客户端, OpenSSL需要知道你信任哪些CA,
+SSL_CTX_load_verify_locations()调用用来加载CA.</p>
+<p>为了保证安全, OpenSSL需要一个好的强性随机数源, 通常,为随机数生成器(RNG)提供种子原料是应用本身的责任,
+然而,如果/dev/urandom可用的话,OPenSSL会自动的使用/var/urandom来为RNG播种,
+由于/dev/urandom在Linux是标准化的, 我们不需要为它做任何事情, 这个就很方便了, 因为收集随机数很诡异,而且很容易引起系统抖动上升.
+注意,如果你在一台不是Linux的系统上,你可能会在某些时刻得到错误数据, 因为随机数产生器没有被播种, OpenSSL的rand(3)
+man手册为你提供了更多可以参考的信息.</p>
+<p><strong>客户端</strong><br />
+当SSL完成了对SSL上下文对象的初始化后，它已经为连接到服务器做好准备。OpenSSL要求我们自己建立一条从客户端到服务器的TCP连接，然后使用这个TCP
+套接字创建一个SSL套接字.为了方便期间，我们把TCP连接的创建划分到函数tcp_connect()(这里没有给出实现，但是在下载的代码中可以看的到)中去实
+现。</p>
+<p>当TCP连接创建好以后，我们创建一个SSL对象来处理这个连接。这个对象需要与套接字绑定,注意，我们并不是直接把SSL对象绑定到套接字上，而是创建一个使用这个
+套接字的BIO对象, 然后将SSL对象绑定到这个BIO上。</p>
+<p>这个抽象层允许你通过各种通道来使用OpenSSL而不是套接字，前提是你已经有了</p>
+<p>一个合适的BIO对象。例如，有一个OpenSSL测试程序纯粹通过内存缓冲区来连接SSL客户端和服务器。一个比较实用的做法就是支持一些套接字根本无法访问协议来
+进行连接。例如，你可以通过一个连续行(serial line)来运行SSL。</p>
+<p>SSL连接的第一步就是执行SSL握手，握手鉴别服务器(也可以选择鉴别客户端客户端)并且建立保护剩余传输所需要的加密算法。SSL_connect()
+调用用来执行SSL握手.由于我们使用</p>
+<p>的是阻塞式的套接字，所以SSL_connect()函数在SSL握手没有完成或者没有检测到一个差错之前是不会返回的。成功时，这个函数返回1，返回0或者负数表示
+出错。</p>
+<p>调用如下：</p>
+<p><strong><a href="http://linux.chinaunix.net/bbs/thread-852198-1-1.html######">[Copy to clipboard]</a></strong>** **<strong><a href="http://linux.chinaunix.net/bbs/thread-852198-1-1.html######">[ - ]</a></strong></p>
+<p><strong>CODE:</strong></p>
+<p>/* Connect the TCP socket*/</p>
+<p>sock=tcp_connect(host,port);</p>
+<p>/* Connect the SSL socket */</p>
+<p>ssl=SSL_new(ctx);</p>
+<p>sbio=BIO_new_socket(sock,BIO_NOCLOSE);</p>
+<p>SSL_set_bio(ssl,sbio,sbio);</p>
+<p>if(SSL_connect(ssl)&lt;=0)</p>
+<p>berr_exit(&ldquo;SSL connect error&rdquo;);</p>
+<p>if(require_server_auth)</p>
+<p>check_cert(ssl,host);</p>
+<p>当我们初始化到达服务器的SSL连接时，我们需要先校验服务器的证书链。OpenSSL为我们做一些这样的校验，但是不幸的是，其他的校验工作总是与具体的应用相关(
+所以不能通过OpenSSL来完成)，因此，我们需要自己去做这些工作。我们的例子代码做的主要测试就是检验服务器的身份。这个通过列表2的函数check_cert
+()来实现。</p>
+<p><strong>列表<strong><strong>2 check_cert</strong></strong>函数</strong><br />
+当检测到服务器的证书链有效的时候，你需要验证你正在查看的证书与你期望的服务器所拥有的身份是否相匹配。在大多数情况下，这意味着服务器的DNS名字出现在证书中，
+或者在Subject Name 的Common Name域，或者位于证书的扩展部分(certificate
+extension).尽管每种协议在识别服务器身份的时候有少许的差别，但是RFC
+2818包括了通过SSL/TSL识别HTTP服务器身份的规则。如果你没有什么很明了的意图去做其他事情，按照RFC 2818 的规则去做是一个很好的做法.</p>
+<p>由于大多数证书还一直将域名放在Common Name字段而不是扩展部分。所以我们只进行了</p>
+<p>Common 字段的校验，我们通过SSL_get_peer_certificate() 函数来提取服务器的证书，然后将证书的Common
+Name字段与我们连接的客户机名称进行比对，如果不匹配的话，肯定出错了，我们退出程序。</p>
+<p>在0.9.5版本之前，OpenSLL容易遭到一种证书扩展攻击，为了方便理解，我们考虑下面的情况，一个服务器鉴别由Bob签名的证书，如图1示，Bob并不是你的
+一个CA，但是它的证书却是由你信任的一个CA签名的。</p>
+<p>如果你接受这个证书，你可能会有很大的麻烦，但是CA签名了Bob的证书这个事实却意味着它通过了对Bob的身份确认，但却不是说Bob可以被信任.如果你知道你想要
+与Bob做生意，那很好，但是如果你想要与Alice（你从从来没听说过，但是Bob为她担保）和Bob一起做生意，那这些信息就没有用了。</p>
+<p>通常，保护你免于此类攻击的唯一方法就是限制证书链的长度，目的就是使你明确你所观看的证书就是CA签名的。V3版的X.509证书包含了一种方法，它使得CA能够在
+一些证书上做标签说明这些证书是其他CA的。这种方法允许一个CA有一个简单的根CA，然后根CA可以认证其他的辅助CA。</p>
+<p>当前的OpenSSL(v0.9.5和以后的)都会校验这些扩展，因此不论你是否校验证书链的长度，这些扩展攻击都会被自动防御掉。比0.9.5更早的OpenSSL
+一点都不作这些扩展部分校验，所以如果要使用这个版本之前的OpenSSL的话，你必须自己限制链的长度。0.9.5版的OpenSSL在校验上有一些问题，所以如果
+你正在使用它你也许应该进行一些更新。initialize_ctx() 函数中，代码#ifdefed提供了对老版本链长度的校验，我们使用SSL_CTX_set
+_verify_depth()函数强迫OpenSSL去校验链的长度。总之，强烈建议你升级到0.9.6，主要是因为比较长的链（但是也有可能是故意构造的）越来越
+流行了，绝对最新和最好的版本就是OpenSSL 0.9.66了</p>
+<p>我们使用列表3的代码来写HTTP请求，出于演示的目的，我们使用了或多或少的在REQUEST_TEMPLATE变量中可以找到的硬线路(HardWired)HT
+TP请求。由于连接的机器可能会改变，我们不需要填充Host这个头信息。这个通过snprintf来实现。然后我们通过SSL_write()函数来发送数据到服务
+器端，SSL_write()的API或多或少与Write()函数类似，区别就是在write中我们传递文件描述符，而在前者中传递SSL对象。</p>
+<p><strong>列表<strong><strong>3 <strong><strong>写</strong></strong>HTTP</strong></strong>请求。</strong><br />
+有经验的TCP程序员都知道，我们在函数的返回值不等于我们想要写入的字节数时抛出一个错误,而不是循环的调用些函数. 在阻塞模式下，SSL_write()函数已
+经足够，因为在所有的数据都被写完或者发生差错之前，这个调用是不会返回的。然而write()函数却可能只会写入一部分数据，我们可以通过设置SSL_MODE_E
+NABLE_PARTIAL_WRITE标志位来允许部分写(本文没有应用)，在这种情况下，你需要循环的调用写函数。</p>
+<p>在老版本的HTTP1.0中，服务器传输它的HTTP响应然后关闭连接。在后来的版本中，引入的持续连接，支持同一连接上多个连续的事务。为了方便和简洁，在本文并不
+使用这种持续的连接。我们忽略(允许设置持续连接的)头部信息，使服务器通过关闭连接来通知响应的结束。在操作上，意味着我们只需要持续读，直到文件结束，这样也相应
+的简化了事务。</p>
+<p>OpenSSL使用SSL_read() 函数来读取数据，正如列表4中所示，跟使用read()一样，我们只需要简单的选择一个合适大小的缓冲，然后将它传递给SS
+L_read()函数。注意到缓冲区的大小在此处并没有多么的重要，SSL_read() 和read()一样，返回可用的数据，哪怕它比请求的数据量小.
+另外，如果没有数据可以读取，读函数将会阻塞。</p>
+<p>**列表****4 **<strong>读取响应</strong><br />
+BUFSIZZ的大小, 基本上可以说与性能是持平的, 这种性能持平与我们简单的从普通的套接字读取是不同的.
+在那种情况下,对read的每一次调用都需要上下文切换到内核态去,由于上下文在内核态和用户态之间切换是非常昂贵的,
+程序员在读取数据的时候都尽量使用较大的缓冲从而减少读取的次数(从而减少了上下文切换的次数). 然而当我们在使用SSL的时候, 对read()的调用次数,
+也就是上下文在内核态和用户态切换的次数, 在很大程度上取决于数据写入的记录数而不是SSL_read()的调用次数.</p>
+<p>例如,如果客户端写入了1000Byte的记录, 然后我们调用SSL_read()每次读取1Byte,
+那么对SSL_read()的第一次调用会使得所有的记录被读入,
+然后剩下的调用就只是将记录从SSL缓冲中读出来.因此,在使用SSL而不是普通的套接字读取数据时,缓冲区的大小选择并不是特别的重要.
+如果数据被写成一系列小的记录, 你可能想通过对Read的一次单独的调用来读取所有的记录. 这时候,
+OpenSSL为你提供了一个标志位,那就是SSL_CTRL_SET_READ_AHEAD, 通过设置这个标志位就可以打开这种读的开关.</p>
+<p>注意本文中使用switch语句来处理SSL_get_error()函数返回值这种用法，使用普通的套接字的一个方便之处就是任何的负的返回值(最典型的是－1)都
+代表失败，然后你可以检测errno去查看真正发生了什么事情。但是errno在这里并不起什么作用，因为它只代表了一个系统错误，而我们想要做的是对SSL错误进行
+处理。同样编程时需要对errno进行细心的处理,以便实现线程安全。</p>
+<p>在OpenSSL中提供了SSL_get_error()调用而不是errno, 这个调用使得我们可以检测返回值以确定是否有错误发生，如果有错误发生，是什么错误
+。如果返回值是一个正数，说明我们读取到了一定的数据，这时候将它简单的打印到屏幕上. 一个真正的客户端会解析HTTP响应然后或者显示数据或者将数据保存到磁盘。
+但是对OpenSSL而言,这些并没有多大意义，所以我们在此处不会涉及对响应信息的具体处理。</p>
+<p>如果返回值是0，并不表示没有数据可以读取，因为在没有数据可以读取的情况下，正如上面已经讨论过的一样,
+我们的函数肯定会被阻塞住的。所以,此处返回的0表明这个套接字已经被关闭了，当然也就没有任何数据可以读取了，所以我们退出循环。</p>
+<p>如果返回值是一个负值，这时肯定发生了某种错误。我们只关心两种类型的错误：普通错误和提前关闭的错误，我们使用SSL_get_error()函数来决定得到的是那
+种类型的错误，差错处理在客户端的程序中非常的简单。所以对于大多数错误，我们仅仅使用berr_exit()函数来打印一行错误信息然后退出，然后,提前关闭这种错
+误需要进行特殊的处理.</p>
+<p>TCP使用FIN片断来表明发送者已经发送完所有的数据. SSL v2 允许任何一端通过发送TCP FIN字段来结束SSL连接.
+但是,这种原则却会遭受一种截断攻击，攻击者可以自己伪造一个TCP FIN来终止连接，使得发送的数据比实际要发送的少.
+除非受害者有某种方法知道他将要接收多长的数据，否则她/他很容易会认为接收到的那一部分长度的数据已经是所有的了。</p>
+<p>为了解决此种安全隐患，SSL v3引入了close_notify()警报机制，close_notify是一个SSL消息(因此是安全的)但却不是SSL数据流的
+一部分，因此应用程序并不能看到它。在close_notify消息被发送出去之后，任何数据将不能再传输了。</p>
+<p>因此当SSL_read()返回0表示套接字已经被结束时，这其实意味这close_notify消息已经收到，如果客户端在收到close_notify消息之前收
+到一个FIN，SSL_read()将会返回一个错误，这种情况叫做提前关闭。</p>
+<p>一个比较简单的客户端可能在遇到任何一个提前关闭的情况时都会报告一个错误然后退出.</p>
+<p>这个处理是SSL V3采取的默认处理方式，但是，不幸的是，对于客户端来说,发送提前关闭消息是一个很常见的差错。所以，如果你不是为了一直汇报错误的话，你最好忽
+略这些提前关闭消息。我们的代码进行了特别的处理，它报告错误却不随着错误而退出程序。</p>
+<p>如果在读取响应的时候没有发生任何错误，这时我们就需要发送自己的close_notify 消息给服务器端，这个是通过SSL_shutdown() 函数来实现的
+,在讨论服务器端的时候我们会仔细的研究这个函数的。但是大体的思想却很简单：返回1表示完全关闭，0表示不完全关闭，－1表示出错。由于我们已经收到了服务器端发送
+的close_notify消息，所以唯一可能出现的问题就是我们在发送我们自己的close_notify消息时出了差错，要不然的话，SSL_shutdown(
+)函数将会成功的（返回值为1）</p>
+<p>最后，我们需要销毁申请的变量对象，因为这个程序最终要退出的，释放这个操作并不是严格意义上必须的进行的，但是在更一般的程序中它却是必要的。</p>
+<p><strong>服务器</strong><br />
+我们的Web服务器除了比客户端更复杂点外, 可以说是客户端的一个镜像，首先，为了服务器能处理多个客户端，要要调用fork()来创建子进程，然后我们用Open
+SSL使用的BIO对象的API来一次一行的读取客户端的请求，同样用BIO来实现对客户端的缓冲写，最后，服务器端的关闭过程有些复杂。</p>
+<p>通常在一台Linux系统上，服务器处理多个客户端连接最简单的方法就是为每个客户端fork()出一个子进程，我们在这里是在accept()返回之后通过fork
+()来创建子进程。每一个子进程独立运行并且在对客户端进行服务以后自行退出。尽管这种方法在比较繁忙的Web服务器上可能相当慢，但是在此处却是可以接受的，列表5
+是主服务器的accept循环</p>
+<p>**列表****5 **<strong>服务器接收连接循环</strong><br />
+在fork()和创建SSL对象之后，服务器调用SSL_accept()函数，从而引起OpenSSL执行了服务器端的SSL握手，跟使用SSL_connect(
+)一样，由于我么使用的是阻塞式的套接字，所以SSL_accept()函数将会一直阻塞直到握手完成为止。因此，SSL_accept()返回的唯一情况就是握手完
+成或者检测到错误。SSL_accept()返回1表示成功，返回0或者负数表示失败。OpenSSL的BIO对象在某种程度上有栈的特性，因此我们可以把SSL对象
+封装在BIO(SSL_BIO对象)中，然后把那个BIO封装在一个缓冲的BIO对象中，如下所示：</p>
+<p><strong><a href="http://linux.chinaunix.net/bbs/thread-852198-1-1.html######">[Copy to clipboard]</a></strong>** **<strong><a href="http://linux.chinaunix.net/bbs/thread-852198-1-1.html######">[ - ]</a></strong></p>
+<p><strong>CODE:</strong></p>
+<p>io=BIO_new(BIO_f_buffer());</p>
+<p>ssl_bio=BIO_new(BIO_f_ssl());</p>
+<p>BIO_set_ssl(ssl_bio,ssl,BIO_CLOSE);</p>
+<p>BIO_push(io,ssl_bio);</p>
+<p>这种方法允许我们使用BIO_* 函数族来操作新类型的IO对象,从而实现对SSL连接的缓冲读和写。在此处，你也许会问，为什么这个用法更好？（或者这有什么好的）
+。主要的原因是，这种方法编程起来很舒服，它使得程序员能够去处理一种更自然的单元(行或者字符等)而不是SSL记录。</p>
+<p><strong>请求</strong><br />
+HTTP请求由请求信息行后面跟着一堆头信息行再加上一个可选体组成。头信息行是通过空行来结束的（例如，一对CRLF，有时候崩溃的客户端会发送一对LF），最舒服
+的读取请求信息行和头信息行的方式就是一次读取一行，直到读取到空行为止。我们可以使用列表6中的OpenSSL_BIO_gets()调用来实现这个操作。</p>
+<p>**列表****6 **<strong>读取请求</strong><br />
+OpenSSL_BIO_gets()调用表现的类似于标准输入输出调用fgets(),它使用任意大小的缓冲区和长度从SSL连接中读取一行数据到缓冲中去，读取的
+结果通常以空字符结束(但也包括结束符LF)。因此，我们每次简单的读取一行，直到读到某一行包括一个简单的LF或者CRLF。</p>
+<p>由于我们使用固定大小的缓冲，所以有可能，也许不太可能，我们会读取到很长的一行，在这种</p>
+<p>情况下，这一行将被分解成两行，在极端不可能的情况下，分隔正好在CRLF之前发生，这样的话，从前一行读取到的第二行就只包括一个CRLF了，这时候我们就会迷惑，
+认为头序列提前结束了。一个真正的Web服务器会检测这种情况的，但是在这里却不值得去做。注意，不管到达的行数是多少，都不会有缓冲区溢出的情况发生。所有可能发生
+的就是我们会错误的解析头信息。</p>
+<p>注意到我们并不需要用HTTP请求做任何事情，所以只是读取然后将它丢弃。真正的实现将会读取请求信息行和头信息行，计算是否有一个消息体存在然后读取这个消息体。</p>
+<p>下一步就是写HTTP响应并且关闭连接：</p>
+<p><strong><a href="http://linux.chinaunix.net/bbs/thread-852198-1-1.html######">[Copy to clipboard]</a></strong>** **<strong><a href="http://linux.chinaunix.net/bbs/thread-852198-1-1.html######">[ - ]</a></strong></p>
+<p><strong>CODE:</strong></p>
+<p>if((r=BIO_puts</p>
+<p>(io,&ldquo;HTTP/1.0 200
+OK\r\n&rdquo;))&lt;0)</p>
+<p>err_exit(&ldquo;Write
+error&rdquo;);</p>
+<p>if((r=BIO_puts</p>
+<p>(io,&ldquo;Server:
+EKRServer\r\n\r\n&rdquo;))&lt;0)</p>
+<p>err_exit(&ldquo;Write
+error&rdquo;);</p>
+<p>if((r=BIO_puts</p>
+<p>(io,&ldquo;Server test
+page\r\n&rdquo;))&lt;0)</p>
+<p>err_exit(&ldquo;Write
+error&rdquo;);</p>
+<p>if((r=BIO_flush(io))&lt;0)</p>
+<p>err_exit(&ldquo;Error
+flushing BIO&rdquo;);</p>
+<p>注意我们在程序中使用BIO_puts()而不是SSL_write()。这样我们就可以一次写一行响应消息，而把所有的行当作一条SSL记录发送出去，这种做法是很
+重要的，因为准备（计算完整性，校验，加密等）一个SSL传输记录的花销是非常大的。因此，使一条传输的记录尽可能的大是一个很好的主意。</p>
+<p>我们有必要留意一下所使用的缓冲写方法. 首先，在关闭之前你需要冲掉缓冲区，SSL对象并不知道你已经在它上面布置了一层BIO，所以，如果你破坏了SSL连接，将
+会使得剩余截断的数据留在缓冲区中。BIO_flush() 函数是用来处理这个的。同样，默认情况下,OpenSSL为BIO对象使用了1024Byte大小的缓冲
+区，由于SSL记录大小可以长达16K，所以使用1024Byte大的缓冲可能会引起过多的碎片(从而使效率下降)，你可以使用BIO_ctrl()
+函数来增加缓冲区的大小。</p>
+<p>一旦完成了响应的传送，我们需要发送close_notify消息，前面已经讲到了，是通过SSL_shutdown来实现的，不幸的是，当服务器首先关闭的时候，情
+况变得游戏蹊跷。我们对SSL_shutdown() 的第一次调用会发送close_notify消息，但是在另一端却不会取寻找它。所以它会很快的以0作为结果返
+回，表明关闭过程没有完成。然后,就需要应用程序自身再一次调用SSL_shutdown()函数了。</p>
+<p>这里也可以存在两种观点，我们能够肯定已经看到了自己关注的HTTP请求的整个部分，然后对其他都不感兴趣，因此，我们可以并不在乎客户端是否发送了close_no
+tify消息，相反，如果严格的遵守协议并且要求其它人也这么作的话，我们也就就需要收到一个close_notify消息。</p>
+<p>如果坚持第一种观点的话，一切将会变得很简单，我们简单的调用SSL_shutdown()
+函数发送我们的close_notify消息，然后不管客户端是否发送一个close_notify
+消息，就立刻退出。如果坚持第二种观点的话(本文的例子服务器就是这么做的)，事情就变得比较复杂了，因为客户端通常都不会表现的多么正常。</p>
+<p>我们面临的第一个问题就是客户端通常都不会发送close_notifys消息。事实上，有些客户端在它们收到HTTP响应时便会立即关闭连接(有些IE是这么做的)
+，当我们在发送close_notify时，另一端可能正在发送一个TCP RST字段，在这种情况下，程序将会捕获SIGPIPE信号，在本文,
+我们将会在函数initialize_ctx()中安装一个虚设的SIGPIPE信号处理器来避免这种情况的发生。</p>
+<p>我们面临的另外一个问题就是客户端可能不会立即发送一个close_notify消息来作为对服务器端close_notify消息的回应，一些版本的Netscap
+e 要求你首先发送一个TCP FIN标志。因此我们在第二次调用SSL_shutdown()之前调用了shutdown(s,1)函数，当我们使用1作为第一个参
+数时，shutdown()函数发送了</p>
+<p>一个FIN标志，但是却使得套接字处于打开并且读的状态。服务器端关闭的代码如列表7所示.</p>
+<p><strong>列表****7 <strong><strong>访问</strong></strong>SSL_shutdown()</strong><br />
+<strong>其它相关的东西</strong><br />
+在本文，我们只是提及了使用OpenSSL时的一些表面的观点，下面是更多的一些观点：</p>
+<p>一种更复杂的检测证书中服务器名字的方法就是使用X.509当中的subjectAltName扩展部分。为了做这个检测，我们需要从证书中提取出这个部分来，然后根
+据hostname检测这个部分，同样，能够在证书中根据wild-carded 名字来检测主机名也是非常有意思的事情。</p>
+<p>注意这些程序处理差错都是根据错误简单的退出程序，一个真正的应用将会识别出错误类型然后发信号告诉给用户或者一些审计日志，而不是直接退出。</p>
+<p>下篇文章中，我们将会讨论一些OpenSSL的高级特性，包括会话恢复，多路传输,非阻塞IO以及客户端认证等。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -41,6 +392,114 @@
       
       <guid>https://blog.alswl.com/2009/03/openssl-s-bio/</guid>
       <description>SSL类型的BIO &amp;mdash;根据openssl doccryptobio_f_ssl.pod翻译和自己的理解写成 （作者：DragonKing, Mail: wzhah@263.net ,发布于：http://openssl.126.com 之openssl专业论坛） 从名字就可以看出，这是一个非常重要的BI O类型，它封装了openssl里面的ssl规则和函数，相当于提供了一个使用SSL很好的有效工具，一个很好的助手。其定义（openss</description>
+      <content:encoded><![CDATA[<p>SSL类型的BIO</p>
+<p>&mdash;根据openssl
+doccryptobio_f_ssl.pod翻译和自己的理解写成</p>
+<p>（作者：DragonKing,
+Mail: <a href="mailto:wzhah@263.net">wzhah@263.net</a> ,发布于：http://openssl.126.com 之openssl专业论坛）</p>
+<p>从名字就可以看出，这是一个非常重要的BI
+O类型，它封装了openssl里面的ssl规则和函数，相当于提供了一个使用SSL很好的有效工具，一个很好的助手。其定义（opensslbio.h,opens
+slssl.h）如下：</p>
+<p>BIO_METHOD *BIO_f_ssl(void);</p>
+<p>#define BIO_set_ssl(b,ssl,c) BIO_ctrl(b,BIO_C_SET_SSL,c,(char *)ssl)</p>
+<p>#define BIO_get_ssl(b,sslp) BIO_ctrl(b,BIO_C_GET_SSL,0,(char *)sslp)</p>
+<p>#define BIO_set_ssl_mode(b,client) BIO_ctrl(b,BIO_C_SSL_MODE,client,NULL)</p>
+<p>#define BIO_set_ssl_renegotiate_bytes(b,num)
+BIO_ctrl(b,BIO_C_SET_SSL_RENEGOTIATE_BYTES,num,NULL);</p>
+<p>#define BIO_set_ssl_renegotiate_timeout(b,seconds)
+BIO_ctrl(b,BIO_C_SET_SSL_RENEGOTIATE_TIMEOUT,seconds,NULL);</p>
+<p>#define BIO_get_num_renegotiates(b)
+BIO_ctrl(b,BIO_C_SET_SSL_NUM_RENEGOTIATES,0,NULL);</p>
+<p>BIO *BIO_new_ssl(SSL_CTX *ctx,int client);</p>
+<p>BIO *BIO_new_ssl_connect(SSL_CTX *ctx);</p>
+<p>BIO *BIO_new_buffer_ssl_connect(SSL_CTX *ctx);</p>
+<p>int BIO_ssl_copy_session_id(BIO *to,BIO *from);</p>
+<p>void BIO_ssl_shutdown(BIO *bio);</p>
+<p>#define BIO_do_handshake(b) BIO_ctrl(b,BIO_C_DO_STATE_MACHINE,0,NULL)</p>
+<p>该类型BIO的实现文件在sslbio_ssl.c里面，大家可以参看这个文件得到详细的函数实现信息。</p>
+<p>【BIO_f_ssl】</p>
+<p>该函数返回一个SSL类型的BIO_METHOD结构，其定义如下：</p>
+<p>static BIO_METHOD
+methods_sslp=</p>
+<p>{</p>
+<p>BIO_TYPE_SSL,&ldquo;ssl&rdquo;,</p>
+<p>ssl_write,</p>
+<p>ssl_read,</p>
+<p>ssl_puts,</p>
+<p>NULL, /* ssl_gets, */</p>
+<p>ssl_ctrl,</p>
+<p>ssl_new,</p>
+<p>ssl_free,</p>
+<p>ssl_callback_ctrl,</p>
+<p>};</p>
+<p>可见，SSL类型BIO不支持BIO_gets的功能。</p>
+<p>BIO_read和BIO_write函数
+调用的时候，SSL类型的BIO会使用SSL协议进行底层的I/O操作。如果此时SSL连接并没有建立，那么就会在调用第一个IO函数的时候先进行连接的建立。</p>
+<p>如果使用BIO_push将一个BIO附加到一个SSL类型的BIO上，那么SSL类型的BIO读写数据的时候，它会被自动调用。</p>
+<p>BIO_reset调用的时候，会调用SS
+L_shutdown函数关闭目前所有处于连接状态的SSL，然后再对下一个BIO调用BIO_reset，这功能一般就是将底层的传输连接断开。调用完成之后，SS
+L类型的BIO就处于初始的接受或连接状态。</p>
+<p>如果设置了BIO关闭标志，那么SSL类型BIO释放的时候，内部的SSL结构也会被SSL_free函数释放。</p>
+<p>【BIO_set_ssl】</p>
+<p>该函数设置SSL类型BIO的内部ssl指针指向ssl，同时使用参数c设置了关闭标志。</p>
+<p>【BIO_get_ssl】</p>
+<p>该函数返回SSL类型BIO的内部的SSL结构指针，得到该指针后，可以使用标志的SSL函数对它进行操作。</p>
+<p>【BIO_set_ssl_mode】</p>
+<p>该函数设置SSL的工作模式，如果参数client是1，那么SSL工作模式为客户端模式，如果client为0，那么SSL工作模式为服务器模式。</p>
+<p>【BIO_set_ssl_renegotiate_bytes】</p>
+<p>该函数设置需要重新进行session协商
+的读写数据的长度为num。当设置完成后，在没读写的数据一共到达num字节后，SSL连接就会自动重新进行session协商，这可以加强SSL连接的安全性。参数
+num最少为512字节。</p>
+<p>【BIO_set_ssl_renegotiate_timeout】</p>
+<p>该函数跟上述函数一样都是为了加强SSL连接的安全性的。不同的是，该函数采用的参数是时间。该函数设置重新进行session协商的时间，其单位是秒。当SSL
+session连接建立的时间到达其设置的时间时，连接就会自动重新进行session协商。</p>
+<p>【BIO_get_num_renegotiates】</p>
+<p>该函数返回SSL连接在因为字节限制或时间限制导致session重新协商之前总共读写的数据长度。</p>
+<p>【BIO_new_ssl】</p>
+<p>该函数使用ctx参数所代表的SSL_CTX结构创建一个SSL类型的BIO，如果参数client为非零值，就使用客户端模式。</p>
+<p>【BIO_new_ssl_connect】</p>
+<p>该函数创建一个包含SSL类型BIO的新BIO链，并在后面附加了一个连接类型的BIO。</p>
+<p>方便而且有趣的是，因为在filter类型
+的BIO里，如果是该BIO不知道（没有实现）BIO_ctrl操作，它会自动把该操作传到下一个BIO进行调用，所以我们可以在调用本函数得到BIO上直接调用BI
+O_set_host函数来设置服务器名字和端口，而不需要先找到连接BIO。</p>
+<p>【BIO_new_buffer_ssl_connect】</p>
+<p>创建一个包含buffer型的BIO，一个SSL类型的BIO以及一个连接类型的BIO。</p>
+<p>【BIO_ssl_copy_session_id】</p>
+<p>该函数将BIO链from的SSL
+Session
+ID拷贝到BIO链to中。事实上，它是通过查找到两个BIO链中的SSL类型BIO，然后调用SSL_copy_session_id来完成操作的。</p>
+<p>【BIO_ssl_shutdown】</p>
+<p>该函数关闭一个BIO链中的SSL连接。事实上，该函数通过查找到该BIO链中的SSL类型BIO，然后调用SSL_shutdown函数关闭其内部的SSL指针。</p>
+<p>【BIO_do_handshake】</p>
+<p>该函数在相关的BIO上启动SSL握手过程
+并建立SSL连接。连接成功建立返回1，否则返回0或负值，如果连接BIO是非阻塞型的BIO，此时可以调用BIO_should_retry函数以决定释放需要重试
+。如果调用该函数的时候SSL连接已经建立了，那么该函数不会做任何事情。一般情况下，应用程序不需要直接调用本函数，除非你希望将握手过程跟其它IO操作分离开来。</p>
+<p>需要注意的是，如果底层是阻塞型（openssl帮助文档写的是非阻塞型,non blocking,但是根据上下文意思已经BIO的其它性质，我个人认为是阻塞型，
+blocking才是正确的）的BIO，在一些意外的情况SSL类型BIO下也会发出意外的重试请求，如在执行BIO_read操作的时候如果启动了session重
+新协商的过程就会发生这种情况。在0.9.6和以后的版本，可以通过SSL的标志SSL_AUTO_RETRY将该类行为禁止，这样设置之后，使用阻塞型传输的SSL
+类型BIO就永远不会发出重试的请求。</p>
+<p>【例子】</p>
+<p>1.一个SSL/TLS客户端的例子，完成从一个SSL/TLS服务器返回一个页面的功能。其中IO操作的方法跟连接类型BIO里面的例子是相同的。</p>
+<p>BIO *sbio, *out;</p>
+<p>int len;</p>
+<p>char tmpbuf[1024];</p>
+<p>SSL_CTX *ctx;</p>
+<p>SSL *ssl;</p>
+<p>ERR_load_crypto_strings();</p>
+<p>ERR_load_SSL_strings();</p>
+<p>OpenSSL_add_all_algorithms();</p>
+<p>//如果系统平台不支持自动进行随机数种子的设置，这里应该进行设置(seed PRNG)</p>
+<p>ctx = SSL_CTX_new(SSLv23_client_method());</p>
+<p>//通常应该在这里设置一些验证路径和模式等，因为这里没有设置，所以该例子可以跟使用任意CA签发证书的任意服务器建立连接</p>
+<p>sbio = BIO_new_ssl_connect(ctx);</p>
+<p>BIO_get_ssl(sbio, &amp;ssl);</p>
+<p>if(!ssl) {</p>
+<p>fprintf(stderr, &ldquo;Can&rsquo;t locate SSL pointern&rdquo;);</p>
+<p>}</p>
+<p>/* 不需要任何重试请求*/</p>
+<p>SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);</p>
+<p>//这里你可以添加对SSL的其它一些设置</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -50,6 +509,314 @@
       
       <guid>https://blog.alswl.com/2009/03/openssl-prepared-using-ssl-tls-instance/</guid>
       <description>◆ 用openssl编写ssl,tls程序 作者：yawl(yawl@nsfocus.com) 日期：2000-8-15 一:简介: ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全 机制可</description>
+      <content:encoded><![CDATA[<p>◆ 用openssl编写ssl,tls程序</p>
+<p>作者：yawl(<a href="mailto:yawl@nsfocus.com">yawl@nsfocus.com</a>)</p>
+<p>日期：2000-8-15</p>
+<p>一:简介:</p>
+<p>ssl(secure socket layer)是netscape公司提出的主要用于web的安全通信标准,分为2.0版和3.0版.tls(transport
+layer security)是ietf的tls工作组在ssl3.0基础之上提出的安全通信标准,目前版本是1.0,即rfc2246.ssl/tls提供的安全
+机制可以保证应用层数据在互联网络传输不被监听,伪造和窜改.</p>
+<p>openssl(<a href="https://www.openssl.org">www.openssl.org</a>)是sslv2,sslv3,tlsv1的一份完整实现,内部包含了大量加密算法程序.其命令行提供了丰富的加密,验
+证,证书生成等功能,甚至可以用其建立一个完整的ca.与其同时,它也提供了一套完整的库函数,可用开发用ssl/tls的通信程序. apache的https两种
+版本mod_ssl和apachessl均基于它实现的.openssl继承于ssleay,并做了一定的扩展,当前的版本是0.9.5a.</p>
+<p>openssl的缺点是文档太少,连一份完整的函数说明都没有,man page也至今没做完整:-(,如果想用它编程序,除了熟悉已有的文档(包括ssleay,m
+od_ssl,apachessl的文档)外,可以到它的maillist上找相关的帖子,许多问题可以在以前的文章中找到答案.</p>
+<p>编程:</p>
+<p>程序分为两部分,客户端和服务器端,我们的目的是利用ssl/tls的特性保证通信双方能够互相验证对方身份(真实性),并保证数据的完整性,私密性.</p>
+<p>1.客户端程序的框架为:</p>
+<p>/<em>生成一个ssl结构</em>/</p>
+<p>meth = sslv23_client_method();</p>
+<p>ctx = ssl_ctx_new (meth);</p>
+<p>ssl = ssl_new(ctx);</p>
+<p>/<em>下面是正常的socket过程</em>/</p>
+<p>fd = socket();</p>
+<p>connect();</p>
+<p>/<em>把建立好的socket和ssl结构联系起来</em>/</p>
+<p>ssl_set_fd(ssl,fd);</p>
+<p>/<em>ssl的握手过程</em>/</p>
+<p>ssl_connect(ssl);</p>
+<p>/<em>接下来用ssl_write(), ssl_read()代替原有的write(),read()即可</em>/</p>
+<p>ssl_write(ssl,&ldquo;hello world&rdquo;,strlen(&ldquo;hello world!&rdquo;));</p>
+<p>2.服务端程序的框架为:</p>
+<p>/<em>生成一个ssl结构</em>/</p>
+<p>meth = sslv23_server_method();</p>
+<p>ctx = ssl_ctx_new (meth);</p>
+<p>ssl = ssl_new(ctx);</p>
+<p>/<em>下面是正常的socket过程</em>/</p>
+<p>fd = socket();</p>
+<p>bind();</p>
+<p>listen();</p>
+<p>accept();</p>
+<p>/<em>把建立好的socket和ssl结构联系起来</em>/</p>
+<p>ssl_set_fd(ssl,fd);</p>
+<p>/<em>ssl的握手过程</em>/</p>
+<p>ssl_connect(ssl);</p>
+<p>/<em>接下来用ssl_write(), ssl_read()代替原有的write(),read()即可</em>/</p>
+<p>ssl_read (ssl, buf, sizeof(buf));</p>
+<p>根据rfc2246(tls1.0)整个tls(ssl)的流程如下:</p>
+<p>client server</p>
+<p>clienthello &mdash;&mdash;&ndash;&gt;</p>
+<p>serverhello</p>
+<p>certificate*</p>
+<p>serverkeyexchange*</p>
+<p>certificaterequest*</p>
+<p>&lt;&mdash;&mdash;&ndash; serverhellodone</p>
+<p>certificate*</p>
+<p>clientkeyexchange</p>
+<p>certificateverify*</p>
+<p>[changecipherspec]</p>
+<p>finished &mdash;&mdash;&ndash;&gt;</p>
+<p>[changecipherspec]</p>
+<p>&lt;&mdash;&mdash;&ndash; finished</p>
+<p>application data &lt;&mdash;&mdash;-&gt; application data</p>
+<p>对程序来说,openssl将整个握手过程用一对函数体现,即客户端的ssl_connect和服务端的ssl_accept.而后的应用层数据交换则用ssl_re
+ad和ssl_write来完成.</p>
+<p>二:证书文件生成</p>
+<p>除将程序编译成功外,还需生成必要的证书和私钥文件使双方能够成功验证对方,步骤如下:</p>
+<p>1.首先要生成服务器端的私钥(key文件):</p>
+<p>openssl genrsa -des3 -out server.key 1024</p>
+<p>运行时会提示输入密码,此密码用于加密key文件(参数des3便是指加密算法,当然也可以选用其他你认为安全的算法.),以后每当需读取此文件(通过openssl
+提供的命令或api)都需输入口令.如果觉得不方便,也可以去除这个口令,但一定要采取其他的保护措施!</p>
+<p>去除key文件口令的命令:</p>
+<p>openssl rsa -in server.key -out server.key</p>
+<p>2.openssl req -new -key server.key -out server.csr</p>
+<p>生成certificate signing
+request,生成的csr文件交给ca签名后形成服务端自己的证书.屏幕上将有提示,依照其指示一步一步输入要求的个人信息即可.</p>
+<p>3.对客户端也作同样的命令生成key及csr文件:</p>
+<p>openssl genrsa -des3 -out client.key 1024</p>
+<p>openssl req -new -key client.key -out client.csr</p>
+<p>4.csr文件必须有ca的签名才可形成证书.可将此文件发送到verisign等地方由它验证,要交一大笔钱,何不自己做ca呢.</p>
+<p>首先生成ca的key文件:</p>
+<p>openssl -des3 -out ca.key 1024</p>
+<p>在生成ca自签名的证书:</p>
+<p>openssl req -new -x509 -key ca.key -out ca.crt</p>
+<p>如果想让此证书有个期限,如一年,则加上&quot;-days 365&quot;.</p>
+<p>(&ldquo;如果非要为这个证书加上一个期限,我情愿是..一万年&rdquo;)</p>
+<p>5.用生成的ca的证书为刚才生成的server.csr,client.csr文件签名:</p>
+<p>可以用openssl中ca系列命令,但不是很好用(也不是多难,唉,一言难尽),一篇文章中推荐用mod_ssl中的sign.sh脚本,试了一下,确实方便了不少
+,如果ca.csr存在的话,只需:</p>
+<p>./sigh.sh server.csr</p>
+<p>./sign.sh client.csr</p>
+<p>相应的证书便生成了(后缀.crt).</p>
+<p>现在我们所需的全部文件便生成了.</p>
+<p>其实openssl中还附带了一个叫ca.pl的文件(在安装目录中的misc子目录下),可用其生成以上的文件,使用也比较方便,但此处就不作介绍了.</p>
+<p>三:需要了解的一些函数:</p>
+<p>1.int ssl_ctx_set_cipher_list(ssl_ctx *,const char *str);</p>
+<p>根据ssl/tls规范,在clienthello中,客户端会提交一份自己能够支持的加密方法的列表,由服务端选择一种方法后在serverhello中通知服务端
+,从而完成加密算法的协商.</p>
+<p>可用的算法为:</p>
+<p>edh-rsa-des-cbc3-sha</p>
+<p>edh-dss-des-cbc3-sha</p>
+<p>des-cbc3-sha</p>
+<p>dhe-dss-rc4-sha</p>
+<p>idea-cbc-sha</p>
+<p>rc4-sha</p>
+<p>rc4-md5</p>
+<p>exp1024-dhe-dss-rc4-sha</p>
+<p>exp1024-rc4-sha</p>
+<p>exp1024-dhe-dss-des-cbc-sha</p>
+<p>exp1024-des-cbc-sha</p>
+<p>exp1024-rc2-cbc-md5</p>
+<p>exp1024-rc4-md5</p>
+<p>edh-rsa-des-cbc-sha</p>
+<p>edh-dss-des-cbc-sha</p>
+<p>des-cbc-sha</p>
+<p>exp-edh-rsa-des-cbc-sha</p>
+<p>exp-edh-dss-des-cbc-sha</p>
+<p>exp-des-cbc-sha</p>
+<p>exp-rc2-cbc-md5</p>
+<p>exp-rc4-md5</p>
+<p>这些算法按一定优先级排列,如果不作任何指定,将选用des-
+cbc3-sha.用ssl_ctx_set_cipher_list可以指定自己希望用的算法(实际上只是提高其优先级,是否能使用还要看对方是否支持).</p>
+<p>我们在程序中选用了rc4做加密,md5做消息摘要(先进行md5运算,后进行rc4加密).即</p>
+<p>ssl_ctx_set_cipher_list(ctx,&ldquo;rc4-md5&rdquo;);</p>
+<p>在消息传输过程中采用对称加密(比公钥加密在速度上有极大的提高),其所用秘钥(shared
+secret)在握手过程中中协商(每次对话过程均不同,在一次对话中都有可能有几次改变),并通过公钥加密的手段由客户端提交服务端.</p>
+<p>2.void ssl_ctx_set_verify(ssl_ctx *ctx,int mode,int (*callback)(int,
+x509_store_ctx *));</p>
+<p>缺省mode是ssl_verify_none,如果想要验证对方的话,便要将此项变成ssl_verify_peer.ssl/tls中缺省只验证server,如
+果没有设置ssl_verify_peer的话,客户端连证书都不会发过来.</p>
+<p>3.int ssl_ctx_load_verify_locations(ssl_ctx *ctx, const char *cafile,const
+char *capath);</p>
+<p>要验证对方的话,当然装要有ca的证书了,此函数用来便是加载ca的证书文件的.</p>
+<p>4.int ssl_ctx_use_certificate_file(ssl_ctx *ctx, const char *file, int type);</p>
+<p>加载自己的证书文件.</p>
+<p>5.int ssl_ctx_use_privatekey_file(ssl_ctx *ctx, const char *file, int type);</p>
+<p>加载自己的私钥,以用于签名.</p>
+<p>6.int ssl_ctx_check_private_key(ssl_ctx *ctx);</p>
+<p>调用了以上两个函数后,自己检验一下证书与私钥是否配对.</p>
+<p>7.void rand_seed(const void *buf,int num);</p>
+<p>在win32的环境中client程序运行时出错(ssl_connect返回-1)的一个主要机制便是与unix平台下的随机数生成机制不同(握手的时候用的到).
+具体描述可见mod_ssl的faq.解决办法就是调用此函数,其中buf应该为一随机的字符串,作为&quot;seed&quot;.</p>
+<p>还可以采用一下两个函数:</p>
+<p>void rand_screen(void);</p>
+<p>int rand_event(uint, wparam, lparam);</p>
+<p>其中rand_screen()以屏幕内容作为&quot;seed&quot;产生随机数,rand_event可以捕获windows中的事件(event),以此为基础产生随机数.
+如果一直有用户干预的话,用这种办法产生的随机数能够&quot;更加随机&quot;,但如果机器一直没人理(如总停在登录画面),则每次都将产生同样的数字.</p>
+<p>这几个函数都只在win32环境下编译时有用,各种unix下就不必调了.</p>
+<p>大量其他的相关函数原型,见cryptorandrand.h.</p>
+<p>8.openssl_add_ssl_algorithms()或ssleay_add_ssl_algorithms()</p>
+<p>其实都是调用int ssl_library_init(void)</p>
+<p>进行一些必要的初始化工作,用openssl编写ssl/tls程序的话第一句便应是它.</p>
+<p>9.void ssl_load_error_strings(void );</p>
+<p>如果想打印出一些方便阅读的调试信息的话,便要在一开始调用此函数.</p>
+<p>10.void err_print_errors_fp(file *fp);</p>
+<p>如果调用了ssl_load_error_strings()后,便可以随时用err_print_errors_fp()来打印错误信息了.</p>
+<p>11.x509 *ssl_get_peer_certificate(ssl *s);</p>
+<p>握手完成后,便可以用此函数从ssl结构中提取出对方的证书(此时证书得到且已经验证过了)整理成x509结构.</p>
+<p>12.x509_name *x509_get_subject_name(x509 *a);</p>
+<p>得到证书所有者的名字,参数可用通过ssl_get_peer_certificate()得到的x509对象.</p>
+<p>13.x509_name *x509_get_issuer_name(x509 *a)</p>
+<p>得到证书签署者(往往是ca)的名字,参数可用通过ssl_get_peer_certificate()得到的x509对象.</p>
+<p>14.char *x509_name_oneline(x509_name *a,char *buf,int size);</p>
+<p>将以上两个函数得到的对象变成字符型,以便打印出来.</p>
+<p>15.ssl_method的构造函数,包括</p>
+<p>ssl_method *tls</p>
+<p>发表者：colorrain</p>
+<p>/*****************************************************************************</p>
+<hr />
+<ul>
+<li>eof - cli.cpp</li>
+</ul>
+<p>***************************************************************************************/</p>
+<p>/*****************************************************************************</p>
+<hr />
+<p>*ssl/tls服务端程序win32版(以demos/server.cpp为基础)</p>
+<p>*需要用到动态连接库libeay32.dll,ssleay.dll,</p>
+<p>*同时在setting中加入ws2_32.lib libeay32.lib ssleay32.lib,</p>
+<p>*以上库文件在编译openssl后可在out32dll目录下找到,</p>
+<p>*所需证书文件请参照文章自行生成.</p>
+<p>***************************************************************************************/</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>#include &lt;stdlib.h&gt;</p>
+<p>#include &lt;memory.h&gt;</p>
+<p>#include &lt;errno.h&gt;</p>
+<p>#include &lt;sys/types.h&gt;</p>
+<p>#include &lt;winsock2.h&gt;</p>
+<p>#include &ldquo;openssl/rsa.h&rdquo;</p>
+<p>#include &ldquo;openssl/crypto.h&rdquo;</p>
+<p>#include &ldquo;openssl/x509.h&rdquo;</p>
+<p>#include &ldquo;openssl/pem.h&rdquo;</p>
+<p>#include &ldquo;openssl/ssl.h&rdquo;</p>
+<p>#include &ldquo;openssl/err.h&rdquo;</p>
+<p>/<em>所有需要的参数信息都在此处以#define的形式提供</em>/</p>
+<p>#define certf &ldquo;server.crt&rdquo; /<em>服务端的证书(需经ca签名)</em>/</p>
+<p>#define keyf &ldquo;server.key&rdquo; /<em>服务端的私钥(建议加密存储)</em>/</p>
+<p>#define cacert &ldquo;ca.crt&rdquo; /<em>ca 的证书</em>/</p>
+<p>#define port 1111 /<em>准备绑定的端口</em>/</p>
+<p>#define chk_null(x) if ((x)==null) exit (1)</p>
+<p>#define chk_err(err,s) if ((err)==-1) { perror(s); exit(1); }</p>
+<p>#define chk_ssl(err) if ((err)==-1) { err_print_errors_fp(stderr); exit(2); }</p>
+<p>int main ()</p>
+<p>{</p>
+<p>int err;</p>
+<p>int listen_sd;</p>
+<p>int sd;</p>
+<p>struct sockaddr_in sa_serv;</p>
+<p>struct sockaddr_in sa_cli;</p>
+<p>int client_len;</p>
+<p>ssl_ctx* ctx;</p>
+<p>ssl* ssl;</p>
+<p>x509* client_cert;</p>
+<p>char* str;</p>
+<p>char buf [4096];</p>
+<p>ssl_method *meth;</p>
+<p>wsadata wsadata;</p>
+<p>if(wsastartup(makeword(2,2),&amp;wsadata) != 0){</p>
+<p>printf(&ldquo;wsastartup()fail:%dn&rdquo;,getlasterror());</p>
+<p>return -1;</p>
+<p>}</p>
+<p>ssl_load_error_strings(); /<em>为打印调试信息作准备</em>/</p>
+<p>openssl_add_ssl_algorithms(); /<em>初始化</em>/</p>
+<p>meth = tlsv1_server_method(); /<em>采用什么协议(sslv2/sslv3/tlsv1)在此指定</em>/</p>
+<p>ctx = ssl_ctx_new (meth);</p>
+<p>chk_null(ctx);</p>
+<p>ssl_ctx_set_verify(ctx,ssl_verify_peer,null); /<em>验证与否</em>/</p>
+<p>ssl_ctx_load_verify_locations(ctx,cacert,null); /<em>若验证,则放置ca证书</em>/</p>
+<p>if (ssl_ctx_use_certificate_file(ctx, certf, ssl_filetype_pem) &lt;= 0) {</p>
+<p>err_print_errors_fp(stderr);</p>
+<p>exit(3);</p>
+<p>}</p>
+<p>if (ssl_ctx_use_privatekey_file(ctx, keyf, ssl_filetype_pem) &lt;= 0) {</p>
+<p>err_print_errors_fp(stderr);</p>
+<p>exit(4);</p>
+<p>}</p>
+<p>if (!ssl_ctx_check_private_key(ctx)) {</p>
+<p>printf(&ldquo;private key does not match the certificate public keyn&rdquo;);</p>
+<p>exit(5);</p>
+<p>}</p>
+<p>ssl_ctx_set_cipher_list(ctx,&ldquo;rc4-md5&rdquo;);</p>
+<p>/<em>开始正常的tcp socket过程&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;</em>/</p>
+<p>printf(&ldquo;begin tcp socket&hellip;n&rdquo;);</p>
+<p>listen_sd = socket (af_inet, sock_stream, 0);</p>
+<p>chk_err(listen_sd, &ldquo;socket&rdquo;);</p>
+<p>memset (&amp;sa_serv, , sizeof(sa_serv));</p>
+<p>sa_serv.sin_family = af_inet;</p>
+<p>sa_serv.sin_addr.s_addr = inaddr_any;</p>
+<p>sa_serv.sin_port = htons (port);</p>
+<p>err = bind(listen_sd, (struct sockaddr*) &amp;sa_serv,</p>
+<p>sizeof (sa_serv));</p>
+<p>chk_err(err, &ldquo;bind&rdquo;);</p>
+<p>/<em>接受tcp链接</em>/</p>
+<p>err = listen (listen_sd, 5);</p>
+<p>chk_err(err, &ldquo;listen&rdquo;);</p>
+<p>client_len = sizeof(sa_cli);</p>
+<p>sd = accept (listen_sd, (struct sockaddr*) &amp;sa_cli, &amp;client_len);</p>
+<p>chk_err(sd, &ldquo;accept&rdquo;);</p>
+<p>closesocket (listen_sd);</p>
+<p>printf (&ldquo;connection from %lx, port %xn&rdquo;,</p>
+<p>sa_cli.sin_addr.s_addr, sa_cli.sin_port);</p>
+<p>/*tcp连接已建立,进行服务端的ssl过程. */</p>
+<p>printf(&ldquo;begin server side ssln&rdquo;);</p>
+<p>ssl = ssl_new (ctx);</p>
+<p>chk_null(ssl);</p>
+<p>ssl_set_fd (ssl, sd);</p>
+<p>err = ssl_accept (ssl);</p>
+<p>printf(&ldquo;ssl_accept finishedn&rdquo;);</p>
+<p>chk_ssl(err);</p>
+<p>/<em>打印所有加密算法的信息(可选)</em>/</p>
+<p>printf (&ldquo;ssl connection using %sn&rdquo;, ssl_get_cipher (ssl));</p>
+<p>/*得到服务端的证书并打印些信息(可选) */</p>
+<p>client_cert = ssl_get_peer_certificate (ssl);</p>
+<p>if (client_cert != null) {</p>
+<p>printf (&ldquo;client certificate:n&rdquo;);</p>
+<p>str = x509_name_oneline (x509_get_subject_name (client_cert), 0, 0);</p>
+<p>chk_null(str);</p>
+<p>printf (&ldquo;t subject: %sn&rdquo;, str);</p>
+<p>free (str);</p>
+<p>str = x509_name_oneline (x509_get_issuer_name (client_cert), 0, 0);</p>
+<p>chk_null(str);</p>
+<p>printf (&ldquo;t issuer: %sn&rdquo;, str);</p>
+<p>free (str);</p>
+<p>x509_free (client_cert);/*如不再需要,需将证书释放 */</p>
+<p>}</p>
+<p>else</p>
+<p>printf (&ldquo;client does not have certificate.n&rdquo;);</p>
+<p>/* 数据交换开始,用ssl_write,ssl_read代替write,read */</p>
+<p>err = ssl_read (ssl, buf, sizeof(buf) - 1);</p>
+<p>chk_ssl(err);</p>
+<p>buf[err] = ;</p>
+<p>printf (&ldquo;got %d chars:%sn&rdquo;, err, buf);</p>
+<p>err = ssl_write (ssl, &ldquo;i hear you.&rdquo;, strlen(&ldquo;i hear you.&rdquo;));</p>
+<p>chk_ssl(err);</p>
+<p>/* 收尾工作*/</p>
+<p>shutdown (sd,2);</p>
+<p>ssl_free (ssl);</p>
+<p>ssl_ctx_free (ctx);</p>
+<p>return 0;</p>
+<p>}</p>
+<p>/*****************************************************************</p>
+<ul>
+<li>eof - serv.cpp</li>
+</ul>
+<p>*****************************************************************/</p>
+<p>五.参考文献</p>
+<p>1.ssl规范(draft302)</p>
+<p>2.tls标准(rfc2246)</p>
+<p>3.openssl源程序及文档</p>
+<p>4.ssleay programmer reference</p>
+<p>5.introducing ssl and certificates using ssleay</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -59,6 +826,76 @@
       
       <guid>https://blog.alswl.com/2009/03/programming-with-openssl-for-ssl/</guid>
       <description>主要介绍openssl进行SSL通信的一些函数以及过程，主要是初始化过程，至于数据的接收以及后续处理可以具体问题具体分析。 load所有的SSL算法 OpenSSL_add_ssl_algorithms(); 建立SSL所用的method SSL_METHOD *meth=SSLv23_method(); 初始化上下文情景 SSL_CTX *ctx=SSL_CTX_new(meth); ret-&amp;gt;quiet_shutdown=1;默认的是ret-&amp;gt;quiet_shutdown=0;他相当于SSL_set_shutdown函数将参数设置为SS L_SENT_SHUTDOWN|SSL_RECEIVED_SHUTDOWN 当设置为1时，假如关闭后，不通</description>
+      <content:encoded><![CDATA[<p>主要介绍openssl进行SSL通信的一些函数以及过程，主要是初始化过程，至于数据的接收以及后续处理可以具体问题具体分析。</p>
+<p>load所有的SSL算法</p>
+<p>OpenSSL_add_ssl_algorithms();</p>
+<p>建立SSL所用的method</p>
+<p>SSL_METHOD *meth=SSLv23_method();</p>
+<p>初始化上下文情景</p>
+<p>SSL_CTX *ctx=SSL_CTX_new(meth);</p>
+<p>ret-&gt;quiet_shutdown=1;默认的是ret-&gt;quiet_shutdown=0;他相当于SSL_set_shutdown函数将参数设置为SS
+L_SENT_SHUTDOWN|SSL_RECEIVED_SHUTDOWN</p>
+<p>当设置为1时，假如关闭后，不通知对方，这样不适合TLS标准</p>
+<p>SSL_CTX_set_quiet_shutdown(ctx,1);</p>
+<p>ctx-&gt;options|=SSL_OP_ALL，SSL/TLS有几个公认的bug,这样设置会使出错的可能更小</p>
+<p>SSL_CTX_set_options(ctx,SSL_OP_ALL);</p>
+<p>设置cache的大小，默认的为1024*20=20000，这个也就是可以存多少个session_id，一般都不需要更改的。假如为0的话将是无限</p>
+<p>SSL_CTX_sess_set_cache_size(ctx,128);</p>
+<p>SSL_CTX_load_verify_locations用于加载受信任的CA证书，CAfile如果不为NULL，则他指向的文件包含PEM编码格式的一个或多
+个证书，可以用e.g.来简要介绍证书内容</p>
+<p>CApath如果不为NULL，则它指向一个包含PEM格式的CA证书的目录，目录中每个文件包含一份CA证书，文件名是证书中CA名的HASH值</p>
+<p>可以用c-rehash来建立该目录，如cd /some/where/certs（包含了很多可信任的CA证书） c_rehash .。返回一成功，0
+失败。SSL_CTX_set_default_verify_paths找寻默认的验证路径，在这里肯定找不到的。</p>
+<p>这里主要set cert_store</p>
+<p>char *CAfile=NULL,*CApath=NULL;</p>
+<p>SSL_CTX_load_verify_locations(ctx,CAfile,CApath);</p>
+<p>当需要客户端验证的时候，服务器把CAfile里面的可信任CA证书发往客户端。</p>
+<p>if(CAfile !=NULL
+)SSL_CTX_set_client_CA_list(ctx,SSL_load_client_CA_file(CAfile));</p>
+<p>设置最大的验证用户证书的上级数。</p>
+<p>SSL_CTX_set_verify_depth(ctx,10);</p>
+<p>当使用RSA算法鉴别的时候，会有一个临时的DH密钥磋商发生。这样会话数据将用这个临时的密钥加密，而证书中的密钥中做为签名。</p>
+<p>所以这样增强了安全性，临时密钥是在会话结束消失的，所以就是获取了全部信息也无法把通信内容给解密出来。</p>
+<p>static unsigned char dh512_p[]={</p>
+<p>0xDA,0x58,0x3C,0x16,0xD9,0x85,0x22,0x89,0xD0,0xE4,0xAF,0x75,</p>
+<p>0x6F,0x4C,0xCA,0x92,0xDD,0x4B,0xE5,0x33,0xB8,0x04,0xFB,0x0F,</p>
+<p>0xED,0x94,0xEF,0x9C,0x8A,0x44,0x03,0xED,0x57,0x46,0x50,0xD3,</p>
+<p>0x69,0x99,0xDB,0x29,0xD7,0x76,0x27,0x6B,0xA2,0xD3,0xD4,0x12,</p>
+<p>0xE2,0x18,0xF4,0xDD,0x1E,0x08,0x4C,0xF6,0xD8,0x00,0x3E,0x7C,</p>
+<p>0x47,0x74,0xE8,0x33,</p>
+<p>};</p>
+<p>static unsigned char dh512_g[]={0x02,};</p>
+<p>DH *dh=DH_new();</p>
+<p>dh-&gt;p=BN_bin2bn(dh512_p,sizeof(dh512_p),NULL);</p>
+<p>dh-&gt;g=BN_bin2bn(dh512_g,sizeof(dh512_g),NULL);</p>
+<p>SSL_CTX_set_tmp_dh(ctx,dh);</p>
+<p>下面加载服务器的证书和私钥，私钥可以和证书在一个文件之中。判断私钥和证书是否匹配。</p>
+<p>char *s_cert_file=&ldquo;server.pem&rdquo;;</p>
+<p>char *s_key_file=NULL;</p>
+<p>SSL_CTX_use_certificate_file(ctx,s_cert_file,SSL_FILETYPE_PEM);</p>
+<p>获取私钥之前先把私钥的密码给写上</p>
+<p>char *pKeyPasswd=&ldquo;serve&rdquo;;</p>
+<p>SSL_CTX_set_default_passwd_cb_userdata(ctx, pKeyPasswd);</p>
+<p>SSL_CTX_use_PrivateKey_file(ctx,s_cert_file,SSL_FILETYPE_PEM);</p>
+<p>SSL_CTX_check_private_key(ctx);</p>
+<p>设置一个临时的RSA，在出口算法中，有规定需要这么做的。</p>
+<p>RSA *rsa=RSA_generate_key(512,RSA_F4,NULL,NULL);</p>
+<p>SSL_CTX_set_tmp_rsa(ctx,rsa);</p>
+<p>用于设置验证方式。s_server_verify是以下值的逻辑或</p>
+<p>SSL_VERIFY_NONE表示不验证，SSL_VERIFY_PEER用于客户端时要求服务器必须提供证书，用于服务器时服务器会发出证书请求消息要求客户端提
+供证书，但是客户端也可以不提供</p>
+<p>SSL_VERIGY_FAIL_IF_NO_PEER_CERT只适用于服务器且必须提供证书。他必须与SSL_VERIFY_PEER一起使用</p>
+<p>当SSL_VERIFY_PEER被设置时verify_callback可以控制验证的行为。任何一个验证失败信息都会终止TLS连接</p>
+<p>static int s_server_verify=SSL_VERIFY_NONE;</p>
+<p>SSL_CTX_set_verify(ctx,SSL_VERIFY_PEER,NULL/<em>verify_callback</em>/);</p>
+<p>为了从自己本身的程序中产生一个session_id，所以要给本程序设定一个session_id_context，否则程序从外部获取session_id_co
+ntext来得到session_id，那很容易产生错误</p>
+<p>长度不能大于SSL_MAX_SSL_SESSION_ID_LENGTH</p>
+<p>const unsigned char s_server_session_id_context[100]=&ldquo;1111asdfd&rdquo;;</p>
+<p>SSL_CTX_set_session_id_context(ctx,s_server_session_id_context,sizeof
+s_server_session_id_context);</p>
+<p>return ctx;</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -68,6 +905,326 @@
       
       <guid>https://blog.alswl.com/2009/03/safe-use-of-openssl-api-programming/</guid>
       <description>使用 OpenSSL API 进行安全编程 创建基本的安全连接和非安全连接 级别： 初级 Kenneth Ballard (kenneth.ballard@ptk.org), 自由程序员 2004 年 8 月 09 日 学习如何使用 OpenSSL &amp;mdash;- 用于安全通信的最著名的开放库 &amp;mdash;- 的 API 有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的 BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。 OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL 使用的教</description>
+      <content:encoded><![CDATA[<p>使用 OpenSSL API 进行安全编程</p>
+<p>创建基本的安全连接和非安全连接</p>
+<p>级别： 初级</p>
+<p>Kenneth Ballard (<a href="mailto:kenneth.ballard@ptk.org">kenneth.ballard@ptk.org</a>),
+自由程序员</p>
+<p>2004 年 8 月 09 日</p>
+<p>学习如何使用 OpenSSL &mdash;- 用于安全通信的最著名的开放库 &mdash;- 的 API
+有些强人所难，因为其文档并不完全。您可以通过本文中的提示补充这方面的知识，并驾驭该 API。在建立基本的连接之后，就可以查看如何使用 OpenSSL 的
+BIO 库来建立安全连接和非安全连接。与此同时，您还会学到一些关于错误检测的知识。</p>
+<p>OpenSSL API 的文档有些含糊不清。因为还没有多少关于 OpenSSL
+使用的教程，所以对初学者来说，在应用程序中使用它可能会有一些困难。那么怎样才能使用 OpenSSL 实现一个基本的安全连接呢？本教程将帮助您解决这个问题。</p>
+<p>学习如何实现 OpenSSL 的困难部分在于其文档的不完全。不完全的 API 文档通常会妨碍开发人员使用该 API，而这通常意味着它注定要失败。但
+OpenSSL 仍然很活跃，而且正逐渐变得强大。这是为什么？</p>
+<p>OpenSSL 是用于安全通信的最著名的开放库。在 google 中搜索&quot;SSL library&quot;得到的返回结果中，列表最上方就是 OpenSSL。它诞生于
+1998 年，源自 Eric Young 和 Tim Hudson 开发的 SSLeay 库。其他 SSL 工具包包括遵循 GNU General
+Public License 发行的 GNU TLS，以及 Mozilla Network Security Services（NSS）（请参阅本文后面的
+参考资料 ，以获得其他信息）。</p>
+<p>那么，是什么使得 OpenSSL 比 GNU TLS、Mozilla NSS 或其他所有的库都优越呢？许可是一方面因素（请参阅 参考资料）。此外，GNS
+TLS（迄今为止）只支持 TLS v1.0 和 SSL v3.0 协议，仅此而已。</p>
+<p>Mozilla NSS 的发行既遵循 Mozilla Public License 又遵循 GNU GPL，它允许开发人员进行选择。不过，Mozilla
+NSS 比 OpenSSL 大，并且需要其他外部库来对库进行编译，而 OpenSSL 是完全自包含的。与 OpenSSL 相同，大部分 NSS API
+也没有文档资料。Mozilla NSS 获得了 PKCS #11 支持，该支持可以用于诸如智能卡这样的加密标志。OpenSSL 就不具备这一支持。</p>
+<p>先决条件</p>
+<p>要充分理解并利用本文，您应该：</p>
+<p>精通 C 编程。</p>
+<p>熟悉 Internet 通信和支持 Internet 的应用程序的编写。</p>
+<p>并不绝对要求您熟悉 SSL ，因为稍后将给出对 SLL 的简短说明；不过，如果您希望得到详细论述 SSL 的文章的链接，请参阅
+参考资料部分。拥有密码学方面的知识固然好，但这并不是必需的。</p>
+<p>回页首</p>
+<p>什么是 SSL？</p>
+<p>SSL 是一个缩写，代表的是 Secure Sockets Layer。它是支持在 Internet 上进行安全通信的标准，并且将数据密码术集成到了协议之中
+。数据在离开您的计算机之前就已经被加密，然后只有到达它预定的目标后才被解密。证书和密码学算法支持了这一切的运转，使用
+OpenSSL，您将有机会切身体会它们。</p>
+<p>理论上，如果加密的数据在到达目标之前被截取或窃听，那些数据是不可能被破解的。不过，由于计算机的变化一年比一年快，而且密码翻译方法有了新的发展，因此，SSL
+中使用的加密协议被破解的可能性也在增大。</p>
+<p>可以将 SSL 和安全连接用于 Internet 上任何类型的协议，不管是 HTTP、POP3，还是 FTP。还可以用 SSL 来保护 Telnet
+会话。虽然可以用 SSL 保护任何连接，但是不必对每一类连接都使用 SSL。如果连接传输敏感信息，则应使用 SSL。</p>
+<p>回页首</p>
+<p>什么是 OpenSSL？</p>
+<p>OpenSSL 不仅仅是 SSL。它可以实现消息摘要、文件的加密和解密、数字证书、数字签名和随机数字。关于 OpenSSL
+库的内容非常多，远不是一篇文章可以容纳的。</p>
+<p>OpenSSL 不只是 API，它还是一个命令行工具。命令行工具可以完成与 API 同样的工作，而且更进一步，可以测试 SSL
+服务器和客户机。它还让开发人员对 OpenSSL 的能力有一个认识。要获得关于如何使用 OpenSSL 命令行工具的资料，请参阅 参考资料部分。</p>
+<p>回页首</p>
+<p>您需要什么</p>
+<p>首先需要的是最新版本的 OpenSSL。查阅参考资料部分，以确定从哪里可以获得最新的可以自己编译的源代码，或者最新版本的二进制文件（如果您不希望花费时间来编
+译的话）。不过，为了安全起见，我建议您下载最新的源代码并自己编译它。二进制版本通常是由第三方而不是由 OpenSSL 的开发人员来编译和发行的。</p>
+<p>一些 Linux 的发行版本附带了 OpenSSL 的二进制版本，对于学习如何使用 OpenSSL
+库来说，这足够了；不过，如果您打算去做一些实际的事情，那么一定要得到最新的版本，并保持该版本一直是最新的。</p>
+<p>对于以 RPM 形式安装的 Linux 发行版本（Red Hat、Mandrake 等），建议您通过从发行版本制造商那里获得 RPM 程序包来更新您的
+OpenSSL 发行版本。出于安全方面的原因，建议您使用最新版本的发行版本。如果您的发行版本不能使用最新版本的
+OpenSSL，那么建议您只覆盖库文件，不要覆盖可执行文件。OpenSSL 附带的 FAQ 文档中包含了有关这方面的细节。</p>
+<p>还要注意的是，OpenSSL 并没有在所有的平台上都获得官方支持。虽然制造商已经尽力使其能够跨平台兼容，但仍然存在 OpenSSL 不能用于您的计算机
+和/或 操作系统的可能。请参阅 OpenSSL 的 Web 站点（ 参考资料 中的链接），以获得关于哪些平台可以得到支持的信息。</p>
+<p>如果想使用 OpenSSL 来生成证书请求和数字证书，那么必须创建一个配置文件。在 OpenSSL 程序包的 apps 文件夹中，有一个名为
+openssl.cnf 的可用模板文件。我不会对该文件进行讨论，因为这不在本文要求范围之内。不过，该模板文件有一些非常好的注释，而且如果在 Internet
+上搜索，您可以找到很多讨论修改该文件的教程。</p>
+<p>回页首</p>
+<p>头文件和初始化</p>
+<p>本教程所使用的头文件只有三个：ssl.h、bio.h 和 err.h。它们都位于 openssl 子目录中，而且都是开发您的项目所必需的。要初始化
+OpenSSL 库，只需要三个代码行即可。清单 1 中列出了所有内容。其他的头文件 和/或 初始化函数可能是其他一些功能所必需的。</p>
+<p>清单 1. 必需的头文件</p>
+<p>/* OpenSSL headers */</p>
+<p>#include &ldquo;openssl/bio.h&rdquo;</p>
+<p>#include &ldquo;openssl/ssl.h&rdquo;</p>
+<p>#include &ldquo;openssl/err.h&rdquo;</p>
+<p>/* Initializing OpenSSL */</p>
+<p>SSL_load_error_strings();</p>
+<p>ERR_load_BIO_strings();</p>
+<p>OpenSSL_add_all_algorithms();</p>
+<p>回页首</p>
+<p>建立非安全连接</p>
+<p>不管连接是安全的还是不安全的，OpenSSL 都使用了一个名为 BIO 的抽象库来处理包括文件和套接字在内的各种类型的通信。您还可以将 OpenSSL
+设置成为一个过滤器，比如用于 UU 或 Base64 编码的过滤器。</p>
+<p>在这里对 BIO 库进行全面说明有点麻烦，所以我将根据需要一点一点地介绍它。首先，我将向您展示如何建立一个标准的套接字连接。相对于使用 BSD
+套接字库，该操作需要的代码行更少一些。</p>
+<p>在建立连接（无论安全与否）之前，要创建一个指向 BIO 对象的指针。这类似于在标准 C 中为文件流创建 FILE 指针。</p>
+<p>清单 2. 指针</p>
+<p>BIO * bio;</p>
+<p>打开连接</p>
+<p>创建新的连接需要调用 BIO_new_connect
+。您可以在同一个调用中同时指定主机名和端口号。也可以将其拆分为两个单独的调用：一个是创建连接并设置主机名的 BIO_new_connect
+调用，另一个是设置端口号的 BIO_set_conn_port （或者 BIO_set_conn_int_port ）调用。</p>
+<p>不管怎样，一旦 BIO 的主机名和端口号都已指定，该指针会尝试打开连接。没有什么可以影响它。如果创建 BIO 对象时遇到问题，指针将会是
+NULL。为了确保连接成功，必须执行 BIO_do_connect 调用。</p>
+<p>清单 3. 创建并打开连接</p>
+<p>bio = BIO_new_connect(&ldquo;hostname:port&rdquo;);</p>
+<p>if(bio == NULL)</p>
+<p>{</p>
+<p>/* Handle the
+failure */</p>
+<p>}</p>
+<p>if(BIO_do_connect(bio) &lt;= 0)</p>
+<p>{</p>
+<p>/* Handle failed
+connection */</p>
+<p>}</p>
+<p>在这里，第一行代码使用指定的主机名和端口创建了一个新的 BIO 对象，并以所示风格对该对象进行 格式化。例如，如果您要连接到
+<a href="http://www.ibm.com/">www.ibm.com</a> 的 80 端口，那么该字符串将是
+<a href="http://www.ibm.com/">www.ibm.com:80</a> 。调用 BIO_do_connect 检查连接是否成功。如果出错，则返回 0 或
+-1。</p>
+<p>与服务器进行通信</p>
+<p>不管 BIO 对象是套接字还是文件，对其进行的读和写操作都是通过以下两个函数来完成的： BIO_read 和 BIO_write
+。很简单，对吧？精彩之处就在于它始终如此。</p>
+<p>BIO_read 将尝试从服务器读取一定数目的字节。它返回读取的字节数、 0 或者 -1。在受阻塞的连接中，该函数返回 0，表示连接已经关闭，而 -1
+则表示连接出现错误。在非阻塞连接的情况下，返回 0 表示没有可以获得的数据，返回 -1 表示连接出错。可以调用 BIO_should_retry
+来确定是否可能重复出现该错误。</p>
+<p>清单 4. 从连接读取</p>
+<p>int x = BIO_read(bio, buf, len);</p>
+<p>if(x == 0)</p>
+<p>{</p>
+<p>/* Handle closed
+connection */</p>
+<p>}</p>
+<p>else if(x &lt; 0)</p>
+<p>{</p>
+<p>if(! BIO_should_retry(bio))</p>
+<p>{</p>
+<p>&amp;n
+bsp_place_holder; /* Handle failed read
+here */</p>
+<p>}</p>
+<p>/* Do something to
+handle the retry */</p>
+<p>}</p>
+<p>BIO_write 会试着将字节写入套接字。它将返回实际写入的字节数、0 或者 -1。同 BIO_read ，0 或 -1 不一定表示错误。
+BIO_should_retry 是找出问题的途径。如果需要重试写操作，它必须使用和前一次完全相同的参数。</p>
+<p>清单 5. 写入到连接</p>
+<p>if(BIO_write(bio, buf, len) &lt;= 0)</p>
+<p>{</p>
+<p>if(!
+BIO_should_retry(bio))</p>
+<p>{</p>
+<p>&amp;n
+bsp_place_holder; /* Handle failed write
+here */</p>
+<p>}</p>
+<p>/* Do something to
+handle the retry */</p>
+<p>}</p>
+<p>关闭连接</p>
+<p>关闭连接也很简单。您可以使用以下两种方式之一来关闭连接： BIO_reset 或 BIO_free_all
+。如果您还需要重新使用对象，那么请使用第一种方式。如果您不再重新使用它，则可以使用第二种方式。</p>
+<p>BIO_reset 关闭连接并重新设置 BIO
+对象的内部状态，以便可以重新使用连接。如果要在整个应用程序中使用同一对象，比如使用一台安全的聊天客户机，那么这样做是有益的。该函数没有返回值。</p>
+<p>BIO_free_all 所做正如其所言：它释放内部结构体，并释放所有相关联的内存，其中包括关闭相关联的套接字。如果将 BIO
+嵌入于一个类中，那么应该在类的析构函数中使用这个调用。</p>
+<p>清单 6. 关闭连接</p>
+<p>/* To reuse the connection, use this line */</p>
+<p>BIO_reset(bio);</p>
+<p>/* To free it from memory, use this line */</p>
+<p>BIO_free_all(bio);</p>
+<p>回页首</p>
+<p>建立安全连接</p>
+<p>现在需要给出建立安全连接需要做哪些事情。惟一要改变的地方就是建立并进行连接。其他所有内容都是相同的。</p>
+<p>安全连接要求在连接建立后进行握手。在握手过程中，服务器向客户机发送一个证书，然后，客户机根据一组可信任证书来核实该证书。它还将检查证书，以确保它没有过期。要
+检验证书是可信任的，需要在连接建立之前提前加载一个可信任证书库。</p>
+<p>只有在服务器发出请求时，客户机才会向服务器发送一个证书。该过程叫做客户机认证。使用证书，在客户机和服务器之间传递密码参数，以建立安全连接。尽管握手是在建立连
+接之后才进行的，但是客户机或服务器可以在任何时刻请求进行一次新的握手。</p>
+<p>参考资料 部分中列出的 Netscasp 文章和 RFC 2246 ，对握手以及建立安全连接的其他方面的知识进行了更详尽的论述。</p>
+<p>为安全连接进行设置</p>
+<p>为安全连接进行设置要多几行代码。同时需要有另一个类型为 SSL_CTX 的指针。该结构保存了一些 SSL 信息。您也可以利用它通过 BIO 库建立 SSL
+连接。可以通过使用 SSL 方法函数调用 SSL_CTX_new 来创建这个结构，该方法函数通常是 SSLv23_client_method 。</p>
+<p>还需要另一个 SSL 类型的指针来保持 SSL 连接结构（这是短时间就能完成的一些连接所必需的）。以后还可以用该 SSL 指针来检查连接信息或设置其他
+SSL 参数。</p>
+<p>清单 7. 设置 SSL 指针</p>
+<p>SSL_CTX * ctx = SSL_CTX_new(SSLv23_client_method());</p>
+<p>SSL * ssl;</p>
+<p>加载可信任证书库</p>
+<p>在创建上下文结构之后，必须加载一个可信任证书库。这是成功验证每个证书所必需的。如果不能确认证书是可信任的，那么 OpenSSL
+会将证书标记为无效（但连接仍可以继续）。</p>
+<p>OpenSSL 附带了一组可信任证书。它们位于源文件树的 certs 目录中。不过，每个证书都是一个独立的文件 &mdash;-
+也就是说，需要单独加载每一个证书。在 certs 目录下，还有一个存放过期证书的子目录。试图加载这些证书将会出错。</p>
+<p>如果您愿意，可以分别加载每一个文件，但为了简便起见，最新的 OpenSSL 发行版本的可信任证书通常存放在源代码档案文件中，这些档案文件位于名为&quot;Trust
+Store.pem&quot;的单个文件中。如果已经有了一个可信任证书库，并打算将它用于特定的项目中，那么只需使用您的文件替换清单 8
+中的&quot;TrustStore.pem&quot;（或者使用单独的函数调用将它们全部加载）即可。</p>
+<p>可以调用 SSL_CTX_load_verify_locations 来加载可信任证书库文件。这里要用到三个参数：上下文指针、可信任库文件的路径和文件名，以
+及证书所在目录的路径。必须指定可信任库文件或证书的目录。如果指定成功，则返回 1，如果遇到问题，则返回 0。</p>
+<p>清单 8. 加载信任库</p>
+<p>if(! SSL_CTX_load_verify_locations(ctx, &ldquo;/path/to/TrustStore.pem&rdquo;, NULL))</p>
+<p>{</p>
+<p>/* Handle failed
+load here */</p>
+<p>}</p>
+<p>如果打算使用目录存储可信任库，那么必须要以特定的方式命名文件。OpenSSL 文档清楚地说明了应该如何去做，不过，OpenSSL 附带了一个名为
+c_rehash 的工具，它可以将文件夹配置为可用于 SSL_CTX_load_verify_locations 的路径参数。</p>
+<p>清单 9. 配置证书文件夹并使用它</p>
+<p>/* Use this at the command line */</p>
+<p>c_rehash /path/to/certfolder</p>
+<p>/* then call this from within the application */</p>
+<p>if(! SSL_CTX_load_verify_locations(ctx, NULL, &ldquo;/path/to/certfolder&rdquo;))</p>
+<p>{</p>
+<p>/* Handle error here
+*/</p>
+<p>}</p>
+<p>为了指定所有需要的验证证书，您可以根据需要命名任意数量的单独文件或文件夹。您还可以同时指定文件和文件夹。</p>
+<p>创建连接</p>
+<p>将指向 SSL 上下文的指针作为惟一参数，使用 BIO_new_ssl_connect 创建 BIO 对象。还需要获得指向 SSL
+结构的指针。在本文中，只将该指针用于 SSL_set_mode 函数。而这个函数是用来设置 SSL_MODE_AUTO_RETRY
+标记的。使用这个选项进行设置，如果服务器突然希望进行一次新的握手，那么 OpenSSL
+可以在后台处理它。如果没有这个选项，当服务器希望进行一次新的握手时，进行读或写操作都将返回一个错误，同时还会在该过程中设置 retry 标记。</p>
+<p>清单 10. 设置 BIO 对象</p>
+<p>bio = BIO_new_ssl_connect(ctx);</p>
+<p>BIO_get_ssl(bio, &amp; ssl);</p>
+<p>SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);</p>
+<p>设置 SSL 上下文结构之后，就可以创建连接了。主机名是使用 BIO_set_conn_hostname
+函数设置的。主机名和端口的指定格式与前面的相同。该函数还可以打开到主机的连接。为了确认已经成功打开连接，必须执行对 BIO_do_connect
+的调用。该调用还将执行握手来建立安全连接。</p>
+<p>清单 11. 打开安全连接</p>
+<p>/* Attempt to connect */</p>
+<p>BIO_set_conn_hostname(bio, &ldquo;hostname:port&rdquo;);</p>
+<p>/* Verify the connection opened and perform the handshake */</p>
+<p>if(BIO_do_connect(bio) &lt;= 0)</p>
+<p>{</p>
+<p>/* Handle failed
+connection */</p>
+<p>}</p>
+<p>连接建立后，必须检查证书，以确定它是否有效。实际上，OpenSSL 为我们完成了这项任务。如果证书有致命的问题（例如，哈希值无效），那么将无法建立连接。但是
+，如果证书的问题并不是致命的（当它已经过期或者尚不合法时），那么仍可以继续使用连接。</p>
+<p>可以将 SSL 结构作为惟一参数，调用 SSL_get_verify_result 来查明证书是否通过了 OpenSSL
+的检验。如果证书通过了包括信任检查在内的 OpenSSL 的内部检查，则返回
+X509_V_OK。如果有地方出了问题，则返回一个错误代码，该代码被记录在命令行工具的 verify 选项下。</p>
+<p>应该注意的是，验证失败并不意味着连接不能使用。是否应该使用连接取决于验证结果和安全方面的考虑。例如，失败的信任验证可能只是意味着没有可信任的证书。连接仍然可
+用，只是需要从思想上提高安全意识。</p>
+<p>清单 12. 检查证书是否有效</p>
+<p>if(SSL_get_verify_result(ssl) != X509_V_OK)</p>
+<p>{</p>
+<p>/* Handle the failed
+verification */</p>
+<p>}</p>
+<p>这就是所需要的全部操作。通常，与服务器进行通信都要使用 BIO_read 和 BIO_write 。并且只需调用 BIO_free_all 或
+BIO_reset ，就可以关闭连接，具体调用哪一个方法取决于是否重用 BIO。</p>
+<p>必须在结束应用程序之前的某个时刻释放 SSL 上下文结构。可以调用 SSL_CTX_free 来释放该结构。</p>
+<p>清单 13. 清除 SSL 上下文</p>
+<p>SSL_CTX_free(ctx);</p>
+<p>回页首</p>
+<p>错误检测</p>
+<p>显然 OpenSSL 抛出了某种类型的错误。这意味着什么？首先，您需要得到错误代码本身； ERR_get_error
+可以完成这项任务；然后，需要将错误代码转换为错误字符串，它是一个指向由 SSL_load_error_strings 或
+ERR_load_BIO_strings 加载到内存中的永久字符串的指针。可以在一个嵌套调用中完成这项操作。</p>
+<p>表 1 略述了从错误栈检索错误的方法。清单 24 展示了如何打印文本字符串中的最后一个错误信息。</p>
+<p>表 1. 从栈中检索错误</p>
+<p>ERR_reason_error_string 返回一个静态字符串的指针，然后可以将字符串显示在屏幕上、写入文件，或者以任何您希望的方式进行处理</p>
+<p>ERR_lib_error_string 指出错误发生在哪个库中</p>
+<p>ERR_func_error_string 返回导致错误的 OpenSSL 函数</p>
+<p>清单 14. 打印出最后一个错误</p>
+<p>printf(&ldquo;Error: %sn&rdquo;, ERR_reason_error_string(ERR_get_error()));</p>
+<p>您还可以让库给出预先格式化了的错误字符串。可以调用 ERR_error_string
+来得到该字符串。该函数将错误代码和一个预分配的缓冲区作为参数。而这个缓冲区必须是 256 字节长。如果参数为 NULL，则 OpenSSL
+会将字符串写入到一个长度为 256 字节的静态缓冲区中，并返回指向该缓冲区的指针。否则，它将返回您给出的指针。如果您选择的是静态缓冲区选项，那么在下一次调用
+ERR_error_string 时，该缓冲区会被覆盖。</p>
+<p>清单 15. 获得预先格式化的错误字符串</p>
+<p>printf(&quot;%sn&quot;, ERR_error_string(ERR_get_error(), NULL));</p>
+<p>您还可以将整个错误队列转储到文件或 BIO 中。可以通过 ERR_print_errors 或 ERR_print_errors_fp
+来实现这项操作。队列是以可读格式被转储的。第一个函数将队列发送到 BIO ，第二个函数将队列发送到 FILE 。字符串格式如下（引自 OpenSSL
+文档）：</p>
+<p>[pid]:error:[error code]:[library name]:[function name]:[reason string]:[file
+name]:[line]:[optional text message]</p>
+<p>其中， [pid] 是进程 ID， [error code] 是一个 8 位十六进制代码， [file name] 是 OpenSSL 库中的源代码文件，
+[line] 是源文件中的行号。</p>
+<p>清单 16. 转储错误队列</p>
+<p>ERR_print_errors_fp(FILE *);</p>
+<p>ERR_print_errors(BIO *);</p>
+<p>回页首</p>
+<p>开始做吧</p>
+<p>使用 OpenSSL 创建基本的连接并不困难，但是，当试着确定该如何去做时，文档可能是一个小障碍。本文向您介绍了一些基本概念，但 OpenSSL
+还有很多灵活之处有待发掘，而且您还可能需要一些高级设置，以便项目能够充分利用 SSL 的功能。</p>
+<p>本文中有两个样例。一个样例展示了到 <a href="http://www.verisign.com/">http://www.verisign.com/</a>
+的非安全连接，另一个则展示了到 <a href="http://www.verisign.com/">http://www.verisign.com/</a> 的安全 SSL
+连接。两者都是连接到服务器并下载其主页。它们没有进行任何安全检查，而且库中的所有设置都是默认值 &mdash;- 作为本文的一部分，应该只将这些用于教学目的。</p>
+<p>在任何支持的平台上，源代码的编译都应该是非常容易的，不过我建议您使用最新版本的 OpenSSL。在撰写本文时，OpenSSL 的最新版本是 0.9.7d。</p>
+<p>参考资料</p>
+<p>您可以参阅本文在 developerWorks 全球站点上的 英文原文.</p>
+<p>下载本文中用到的 源代码。</p>
+<p>您可以从 OpenSSL Project 下载 OpenSSL 源文件；一定要去查看一下 文档 的当前状态。您还可以从
+邮件列表（滚动到底部，以获得到存档文件的链接）中学到很多知识，而且应该&mdash;-当然，如往常一样&mdash;-花一些时间去 阅读 FAQ！</p>
+<p>OpenSSL 源自 SSLeay （它甚至有非常 完善的文档）。</p>
+<p>此外，请参阅由两部分构成的文章&quot; An Introduction to OpenSSL Programming&quot;（ Linux Journal，2001
+年）（以及 第二部分），而且可以通过（ informIT， 2001 年）获得的另一篇来自 Sams 的文章 &quot; Securing Sockets with
+OpenSSL&quot;和它的 第二部分，该文章也是由两部分构成的。</p>
+<p>在线阅读 BIO library documentation 和 Network Security with OpenSSL （O&rsquo;Reilly &amp;
+Associates，2002 年）的样例章节。 Linux Socket Programming （Sams，2001 年）摘自 Sams 的书。</p>
+<p>OpenSSL 的发布遵循 BSD/Apache-type 许可。如果您是自由软件（Free Software）的支持者（或者是 good
+documentation 的支持者），您可能还希望查看 The GNU Transport Layer Security Library
+（注意，如果没有异常子句，GPL 的软件不能针对 OpenSSL 进行链接）。 Mozilla Network Security Services（NSS）
+是双许可的，它既遵循 Mozilla Public License（MPL）又遵循 GNU General Public License （GNU
+GPL），而且有相当好的 文档。要深入了解 TLS，请阅读 Wikipedia 的文章 Transport Layer Security。</p>
+<p>可以在 RFC 2246 中找到关于 Transport Layer Security 的备忘录和技术细节，RFC 2246 定义了标准，并且它被 RFC
+3546 更新，后者定义了对 TLS 协议的扩展。</p>
+<p>&quot; 使用 Twisted 框架进行网络编程, 第 4 部分&quot;（ developerWorks，2003 年 9 月）中 David Mertz 讨论了使用
+Python twisted 框架进行 SSL 编程。</p>
+<p>要深入学习套接字编程，请参阅 Linux Socket 编程，第一部分（ developerWorks，2003 年 10 月）和 Linux Socket
+编程，第二部分，这也是 David Mertz 的一个教程系列（ developerWorks，2004 年 1 月）。对那些刚开始进行套接字编程的人来说，
+Beej&rsquo;s Guide to Network Programming Using Internet Sockets 也是一个不错的参考资料。</p>
+<p>如果您是 刚刚 开始接触套接字，那么请先阅读 &quot; Understanding Sockets in Unix, NT, and Java&quot;（
+developerWorks，1998 年 6 月），那篇文章提供了什么是套接字以及它们适用于何处的极好的入门级概述。</p>
+<p>此外，还可以参阅来自 Communications Programming Concepts Sockets 的关于 Sockets 的 IBM
+文档，以及来自 Technical Reference: Communications, Volume 2 的 Programming sockets on
+AIX。</p>
+<p>可以通过&quot; Encryption using OpenSSL&rsquo;s crypto libraries&quot; （ Linux Gazette，2003
+年）初步了解加密，并通过 &quot; Introduction to Cryptography&quot; （ PGP Corporation，2003 年 5 月 &mdash;-
+XPDF 格式） 或 &quot; Introduction to cryptography&quot; （ developerWorks，2001 年 3
+月）获得对加密的总体上的深入理解。可以以 Postscript 和 PDF 格式在线获得 Handbook of Appplied Cryptography
+（CRC Press，1996 年）（可以通过订购获得更新后的 2001 版本）。</p>
+<p>在 developerWorks Linux 专区 可以找到更多为 Linux 开发人员准备的参考资料。</p>
+<p>可以在 Developer Bookstore Linux 区中定购 打折出售的 Linux 书籍。</p>
+<p>从 developerWorks 的 Speed-start your Linux app 专区下载可以运行于 Linux 之上的精选的
+developerWorks Subscription 产品免费测试版本，其中包括 WebSphere Studio Site
+Developer、WebSphere SDK for Web services、WebSphere Application Server、DB2
+Universal Database Personal Developers Edition、Tivoli Access Manager 和 Lotus
+Domino Server。想更快地开始上手，请参阅针对各个产品的 how-to 文章和技术支持。</p>
+<p>关于作者</p>
+<p>Kenneth 是 Peru State College（位于 Peru, Nebraska）计算机科学专业的大四学生。他还是学生报 The Peru
+State Times 的职业作者。他拥有 Southwestern Community College （位于 Creston,
+Iowa）计算机编程专业的理学副学士（Associate of Science）学位，在这所大学里，他是一名半工半读的 PC 技术员。他的研究领域包括
+Java、C++、COBOL、 Visual Basic 和网络。</p>
+<p>原出处:</p>
+<p>[www.ibm.com/developerworks/cn/linux/l-openssl.html#Resources](<a href="http://www.ibm">http://www.ibm</a>.
+com/developerworks/cn/linux/l-openssl.html#Resources)</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -77,6 +1234,39 @@
       
       <guid>https://blog.alswl.com/2009/03/using-openssl-to-create-certificates-using-the-command/</guid>
       <description>这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全- 基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。 这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&amp;quot;利用OpenSSL实现安全的Web Server&amp;quot;中找到自己需要的内容，现在分享一下。 1.生成CA中心的私钥 openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem 2.生成</description>
+      <content:encoded><![CDATA[<p>这几天在弄OpenSSL需要使用的证书，翻了很多文档，找来一《本OpenSSL与网络信息安全-
+基础、结构和指令》，书上的密码学和OpenSSL的基础介绍的很详细，但是缺少一些实例。</p>
+<p>这证书死活做不出来，最后在《计算机网络高级软件编程技术》上第19章&quot;利用OpenSSL实现安全的Web Server&quot;中找到自己需要的内容，现在分享一下。</p>
+<p>1.生成CA中心的私钥</p>
+<blockquote>
+<p>openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem</p>
+</blockquote>
+<p>2.生成CA中心的自签证书</p>
+<blockquote>
+<p>openssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey
+rootkey.pem -out rootcert.pem</p>
+</blockquote>
+<p>3.生成A分支机构的私钥和认证请求</p>
+<blockquote>
+<p>openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem</p>
+</blockquote>
+<p>PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf
+的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件</p>
+<p>那么这时候可以把命令修改为： openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out
+Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf</p>
+<p>注意：这个 openssl.cnf 文件定位根据自己的OpenSSL位置修改。</p>
+<p>4.由CA中心为A分支机构签发证书</p>
+<blockquote>
+<p>openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.pem
+-CAkey rootkey.pem -CAcreateserial -out Acert.pem</p>
+</blockquote>
+<p>5.用x509命令查看生成的证书</p>
+<blockquote>
+<p>openssl x509 -subject -issuer -noout -in rootcert.pem</p>
+</blockquote>
+<p>这样之后，Acert.pem就是所要使用的证书文件，Akey.pem是私钥文件，rootcert.pem是信任CA</p>
+<p>供朋友们参考</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -86,6 +1276,47 @@
       
       <guid>https://blog.alswl.com/2009/03/common-certificate-format-and-conversion/</guid>
       <description>这些文字都是转来转去，都找不到原作者是谁，唉```` 仍然感谢作者的贡献&amp;hellip;. PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。 常用的有： PKCS#7 Cryptographic Message Syntax Standard PKCS#10 Certification Request Standard PKCS#12 Personal Information Exchange Syntax Standard X.509是常见通用的证书格式。所有的证书都符合为Public Key Infrastructure (PKI) 制定的 ITU-T X509 国际标准。 PKCS#7 常用的后缀是： .P7B .P7C .SPC PKCS#12 常用的后缀有： .P12 .PFX X.509 DER 编码(ASCII)的</description>
+      <content:encoded><![CDATA[<p>这些文字都是转来转去，都找不到原作者是谁，唉````</p>
+<p>仍然感谢作者的贡献&hellip;.</p>
+<p>PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA
+实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。 常用的有：</p>
+<p>PKCS#7 Cryptographic Message Syntax Standard</p>
+<p>PKCS#10 Certification Request Standard</p>
+<p>PKCS#12 Personal Information Exchange Syntax Standard</p>
+<p>X.509是常见通用的证书格式。所有的证书都符合为Public Key Infrastructure (PKI) 制定的 ITU-T X509 国际标准。</p>
+<p>PKCS#7 常用的后缀是： .P7B .P7C .SPC</p>
+<p>PKCS#12 常用的后缀有： .P12 .PFX</p>
+<p>X.509 DER 编码(ASCII)的后缀是： .DER .CER .CRT</p>
+<p>X.509 PAM 编码(Base64)的后缀是： .PEM .CER .CRT</p>
+<p>.cer/.crt是用于存放证书，它是2进制形式存放的，不含私钥。</p>
+<p>.pem跟crt/cer的区别是它以Ascii来表示。</p>
+<p>pfx/p12用于存放个人证书/私钥，他通常包含保护密码，2进制方式</p>
+<p>p10是证书请求</p>
+<p>p7r是CA对证书请求的回复，只用于导入</p>
+<p>p7b以树状展示证书链(certificate chain)，同时也支持单个证书，不含私钥。</p>
+<p>一 用openssl创建CA证书的RSA密钥(PEM格式)：</p>
+<p>openssl genrsa -des3 -out ca.key 1024</p>
+<p>二用openssl创建CA证书(PEM格式,假如有效期为一年)：</p>
+<p>openssl req -new -x509 -days 365 -key ca.key -out ca.crt -config openssl.cnf</p>
+<p>openssl是可以生成DER格式的CA证书的，最好用IE将PEM格式的CA证书转换成DER格式的CA证书。</p>
+<p>三 x509到pfx</p>
+<p>pkcs12 -export -in keys/client1.crt -inkey keys/client1.key -out
+keys/client1.pfx</p>
+<p>四 PEM格式的ca.key转换为Microsoft可以识别的pvk格式。</p>
+<p>pvk -in ca.key -out ca.pvk -nocrypt
+-topvk</p>
+<p>五 PKCS#12 到 PEM 的转换</p>
+<p>openssl pkcs12 -nocerts -nodes -in cert.p12 -out private.pem</p>
+<p>验证 openssl pkcs12 -clcerts -nokeys -in cert.p12 -out cert.pem</p>
+<p>六 从 PFX 格式文件中提取私钥格式文件 (.key)</p>
+<p>openssl pkcs12 -in mycert.pfx -nocerts -nodes -out mycert.key</p>
+<p>七 转换 pem 到到 spc</p>
+<p>openssl crl2pkcs7 -nocrl -certfile venus.pem -outform DER -out venus.spc</p>
+<p>用 -outform -inform 指定 DER 还是 PAM 格式。例如：</p>
+<p>openssl x509 -in Cert.pem -inform PEM -out cert.der -outform DER</p>
+<p>八 PEM 到 PKCS#12 的转换，</p>
+<p>openssl pkcs12 -export -in Cert.pem -out Cert.p12 -inkey key.pem</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -95,6 +1326,112 @@
       
       <guid>https://blog.alswl.com/2009/03/using-openssl-to-generate-certificates/</guid>
       <description>这些命令虽然是linux下面的，但是在windows下面也能用 我遇到I am unable to access the ./demoCA/newcerts directory ./demoCA/newcerts: No such file or directory 然后找到这篇文章，只要用生成相应的目录就可以了。 我遇到的第二个问题是TXT_DB error number 2 在redhat的网站[kbase.redhat.com/faq/docs/DOC-3624] (http://kbase.redhat.com/faq/docs/DOC-3624)这篇文章。 我将原来index.txt里面</description>
+      <content:encoded><![CDATA[<p>这些命令虽然是linux下面的，但是在windows下面也能用</p>
+<p>我遇到I am unable to access the ./demoCA/newcerts directory ./demoCA/newcerts: No
+such file or directory 然后找到这篇文章，只要用生成相应的目录就可以了。</p>
+<p>我遇到的第二个问题是TXT_DB error number 2 在redhat的网站[kbase.redhat.com/faq/docs/DOC-3624]
+(<a href="http://kbase.redhat.com/faq/docs/DOC-3624">http://kbase.redhat.com/faq/docs/DOC-3624</a>)这篇文章。</p>
+<p>我将原来index.txt里面的内容剪切出，然后重新签证，再把剪切出的内容粘贴到后来生成文件之前，就解决了那个问题。</p>
+<p>下面是网上的资料：OpenSSL相关命令<a href="http://hi.baidu.com/kobetec/blog/item/706fc0440ff3b44a510ffe0b.html">hi.baidu.com/kobetec/blog/item/706fc0440ff3b44a510ffe0b.html</a></p>
+<p>这个是一个不错的资料参考，就转载过来，谢谢原作者</p>
+<p>命令操作：</p>
+<p>　　1、生成普通私钥：</p>
+<p>[weigw@TEST src]$ openssl genrsa -out privatekey.key 1024</p>
+<p>Generating RSA private key, 1024 bit long modulus &hellip;.++++++ &hellip;&hellip;.++++++ e
+is 65537 (0x10001)</p>
+<p>2、生成带加密口令的密钥：</p>
+<p>[weigw@TEST src]$ openssl genrsa -des3 -out privatekey.key 1024</p>
+<p>Generating RSA private key, 1024 bit long modulus &hellip;&hellip;&hellip;&hellip;++++++
+&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;++++++ e is 65537 (0x10001) Enter pass phrase for
+privatekey.key: Verifying - Enter pass phrase for privatekey.key:</p>
+<p>在生成带加密口令的密钥时需要自己去输入密码。对于为密钥加密现在提供了一下几种算法：</p>
+<p>-des encrypt the generated key with DES in cbc mode</p>
+<p>-des3 encrypt the generated key with DES in ede cbc mode (168 bit key)</p>
+<p>-aes128, -aes192, -aes256 encrypt PEM output with cbc aes</p>
+<p>去除密钥的口令：</p>
+<p>[weigw@TEST src]$ openssl rsa -in privatekey.key -out</p>
+<p>privatekey.key Enter pass phrase for privatekey.key: writing RSA key</p>
+<p>通过生成的私钥去生成证书：</p>
+<p>[weigw@TEST src]$ openssl req -new -x509 -key privatekey.key -out cacert.crt
+-days 1095</p>
+<p>You are about to be asked to enter information that will be incorporated into
+your certificate request.</p>
+<p>What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank For some fields
+there will be a default value, If you enter &lsquo;.&rsquo;, the field will be left blank.</p>
+<hr />
+<p>Country Name (2 letter code) [GB]:CN</p>
+<p>State or Province Name (full name) [Berkshire]:beijing</p>
+<p>Locality Name (eg, city) [Newbury]:beijing</p>
+<p>Organization Name (eg, company) [My Company Ltd]:wondersoft</p>
+<p>Organizational Unit Name (eg, section) []:develop</p>
+<p>Common Name (eg, your name or your server&rsquo;s hostname) []:WeiGW</p>
+<p>Email Address []:weigongwan@sina.com</p>
+<p>在生成证书的时候需要按照提示输入一些个人信息。</p>
+<p>通过私钥生成公钥：</p>
+<p>[weigw@TEST src]$ openssl rsa -in privatekey.key -pubout -out pubkey.key
+writing RSA key</p>
+<p>格式转换：（证书、私钥、公钥）（PEM &lt;&mdash;&ndash;&gt;DER）</p>
+<p>[weigw@TEST src]$ openssl x509 -in cacert.crt -inform PEM -out cacert.der
+-outform DER</p>
+<p>[weigw@TEST src]$</p>
+<p>[weigw@TEST src]$ openssl rsa -in privatekey.key -inform PEM -out
+privatekey.der -outform DER</p>
+<p>writing RSA key</p>
+<p>[weigw@TEST src]$ openssl rsa -pubin -in pubkey.key -inform PEM -pubout -out
+pubkey.der -outform DER</p>
+<p>writing RSA key</p>
+<p>从DER格式转换成PEM格式一样，就是把inform的格式改成DERoutform的格式改成PEM即可。</p>
+<p>下面是一个服务器和客户端认证的证书、私钥生成方法：（server.crt、client.crt、ca.crt）</p>
+<p>第一步： 生成私钥</p>
+<pre><code>[weigw@TEST bin]$ openssl genrsa -out server.key 1024    Generating RSA private key, 1024 bit long modulus .++++++ .. .........++++++ e is 65537 (0x10001)    [weigw@TEST bin]$ openssl genrsa -out client.key 1024    Generating RSA private key, 1024 bit long modulus ...++++++ ...... ..........++++++ e is 65537 (0x10001)    [weigw@TEST bin]$ openssl genrsa -out ca.key 1024  Generating RSA private key, 1024 bit long modulus ....... ..++++++ .........++++++ e is 65537 (0x10001)    [weigw@TEST bin]$
+</code></pre>
+<p>　　第三步： 申请证书（为请求文件签名）</p>
+<p>[weigw@TEST bin]$ openssl ca -in server.csr -out server.crt -cert ca.crt
+-keyfile ca.key</p>
+<p>[weigw@TEST bin]$ openssl ca -in client.csr -out client.crt -cert ca.crt
+-keyfile ca.key</p>
+<p>如果在这步出现错误信息：</p>
+<p>[weigw@TEST bin]$ openssl ca -in client.csr -out client.crt -cert ca.crt
+-keyfile ca.key</p>
+<p>Using configuration from /usr/share/ssl/openssl.cnf I am unable to access the
+./demoCA/newcerts directory ./demoCA/newcerts: No such file or directory</p>
+<p>[weigw@TEST bin]$</p>
+<p>自己手动创建一个CA目录结构：</p>
+<p>[weigw@TEST bin]$ mkdir ./demoCA</p>
+<p>[weigw@TEST bin]$ mkdir demoCA/newcerts</p>
+<p>创建个空文件：</p>
+<p>[weigw@TEST bin]$ vi demoCA/index.txt</p>
+<p>向文件中写入01：</p>
+<p>[weigw@TEST bin]$ vi demoCA/serial</p>
+<p>合并证书文件（crt）和私钥文件（key）：</p>
+<p>[weigw@TEST bin]$ cat client.crt client.key &gt; client.pem [weigw@TEST bin]$ cat
+server.crt server.key &gt; server.pem</p>
+<p>合并成pfx证书：</p>
+<p>[weigw@TEST bin]$ openssl pkcs12 -export -clcerts -in client.crt -inkey
+client.key -out client.p12</p>
+<p>Enter Export Password:</p>
+<p>Verifying - Enter Export Password:</p>
+<p>[weigw@TEST bin]$openssl pkcs12 -export -clcerts -in server.crt -inkey
+server.key -out server.p12</p>
+<p>Enter Export Password:</p>
+<p>Verifying - Enter Export Password:</p>
+<p>文本化证书：</p>
+<p>[weigw@TEST bin]$ openssl pkcs12 -in client.p12 -out client.txt Enter Import
+Password:</p>
+<p>MAC verified OK</p>
+<p>Enter PEM pass phrase: Verifying - Enter PEM pass phrase:</p>
+<p>[weigw@TEST bin]$openssl pkcs12 -in server.p12 -out server.txt</p>
+<p>Enter Import Password:</p>
+<p>MAC verified OK</p>
+<p>Enter PEM pass phrase: Verifying - Enter PEM pass phrase:</p>
+<p>屏幕模式显式：（证书、私钥、公钥）</p>
+<p>[weigw@TEST bin]$ openssl x509 -in client.crt -noout -text -modulus</p>
+<p>[weigw@TEST bin]$ openssl rsa -in server.key -noout -text -modulus</p>
+<p>[weigw@TEST bin]$ openssl rsa -in server.pub -noout -text -modulus</p>
+<p>得到DH：</p>
+<p>[weigw@TEST bin]$ openssl dhparam -out dh1024.pem 1024</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -104,6 +1441,35 @@
       
       <guid>https://blog.alswl.com/2009/03/early-contact-with-openssl/</guid>
       <description>Boss昨个儿说，这两天把SSL上面的相关东西给他去看一下 苦命啊，最近都在做Ajax，SSL几乎没有什么动静。唉，今天中午没吃饭，没睡觉，就开始做SSL 耗费了很多时间，才正确的编译完OpenSSL 要做的东西是基于C#的、利用OpenSSL开源代码完成的SSL分级服务器，很是麻烦，要用C#来调用C程序，而且OpenSSL本来就很难使用，唉，残念啊。 下面把我今天的成果分享一下： [C#]用HttpWeb</description>
+      <content:encoded><![CDATA[<p>Boss昨个儿说，这两天把SSL上面的相关东西给他去看一下</p>
+<p>苦命啊，最近都在做Ajax，SSL几乎没有什么动静。唉，今天中午没吃饭，没睡觉，就开始做SSL</p>
+<p>耗费了很多时间，才正确的编译完OpenSSL</p>
+<p>要做的东西是基于C#的、利用OpenSSL开源代码完成的SSL分级服务器，很是麻烦，要用C#来调用C程序，而且OpenSSL本来就很难使用，唉，残念啊。</p>
+<p>下面把我今天的成果分享一下：</p>
+<p><a href="http://www.cnblogs.com/zhengyun_ustc/archive/2005/04/11/135821.aspx">[C#]用HttpWebRequest加载证书建立SSL通道时发生异常的解决办法- 旁观
+&hellip;</a></p>
+<p><a href="http://i.cn.yahoo.com/suntongo/blog/p_2/">OpenSSL- .net，C++/CLI语言的一次实践</a></p>
+<p><a href="http://www.openssl.org/">OpenSSL: The Open Source toolkit for SSL/TLS</a></p>
+<p><a href="http://www.ibm.com/developerworks/cn/linux/l-openssl.html">使用OpenSSL API
+进行安全编程</a></p>
+<p>[在C#工程中使用OPENSSL](<a href="http://www.cnblogs.com/sleepingwit/archive/2008/11/03/132333">http://www.cnblogs.com/sleepingwit/archive/2008/11/03/132333</a>
+4.html)</p>
+<p><a href="http://www.cnblogs.com/gleam/archive/2008/05/07/1187154.html">本文介绍在VC 6.0中编译和使用OpenSSL的过程- 微光的闪现-
+博客园</a></p>
+<p><a href="http://www.sinfors.com/cn/news/913.htm">深信服SSL VPN M4.0正式发布</a></p>
+<p>这些是我使用的资料，搜集了好几天的</p>
+<p>关于OpenSSL编译，源码文件夹下的INSTALL.W32就说的很清楚</p>
+<p><a href="http://www.cnblogs.com/gleam/archive/2008/05/07/1187154.html">本文介绍在VC 6.0中_编译_和使用_OpenSSL_的过程- 微光的闪现-
+博客园</a></p>
+<p><a href="http://blog.csdn.net/gofishing/archive/2006/04/10/658203.aspx">_openssl编译_步骤- 太郎之石的专栏-
+CSDNBlog</a></p>
+<p><a href="http://blog.csdn.net/rabbit729/archive/2008/06/03/2506514.aspx">在Windows下使用汇编方式_编译OpenSSL_方法- rabbit729的专栏-
+CSDNBlog</a></p>
+<p><a href="http://shootingstars.cnblogs.com/archive/2006/02/17/332276.html">在Windows下_编译OpenSSL_（VS2005） - shootingstars -
+博客园</a></p>
+<p>之前我按照官方做法编译失败了，后来安装了VS2005之后就成功了，可能是环境配置的问题，如果VC6.0的朋友遇到和我一样的原因，可以换Visual
+Studio下面的&quot;Visual Studio 2005 命令提示&quot;试试</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -113,6 +1479,100 @@
       
       <guid>https://blog.alswl.com/2008/10/mfc-will-be-from-the-stage-of-history-microsoft-s-next-generation-user-interface-technology-wpf/</guid>
       <description>转来的，最近对MFC很关注&amp;hellip; WPF简介 WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示， 所以叫Presentation（呈现）。 作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的 支持</description>
+      <content:encoded><![CDATA[<p>转来的，最近对MFC很关注&hellip;</p>
+<p>WPF简介</p>
+<p>　　WPF的全称是WindowsPresentationFoundation，是微软新发布的Vista操作系统的三大核心开发库之一，其主要负责的是图形显示，
+所以叫Presentation（呈现）。</p>
+<p>　　作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的
+支持，更加让你刚到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置
+的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。</p>
+<p>　　微软公司早在2003年洛杉矶的PDC上就公布了Avalon，他们将其视为下一代用户界面技术，并且得到了开发者和用户的一致赞同。</p>
+<p>　　在2005年的PDC上，微软公司展示了比2003年更加完整的Avalon版本，并给它取了一个官方新名称：WindowsPresentationFound
+ation(WPF)。在此之前，它已经完成了从演示软件到开始阶段alpha版本的API的转变。到了几个月之后的今天，它又成长成为更加先进的beta版本&ndash;
+你可以使用它来开发你的下一代用户界面程序了。</p>
+<p>　　那么，WPF是什么，为什么它那么重要呢？</p>
+<p>　　首先，它清晰而又有效的将用户界面和程序实现分开。它使得设计可视化的用户界面的设计者和编写内部核心代码的开发人员可以并行工作。这是非常重要的：</p>
+<p>　　•将两者分开，软件开发公司可以使得设计者们集中精力将设计工作做得更好，同时让开发者支持他们。</p>
+<p>　　•随着软件外包和订购的逐渐风行，WPF使得一些商业的设计者们能够更好的从事界面设计工作，并集成一些简单的功能，而购买的核心代码能够独立的完成内部的一些关
+键逻辑而不干扰设计过程。</p>
+<p>　　•它更好的支持应用软件的国际化。不同的独立的界面可以使用不同的本地化方案，而内部的代码是通用的。</p>
+<p>　　•它支持软件的&quot;空标签&quot;：可以为不同的用户采用定制的界面而保持核心的逻辑不变。开发者们创建程序逻辑，然后为不同的用户使用不同的界面并贴上他们的商标等。</p>
+<p>　　WPF使用一种基于XML的语言来定义用户界面从而完成上述的工作。这种语言被称为XAML，XML应用程序标记语言。</p>
+<p>　　其次，WPF使用一种基于向量而不是基于光栅的绘制引擎，这和曹其的Windows的绘制引擎是截然不同的。光栅绘制引擎通过在屏幕上绘制象素点来绘制表面。象素
+只是点；这样的话，如果屏幕分辨率(DPI，每英寸点)增加了，它的效果就会变差。随着现在屏幕都采用超高DPI的分辨率，字体必须使用成百上千个DPI来达到一定的
+浏览效果。比如微软Word里缺省的英文字体12号的TimesNewRoman，在现在的普通分辨率情况下效果还可以但是到了超高分辨率的显示器上效果就不行了。管
+理这些基于光栅的图像的点将会消耗大量的处理能力，同时也是很浪费的。而采用基于向量的方式来替代象素，在一个可扩展的坐标系里绘制字体和其他线型，使得它们可以独立
+于DPI。想想WindowsMetafile（WMF）和位图文件（BMP）之间的差距你就明白了。同时，向量图也使得一些变换如3D，旋转和动画变得更加方便和易
+于操作。</p>
+<p>　　作为新的图形引擎，WPF是基于DirectX的，当然增加了很多新的功能。其2D和3D引擎的强大看看Vista的界面就明白了，再加上其对Aero图形引擎的
+支持，更加让你感到神奇。顺便提一下，Aero是专门为3D桌面开发的引擎，可以让桌面实现神奇的3D翻转，这绝对是操作系统有史以来的一次神奇尝试，虽然对硬件配置
+的要求也是惊人的，此前已有相关报道称，Vista对显卡十分挑剔就是出于运行Aero的考虑。</p>
+<p>　&amp;
+nbsp_place_holder;&amp;nb
+sp_place_holder;&amp;nbsp
+_place_holder;&amp;nbsp_p
+lace_holder;&amp;nbsp_pla
+ce_holder;&amp;nbsp_place
+_holder;&amp;nbsp_place_h
+older;&amp;nbsp_place_hol
+der;&amp;nbsp_place_holde
+r;
+&amp;n
+bsp_place_holder;
+WPF前景分析</p>
+<p>　　WPF其实不仅仅是图形引擎而已，它将给Windows应用程序的开发带来一次革命，因为新的架构提供了一种全新的开发模式。当然对于普通用户而言，最直观的就是
+界面越来越漂亮，看起来越来越舒服了；但对于开发人员而言，界面显示和代码将更好的得到分离，这与从前的桌面应用程序开发有很多不同（界面设置和代码是融合在一起的）
+，这是比较具有革命性的改变之一。还有就是桌面应用程序和浏览器应用程序的融合，根据ms的承诺，正在开发中的WPF/E，即WPFEverywhere版本，将为基
+于WPF的应用程序提供全面的浏览器支持，这意味着未来开发出的应用程序将可以基于浏览器在不同的操作系统上运行（也就是说桌面应用程序和浏览器应用程序将会融合！！
+），当然由于目前还在开发中，我们并不确定会不会有一定的限制，根据WPF/E开发组的定义，WPF/E仍然是WPF的子集，而不是后继版本。总体而言，WPF的前景
+应该是一片光明。</p>
+<p>目前开发界的对WPF响应程度</p>
+<p>　　目前已有很多人开始考虑或者已经转向WPF，一场新的学习热潮已经开始。但根据我最近的学习和了解，国内关于WPF的资料很少，除了msdn提供的资料以外，基本
+都是来自国外的资料，有些则是国外开发人员blog上的资料，当然都是英文的。因此如果现在能够引进一些WPF的书绝对是很好的时机。而且国外目前的几本WPF书也是
+刚刚上市，如果我们可以尽快引进的话，绝对可以帮助国内开发人员在最短时间内赶上国际步伐。</p>
+<p>　　目前微软针对WPF提供的服务和支持</p>
+<p>　　随着VistaRTM的发布，微软新一轮的技术推广已经开始。其实在此之前，WPF已经有很大的推广，因为CTP版本已经发布了有一段日子了。当然很多开发人员主
+要以技术研究为主，也有少数公司已经开始从事基于WPF的产品研发工作。</p>
+<p>　　1。目前WPF的正式版本已经发布（随。netframework3。0正式版发布），你可以从msdn上免费下载</p>
+<p>　　2。相应的技术支持已经开始，但目前仅限于大客户，主要做售前技术支持，对于普通开发人员的技术支持可能要等到明年2月份才会开始（个人知道的情况，请以微软官方
+技术支持网站发布的信息为准）</p>
+<p>　　3。WPF的VS2005插件目前还只有社区预览版（CTP版），也是从msdn上免费下载的，但正式版恐怕还要等一段时间，但使用CTP版本确实已经可以在VS
+2005中进行所见即所得的WPF开发。</p>
+<p>　　对比MFC，winform，wpf</p>
+<p>　　分析：</p>
+<p>　　MFC生成本机代码，自然是很快。可是，消息循环，减缓了界面显示速度，</p>
+<p>　　winform封装了win32的api，多次进行P/invoke操作（大部分使用p/invoke操作封装），速度慢。</p>
+<p>　　wpf是一种新的模型，不再使用win32模型，自己新建模型，使用dx作为新的显示技术，直接访问驱动程序，加快了运行速度，可是，这种模型，需要支持dx9的
+显卡，硬件要求高（你还能找到现代机器不支持dx9的吗？）</p>
+<p>　&amp;
+nbsp_place_holder;&amp;nb
+sp_place_holder;&amp;nbsp
+_place_holder;&amp;nbsp_p
+lace_holder;&amp;nbsp_pla
+ce_holder;&amp;nbsp_place
+_holder;&amp;nbsp_place_h
+older;&amp;nbsp_place_hol
+der;&amp;nbsp_place_holde
+r;
+　MFC，winform，wpf</p>
+<p>　　开发效率上，MFC&lt;WPF&lt;winform</p>
+<p>　　尽管MFC开发界面执行效率高但是开发效率低，作为现在的项目开发来说</p>
+<p>　　时间跟开发效率往往能决定项目的成败，所以除非有特别的需求，否则都回尽量避免用mfc来做开发，MFC只是一个弱封装器</p>
+<p>　　开发成本，MFC〉wpf〉winform</p>
+<p>　　用MFC开发成本太高，对开发者能力要求更高，作为客服当然希望开发的费用越少越好，开发者当然希望钱赚得越多越好，这样一比，这也是MFC没落的一个很大的原因</p>
+<p>　　界面执行效率上，MFC==WPF〉winform</p>
+<p>　　随着计算机硬件的性能提高，多核cpu的普及，它们的差距会越来越小</p>
+<p>　　开发灵活性上：wpf〉MFC〉winform</p>
+<p>　　美观上：Wpf〉winform〉MFC</p>
+<p>　　这一项中MFC下要开发出一个华丽的ui极其困难，也许你可以说你可以用控件，但是商业开发控件是要收费的！！Wpf很容易就可以做出vista那样的ui特效</p>
+<p>　　mfc要写出这种效果不知要写到何年何月</p>
+<p>　　这样一来MFC存在的价值就更低了。效率和美观不如Wpf，开发效率又不如winform，预计不出10年，随着vista取代xp，mfc将会退出历史舞台</p>
+<p>　　内存使用上：wpf〉winform〉MFC</p>
+<p>　　随着计算机硬件的性能提高wpf这个缺点会被忽略</p>
+<p>　　使用范围：wpf〉MFC==winform</p>
+<p>　　由以上可知：WPF大有取代winform和MFC之势，从未来net的发展来看，MFC以后只会变成一种经典，作为一种技术来供开发者学习，winform和W
+PF两者会并存发展，但最终都会被WPF取代，最终实现桌面应用程序和浏览器应用程序的统一。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -122,6 +1582,12 @@
       
       <guid>https://blog.alswl.com/2008/10/mfc/</guid>
       <description>刚开始似乎不太对MFC敏感，觉得现在导出讨论Java和.Net，很少看到MFC的身影，唔，当然了，是在我这只菜鸟看来 后来慢慢写在WinAPI上的程序，都是在命令提示符里面完成代码，界面很不友好，这才翻出MFC的书看。觉得写起来不太容易，逻辑和实现有点差距，就放下了几天。 这几天网络编程想写人性化一点的VC界面，还是得使用MFC。 我到今天才稍微弄清楚MFC和WinAPI窗体之间的关系，一方面开始感慨微</description>
+      <content:encoded><![CDATA[<p>刚开始似乎不太对MFC敏感，觉得现在导出讨论Java和.Net，很少看到MFC的身影，唔，当然了，是在我这只菜鸟看来</p>
+<p>后来慢慢写在WinAPI上的程序，都是在命令提示符里面完成代码，界面很不友好，这才翻出MFC的书看。觉得写起来不太容易，逻辑和实现有点差距，就放下了几天。</p>
+<p>这几天网络编程想写人性化一点的VC界面，还是得使用MFC。</p>
+<p>我到今天才稍微弄清楚MFC和WinAPI窗体之间的关系，一方面开始感慨微软的MFC类库的强大&hellip;</p>
+<p>嗯，继续fighting&hellip;</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -131,6 +1597,77 @@
       
       <guid>https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/</guid>
       <description>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的 首先是ARP的接收，来看一下程序的流程 获取网络设备列表 pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;amp;alldevs, errbuf) 然后人机交互一下，获得需要工作的网卡 打开需要的网</description>
+      <content:encoded><![CDATA[<p>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受</p>
+<p>网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节
+的含义</p>
+<p>玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的</p>
+<p>首先是ARP的接收，来看一下程序的流程</p>
+<p>获取网络设备列表</p>
+<p>pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)</p>
+<p>然后人机交互一下，获得需要工作的网卡</p>
+<p>打开需要的网卡</p>
+<p>(adhandle= pcap_open(d-&gt;name, // 设备名</p>
+<p>65536, // 要捕捉的数据包的部分</p>
+<p>// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容</p>
+<p>PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式</p>
+<p>1000, // 读取超时时间</p>
+<p>NULL, // 远程机器验证</p>
+<p>errbuf // 错误缓冲池</p>
+<p>)</p>
+<p>检查数据链路层，我们只考虑以太网</p>
+<p>pcap_datalink(adhandle) != DLT_EN10MB</p>
+<p>编译过滤器</p>
+<p>pcap_compile(adhandle, &amp;fcode, packet_filter, 1, netmask)</p>
+<p>设置过滤器</p>
+<p>pcap_setfilter(adhandle, &amp;fcode)</p>
+<p>开始捕捉数据包</p>
+<p>pcap_loop(adhandle, 0, packet_handler, NULL)</p>
+<p>packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数</p>
+<p>/* 回调函数，当收到每一个数据包时会被libpcap所调用 */</p>
+<p>void packet_handler(u_char *param, const struct pcap_pkthdr *header, const
+u_char *pkt_data)</p>
+<p>这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束</p>
+<p>我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点</p>
+<p>源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的</p>
+<p>整个程序的注意点</p>
+<ol>
+<li>
+<p>结构的定义，写完整个程序，包括ARP接受，发送，欺骗，我最大的感觉就是关于数据长度的重要性，以前不以为意，只是觉得可以省空间，也不觉得64位和32位有
+什么区别，不过写完网络数据包的分析，就觉得数据长度控制很重要，所以就算有指针，也是需要定义被指向目标的长度。因为指针的出现，数据的转换实在是变得太方便了。可
+以直接把WinPcap捕捉到的数据直接往后移动14个单位长度，获得ip头，而忽略前面14字节的以太网头部。</p>
+</li>
+<li>
+<p>unsigned char, unsigned short, unsigned int等非负数据的使用和转换必须非常小心，因为插入断电看到的数据未必就
+是真实的数据，压根看不出真实数据，我后来使用Ethereal来进行数据包的监控，非常有效，Ethereal是一款GUI界面的网络数据包监控软件，非常好用，他
+本身也是基于WinPcap的。</p>
+</li>
+<li>
+<p>安全性的控制，程序的框架，其实我是使用的WinPcap自带代码的框架，安全控制几乎是步步为营，刚开始我认为有点大题小做，后来把程序移植到别的机子上运行
+，真的发现安全控制做的真好，每一步都可以知道问题出在哪里，防止更多错误出现。</p>
+</li>
+<li>
+<p>有一个MacToStr()的函数写的非常巧妙，是课本上面的事例程序，使用了位运算，本来还有一个IpToStr()，不过似乎出现了一些问题，于是我的Ma
+c地址存储在u_char[6]里面，而Ip地址存储在ip_address里面，自定义了一个结构，这个也是学习WinPcap示例代码的。我觉得自定义结构使用更
+方便高效。</p>
+</li>
+<li>
+<p>网络存储字节高地位和本地存储高地位是相反的，有几个函数专门用来转换的,我直接使用的自己人工把那几个自己转换的</p>
+</li>
+<li>
+<p>printf使用很方便，这点要感谢暑假Acm训练…</p>
+</li>
+</ol>
+<p>接受数据包其实非常简单，几乎就是简单的把WinPcap使用了一下</p>
+<p>本程序源代码的下载地址（[http://download.csdn.net/source/647852](<a href="http://download.csdn.net/">http://download.csdn.net/</a>
+source/647852)）其实很简单，如果有WinPcap开发文档，自己写也差不多</p>
+<p>我现在已经写完了欺骗了，会逐渐把自己的心的经验拿上来分享一下</p>
+<p>这几天看MFC图形界面，网络编程方面在看使用WinAPI来发送数据包，这样就可以不用装WinPcap了</p>
+<p>想不适用WinPcap就直接使用WinPcap的函数，我正在尝试，光考出几个dll还不够，还要一个npf.sys支持，我也是今天刚看到资料，待会儿在机房做完
+测试会写个帖子的。</p>
+<p>呼呼，就写这么点了，晚上图形实验课在机房做ARP欺骗，老师的防火墙一直叫，嘿嘿，不过大家都有360防火墙，倒没什么事故。</p>
+<p>系统重装了，打好多补丁啊，还有好多软件重装…郁闷…</p>
+<p>老系统用了2年没重装了，也到寿命了…</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -140,6 +1677,19 @@
       
       <guid>https://blog.alswl.com/2008/09/arp/</guid>
       <description>挺累的，连续两天忙到3点睡觉，早上9点起来继续做 开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。 这是网络编程，也就是我的专业方向课的第一份作业，我特别看中这次，当初分方向时候，鑫爷和大妈都去了软件，我留在网络了。似乎都觉得网络好学，简单，不要写程序 那么我就写 第一次将c++与系统底层结合起来，去操作网络上的数据包，感觉真是，太perfect了，不再是呆板的代码</description>
+      <content:encoded><![CDATA[<p>挺累的，连续两天忙到3点睡觉，早上9点起来继续做</p>
+<p>开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。</p>
+<p>这是网络编程，也就是我的专业方向课的第一份作业，我特别看中这次，当初分方向时候，鑫爷和大妈都去了软件，我留在网络了。似乎都觉得网络好学，简单，不要写程序</p>
+<p>那么我就写</p>
+<p>第一次将c++与系统底层结合起来，去操作网络上的数据包，感觉真是，太perfect了，不再是呆板的代码，而是真实的数据，真实的操作，甚至我感觉通过键盘，我能
+控制一切的感觉</p>
+<p>从连接网卡，获取数据，过滤数据包，容错纠正，类型匹配，发送数据，匹配数据包，发送伪装数据攻击，我甚至写出了一套简单的ARP病毒…</p>
+<p>其实说起来也不难，只要稍微组合一下几个函数而已</p>
+<p>呵呵，挺开心的，自己做东西真好，真实在</p>
+<p>唔…睡觉了…</p>
+<p>手机打字还是挺累的…</p>
+<p>待会儿放上详细流程</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -149,6 +1699,33 @@
       
       <guid>https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/</guid>
       <description>1.编译时候会出现函数问题 &amp;lsquo;pcap_findalldevs_ex&amp;rsquo; : undeclared identifier &amp;lsquo;PCAP_SRC_IF_STRING&amp;rsquo; : undeclared identifier &amp;lsquo;pcap_open&amp;rsquo; : undeclared identifier &amp;lsquo;PCAP_OPENFLAG_PROMISCUOUS&amp;rsquo; : undeclared identifier &amp;lsquo;=&amp;rsquo; : cannot convert from &amp;lsquo;int&amp;rsquo; to &amp;lsquo;struct pcap *&amp;rsquo; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &amp;ldquo;pcap.h&amp;quot;后面加上 #include &amp;ldquo;remote-ext.h&amp;rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#</description>
+      <content:encoded><![CDATA[<p>1.编译时候会出现函数问题</p>
+<p>&lsquo;pcap_findalldevs_ex&rsquo; : undeclared identifier</p>
+<p>&lsquo;PCAP_SRC_IF_STRING&rsquo; : undeclared identifier</p>
+<p>&lsquo;pcap_open&rsquo; : undeclared identifier</p>
+<p>&lsquo;PCAP_OPENFLAG_PROMISCUOUS&rsquo; : undeclared identifier</p>
+<p>&lsquo;=&rsquo; : cannot convert from &lsquo;int&rsquo; to &lsquo;struct pcap *&rsquo;</p>
+<p>等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个</p>
+<p>头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在</p>
+<p>#include &ldquo;pcap.h&quot;后面加上</p>
+<p>#include &ldquo;remote-ext.h&rdquo;</p>
+<p>就可以编译通过了。</p>
+<p>网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了</p>
+<p>= =#</p>
+<p>2.出现连接错误</p>
+<p>Cpp3.obj : error LNK2001: unresolved external symbol
+<a href="mailto:__imp__ntohs@4">__imp__ntohs@4</a></p>
+<p>Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals</p>
+<p>一般添加工程只需要添加wpcap.lib这个库文件，而在分析数据包这段代码里，光这个头文件</p>
+<p>已经不够了，需要再添加ws2_32.lib这个头文件。其实这个在WinPcap的配置VC里有说明，但</p>
+<p>是以前懒，都只用wpcap.lib</p>
+<p>3.关于程序运行时候是否需要WinPcap的支持，我无法测试出结果，因为学校上网方式的限制</p>
+<p>，所有系统都是有WinPcap运行库文件的，待会儿去网上找找相关资料呢</p>
+<p>4.暑假一直看的是英文说明文档，很吃力，最近在搜狗随便一搜，居然发现了有现成翻译好的</p>
+<p>中文说明文档，翻译挺不错的，可以去搜索下一下。</p>
+<p>终于开始开网络编程课，感叹一下WinPcap的强大，还是停留在用户层的编程，完全没能力看</p>
+<p>核心的源代码。。。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -158,6 +1735,48 @@
       
       <guid>https://blog.alswl.com/2008/08/learning-network-programming-diary-1-_winpcap-and-vc-configuration/</guid>
       <description>下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这 种书，叹一个。 直接导致了我很多东西都得一点一点去网上查找。 很多函数都是用的WinPcap的，所以我又抓紧时间看WinPcap的入门知识。 WinPcap开发包下载：[http://www.winpcap.org/install/default.h</description>
+      <content:encoded><![CDATA[<p>下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这
+种书，叹一个。</p>
+<p>直接导致了我很多东西都得一点一点去网上查找。</p>
+<p>很多函数都是用的WinPcap的，所以我又抓紧时间看WinPcap的入门知识。</p>
+<p>WinPcap开发包下载：[http://www.winpcap.org/install/default.htm](<a href="http://www.winpcap.o">http://www.winpcap.o</a>
+rg/install/default.htm)</p>
+<p>里面有开发者包Developer&rsquo;s Pack和普通使用的安装程序，宽带上网助手就是普通的安装包，而开发要使用的则是Developer&rsquo;s Pack。</p>
+<p>下来之后，安装到某个目录，然后配置VC，把那个目录的include和lib两个目录放到VC的选项-&gt;目录里面。</p>
+<p>WinPcap目录下有doc文档，里面的东西相当全面。我运行了两个，都不能直接运行。</p>
+<p>第一个简单程序是获取网卡适配器信息，里面一个函数pcap_findalldevs_ex找不到，网上资料说是因为这个函数属于远程网卡获取，它的声明在#incl
+ude &ldquo;remote-ext.h&quot;里面，加上去就可以运行了。</p>
+<p>第二个程序错误更多，</p>
+<p>F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: &lsquo;socklen_t&rsquo; : undeclared
+identifier</p>
+<p>F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2146: syntax error : missing &lsquo;;&rsquo;
+before identifier &lsquo;sockaddrlen&rsquo;</p>
+<p>F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: &lsquo;sockaddrlen&rsquo; : undeclared
+identifier</p>
+<p>F:学习网络WiPcap8_08_202Cpp1.cpp(164) : error C2065: &lsquo;getnameinfo&rsquo; : undeclared
+identifier</p>
+<p>F:学习网络WiPcap8_08_202Cpp1.cpp(170) : error C2065: &lsquo;NI_NUMERICHOST&rsquo; : undeclared
+identifier</p>
+<p>错误根由是因为WinPcap支持ipv6,而VC的winsock2.h太老了，很多结构都没有被支持，所以产生错误。网上有人说可以用VS新版本调试，我电脑里面
+是VS2008，但是仍然产生错误</p>
+<p>_vsnprintf属性与生命不匹配，网上没有合适的解决方案，我感觉是WinPcap的某个头文件与stdio.h参数不匹配。</p>
+<p>既然VS也无法通过，我实在没能力去修改WinPcap的头文件，所以就用最后一个方案，使用VC6.0的最新的PlatForm
+SDK开发包，里面包含了新的头文件，就可以支持WinPcap了。</p>
+<p>有人说PSDK只有Windows2003的版本，我在微软里面找到了WinXPSP2的PSDK。</p>
+<p>网址如下</p>
+<p>[http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.ht
+m](<a href="http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall">http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall</a>.
+htm)</p>
+<p>里面好几个Cab，网页里面有完整的安装说明。</p>
+<p>我正在下，搞好之后如果能用再说。</p>
+<p>弄好了，下面是PlatFormSDK安装步骤</p>
+<p>(1)安装过程:</p>
+<p>CMD运行PSDK-FULL.bat，参数为一个目录，里面会被解压缩安装包，然后Setup，一路Next就可以了。</p>
+<p>(2)配置过程</p>
+<p>打开Visual C++6.0，在选项里面连接，把PSDK安装后的include和lib加入相应的位置。</p>
+<p>特别注意，要把这些目录的顺序调高，我直接放到了最高层去了。</p>
+<p>呵呵，编译一下，通过了，好Happy啊。</p>
+]]></content:encoded>
     </item>
     
   </channel>

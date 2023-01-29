@@ -14,6 +14,197 @@
       
       <guid>https://blog.alswl.com/2020/06/type-safe-python/</guid>
       <description>image from pixabay.com 静态类型正在逐渐成为潮流， 2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。 过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。 我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难： 在重构阶段代码回归成本异常之高，很多历史代码不敢动。 后来技术栈转到</description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/202006/wall.png" alt="wall"  />
+
+
+<small>image from pixabay.com</small></p>
+<p>静态类型正在逐渐成为潮流，
+2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。
+过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。</p>
+<p>我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难：
+在重构阶段代码回归成本异常之高，很多历史代码不敢动。
+后来技术栈转到 Java，被类型系统怀抱让人产生安全感。</p>
+<p>最近一年在一个面向稳定性的运维系统耕耘。系统选型之初使用了 Python。
+我在项目中力推了 Python 3.7，并大规模使用了 Python 的类型系统来降低潜在风险。</p>
+<p>追根溯源，我花了一些时间了解 Python 在类型系统的设计和实现，
+本文以 PEP 提案介绍一下 Python 在类型系统上面走过的路。</p>
+<!-- more -->
+<h2 id="类型系统">类型系统</h2>
+<p>谈类型系统之前，要厘定两个概念，动态语言和动态类型。</p>
+<p>动态语言（Dynamic Programming Language）则是指程序在运行时可以改变结构。
+这个结构可以包含函数、对象、变量类型、程序结构。
+动态类型是类型系统（Type System）其中一类，即程序在运行期间可以修改变量类型。
+另外一种是静态类型：在编译期就决定了变量类型，运行期不允许发生变化。
+类型系统还有一种分法是强类型和弱类型，强类型是指禁止类型不匹配的指令，弱类型反之。</p>
+<p>动态语言和动态类型这两个概念切入点不一样，
+Python 是一门动态语言，也是动态类型语言，还是强类型的动态类型。
+这篇文章主要讨论 Python 语言的类型系统，不会涉及动态语言特性。</p>
+<h2 id="类型安全之路">类型安全之路</h2>
+<p>行业里面一直有一个争论：动态类型和静态类型哪一种更强大。
+静态类型的支持者认为三个方面具备优势：性能、错误发现、高效重构。
+静态类型通过编译期决定具体类型可以显著的提高运行期效率；
+编译期就能够发现错误，在工程规模逐步变大时候尤其明显；
+类型系统可以帮助 IDE 提示，高效重构。
+动态类型的支持者则认为分析代码会更简单，减少出错机会，写起来也更为快速。</p>
+<p>Python 开发者们并非没有看到这个痛点，
+一系列 PEP 提案应运而生。
+在保留 Python 动态类型系统优势前提，通过语法、特性增强，将类型系统引入 Python。</p>
+<p>Python 在 2014 年即提出了 PEP 484，随后提出一个精粹版 PEP 483（The Theory of Type Hints），
+其工程实现 <a href="https://docs.python.org/3/library/typing.html">typing</a> 模块在 3.5 发布。
+经过 PEP 484，PEP 526，PEP 544，PEP 586，PEP 589，PEP 591 的多次版本迭代，Python 的类型系统已经很丰富。
+甚至包含了比如 Structural Subtyping 以及 Literal Typing 这边相对罕见的特性。</p>
+<h3 id="pep-483---核心概念">PEP 483 - 核心概念</h3>
+<p><a href="https://www.python.org/dev/peps/pep-0483/">PEP 483</a> 在 2014 年 12 月发布，
+是 Guido 起笔的核心概念版，简明扼要的写清楚 Python 的类型系统建设方向、边界、要和不要。</p>
+<p>PEP 483 没有谈具体工程实现，提纲挈领地讲了一下 Python 类型系统如何对外呈现。
+厘定 Type / Class 差别，前者是语法分析概念，后者是运行时概念。
+在这个定义下面 Class 都是一个 Type，但 Type 未必是 Class。
+举例 <code>Union[str, int]</code> 是 Type 但并不是 Class。</p>
+<p>PEP 483 还介绍内建基础类型：<code>Any</code> / <code>Unison</code> / <code>Optional</code> / <code>Tuple</code> / <code>Callable</code>，这些基础类型支撑上游丰富变化。</p>
+<p>静态类型系统最大的诟病是不够灵活，Go 语言现在还没有实现泛型。
+PEP 483 介绍了 Python Generic types 泛型使用方法，
+形式如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">longest</span><span class="p">(</span><span class="n">first</span><span class="p">:</span> <span class="n">S</span><span class="p">,</span> <span class="n">second</span><span class="p">:</span> <span class="n">S</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">S</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">first</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">first</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">second</span><span class="p">)</span> <span class="k">else</span> <span class="n">second</span>
+</span></span></code></pre></div><p>最后，PEP 483 还提了一些重要的小特性：</p>
+<ul>
+<li>别称 Alias</li>
+<li>前置引用 Farward Reference（在定义类方法注解中使用定义类），eg.：解决二叉树 Node 节点中需要引用 Node 问题</li>
+<li>covariance contravariant 协变逆变</li>
+<li>使用注释标记类型</li>
+<li>转型 Cast</li>
+</ul>
+<p>PEP 483 的实现，主要依赖了 <a href="https://www.python.org/dev/peps/pep-3107/">PEP 3107 &ndash; Function Annotations</a>
+这个提案。PEP 3107 介绍 function 注解使用。比如， <code>func(a: a1, b: b1) -&gt; r1</code>
+这段代码，
+其中冒号后面的描述符记录会到 func 的 <code>__annotations__</code> 变量中。</p>
+<p>PEP 3107 效果展示如下，可以清晰看到函数变量存放：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="o">.</span><span class="vm">__annotations__</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># {&#39;x&#39;: int, &#39;y&#39;: int, &#39;return&#39;: int}</span>
+</span></span></code></pre></div><p>PS：现在 Python 有了 Decorator 装饰器 / Annotation 注解，其中 Annotation 的设计还和 Java 的 Annotation 同名，一锅粥。</p>
+<h3 id="pep-484---type-hints-核心">PEP 484 - Type Hints 核心</h3>
+<p><a href="https://www.python.org/dev/peps/pep-0484/">PEP 484 &ndash; Type Hints</a>
+在 PEP 483 基础上完整讲述 Python 类型系统如何设计，如何使用，细节如何（typing 模块）</p>
+<p>这篇提案开宗明义地点出：</p>
+<blockquote>
+<p>Python will remain a dynamically typed language, and the authors have no desire to ever make type hints mandatory,
+even by convention.</p>
+</blockquote>
+<p>一句话断绝了 Python 在语言级别进化到静态系统的可能。</p>
+<p>提案除了 PEP 483 已经讲解的特性，还有以下吸引我的点：</p>
+<ul>
+<li>允许通过 Stub Files 为已经存在的库添加类型描述。具体是使用 Python 文件对应的 <code>.pyi</code> 文件描述 Python 代码的带类型签名。
+这个方案和 TS 的 <code>@types</code> 文件有异曲同工之妙。</li>
+<li>允许使用 <code>@overload</code> 进行类型重载，这也是活久见，Python 居然可以（在某种意义上）支持重载了。</li>
+<li>介绍了 typing 实现细节，比如使用 abs（Abstract Base Class）构建常见类型的 interface，包括 <code>Sized</code> / <code>Iterable</code> 这些基础接口。
+我个人认为这个工作量是其实挺大，是给已有的类进行一次依赖梳理。</li>
+<li>介绍了 Python 向后（Python 2）兼容方法，有这么几种策略：
+使用 decorator（<code>@typehints(foo=str, returns=str)</code>）、comments、Stub files、Docstring</li>
+</ul>
+<h3 id="pep-526---变量也安排上了">PEP 526 - 变量也安排上了</h3>
+<p><a href="https://www.python.org/dev/peps/pep-0526/">PEP 526 &ndash; Syntax for Variable Annotations</a>
+核心提案是给变量加上 Type Hints 支持。</p>
+<p>和 <code>function annotation</code> 类似，也是通过注解方式存放。
+差异是并不是给实例添加一个 <code>__annotations__</code> 成员，而是将变量的 annotations 信息存放在上下文变量 <code>__annotations__</code> 之中。
+这个其实也比较好理解：定义一个变量类型时候，这个变量还没有初始化。</p>
+<p>我写一段 Demo 展示一下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+</span></span><span class="line"><span class="cl"><span class="n">users</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># print(__annotations__)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># {&#39;users&#39;: typing.List[int]}</span>
+</span></span></code></pre></div><p>可以看到，上述 Demo 效果是在上下文变量创建了一个 <code>users</code>，但这个 <code>users</code> 其实并不存在，只是定义了类型，
+如果运行 <code>print(users)</code> 会抛出 <code>NameError: name 'users' is not defined</code>。</p>
+<p>观察字节码会更清晰：</p>
+<pre tabindex="0"><code> L.   1         0  SETUP_ANNOTATIONS
+
+ L.   1         2  LOAD_CONST               0
+                4  LOAD_CONST               (&#39;List&#39;,)
+                6  IMPORT_NAME              typing
+                8  IMPORT_FROM              List
+               10  STORE_NAME               List
+               12  POP_TOP
+
+ L.   3        14  LOAD_NAME                List
+               16  LOAD_NAME                int
+               18  BINARY_SUBSCR
+               20  LOAD_NAME                __annotations__
+               22  LOAD_STR                 &#39;users&#39;
+               24  STORE_SUBSCR
+               26  LOAD_CONST               None
+               28  RETURN_VALUE
+</code></pre><p>可以清晰看到，并没有创建一个名为 users 的变量，而是使用了 <code>__annotations__</code> 变量。
+注：Python 存储变量使用 opcode 是 <code>STORE_NAME</code>。</p>
+<p>PS：本提案中有不少被否决的提案，挺有趣的，社区提出了很多奇淫巧计。
+可以看出社区决策的慎重，存量系统升级的难度。</p>
+<h3 id="pep-544---nominal-subtyping-vs-structural-subtyping">PEP 544 - Nominal Subtyping vs Structural Subtyping</h3>
+<p>PEP 484 里面类型系统讨论的是 Nominal Subtyping，
+这个 <a href="https://www.python.org/dev/peps/pep-0544/">PEP 544 &ndash; Protocols: Structural subtyping (static duck typing)</a>
+则是提出了Structural Subtyping。
+如果非要翻译，我觉得可以称为具名子类型 / 同构子类型。
+注意，也有人将 Structural Subtyping 称之为 Duck Typing，其实这两者不相同，具体可以见
+<a href="https://en.wikipedia.org/wiki/Duck_typing#Structural_type_systems">Duck typing / Comparison with other type systems</a>。</p>
+<p>Nominal Subtyping 是指按字面量匹配类型，而 Structural Subtyping 则是按照结构（行为）进行匹配，
+比如 Go 的 Type 就是 Structural Subtyping 实现。</p>
+<p>这里写个简单 Demo 展示一下后者：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Iterable</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Bucket</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="o">...</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span> <span class="o">...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="n">items</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
+</span></span><span class="line"><span class="cl"><span class="n">result</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">collect</span><span class="p">(</span><span class="n">Bucket</span><span class="p">())</span>  <span class="c1"># Passes type check</span>
+</span></span></code></pre></div><p>代码中定义了 Bucket 这种类型，并且提供了两个类成员。这两个类成员刚好是 Interator 的定义。
+那么在实际使用中，就可以使用 Bucket 替换 Iterable。</p>
+<h3 id="pep-586--pep-589--pep-591-持续增强">PEP 586 / PEP 589 / PEP 591 持续增强</h3>
+<p><a href="https://www.python.org/dev/peps/pep-0586/">PEP 586 &ndash; Literal Types</a>
+在 Python 3.8 实现，支持了字面量作为类型使用。
+比如 <code>Literal[4]</code>，举一个更有语义的例子 <code>Literal['GREEN']</code>。</p>
+<p>我第一反应这和 Scala 里面的 Symbol 非常像，Scala 中写法是 <code>Symbol(&quot;GREEN&quot;)</code>。
+这个特性使用挺学院派，很容易在 DSL 里面写的天花乱坠。
+Scala 官方有说过可能在未来移除 Symbol 特性，建议直接使用常量替代。</p>
+<p><a href="https://www.python.org/dev/peps/pep-0589/">PEP 589 &ndash; TypedDict: Type Hints for Dictionaries with a Fixed Set of Keys</a>
+给 Dict 增加 key 的 Type，继承 <code>TypedDict</code>。</p>
+<p><a href="https://www.python.org/dev/peps/pep-0591/">PEP 591 &ndash; Adding a final qualifier to typing</a>
+增加 <code>final</code> / <code>Final</code> 两个概念，前者是装饰器，后者是注解，标注该类 / 函数 / 变量无法修改</p>
+<p>至此，Python 3.8 已经具备我们日常需要的类型系统特性（非运行时 😂）。</p>
+<h2 id="总结">总结</h2>
+<p>遗憾的是，<code>typing</code> 模块在文档鲜明的标注：</p>
+<blockquote>
+<p>The Python runtime does not enforce function and variable type annotations. They can be used by third party tools
+such as type checkers, IDEs, linters, etc.</p>
+</blockquote>
+<p>即：Python 运行时（Intercepter / Code Evaluator）并不支持函数和变量的类型装饰符。
+这些装饰符只能由第三方工具检查，比如类型检查器、IDE、静态、Linter。</p>
+<p>这个信息说明了 Python 在类型安全上尝试的局限性。所有的限制、约束都不会发生在运行时，
+想要从类型系统中收获工程上面的价值，只能借助第三方工具。</p>
+<p>诚然，Python 社区在竭力向类型系统靠拢，但是这种非语言级别 Runtime 的支持，到底能走多远呢？
+Python 缺少金主爸爸，干爹 Red Hat 投入资源也有限。连社区从 Python 2 切换到 Python 3 都还没走完，为何？
+投入产出比太低，新特性缺乏足够的吸引力，替代品太多。</p>
+<p>另一方面，看看竞对们：
+动态语言在往静态语言靠拢，而静态语言也在不断吸收动态语言的特性。比如 Java 14 里面的 REPL（Read-Eval-Print-Loop），
+Kotlin / Scala 等语言的类型推断（Type Inference）。
+也许这种演进方式更能够让用户接受吧。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://docs.python.org/3/library/typing.html">typing — Support for type hints — Python 3.8.3 documentation</a></li>
+<li><a href="https://www.python.org/dev/peps/pep-0483/#type-variables">PEP 483 &ndash; The Theory of Type Hints | Python.org</a></li>
+<li><a href="https://www.python.org/dev/peps/pep-0484/#abstract">PEP 484 &ndash; Type Hints | Python.org</a></li>
+<li><a href="https://www.bernat.tech/the-state-of-type-hints-in-python/">the state of type hints in Python</a></li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -23,6 +214,164 @@
       
       <guid>https://blog.alswl.com/2013/11/python-gdb/</guid>
       <description>大约一年前，我接触了 Java 中的 Btrace 能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。 另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。 当时公司技术方面也遇到了一些瓶颈，一部分原因是 CPython 本身的 IO 模型问题， 另一方面也和早期代码写的极不工整脱不了关系。万般无奈之下，我们用 Jython 推翻重做了主要业务，效果立竿见影，但同时也把真实问题给规避掉了。 在这之后我们在 JVM 的领导下，走上了康庄大道。但我心中始终还有</description>
+      <content:encoded><![CDATA[<p>大约一年前，我接触了 Java 中的 <a href="http://kenai.com/projects/btrace">Btrace</a>
+能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。
+另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。</p>
+<p>当时公司技术方面也遇到了一些瓶颈，一部分原因是 CPython 本身的 IO 模型问题，
+另一方面也和早期代码写的极不工整脱不了关系。万般无奈之下，我们用
+Jython 推翻重做了主要业务，效果立竿见影，但同时也把真实问题给规避掉了。</p>
+<p>在这之后我们在 JVM 的领导下，走上了康庄大道。但我心中始终还有一个梗，
+就是想对性能遇到瓶颈的 Python Process 进行线上侦测。
+这篇文章就是开始的第一步。</p>
+<p>PS:这篇文章理论上是可行的，但是在我机器（Ubuntu 12.04 / 系统自带 Python）
+无法正常执行，会爆出 <code>unable to read python frame information</code>
+的问题。解决方法我会在下篇文章中写出。这里只是单纯翻译一下原文。</p>
+<p>原文可以移步 <a href="https://wiki.python.org/moin/DebuggingWithGdb">https://wiki.python.org/moin/DebuggingWithGdb</a>。</p>
+<!-- more -->
+<hr />
+<p>有一些类型的 bugs 很难使用 Python 直接进行 debug，比如</p>
+<ul>
+<li>段错误（无法被捕捉的 Python 异常）</li>
+<li>卡住的进程（这种情况下面没法使用 <code>pdb</code> 来进行跟踪）</li>
+<li>控制之外的后台处理 daemon 进程</li>
+</ul>
+<p>这些情况下，你可以使用尝试使用 <code>gdb</code>。</p>
+<h2 id="准备">准备</h2>
+<p>需要在系统安装 <code>gdb</code> 和 Python debug 扩展。
+Python debug 扩展包含了一些 debug 命令，并且添加了一些 Python 特定的命令到 <code>gdb</code>。
+在主流的 Linux 发行版中，你可以轻松的安装他们：</p>
+<p>Fedora:</p>
+<pre tabindex="0"><code>sudo yum install gdb python-debuginfo
+</code></pre><p>Ubunt:</p>
+<pre tabindex="0"><code>sudo apt-get install gdb python2.7-dbg
+</code></pre><p>在一些老系统上面，也一样可以使用 <code>gdb</code>，具体看文章末尾。</p>
+<h2 id="使用-gdb">使用 <code>GDB</code></h2>
+<p>有两种可行的方法：</p>
+<ol>
+<li>一开始就使用 <code>gdb</code> 来启动应用</li>
+<li>连接到一个已经运行的 Python 进程</li>
+</ol>
+<p>在 <code>gdb</code> 下面启动 Python 同样有两种方式：</p>
+<p>交互式：</p>
+<pre tabindex="0"><code>$ gdb python
+...
+(gdb) run &lt;programname&gt;.py &lt;arguments&gt;
+</code></pre><p>自动：</p>
+<pre tabindex="0"><code>$ gdb -ex r --args python &lt;programname&gt;.py &lt;arguments&gt;
+</code></pre><p>这样的话，它会一直运行直到退出、段错误、或者人为的停止（使用 <code>Ctrl+C</code>）。</p>
+<p>如果进程已经开始运行，你可以通过 PID 来接入它：</p>
+<pre tabindex="0"><code>$ gdb python &lt;pid of running process&gt;
+</code></pre><h2 id="调试进程">调试进程</h2>
+<p>如果你的程序段错误了， <code>gdb</code> 会自动暂停程序，这样你可以切换到 <code>gdb</code>
+命令行来检查状态。你也可以人为地使用 <code>Ctrl+C</code> 来暂停程序运行。</p>
+<p>查看 <a href="https://fedoraproject.org/wiki/Features/EasierPythonDebugging">EasierPythonDebugging</a>
+获得 <code>gdb</code> 里面的 Python 命令列表。</p>
+<h2 id="查看-c-调用栈">查看 C 调用栈</h2>
+<p>如果你在 debug 段错误，你最想做的可能就是查看 C 调用栈。</p>
+<p>在 <code>gdb</code> 的命令行里面，只要运行一下命令：</p>
+<pre tabindex="0"><code>(gdb) bt
+#0  0x0000002a95b3b705 in raise () from /lib/libc.so.6
+#1  0x0000002a95b3ce8e in abort () from /lib/libc.so.6
+#2  0x00000000004c164f in posix_abort (self=0x0, noargs=0x0)
+    at ../Modules/posixmodule.c:7158
+#3  0x0000000000489fac in call_function (pp_stack=0x7fbffff110, oparg=0)
+    at ../Python/ceval.c:3531
+#4  0x0000000000485fc2 in PyEval_EvalFrame (f=0x66ccd8)
+    at ../Python/ceval.c:2163
+...
+</code></pre><p>运气好的话，你可以直接看到问题出现在什么地方。如果它提供的信息不能直接帮你解决问题，
+你可以尝试继续追踪调用栈。
+调式的结果取决于 debug 信息的有效程度。</p>
+<h2 id="查看-python-调用栈">查看 Python 调用栈</h2>
+<p>如果你安装了 Python 扩展，你可以使用</p>
+<pre tabindex="0"><code>(gdb) py-bt
+</code></pre><p>可以获取熟悉的 Python 源代码。</p>
+<h2 id="对挂住的进程开刀">对挂住的进程开刀</h2>
+<p>如果一个进程看上去挂住了，他可能在等待什么东西（比如锁、IO 等等）。
+也有可能在拼命的跑循环。连接上这个进程，然后检查调用栈也许可以帮上忙。</p>
+<p>如果进程在疯狂循环，你可以先让它运行一会，使用 <code>cont</code> 命令，
+然后使用 <code>Ctrl+C</code> 来暂停，并且打印出调用栈。</p>
+<p>如果一些线程卡住了，下面的命令可能会帮上忙：</p>
+<pre tabindex="0"><code>(gdb) info threads
+  Id   Target Id         Frame
+  37   Thread 0xa29feb40 (LWP 17914) &#34;NotificationThr&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  36   Thread 0xa03fcb40 (LWP 17913) &#34;python2.7&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  35   Thread 0xa0bfdb40 (LWP 17911) &#34;QProcessManager&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  34   Thread 0xa13feb40 (LWP 17910) &#34;python2.7&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  33   Thread 0xa1bffb40 (LWP 17909) &#34;python2.7&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  31   Thread 0xa31ffb40 (LWP 17907) &#34;QFileInfoGather&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  30   Thread 0xa3fdfb40 (LWP 17906) &#34;QInotifyFileSys&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  29   Thread 0xa481cb40 (LWP 17905) &#34;QFileInfoGather&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  7    Thread 0xa508db40 (LWP 17883) &#34;QThread&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  6    Thread 0xa5cebb40 (LWP 17882) &#34;python2.7&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  5    Thread 0xa660cb40 (LWP 17881) &#34;python2.7&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  3    Thread 0xabdffb40 (LWP 17876) &#34;gdbus&#34; 0xb7fdd424 in __kernel_vsyscall ()
+  2    Thread 0xac7b7b40 (LWP 17875) &#34;dconf worker&#34; 0xb7fdd424 in __kernel_vsyscall ()
+* 1    Thread 0xb7d876c0 (LWP 17863) &#34;python2.7&#34; 0xb7fdd424 in __kernel_vsyscall ()
+</code></pre><p>当前运行的线程被标记为 <code>*</code>，要查看 Python 代码运行到哪里，使用 <code>py-list</code> 查看：</p>
+<pre tabindex="0"><code>(gdb) py-list
+2025        # Open external files with our Mac app
+2026        if sys.platform == &#34;darwin&#34; and &#39;Spyder.app&#39; in __file__:
+2027            main.connect(app, SIGNAL(&#39;open_external_file(QString)&#39;),
+2028                         lambda fname: main.open_external_file(fname))
+2029
+&gt;2030        app.exec_()
+2031        return main
+2032
+2033
+2034    def __remove_temp_session():
+2035        if osp.isfile(TEMP_SESSION_PATH):
+</code></pre><p>查看所有进程的 Python 代码位置，可以使用：</p>
+<pre tabindex="0"><code>(gdb) thread apply all py-list
+...
+ 200
+ 201        def accept(self):
+&gt;202            sock, addr = self._sock.accept()
+ 203            return _socketobject(_sock=sock), addr
+ 204        accept.__doc__ = _realsocket.accept.__doc__
+ 205
+ 206        def dup(self):
+ 207            &#34;&#34;&#34;dup() -&gt; socket object
+
+Thread 35 (Thread 0xa0bfdb40 (LWP 17911)):
+Unable to locate python frame
+
+Thread 34 (Thread 0xa13feb40 (LWP 17910)):
+ 197            for method in _delegate_methods:
+ 198                setattr(self, method, dummy)
+ 199        close.__doc__ = _realsocket.close.__doc__
+ 200
+ 201        def accept(self):
+&gt;202            sock, addr = self._sock.accept()
+ 203            return _socketobject(_sock=sock), addr
+...
+</code></pre><h2 id="引用">引用</h2>
+<ul>
+<li><a href="http://fedoraproject.org/wiki/Features/EasierPythonDebugging">http://fedoraproject.org/wiki/Features/EasierPythonDebugging</a></li>
+<li><a href="https://code.google.com/p/spyderlib/wiki/HowToDebugDeadlock">https://code.google.com/p/spyderlib/wiki/HowToDebugDeadlock</a></li>
+</ul>
+<h2 id="老系统上的-gdb">老系统上的 GDB</h2>
+<p>有时候你需要在老系统上面安装 <code>gdb</code>，这时候你可能需要下列信息：</p>
+<h3 id="gdb-macros">GDB Macros</h3>
+<p>一些随着 Python 发布的 GDB 脚本可以用来调试 Python 进程。
+你可以把 Python 源码里面的 <code>Misc/gdbinit</code>  拷贝到 <code>~/.gdbinit</code>，
+或者从 <a href="http://svn.python.org/view/python/branches/release27-maint/Misc/gdbinit?view=log">Subversion</a>
+来拷贝他们。请注意你的 Python，确保使用正确的代码版本，否则有些功能可能无法工作。</p>
+<p>请注意有些新的 GDB 命令只有在 debug 需要的库存在才能正常工作。</p>
+<p>这个脚本在 Ubuntu 上面的 gcc 4.5.2 工作时，会爆出错误
+<code>No symbol &quot;co&quot; in current context.</code>，是因为 <code>call_function</code> 在
+<a href="https://wiki.python.org/moin/EvalFrameEx">PyEval_EvalFrameEx</a> 和
+<a href="https://wiki.python.org/moin/EvalCodeEx">PyEval_EvalCodeEx</a> 之间。
+重新使用 <code>make &quot;CFLAGS=-g -fno-inline -fno-strict-aliasing&quot;</code>
+编译 Python 可以解决这个问题。</p>
+<h3 id="使用-python-stack-traces-gdb-脚本">使用 Python Stack Traces GDB 脚本</h3>
+<p>在 gdb 命令行里，可以这样查看 Python stack trace:</p>
+<pre tabindex="0"><code>(gdb) pystack
+</code></pre><p>同样的，可以获取一列 stack frame 的 Python 变量：</p>
+<pre tabindex="0"><code>(gdb) pystackv
+</code></pre><p>更多 gdbinit 里面没定义的有用的脚本可以在这里找到：</p>
+<p><a href="http://web.archive.org/web/20070915134837/http://www.mashebali.com/?Python_GDB_macros:The_Macros">http://web.archive.org/web/20070915134837/http://www.mashebali.com/?Python_GDB_macros:The_Macros</a></p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -32,6 +381,129 @@
       
       <guid>https://blog.alswl.com/2013/01/python-epoll/</guid>
       <description>原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b&amp;#39;\n\n&amp;#39; EOL2 = b&amp;#39;\n\r\n&amp;#39; response = b&amp;#39;HTTP/1.0 200 OK\r\ndate: &amp;#34;2013-01-12T00:01:00+08:00&amp;#34; response += b&amp;#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&amp;#39; response += b&amp;#39;Hello, world!&amp;#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&amp;#39;0.0.0.0&amp;#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&amp;#39;&amp;#39; while EOL1 not in request and EOL2 not in request: request += connectiontoclient.recv(1024) print(&amp;#39;-&amp;#39;*40 + &amp;#39;\n&amp;#39; + request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将</description>
+      <content:encoded><![CDATA[<p>原文地址： <a href="http://scotdoyle.com/python-epoll-howto.html">http://scotdoyle.com/python-epoll-howto.html</a> ，
+我这里取精简内容翻译过来。</p>
+<p>============ 正文开始 ============</p>
+<h2 id="介绍">介绍</h2>
+<p>Python 从 2.6 开始支持 <a href="http://linux.die.net/man/4/epoll">epoll</a>。现在我们用 Python3 来写基于这些 API
+的 epoll 范例。</p>
+<!-- more -->
+<h2 id="阻塞的-socket-通信范例">阻塞的 Socket 通信范例</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">EOL1</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">EOL2</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n\r\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span>  <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s1">date: &#34;2013-01-12T00:01:00+08:00&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s1">Content-Length: 13</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;Hello, world!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">serversocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">   <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">connectiontoclient</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">      <span class="n">request</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">while</span> <span class="n">EOL1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span> <span class="ow">and</span> <span class="n">EOL2</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">          <span class="n">request</span> <span class="o">+=</span> <span class="n">connectiontoclient</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">decode</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">      <span class="n">connectiontoclient</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">connectiontoclient</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">finally</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">   <span class="n">serversocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span></code></pre></div><p>这个范例中的代码在 <code>accept()</code> 、 <code>recv()</code> 和 <code>send()</code> 时候会发生阻塞，
+导致其他连接无法完成。</p>
+<p>通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听，
+将建立成功的连接交给其他线程操作，然后继续在主线程上面监听。
+这样一来，就不会受单次请求阻塞的限制。</p>
+<p><a href="http://www.kegel.com/c10k.html">C10K</a> 问题描述了其他处理高并发方法，比如异步 Socket，
+通过监听事件来触发预设的响应。异步 Socket 可以是单线程，也可以是多线程。</p>
+<p>Python 的 API 中包含了 select / poll / epoll，具体的可用性依赖于操作系统。
+他们的效率是 epoll &gt; poll &gt; select，从这个 <a href="http://lse.sourceforge.net/epoll/index.html">性能测试文章</a> 就可以看出来。</p>
+<h2 id="epoll-异步编程范例">epoll 异步编程范例</h2>
+<p>epoll 的流程是这样的：</p>
+<ol>
+<li>创建 epoll 实例</li>
+<li>告诉 epoll 去监听哪几种类型事件</li>
+<li>向 epoll 查询最近已监听事件的变化</li>
+<li>根据不同的类型做不同的处理</li>
+<li>让 epoll 修改监听列表</li>
+<li>重复 3-5 直到结束</li>
+<li>消灭 epoll 实例</li>
+</ol>
+<p>范例代码：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span><span class="o">,</span> <span class="nn">select</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">EOL1</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">EOL2</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n\r\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span>  <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s1">date: &#34;2013-01-12T00:01:00+08:00&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s1">Content-Length: 13</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">+=</span> <span class="sa">b</span><span class="s1">&#39;Hello, world!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">serversocket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="mi">8080</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">serversocket</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">epoll</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">epoll</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">   <span class="n">connections</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">requests</span> <span class="o">=</span> <span class="p">{};</span> <span class="n">responses</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">   <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">      <span class="n">events</span> <span class="o">=</span> <span class="n">epoll</span><span class="o">.</span><span class="n">poll</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="k">for</span> <span class="n">fileno</span><span class="p">,</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">events</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">         <span class="k">if</span> <span class="n">fileno</span> <span class="o">==</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">            <span class="n">connection</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="n">serversocket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="n">connection</span><span class="o">.</span><span class="n">setblocking</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">epoll</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">connections</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">connection</span>
+</span></span><span class="line"><span class="cl">            <span class="n">requests</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">responses</span><span class="p">[</span><span class="n">connection</span><span class="o">.</span><span class="n">fileno</span><span class="p">()]</span> <span class="o">=</span> <span class="n">response</span>
+</span></span><span class="line"><span class="cl">         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLIN</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">+=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">EOL1</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="ow">or</span> <span class="n">EOL2</span> <span class="ow">in</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">               <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">40</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">requests</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">()[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLOUT</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">byteswritten</span> <span class="o">=</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span> <span class="o">=</span> <span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">][</span><span class="n">byteswritten</span><span class="p">:]</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">responses</span><span class="p">[</span><span class="n">fileno</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">               <span class="n">epoll</span><span class="o">.</span><span class="n">modify</span><span class="p">(</span><span class="n">fileno</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">               <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">shutdown</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SHUT_RDWR</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">         <span class="k">elif</span> <span class="n">event</span> <span class="o">&amp;</span> <span class="n">select</span><span class="o">.</span><span class="n">EPOLLHUP</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">fileno</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="k">del</span> <span class="n">connections</span><span class="p">[</span><span class="n">fileno</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="k">finally</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">   <span class="n">epoll</span><span class="o">.</span><span class="n">unregister</span><span class="p">(</span><span class="n">serversocket</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">   <span class="n">epoll</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">   <span class="n">serversocket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span></code></pre></div><p>最关键的几行如下：</p>
+<ul>
+<li>16：注册感兴趣的事件</li>
+<li>23：如果发现是监听 socket，则创建连接</li>
+<li>30：读事件处理</li>
+<li>33：读事件完成后，修改 epoll 对应的状态到写事件</li>
+<li>35：写事件</li>
+<li>41：释放对应的连接</li>
+</ul>
+<p>Epoll 分边缘触发（edge-triggered）和水平触发（level-triggered）两种，
+前者只被内核触发一次通知（除非状态被改变为未就绪），后者在触发后如果不做操作，
+以后仍然会收到内核的触发通知。</p>
+<h2 id="更多优化">更多优化</h2>
+<h3 id="连接等待池大小">连接等待池大小</h3>
+<p>我们之前的代码直接使用 <code>listen()</code> 建立连接，可以通过设定一个队列大小，
+在队列满了时候，就不再接受新的连接，从而保证已经接受的连接顺利完成。</p>
+<h3 id="tcp-选项">TCP 选项</h3>
+<p>使用 <a href="http://www.baus.net/on-tcp_cork">TCP_CORK</a> 功能，可以将小数据包封装成大包传输，提高效率。</p>
+<p><a href="http://www.techrepublic.com/article/tcpip-options-for-high-performance-data-transmission/1050878">TCP_NODELAY</a> 则作用相反，将大包分成小包发送出去。比较适合实时应用比如 SSH。</p>
+<p>（译者：<a href="http://www.uplook.cn/blog/8/81276/">Linux下高性能网络编程中的几个TCP/IP选项</a>介绍这几个 HTTP，写的不错。</p>
+<p>范例中的源码在 <a href="http://scotdoyle.com/python-epoll-examples.tar.gz">source code</a> 下载。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -41,6 +513,70 @@
       
       <guid>https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/</guid>
       <description>原文链接：Keeping Instagram up with over a million new users in twelve hours 这周二我们发布了 Instagram for Android，反响空前强烈。 最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。 尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。 在这里我们将分享一些帮助我们解决问题的工具和技术。 ##statsd## statsd 在 Instagram 很受欢迎。这是 Etsy 写的一个网络监控器， 能够统计并图形化数据。它有两种核心的统计方式：计数器和</description>
+      <content:encoded><![CDATA[<p>原文链接：<a href="http://instagram-engineering.tumblr.com/post/20541814340/keeping-instagram-up-with-over-a-million-new-users-in">Keeping Instagram up with over a million new users in twelve hours</a></p>
+<hr />
+<p>这周二我们发布了 <a href="https://play.google.com/store/apps/details?id=com.instagram.android">Instagram for Android</a>，反响空前强烈。
+最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。
+尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。
+在这里我们将分享一些帮助我们解决问题的工具和技术。</p>
+<!-- more -->
+<p>##statsd##</p>
+<p><a href="http://github.com/etsy/statsd/">statsd</a> 在 Instagram 很受欢迎。这是 <a href="http://github.com/etsy/">Etsy</a> 写的一个网络监控器，
+能够统计并图形化数据。它有两种核心的统计方式：计数器和计时器。
+我们用计数器来跟踪许多信息，从每秒钟注册数到喜欢数量统计。
+同时我们使用计时器来跟踪 feeds 变化，用户停留在 feeds 多久，和其他的主要操作。</p>
+<p>我们喜欢 statsd 的最大原因是它能迅速将状态显示并图形化出来。
+Stats 几乎是实时的（在我们系统中有 10 秒钟的延时）
+帮助我们评估系统状况和代码变化情况。
+Stats 可以随意启用，当我们需要跟踪时，能够快速启用它。
+你可以指定一个取样密度，来均匀的查看 web 应用概况，
+而不会影响它运行效率。</p>
+<p>总结：实时统计可以动态添加，帮助你线上诊断而无须等待问题重现。</p>
+<p>##Dogslow##</p>
+<p><a href="http://blog.bitbucket.org/2011/05/17/tracking-slow-requests-with-dogslow/">Bitbucket</a> 出品，Dogslow 是一个 Django middleware，它能监视运行的进程，
+当发现有进程运行时间超过 <em>N</em> 秒时，会保存当前进程信息的快照到磁盘。
+一直开着它很耗性能，但当去定位突发问题的瓶颈时，就会非常有用（我们在 web
+服务器上加了一个开关控制）。</p>
+<p>在发布那天，我们发现很多运行时间超过 1.5s 的进程都卡在 memcached 的 set()
+和 get_many() 方法上。我们使用 Munin 跟踪我们的机器状态，发现 memcached
+每秒有 5 万次请求，因此，尽管还没到达 CPU 上限，却被 memcached
+拖慢了应用服务器速度。</p>
+<p>总结：瓶颈往往是后台的一个短板造成的，定位到底哪里卡下来能帮助找出问题根源。</p>
+<p>##Replication &amp; Read-slaves##</p>
+<p>我们主要的两个数据源 <a href="http://redis.io">Redis</a> 和 <a href="http://postgresql.org/">PostgreSQL</a> 都可以方便地主从分离。
+当我们的 Redis 数据库到达每秒 4 万请求时候，开始成为瓶颈。我们在另外一台服务器
+打开 <a href="http://redis.io/topics/replication">SYNCing to the master</a>，然后将读请求发送到这台服务器，
+这些操作仅耗时 20 分钟。根据几个案例，有些机器的负载会偏离了我们预期，
+所以我们会提前准备好从服务器，从而快速地分离出读请求。</p>
+<p>比方说 Postgres，我们混合使用 <a href="http://wiki.postgresql.org/wiki/Streaming_Replication">Streaming Replication</a> 和 Amazon EBS
+快照来快速启动从服务器。所有从主 DB 到从服务器的数据不定时会有 EBS 快照。
+根据这些快照，我们可以在 20 分钟内启动新的从服务器并通知主服务器。
+在 AWS 这样的环境中，我们使用脚本和命令来很快的预判并部署新的从服务器。</p>
+<p>总结：如果读能力会变成瓶颈，那就预先准备好从服务器，并让他们轮询服务。
+一旦出现了新的读问题，要做的仅仅是加更多的读服务器到轮询中去。</p>
+<h2 id="pgfouine">##PGFouine##</h2>
+<p><a href="http://pgfouine.projects.postgresql.org/">PGFouine</a> 是一个分析 PostgreSQL 查询日志并生成查询结果的工具。
+将最重、最常用、最慢的查询拆分出来。我们写了一个 Fabric 脚本来方便的使用它，
+连接到一个数据库，然后等待 30 秒并记录下其中每条查询，把结果保存到本地再用
+pgfouine 来分析，这里可以看到 <a href="https://gist.github.com/2307647">as a gist</a>。PGFouine
+是我们用来分析数据库性能的核心工具。帮我们找出哪些查询应该被 memcached 缓存，
+哪些查询了过度的数据等等。发布那天数据库出现了一点压力，我们就跑 PGFouine，
+然后部署一些提升性能的代码来缓解压力，然后再跑一次 PGFouine 来确认效果。</p>
+<p>知道平日里数据库表现性能很重要，因此我们也定期在无压力的服务器上统计信息。</p>
+<p>总结：数据库日志分析（尤其注意迭代循环查询和缓存经常使用的数据）</p>
+<h2 id="one-more-thing">One more thing</h2>
+<p>另一个帮助我们顺利通过发布第一天的工具是我们自己写的一个 node.js 服务，node2dm，
+用来推送通知消息到 Android C2DM 服务。它至今已经发送了 500 万条推送。</p>
+<p>我们调查了一些支持 C2DM 的可用服务，但要么是开源包不那么被积极维护，
+要么是不支持 Google 所有的功能。我们现在用 <a href="http://github.com/Instagram/node2dm">open sourcing node2dm</a>，
+你可以随意 forlk / pull-request 来帮助我们改进。</p>
+<h2 id="interested">Interested?</h2>
+<p>如果你对这些很感兴趣，你可以跟我们联系来获得工作机会，<a href="http://instagram.jobscore.com/jobs/instagram/engineer/bXctey0Oir4kCZeJe4bk1X">drop us a note</a>，
+我们需要知道你的想法。</p>
+<p>你可以在 Hacker News 来 <a href="http://news.ycombinator.com/item?id=3804351">discuss this post</a>。</p>
+<p>—</p>
+<p><em>Mike Krieger, co-founder</em></p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -50,6 +586,30 @@
       
       <guid>https://blog.alswl.com/2012/11/kuku/</guid>
       <description>一个小小的 Weekend Project，基于 web.py。 代码在 alswl / kuku ，很简陋，属于差不多能用阶段。 基于以下原因开发： 想把服务器去 PHP 化，以前的 upload.log4d.com 是基于 PHP 的， 详情请见 使用独立图床子域名。 刚买的 Linode VPS，终于从 128MB 内存解放出来了，赶紧放个 Python 程序跑跑。 想些 Python 了，手痒，想看看写这么简单的功能需要多长时间， 弥补上次没能参加黑客马拉松的遗憾。 KuKu 的发音是我家乡话的「看看」。 KuKu 中比较有趣的地方是，用了 Foundation 这个流式 Web 前端框架， 用了</description>
+      <content:encoded><![CDATA[<p>一个小小的 Weekend Project，基于 <a href="http://webpy.org/">web.py</a>。
+代码在 <a href="https://github.com/alswl/kuku">alswl / kuku</a> ，很简陋，属于差不多能用阶段。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201211/kuku.png" alt="Kuku"  />
+
+</p>
+<p>基于以下原因开发：</p>
+<ul>
+<li>想把服务器去 PHP 化，以前的 <a href="https://upload.log4d.com/">upload.log4d.com</a> 是基于 PHP 的，
+详情请见 <a href="http://log4d.com/2012/05/image-host/">使用独立图床子域名</a>。</li>
+<li>刚买的 <a href="http://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c">Linode VPS</a>，终于从 128MB 内存解放出来了，赶紧放个 Python 程序跑跑。</li>
+<li>想些 Python 了，手痒，想看看写这么简单的功能需要多长时间，
+弥补上次没能参加黑客马拉松的遗憾。</li>
+</ul>
+<p>KuKu 的发音是我家乡话的「看看」。</p>
+<p>KuKu 中比较有趣的地方是，用了 <a href="http://foundation.zurb.com/">Foundation</a> 这个流式 Web 前端框架，
+用了 <a href="http://www.zurb.com/playground/foundation-icons">Foundation Icons Fonts</a>，将 js 库全部托管在 <a href="https://developers.google.com/speed/libraries/">Google Hosted Libaries</a>
+和 <a href="http://cdnjs.com">cdnjs</a> 上。</p>
+<p>这篇文章我看着都觉得水。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -59,6 +619,108 @@
       
       <guid>https://blog.alswl.com/2012/10/pycon-2012/</guid>
       <description>PyCon 是 Python 领域最著名的技术会议，从 2011 年开始，中国区开始举办自己的 PyCon 大会。这次 PyCon 2012 分成两个场地同时进行，北京和上海， 并且在网上提供同步转播，各地也有组织线下收看的。 去年时候我很遗憾的不能跑到上海来参加，现在我人就在上海， 怎能错过 Pythoner 的饕餮大餐呢？早就眼巴巴的买票准备参加了。 上海这边的主题如下： 《Python 产品构建与发布指南》- 沈崴 《实战游戏客户端》 - 林伟 《让程序运行更快》- 李小红 《演进或革命 - 选型和架构</description>
+      <content:encoded><![CDATA[<p>PyCon 是 Python 领域最著名的技术会议，从 2011 年开始，中国区开始举办自己的
+PyCon 大会。这次 PyCon 2012 分成两个场地同时进行，北京和上海，
+并且在网上提供同步转播，各地也有组织线下收看的。</p>
+<p>
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201210/PyConChina2012.png" alt="PyCon Logo"  />
+
+
+</p>
+<p>去年时候我很遗憾的不能跑到上海来参加，现在我人就在上海，
+怎能错过 Pythoner 的饕餮大餐呢？早就眼巴巴的买票准备参加了。</p>
+<!-- more -->
+<p>上海这边的主题如下：</p>
+<ul>
+<li>《Python 产品构建与发布指南》- 沈崴</li>
+<li>《实战游戏客户端》 - 林伟</li>
+<li>《让程序运行更快》- 李小红</li>
+<li>《演进或革命 - 选型和架构的实践经验谈》 - 潘俊勇</li>
+<li>《网游开发中的 Python 组件》- 赖勇浩</li>
+<li>《自动化即时战斗游戏解决方案》 - 王健</li>
+<li>《人人可以化半小时开发一个全功能OpenERP模块》 - Tony Gu</li>
+<li>《元编程在redis orm中的应用》 - 许智翔</li>
+<li>《OpenERP即将推出的第7版的功能和新的编程框架介绍》- Eric Caudal</li>
+<li>《Python如何帮助「逆转三国」获得成功》- 车蕙怡</li>
+<li>《Pyramid Web Framework for Advanced Web Applications》- 黄峥峼 （Mark Huang）</li>
+<li>《用Tornado开发RESTful API应用》- 飞龙非龙</li>
+<li>《NOSQL和MySQL在django上的混合使用》- 黄昶</li>
+<li>《网页游戏的跨界开发》 - 董诣</li>
+<li>《阿里云之移动开发者上云》 - 刘飞</li>
+<li>《使用 Python 和 Django 建设维护学校门户》- 于夏桥</li>
+<li>《python在linux运维中的应用》 - 吴晗</li>
+<li>《用Python替换C代码——A Python Successful Story》- Adieu（刁立知）</li>
+<li>《 Python in Gentoo Linux》- Patrick Lauer</li>
+<li>《基于nova的自动扩展和负载均衡》- 刘明华</li>
+<li>《用myTestCase模块来做python的UT》- 陈钢</li>
+</ul>
+<p>我最喜欢的是 <a href="http://shell909090.com/blog/">许智翔（shell）</a> / 沈崴 / 林伟 / 黄峥峼 / 李小红 / 赖勇浩
+的 Topic。其中尤其是沈崴关于输入处理的准则，解开我一个很久的疑惑。
+沈崴这个 <a href="http://www.slideshare.net/wilhelmshen/py-art">Python 编程艺术</a> 是赖勇浩提到的幻灯片，强烈推荐观看。</p>
+<p>shell 的博客我一直在关注，也列入了我的 GR 「tag-必读」中，
+这次听了他关于「元编程」的黑魔法，我也很有收获，而且他是个很有趣的人，
+把 Topic 讲的很生动。</p>
+<p>我用 Pylons 一年多，所以对 Pyramid 有一种天然好感，可惜一直可机会去学习，
+黄峥峼的 Topic 讲了很多关于 Pyramid 的东西，也很值得一看，
+潘俊勇对 Pyramid 的来源补充也非常详细，果然是高手啊。</p>
+<p>本来还想听王捷讲一讲 <a href="http://www.shanbay.com/">扇贝网</a> 的 Django，可惜他居然去北京做 Topic，
+我勒个去，要知道扇贝网可是在南京。王捷也是 NJLUG 成员，
+下月他们还将提供 NJLUG 会场，一直没有机会见到，蛮可惜的。
+而且他们也是用的 Django，现在遇到一些性能瓶颈，
+讲座内容应该有很多值得学习，只能一会去看视频了。</p>
+<p>比较广告的就是「逆转三国」和「阿里云」的 Topic 啦，赞助商嘛，大家懂的。</p>
+<p>上一些拍的照片：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201210/2012-10-20-09.16.05.jpg" alt="主持人开场"  />
+
+</p>
+<p>主持人开场，这位主持应该是 Intridea 的 Ruby 程序员，哈哈。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201210/2012-10-20-14.06.18.jpg" alt="shell 在讲黑魔法"  />
+
+</p>
+<p>shell 在讲黑魔法</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201210/2012-10-20-16.54.39.jpg" alt="Day 1 的圆桌"  />
+
+</p>
+<p>Day 1 的圆桌</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201210/2012-10-21-09.58.48.jpg" alt="赖勇浩和沈葳"  />
+
+</p>
+<p>赖勇浩和沈葳</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201210/2012-10-21-17.48.42.jpg" alt="Day 2 的圆桌"  />
+
+</p>
+<p>Day 2 的圆桌</p>
+<p>虽然 Python CN 邮件列表中有人反应今年不如去年质量高，我没有看过去年的 PyCon，
+但是觉得今年的还是很不错，学到了很多东西，也见到了很多牛人真身。
+一会准备把去年的 <a href="2011">PyCon 2011</a> 也学习一下。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -68,6 +730,557 @@
       
       <guid>https://blog.alswl.com/2012/10/working-with-python-subprocess/</guid>
       <description>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。 这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。 原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More 注意 关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。 在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次</description>
+      <content:encoded><![CDATA[<p>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。</p>
+<p>这篇文章是在写 <a href="http://kenai.com/projects/btrace/pages/Home">Btrace</a> 脚本时候查资料看到的，
+看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。
+熬了一个月才磨出来，媳妇都快成婆了有木有。</p>
+<p>原文链接：<a href="http://jimmyg.org/blog/2009/working-with-python-subprocess.html">Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More</a></p>
+<hr />
+<p>注意</p>
+<blockquote>
+<p>关于「执行命令时候发生了什么」这个问题，可以在
+<a href="http://en.wikipedia.org/wiki/Redirection_(computing)">http://en.wikipedia.org/wiki/Redirection_(computing)</a>
+找到更多最新信息。这篇文章遵循 <a href="http://www.gnu.org/copyleft/fdl.html">GFDL</a> 协议。</p>
+</blockquote>
+<p>在我的上一篇日志中，我写到如何
+<a href="http://jimmyg.org/blog/2009/python-command-line-interface-%28cli%29-with-sub-commands.html">build a command line interface with sub-commands in Python</a>。
+这次我来尝试如何通过 Python 的 <code>subprocess</code> 模块来和命令行指令进行交互。</p>
+<p>我想达到的目标是：</p>
+<ul>
+<li>查看当你键入命令时究竟发生了什么</li>
+<li>如何确认一个命令是否存在并找出到底在哪</li>
+<li>通过 Python 或 shell 执行命令</li>
+<li>向一个运行中的进程读取 STDOUT 或写入 STDIN</li>
+<li>检查进程的退出返回状态</li>
+<li>理解 Bash 在命令中断中扮演的角色，并如何将它们发送给程序</li>
+</ul>
+<!-- more -->
+<h2 id="执行程序时发生了什么">执行程序时发生了什么</h2>
+<p>当你双击桌面上的终端程序图标时，就会打开一个载入 <code>shell</code> 的程序。
+你键入的命令不会直接在内核执行，而是先和 shell 进行交互。</p>
+<pre tabindex="0"><code>    Command      (eg. `ls -l&#39;)
+       ↓
+Terminal Program (eg. `gnome-terminal&#39;)
+       ↓
+     Shell       (eg Bash)
+       ↓
+     Kernel      (eg. Linux 2.6.24)
+</code></pre><p>更多关于 shell 的信息：</p>
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Unix_shell">http://en.wikipedia.org/wiki/Unix_shell</a></li>
+</ul>
+<p>更多关于进程如何运行的信息：</p>
+<ul>
+<li><a href="http://pangea.stanford.edu/computerinfo/unix/shell/processes/processes.html">http://pangea.stanford.edu/computerinfo/unix/shell/processes/processes.html</a></li>
+</ul>
+<p>当你通过 Python 执行程序时候，你可以选择直接从内核执行或者通过 shell。
+如果你选择直接执行，你就没办法和 bash 同样方式执行命令。</p>
+<p>我们先看看怎么使用 shell 和那些好玩的特性功能，
+然后再通过 <code>subprocess</code> 来实现同样的功能，</p>
+<h3 id="数据流">数据流</h3>
+<p>在 UNIX 和 Linux 下，有三个被称作 <em>流</em> 的 I/O 通道，它们通过文本终端
+（比如用 gnome-terminal 运行 Bash）和其他应用程序（比如通过 Python 的
+<code>subprocess</code> ）这类环境来连接程序。
+这几个 I/O 通道分别称为 <em>标准输入</em>， <em>标准输出</em>，和 <em>标准错误输出</em> ,
+它们的 <em>文件描述符</em> 分别为 0，1，2。</p>
+<table>
+  <thead>
+    <tr>
+      <th> 句柄 </th> <th> 名称 </th> <th> 描述 </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> 0 </td> <td> stdin </td> <td> 标准输入 </td>
+    </tr>
+    <tr>
+      <td> 1 </td> <td> stdout </td> <td> 标准输出 </td>
+    </tr>
+    <tr>
+      <td> 2 </td> <td> stderr </td> <td> 标准错误输出 </td>
+    </tr>
+  </tbody>
+</table>
+<p>这里你能看到标准输入叫做 <code>stdin</code>，标准输出称作 <code>stdout</code>，标准错误输出叫做
+<code>stderr</code> 。</p>
+<p>流是这样工作的：从终端输出获取输入并通过标准输入发送到程序，
+程序返回的正常输出从标准输出输出，错误则返回到环境上下文的标准错误输出。
+维基百科有幅图将描述这个过程：</p>
+<p><a href="http://en.wikipedia.org/wiki/File:Stdstreams-notitle.svg">
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201209/Stdstreams-notitle.svg.png" alt="Stdstreams-notitle.svg"  />
+
+
+</a></p>
+<p>如果你想将流从一个程序重定向到另一个地方，请看下文分解。</p>
+<h2 id="使用-shell">使用 Shell</h2>
+<h3 id="重定向标准输入和输出到文件">重定向标准输入和输出到文件</h3>
+<p>你可以在 Bash 中使用 <code>&gt;</code> 操作符将一个程序的标准输出重定向到一个文件
+（在其他 Shell 也许略有语法差异）。这里有个范例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">program1 &gt; file1
+</span></span></code></pre></div><p><code>program1</code> 执行后的输出结果从标准输出流写入 <code>file1</code>，并将 <code>file1</code>
+其中现有的内容所替换。如果你只是想追加内容，你可以使用 <code>&gt;&gt;</code> 操作符：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">program1 &gt;&gt; file1
+</span></span></code></pre></div><p><code>&lt;</code> 操作符可以被用来从文件中读取数据并传输到程序的标准输入流：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">program1 &lt; file1
+</span></span></code></pre></div><p>同样的，<code>program1</code> 会被执行，但是此时 <code>file1</code> 取代了键盘，
+成为了标准输入的数据源。</p>
+<p>你可以组合 shell 操作符以完成更复杂的操作。
+下面这个范例中，<code>program1</code> 从 <code>file1</code> 获取数据并发送到标准输入。标准输出则从
+<code>program1</code> 输出到 <code>file2</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">program1 &lt; file1 &gt; file2
+</span></span></code></pre></div><p>也许有时候你需要从一个程序获取输出并将其作为另一个程序的输入。
+你可以通过一个临时文件来实现这个操作：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">program1 &gt; tempfile1
+</span></span><span class="line"><span class="cl">program2 &lt; tempfile1
+</span></span><span class="line"><span class="cl">rm tempfile1
+</span></span></code></pre></div><p>这种方法有点累赘，因此 shell 提供了方便的机制，称为 <em>管道</em></p>
+<h3 id="管道">管道</h3>
+<p>管道允许一个程序的标准输出直接输入到另一个程序的标准输入流中，
+而无须创建临时文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">program1 <span class="p">|</span> program2
+</span></span></code></pre></div><p>操作符 <code>|</code> 被称作 <em>管道</em> 符号，因此这种操作就被称为 <em>管道</em>。</p>
+<p>这里有一幅来自维基百科的图片来描述管道：</p>
+<p><a href="http://en.wikipedia.org/wiki/File:Pipeline.svg">
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201209/Pipeline.svg.png" alt="Pipeline.svg"  />
+
+
+</a></p>
+<p>这里有个使用 <code>find .</code>（遍历当前目录下的文件和目录）的例子，将输出定向到 <code>grep</code>
+程序来查找特定文件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find . <span class="p">|</span> grep <span class="s2">&#34;The file I&#39;m after.txt&#34;</span>
+</span></span></code></pre></div><p>第一个程序产生的数据是一行一行地导向第二个程序的，所以在第一个程序运行结束之前，
+第二个程序就可以开始使用它们。</p>
+<h3 id="从文件重定向标准输入和输出">从文件重定向标准输入和输出</h3>
+<p>在重定向标准输出的同时，你也可以重定向其他流，
+比如重定向标准错误输出到标准输出。我们已经讨论过在 Bash 中，
+可以在文件描述符之前使用 <code>&gt;</code>，<code>&lt;</code> 和 <code>&gt;&gt;</code> 操作符来重定向数据流
+（还记得之前讨论的数字 0，1，2 么）。如果把标准输出代表的数字 1 省略掉看，
+会发现我们一直在使用标准输出。</p>
+<p>下面这条命令执行 <code>program1</code> 并将所有标准 <em>错误</em> 数据输出到 <code>file1</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">program1 2&gt; file1
+</span></span></code></pre></div><p>执行 <code>program1</code>，错误信息就被重定向到 <code>file</code> 了。</p>
+<p>这里有个范例程序让你来测试，将它保存成 <code>redirect1.py</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="mi">1</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">input</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">input</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Echo to stdout: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="nb">input</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Echo to stderr: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="nb">input</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="n">KeyboardError</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span></code></pre></div><p>这个程序始终将接受到的输入数据并同时输出到 stdout 和 stderr 。</p>
+<p>在 csh 衍生出来的 shell 中，语法则是在重定向符号之后加上 <code>&amp;</code> 符号，
+可以达到同样的效果。（译者注：即 <code>|&amp;</code>）</p>
+<p>另一个常用的特性是将一个输出流重定向到定一个。
+最常见的用法是将标准错误输出重定向到标准输出，
+这样就可以把错误信息和正确信息合并在一起，比如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find / -name .profile &gt; results 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span></span></code></pre></div><p>命令将会找出所有名叫 <code>.profile</code> 的文件。
+如果没有重定向，它将输出命中信息到 stdout，错误信息到 stderr
+（比如有些目录无权限访问）。如果标准输出定向到文件，错误信息则会显示在命令行上。
+为了在结果文件中可以同时看到命中信息和错误信息，我们需要使用 <code>2&gt;&amp;1</code>
+将标准错误输出（2）输出到标准输出（1）。（这次即使在 Bash 中也需要 <code>&amp;</code> 符。）</p>
+<p>虽然语法上可以将 <code>2&gt;&amp;1</code> 放到 <code>&gt;</code> 前面，但这样不能正常工作。
+事实上，当解析器读取 <code>2&gt;&amp;1</code> 时候，它还不知道标准输出将重定向到哪里，
+所以标准错误输出就不会被合并。</p>
+<p>如果使用管道合并输出流，那么合并符号 <code>2&gt;&amp;1</code> 需要在管道符号 <code>|</code> 之前。比如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">find / -name .profile 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">|</span> less
+</span></span></code></pre></div><p>Bash 中的合并输出简写形式是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">command</span> &gt; file 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span></span></code></pre></div><p>为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">command</span> <span class="p">&amp;</span>&gt;file
+</span></span></code></pre></div><p>或者：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">command</span> &gt;<span class="p">&amp;</span>file
+</span></span></code></pre></div><p>但是最好别用简写形式，否则你会弄糊涂。我提倡宁愿麻烦但是要清晰。</p>
+<p><code>&amp;&gt;</code> 操作符同时重定向标准输出和标准错误输出。
+它的作用和在 Bourne Shell 中的 <code>command &gt; file 2&gt;&amp;1</code> 一样。</p>
+<h3 id="管道链">管道链</h3>
+<p>重定向可以和管道连接起来组成复杂的命令，比如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ls <span class="p">|</span> grep <span class="s1">&#39;\.sh&#39;</span> <span class="p">|</span> sort &gt; shlist
+</span></span></code></pre></div><p>列出当前目录下所有文件，然后过滤剩下仅包含 .sh 的内容，根据文字编码排序，
+然后将最终结果输出到 shlist。这种类型的命令经常在 shell 脚本和批处理文件中使用。</p>
+<h3 id="多重输出重定向">多重输出重定向</h3>
+<p>标准命令 <code>tee</code> 可以重定向一个命令到多个地方。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ls -lrt <span class="p">|</span> tee xyz
+</span></span></code></pre></div><p>这将文件列表同时输出到标准输出和文件 <code>xyz</code> 中。</p>
+<h3 id="here-文档">Here 文档</h3>
+<p>大部分 Shell，包括 Bash 都支持 <em>Here 文档</em>，它允许你使用 <code>&lt;&lt;</code>
+操作符和一些文本作为分隔符将文本块嵌入到命令之中。</p>
+<p>在下面的范例中，文本块被传送给 <code>tr</code> 命令，同时使用 <code>END_TEXT</code> 作为 Here
+文档分隔符来指明文本的开始和结束。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ tr a-z A-Z <span class="s">&lt;&lt;END_TEXT
+</span></span></span><span class="line"><span class="cl"><span class="s">&gt; one two three
+</span></span></span><span class="line"><span class="cl"><span class="s">&gt; uno dos tres
+</span></span></span><span class="line"><span class="cl"><span class="s">&gt; END_TEXT</span>
+</span></span><span class="line"><span class="cl">ONE TWO THREE
+</span></span><span class="line"><span class="cl">UNO DOS TRES
+</span></span></code></pre></div><p>经过 <code>tr</code> 处理后，输出的结果是 <code>ONE TWO THREE</code> 和 <code>UNO DOS TRES</code>。</p>
+<p>一种常用用法是用 Here 文档向文件添加文本。
+默认情况下，文本中的变量是会被替换成真实值的。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ cat <span class="s">&lt;&lt; EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">&gt; Working dir $PWD
+</span></span></span><span class="line"><span class="cl"><span class="s">&gt; EOF</span>
+</span></span><span class="line"><span class="cl">Working dir /home/user
+</span></span></code></pre></div><p>通过在 Here 文档标签引上单引号或者双引号，就可以避免这种转义：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ cat &lt;&lt; <span class="s2">&#34;EOF&#34;</span>
+</span></span><span class="line"><span class="cl">&gt; Working dir <span class="nv">$PWD</span>
+</span></span><span class="line"><span class="cl">&gt; EOF
+</span></span><span class="line"><span class="cl">Working dir <span class="nv">$PWD</span>
+</span></span></code></pre></div><h2 id="介绍-subprocess">介绍 <code>subprocess</code></h2>
+<p>刚才我们讨论过了一些命令行提供的功能，现在让我们体验一下 <code>subprocess</code> 模块。
+你可以在命令行中运行下面这条简单的命令：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="s2">&#34;Hello world!&#34;</span>
+</span></span><span class="line"><span class="cl">Hello world!
+</span></span></code></pre></div><p>让我们试着在 Python 中运行它。</p>
+<p>以前我们需要使用一堆各异的标准库来实现进程管理。
+从 Python 2.4 开始，所有功能都被精心地整理到 <code>subprocess</code> 这个模块，
+其中的 <code>Popen</code> 类可以提供所有我们需要的。</p>
+<p>注意</p>
+<blockquote>
+<p>如果你对新的 <code>Popen</code> 如何替换旧模块，[subprocess-doc][subprocess-documentation]
+有一个章节解释过去是如何作用以及当前是如何作用。</p>
+</blockquote>
+<p><code>Popen</code> 可以接受一下参数，详情可以在 [using-the-subprocess-module][http://docs.python.org/library/subprocess.html#using-the-subprocess-module]：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">subprocess.Popen<span class="o">(</span>args, <span class="nv">bufsize</span><span class="o">=</span>0, <span class="nv">executable</span><span class="o">=</span>None, <span class="nv">stdin</span><span class="o">=</span>None,
+</span></span><span class="line"><span class="cl">    <span class="nv">stdout</span><span class="o">=</span>None, <span class="nv">stderr</span><span class="o">=</span>None, <span class="nv">preexec_fn</span><span class="o">=</span>None, <span class="nv">close_fds</span><span class="o">=</span>False,
+</span></span><span class="line"><span class="cl">    <span class="nv">shell</span><span class="o">=</span>False, <span class="nv">cwd</span><span class="o">=</span>None, <span class="nv">env</span><span class="o">=</span>None, <span class="nv">universal_newlines</span><span class="o">=</span>False,
+</span></span><span class="line"><span class="cl">    <span class="nv">startupinfo</span><span class="o">=</span>None, <span class="nv">creationflags</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span></code></pre></div><h2 id="使用-shell-1">使用 Shell</h2>
+<p>让我们以 Hello World! 这个例子开始。和之前类似，通过
+Python shell 执行下列命令：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt;&gt;&gt; import subprocess
+</span></span><span class="line"><span class="cl">&gt;&gt;&gt; subprocess.Popen<span class="o">(</span><span class="s1">&#39;echo &#34;Hello world!&#34;&#39;</span>, <span class="nv">shell</span><span class="o">=</span>True<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Hello world!
+</span></span><span class="line"><span class="cl">&lt;subprocess.Popen object at 0x...&gt;
+</span></span></code></pre></div><p>如你所见，标准输出和同样打印出 <code>Hello world!</code> ，
+区别在于命令行显示了一个我们创建的 <code>subprocess.Popen</code> 实例。</p>
+<p>如果你将代码保存为 <code>process_test.py</code> ，然后在命令行执行，你会得到一样的结果：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ python process_test.py
+</span></span><span class="line"><span class="cl">Hello world!
+</span></span></code></pre></div><p>看上去运行 OK。</p>
+<p>你可能在琢磨我们到底使用了哪个 shell。Unix 的默认 shell 是 <code>/bin/sh</code> ，
+而 Windows 下面则取决于 <code>COMSPEC</code> 这个环境变量。
+如果你设置 <code>shell=True</code> ，则可以通过 <code>executable</code> 参数来自定义 shell。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt;&gt;&gt; subprocess.Popen<span class="o">(</span><span class="s1">&#39;echo &#34;Hello world!&#34;&#39;</span>, <span class="nv">shell</span><span class="o">=</span>True, <span class="nv">executable</span><span class="o">=</span><span class="s2">&#34;/bin/bash&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">Hello world!
+</span></span><span class="line"><span class="cl">&lt;subprocess.Popen object at 0x...&gt;
+</span></span></code></pre></div><p>和我们之前看到的一样，但是如果你使用特定的 shell ，
+你也许会发现不同的地方。</p>
+<p>让我们探索一下通过 Python 使用 shell 的其他特性：</p>
+<p>变量解析：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt;&gt;&gt; subprocess.Popen<span class="o">(</span><span class="s1">&#39;echo $PWD&#39;</span>, <span class="nv">shell</span><span class="o">=</span>True<span class="o">)</span>
+</span></span><span class="line"><span class="cl">/home/james/Desktop
+</span></span><span class="line"><span class="cl">&lt;subprocess.Popen object at 0x...&gt;
+</span></span></code></pre></div><p>管道和重定向：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">subprocess.Popen<span class="o">(</span><span class="s1">&#39;echo &#34;Hello world!&#34; | tr a-z A-Z 2&gt; errors.txt&#39;</span>, <span class="nv">shell</span><span class="o">=</span>True<span class="o">)</span>
+</span></span><span class="line"><span class="cl">&lt;subprocess.Popen object at 0x...&gt;
+</span></span><span class="line"><span class="cl">&gt;&gt;&gt; HELLO WORLD!
+</span></span></code></pre></div><p><code>errors.txt</code> 应该是空的，因为没有任何错误产生。
+有趣的是在我电脑上，<code>Popen</code> 实例在 <code>HELLO WORLD!</code> 被打印到标准输出
+<em>之前</em> 出现。
+恩，管道和重定向都可以正常工作。</p>
+<p>Here 文档：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt;&gt;&gt; subprocess.Popen<span class="o">(</span><span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">... cat &lt;&lt; EOF &gt; new.txt
+</span></span></span><span class="line"><span class="cl"><span class="s2">... Hello World!
+</span></span></span><span class="line"><span class="cl"><span class="s2">... EOF
+</span></span></span><span class="line"><span class="cl"><span class="s2">... &#34;&#34;&#34;</span>, <span class="nv">shell</span><span class="o">=</span>True<span class="o">)</span>
+</span></span><span class="line"><span class="cl">&lt;subprocess.Popen object at 0xb7dbbe2c&gt;
+</span></span></code></pre></div><p><code>new.txt</code> 文件正常生成，并且包含内容 <code>Hello World!</code> 。</p>
+<p>如我们预料，在 shell 中正常运行的命令同样可以在 Python shell 中运行。</p>
+<h2 id="字符串和参数列表">字符串和参数列表</h2>
+<p>现在可以轻松地在 Python 中执行命令行了，你也许会需要传递变量过去。
+假设我们要用 <code>echo</code> 重写刚才那个函数：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">print_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">print</span> <span class="n">string</span>
+</span></span></code></pre></div><p>你也许想当然这样写：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">print_string</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">	<span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s1">&#39;echo &#34;</span><span class="si">%s</span><span class="s1">&#34;&#39;</span><span class="o">%</span><span class="n">string</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></div><p>这种写法，当字符串是 <code>Hello World!</code> 时候没问题：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt;&gt;&gt; print_string<span class="o">(</span><span class="s1">&#39;Hello world!&#39;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">Hello world!
+</span></span></code></pre></div><p>但这样就有问题：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt;&gt;&gt; print_string<span class="o">(</span><span class="s1">&#39;nasty &#34; example&#39;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">/bin/sh: Syntax error: Unterminated quoted string
+</span></span></code></pre></div><p>这个命令会被执行成 <code>echo &quot;nasty&quot; example&quot;</code> ，唔，这里的转义有问题。</p>
+<p>一种解决方式是在代码里面做好转义，但这样会很麻烦，
+你需要处理所有可能出现的转义字符和空格等等。</p>
+<p>Python 可以帮你处理好，条件是你不能直接操作 shell，
+如何操作看下文。</p>
+<h2 id="shell-之外">Shell 之外</h2>
+<p>现在让我们试试不操作 shell 来实现同样的效果：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">def print_string<span class="o">(</span>string<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">	subprocess.Popen<span class="o">([</span><span class="s1">&#39;echo&#39;</span>, string<span class="o">]</span>, <span class="nv">shell</span><span class="o">=</span>False<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&gt;&gt;&gt; print_string<span class="o">(</span><span class="s1">&#39;Hello world!&#39;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">Hello world!
+</span></span><span class="line"><span class="cl">&gt;&gt;&gt; print_string<span class="o">(</span><span class="s1">&#39;nasty &#34; example&#39;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">nasty <span class="s2">&#34; example
+</span></span></span></code></pre></div><p>现在你可以看到它正常地处理了转义。</p>
+<p>注意</p>
+<blockquote>
+<p>实际上你也可以在 <code>shell=False</code> 那里直接使用一个单独的字符串作为参数，
+但是它必须是命令程序本身，这种做法和在一个列表中定义一个 <code>args</code>
+没什么区别。而如果当 <code>shell=False</code> 时候直接执行字符串命令，则会报错：</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="s1">&#39;echo &#34;Hello world!&#34;&#39;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">File</span> <span class="s2">&#34;&lt;stdin&gt;&#34;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">File</span> <span class="s2">&#34;/usr/lib/python2.5/subprocess.py&#34;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">594</span><span class="p">,</span> <span class="ow">in</span> <span class="fm">__init__</span>
+</span></span><span class="line"><span class="cl">	<span class="n">errread</span><span class="p">,</span> <span class="n">errwrite</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">File</span> <span class="s2">&#34;/usr/lib/python2.5/subprocess.py&#34;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1147</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_execute_child</span>
+</span></span><span class="line"><span class="cl">	<span class="k">raise</span> <span class="n">child_exception</span>
+</span></span><span class="line"><span class="cl"><span class="ne">OSError</span><span class="p">:</span> <span class="p">[</span><span class="n">Errno</span> <span class="mi">2</span><span class="p">]</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="ow">or</span> <span class="n">directory</span>
+</span></span></code></pre></div><p>如果我们还是坚持使用一个字符串，Python 会认为这个 <em>完整的字符串</em>
+是一个可执行的程序名，而实际上没有一个叫做 <code>echo &quot;Hello world!&quot;</code>
+的程序，所以报错了。正确的做法要用 list 分开传送参数。</p>
+<h3 id="检查-path-中的程序">检查 PATH 中的程序</h3>
+<p>这里有个方法可以找出程序真正的位置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">whereis</span><span class="p">(</span><span class="n">program</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;PATH&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">program</span><span class="p">))</span> <span class="ow">and</span> \
+</span></span><span class="line"><span class="cl">		   <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">program</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">			<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">program</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="kc">None</span>
+</span></span></code></pre></div><p>让我们用它来找出 <code>echo</code> 程序在哪里：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">location</span> <span class="o">=</span> <span class="n">whereis</span><span class="p">(</span><span class="s1">&#39;echo&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="n">location</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>     <span class="nb">print</span> <span class="n">location</span>
+</span></span><span class="line"><span class="cl"><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">echo</span>
+</span></span></code></pre></div><p>这个方法同样可以检查用户的 <code>PATH</code> 里面是否有 Python 需要的程序。</p>
+<p>当然你也可以使用命令行中的程序 <code>whereis</code> 来找出程序的路径。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ whereis <span class="nb">echo</span>
+</span></span><span class="line"><span class="cl">echo: /bin/echo /usr/share/man/man1/echo.1.gz
+</span></span></code></pre></div><p>注意</p>
+<blockquote>
+<p>无论我们使用 <code>shell</code> 为 <code>True</code> 或者 <code>False</code> ，
+我们都没有指定执行程序的全路径。
+如果这个程序在上下文环境的 <code>PATH</code> 变量中，我们才可以执行。
+当然如果你愿意，指定全路径也没问题。</p>
+</blockquote>
+<p>你也可以坚持指定 <code>executable</code> 为想要执行的程序，
+然后 <code>args</code> 就不设定程序。虽然没看到明确的文档，不过我电脑上面可以这么执行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">executable</span><span class="o">=</span><span class="s1">&#39;echo&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="mi">2</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0xb776f56c</span><span class="o">&gt;</span>
+</span></span></code></pre></div><p>不直接使用 shell 会导致不能直观地使用重定向、管道、here 文档、shell
+参数或其他那些可以在命令行使用的技巧。接下来我们会看看怎么使用这些功能。</p>
+<h2 id="从标准输出和错误重定向">从标准输出和错误重定向</h2>
+<p>当你使用 <code>Popen</code> 执行程序时候，输出内容通常被发送到 stdout，
+这也是为什么你能看到这些内容。</p>
+<p>当你想尝试从某个程序读取标准输出信息时候，则需要在调用 <code>Popen</code> 之前设定
+<code>stdout</code> 参数。要设定的值是 <code>subprocess.PIPE</code>：</p>
+<p><code>subprocess.PIPE</code></p>
+<blockquote>
+<p>可以为 <code>Popen</code> 指定标准输入、标准输出和标准错误输出的参数，
+需要注意的是标准输出流需要打开可写。</p>
+</blockquote>
+<p>这里有个范例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;echo&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello World!&#39;</span><span class="p">],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+</span></span></code></pre></div><p>To read the output from the pipe you use the <code>communicate()</code> method:</p>
+<p>为了从管道获取输出，你可以使用 <code>communicate()</code> 方法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;Hello World!</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>communicate()</code> 的返回值是一个 tuple，第一个值是标准输出的数据，
+第二个输出是标准错误输出的内容。</p>
+<p>这里有段脚本能让我们测试标准输出和标准错误输出的表现行为，
+将它存为 <code>test1.py</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Message to stdout</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Message to stderr</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>执行它：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="s1">&#39;test1.py&#39;</span><span class="p">],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Message</span> <span class="n">to</span> <span class="n">stderr</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;Message to stdout</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span></span></code></pre></div><p>注意标准错误输出在被生成后就打印了，而标准输出则被管道传输了。
+这是因为我们只设定了标准输出的管道，让我们同时也设定标准错误输出。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="s1">&#39;test1.py&#39;</span><span class="p">],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">(</span><span class="s1">&#39;Message to stdout</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Message to stderr</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span></code></pre></div><p>这次标准输出和标准错误输出都被 Python 获取到了。</p>
+<p>现在所有的消息能被打印出来了，如果我们再次调用 <code>communicate()</code>，
+则会得到一个错误信息：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">File</span> <span class="s2">&#34;&lt;stdin&gt;&#34;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">File</span> <span class="s2">&#34;/usr/lib/python2.5/subprocess.py&#34;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">668</span><span class="p">,</span> <span class="ow">in</span> <span class="n">communicate</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_communicate</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">File</span> <span class="s2">&#34;/usr/lib/python2.5/subprocess.py&#34;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1207</span><span class="p">,</span> <span class="ow">in</span> <span class="n">_communicate</span>
+</span></span><span class="line"><span class="cl">	<span class="n">rlist</span><span class="p">,</span> <span class="n">wlist</span><span class="p">,</span> <span class="n">xlist</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">read_set</span><span class="p">,</span> <span class="n">write_set</span><span class="p">,</span> <span class="p">[])</span>
+</span></span><span class="line"><span class="cl"><span class="ne">ValueError</span><span class="p">:</span> <span class="n">I</span><span class="o">/</span><span class="n">O</span> <span class="n">operation</span> <span class="n">on</span> <span class="n">closed</span> <span class="n">file</span>
+</span></span></code></pre></div><p><code>communicate()</code> 方法读取标准输出和标准错误输出时候，遇到结束符（EOF）
+就会结束。</p>
+<h3 id="重定向-stderr-到-stdout">重定向 stderr 到 stdout</h3>
+<p>如果你想将错误信息重定向到标准输出，只需要给 <code>stderr</code>
+参数指定一个特殊值： <code>stderr=subprocess.STDOUT</code> 即可。</p>
+<h2 id="写入标准输入">写入标准输入</h2>
+<p>写数据入一个进程和之前所述比较类似。为了要写入数据，需要先打开一个管道到标准输入。
+通过设定 <code>Popen</code> 参数 <code>stdin=subproces.PIPE</code> 可以实现。</p>
+<p>为了测试，让我们另外写一个仅输出 <code>Received:</code> 和输入数据的程序。
+它在退出之前会输出消息。调用这个 <code>test2.py</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl"><span class="nb">input</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Received: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="nb">input</span><span class="p">)</span>
+</span></span></code></pre></div><p>为了发送消息到标准输入，把你想发送的信息作为 <code>communicate()</code> 的参数 <code>input</code> 。让我们跑起来：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="s1">&#39;test2.py&#39;</span><span class="p">],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span> <span class="n">process</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="s1">&#39;How are you?&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">Received</span><span class="p">:</span> <span class="n">How</span> <span class="n">are</span> <span class="n">you</span><span class="err">?</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span></span></code></pre></div><p>注意 <code>test2.py</code> 发送的信息被打印到标准输出，随后的是 <code>(None, None)</code> ，
+这是因为标准输出和标准错误输出没有设定输出管道。</p>
+<p>你可以和之前那样指定 <code>stdout=subprocess.PIPE</code>
+和 <code>stderr=subprocess.PIPE</code> 来设定输出管道。</p>
+<h3 id="类文件属性">类文件属性</h3>
+<p><code>Popen</code> 拥有 <code>stdout</code> 和 <code>stderr</code> 属性，从而可以当作文件一样写出数据，同时 <code>stdin</code> 属性可以像文件一样读取数据。
+你可以使用他们来替换 <code>communicate()</code>。下面我们将看如何用它们。</p>
+<h3 id="读写同一个进程">读写同一个进程</h3>
+<p>这里有个例子，将它保存为 <code>test3.py</code>：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">input</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Received: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="nb">input</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</span></span></code></pre></div><p>这个程序也是简单的响应接受到的数据，让我们把它跑起来：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="s1">&#39;test3.py&#39;</span><span class="p">],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>     <span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>     <span class="n">output</span> <span class="o">=</span> <span class="n">process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>     <span class="nb">print</span> <span class="n">output</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">...</span>
+</span></span><span class="line"><span class="cl"><span class="n">Received</span><span class="p">:</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Received</span><span class="p">:</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Received</span><span class="p">:</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Received</span><span class="p">:</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Received</span><span class="p">:</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span>
+</span></span></code></pre></div><p>每隔一秒钟会输出一行。</p>
+<p>现在你应该掌握了所有需要通过 Python 来跟 Shell 交互需要的知识。</p>
+<h2 id="获取返回值-poll-和-wait">获取返回值， <code>poll()</code> 和 <code>wait()</code></h2>
+<p>当一个程序退出时候，他会返回一个正整数来表明它的退出状态。
+0 代表「成功地结束」，非零则表示「非正常结束」。
+大部分系统要求返回值在 0-127 之间，其他都是未定义的结果。
+一些系统会有事先定义好的错误对应关系，但一般不被拿出来用。
+Unix 程序通常使用 2 作为命令语法错误，1 作为其他错误。</p>
+<p>你可以通过 <code>Popen</code> 的 <code>.returncode</code> 属性获取程序返回值。这儿有个例子：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s1">&#39;echo&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello world!&#39;</span><span class="p">],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span>
+</span></span><span class="line"><span class="cl"><span class="kc">None</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">process</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span> <span class="n">process</span><span class="o">.</span><span class="n">returncode</span>
+</span></span><span class="line"><span class="cl"><span class="mi">0</span>
+</span></span></code></pre></div><p>这个 <code>returncode</code> 并不是一开始就设定好的，最初是默认值 <code>None</code>，
+它会一直是 <code>None</code> 知道你调用 <code>subprocess</code> 的方法比如 <code>poll()</code> 和 <code>wait()</code>。
+这些方法会设定 <code>returncode</code>。因此，如果你想知道返回值，那就调用 <code>poll()</code>
+和 <code>wait()</code>。</p>
+<p><code>poll()</code> 和 <code>wait()</code> 方法区别很小：</p>
+<dl>
+<dt><code>Popen.poll()</code></dt>
+<dd>检查子进程是否结束。并设置和返回 <code>.returncode</code> 属性。
+<code>Popen.wait()</code></dd>
+<dd>等待子进程结束。并设置和返回 <code>.returncode</code> 属性。</dd>
+</dl>
+<h2 id="便捷的方法">便捷的方法</h2>
+<p><code>subprocess</code> 模块还提供了很多方便的方法来使得执行 shell 命令更方便。
+我没有全部试试。（译者：意思是让读者自己挖掘？）</p>
+<h2 id="理解-sysargv">理解 <code>sys.argv</code></h2>
+<p>如果你想写一个 Python 脚本来接受命令行参数，
+那么命令行的参数会被传送并成参数 <code>sys.argv</code>。
+这里有个小范例，将它保存成 <code>command.py</code> 。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span> <span class="s2">&#34;Executable: </span><span class="si">%s</span><span class="s2">&#34;</span><span class="o">%</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span> <span class="s2">&#34;Arg: </span><span class="si">%s</span><span class="s2">&#34;</span><span class="o">%</span><span class="n">arg</span>
+</span></span></code></pre></div><p><code>if __name__ == '__main__'</code> 这行确保代码在被执行是才运行，
+而不是被引入时候运行。给这个文件执行权限：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ chmod <span class="m">755</span> command.py
+</span></span></code></pre></div><p>这里是一些运行时的范例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ python command.py
+</span></span><span class="line"><span class="cl">Executable: command.py
+</span></span><span class="line"><span class="cl">$ python command.py arg1
+</span></span><span class="line"><span class="cl">Executable: command.py
+</span></span><span class="line"><span class="cl">Arg: arg1
+</span></span><span class="line"><span class="cl">$ python command.py arg1 arg2
+</span></span><span class="line"><span class="cl">Executable: command.py
+</span></span><span class="line"><span class="cl">Arg: arg1
+</span></span><span class="line"><span class="cl">Arg: arg2
+</span></span></code></pre></div><p>注意无论 Python 脚本怎么执行， <code>sys.argv[0]</code> 始终是脚本的名称。
+<code>sys.argv[1]</code> 和之后的参数是命令行接受的参数。
+你可以通过使用参数 <code>-m</code> 来强制 Python 脚本作为模块导入使用。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ python -m <span class="nb">command</span>
+</span></span><span class="line"><span class="cl">Executable: /home/james/Desktop/command.py
+</span></span><span class="line"><span class="cl">$ python -m <span class="nb">command</span> arg1
+</span></span><span class="line"><span class="cl">Executable: /home/james/Desktop/command.py
+</span></span><span class="line"><span class="cl">Arg: arg1
+</span></span><span class="line"><span class="cl">$ python -m <span class="nb">command</span> arg1 arg2
+</span></span><span class="line"><span class="cl">Executable: /home/james/Desktop/command.py
+</span></span><span class="line"><span class="cl">Arg: arg1
+</span></span><span class="line"><span class="cl">Arg: arg2
+</span></span></code></pre></div><p>如你所见，Python 将 <code>-m</code> 作为命令的一部分，因此 `sys.srgv[0] 包含了脚本的全路径。
+现在我们来直接执行它：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./command.py
+</span></span><span class="line"><span class="cl">Executable: ./command.py
+</span></span><span class="line"><span class="cl">$ ./command.py arg1
+</span></span><span class="line"><span class="cl">Executable: ./command.py
+</span></span><span class="line"><span class="cl">Arg: arg1
+</span></span><span class="line"><span class="cl">$ ./command.py arg1 arg2
+</span></span><span class="line"><span class="cl">Executable: ./command.py
+</span></span><span class="line"><span class="cl">Arg: arg1
+</span></span><span class="line"><span class="cl">Arg: arg2
+</span></span></code></pre></div><p>看吧，<code>sys.argv[0]</code> 包含 Python 脚本的名称， <code>sys.argv[1]</code>
+以及他的兄弟们还是老样子，包含各类参数。</p>
+<h3 id="展开-shell">展开 Shell</h3>
+<p>有时候，我们会在 shell 中使用通配符来设定一组参数，比如，
+我们在 Bash 中运行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./command.py *.txt
+</span></span></code></pre></div><p>你可能觉得输出应该是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Executable: ./command.py
+</span></span><span class="line"><span class="cl">Arg: *.txt
+</span></span></code></pre></div><p>这不是你想要的结果。输出结果应该依赖当前文件夹中 <code>.txt</code> 文件的数目。执行效果如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Executable: ./command.py
+</span></span><span class="line"><span class="cl">Arg: errors.txt
+</span></span><span class="line"><span class="cl">Arg: new.txt
+</span></span><span class="line"><span class="cl">Arg: output.txt
+</span></span></code></pre></div><p>Bash 会将 <code>\*.txt</code> 自动展开成所有符合 <code>.txt</code> 的参数。所以接受到的参数会超过你预期。</p>
+<p>你可以通过将参数用引号抱起来来关闭 Shell 解释特性，
+但是只要你用过，就会意识到在大多数情况下面这是非常有用的功能。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./command.py <span class="s2">&#34;*.txt&#34;</span>
+</span></span><span class="line"><span class="cl">Executable: ./command.py
+</span></span><span class="line"><span class="cl">Arg: *.txt
+</span></span></code></pre></div><p>更多关于 Bash 解释信息，可以看 <a href="http://www.gnu.org/software/bash/manual/bashref.html#Filename-Expansion">http://www.gnu.org/software/bash/manual/bashref.html#Filename-Expansion</a></p>
+<h2 id="拓展阅读">拓展阅读</h2>
+<p>可以参考：</p>
+<ul>
+<li><a href="http://www.doughellmann.com/PyMOTW/subprocess/">http://www.doughellmann.com/PyMOTW/subprocess/</a> (and its O&rsquo;Reilly copy here)</li>
+<li><a href="http://docs.python.org/library/subprocess.html">http://docs.python.org/library/subprocess.html</a></li>
+<li><a href="http://webpython.codepoint.net/cgi_shell_command">http://webpython.codepoint.net/cgi_shell_command</a></li>
+<li><a href="http://www.artima.com/weblogs/viewpost.jsp?thread=4829">http://www.artima.com/weblogs/viewpost.jsp?thread=4829</a> (About writing main() functions)</li>
+</ul>
+<p>未来相关的文章：</p>
+<ul>
+<li>进程间信号通信</li>
+<li>后台执行程序</li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -77,6 +1290,146 @@
       
       <guid>https://blog.alswl.com/2012/07/moin2txt/</guid>
       <description>我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考 [使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 data 目录链接到 Dropbox 同步目录下面，从而可以备份并查看我的知识库。 我想同步阅读 KMS 数据 想在移动设备阅读 KMS 数据时，我遇到一个麻烦，MoinMoin 使用文件来保存 wiki 数据， 比如「28个Unix.Linux的命令行神器」这篇 wiki 目录在 data/28(e4b8aa)Unix(2e)Linux(e79a84e591bde4bba4e8a18ce7a59ee599a8) 中， 结构如下： |---revisions | |---00000002 | |---00000001 |---edit-log |---current |---attachments | |---http___coolshell.cn_wp-content_uploads_2012_07_xargs_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_sl.jpg | |---http___coolshell.cn_wp-content_uploads_2012_07_mtr_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_lftp_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_htop_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_calcurse_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_multitail_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_ack_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_tpp_screenshot.png</description>
+      <content:encoded><![CDATA[<p>我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考
+[使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 <code>data</code>
+目录链接到 Dropbox 同步目录下面，从而可以备份并查看我的知识库。</p>
+<h2 id="我想同步阅读-kms-数据">我想同步阅读 KMS 数据</h2>
+<p>想在移动设备阅读 KMS 数据时，我遇到一个麻烦，MoinMoin 使用文件来保存 wiki 数据，
+比如「28个Unix.Linux的命令行神器」这篇 wiki 目录在
+<code>data/28(e4b8aa)Unix(2e)Linux(e79a84e591bde4bba4e8a18ce7a59ee599a8)</code> 中，
+结构如下：</p>
+<!-- more -->
+<pre tabindex="0"><code>|---revisions
+|        |---00000002
+|        |---00000001
+|---edit-log
+|---current
+|---attachments
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_xargs_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_sl.jpg
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_mtr_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_lftp_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_htop_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_calcurse_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_multitail_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_ack_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_tpp_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_powertop_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_newsbeuter_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_socat_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_siege_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_duplicity_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_ipbt_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_iftop_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_curl_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_iptraf-tcpudp.gif
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_vim_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_earthquake.jpg
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_tmux3.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_cowsay_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_TaskWarrior2.0.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_vifm_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_taskwarrior_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_linuxlogo.jpg
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_ranger.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_nethack_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_rtorrent_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_dtach+dvtm.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_gnu_screen_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_ledger_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_rsync_screenshot.png
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_byobu-tmux.jpg
+|          |---http___coolshell.cn_wp-content_uploads_2012_07_ttytter_screenshot.png
+|---cache
+|    |---text_html
+|    |---pagelinks
+</code></pre><p>可以看到，中文名称的 wiki 在存储时候，MoinMoin 会将中文保存为 utf-8 码，
+不能直接阅读。并且我需要将目录下面有多级目录，阅读麻烦。</p>
+<h2 id="一个脚本">一个脚本</h2>
+<p>为了解决这个问题，我写了如下小脚本，帮我解决这个问题：</p>
+<pre tabindex="0"><code>#!/usr/bin/env python2
+# coding=utf-8
+
+# convert MoinMoin wiki to text
+# for moinmoin 1.9.x
+# author: alswl
+# update at: 2012-07-22
+
+import sys
+import os
+import argparse
+import binascii
+import re
+import shutil
+
+IS_DECODE_PATH = False
+
+def convert(root, dir, target):
+    name = name_decode(dir)
+    if not name:
+        return
+    dst = os.path.join(target, name.replace(&#39;/&#39;, &#39;-&#39;) + &#39;.txt&#39;)
+    try:
+        version = open(os.path.join(root, dir, &#39;current&#39;),
+                       &#39;r&#39;).readline().strip()
+        src = os.path.join(root, dir, &#39;revisions&#39;, version)
+        shutil.copyfile(src, dst)
+    except IOError, e:
+        if IS_DECODE_PATH:
+            dir = dir.replace(&#39;(&#39;, r&#39;\(&#39;).replace(&#39;)&#39;, r&#39;\)&#39;)
+        sys.stderr.write(&#39;File %s, Name: %s, Message: %s\n&#39;
+                         %(dir, name, str(e)))
+
+def name_decode(name):
+    raw = &#39;&#39;
+    lastpos = 0
+    ENCODE_RE = re.compile(r&#39;\(([\w\d]+)\)&#39;)
+    match =ENCODE_RE.search(name)
+    while(match):
+        raw += name[lastpos : lastpos + match.start()]
+        raw += binascii.unhexlify(match.groups()[0])
+        lastpos += match.end()
+        match = ENCODE_RE.search(name[lastpos:])
+    return raw
+
+def walk(path, target):
+    for dir in os.listdir(path):
+        convert(path, dir, target)
+
+def main():
+    parser = argparse.ArgumentParser(
+        description=&#39;Convert moin wiki to text archieves&#39;
+        )
+    parser.add_argument(&#39;--input&#39;, &#39;-i&#39;,
+                        help=&#39;the path of moinmoin/data/pages&#39;,
+                        type=str,
+                        required=True)
+    parser.add_argument(&#39;--output&#39;, &#39;-o&#39;,
+                        help=&#39;the path os target&#39;,
+                        type=str,
+                        required=True)
+    args = parser.parse_args()
+
+    walk(args.input, args.output)
+
+if __name__ == &#39;__main__&#39;:
+    main()
+</code></pre><p>使用帮助：</p>
+<pre tabindex="0"><code>usage: moin2txt.py [-h] --input INPUT --output OUTPUT
+
+Convert moin wiki to text archieves
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --input INPUT, -i INPUT
+                        the path of moinmoin/data/pages
+  --output OUTPUT, -o OUTPUT
+                        the path os target
+</code></pre><p>使用范例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python moin2txt.py -i /your/moin/path/data/pages -o /your/dropbox/path/kms
+</span></span></code></pre></div><p>命令运行完，就能在对应目录生成一坨 txt 文件，文件名还是中文的，Mission complete.</p>
+<p>我将这个命令加入了 cron，每天执行一次，保证 Dropbox 中是最新的 wiki。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -86,6 +1439,177 @@
       
       <guid>https://blog.alswl.com/2012/03/gae/</guid>
       <description>GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也假模假样的看文档， 就是没有什么产出。 去年写了一个小应用 dbevent2gc ， 期间发现 GAE 和普通程序开发的诸多不同，又遭遇 GAE 配额大幅缩水， 写出来的应用运转的不太稳定。在南京图书馆的架上看见这本《GAE 编程指南读书笔记》， 立即借回家仔细阅读。 GAE 的简介 运行时环境 Python / Java 数据存储 Datastore（实体 / 查询 / 索引 / 事务</description>
+      <content:encoded><![CDATA[<p>GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也假模假样的看文档，
+就是没有什么产出。</p>
+<p>去年写了一个小应用 <a href="https://github.com/alswl/dbevent2gc">dbevent2gc</a> ， 期间发现 GAE
+和普通程序开发的诸多不同，又遭遇 GAE 配额大幅缩水， 写出来的应用运转的不太稳定。在南京图书馆的架上看见这本《GAE 编程指南读书笔记》，
+立即借回家仔细阅读。</p>
+<ul>
+<li>
+<p>GAE 的简介</p>
+<ul>
+<li>运行时环境 Python / Java</li>
+<li>数据存储 Datastore（实体 / 查询 / 索引 / 事务）</li>
+<li>服务（Memcache / GAccount / 任务队列 / 计划任务）</li>
+<li>工具（SDK / appcfg / dev_appserver / 控制台）</li>
+</ul>
+</li>
+<li>
+<p>入门（安装 / GAccount / webapp / app.yaml / /_ah/admin / 注册部署 / login:required）</p>
+</li>
+<li>
+<p>处理流程：请求 - 前端 - 引用服务器 / 静态文件服务器 - 服务</p>
+<ul>
+<li>配额限制：请求限制 / CPU 限制 / 服务限制 / 部署限制 （最新配额：http://code.google.com/intl/zh-CN/appengine/docs/quotas.html）</li>
+</ul>
+</li>
+<li>
+<p>数据存储</p>
+<ul>
+<li>
+<p>GAE 的数据存储方式和传统的 RDBMS 差异比较大，更类似于对象数据库。</p>
+</li>
+<li>
+<p>类别 kind / 键 / 键名 key name</p>
+</li>
+<li>
+<p>可以通过键来获取和操作对象</p>
+<ul>
+<li><code>e = db.get(db.Key('Entity', 'alphabeta'))</code> / <code>e = Entity.get(k)</code></li>
+<li><code>e = db.get(k)</code></li>
+<li><code>e.delete()</code> / <code>db.delete(e1, e2)</code> / <code>db.delete(k)</code></li>
+</ul>
+</li>
+<li>
+<p>Expando 基类可以任意扩展属性，Model 基类则不可。</p>
+</li>
+<li>
+<p>GAE 中基本类型与 Python / Java 中基本类型的差异</p>
+</li>
+<li>
+<p>多值属性</p>
+</li>
+</ul>
+</li>
+<li>
+<p>数据查询</p>
+<ul>
+<li>查询和类别 <code>db.query()</code> <code>query.filter()</code> <code>query.order()</code></li>
+<li>查询和键：查询结果要么返回实体，要么返回键（ <code>key_only=True</code> ）</li>
+<li>可以用 GQL 写查询语句，不能写 CUD</li>
+<li>获取结果： <code>fetch()</code></li>
+</ul>
+</li>
+<li>
+<p>索引</p>
+<ul>
+<li>每条查询都需要维护一条索引，在 <code>index.yaml</code> 中可以配置</li>
+<li>排序之后的索引查询很快，查询效率和返回结果集有关</li>
+<li>实体的每个属性会自动维护两条索引：升序和降序</li>
+<li>查询时候选取对应的索引进行查询，条件语句可能和排序语句相冲突</li>
+<li>不等于 / IN 操作符将引发一系列变换出的查询</li>
+<li>多值字段的索引：每个值会成为索引中一行 / 实体会因此分散 / 取第一次成功扫描到的行</li>
+<li>多值会引入爆炸索引问题</li>
+</ul>
+</li>
+<li>
+<p>事务</p>
+<ul>
+<li>通过实体组来控制事务，实体组会在同一块存储区</li>
+<li>GAE 使用乐观锁</li>
+<li>使用 <code>AModel(parent=p)</code> 构造祖先，然后通过 <code>run_in_transation()</code> 回调事务处理函数</li>
+<li>BigTable 中使用日志+时间戳来跟踪实体的修改，保证数据并发和一致性</li>
+<li>事务更新和索引更新：可能返回的索引结果和实体不一致</li>
+</ul>
+</li>
+<li>
+<p>Python 数据建模</p>
+<ul>
+<li>
+<p>声明 / 类型 / 验证（ <code>validate()</code> ）</p>
+</li>
+<li>
+<p>不编入索引的属性 <code>indexed=False</code></p>
+</li>
+<li>
+<p>时间类型的自动值</p>
+</li>
+<li>
+<p>模型变化带来的维护问题：修改属性类型 / 添加一个必要属性是不向后兼容的。</p>
+</li>
+<li>
+<p>关系建模</p>
+<ul>
+<li>db.ReferenceProperty</li>
+<li>collection_name</li>
+</ul>
+</li>
+<li>
+<p>多对多关系的处理</p>
+<ul>
+<li>键列表方法：使用多值属性</li>
+<li>链接模型方法：相当于中间表概念</li>
+</ul>
+</li>
+<li>
+<p>模型的继承：通过 <code>db.PolyModel</code> 实现多态查询</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Memcache</p>
+<ul>
+<li>CRUD</li>
+</ul>
+</li>
+<li>
+<p>获取 URL 资源</p>
+<ul>
+<li><code>urlfetch()</code></li>
+</ul>
+</li>
+<li>
+<p>RPC 异步请求调用，闭包调用</p>
+</li>
+<li>
+<p>邮件和 XMPP</p>
+<ul>
+<li>额，亲用到时候看 Google 官方文档吧～</li>
+</ul>
+</li>
+<li>
+<p>大批量数据操作和远程访问</p>
+<ul>
+<li><code>/remote_api</code></li>
+<li>Bulk Loader 大量数据操作</li>
+<li>远程 shell <code>remote_api_shell.py app-id</code></li>
+</ul>
+</li>
+<li>
+<p>任务队列和计划任务</p>
+<ul>
+<li>队列： <code>queue.yaml</code> / 令牌桶</li>
+<li>计划任务： <code>cron.yaml</code></li>
+<li>都是通过设定主动触发某个 url</li>
+</ul>
+</li>
+<li>
+<p>Django</p>
+<ul>
+<li>看 Django 文档吧，亲～</li>
+</ul>
+</li>
+<li>
+<p>部署</p>
+<ul>
+<li>上传 <code>appcfg.py update ./clock</code></li>
+<li>通过 url 使用特定版本： <code>version-id.latest.app-id.appspot.com</code></li>
+<li>版本只维护代码，数据库还是同一份</li>
+<li>下载日志 <code>appcfg.py request_logs clock logs.txt</code></li>
+</ul>
+</li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -95,6 +1619,74 @@
       
       <guid>https://blog.alswl.com/2012/03/python-debug/</guid>
       <description>撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。 吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。 在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。 import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c /</description>
+      <content:encoded><![CDATA[<p>撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons
+开发的调试技巧。</p>
+<p>吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程，
+绝对不是简单的复制和粘帖。</p>
+<h2 id="在-python-中调试">在 Python 中调试</h2>
+<h3 id="pdb">pdb</h3>
+<p>在代码中加入下列语句即可启用交互式调试。</p>
+<pre><code>import pdb;pdb.set_trace()
+</code></pre>
+<p>在 pdb 中，可以使用 <code>h / l / b / n / s / c / j / a / p / ! / q</code> 这些命令所代表的含义可以通过
+<code>h(elp)</code> 打印出来。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="http://magustest.com/blog/python/use-pdb-debug-python/comment-page-1">用PDB库调试Python程序</a></li>
+</ul>
+<h3 id="ipdb">ipdb</h3>
+<p>比 pdb 更好用的是 ipdb，需要预先安装 IPython，通过 IPython 可以提供更强的交互功能。</p>
+<p>安装 ipdb: <code>easy_install ipdb</code> ， 使用方法依然是 <code>import ipdb;ipdb.set_trace()</code> 。</p>
+<p>ps: 根据我的测试，ipdb 0.61 不能和 ipython 0.91 正常工作， 会报 <code>ImportError: No module named core.debugger</code> 错误，请尝试使用 ipython 0.10 或者更新版本。这个错误在 ipdb 官网有 issue 描述
+（<a href="https://github.com/gotcha/ipdb/issues/9">link</a>）。</p>
+<h3 id="使用-embed-python-shell">使用 embed python shell</h3>
+<p>除了特定代码的调试，有时候我们还需要在开发一个功能之前进行尝试性代码撰写， 这点在 web 开发时候尤其有用。托 Python
+动态语言特性的福，我们可以很方便的使用 Interactivate Shell 进行开发。</p>
+<p>在项目的根目录建立一个 Python 脚本，比如 <code>shell.py</code> ，其中代码如下：</p>
+<pre><code>#!/usr/bin/env python
+#coding=utf-8
+</code></pre>
+<h1 id="desc-这个shell提供python上下文环境方便调试">desc: 这个shell提供Python上下文环境，方便调试</h1>
+<h1 id="author-alswl">author: alswl</h1>
+<h1 id="date-2012-03-20">date: 2012-03-20</h1>
+<p>def main():</p>
+<h1 id="do-something-for-init-here">Do something for init here.</h1>
+<p>try:</p>
+<p>from IPython.frontend.terminal.embed import InteractiveShellEmbed</p>
+<p>ipshell = InteractiveShellEmbed()</p>
+<p>ipshell()</p>
+<p>except ImportError:</p>
+<p>import code</p>
+<p>pyshell = code.InteractiveConsole(locals=locals())</p>
+<p>pyshell.interact()</p>
+<p>if <strong>name</strong> == &lsquo;<strong>main</strong>&rsquo;:</p>
+<p>main()</p>
+<p>这段代码先尝试使用 IPython 作为交互 shell，如果没有安装就使用原生 Python 作为 交互 Shell。(强烈建议使用 IPython)。</p>
+<p>请在 <code>main()</code> 方法开始时候做一些初始化动作，比如载入 webapp 的实例并初始化各路config，
+这样就能实现即时代码测试功能，提高开发效率，不用一遍遍地跑流程。</p>
+<p>参考链接</p>
+<ul>
+<li><a href="http://qixinglu.com/archives/embed_python_shell_in_code">http://qixinglu.com/archives/embed_python_shell_in_code</a> （注意， 这篇文章是2011年的，其中引入 IPython 的 <code>InteractiveShellEmbed</code> 的方法已经过期，请参考上面的代码）</li>
+</ul>
+<h3 id="gae-中的-pdb">GAE 中的 pdb</h3>
+<p>有一些特定系统，比如 GAE 和 nosetests，他们会重定向 <code>std:in</code> 和 <code>std:out</code> ， 造成 pdb
+无法正确输入和输出，在使用的使用，需要用以下代码做个 hack。</p>
+<pre><code>import sys
+import pdb
+for attr in ('stdin', 'stdout', 'stderr'):
+    setattr(sys, attr, getattr(sys, '__%s__' % attr))
+pdb.set_trace()
+</code></pre>
+<h2 id="pylons-调试">Pylons 调试</h2>
+<p>Paster 的 Shell 交互式调试更显犀利（官方所称杀手级功能）， 可以直接使用 <code>paster shell dev.ini</code>
+命令启用交互界面，默认会先尝试载入 IPython，不存在就载入原生 Shell。</p>
+<p>我当前使用的 Paster 版本为 1.7.5,无法正确识 IPython 0.11及以上版本， 请使用0.9.1或者0.10。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="http://wiki.pylonshq.com/pages/viewpage.action?pageId=9011323">How can I use &ldquo;paster shell&rdquo; to develop doctest tests?</a></li>
+<li><a href="http://stackoverflow.com/questions/7389388/pylons-paster-shell-does-not-run-in-ipython">stackoverflow 上关于 IPython 版本的问题</a></li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -104,6 +1696,150 @@
       
       <guid>https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/</guid>
       <description>1. 使用 MoinMoin 前些日子，我写了一篇使用MoinMoin作为个人KMS 大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源， 我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。 MoinMoin开发者wiki地址 MoinMoin开发API文档（这个官方wiki居然很少提及） MoinMoin的多国语翻译组wiki地址 我在使用MoinMoi</description>
+      <content:encoded><![CDATA[<h2 id="1-使用-moinmoin">1. 使用 MoinMoin</h2>
+<p>前些日子，我写了一篇<a href="../2011/12/moinmoin-kms">使用MoinMoin作为个人KMS</a>
+大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源，
+我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。</p>
+<ul>
+<li><a href="http://moinmo.in/MoinDev">MoinMoin开发者wiki地址</a></li>
+<li><a href="http://docs.moinmo.in/">MoinMoin开发API文档（这个官方wiki居然很少提及）</a></li>
+<li><a href="http://moinmo.in/MoinDev/Translation">MoinMoin的多国语翻译组wiki地址</a></li>
+</ul>
+<p>我在使用MoinMoin过程中，有一个急迫需要的功能：</p>
+<blockquote>
+<p>保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。</p>
+</blockquote>
+<p>这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供，
+我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。</p>
+<ul>
+<li><a href="http://moinmo.in/MoinMoinExtensions">MoinMoin插件库</a></li>
+<li><a href="http://moinmo.in/ActionMarket/Image2Attach">image2attach在MoinMoin官方Wiki的地址</a></li>
+</ul>
+<p>现在我分享一下如何写MoinMoin插件，技术大牛可以直接移步官方开发文档， 我这里只是写一些简单的内容，帮助像我一样的同学。</p>
+<p>以下内容需要Python编程基础～</p>
+<h2 id="2-moinmoin-系统结构">2. MoinMoin 系统结构</h2>
+<p>MoinMoin的UML图：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201202/MoinMoinArchitecture.png" alt="MoinMoin"  />
+
+</p>
+<h2 id="3-moinmoin-常用对象">3. MoinMoin 常用对象</h2>
+<h3 id="31-request">3.1. request</h3>
+<p>这个request和普通jsp/asp中request很类似（实际上这个request就是继承
+<a href="http://werkzeug.pocoo.org/">werkzeug</a>的Request）。</p>
+<p>除了正常的web request功能，Moin的request还带了Wiki自身的信息。</p>
+<ul>
+<li>request.getText # 多国语函数，经常使用 <code>_ = request.getText</code> 来简化代码</li>
+<li>request.dicts # 获取定义在页面中的Dict，参见http://moinmo.in/HelpOnDictionaries</li>
+<li>request.groups # 获取权限管理中的组别</li>
+<li>request.user.may # 检查用户权限</li>
+</ul>
+<h3 id="32-page">3.2. Page</h3>
+<p>Page是最常见的类，它代表某个Wiki页面，通过它可以获取某个页面所有信息。 age本身是只读的，如果需要编辑需要使用PageEditor。</p>
+<ul>
+<li>Page.exists() # 是否存在</li>
+<li>Page.getRevList() # 版本列表</li>
+<li>Page.current_rev() # 当前版本</li>
+<li>Page.getPagePath() # 存储路径</li>
+<li>Page.get_raw_body() # 获取存储的数据</li>
+<li>Page.send_page() # 发送格式化好页面</li>
+</ul>
+<h3 id="33-pageeditor">3.3. PageEditor</h3>
+<p>上面说到Page是只读的，那当我们需要编辑页面时候，就要用到PageEditor类了。</p>
+<ul>
+<li>PageEditor.saveText() # 保存内容</li>
+<li>PageEditor.deletePage() # 删除页面</li>
+</ul>
+<h3 id="34-attachfile">3.4. AttachFile</h3>
+<p>顾名思义，AttachFile用来管理页面附件。</p>
+<ul>
+<li>AttachFile.exists() # 检查附件是否存在</li>
+<li>AttachFile.getAttachDir() # 获取附件存放的本地目录</li>
+<li>AttachFile.getAttachUrl() # 获取附件url</li>
+</ul>
+<h3 id="35-wikiutil">3.5. wikiutil</h3>
+<p>wikiutil 是MoinMoin提供的一个帮助类，包含一些常用的小功能。</p>
+<ul>
+<li>wikiutil.escape() # html转义</li>
+<li>wikiutil.createTicket() # 生成一串唯一key，用来页面验证</li>
+<li>wikiutil.checkTicket() # 检查ticket</li>
+<li>wikiutil.invoke_extension_function() # 注入脚本类插件</li>
+<li>wikiutil.version2timestamp() # 将MoinMoin时间转换成UNIX时间戳</li>
+<li>wikiutil.timestamp2version() # 参考楼上</li>
+<li>wikiutil.renderText() # 将wiki text转换成html来展现</li>
+</ul>
+<h3 id="36-user">3.6. user</h3>
+<p>用户类，CRUD操作，不解释。</p>
+<h3 id="37-formatter">3.7. formatter</h3>
+<p>formatter将输出展现类，将wiki text转换为各种预定义的格式。 需要和parser配合使用（两者关系看上去像抽象工厂模式）。</p>
+<ul>
+<li>formatter.text() # 格式化为普通文本</li>
+<li>formatter.img() # 格式化为图片</li>
+<li>formatter.number_list() # 格式化为有序列表</li>
+<li>formatter.bullet_list() # 格式化为无序列表</li>
+<li>formatter.listitem() # 格式化为列表项</li>
+</ul>
+<h3 id="38-parser">3.8. parser</h3>
+<p>formatter完成的工作是展现解析后的wiki内容，而负责解析的就是parser了。</p>
+<p>流程是这样的：</p>
+<pre><code>wiki -&gt; parser -&gt; formatter
+</code></pre>
+<p>每一个parser都对应一个或者多个formatter。系统内置的 parser/formatter 有：</p>
+<ul>
+<li>docbook</li>
+<li>html</li>
+<li>plain</li>
+<li>python</li>
+<li>rst</li>
+<li>cvs</li>
+</ul>
+<h2 id="4-moinmoin-运行流程">4. MoinMoin 运行流程</h2>
+<ol>
+<li>cgi.py</li>
+<li>通过url获取pagename和action，然后调用对应的Page方法和Action对象</li>
+</ol>
+<pre><code>1. Page().send_page()创建普通页面
+2. MoinMoin.action.getHandler()用来获取对应action
+</code></pre>
+<h2 id="5-moinmoin-开发配置">5. MoinMoin 开发配置</h2>
+<h3 id="51-禁用pyc缓存">5.1. 禁用pyc缓存</h3>
+<p>MoinMoin 为了提高系统效率，会为 python 文件生成pyc缓存，如果放任它们的话。
+每次修改python源码效果都得不到立即体现。所以我们要在开发阶段禁用系统缓存。</p>
+<p>在文件 <code>/usr/lib/python2.7/site-packages/MoinMoin/config/multiconfig.py</code>
+的第815行左右，修改 <code>options_no_group_name</code> 中的 <code>cache</code> 时间。</p>
+<p>当改为0时候，就不使用 <code>pyc</code> 缓存，这样就不用重启服务器来清楚缓存了。</p>
+<pre><code>options_no_group_name = {
+        # ...
+        #'cache': (600, 30), # cache action is very cheap/efficient
+        'cache': (0, 0), # cache action is very cheap/efficient #XXX alswl
+        # ...
+}
+</code></pre>
+<h2 id="6-image2attach-范例">6. image2attach 范例</h2>
+<p>image2attach这个插件功能很简单，就是读取wiki文本内容，找出所有图片，
+然会将这些图片从互联网上下载到本地，并将文中的图片链接改为MoinMoin的附件链接。</p>
+<h3 id="61-创建插件文件">6.1. 创建插件文件</h3>
+<p>在 <code>data/plugin/action/</code> 目录下创建文件Image2Attach.py。
+（请使用大写文件，Moin会自动识别大写开头的Python文件为插件）</p>
+<h3 id="62-基本框架">6.2. 基本框架</h3>
+<ol>
+<li><code>execute()</code> ：hook函数，用来给上层调用，签名必须是 <code>def execute(pagename, request)</code></li>
+<li><code>Class Image2Attach</code> ：主要类，处理逻辑。</li>
+</ol>
+<pre><code>1. `process() / process_line()` ：处理每行wiki text，会抓取&lt;a&gt;和&lt;img&gt;
+2. `process_transclude() / process_link()` ：分别处理&lt;a&gt; / &lt;img&gt;
+3. `fetch_image()` ：下载图片
+4. `add_attachment()` ：将图片作为附件加入到wiki
+5. `write_file()` ：写入wiki text
+</code></pre>
+<p>总的来说，开发Moin插件还是比较方便的，官方提供了详尽（但不够顺畅）的教程和
+<a href="http://docs.moinmo.in/moin/1.9/">API文档</a>。 我大部分时间在看Moin的API文档，
+Moin作为一款久经考研的Wiki系统，开放的代码也有很多地方可以学习。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -113,6 +1849,106 @@
       
       <guid>https://blog.alswl.com/2012/01/tingdownload/</guid>
       <description>度娘终于干了一件好事，Baidu Ting上线了， 正版音乐免费下载，类似于谷歌音乐。 关于音乐版权和免费的问题， 有很多问题需要取讨论， 比如说这种商业模式是否对传统唱片业产生冲击又或是有积极影响？ 作为普通消费者，暂时不用考虑这些问题，先享受这些服务好了。 Baidu Ting的音乐质量是128KBps，音质算好，里面的idv3信息也勉强可以，有: 歌名 歌手 部分专辑名（偶尔也出现&amp;quot;201-8月新歌快递&amp;quo</description>
+      <content:encoded><![CDATA[<p>度娘终于干了一件好事，<a href="http://ting.baidu.com">Baidu Ting</a>上线了，
+正版音乐免费下载，类似于<a href="http://www.google.cn/music">谷歌音乐</a>。 关于音乐版权和免费的问题， 有很多问题需要取讨论，
+比如说这种商业模式是否对传统唱片业产生冲击又或是有积极影响？ 作为普通消费者，暂时不用考虑这些问题，先享受这些服务好了。</p>
+<p>Baidu Ting的音乐质量是128KBps，音质算好，里面的idv3信息也勉强可以，有:</p>
+<ul>
+<li>歌名</li>
+<li>歌手</li>
+<li>部分专辑名（偶尔也出现&quot;201-8月新歌快递&quot;这种比较山寨的字）</li>
+<li>部分唱片封面图片</li>
+</ul>
+<p>虽然比不上谷歌音乐连歌曲风格都准备好了，但是比杂乱无章的那些音乐mp3要好太多了。</p>
+<h2 id="自动下载脚本tingdownload">自动下载脚本tingdownload</h2>
+<p>早上下了几首音乐，就顺手写了一个脚本，用来批量从Badu Ting下载音乐。</p>
+<p>代码在<a href="https://github.com/alswl/tingdownload">github-tingdownload</a></p>
+<h2 id="需要">需要</h2>
+<ul>
+<li>Python 2 (仅在Python2.7下测试)</li>
+<li>BeautifulSoup(已包含在目录下)</li>
+<li>simplejson（已包含在目录下)</li>
+<li>一点点Python基础</li>
+<li>Linux/Windows（我在Linux没问题，Windows应该也可以）</li>
+</ul>
+<h2 id="使用方法">使用方法</h2>
+<p>在Shell(命令行)里输入下面随便一个命令，就会在当前目录下面出现 <code>musics</code> 文件夹， 里面就有下载好的音乐。</p>
+<pre><code># 使用说明
+usage: tingdownload.py [-h] [--input INPUT] [Keyword [Keyword ...]]
+</code></pre>
+<p>A script to download music from ting.baidu.com.</p>
+<p>positional arguments:</p>
+<p>Keyword</p>
+<p>optional arguments:</p>
+<p>-h, &ndash;help show this help message and exit<br />
+&ndash;input INPUT, -i INPUT<br />
+a list file to input musics</p>
+<pre><code># 示例
+python tingdownload.py 老男孩 #单个文件下载
+./tingdownload.py 老男孩 #单个文件下载（给python文件加上可执行权限）
+python tingdownload.py 老男孩 Raise\n Me\n Up # 多文件名，如果有空格，请记得加上空格反转'\n'
+</code></pre>
+<p>批量下载的话，可以准备一个列表文件，每个歌曲名用回车隔开，如下：</p>
+<pre><code>还过得去
+不敢太幸福
+小情歌
+爱情靠不住
+我爱我
+你可以不用给我答案     金莎
+没有这首歌         后弦
+        回不去了吗         萧亚轩
+        有些事现在不做 一辈子都不会做了  五月天
+        第一夫人    张杰
+</code></pre>
+<p>将这个list文件作为输入传入执行脚本：</p>
+<pre><code>python2.7 tingdownload.py --input ~/music.txt
+</code></pre>
+<p>运行结果如下，列出四种情况：</p>
+<ul>
+<li>
+<p>下载成功，如果文件已经存在，会跳过</p>
+</li>
+<li>
+<p>下载失败，由于网络原因</p>
+</li>
+<li>
+<p>下载失败，由于关键词不准确而出现太多结果</p>
+</li>
+<li>
+<p>下载失败，没有关键词匹配的结果</p>
+<p>█▓▒░alswl@x201█▓▒░ ~/dev/project/python/tingdownload/ ./tingdownload.py 黄昏\ 周传雄 考试什么 &ndash;input ~/a.txt</p>
+<blockquote>
+<p>Start download 黄昏 周传雄&hellip;</p>
+</blockquote>
+<h1 id="info-file-homealswldevprojectpythontingdownloadmusics周传雄-黄昏mp3-exists">Info: File &ldquo;/home/alswl/dev/project/python/tingdownload/musics/周传雄-黄昏.mp3&rdquo; exists.</h1>
+<blockquote>
+<p>Start download 考试什么&hellip;</p>
+</blockquote>
+<h1 id="info-file-homealswldevprojectpythontingdownloadmusics徐良-考试什么的去死吧mp3-exists">Info: File &ldquo;/home/alswl/dev/project/python/tingdownload/musics/徐良-考试什么的去死吧.mp3&rdquo; exists.</h1>
+<blockquote>
+<p>Start download 还过得去&hellip;</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>Start download 不敢太幸福&hellip;</p>
+</blockquote>
+<blockquote>
+<p>Start download 小情歌&hellip;</p>
+</blockquote>
+<h1 id="failed-too-more-result-found-for-keyword-小情歌">Failed: Too more result found for keyword 小情歌.</h1>
+<blockquote>
+<p>Start download 爱情靠不住&hellip;</p>
+</blockquote>
+<p>== Download success (4) ==</p>
+<p>黄昏 周传雄</p>
+<p>考试什么</p>
+<p>还过得去</p>
+<p>不敢太幸福</p>
+<p>== Download failed for too many result (1) ==</p>
+<p>小情歌</p>
+<p>Enjoy it.</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -128,6 +1964,57 @@ Support You can get some develop infomation in Image2attach - Log4D
 Licence Distributed under the GPL v2
 Source code powered by https://github.com/alswl/image2attach.
 update 2012-05-28 fix url catch bug(Issue 4 / Issue 6) 2011-12-25 support link([[http://xxx.com/xxx.jpg|) fix url has &amp;lsquo;attachment&amp;rsquo; string bug. support image attachment rewrite. </description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201112/moinmoin.png" alt="MoinMoin"  />
+
+</p>
+<h2 id="whats-this">What&rsquo;s this</h2>
+<p>Image2Attach is a extension for <a href="http://moinmo.in">MoinMoin</a>.
+It can create a page action to save images from web to page&rsquo;s attachments.</p>
+<h2 id="requirment">Requirment</h2>
+<ul>
+<li>MoinMoin 1.9 (I only test in this version.)</li>
+</ul>
+<h2 id="install">Install</h2>
+<ul>
+<li>copy action/Image2Attach.py to data/plugin/action/</li>
+<li>restart python server</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<p>Go into a page, click <code>more action</code> - <code>Image2Attach</code> .
+It will take a while to fetch the images,
+after that it will save the image to attachments and replace the
+image&rsquo;s link with attachment&rsquo;s link.
+Finnally it will commit a change with message
+<code>internet image save to attachment</code> to wiki.</p>
+<p>Enjoy it, any bugs can report to
+<a href="https://github.com/alswl/image2attach/issues">Issue Report</a>.</p>
+<h2 id="support">Support</h2>
+<p>You can get some develop infomation in
+<a href="http://log4d.com/tag/image2attach">Image2attach - Log4D</a></p>
+<h2 id="licence">Licence</h2>
+<p>Distributed under the <a href="http://www.gnu.org/licenses/gpl-2.0.htmwl">GPL v2</a></p>
+<p>Source code powered by <a href="https://github.com/alswl/image2attach">https://github.com/alswl/image2attach</a>.</p>
+<h2 id="update">update</h2>
+<ul>
+<li>2012-05-28</li>
+</ul>
+<ul>
+<li>fix url catch bug(Issue 4 / Issue 6)</li>
+</ul>
+<ul>
+<li>2011-12-25</li>
+</ul>
+<ul>
+<li>support link([[http://xxx.com/xxx.jpg|)</li>
+<li>fix url has &lsquo;attachment&rsquo; string bug.</li>
+<li>support image attachment rewrite.</li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -137,6 +2024,45 @@ update 2012-05-28 fix url catch bug(Issue 4 / Issue 6) 2011-12-25 support link([
       
       <guid>https://blog.alswl.com/2011/11/dbevent2gc-v0-1-released/</guid>
       <description>重要通知：Log4D的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner的地址未发生变化） http://feed.dddspace.com 弃用 请订阅我博客的朋友更新一下订阅地址。 关于dbevent2gc A application to sync douban.com events to Google Calendar. dbevent2gc是一个GAE应用，它将豆瓣同城的活动同步到Google Calendar的日历， 允许用户订阅活动而知道最近几周周边将发生活动。 dbevent2gc是基于Python/web.py/mako/iC</description>
+      <content:encoded><![CDATA[<p>重要通知：Log4D的域名由 <a href="http://dddspace.com">http://dddspace.com</a> 迁移到
+<a href="http://log4d.com">http://log4d.com</a> 。</p>
+<p>订阅地址现在改为 <a href="http://log4d.com/feed">http://log4d.com/feed</a> 和
+<a href="http://feeds.feedburner.com/dddspace">http://feeds.feedburner.com/dddspace</a>
+。（FeedBurner的地址未发生变化）</p>
+<p><strike><a href="http://feed.dddspace.com">http://feed.dddspace.com</a></strike> 弃用</p>
+<p>请订阅我博客的朋友更新一下订阅地址。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/dbevent2gc.png" alt="dbevent2gc"  />
+
+</p>
+<h2 id="关于dbevent2gc">关于dbevent2gc</h2>
+<p>A application to sync douban.com events to Google Calendar.</p>
+<p>dbevent2gc是一个GAE应用，它将豆瓣同城的活动同步到Google Calendar的日历， 允许用户订阅活动而知道最近几周周边将发生活动。</p>
+<p>dbevent2gc是基于Python/web.py/mako/iCalendar的，源代码地址在
+<a href="https://github.com/alswl/dbevent2gc">https://github.com/alswl/dbevent2gc</a></p>
+<h2 id="使用方法">使用方法</h2>
+<p>目前dbevent2gc运行在GAE上面，地址是 <a href="http://dbevent2gc.appspot.com">http://dbevent2gc.appspot.com</a> （墙外）
+<a href="http://dbevent2gc.log4d.com/">http://dbevent2gc.log4d.com/</a> （我做的本地反向代理）
+登录这个地址可以选择需要订阅的城市和活动类型，然后会生成一个按钮， 点击这个按钮可以直接将选择的活动订阅到Google日历。</p>
+<p>如果你无法翻墙，可以使用 [http://dbevent2gc.appspot.com/event/location/beijing?type=all](h
+ttp://dbevent2gc.appspot.com/event/location/beijing?type=all) 这样的地址添加到你的Google
+Calender里面。</p>
+<p>接受的参数：</p>
+<ul>
+<li>城市（把最后的beijing替换成你想要的城市拼音， 更多城市拼音查看<a href="http://www.douban.com/location/world/?others=true">这里</a></li>
+<li>活动类型 type，支持all, commonweal, drama, exhibition, film, music, others, party, salon, sports, travel. 可选参数,默认为all</li>
+</ul>
+<h2 id="安装方法">安装方法</h2>
+<p>如果想自己搭建GAE应用，也很简单，直接使用 <code>git://github.com/alswl/dbevent2gc.git</code> 就可以获取最新代码，
+然后嘛去GAE注册一个应用，上传即可运行了。</p>
+<p>dbevent2gc看上去可以用了，我昨晚发布了v0.1版本。</p>
+<p>感兴趣的同学可以试试，现在的问题是获取的活动可能太多了，<strike>我后期会加上过滤功能</strike>（update
+2011-11-26，我已经添加了活动类型选择功能）。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -146,6 +2072,321 @@ update 2012-05-28 fix url catch bug(Issue 4 / Issue 6) 2011-12-25 support link([
       
       <guid>https://blog.alswl.com/2011/09/nose/</guid>
       <description>不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用 nose 做单元测试，颇有心得， 在这里分享一下。 1. Pylons中依赖包 先简单介绍一下Pylons, Pylons与其说是一个框架，不如说是一堆框架的组合， Pylons在其中做到一个胶水的作用。Pylons依赖的包如下。 breaker，缓存和Session FormEncode，用户输入检查 Mako，模板渲染 nose，自动化测试 Paste，服</description>
+      <content:encoded><![CDATA[<p>不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用
+<a href="http://readthedocs.org/docs/nose/en/latest">nose</a> 做单元测试，颇有心得， 在这里分享一下。</p>
+<h2 id="1-pylons中依赖包">1. Pylons中依赖包</h2>
+<p>先简单介绍一下Pylons, Pylons与其说是一个框架，不如说是一堆框架的组合， Pylons在其中做到一个胶水的作用。Pylons依赖的包如下。</p>
+<ul>
+<li><a href="https://github.com/danielfm/pybreaker">breaker，缓存和Session</a></li>
+<li><a href="http://formencode.org/">FormEncode，用户输入检查</a></li>
+<li><a href="http://www.makotemplates.org/">Mako，模板渲染</a></li>
+<li><a href="http://readthedocs.org/docs/nose/en/latest/">nose，自动化测试</a></li>
+<li><a href="http://pythonpaste.org/script/">Paste，服务器</a></li>
+<li><a href="http://routes.groovie.org/">Routes, 路由</a></li>
+<li><a href="http://pythonpaste.org/tempita/">Tempita，Paste的模板</a></li>
+<li><a href="http://packages.python.org/WebCore/modules/thirdparty/weberror.html">Weberror</a></li>
+<li><a href="http://docs.webob.org/en/latest/index.html">WebOb，提供WSGI请求响应等对象</a></li>
+<li><a href="http://pythonpaste.org/webtest/">WebTest，Paste自带的测试小框架， 提供TestResponse和TestRequest两个有用的小东西</a></li>
+</ul>
+<p>Pylons的测试主要使用的其中的 Paste / nose / WebOb / WebTest。 遇到问题的时候，可以去翻一翻上面的文档。</p>
+<h2 id="2-pylons中测试目录结构">2. Pylons中测试目录结构</h2>
+<p>目录结构如下</p>
+<pre tabindex="0"><code>├─config
+├─controllers
+├─lib
+├─model
+├─public
+├─templates
+└─tests
+    └─functional
+</code></pre><p>目录中的 <code>config / controllers / lib / model / public</code>
+在不同的web框架下面可能会略有差别，在这里我不关注他们，我关注 <code>tests / functional</code> 中存放相应的测试脚本，比如
+<code>test_user.py</code></p>
+<h2 id="3-第一个简单的测试用例">3. 第一个简单的测试用例</h2>
+<h3 id="31-撰写单元测试文件">3.1. 撰写单元测试文件</h3>
+<p>最简单的test脚本如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">myb.tests</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestIndexController</span><span class="p">(</span><span class="n">TestController</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Test response...</span>
+</span></span></code></pre></div><p>这里我们从 <code>myb.tests</code> 这个目录下面引入了所有包 （其实起作用的是 <code>__init__.py</code> ）</p>
+<p><code>__init__.py</code> 如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#coding: utf-8</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">webob.headers</span> <span class="kn">import</span> <span class="n">ResponseHeaders</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">TestCase</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">paste.deploy</span> <span class="kn">import</span> <span class="n">loadapp</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">paste.script.appinstall</span> <span class="kn">import</span> <span class="n">SetupCommand</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pylons</span> <span class="kn">import</span> <span class="n">url</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">routes.util</span> <span class="kn">import</span> <span class="n">URLGenerator</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">webtest</span> <span class="kn">import</span> <span class="n">TestApp</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pylons.test</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="s1">&#39;TestController&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Invoke websetup with the current config file</span>
+</span></span><span class="line"><span class="cl"><span class="n">SetupCommand</span><span class="p">(</span><span class="s1">&#39;setup-app&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">pylons</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">pylonsapp</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;__file__&#39;</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl"><span class="n">environ</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestController</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">wsgiapp</span> <span class="o">=</span> <span class="n">pylons</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">pylonsapp</span>
+</span></span><span class="line"><span class="cl">        <span class="n">config</span> <span class="o">=</span> <span class="n">wsgiapp</span><span class="o">.</span><span class="n">config</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">TestApp</span><span class="p">(</span><span class="n">wsgiapp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">url</span><span class="o">.</span><span class="n">_push_object</span><span class="p">(</span><span class="n">URLGenerator</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;routes.map&#39;</span><span class="p">],</span> <span class="n">environ</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">TestCase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></span></code></pre></div><p>可以看到，这里使用了 <code>TestController</code> 继承了 <code>TestCase</code> 这个单元测试基类， 并且在里面进行了web应用的环境初始化。</p>
+<h3 id="32-撰写测试配置文件">3.2. 撰写测试配置文件</h3>
+<p>上文撰写了一个最简单的测试代码，我们接着做一些单元测试配置。</p>
+<p>在app应用的同级文件里面，修改 <code>test.ini</code> 文件。</p>
+<pre tabindex="0"><code>[DEFAULT]
+debug = true
+#email_to = you@yourdomain.com
+smtp_server = localhost
+error_email_from = paste@localhost
+
+[server:main]
+use = egg:Paste#http
+host = 127.0.0.1
+port = 5000
+
+[app:main]
+use = config:development.ini
+sqlalchemy.url = mysql://username:password@localhost/myb_test?charset=utf8&amp;use_unicode=1
+
+# Logging configuration
+[loggers]
+keys = root, routes, myb, sqlalchemy
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[logger_routes]
+level = INFO
+handlers =
+qualname = routes.middleware
+
+# &#34;level = DEBUG&#34; logs the route matched and routing variables.
+[logger_myb]
+level = DEBUG
+handlers =
+qualname = myb
+
+[logger_sqlalchemy]
+level = INFO
+handlers =
+qualname = sqlalchemy.engine
+
+# &#34;level = INFO&#34; logs SQL queries.
+# &#34;level = DEBUG&#34; logs SQL queries and results.
+# &#34;level = WARN&#34; logs neither. (Recommended for production systems.)
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s,%(msecs)03d %(levelname)-5.5s [%(name)s] [%(threadName)s] %(message)s
+datefmt = %H:%M:%S
+</code></pre><p>这个配置文件设定了基本调试信息，数据库（使用myb_test数据库来避免修改原始数据） ，log方式。</p>
+<p>在 <code>[app:main]</code> 里面，我直接引用了 <code>development.ini</code> 的配置。</p>
+<h3 id="33-运行nose">3.3. 运行nose</h3>
+<p>在shell里面切换到app所在的目录（test.ini）所在的目录，运行 <code>nosetests myb/tests/functional/test_hello world.py</code> 。 之后会出现一些log内容，不出意外的话，应该出现 <code>OK</code> 。</p>
+<p>如果遇到 <code>FAILED</code> ，那就根据错误提示的信息来查错。 nose会输出log的信息和print标准输出的信息。</p>
+<h2 id="4-高级一点的测试方法">4. 高级一点的测试方法</h2>
+<p>在开发过程中，我们需要判定单元测试是否正确，我罗列一些常见的用法</p>
+<h3 id="41-测试返回类型为http-status的方法">4.1. 测试返回类型为HTTP STATUS的方法</h3>
+<p>每次HTTP请求都会返回HTTP STATUS，正常是200，找不到是404，服务器错误是500， 我们可以根据这些返回状态值来判断测试是否跑通。</p>
+<pre tabindex="0"><code>class TestQuestionController(TestController):
+
+  def test_suggest_question(self):
+
+    #正常返回200
+    response = self.app.get(url=url(controller=&#39;question&#39;,
+    action=&#39;suggest_question&#39;,
+    ),
+
+    params={
+    },
+    headers=self.headers,
+    status=200,
+    )
+</code></pre><p>#不存在的id返回404</p>
+<pre tabindex="0"><code>response = self.app.get(url=url(controller=&#39;question&#39;,
+
+action=&#39;suggest_question&#39;,
+
+),
+
+params={
+
+&#39;id&#39;: &#39;345&#39;,
+
+},
+
+headers=self.headers,
+
+status=404,
+
+)
+</code></pre><p>我习惯使用 <code>url()</code> 方法来生成url，这样一方面不用记住冗长的url， 另外在url路由表发生变化之后，也不用去改变测试代码。</p>
+<h3 id="42-测试返回类型为html的方法">4.2. 测试返回类型为html的方法</h3>
+<pre tabindex="0"><code>        def test_register(self):
+            response = self.app.post(url(controller = &#39;users&#39;,
+                                         action = &#39;register&#39;,
+                                         format = &#39;json&#39;),
+                                     {
+                                         &#39;login_name&#39;: &#39;nose_json&#39;,
+                                         &#39;login_pass&#39;: &#39;123&#39;,
+                                         &#39;user_name&#39;: &#39;测试机器人_json&#39;,
+                                     },
+                                     status=200
+                                     )
+            assert &#39;202cb962ac59075b964b07152d234b70&#39; in response.body #返回的加密密码
+            #log.debug( u&#39;器&#39; in response.unicode_body) #无法测试中文
+            #log.debug( u&#39;测试机器人_json&#39; in response.unicode_body) #无法测试中文
+</code></pre><p>使用 <code>response.body</code> 来判定html里面的内容（这里对中文支持不太好）。</p>
+<h3 id="43-测试返回类型为json的方法">4.3. 测试返回类型为json的方法</h3>
+<p>AJAX请求正常返回的状态吗都是200，我们需要判定里面的内容进行assert</p>
+<pre tabindex="0"><code>            response = self.app.post(url=url(controller=&#39;invitation&#39;,
+                                             action=&#39;invite_by_mail&#39;),
+                                     params={
+                                         &#39;to_address&#39;: &#39;&#39;,
+                                         &#39;to_user_name&#39;: &#39;大爷&#39;,
+                                     },
+                                     headers=self.headers,
+                                     status=200
+                                    )
+            result = response.json
+            assert(result[&#39;success&#39;] == False)
+            assert(result[&#39;message&#39;] == u&#39;发送失败：你妹不漂亮&#39;)
+</code></pre><h3 id="44-测试返回类型为重定向的方法">4.4. 测试返回类型为重定向的方法</h3>
+<p>这是HTTP状态吗的特殊形式，比如登录之后做一次跳转之类的。</p>
+<pre tabindex="0"><code>        def test_add(self):
+            #成功之后返回302做跳转，同时判定返回内容中跳转路径
+            response = self.app.post(url=url(controller=&#39;question&#39;,
+                                             action=&#39;add&#39;,
+                                             ),
+                                     params={
+                                         &#39;question_title&#39;: &#39;hwti1&#39;,
+                                         &#39;question_content&#39;: &#39;wgtinzrs1&#39;,
+                                     },
+                                     headers=self.headers,
+                                     status=302,
+                                    )
+            assert re.match(r&#39;^http://localhost/question/d*&#39;,
+                            response.headers[&#39;Location&#39;])
+</code></pre><h3 id="45-用户登录生成session">4.5. 用户登录生成Session</h3>
+<p>有些方法需要登录后才能运行，这依赖于服务器和浏览器之间的Cookie。如果要对这类
+方法进行测试，我们需要事先获取Cookie，再在每一次请求发出的时候附带这个Cookie。</p>
+<p>在下面的方法中，我实现了用户登录操作。 在test目录下的 <code>__init.py__</code> 中 <code>TestController</code> 加入新方法 <code>login()</code></p>
+<pre tabindex="0"><code>        def login(self, login_name, login_pass):
+            &#34;&#34;&#34;
+            用户登录操作，获取Cookie
+
+&#34;&#34;&#34;
+
+response = self.app.post(url=url(controller=&#39;users&#39;,
+
+action=&#39;login&#39;),
+
+params={
+
+&#39;login_name&#39;: login_name,
+
+&#39;login_pass&#39;: login_pass,
+
+},
+
+)
+
+cookie = response.headers.getall(&#39;Set-cookie&#39;)[0]
+
+self.headers = ResponseHeaders()
+
+self.headers.add(&#39;Cookie&#39;, cookie)
+</code></pre><p>这样就可以通过 <code>self.headers</code> 保存登录之后的cookie。</p>
+<h3 id="46-批量测试">4.6. 批量测试</h3>
+<p>除了制定 <code>test_xxx.py</code> 文件进行单元测试，我们还可以直接使用 <code>nosetests</code> 测试所有测试用例。</p>
+<pre><code>nosetests
+//该目录下需要存在 test.ini 配置文件
+</code></pre>
+<h2 id="5-遇到的问题">5. 遇到的问题</h2>
+<h3 id="51-编码问题">5.1. 编码问题</h3>
+<pre tabindex="0"><code>      File &#34;buildbdist.win32eggwebtest__init__.py&#34;, line 211, in post
+        content_type=content_type)
+      File &#34;buildbdist.win32eggwebtest__init__.py&#34;, line 191, in _gen_request
+        expect_errors=expect_errors)
+      File &#34;buildbdist.win32eggwebtest__init__.py&#34;, line 370, in do_request
+        res = req.get_response(app, catch_exc_info=True)
+      File &#34;buildbdist.win32eggwebobrequest.py&#34;, line 1004, in get_response
+        application, catch_exc_info=True)
+      File &#34;buildbdist.win32eggwebobrequest.py&#34;, line 977, in call_application
+        app_iter = application(self.environ, start_response)
+      File &#34;buildbdist.win32eggwebtestlint.py&#34;, line 170, in lint_app
+        iterator = application(environ, start_response_wrapper)
+      File &#34;d:programmingpython26libsite-packagespaste-1.7.5.1-py2.6.eggpastecascade.py&#34;, line 130, in __call__
+        return self.apps[-1](environ, start_response)
+      File &#34;d:programmingpython26libsite-packagespaste-1.7.5.1-py2.6.eggpasteregistry.py&#34;, line 379, in __call__
+        app_iter = self.application(environ, start_response)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsmiddleware.py&#34;, line 150, in __call__
+        self.app, environ, catch_exc_info=True)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsutil.py&#34;, line 48, in call_wsgi_application
+        app_iter = application(environ, start_response)
+      File &#34;d:programmingpython26libsite-packagesweberror-0.10.3-py2.6.eggweberrorevalexception.py&#34;, line 235, in __call__
+        return self.respond(environ, start_response)
+      File &#34;d:programmingpython26libsite-packagesweberror-0.10.3-py2.6.eggweberrorevalexception.py&#34;, line 418, in respond
+        return self.application(environ, start_response)
+      File &#34;d:programmingpython26libsite-packagesbeaker-1.5.4-py2.6.eggbeakermiddleware.py&#34;, line 152, in __call__
+        return self.wrap_app(environ, session_start_response)
+      File &#34;d:programmingpython26libsite-packagesroutes-1.12.3-py2.6.eggroutesmiddleware.py&#34;, line 131, in __call__
+        response = self.app(environ, start_response)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonswsgiapp.py&#34;, line 107, in __call__
+        response = self.dispatch(controller, environ, start_response)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonswsgiapp.py&#34;, line 312, in dispatch
+        return controller(environ, start_response)
+      File &#34;F:workxintongworkspaceMYB_WENDAmybmyblibbase.py&#34;, line 52, in __call__
+        return WSGIController.__call__(self, environ, start_response)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonscontrollerscore.py&#34;, line 266, in __call__
+        return response(environ, self.start_response)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 517, in __call__
+        environ, start_response)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 341, in __call__
+        return self.generate_response(environ, start_response)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 322, in generate_response
+        body = self.plain_body(environ)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 301, in plain_body
+        body = self._make_body(environ, no_escape)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 294, in _make_body
+        args[k] = escape(v)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 182, in no_escape
+        value = str(value)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsutil.py&#34;, line 112, in __repr__
+        value_repr = repr(value)
+    UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 8-18: ordinal not in range(128)
+</code></pre><p>这是一个明显由编码引起的错误。</p>
+<p>修改pylons-1.0-py2.6.eggPylonsutil.py中112行修改为</p>
+<pre tabindex="0"><code>    try:
+        value_repr = repr(value)
+    except UnicodeEncodeError, e:
+        log.error(&#39;encode error in pylons/utils.py&#39;)
+        continue
+</code></pre><p>这样虽然不能从根本上解决问题，但是至少规避了问题。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -155,6 +2396,91 @@ update 2012-05-28 fix url catch bug(Issue 4 / Issue 6) 2011-12-25 support link([
       
       <guid>https://blog.alswl.com/2011/08/mako-typeerror/</guid>
       <description>Mako 下面开发时候，遇到这个问题 TypeError: sequence item : expected string or Unicode, long found Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息） File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&amp;rsquo;, line 239 in staticpage return render(&amp;rsquo;/pages/%s.html&amp;rsquo; % name) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 274 in render_mako cache_type=cache_type, cache_expire=cache_expire) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 249 in cached_template return render_func() File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 271 in render_template return literal(template.render_unicode(**globs)) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/template.py&amp;rsquo;, line 138 in render_unicode return runtime.render(self, self.callable, args, data, as_unicode=True) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&amp;rsquo;, line 348 in _render return context._pop_buffer().getvalue() File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/util.py&amp;rsquo;, line 74 in getvalue return self.delim.join(self.data) TypeError: sequence item 68: expected string or Unicode, NoneType found Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylon</description>
+      <content:encoded><![CDATA[<p>Mako 下面开发时候，遇到这个问题</p>
+<blockquote>
+<p>TypeError: sequence item : expected string or Unicode, long found</p>
+</blockquote>
+<p>Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息）</p>
+<blockquote>
+<p>File &lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&rsquo;,
+line 239 in staticpage</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>return render(&rsquo;/pages/%s.html&rsquo; % name)</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 274 in render_mako</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>cache_type=cache_type, cache_expire=cache_expire)</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 249 in
+cached_template</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>return render_func()</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 271 in
+render_template</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>return literal(template.render_unicode(**globs))</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/template.py&rsquo;, line 138 in render_unicode
+return runtime.<em>render(self, self.callable</em>, args, data, as_unicode=True) File
+&lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&rsquo;, line 348 in _render</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>return context._pop_buffer().getvalue()</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/util.py&rsquo;, line 74 in getvalue</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>return self.delim.join(self.data)</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>TypeError: sequence item 68: expected string or Unicode, NoneType found</p>
+</blockquote>
+<p>Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](<a href="http://www.mail-archive.com/pylons-">http://www.mail-archive.com/pylons-</a>
+<a href="mailto:discuss@googlegroups.com">discuss@googlegroups.com</a>/msg11021.html)（需翻墙）</p>
+<p>讨论了半天也没什么结果，一直围绕在 default_filter 上面，我改了半天，也没效果。</p>
+<p>测试服务器和正式环境都没有问题，最后试了清空<code>data/session, data/templates</code> 目录，终于没错误了。</p>
+<p>Google 上这个错误信息资料太少，我就记下来，如果哪位同学出现同样错误找到我这里，就方便解决了。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -164,6 +2490,48 @@ update 2012-05-28 fix url catch bug(Issue 4 / Issue 6) 2011-12-25 support link([
       
       <guid>https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/</guid>
       <description>当使用 Python2.7 + go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。 [alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&amp;quot;, line 67, in &amp;lt;module&amp;gt; import os File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&amp;quot;, line 398, in &amp;lt;module&amp;gt; import UserDict File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&amp;quot;, line 83, in &amp;lt;module&amp;gt; import _abcoll File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&amp;quot;, line 11, in &amp;lt;module&amp;gt; from abc import ABCMeta, abstractmethod File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&amp;quot;, line 8, in &amp;lt;module&amp;gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;) ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。 #!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 +0200 +++ b/virtualenv.py 2010-09-14 21:46:20.650769346 +0200 @@ -51,6 +51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config if sys.version_info[:2] &amp;gt;= (2, 6): REQUIRED_MODULES.extend([&amp;lsquo;warnings&amp;rsquo;, &amp;rsquo;linecache&amp;rsquo;, &amp;lsquo;_abcoll&amp;rsquo;, &amp;lsquo;abc&amp;rsquo;]) if sys.version_info[:2] &amp;gt;= (2, 7): REQUIRED_MODULES.extend([&amp;rsquo;_weakrefset&amp;rsquo;]) if sys.version_info[:2] &amp;lt;= (2, 3): REQUIRED_MODULES.extend([&amp;lsquo;sets&amp;rsquo;, &amp;lsquo;future&amp;rsquo;]) if is_pypy: 懒人可以点击</description>
+      <content:encoded><![CDATA[<p>当使用 Python2.7 +<a href="http://pylonshq.com/download/1.0/go-pylons.py"> go-pylons.py</a>
+创建 Pylons 运行环境的话，会报一下错误。</p>
+<pre><code>[alswl@arch-vm xingtong]$ python go-pylons.py myb_env
+New python executable in myb_env/bin/python
+Traceback (most recent call last):
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&quot;, line 67, in &lt;module&gt;
+    import os
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&quot;, line 398, in &lt;module&gt;
+    import UserDict
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&quot;, line 83, in &lt;module&gt;
+    import _abcoll
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&quot;, line 11, in &lt;module&gt;
+    from abc import ABCMeta, abstractmethod
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&quot;, line 8, in &lt;module&gt;
+    from _weakrefset import WeakSet
+ImportError: No module named _weakrefset
+ERROR: The executable myb_env/bin/python is not functioning
+ERROR: It thinks sys.prefix is '/home/alswl/work/xingtong' (should be '/home/alswl/work/xingtong/myb_env')
+ERROR: virtualenv is not compatible with this system or executable
+</code></pre>
+<p>STFW 之后，找到了引发错误的根源<a href="https://github.com/pypa/virtualenv">virtualenv</a>，这个 bug
+在<a href="https://github.com/pypa/virtualenv/issues/76">这里</a>已经修复了。</p>
+<pre><code>#!diff
+--- a/virtualenv.py        2010-09-14 21:48:58.078562930 +0200
++++ b/virtualenv.py        2010-09-14 21:46:20.650769346 +0200
+@@ -51,6 +51,8 @@ REQUIRED_FILES = ['lib-dynload', 'config
+</code></pre>
+<p>if sys.version_info[:2] &gt;= (2, 6):</p>
+<p>REQUIRED_MODULES.extend([&lsquo;warnings&rsquo;, &rsquo;linecache&rsquo;, &lsquo;_abcoll&rsquo;, &lsquo;abc&rsquo;])</p>
+<ul>
+<li>
+<p>if sys.version_info[:2] &gt;= (2, 7):</p>
+</li>
+<li>
+<p>REQUIRED_MODULES.extend([&rsquo;_weakrefset&rsquo;])</p>
+</li>
+</ul>
+<p>if sys.version_info[:2] &lt;= (2, 3):</p>
+<p>REQUIRED_MODULES.extend([&lsquo;sets&rsquo;, &lsquo;<strong>future</strong>&rsquo;])</p>
+<p>if is_pypy:</p>
+<p>懒人可以点击<a href="../../static/images/2011/08/go-pylons.py">go-pylons.py</a>下载。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -173,6 +2541,98 @@ update 2012-05-28 fix url catch bug(Issue 4 / Issue 6) 2011-12-25 support link([
       
       <guid>https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/</guid>
       <description>在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。 Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完Python字符串的encode与decode 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。 Traceback (most recent call last): File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1, in</description>
+      <content:encoded><![CDATA[<p>在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的，
+特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。</p>
+<p>Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道，
+研读完<a href="http://ipie.blogbus.com/logs/19379694.html">Python字符串的encode与decode</a>
+之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。</p>
+<pre><code>Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 126, in urlopen
+    return _opener.open(url, data, timeout)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 391, in open
+    response = self._open(req, data)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 409, in _open
+    '_open', req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 369, in _call_chain
+    result = func(*args)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1170, in http_open
+    return self.do_open(httplib.HTTPConnection, req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1142, in do_open
+    h.request(req.get_method(), req.get_selector(), req.data, headers)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 914, in request
+    self._send_request(method, url, body, headers)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 951, in _send_request
+    self.endheaders()
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 908, in endheaders
+    self._send_output()
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 780, in _send_output
+    self.send(msg)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 759, in send
+    self.sock.sendall(str)
+  File &quot;&lt;string&gt;&quot;, line 1, in sendall
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 7-8: ordinal not in range(128)
+</code></pre>
+<p>这次错误引发是在 <code>urlopen()</code> 引起的，很有特色，开始使用 <code>url.encode('utf-8')</code> 就可以解决了。 今天我做了一些测试。</p>
+<h2 id="1-ascii--unicode-测试">1. ascii + unicode 测试</h2>
+<pre><code>&gt;&gt;&gt; 'a' + u'b'
+&gt;&gt;&gt; '你' + u'好'
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)
+&gt;&gt;&gt; u'你' + u'好'
+u'u4f60u597d'
+&gt;&gt;&gt; u'a' + '你' + u'好'
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe4 in position 0: ordinal not in range(128)
+</code></pre>
+<p>上面的测试说明ascii码和unicode码相连操作，结论是有中文记得带上u，就不会有问题。
+Python默认解码器是ascii，无法解码unicode中的中文。</p>
+<h2 id="2-urllib2的测试">2. urllib2的测试</h2>
+<pre><code>&gt;&gt;&gt; import urllib2
+&gt;&gt;&gt; h1 = 'http://baidu.com'
+&gt;&gt;&gt; urllib2.urlopen(h1)
+&lt;addinfourl at 153439532 whose fp = &lt;socket._fileobject object at 0xb74e51ac&gt;&gt;
+&gt;&gt;&gt; h2 = u'http://baidu.com'
+&gt;&gt;&gt; urllib2.urlopen(h2)
+&lt;addinfourl at 153440236 whose fp = &lt;socket._fileobject object at 0x925912c&gt;&gt;
+&gt;&gt;&gt; h3 = 'http://baidu.com?w=测试'
+&gt;&gt;&gt; urllib2.urlopen(h3)
+&lt;addinfourl at 153482348 whose fp = &lt;socket._fileobject object at 0x92593ac&gt;&gt;
+&gt;&gt;&gt; h4 = u'http://baidu.com?w=测试'
+&gt;&gt;&gt; urllib2.urlopen(h4)
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 126, in urlopen
+    return _opener.open(url, data, timeout)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 391, in open
+    response = self._open(req, data)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 409, in _open
+    '_open', req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 369, in _call_chain
+    result = func(*args)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1170, in http_open
+    return self.do_open(httplib.HTTPConnection, req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1142, in do_open
+    h.request(req.get_method(), req.get_selector(), req.data, headers)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 914, in request
+    self._send_request(method, url, body, headers)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 951, in _send_request
+    self.endheaders()
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 908, in endheaders
+    self._send_output()
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 780, in _send_output
+    self.send(msg)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 759, in send
+    self.sock.sendall(str)
+  File &quot;&lt;string&gt;&quot;, line 1, in sendall
+UnicodeEncodeError: 'ascii' codec can't encode characters in position 7-8: ordinal not in range(128)
+</code></pre>
+<p>这个测试说明， <code>urllib2.urlopen()</code> 可以接受ascii/unicode的英文，也可以接受ascii的中文，
+但是一旦是unicode的中文url，就会报转码错误。</p>
+<p>so，请尽量英文url，非要用中文，请记得转码。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -182,6 +2642,16 @@ update 2012-05-28 fix url catch bug(Issue 4 / Issue 6) 2011-12-25 support link([
       
       <guid>https://blog.alswl.com/2011/06/mako-vim/</guid>
       <description>给Vim找了一个Mako的语法高亮，发现着色居然有问题。查看更新记录后发现作者Armin Ronacher只更新到08年9月份。之后Mako更新了一些少许细节，我修改了一下mako.vim，放在这里供下载。 其实我只改了57/58行，增加一个block语法。 点击这里下载：mako.vim 使用方法，放入vimfiles/syntax 相关链接： 原始mako.vim：http://www.vim.org/s</description>
+      <content:encoded><![CDATA[<p>给Vim找了一个Mako的语法高亮，发现着色居然有问题。查看更新记录后发现作者<a href="http://lucumr.pocoo.org/">Armin Ronacher</a>只更新到08年9月份。之后Mako更新了一些少许细节，我修改了一下mako.vim，放在这里供下载。</p>
+<p>其实我只改了57/58行，增加一个block语法。</p>
+<p>点击这里下载：<a href="../../static/images/upload_dropbox/201106/mako.vim">mako.vim</a></p>
+<p>使用方法，放入vimfiles/syntax</p>
+<p>相关链接：</p>
+<p>原始mako.vim：<a href="http://www.vim.org/scripts/script.php?script_id=1858">http://www.vim.org/scripts/script.php?script_id=1858</a></p>
+<p>另外一个mako.vim是缩进用的，放入vimfiles/syntax：<a href="http://www.vim.org/scripts/script.php?script_id=2663">http://www.vim.org/scripts/script.php?script_id=2663</a></p>
+<p>ps：Mako是一个Python下面的Template框架。</p>
+<p>pss：貌似服务器ip被认证了，讨厌~</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -191,141 +2661,36 @@ update 2012-05-28 fix url catch bug(Issue 4 / Issue 6) 2011-12-25 support link([
       
       <guid>https://blog.alswl.com/2011/05/run-pylons-in-eclipse/</guid>
       <description>官方中pylons都是通过在shell中运行paster serve &amp;ndash;reload development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤可以在Eclipse中运行pylons。 配置Run Configuration - Python Run如下。 Main页签中Main Module指向paster-script.py，可以使用绝对路径。 配置Arguments页签的参数，添加serve &amp;ndash;reload development.i</description>
-    </item>
-    
-    <item>
-      <title>Pylons使用小记</title>
-      <link>https://blog.alswl.com/2011/05/pylons/</link>
-      <pubDate>Mon, 16 May 2011 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2011/05/pylons/</guid>
-      <description>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。 关于Pylons Pylons是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http: //www.makotemplates.org/)作为Template，SQLAlchemy作为 ORM映射。使用BSD作为授权协议。 托WSGI的福，pyth</description>
-    </item>
-    
-    <item>
-      <title>最简陋的GAE代理</title>
-      <link>https://blog.alswl.com/2011/01/a-simple-gae-proxy/</link>
-      <pubDate>Tue, 11 Jan 2011 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2011/01/a-simple-gae-proxy/</guid>
-      <description>年前换了一次服务器，之后发现Lifestream的Errors飙升到1000+错误，检查一下，发现是获 取不了豆瓣的rss链接。正好这台主机支持SSH，连入之后CURL了一下豆瓣服务器，发现Time out。 紧接着发现中国内的所有域名都无法使用CURL获取，联系小张之后，得知该主机曾经被入侵过，于是屏蔽了中国大陆的ip段（囧~入侵和中国ip有毛关系） 遂想用GAE做个代理服务器，反正获取RSS也只要Ge</description>
-    </item>
-    
-    <item>
-      <title>一周Python小记</title>
-      <link>https://blog.alswl.com/2010/11/a-week-python/</link>
-      <pubDate>Tue, 09 Nov 2010 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2010/11/a-week-python/</guid>
-      <description>上个星期以来忙里偷闲一直在写一系列小型的代码生成器，完成一些从需求到结构化代码生成和验证作业。这个小东西是用Python写的，我简单分享一下中间所得。 一、配置文件 1、YAML格式 数据库连接信息和作业相关信息是存放在数据库中的，配置文件形式可以有很多种选择：XML / ini / txt，我这里选择YAML作为存放。 YAML使用起来相当方便，能够自动解析成对应语言中的变量，比如列表解析为列表，数字文字分别解析成</description>
-    </item>
-    
-    <item>
-      <title>Python读写剪贴板</title>
-      <link>https://blog.alswl.com/2010/10/python-clipboard/</link>
-      <pubDate>Sat, 23 Oct 2010 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2010/10/python-clipboard/</guid>
-      <description>最近在写一个CodeGenX代码生成器，说是生成器，其实是目前只完成一堆零散的脚本。这些脚本的调用方式一般是从某个txt中读取数据，再写到另外一个txt中。 由于某些数据变动频繁，导致我操作txt次数大增，我怒了，就找了一个脚本自动读写剪贴板。 #coding=utf-8 &amp;#39;&amp;#39;&amp;#39; 读写剪贴板 &amp;#39;&amp;#39;&amp;#39; import win32clipboard as w import win32con def getText(): w.OpenClipboard() d = w.GetClipboardData(win32con.CF_TEXT) w.CloseClipboard() return d def setText(aString): w.OpenClipboard() w.EmptyClipboard() w.SetClipboardData(win32con.CF_TEXT, aString) w.CloseClipboard() 别说有了这个脚本用起来还是蛮方便的，建议丢到Python的lib下面，然后可以方便调用。 如果双击 .py</description>
-    </item>
-    
-    <item>
-      <title>小脚本mm-&gt;html</title>
-      <link>https://blog.alswl.com/2010/09/script-mm2html/</link>
-      <pubDate>Mon, 27 Sep 2010 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2010/09/script-mm2html/</guid>
-      <description>我同时在使用两套信息记录工具，知识收集记录工具BooguNote + KMS Wiz，关于这两套系统具体介绍请见桌面记录神器- BooguNote &amp;amp; 我所使用的知识管理系统。 我的使用习惯是在BooguNote中收集日常的琐碎知识点，包括我所想的和工作记录。每个小知识节点的长度大概在200-300字左右。这些被我称为的知识碎片显然 不能直接放入KMS。 BooguNote可以将里面的文字直接复制出来，会在父亲节点上加入+，子节点加入</description>
-    </item>
-    
-    <item>
-      <title>获取每日Bing图片</title>
-      <link>https://blog.alswl.com/2010/07/get-daily-bing-picture/</link>
-      <pubDate>Mon, 19 Jul 2010 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2010/07/get-daily-bing-picture/</guid>
-      <description>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。 放狗搜索，发现一篇文章 抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客，文中提供了抓取程式的Python代码，我摘录如下。 import urllib import time def main(): url = &amp;#39;http://www.bing.com&amp;#39; f = urllib.urlopen(url) html = f.read() f.close() a = html[html.index(&amp;#39;/fd/hpk2&amp;#39;):] data = a[:a.index(&amp;#39;&amp;#39;,id:&amp;#39;)] url = data.replace(&amp;#39;\&amp;#39;, &amp;#39;&amp;#39;) url = &amp;#39;http://www.bing.com&amp;#39;+url name=time.strftime(&amp;#34;%Y%m%d&amp;#34;, time.localtime()) name=name+&amp;#34;.jpg&amp;#34; urllib.urlretrieve(url,name) if __name__ == &amp;#34;__main__&amp;#34;: main() 关键的步骤是MS修改了jpg的url方式，用g_img={</description>
-    </item>
-    
-    <item>
-      <title>铁血联盟EdtTxt转换器v0.9</title>
-      <link>https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/</link>
-      <pubDate>Sun, 01 Nov 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/11/jagged-alliance-edt-txt-converter-v0-9/</guid>
-      <description>上个月时候，zwwooooo同鞋联系我让帮写一个铁血联盟中需要用到的Edt&amp;lt;-&amp;gt;Txt转换器，我前前后后大约三个星期完成 到v0.9，能完成基本的功能（但似乎存在一些未知Bug，-_-#）。由于我之后很长一段时间得找工作，所以不能继续维护这个小工具，现在把他的代码开放，如果有高 人能看到这个小工具，有兴趣的话可以继续维护下去，(zwwooooo，真的很不好意思……)。 一些关于程序说明，zw</description>
-    </item>
-    
-    <item>
-      <title>Python输入16进制保存到文件</title>
-      <link>https://blog.alswl.com/2009/10/python-enter-the-16-hex-save-to-file/</link>
-      <pubDate>Wed, 07 Oct 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/10/python-enter-the-16-hex-save-to-file/</guid>
-      <description>（题目有点勉强，不过问题真的很难描述，希望Google/Baidu到这里的童鞋不要失望） 前几天给zwwooooo写一个 小工具，其中遇到一个输入的问题。具体描述就是：&amp;ldquo;输入4个16进制的数字，如&#39;00a0&amp;rsquo;，输入之后必须能够把这个输入给保存到文件中存为2进制格式，必须是原始的 16进制，而不是字符串类型。如&amp;rsquo;x00xa0&amp;rsquo;&amp;quot;。（其实这是用在处理</description>
-    </item>
-    
-    <item>
-      <title>GAE&#43;校内App初接触</title>
-      <link>https://blog.alswl.com/2009/09/gae-initial-contact-with-the-school-app/</link>
-      <pubDate>Mon, 28 Sep 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/09/gae-initial-contact-with-the-school-app/</guid>
-      <description>下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello World来介绍一个开发步骤。 1.创建GAE应用 建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 App Engine ，激活这个服务，就可以创建新的应用。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。 一个简单的App控制台</description>
-    </item>
-    
-    <item>
-      <title>当Google APP Engine遇上校内</title>
-      <link>https://blog.alswl.com/2009/09/when-google-app-engine-encounter-campus/</link>
-      <pubDate>Sun, 27 Sep 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/09/when-google-app-engine-encounter-campus/</guid>
-      <description>昨天看《程序员》时候看到一篇讲开放接口的文章，是FaceBook的一个开发人员写的，讲了很多关于开放平台的东西 。其中提到Google App Engine的云计算支持，FaceBook的FBML（校内的称为XNML，一种标记性语言）。 Google App Engine(GAE) Google App Engine让用户可以在 Google 的基础架构上运行的网络应用程序。Google App Engine 应用程序易于构建和维护，并可根据用户的访问量和数据存储需要的增长轻松扩展。使用 Google App Engi</description>
-    </item>
-    
-    <item>
-      <title>python中目录与文件操作</title>
-      <link>https://blog.alswl.com/2009/09/python-in-the-directory-and-file-operations/</link>
-      <pubDate>Wed, 16 Sep 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/09/python-in-the-directory-and-file-operations/</guid>
-      <description>本文来源：[python:目录与文件操作_浸在苏打水里的玩偶](http://hi.baidu.com/javalang/blog/item/6ce3293 f866596ee55e72334.html) os和os.path模块 os.listdir(dirname)：列出dirname下的目录和文件 os.getcwd()：获得当前工作目录 os.curdir:返回但前目录（&amp;rsquo;.&#39;) os.chdir(dirname):改变工作目录到d</description>
-    </item>
-    
-    <item>
-      <title>将Python程序编译为exe可执行程序</title>
-      <link>https://blog.alswl.com/2009/09/python-program-will-be-compiled-into-an-executable-program-exe/</link>
-      <pubDate>Tue, 15 Sep 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/09/python-program-will-be-compiled-into-an-executable-program-exe/</guid>
-      <description>Python很强大，这个py2exe程序能够把.py文件编译为.exe可执行文件，真是如虎添翼啊。 我注意到这个细节：这篇文章发表于 2005-6-5 23:34作者wolfg太犀利了。 原文出处：py2exe初接触（一） - Python - ChinaUnix.net py2exe是什么？ py2exe是一种python发布工具，可以把python脚本转换成windows下的可执行程序，不需要安装python便可运行。 py2exe现在可以用来创建使用了wxPy</description>
-    </item>
-    
-    <item>
-      <title>Python中使用Struct数据格式转换</title>
-      <link>https://blog.alswl.com/2009/09/python-data-format-conversion-using-struct/</link>
-      <pubDate>Mon, 14 Sep 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/09/python-data-format-conversion-using-struct/</guid>
-      <description>本文来源：Python模块学习 &amp;mdash;- struct 数据格式转换 - JGood的专栏 - CSDN博客 Python是一门非常简洁的语言，对于数据类型的表示，不像其他语言预定义了许多类型（如：在C#中，光整型就定义了8种），它只定义了六种基本类型：字符串，整数 ，浮点数，元组，列表，字典。通过这六种数据类型，我们可以完成大部分工作。但当Python需要通过网络与其他的平台进行交互的时候，必须考虑到将这些数据类型与其 他平台或语</description>
-    </item>
-    
-    <item>
-      <title>Python读写文件</title>
-      <link>https://blog.alswl.com/2009/09/python-to-read-and-write-files/</link>
-      <pubDate>Sat, 12 Sep 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/09/python-to-read-and-write-files/</guid>
-      <description>本文来源：Python天天美味(17) - open读写文件 - CoderZh的技术博客 - 博客园 「我本来想加上看到这篇文章的博客链接，结果粘贴时候发现了图片来源居然是cnblogs，这才反应过来这不是那个博客的原创。我不反对转载，看到的好文章我自己也会 收藏下来，转载能帮助更多需要的人，可是，至少加上人家原作者的地址呀……」-alswl Python中文件操作可以通过open函数，这的确很像C语言中的fop</description>
-    </item>
-    
-    <item>
-      <title>Python读写txt代码</title>
-      <link>https://blog.alswl.com/2009/09/python-code-to-read-and-write-txt/</link>
-      <pubDate>Fri, 04 Sep 2009 00:00:00 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2009/09/python-code-to-read-and-write-txt/</guid>
-      <description>09_09_09在Windows Live Writer下修正 一直有学Python或者Perl的想法，不过没有规划到日程来，最近打算辞职专心考驾照，正好每天都有点时间来学Python。 关于Python和Perl，我并没有什么谁优谁劣的看法，只是感觉Python可能资料会多一点，而且Google App Enginee支持Python,所以选择了Python。 OK，这几天写的两段小代码，来自《Python核心编程（第</description>
+      <content:encoded><![CDATA[<p>官方中pylons都是通过在shell中运行paster serve &ndash;reload
+development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤可以在Eclipse中运行pylons。</p>
+<p>配置Run Configuration - Python Run如下。</p>
+<p>Main页签中Main Module指向paster-script.py，可以使用绝对路径。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201105/eclipse-main.png" alt="image"  />
+
+</p>
+<p>配置Arguments页签的参数，添加serve &ndash;reload development.ini，后面的ini配置文件可以使用绝对路径。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201105/eclipse-arguments.png" alt="image"  />
+
+</p>
+<p>勾选Common下的Allocate Console来进行paster调试信息输出。</p>
+<p>在Windows - Preference - Pydev - Interpreter - Python中的PYTHONPATH加入pylons目标环境
+，报过site-packages目录和site-packages目录下面的egg文件（理解为jar包，称之为蟒蛇蛋）。</p>
+<p>不出意外的话，就可以通过Run跑起整个应用了。</p>
+<p>很可惜的是，这样做还是不能对应用进行Debug，pylons的debug依然依赖于pylons的&quot;交互调试页面&quot;。</p>
+<p>参考[http://stackoverflow.com/questions/147650/debug-pylons-application-through-
+eclipse](<a href="http://stackoverflow.com/questions/147650/debug-pylons-application-">http://stackoverflow.com/questions/147650/debug-pylons-application-</a>
+through-eclipse)</p>
+]]></content:encoded>
     </item>
     
   </channel>

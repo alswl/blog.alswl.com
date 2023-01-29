@@ -14,6 +14,122 @@
       
       <guid>https://blog.alswl.com/2010/07/get-daily-bing-picture/</guid>
       <description>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。 放狗搜索，发现一篇文章 抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客，文中提供了抓取程式的Python代码，我摘录如下。 import urllib import time def main(): url = &amp;#39;http://www.bing.com&amp;#39; f = urllib.urlopen(url) html = f.read() f.close() a = html[html.index(&amp;#39;/fd/hpk2&amp;#39;):] data = a[:a.index(&amp;#39;&amp;#39;,id:&amp;#39;)] url = data.replace(&amp;#39;\&amp;#39;, &amp;#39;&amp;#39;) url = &amp;#39;http://www.bing.com&amp;#39;+url name=time.strftime(&amp;#34;%Y%m%d&amp;#34;, time.localtime()) name=name+&amp;#34;.jpg&amp;#34; urllib.urlretrieve(url,name) if __name__ == &amp;#34;__main__&amp;#34;: main() 关键的步骤是MS修改了jpg的url方式，用g_img={</description>
+      <content:encoded><![CDATA[<p>在使用公司一个Redirect开发工具页面时候，想个性化一下，就想添加一个背景，最好每天能自动变化，我第一个想到的就是Bing。</p>
+<p>放狗搜索，发现一篇文章 <a href="http://blog.csdn.net/huangct/archive/2009/10/27/4734844.aspx">抓取每天必应bing背景图片 - huangct的专栏 - CSDN博客</a>，文中提供了抓取程式的Python代码，我摘录如下。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">urllib</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.bing.com&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">html</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">a</span> <span class="o">=</span> <span class="n">html</span><span class="p">[</span><span class="n">html</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;/fd/hpk2&#39;</span><span class="p">):]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">=</span> <span class="n">a</span><span class="p">[:</span><span class="n">a</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="nb">id</span><span class="p">:</span><span class="s1">&#39;)]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">url</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">, &#39;&#39;)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.bing.com&#39;</span><span class="o">+</span><span class="n">url</span>
+</span></span><span class="line"><span class="cl">    <span class="n">name</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&#34;%Y%m</span><span class="si">%d</span><span class="s2">&#34;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="o">+</span><span class="s2">&#34;.jpg&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">urllib</span><span class="o">.</span><span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></div><p>关键的步骤是MS修改了jpg的url方式，用g_img={url:&rsquo;/fd/hpk2/BambooBoat_ZH-
+CN1057817945.jpg&rsquo;这样的字符串躲避机器人的抓取。简单的替换即可完成。</p>
+<p>我用C#重写了代码实现，如下所示。</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Net;
+using System.IO;
+</code></pre>
+<p>namespace com.dddspace.GetBingImg</p>
+<p>{ #region 获取Bing图片</p>
+<p>class GetBingImg</p>
+<p>{</p>
+<p>static void Main(string[] args)</p>
+<p>{</p>
+<p>try</p>
+<p>{</p>
+<p>string html = GetHtml(&ldquo;<a href="http://www.bing.com">http://www.bing.com</a>&rdquo;);</p>
+<p>html = html.Substring(html.IndexOf(@&quot;/fd/hpk2/&quot;));</p>
+<p>html = html.Substring(0, html.IndexOf(&quot;.jpg&quot;) + 4);</p>
+<p>html = html.Replace(&quot;&quot;, &ldquo;&rdquo;);</p>
+<p>string url = &ldquo;<a href="http://www.bing.com">http://www.bing.com</a>&rdquo; + html;</p>
+<p>Console.WriteLine(url);</p>
+<p>}</p>
+<p>catch (Exception e)</p>
+<p>{</p>
+<p>Console.WriteLine(e.ToString());</p>
+<p>}</p>
+<p>}</p>
+<p>public static string GetBingImg()</p>
+<p>{</p>
+<p>string html = GetHtml(&ldquo;<a href="http://www.bing.com">http://www.bing.com</a>&rdquo;);</p>
+<p>html = html.Substring(html.IndexOf(@&quot;/fd/hpk2/&quot;));</p>
+<p>html = html.Substring(0, html.IndexOf(&quot;.jpg&quot;) + 4);</p>
+<p>html = html.Replace(&quot;&quot;, &ldquo;&rdquo;);</p>
+<p>return &ldquo;<a href="http://www.bing.com">http://www.bing.com</a>&rdquo; + html;</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 获得页面的html代码</p>
+<p>/// </summary></p>
+<p>/// <param name="url">页面地址</param></p>
+<p>protected static string GetHtml(string url)</p>
+<p>{</p>
+<p>string html = &ldquo;&rdquo;;</p>
+<p>HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);</p>
+<p>request.Accept = &ldquo;<em>/</em>&rdquo;;</p>
+<p>HttpWebResponse response = null;</p>
+<p>Stream stream = null;</p>
+<p>StreamReader reader = null;</p>
+<p>try</p>
+<p>{</p>
+<p>response = (HttpWebResponse)request.GetResponse();</p>
+<p>stream = response.GetResponseStream();</p>
+<p>reader = new StreamReader(stream, Encoding.UTF8);</p>
+<p>html = reader.ReadToEnd().Replace(&ldquo;rn&rdquo;, &ldquo;&rdquo;); //我知道这里会改变html代码，但和这里没关系</p>
+<p>}/*</p>
+<p>catch (Exception excpt)</p>
+<p>{</p>
+<p>Console.WriteLine(excpt);</p>
+<p>Console.Write(&ldquo;n【注意】出现异常，输入任意字符和回车继续：&rdquo;);</p>
+<p>Console.ReadLine();</p>
+<p>}*/</p>
+<p>finally</p>
+<p>{</p>
+<p>if (reader != null)</p>
+<p>{</p>
+<p>reader.Close();</p>
+<p>reader.Dispose();</p>
+<p>}</p>
+<p>if (stream != null)</p>
+<p>{</p>
+<p>stream.Close();</p>
+<p>stream.Dispose();</p>
+<p>}</p>
+<p>if (response != null)</p>
+<p>{</p>
+<p>response.Close();</p>
+<p>}</p>
+<p>}</p>
+<p>return html;</p>
+<p>}</p>
+<p>}</p>
+<p>#endregion</p>
+<p>}</p>
+<p>没多大的技术含量，就是用来把玩把玩。</p>
+<p>在.aspx中加一个Panel，然后使用<code>this.Panel1.BackImageUrl = BingImg.GetBingImg();</code>设置一下背景图片就万事OK了。现在，一个死板的小工具就稍微变得丰富多彩一些，是不是会让你工作的情绪略微提高呢~</p>
+<p>附上今天的Bing图片</p>
+<p><a href="http://cn.bing.com/fd/hpk2/Finca_ZH-CN2784763289.jpg">
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201612/404.png" alt="image"  />
+
+</a></p>
+]]></content:encoded>
     </item>
     
   </channel>

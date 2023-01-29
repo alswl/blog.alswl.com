@@ -14,6 +14,87 @@
       
       <guid>https://blog.alswl.com/2011/05/pylons/</guid>
       <description>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。 关于Pylons Pylons是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http: //www.makotemplates.org/)作为Template，SQLAlchemy作为 ORM映射。使用BSD作为授权协议。 托WSGI的福，pyth</description>
+      <content:encoded><![CDATA[<p>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201105/pylons.png" alt="image"  />
+
+</p>
+<h2 id="关于pylons">关于Pylons</h2>
+<p><a href="http://pylonsproject.org/">Pylons</a>是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http:
+//www.makotemplates.org/)作为Template，<a href="http://www.sqlalchemy.org/">SQLAlchemy</a>作为
+ORM映射。使用BSD作为授权协议。</p>
+<p>托WSGI的福，python的web框架超多，甚至高手5分钟可以自己手写一个web框架，这种情况也导致了Python
+web框架的纷杂。我这里选择Pylons（其实是被选择），并不是说Pylons一定最好，而是比较适合当前项目。更多的Python
+web框架对比建议看这篇[浅谈Python web框架](<a href="http://feilong.me/2011/01/talk-about-python-web-">http://feilong.me/2011/01/talk-about-python-web-</a>
+framework)，另外，这个<a href="http://www.bestwebframeworks.com/python/">Best Web-
+Framework</a>有直观的对比。</p>
+<h2 id="pylons环境配置">Pylons环境配置</h2>
+<p>因为开发机是刚到手的ThinkPad，没有冒险安装Linux，所以这里的安装环境是Win7 + Python 2.6 + MySQL5.1。</p>
+<h3 id="1安装pylons">1、安装Pylons</h3>
+<p>Pylons似乎没有方便的easy_install，原因是由于Pylons在安装过程中，会生成一个目标环境。这个环境包括完整的Python环境，从而与系统自
+带Python环境独立开来，防止第三方库的相互污染。Pylons官方提供了一个Python <a href="http://www.pylonshq.com/download/1.0/go-pylons.py">go-
+pylons.py</a>脚本进行安装。</p>
+<p>通过在shell键入命令<code>python go-pylons.py myb_env</code>安装，其中myb_env代表目标环境，会在当前目录下面生成一个myb_en
+v文件夹，myb_env也可以使用绝对路径代替。在生成完之后请不要随意移动这个目录，因为环境里生成的Python脚本硬编码了绝对路径。</p>
+<h3 id="2安装mysql-python驱动">2、安装mysql-python驱动</h3>
+<p>我使用的是MySQL数据库，使用mysql-python驱动，windows下具体安装过程可以参见[http://fendou.org/2010/06/17
+/install-python26-mysql-python-on-windows/](<a href="http://fendou.org/2010/06/17">http://fendou.org/2010/06/17</a>
+/install-python26-mysql-python-on-windows/) 需要修改一下源码和加入几个dll。</p>
+<h3 id="3生成egg包下载第三方依赖">3、生成egg包，下载第三方依赖</h3>
+<p>在目标项目下面，执行<code>python setup.py develop</code>，这将执行项目需要的三方依赖，设定依赖可以到<code>setup.py中install_req uires</code>进行配置。这个步骤用到了easy_install，所以请确保python/script下面有easy_install的可执行文件。windows
+下安装easy_install可以参考这里[http://thinkhole.org/wp/2007/02/01/howto-install-
+setuptools-in-windows/](<a href="http://thinkhole.org/wp/2007/02/01/howto-install-">http://thinkhole.org/wp/2007/02/01/howto-install-</a>
+setuptools-in-windows/)。</p>
+<p>呼啦啦一大串命令跑完之后，就ok了。</p>
+<h3 id="4安装额外的三方依赖可选">4、安装额外的三方依赖（可选）</h3>
+<p>根据实际情况操作吧，我这里使用了<code>easy_install python-memcached</code>和<code>easy_install pil</code>，前者是memcache的python驱动，后者是python图形库。</p>
+<h3 id="5初始化数据库">5、初始化数据库</h3>
+<p>托SQLAlchemy的福，我们可以让它自动给我们创建映射表。首先确保在model下面配置好model类。</p>
+<pre><code>class Person(Base):
+    __tablename__ = &quot;person&quot;
+</code></pre>
+<p>id = Column(Integer, primary_key=True)</p>
+<p>name = Column(String(100))</p>
+<p>email = Column(String(100))</p>
+<p>def <strong>init</strong>(self, name=&rsquo;&rsquo;, email=&rsquo;&rsquo;):</p>
+<p>self.name = name</p>
+<p>self.email = email</p>
+<p>然后在目标项目下面的development.ini中配置数据库连接字符串。</p>
+<pre><code># SQLAlchemy database URL
+#sqlalchemy.url = sqlite:///%(here)s/myb.db
+sqlalchemy.url = mysql://test:test@localhost/myb?charset=utf8&amp;use_unicode=0
+</code></pre>
+<p>最后在shell中执行<code>paster setup-app development.ini</code>，即可初始化好数据库结构。</p>
+<p>如果需要在初始化时候加入测试数据，可以在项目目录下的websetup.py中setup_app方法填充数据。</p>
+<p>如果paster运行错误，则使用<code>easy_install Paste</code>安装一下paster。</p>
+<h3 id="6运行app">6、运行app</h3>
+<p>在shell中运行<code>paster serve --reload development.ini</code>即可启动网站，通过访问127.0.0.1:5000访问。</p>
+<h2 id="pylons中常用的paster命令viahttpwwwcnblogscomjustrun1983archive200912">pylons中常用的paster命令([via](<a href="http://www.cnblogs.com/JustRun1983/archive/2009/12">http://www.cnblogs.com/JustRun1983/archive/2009/12</a></h2>
+<p>/17/1626771.html))</p>
+<p>paster create -t pylons helloworld</p>
+<p>创建一个以pylons为模板的项目，项目名字是helloworld</p>
+<p>paster create &ndash;list-templates</p>
+<p>显示当前的pylons中有多少可以使用的模板</p>
+<p>paster serve &ndash;reaload development.ini</p>
+<p>最常用的命令了，启动调式程序的时候都会使用得到它。</p>
+<p>paster controller helloworld</p>
+<p>常见一个新的controller,名字是helloworld.会在项目目录controller中生成一个hellowolrd.py文件。这个是一个最基本的c
+ontroller文件了，可以修改代码，完成我们的目的。</p>
+<p>paster setup-app development.ini</p>
+<p>安装数据库表。</p>
+<p>当配置好了model的__init__.py文件，执行这个命令按照要求生成数据库结构。</p>
+<p>数据库默认是sqlite的，如果要修改sqlite数据库路径或者更换成mysql数据库，需要修改development.ini文件。</p>
+<h2 id="更多的文档">更多的文档</h2>
+<p>[Pylons Reference Documentation</p>
+<p>](<a href="http://docs.pylonsproject.org/projects/pylons_framework/dev/index.html">http://docs.pylonsproject.org/projects/pylons_framework/dev/index.html</a>)</p>
+<p><a href="http://www.sqlalchemy.org/docs/index.html">SQLAlchemy 0.6.8 Documentation</a></p>
+<p><a href="http://www.makotemplates.org/docs/index.html">Mako 0.4.1 Documentation</a></p>
+<p><a href="http://pythonpaste.org/script/">Paste Script v1.7 documentation</a></p>
+]]></content:encoded>
     </item>
     
   </channel>

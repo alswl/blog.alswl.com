@@ -14,6 +14,111 @@
       
       <guid>https://blog.alswl.com/2016/12/https-2/</guid>
       <description>(图片来自 茶杯中的可爱小白鼠 壁纸 - 2560x1920－堆糖，美好生活研究所) 在上篇文章 🔒 也谈 HTTPS - HTTPDNS + HTTPS 中， 我们谈了如何基于 HTTPDNS 来部署无坚不摧的 HTTPS 通信环境， 这次我们讨论另外一个比较头疼的问题：部署。 小站点部署 HTTPS 相对成本低，改改前端代码，就可以上线了。 但作为业务有一定复杂度的大网站，就没办法这么暴力上线了。 前端在基础库中调整 Scheme 之后，仍然可能存在很多边边角角没有覆盖到。 比如 JS 里面写死了 HTTP，那在 HTTPS 下请</description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201612/mouse.jpeg" alt="201612/mouse.jpeg"  />
+
+
+(图片来自 <a href="https://www.duitang.com/blog/?id=48013745">茶杯中的可爱小白鼠 壁纸 - 2560x1920－堆糖，美好生活研究所</a>)</p>
+<p>在上篇文章 <a href="https://blog.alswl.com/2016/11/https-1/">🔒 也谈 HTTPS - HTTPDNS + HTTPS</a> 中，
+我们谈了如何基于 HTTPDNS 来部署无坚不摧的 HTTPS 通信环境，
+这次我们讨论另外一个比较头疼的问题：部署。</p>
+<!-- more -->
+<p>小站点部署 HTTPS 相对成本低，改改前端代码，就可以上线了。
+但作为业务有一定复杂度的大网站，就没办法这么暴力上线了。</p>
+<p>前端在基础库中调整 Scheme 之后，仍然可能存在很多边边角角没有覆盖到。
+比如 JS 里面写死了 HTTP，那在 HTTPS 下请求 HTTP XHR 的话，
+浏览器会将请求拦截掉。
+一旦出现这种故障，用户就无法正常使用业务，小白用户往往也不懂得自己将 <code>https://</code> 换成 <code>http://</code> 使用。</p>
+<p>解决的思路是足够的内测，找一群人帮我在 HTTPS 环境下使用足够长时间。
+让他们当小白鼠，提前发现问题并解决。
+于是，我把目光转向了身边的一大大群小白鼠，整个办公室的同事~😄</p>
+<p>没错，<strong><strong>我要强制所有同事使用 HTTPS 的公司网站</strong></strong>，从而靠他们帮我发现问题。</p>
+<p>靠发邮件、QQ 广播呼吁大家使用 HTTPS 站点的方法，估计是不行的。
+没有利益驱动，推动力是不足的，我必须想点强制的手段让他们使用 HTTPS。</p>
+<p>有三种方法来达到这个效果：</p>
+<ol>
+<li>业务系统内入口判断用户身份，是雇员的话，切换到 HTTPS</li>
+<li>Nginx 入口系统判断 IP 来源，办公室 IP 则切换到 HTTPS</li>
+<li>改造办公室网络，访问站点时候，自动切换到 HTTPS</li>
+</ol>
+<p>为了避免对线上业务系统、基础设施造成影响，我采用了第三条方案。</p>
+<p>说干就干，直接对公司网络出口设备是 ROS<a href="http://wiki.mikrotik.com/wiki/Main_Page">via</a> 动起刀子。</p>
+<p>实现的原理如下：</p>
+<ul>
+<li>A：办公室网络的 🐁 们请求站点 <a href="http://www.duitang.com">http://www.duitang.com</a></li>
+<li>B：操作 RouterOS 的防火墙，将 dst 为 <a href="https://www.duitang.com">www.duitang.com</a> IP 的 TCP 请求都 dst-nat 到新的一台 Nginx 服务器 proxy.duitang.com</li>
+<li>C：这台 proxy.duitang.com 做过特别定制，将所有针对 *.duitang.com 请做一次 302 请求，将 <a href="http://www.duitang.com">http://www.duitang.com</a> 请求都转发到 <a href="https://www.duitang.com">https://www.duitang.com</a></li>
+<li>D：Client 收到 302 请求，重新请求 <a href="https://www.duitang.com">https://www.duitang.com</a></li>
+<li>E：同 B</li>
+<li>F：proxy.duitang.com 将请求转发到真正的 <a href="https://www.duitang.com">www.duitang.com</a> 服务器</li>
+</ul>
+<p>PS：这里要小心的是，需要配置 proxy.duitang.com 的 <code>resolver</code> 避免 Nginx 内部请求。</p>
+<p>流程图：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201612/https_ros_process.jpg" alt="201612/https_ros_process.jpg"  />
+
+</p>
+<p>这样操作之后，在办公室网络下，所有访问公司网站的 HTTP 流量都会跳转到 HTTPS。</p>
+<p>PS：我原始方案想使用 ROS 的 L7 防火墙 直接抓 HTTP 包，match HTTP 头数据，
+再修改返回的 TCP 包。
+但测试下来发现 ROS L7 Firewall 不支持写 TCP 数据。
+所以我最后只能使用中间跳转的方案。</p>
+<p>如果不是使用 ROS 的朋友也不用担心，原理和流程已经讲清楚了，
+无非是使用 Cisco / Huawei 网络设备的防火墙命令实现需要的功能。</p>
+<hr />
+<p>上篇文章发完之后，好几个朋友问我 IP 证书供应商的事情。我就简单说一下我了解的情况。</p>
+<p>国内 SSL 证书供应商们会给他们兜售的产品起各种各样花里胡哨的名字，
+什么超真、超强、超安、超快，国外有些企业也会搞什么 Pro / Super / Premium / Essential，
+其实 SSL 证书的区分，笼统来说就三种类型：DV / OV / EV，
+Domain Validation / Orgnization Validation / Extented Validation。
+他们区别除了字面意思，就是所有权审核流程一个比一个麻烦。</p>
+<p>想基于 IP 直接搞所有权审核，要看对应供应商的证书是否支持。
+去年年底我做了一个调查，支持 IP 证书的厂家如下：</p>
+<ul>
+<li>Rapid SSL 不支持 ip</li>
+<li>wosign OV 级别支持
+<ul>
+<li>OV 需要验证 需要验证申请单位的营业执照、等其他证明文件</li>
+<li>浏览器支持情况
+<ul>
+<li>Firefox 32 <a href="https://mozillacaprogram.secure.force.com/CA/IncludedCACertificateReport">https://mozillacaprogram.secure.force.com/CA/IncludedCACertificateReport</a></li>
+<li>交叉认证了 Startcom 的证书，可以支持老版本</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>GlobalSign OV 支持
+<ul>
+<li>$349 * 6 * 8 = 16752</li>
+<li><a href="https://support.globalsign.com/customer/portal/articles/1216536-securing-a-public-ip-address---ssl-certificates">https://support.globalsign.com/customer/portal/articles/1216536-securing-a-public-ip-address&mdash;ssl-certificates</a></li>
+<li>需要认证 RIPE ip， <a href="https://apps.db.ripe.net/search/query.html?searchtext=221.228.82.178#resultsAnchor">https://apps.db.ripe.net/search/query.html?searchtext=221.228.82.178#resultsAnchor</a></li>
+</ul>
+</li>
+<li>Geotrust 明确表示不支持 <a href="https://www.geocerts.com/faq#Q47">https://www.geocerts.com/faq#Q47</a></li>
+</ul>
+<p>现在 Wosign 爆了丑闻，于是支持 IP SSL 又少了一家。
+只剩下 GlobalSign 了，但是 GlobalSign OV 又贵审核又麻烦，
+不知道看到此文的大神们有没有更好的推荐。</p>
+<hr />
+<p>参考链接：</p>
+<ul>
+<li><a href="http://serverfault.com/questions/193775/ssl-certificate-for-a-public-ip-address">domain name - SSL certificate for a public IP address? - Server Fault</a></li>
+<li><a href="http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/Filter">ROS Filter</a></li>
+<li><a href="http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/NAT">ROS NAT</a></li>
+<li><a href="http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/L7">ROS Firewall L7</a></li>
+<li><a href="http://forum.mikrotik.com/viewtopic.php?f=13&amp;t=62152">How to block and redirect website - MikroTik RouterOS</a></li>
+<li><a href="http://forum.mikrotik.com/viewtopic.php?t=39837">Mikrotik IP REDIRECT using firewall - MikroTik RouterOS</a></li>
+<li><a href="http://forum.mikrotik.com/viewtopic.php?t=88049">Redirect all traffic from a spesific ip number to a web page - MikroTik RouterOS</a></li>
+</ul>
+]]></content:encoded>
     </item>
     
   </channel>

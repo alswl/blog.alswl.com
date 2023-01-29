@@ -14,6 +14,38 @@
       
       <guid>https://blog.alswl.com/2011/02/dataconnectiondialog/</guid>
       <description>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方 法来动态生成连接字符串，这种方法充满了Bad Smell。 昨天用CodeSmith时候，看到它的数据连接配置界面，如此的眼熟，如下图。 Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命名空间为Microsof</description>
+      <content:encoded><![CDATA[<p>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方
+法来动态生成连接字符串，这种方法充满了Bad Smell。</p>
+<p>昨天用CodeSmith时候，看到它的数据连接配置界面，如此的眼熟，如下图。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201102/DataConnectionDialog.jpg" alt="image"  />
+
+</p>
+<p>Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命名空间为Microsoft.VisualStudio.Data。</p>
+<p>使用的方法也很简单，引用Microsoft.Data.ConnectionUI.dll和Microsoft.Data.ConnectionUI.Dialog
+.dll，这两个文件位于Microsoft Visual Studio 9.0Common7IDE下面。</p>
+<p>这两个dll并没有其他依赖关系，可以放心的放到自己的程序中使用。</p>
+<p>使用代码如下</p>
+<pre><code>DataConnectionDialog dataConnectionDialog = new DataConnectionDialog();
+DataSource.AddStandardDataSources(dataConnectionDialog);
+if (DataConnectionDialog.Show(dataConnectionDialog) == DialogResult.OK)
+{
+	targetDBConnectionString = dataConnectionDialog.ConnectionString;
+}
+</code></pre>
+<p>dataConnectionDialog.ConnectionString是完整的连接字符串，这样就可以比较优美的动态获取连接字符串了。</p>
+<p>参考文章</p>
+<ul>
+<li><a href="http://www.cnblogs.com/yans/archive/2010/12/04/1896285.html">DataConnectionDialog 旧事重提 - 名牌热狗 - 博客园</a></li>
+<li><a href="http://jayai.blog.51cto.com/510093/256313">C#&ndash;WinForm系统平台之登录界面及数据连接 - 天高行健，地厚载物 - 51CTO技术博客</a></li>
+<li><a href="http://msdn.microsoft.com/zh-cn/library/microsoft.visualstudio.data.dataconnectiondialog(v=vs.80).aspx">DataConnectionDialog Class (Microsoft.VisualStudio.Data)</a></li>
+</ul>
+<p>最后给大家拜个晚年，祝大家新年新气象。。。（此处省略1000字）</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -23,6 +55,145 @@
       
       <guid>https://blog.alswl.com/2008/07/course-design-works-great-debut/</guid>
       <description>本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉 这个系统我还是很得意的，是我大二时候学C#时候巅峰之作，那时候刚学完网络， 还没开任何网络编程，那时候第一次接触SourceForge，参考了好多英文资料。 AzaChat管理系统 Powered by DDD &amp;amp; King ZD 系统功能 登录，注册，群聊，私聊，踢人，聊天字体设置，字体颜色，图片插入，图文混编，音效播放，抖动窗体(模仿QQ) 聊天人员管理，数据库</description>
+      <content:encoded><![CDATA[<p>本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉</p>
+<p>这个系统我还是很得意的，是我大二时候学C#时候巅峰之作，那时候刚学完网络，
+还没开任何网络编程，那时候第一次接触SourceForge，参考了好多英文资料。</p>
+<hr />
+<h1 id="azachat管理系统">AzaChat管理系统</h1>
+<p>Powered by DDD &amp; King ZD</p>
+<h2 id="系统功能">系统功能</h2>
+<ul>
+<li>登录，注册，群聊，私聊，踢人，聊天字体设置，字体颜色，图片插入，图文混编，音效播放，抖动窗体(模仿QQ)</li>
+<li>聊天人员管理，数据库管理，数据库查找功能</li>
+<li>皮肤更换功能</li>
+</ul>
+<h2 id="系统说明">系统说明</h2>
+<p>这个系统是我这个学期课程设计，花了我将近一个多月的时间(期末考试阶段，很忙 - -#)，在写之前，我完全不懂数据库和网络传输，C#和面向对象思想也是这学期刚开的。虽然Bug还很多，但我仍然写出来了，很是开心。</p>
+<p>上传到CSDN，希望对大家有帮助。
+Aza的来源是因为一个笑话，一个女人是500只鸭子，我想到聊天室就应该那种AzaAza的聊天声音，嘿嘿。</p>
+<p>代码我给，论文自己写。。。看懂了别人的代码就是你的，看不懂，还是我的。。。
+写了很多注释，相信对大家有帮助的</p>
+<h2 id="版本">版本</h2>
+<p>我是在VS2008下面开发的，下载包里面自带转换器可以将项目文件转换到VS2005。
+Sql server的版本是vs自带的sql server 2005 express</p>
+<h2 id="数据库说明">数据库说明</h2>
+<ol>
+<li>将自带的两个数据库文件User.mdf和Server_log附加到数据库</li>
+<li>将数据库登录方式打开为Windows身份验证和Sql Server验证</li>
+<li>sa的密码可以自己改</li>
+<li>如果想在数据库服务器和聊天服务器分开的话，必须将数据库服务器的远程连接选项打开</li>
+</ol>
+<p>更详细的设置方式可以去查CSDN</p>
+<pre tabindex="0"><code>服务器帐号：sa
+密码：123456
+
+管理员帐号：admin
+密码：admin
+
+用户帐号：123
+密码：123
+</code></pre><p>更多帐号可以注册和去服务器端管理。</p>
+<p>客户端普通帐号可以随时注册，服务器端必须是管理员帐号登录。
+用起来很简单，登录进去就知道了。</p>
+<p>PS:程序在.Net Framework2.0下写，请确保电脑已经有.Net Framework2.0或者更高版本，否则会报错</p>
+<p>Powered by DDD</p>
+<p>E-mail:alswlwangzi(a)163.com</p>
+<h2 id="更新">更新</h2>
+<p>2008.7.11更新</p>
+<p>更新内容：</p>
+<p>V1.3版本更新：修改图片传输大小限制Bug,增强数据管理删选功能，修改在线用户查看，增加查看对方IP地址和连接端口功能</p>
+<p>V1.2」版本更新：加入远程数据库登录管理功能</p>
+<p>V1.1版本更新：加入服务器数据管理，修改增加删除数据保存的一些Bug</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A972857781312POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A983104784976POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A979487865902POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A976688814655POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A039328251736CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A037255836541CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A016564641801CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A014442672895CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A009044384619CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A004793674766CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A002612293529CUC.jpg" alt="img"  />
+
+</p>
+<p>终于写完了，虽然很累，不过真的很开心。</p>
+]]></content:encoded>
     </item>
     
   </channel>

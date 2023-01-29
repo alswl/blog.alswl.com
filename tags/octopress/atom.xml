@@ -14,6 +14,43 @@
       
       <guid>https://blog.alswl.com/2012/05/support-rss/</guid>
       <description>土鳖人人网的 日志导入 功能仅支持 RSS2.0，而 Octopress 输出的订阅格式是 Atom1.0。 于是为了让人人网的同学能看见我那些技术宅，又或非技术宅的文章， 我只能昧着良心，给 Octopress 加上过时的 RSS2.0 输出。 在 source/ 下创建新文件 rss.xml ，内容如下： --- layout: nil --- &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;rss xmlns:dc=&amp;#34;http://purl.org/dc/elements/1.1/&amp;#34; version=&amp;#34;2.0&amp;#34;&amp;gt; &amp;lt;channel&amp;gt; &amp;lt;description&amp;gt;&amp;lt;![CDATA[{{ site.title }}]]&amp;gt;&amp;lt;/description&amp;gt; &amp;lt;title&amp;gt;&amp;lt;![CDATA[{{ site.title }}]]&amp;gt;&amp;lt;/title&amp;gt; &amp;lt;link&amp;gt;{{ site.url }}/&amp;lt;/link&amp;gt; &amp;lt;pubDate&amp;gt;{{ site.time | date_to_xmlschema }}&amp;lt;/pubDate&amp;gt; {% for post in site.posts limit: 20 %} &amp;lt;item&amp;gt; &amp;lt;description&amp;gt; &amp;lt;![CDATA[ {{ post.content | expand_urls: site.url | cdata_escape }} {% include post/copyright.html %} ]]&amp;gt; &amp;lt;/description&amp;gt; &amp;lt;title&amp;gt;&amp;lt;![CDATA[{{ post.title | cdata_escape }}]]&amp;gt;&amp;lt;/title&amp;gt; &amp;lt;link&amp;gt;{{ site.url }}{{ post.url }}&amp;lt;/link&amp;gt; &amp;lt;pubDate&amp;gt;{{ post.date | date_to_xmlschema }}&amp;lt;/pubDate&amp;gt; &amp;lt;guid isPermaLink=&amp;#34;false&amp;#34;&amp;gt;{{ site.url }}{{ post.id }}&amp;lt;/guid&amp;gt; &amp;lt;source url=&amp;#34;{{ site.url }}/rss.xml&amp;#34;&amp;gt;&amp;lt;![CDATA[{{ site.title }}]]&amp;gt;&amp;lt;/source&amp;gt; &amp;lt;/item&amp;gt; {% endfor %} &amp;lt;/channel&amp;gt; &amp;lt;/rss&amp;gt; 然后，访问 http://site.url/rss.xml 即可。 我的 RSS2.0</description>
+      <content:encoded><![CDATA[<p>土鳖人人网的 <strong>日志导入</strong> 功能仅支持 RSS2.0，而 Octopress 输出的订阅格式是 Atom1.0。
+于是为了让人人网的同学能看见我那些技术宅，又或非技术宅的文章，
+我只能昧着良心，给 Octopress 加上过时的 RSS2.0 输出。</p>
+<p>在 <code>source/</code> 下创建新文件 <code>rss.xml</code> ，内容如下：</p>
+<pre tabindex="0"><code>---
+layout: nil
+---
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
+&lt;rss xmlns:dc=&#34;http://purl.org/dc/elements/1.1/&#34; version=&#34;2.0&#34;&gt;
+	&lt;channel&gt;
+		&lt;description&gt;&lt;![CDATA[{{ site.title }}]]&gt;&lt;/description&gt;
+		&lt;title&gt;&lt;![CDATA[{{ site.title }}]]&gt;&lt;/title&gt;
+		&lt;link&gt;{{ site.url }}/&lt;/link&gt;
+		&lt;pubDate&gt;{{ site.time | date_to_xmlschema }}&lt;/pubDate&gt;
+
+		{% for post in site.posts limit: 20 %}
+		&lt;item&gt;
+			&lt;description&gt;
+				&lt;![CDATA[
+				{{ post.content | expand_urls: site.url | cdata_escape }}
+				{% include post/copyright.html %}
+				]]&gt;
+			&lt;/description&gt;
+			&lt;title&gt;&lt;![CDATA[{{ post.title | cdata_escape }}]]&gt;&lt;/title&gt;
+			&lt;link&gt;{{ site.url }}{{ post.url }}&lt;/link&gt;
+			&lt;pubDate&gt;{{ post.date | date_to_xmlschema }}&lt;/pubDate&gt;
+			&lt;guid isPermaLink=&#34;false&#34;&gt;{{ site.url }}{{ post.id }}&lt;/guid&gt;
+
+			&lt;source url=&#34;{{ site.url }}/rss.xml&#34;&gt;&lt;![CDATA[{{ site.title }}]]&gt;&lt;/source&gt;
+		&lt;/item&gt;
+		{% endfor %}
+	&lt;/channel&gt;
+&lt;/rss&gt;
+</code></pre><p>然后，访问 <code>http://site.url/rss.xml</code> 即可。
+我的 RSS2.0 地址是 <a href="http://log4d.com/rss.xml">http://log4d.com/rss.xml</a>。</p>
+<p>最后，再让我吐槽一下人人网的工程师们：「导入日志后格式处理的一塌糊涂，几乎不能看」，真土鳖。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -23,6 +60,40 @@
       
       <guid>https://blog.alswl.com/2012/05/tag-cloud/</guid>
       <description>上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。 自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后， 就只剩下 tag 的问题没有搞定了。 我当时使用了YORKXIN的修改版本来处理 Wordpress 的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category / tag 都给予了保留。具体使用方法可以参见从Wordpress迁移到Octopress。 只是虽然 tag 的数据保留了，但是 Octopress 仅支持 category 的分类，而完全忽略 tag。这是</description>
+      <content:encoded><![CDATA[<p>上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。
+自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后，
+就只剩下 tag 的问题没有搞定了。</p>
+<p>我当时使用了YORKXIN的<a href="https://gist.github.com/1394128">修改版本</a>来处理 Wordpress
+的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category /
+tag 都给予了保留。具体使用方法可以参见<a href="http://blog.dayanjia.com/2012/04/migration-to-octopress-from-wordpress/">从Wordpress迁移到Octopress</a>。</p>
+<p>只是虽然 tag 的数据保留了，但是 <strong>Octopress 仅支持 category 的分类，而完全忽略
+tag</strong>。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。
+<strong>一篇文章只能属于一个 category，但可以同时属于多个 tag</strong>。
+Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。</p>
+<!-- more -->
+<p>ps：Octopress 官方也推荐了一个所谓「<a href="https://github.com/tokkonopapa/octopress-tagcloud">octopress-tagcloud</a>」的插件，
+<strong>但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag
+概念</strong>。更多官方插件可以查看
+<a href="https://github.com/imathis/octopress/wiki/3rd-party-plugins">3rd party plugins</a>。</p>
+<p>就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件：
+<a href="https://github.com/robbyedwards/octopress-tag-pages">robbyedwards / octopress-tag-pages</a>和
+<a href="https://github.com/robbyedwards/octopress-tag-cloud">robbyedwards / octopress-tag-cloud</a>。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。</p>
+<p>这两个插件使用很简单，将插件文件放入对应的目录（<strong>注意备份，存在覆盖的情况</strong>）。
+然后再给插件「octopress-tag-cloud」添加一个专属页面存放标签云即可。
+这个标签云生成的标记是 <code>li...li</code> ，需要在 <code>sass/custom/_styles.scss</code> 添加对应的样式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-css" data-lang="css"><span class="line"><span class="cl"><span class="p">#</span><span class="nn">content</span> <span class="nt">article</span> <span class="p">.</span><span class="nc">cloud</span> <span class="nt">li</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">display</span><span class="p">:</span> <span class="kc">inline</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">list-style</span><span class="p">:</span> <span class="kc">none</span> <span class="kc">outside</span> <span class="kc">none</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">padding</span><span class="p">:</span> <span class="mi">0</span> <span class="mi">4</span><span class="kt">px</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>第二个插件 octopress-tag-cloud 会和 Octopress 官方推荐的所谓「Octopress Tag Cloud」
+文件 / tag 标记 冲突，我建议修改官方的那个插件。</p>
+<p>我修改过的 octopress-tagcloud 在这里，被重命名为
+<a href="https://github.com/alswl/octopress-category-list">alswl / octopress-category-list</a>。</p>
+<p>这个版本同时参考了 <a href="http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud/">pf_miles</a> 的 utf-8 修改，以修复问题 <code>Liquid error: incompatible encoding regexp match (ASCII-8BIT regexp with UTF-8 string)</code> 。</p>
+<p>最后 Show 一下我的<a href="http://log4d.com/tag/">一坨标签云</a>，
+等有时间我再将标签和类别精简一下，以适应 Octopress。</p>
+]]></content:encoded>
     </item>
     
   </channel>

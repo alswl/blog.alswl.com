@@ -14,6 +14,321 @@
       
       <guid>https://blog.alswl.com/2011/09/nose/</guid>
       <description>不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用 nose 做单元测试，颇有心得， 在这里分享一下。 1. Pylons中依赖包 先简单介绍一下Pylons, Pylons与其说是一个框架，不如说是一堆框架的组合， Pylons在其中做到一个胶水的作用。Pylons依赖的包如下。 breaker，缓存和Session FormEncode，用户输入检查 Mako，模板渲染 nose，自动化测试 Paste，服</description>
+      <content:encoded><![CDATA[<p>不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用
+<a href="http://readthedocs.org/docs/nose/en/latest">nose</a> 做单元测试，颇有心得， 在这里分享一下。</p>
+<h2 id="1-pylons中依赖包">1. Pylons中依赖包</h2>
+<p>先简单介绍一下Pylons, Pylons与其说是一个框架，不如说是一堆框架的组合， Pylons在其中做到一个胶水的作用。Pylons依赖的包如下。</p>
+<ul>
+<li><a href="https://github.com/danielfm/pybreaker">breaker，缓存和Session</a></li>
+<li><a href="http://formencode.org/">FormEncode，用户输入检查</a></li>
+<li><a href="http://www.makotemplates.org/">Mako，模板渲染</a></li>
+<li><a href="http://readthedocs.org/docs/nose/en/latest/">nose，自动化测试</a></li>
+<li><a href="http://pythonpaste.org/script/">Paste，服务器</a></li>
+<li><a href="http://routes.groovie.org/">Routes, 路由</a></li>
+<li><a href="http://pythonpaste.org/tempita/">Tempita，Paste的模板</a></li>
+<li><a href="http://packages.python.org/WebCore/modules/thirdparty/weberror.html">Weberror</a></li>
+<li><a href="http://docs.webob.org/en/latest/index.html">WebOb，提供WSGI请求响应等对象</a></li>
+<li><a href="http://pythonpaste.org/webtest/">WebTest，Paste自带的测试小框架， 提供TestResponse和TestRequest两个有用的小东西</a></li>
+</ul>
+<p>Pylons的测试主要使用的其中的 Paste / nose / WebOb / WebTest。 遇到问题的时候，可以去翻一翻上面的文档。</p>
+<h2 id="2-pylons中测试目录结构">2. Pylons中测试目录结构</h2>
+<p>目录结构如下</p>
+<pre tabindex="0"><code>├─config
+├─controllers
+├─lib
+├─model
+├─public
+├─templates
+└─tests
+    └─functional
+</code></pre><p>目录中的 <code>config / controllers / lib / model / public</code>
+在不同的web框架下面可能会略有差别，在这里我不关注他们，我关注 <code>tests / functional</code> 中存放相应的测试脚本，比如
+<code>test_user.py</code></p>
+<h2 id="3-第一个简单的测试用例">3. 第一个简单的测试用例</h2>
+<h3 id="31-撰写单元测试文件">3.1. 撰写单元测试文件</h3>
+<p>最简单的test脚本如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">myb.tests</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestIndexController</span><span class="p">(</span><span class="n">TestController</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">test_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># Test response...</span>
+</span></span></code></pre></div><p>这里我们从 <code>myb.tests</code> 这个目录下面引入了所有包 （其实起作用的是 <code>__init__.py</code> ）</p>
+<p><code>__init__.py</code> 如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#coding: utf-8</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">webob.headers</span> <span class="kn">import</span> <span class="n">ResponseHeaders</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">unittest</span> <span class="kn">import</span> <span class="n">TestCase</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">paste.deploy</span> <span class="kn">import</span> <span class="n">loadapp</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">paste.script.appinstall</span> <span class="kn">import</span> <span class="n">SetupCommand</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pylons</span> <span class="kn">import</span> <span class="n">url</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">routes.util</span> <span class="kn">import</span> <span class="n">URLGenerator</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">webtest</span> <span class="kn">import</span> <span class="n">TestApp</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pylons.test</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;environ&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="p">,</span> <span class="s1">&#39;TestController&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Invoke websetup with the current config file</span>
+</span></span><span class="line"><span class="cl"><span class="n">SetupCommand</span><span class="p">(</span><span class="s1">&#39;setup-app&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">pylons</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">pylonsapp</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;__file__&#39;</span><span class="p">]])</span>
+</span></span><span class="line"><span class="cl"><span class="n">environ</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">TestController</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">wsgiapp</span> <span class="o">=</span> <span class="n">pylons</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">pylonsapp</span>
+</span></span><span class="line"><span class="cl">        <span class="n">config</span> <span class="o">=</span> <span class="n">wsgiapp</span><span class="o">.</span><span class="n">config</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">TestApp</span><span class="p">(</span><span class="n">wsgiapp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">url</span><span class="o">.</span><span class="n">_push_object</span><span class="p">(</span><span class="n">URLGenerator</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;routes.map&#39;</span><span class="p">],</span> <span class="n">environ</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">TestCase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></span></code></pre></div><p>可以看到，这里使用了 <code>TestController</code> 继承了 <code>TestCase</code> 这个单元测试基类， 并且在里面进行了web应用的环境初始化。</p>
+<h3 id="32-撰写测试配置文件">3.2. 撰写测试配置文件</h3>
+<p>上文撰写了一个最简单的测试代码，我们接着做一些单元测试配置。</p>
+<p>在app应用的同级文件里面，修改 <code>test.ini</code> 文件。</p>
+<pre tabindex="0"><code>[DEFAULT]
+debug = true
+#email_to = you@yourdomain.com
+smtp_server = localhost
+error_email_from = paste@localhost
+
+[server:main]
+use = egg:Paste#http
+host = 127.0.0.1
+port = 5000
+
+[app:main]
+use = config:development.ini
+sqlalchemy.url = mysql://username:password@localhost/myb_test?charset=utf8&amp;use_unicode=1
+
+# Logging configuration
+[loggers]
+keys = root, routes, myb, sqlalchemy
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[logger_routes]
+level = INFO
+handlers =
+qualname = routes.middleware
+
+# &#34;level = DEBUG&#34; logs the route matched and routing variables.
+[logger_myb]
+level = DEBUG
+handlers =
+qualname = myb
+
+[logger_sqlalchemy]
+level = INFO
+handlers =
+qualname = sqlalchemy.engine
+
+# &#34;level = INFO&#34; logs SQL queries.
+# &#34;level = DEBUG&#34; logs SQL queries and results.
+# &#34;level = WARN&#34; logs neither. (Recommended for production systems.)
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s,%(msecs)03d %(levelname)-5.5s [%(name)s] [%(threadName)s] %(message)s
+datefmt = %H:%M:%S
+</code></pre><p>这个配置文件设定了基本调试信息，数据库（使用myb_test数据库来避免修改原始数据） ，log方式。</p>
+<p>在 <code>[app:main]</code> 里面，我直接引用了 <code>development.ini</code> 的配置。</p>
+<h3 id="33-运行nose">3.3. 运行nose</h3>
+<p>在shell里面切换到app所在的目录（test.ini）所在的目录，运行 <code>nosetests myb/tests/functional/test_hello world.py</code> 。 之后会出现一些log内容，不出意外的话，应该出现 <code>OK</code> 。</p>
+<p>如果遇到 <code>FAILED</code> ，那就根据错误提示的信息来查错。 nose会输出log的信息和print标准输出的信息。</p>
+<h2 id="4-高级一点的测试方法">4. 高级一点的测试方法</h2>
+<p>在开发过程中，我们需要判定单元测试是否正确，我罗列一些常见的用法</p>
+<h3 id="41-测试返回类型为http-status的方法">4.1. 测试返回类型为HTTP STATUS的方法</h3>
+<p>每次HTTP请求都会返回HTTP STATUS，正常是200，找不到是404，服务器错误是500， 我们可以根据这些返回状态值来判断测试是否跑通。</p>
+<pre tabindex="0"><code>class TestQuestionController(TestController):
+
+  def test_suggest_question(self):
+
+    #正常返回200
+    response = self.app.get(url=url(controller=&#39;question&#39;,
+    action=&#39;suggest_question&#39;,
+    ),
+
+    params={
+    },
+    headers=self.headers,
+    status=200,
+    )
+</code></pre><p>#不存在的id返回404</p>
+<pre tabindex="0"><code>response = self.app.get(url=url(controller=&#39;question&#39;,
+
+action=&#39;suggest_question&#39;,
+
+),
+
+params={
+
+&#39;id&#39;: &#39;345&#39;,
+
+},
+
+headers=self.headers,
+
+status=404,
+
+)
+</code></pre><p>我习惯使用 <code>url()</code> 方法来生成url，这样一方面不用记住冗长的url， 另外在url路由表发生变化之后，也不用去改变测试代码。</p>
+<h3 id="42-测试返回类型为html的方法">4.2. 测试返回类型为html的方法</h3>
+<pre tabindex="0"><code>        def test_register(self):
+            response = self.app.post(url(controller = &#39;users&#39;,
+                                         action = &#39;register&#39;,
+                                         format = &#39;json&#39;),
+                                     {
+                                         &#39;login_name&#39;: &#39;nose_json&#39;,
+                                         &#39;login_pass&#39;: &#39;123&#39;,
+                                         &#39;user_name&#39;: &#39;测试机器人_json&#39;,
+                                     },
+                                     status=200
+                                     )
+            assert &#39;202cb962ac59075b964b07152d234b70&#39; in response.body #返回的加密密码
+            #log.debug( u&#39;器&#39; in response.unicode_body) #无法测试中文
+            #log.debug( u&#39;测试机器人_json&#39; in response.unicode_body) #无法测试中文
+</code></pre><p>使用 <code>response.body</code> 来判定html里面的内容（这里对中文支持不太好）。</p>
+<h3 id="43-测试返回类型为json的方法">4.3. 测试返回类型为json的方法</h3>
+<p>AJAX请求正常返回的状态吗都是200，我们需要判定里面的内容进行assert</p>
+<pre tabindex="0"><code>            response = self.app.post(url=url(controller=&#39;invitation&#39;,
+                                             action=&#39;invite_by_mail&#39;),
+                                     params={
+                                         &#39;to_address&#39;: &#39;&#39;,
+                                         &#39;to_user_name&#39;: &#39;大爷&#39;,
+                                     },
+                                     headers=self.headers,
+                                     status=200
+                                    )
+            result = response.json
+            assert(result[&#39;success&#39;] == False)
+            assert(result[&#39;message&#39;] == u&#39;发送失败：你妹不漂亮&#39;)
+</code></pre><h3 id="44-测试返回类型为重定向的方法">4.4. 测试返回类型为重定向的方法</h3>
+<p>这是HTTP状态吗的特殊形式，比如登录之后做一次跳转之类的。</p>
+<pre tabindex="0"><code>        def test_add(self):
+            #成功之后返回302做跳转，同时判定返回内容中跳转路径
+            response = self.app.post(url=url(controller=&#39;question&#39;,
+                                             action=&#39;add&#39;,
+                                             ),
+                                     params={
+                                         &#39;question_title&#39;: &#39;hwti1&#39;,
+                                         &#39;question_content&#39;: &#39;wgtinzrs1&#39;,
+                                     },
+                                     headers=self.headers,
+                                     status=302,
+                                    )
+            assert re.match(r&#39;^http://localhost/question/d*&#39;,
+                            response.headers[&#39;Location&#39;])
+</code></pre><h3 id="45-用户登录生成session">4.5. 用户登录生成Session</h3>
+<p>有些方法需要登录后才能运行，这依赖于服务器和浏览器之间的Cookie。如果要对这类
+方法进行测试，我们需要事先获取Cookie，再在每一次请求发出的时候附带这个Cookie。</p>
+<p>在下面的方法中，我实现了用户登录操作。 在test目录下的 <code>__init.py__</code> 中 <code>TestController</code> 加入新方法 <code>login()</code></p>
+<pre tabindex="0"><code>        def login(self, login_name, login_pass):
+            &#34;&#34;&#34;
+            用户登录操作，获取Cookie
+
+&#34;&#34;&#34;
+
+response = self.app.post(url=url(controller=&#39;users&#39;,
+
+action=&#39;login&#39;),
+
+params={
+
+&#39;login_name&#39;: login_name,
+
+&#39;login_pass&#39;: login_pass,
+
+},
+
+)
+
+cookie = response.headers.getall(&#39;Set-cookie&#39;)[0]
+
+self.headers = ResponseHeaders()
+
+self.headers.add(&#39;Cookie&#39;, cookie)
+</code></pre><p>这样就可以通过 <code>self.headers</code> 保存登录之后的cookie。</p>
+<h3 id="46-批量测试">4.6. 批量测试</h3>
+<p>除了制定 <code>test_xxx.py</code> 文件进行单元测试，我们还可以直接使用 <code>nosetests</code> 测试所有测试用例。</p>
+<pre><code>nosetests
+//该目录下需要存在 test.ini 配置文件
+</code></pre>
+<h2 id="5-遇到的问题">5. 遇到的问题</h2>
+<h3 id="51-编码问题">5.1. 编码问题</h3>
+<pre tabindex="0"><code>      File &#34;buildbdist.win32eggwebtest__init__.py&#34;, line 211, in post
+        content_type=content_type)
+      File &#34;buildbdist.win32eggwebtest__init__.py&#34;, line 191, in _gen_request
+        expect_errors=expect_errors)
+      File &#34;buildbdist.win32eggwebtest__init__.py&#34;, line 370, in do_request
+        res = req.get_response(app, catch_exc_info=True)
+      File &#34;buildbdist.win32eggwebobrequest.py&#34;, line 1004, in get_response
+        application, catch_exc_info=True)
+      File &#34;buildbdist.win32eggwebobrequest.py&#34;, line 977, in call_application
+        app_iter = application(self.environ, start_response)
+      File &#34;buildbdist.win32eggwebtestlint.py&#34;, line 170, in lint_app
+        iterator = application(environ, start_response_wrapper)
+      File &#34;d:programmingpython26libsite-packagespaste-1.7.5.1-py2.6.eggpastecascade.py&#34;, line 130, in __call__
+        return self.apps[-1](environ, start_response)
+      File &#34;d:programmingpython26libsite-packagespaste-1.7.5.1-py2.6.eggpasteregistry.py&#34;, line 379, in __call__
+        app_iter = self.application(environ, start_response)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsmiddleware.py&#34;, line 150, in __call__
+        self.app, environ, catch_exc_info=True)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsutil.py&#34;, line 48, in call_wsgi_application
+        app_iter = application(environ, start_response)
+      File &#34;d:programmingpython26libsite-packagesweberror-0.10.3-py2.6.eggweberrorevalexception.py&#34;, line 235, in __call__
+        return self.respond(environ, start_response)
+      File &#34;d:programmingpython26libsite-packagesweberror-0.10.3-py2.6.eggweberrorevalexception.py&#34;, line 418, in respond
+        return self.application(environ, start_response)
+      File &#34;d:programmingpython26libsite-packagesbeaker-1.5.4-py2.6.eggbeakermiddleware.py&#34;, line 152, in __call__
+        return self.wrap_app(environ, session_start_response)
+      File &#34;d:programmingpython26libsite-packagesroutes-1.12.3-py2.6.eggroutesmiddleware.py&#34;, line 131, in __call__
+        response = self.app(environ, start_response)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonswsgiapp.py&#34;, line 107, in __call__
+        response = self.dispatch(controller, environ, start_response)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonswsgiapp.py&#34;, line 312, in dispatch
+        return controller(environ, start_response)
+      File &#34;F:workxintongworkspaceMYB_WENDAmybmyblibbase.py&#34;, line 52, in __call__
+        return WSGIController.__call__(self, environ, start_response)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonscontrollerscore.py&#34;, line 266, in __call__
+        return response(environ, self.start_response)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 517, in __call__
+        environ, start_response)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 341, in __call__
+        return self.generate_response(environ, start_response)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 322, in generate_response
+        body = self.plain_body(environ)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 301, in plain_body
+        body = self._make_body(environ, no_escape)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 294, in _make_body
+        args[k] = escape(v)
+      File &#34;d:programmingpython26libsite-packageswebob-1.0.7-py2.6.eggwebobexc.py&#34;, line 182, in no_escape
+        value = str(value)
+      File &#34;d:programmingpython26libsite-packagespylons-1.0-py2.6.eggpylonsutil.py&#34;, line 112, in __repr__
+        value_repr = repr(value)
+    UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 8-18: ordinal not in range(128)
+</code></pre><p>这是一个明显由编码引起的错误。</p>
+<p>修改pylons-1.0-py2.6.eggPylonsutil.py中112行修改为</p>
+<pre tabindex="0"><code>    try:
+        value_repr = repr(value)
+    except UnicodeEncodeError, e:
+        log.error(&#39;encode error in pylons/utils.py&#39;)
+        continue
+</code></pre><p>这样虽然不能从根本上解决问题，但是至少规避了问题。</p>
+]]></content:encoded>
     </item>
     
   </channel>

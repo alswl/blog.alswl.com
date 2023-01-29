@@ -14,6 +14,133 @@
       
       <guid>https://blog.alswl.com/2013/11/postfix-basic-configuration/</guid>
       <description>原文地址：Postfix Basic Configuration 。 有少许编译。 介绍 Postfix 的配置文件 main.cf 有数百个配置参数， 幸运的是，所有参数都有合理的默认配置项。 大部分时候，只需要配置两三个参数即可。 安装 Postfix 的方法可以参见 安装方法。 特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在 标准配置说明 里面查看。 Postfix 配置语法 Postfix 的配置文件默认在 /etc/postfix。主力配置文件是 main.cf 和 master.cf。用户权限必须是 root 的。 /etc/postfix/main.cf 配置语法</description>
+      <content:encoded><![CDATA[<p>原文地址：<a href="http://www.postfix.org/BASIC_CONFIGURATION_README.html#syntax">Postfix Basic Configuration </a>。
+有少许编译。</p>
+<h2 id="介绍">介绍</h2>
+<p>Postfix 的配置文件 <a href="http://www.postfix.org/postconf.5.html">main.cf</a> 有数百个配置参数，
+幸运的是，所有参数都有合理的默认配置项。
+大部分时候，只需要配置两三个参数即可。</p>
+<p>安装 Postfix 的方法可以参见 <a href="http://www.postfix.org/INSTALL.html">安装方法</a>。</p>
+<p>特殊场景用途的配置方式，如邮件中枢，防火墙，拨号环境客户端的说明可以在
+<a href="http://www.postfix.org/STANDARD_CONFIGURATION_README.html">标准配置说明</a> 里面查看。</p>
+<!-- more -->
+<h2 id="postfix-配置语法">Postfix 配置语法</h2>
+<p>Postfix 的配置文件默认在 <code>/etc/postfix</code>。主力配置文件是 <a href="http://www.postfix.org/postconf.5.html">main.cf</a> 和
+<a href="http://www.postfix.org/master.5.html">master.cf</a>。用户权限必须是 root 的。</p>
+<p><code>/etc/postfix/main.cf</code> 配置语法有两个要点：不用引号，可以使用 <code>$</code> 来引用参数。</p>
+<pre tabindex="0"><code># 定义一个参数
+/etc/postfix/main.cf:
+    parameter = value
+# 引用一个已有参数
+/etc/postfix/main.cf:
+    other_parameter = $parameter
+</code></pre><p>引用参数时候，可以再定义之前先引用（Postfix 使用延迟计算技术）。</p>
+<p>Postfix 使用数据文件来控制接入权限。详情请看 <a href="http://www.postfix.org/DATABASE_README.html">DATABASE 介绍</a>，一般这样配置：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    virtual_alias_maps = hash:/etc/postfix/virtual
+</code></pre><p>修改 <code>main.cf</code> 或者 <code>master.cf</code> 之后，需要 <code>postfix reload</code> 重新载入配置文件。</p>
+<h2 id="配置对外发送域名">配置对外发送域名</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#myorigin">myorigin</a> 参数指定邮件中显示的发送域名，默认使用当前机器名 <code>$myhostname</code>。
+一般来说，我们会把 <code>myorigin</code> 设置成顶级域名 <code>$mydomain</code>。</p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    myorigin = $myhostname (default: send mail as &#34;user@$myhostname&#34;)
+    myorigin = $mydomain   (probably desirable: &#34;user@$mydomain&#34;)
+</code></pre><h2 id="配置接收域名">配置接收域名</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#mynetworks">mydestination</a> 参数配置了本地直接接收的域名，而不会再对外发送。</p>
+<p>这个参数可以使用文件配置，也可以使用 <code>type:table</code>，比如 hash / btree / ldap
+/ mysql 等等。</p>
+<p>范例：</p>
+<pre tabindex="0"><code># 默认配置
+/etc/postfix/main.cf:
+    mydestination = $myhostname localhost.$mydomain localhost
+
+# 对整个域名生效
+/etc/postfix/main.cf:
+    mydestination = $myhostname localhost.$mydomain localhost $mydomain
+
+# 对多个 DNS 域名生效
+/etc/postfix/main.cf:
+    mydestination = $myhostname localhost.$mydomain localhost 
+        www.$mydomain ftp.$mydomain
+</code></pre><h2 id="配置允许从哪些地方接收">配置允许从哪些地方接收</h2>
+<p>默认情况下面，Postfix 仅发送信任网络的邮件。信任网络配置在 <a href="http://www.postfix.org/postconf.5.html#mynetworks">mynetworks</a> 参数中。</p>
+<p>范例（使用下列任意一个）：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    mynetworks_style = subnet  (default: authorize subnetworks)
+    mynetworks_style = host    (safe: authorize local machine only)
+    mynetworks = 127.0.0.0/8   (safe: authorize local machine only)
+    mynetworks = 127.0.0.0/8 168.100.189.2/32 (authorize local machine) 
+</code></pre><p>还可以这样配置：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    mynetworks = 168.100.189.0/28, 127.0.0.0/8
+</code></pre><h2 id="配置允许发送到的域名">配置允许发送到的域名</h2>
+<p>默认情况下，非信任网络仅仅被允许从发送邮件到特定域名。默认值是
+<a href="http://www.postfix.org/postconf.5.html#mynetworks">mydestination</a> 下面的所有域名（包括子域名）。</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    relay_domains = $mydestination (default)
+    relay_domains =           (safe: never forward mail from strangers)
+    relay_domains = $mydomain (forward mail to my domain and subdomains)
+</code></pre><h2 id="配置递送方式直接或间接">配置递送方式：直接或间接</h2>
+<p>默认情况下，Postfix 会直接递送邮件到因特网。有时候你的服务器在防火墙后面或者
+无法直接连接互联网，那就需要将邮件递送到另外一个 <a href="http://www.postfix.org/postconf.5.html#relayhost">relay host</a>。</p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    relayhost =                   (default: direct delivery to Internet)
+    relayhost = $mydomain         (deliver via local mailhub)
+    relayhost = [mail.$mydomain]  (deliver via local mailhub)
+    relayhost = [mail.isp.tld]    (deliver via provider mailhub)
+</code></pre><h2 id="配置报告错误">配置报告错误</h2>
+<p>可以通过配置 <a href="http://www.postfix.org/aliases.5.html">aliases</a> 来将错误报告邮件转发给其他人。</p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/aliases:
+    postmaster: you
+    root: you
+</code></pre><p>默认情况下面，只会报告严重错误（资源错误和软件错误）：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    notify_classes = resource, software
+</code></pre><p>其他错误还有：bounce 拒收 / 2bounce 错误报告拒收 / delay 延迟 / policy 策略未通过
+/ protocol 协议错误 / resouce 资源错误 / software 软件错误</p>
+<h2 id="代理nat-配置">代理/NAT 配置</h2>
+<p>有时候需要通过代理或者 NAT 连接互联网。参考 <a href="http://www.postfix.org/postconf.5.html#proxy_interfaces">proxy_interfaces</a></p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    proxy_interfaces = 1.2.3.4 (the proxy/NAT external network address)
+</code></pre><h2 id="postfix-日志分布情况">Postfix 日志分布情况</h2>
+<p>日志路径配置在 <code>/etc/syslog.conf</code> 中：</p>
+<pre tabindex="0"><code>etc/syslog.conf:
+    mail.err                                    /dev/console
+    mail.debug                                  /var/log/maillog
+</code></pre><p>建议经常这样做日志审核：</p>
+<pre tabindex="0"><code># postfix check
+# egrep &#39;(reject|warning|error|fatal|panic):&#39; /some/log/file
+</code></pre><h2 id="在-chorooted-状态下运行-postfix">在 chorooted 状态下运行 Postfix</h2>
+<p>初学者就不用管这个了。</p>
+<h2 id="配置机器名">配置机器名</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#myhostname">myhostname</a> 手工指定了 FQDN。它被其他好几个域名相关的地方引用。</p>
+<p>一般来说，如果指定了 <code>mydomain</code>，就会自动通过它生成 <code>myhostname</code>。</p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    myhostname = host.local.domain (machine name is not FQDN)
+    myhostname = host.virtual.domain (virtual interface)
+    myhostname = virtual.domain (virtual interface)
+</code></pre><h2 id="配置域名">配置域名</h2>
+<p>使用 <a href="http://www.postfix.org/postconf.5.html#mydomain">mydomain</a> 配置，这个参数被很多地方引用。</p>
+<p>范例：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    mydomain = local.domain
+    mydomain = virtual.domain (virtual interface)
+</code></pre><h2 id="配置网络地址">配置网络地址</h2>
+<p><a href="http://www.postfix.org/postconf.5.html#inet_interfaces">inet_interfaces</a> 配置监听网络。</p>
+<p>默认配置：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    inet_interfaces = all
+</code></pre><p>多个虚拟邮件服务器配置：</p>
+<pre tabindex="0"><code>/etc/postfix/main.cf:
+    inet_interfaces = virtual.host.tld         (virtual Postfix)
+    inet_interfaces = $myhostname localhost... (non-virtual Postfix)
+</code></pre><p>注意，这项参数配置完之后需要重启。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -23,6 +150,37 @@
       
       <guid>https://blog.alswl.com/2013/04/buy-arch/</guid>
       <description>Arch 是我真正使用的第一款 Linux 发行版，大约使用了三年， 现在的这个 VPS 跑的系统也是 Arch。 然而随着时间变化，我从最早的天天更新狂，到一周、一个月、三个月和不主动更新。 彻底从从不折腾会死星人变成了一个尽量避免变更的老用户。 Arch 很适合作为第二个（第一个是新手使用的 Ubuntu），它的哲学 KISS 非常优雅， Keep It Simple And Stupid。基于这原则，它将 Linux 内部的使用、运维细节都展现出来。 毫不夸张的说，被 Arch 折腾几年，就能胜任 Linux SA 的</description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201304/archlinux-logo-dark-1200dpi_.png" alt="Arch"  />
+
+</p>
+<p>Arch 是我真正使用的第一款 Linux 发行版，大约使用了三年，
+现在的这个 VPS 跑的系统也是 Arch。
+然而随着时间变化，我从最早的天天更新狂，到一周、一个月、三个月和不主动更新。
+彻底从从不折腾会死星人变成了一个尽量避免变更的老用户。</p>
+<!-- more -->
+<p>Arch 很适合作为第二个（第一个是新手使用的 Ubuntu），它的哲学 KISS 非常优雅，
+Keep It Simple And Stupid。基于这原则，它将 Linux 内部的使用、运维细节都展现出来。
+毫不夸张的说，被 Arch 折腾几年，就能胜任 Linux SA 的角色了（笑）。</p>
+<p>可是这种深入带来的学习成本也很高，需要不停地跟着 Arch 社区的变化而变化。
+每次更新之前需要先阅读官方升级指南，搞不好就升级给挂了。
+而且 Arch 社区升级激进得有些可怕。rc.d 升级 systemctl 时候，我还能撑住，
+MySQL 转 MariaDB 时候，我也还凑合，但是当我安装一个 privoxy 导致 pacman
+崩溃，进而不能安装程序时候，我失去了耐心。</p>
+<p>想来也是，我已过折腾系统的年龄，不会给手机刷机 ROM，
+而是安安本本的使用没越狱的 iPhone。越发觉得时间和精力是有限的，
+需要把它们用到「正经」的地方。我对 Linux 宗教般的膜拜，也逐渐消失，
+等下次 MBP 发布我就考虑出手，哈哈。</p>
+<p>我曾经的签名中鲜亮的标着「ArchLinux / Python / Vim」，现在要把 ArchLinux 改成
+Linuxer 了。
+昨晚装了 Ubuntu 12.10，我不喜欢 Ubuntu，只是图它简单省事，社区支持丰富。
+在装完之后就卸掉了几十个系统自带的应用，然后把 Awesome 桌面迁移到 Debian 环境。</p>
+<p>再见，ArchLinux，我会永远感谢你的。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -32,6 +190,119 @@
       
       <guid>https://blog.alswl.com/2012/05/networkmanager-policykit-consolekit/</guid>
       <description>在使用 Awesome 的过程中，我又遇到了一个老问题「NetworkManager 在非 Gnome 环境启动后，会无法 添加 / 删除 / 编辑 无线连接」。明眼人一看就知道， 这是权限的问题。 问题描述 我的环境是 ArchLinux / xmonad 0.10 / awesome v3.4.11 / GDM 3.4.1 / NetworkManager 0.9.4.0， 下面我用 awesome 做示例，其他非 Gnome WM 也应该是类似配置。 我的 WM 启动流程是： 通过 GDM 启动 xmonad / awesome，启动 xsession 是 /usr/share/xsessions/awesome.desktop， 内容如下 [Desktop Entry]</description>
+      <content:encoded><![CDATA[<p>在使用 Awesome 的过程中，我又遇到了一个老问题「NetworkManager 在非 Gnome
+环境启动后，会无法 添加 / 删除 / 编辑 无线连接」。明眼人一看就知道，
+这是权限的问题。</p>
+<h2 id="问题描述">问题描述</h2>
+<p>我的环境是 <strong>ArchLinux / xmonad 0.10 / awesome v3.4.11 / GDM 3.4.1 / NetworkManager 0.9.4.0</strong>，
+下面我用 awesome 做示例，其他非 Gnome WM 也应该是类似配置。</p>
+<p>我的 WM 启动流程是：
+通过 GDM 启动 xmonad / awesome，启动 xsession 是 <code>/usr/share/xsessions/awesome.desktop</code>，
+内容如下</p>
+<!-- more -->
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[Desktop Entry]</span>
+</span></span><span class="line"><span class="cl"><span class="na">Name</span><span class="o">=</span><span class="s">Awesome</span>
+</span></span><span class="line"><span class="cl"><span class="na">Comment</span><span class="o">=</span><span class="s">This session logs you into Awesome</span>
+</span></span><span class="line"><span class="cl"><span class="na">Type</span><span class="o">=</span><span class="s">Application</span>
+</span></span><span class="line"><span class="cl"><span class="na">Exec</span><span class="o">=</span><span class="s">ck-launch-session dbus-launch $HOME/.start-session.sh awesome</span>
+</span></span><span class="line"><span class="cl"><span class="na">TryExec</span><span class="o">=</span><span class="s">/usr/bin/awesome</span>
+</span></span></code></pre></div><p><code>$HOME/.start-session.sh</code> 中的作用是启动 <strong>nm-applet</strong> 和 <strong>exec awesome</strong>。</p>
+<p>启动之后的情况是 NetworkManager 无线 编辑/删除 按钮变灰无法点击，或者可以点击，
+但是会发生 <strong>insufficient privileges</strong> 错误。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201205/insufficient-privileges.png" alt="insufficient privileges"  />
+
+</p>
+<h2 id="问题原因">问题原因</h2>
+<p>这个问题是由 PolicyKit 和 ConsoleKit 启动不当引起的。</p>
+<p>PolicyKit 是：</p>
+<blockquote>
+<p>PolicyKit allows fine-tuned capabilities in desktop enviroment. Traditionally only privilaged user (root) was allowed to configure network. However while in server enviroment it is reasonable assumption it would be too limiting to not allowed to connect to hotspot on laptop. Still however you may not want to give full privilages to this person (like installing programs) or you want to limit options for some people (for example on your children laptops only &rsquo;trusted&rsquo; networks with parential filters can be used). As far as I remember it works like:</p>
+<ul>
+<li>Program send message to daemon via dbus about action</li>
+<li>Daemon uses PolicyKit libraries/configuration (in fact PolicyKit daemon) to determine if user is allowed to perform action. It may happen that the certain confition must be fullfilled (like entering password or hardware access).</li>
+<li>Deamon performs action according to it (returns auth error or perform action)</li>
+</ul>
+</blockquote>
+<p>ConsoleKit 是：</p>
+<blockquote>
+<p>In short consolekit is service which tracks user sessions (i.e. where user is logged in). It allows switching users without logging out [many user can be logged in on the same hardware at the same time with one user active]. It is also used to check if session is &ldquo;local&rdquo; i.e. if user have direct access to hardware (which may be considered more secure then remote access).</p>
+</blockquote>
+<p>参考：<a href="http://unix.stackexchange.com/questions/5220/what-are-consolekit-and-policykit-how-do-they-work">What are ConsoleKit and PolicyKit? How do they work?</a></p>
+<p>所以简而言之，ConsoleKit 是用来管理用户会话的，PolicyKit 是用来处理用户申请特殊权限的，
+他们两个经常工作在一起。</p>
+<p>有个 PolicyKit 认证 API 教程可以一看：</p>
+<ul>
+<li><a href="http://www.kissuki.com/blog/2009/03/10/policykit/">使用 PolicyKit 进行身份认证（上）</a></li>
+<li><a href="http://www.kissuki.com/blog/2009/03/12/policykit/">使用 PolicyKit 进行身份认证（中）</a></li>
+<li><a href="http://www.kissuki.com/blog/2009/03/13/policykit/">使用 PolicyKit 进行身份认证（下）</a></li>
+</ul>
+<p>我的这个问题就是由于 PolicyKit 无法正确授权引起的。</p>
+<h2 id="问题解决">问题解决</h2>
+<p>我开始吭次吭次的 Google，一会就找到了 Arch Wiki 中 <a href="https://wiki.archlinux.org/index.php/NetworkManager#Set_up_PolicyKit_permissions">NetworkManager</a> 的解决办法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">exec</span> ck-launch-session dbus-launch wm
+</span></span></code></pre></div><p>写的很清楚，使用 <strong>ck-launch-session</strong> 和 <strong>dbus-launch</strong> 来加载 WM。但是我已经使用
+<code>ck-launch-session</code> 来启动 WM 了。</p>
+<p>随后我把怀疑的目光放到 <code>/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1</code>
+这个程序给系统提供 PolicyKit 权限认证，请求时候会让用户输入密码，如下图：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201205/policykit-agent.png" alt="PolicyKit Agent"  />
+
+</p>
+<p>可惜还是不行。</p>
+<p>我甚至还参考<a href="http://blog.san-ss.com.ar/2011/03/using-gnome-keyring-in-xmonad.html">Using gnome keyring in xmonad</a>
+试图手工建立一个 Gnome Keyring。事实证明，Gnome Keyring 和这个问题无关。</p>
+<p>最后，我用 <code>ck-list-sessions</code> 命令查看运行的用户 Session，发现同时运行着两个，
+一个处于 <code>Active</code>，一个不处于 <code>Active</code>，这下真相大白了：GDM 启动时候会自己启动
+<code>ck-launch-session</code>，不用自己手动启动，否则会造成两个会话而无法正确授权。</p>
+<pre tabindex="0"><code>Session2:
+	unix-user = &#39;1000&#39;
+	realname = &#39;Jason Ti&#39;
+	seat = &#39;Seat1&#39;
+	session-type = &#39;&#39;
+	active = TRUE
+	x11-display = &#39;:0&#39;
+	x11-display-device = &#39;/dev/tty7&#39;
+	display-device = &#39;&#39;
+	remote-host-name = &#39;&#39;
+	is-local = TRUE
+	on-since = &#39;2012-05-17T00:54:31.706019Z&#39;
+	login-session-id = &#39;2&#39;
+Session3:
+	unix-user = &#39;1000&#39;
+	realname = &#39;Jason Ti&#39;
+	seat = &#39;Seat1&#39;
+	session-type = &#39;&#39;
+	active = False
+	x11-display = &#39;:0&#39;
+	x11-display-device = &#39;/dev/tty7&#39;
+	display-device = &#39;&#39;
+	remote-host-name = &#39;&#39;
+	is-local = TRUE
+	on-since = &#39;2012-05-17T00:54:33.3465302Z&#39;
+	login-session-id = &#39;2&#39;
+</code></pre><p>修正 <code>/usr/share/xsessions/awesome.desktop</code> 如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[Desktop Entry]</span>
+</span></span><span class="line"><span class="cl"><span class="na">Name</span><span class="o">=</span><span class="s">Awesome</span>
+</span></span><span class="line"><span class="cl"><span class="na">Comment</span><span class="o">=</span><span class="s">This session logs you into Awesome</span>
+</span></span><span class="line"><span class="cl"><span class="na">Type</span><span class="o">=</span><span class="s">Application</span>
+</span></span><span class="line"><span class="cl"><span class="na">Exec</span><span class="o">=</span><span class="s">$HOME/.start-session.sh awesome</span>
+</span></span><span class="line"><span class="cl"><span class="na">TryExec</span><span class="o">=</span><span class="s">/usr/bin/awesome</span>
+</span></span></code></pre></div><p>事实上，在启动完 GDM 还没进入 WM 之前，<code>Ctrl+Alt+F1</code> 切换到命令行下面，查看进程会发现</p>
+<pre tabindex="0"><code>root       637     1  0 08:44 ?        00:00:00 /usr/lib/polkit-1/polkitd --no-debug
+root      1072     1  0 08:44 ?        00:00:00 /usr/sbin/console-kit-daemon --no-daemon
+rtkit     1260     1  0 08:45 ?        00:00:00 /usr/lib/rtkit-daemon
+</code></pre><p>果不其然，PolicyKit 和 ConsoleKit 已经在运行了。</p>
+<p>实测 Awesome / Xmonad 已经可以正常授权 NetworkManager 来编辑无线了。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -41,6 +312,99 @@
       
       <guid>https://blog.alswl.com/2012/04/fcitx-config/</guid>
       <description>Fcitx Fcitx 简介： 小企鹅中文输入法（Free Chinese Input Toy for X，fcitx） 是一个以 GPL 方式发布的输入法框架， 编写它的目是为桌面环境提供一个灵活的输入方案。 本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持 XIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼， 并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。 您可以从 http://fcitx.googlecode.com 下载最新的发布版本。 当年刚开始使用 Linux 时候，使用的</description>
+      <content:encoded><![CDATA[<h2 id="fcitx">Fcitx</h2>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201204/fcitx.png" alt="Fcitx"  />
+
+</p>
+<p>Fcitx 简介：</p>
+<pre><code>小企鹅中文输入法（Free Chinese Input Toy for X，fcitx）
+是一个以 GPL 方式发布的输入法框架， 编写它的目是为桌面环境提供一个灵活的输入方案。
+</code></pre>
+<p>本程序目前可以支持XIM和GTK2，GTK3，QT4的IM Module，可为支持</p>
+<p>XIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位和全/简/双拼，</p>
+<p>并支持基于码表的输入法（自带五笔、二笔和仓颉等输入码表）。</p>
+<p>您可以从 <a href="http://fcitx.googlecode.com">http://fcitx.googlecode.com</a> 下载最新的发布版本。</p>
+<p>当年刚开始使用 Linux 时候，使用的是 iBus，随后发现 Fcitx 这个输入法， 试用了一下就发现自己所需要的 双拼 / 模糊音 / 自定义输入
+功能都有提供， 遂转移阵地到 Fcitx。</p>
+<h2 id="fcitx-安装">Fcitx 安装</h2>
+<p>大部分发行版软件源都有 Fcitx，Arch 下安装使用命令 <code>pacman -S fcitx</code> 即可安装最新版本。Ubuntu 的安装可以参考
+<a href="http://wiki.ubuntu.org.cn/Fcitx">http://wiki.ubuntu.org.cn/Fcitx</a> 。</p>
+<h2 id="fcitx-配置">Fcitx 配置</h2>
+<p>详细的配置文档参见 [http://fcitx.github.com/handbook/fcitx.html](<a href="http://fcitx.github.co">http://fcitx.github.co</a>
+m/handbook/fcitx.html)</p>
+<h2 id="fcitx-特殊符号">Fcitx 特殊符号</h2>
+<p>当我们需要输入特殊符号（数字符号、箭头等等）时候，往往需要去网上搜索对应的 unicode 码，然后拷贝过来。Fcitx
+提供一个很方便的功能叫做「特殊符号输入」， 可以定义自己的特殊符号。</p>
+<p>在 <code>/usr/share/fcitx/pinyin/pySym.mb</code> / <code>~/.config/fcitx/pinyin/pySym.mb</code>
+（ps：我当前版本是4.2.1，所以是这个路径，老版本可能不是这个路径） 中定义需要使用的特殊符号，格式为 <code>&lt;编码&gt; &lt;符号&gt;</code> ，比如：</p>
+<pre><code>yinyue ♩
+yinyue ♪
+yinyue ♫
+...
+</code></pre>
+<p>那么，在 Fcitx 中输入 <code>yinyue</code> 就会出现如下候选框</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201204/fcitx-1.png" alt="Fcitx 特殊符号"  />
+
+</p>
+<p><code>pySym.mb</code> 文件中，「编码」和「符号」均不允许出现空格，所以比较适合短小的符号，
+而颜文字或者长句不适合在这里出现。颜文字以及其他较长的文字如何快速输入， 就要看 Fcitx 的「快速输入」功能了。</p>
+<p>我在这里提供的配置文件包括了常用符号、数字、星座、箭头等等，喜欢可以直接拿去。
+ps：我定义的「编码」是全拼，所以可能会混淆正常输入，建议全拼用户将「编码」略做 修改，添加前缀比如 <code>z</code> （文档中说 <code>v</code> 不能被使用为前缀）。</p>
+<p>配置完成之后，使用 <code>fcitx -r</code> 重启 Fcitx（使用 Ctrl+5 可以刷新配置文件， 但并不能刷新全部配置文件，建议重启 Fcitx）。
+待会配置「快速输入」之后，也需要重启 Fcitx 来让配置文件生效。</p>
+<p>我的配置文件 [fcitx-config / pinyin / pySym.mb](<a href="https://github.com/alswl/fcitx-">https://github.com/alswl/fcitx-</a>
+config/blob/master/pinyin/pySym.mb)</p>
+<h2 id="fcitx-快速输入">Fcitx 快速输入</h2>
+<p>Fcitx 的「快速输入」和「特殊符号」很类似，后者管理字符，前者管理自定义语句。</p>
+<p>快速输入通过 <code>；</code> 按键启用，随后输入相应的「字符组合」，Fcitx 会自动补全。</p>
+<p>编码对照文件存放在 <code>~/.config/fcitx/data/QuickPhrase.mb</code> 或 <code>share</code> 目录下对应的文件中，格式为
+<code>&lt;字符组合&gt; &lt;短语&gt;</code> ，范例如下</p>
+<pre><code># 颜文字欢呼 （颜文字太需要了，卖个萌什么的太管用了）
+yhuanhu (/≥▽≤/)
+yhuanhu ヾ(o◕∀◕)ﾉ
+</code></pre>
+<p>在输入法中，键入 <code>；</code> 之后再输入 <code>yhuanhu</code> 就会出现下面候选框：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201204/fcitx-2.png" alt="Fcitx 快速输入"  />
+
+</p>
+<p>从图中可以看出，Fcitx 还自动进行了「字符组合」补全。</p>
+<p>我的 [fcitx-config / data / QuickPhrase.mb](<a href="https://github.com/alswl/fcitx-">https://github.com/alswl/fcitx-</a>
+config/blob/master/data/QuickPhrase.mb) 配置文件按类别收集了一些颜文字，可以直接拿过来使用。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="http://zhan.renren.com/fullcirclectt?tagId=163058&amp;checked=true">FCCTT推送特别篇&mdash;-FCITX输入法快速输入表情</a></li>
+<li><a href="http://site.douban.com/widget/notes/4567539/note/197244464/">颜文字收集整理╰(<strong>°▽°</strong>)</a></li>
+</ul>
+<h2 id="fcitx-中文键位映射">Fcitx 中文键位映射</h2>
+<p>很多朋友和我一样，喜欢使用「和」来替换&quot;/&quot;，至于为什么，知乎有一个回答就解释的很好
+<a href="http://www.zhihu.com/question/19589668">为什么大家引用时常用直角引号（「」）而不是弯引号（&quot;&quot;）？</a></p>
+<p>Fcitx 完全可以通过配置中英文键位映射来修改中文状态下面的输入。全局配置文件在
+<code>/usr/share/fcitx/data/punc.mb.zh_CN</code> 中， 个人配置文件在
+<code>~/.config/fcitx/data/punc.mb.zh_CN</code> 这个对应位置。</p>
+<p>我的配置 [fcitx-config / data / punc.mb.zh_CN](<a href="https://github.com/alswl/fcitx-">https://github.com/alswl/fcitx-</a>
+config/blob/master/data/punc.mb.zh_CN)</p>
+<h2 id="最后">最后</h2>
+<p>关于 Fcitx，有 bug 可以到官网反馈，处理起来效率很高， 感谢作者们给大家带来这么优秀的开源软件。</p>
+<p>Update:</p>
+<ul>
+<li>2012-03-02 感谢 @Weng Xuetian 指正 <code>Ctrl + F5</code> 是错误的，需要使用 <code>Ctrl + 5</code> 重载配置。</li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -50,6 +414,23 @@
       
       <guid>https://blog.alswl.com/2011/12/transfer-vps/</guid>
       <description>Log4D挂了整整一天，原因是因为VPS扩容导致系统无法启动。 我使用的VPS是PhotonVPS的WARP.25 套餐。买时候套餐里面硬盘空间是2个G，前几天朋友告诉我新套餐变成了10G。我就发了ticket给客服，他们很快答应帮我升级VPS。我就将数据备份出来，静候升 级。 等了半天没反应，又咨询过后才知道新加入的硬盘空间需要重装系统才能启用。好吧，正好我想将CentOS 6换成Arch（Arch用的太</description>
+      <content:encoded><![CDATA[<p>Log4D挂了整整一天，原因是因为VPS扩容导致系统无法启动。</p>
+<p>我使用的VPS是<a href="http://www.photonvps.com/billing/aff.php?aff=2188">PhotonVPS</a>的WARP.25
+套餐。买时候套餐里面硬盘空间是2个G，前几天朋友告诉我新套餐变成了10G。我就发了ticket给客服，他们很快答应帮我升级VPS。我就将数据备份出来，静候升
+级。</p>
+<p>等了半天没反应，又咨询过后才知道新加入的硬盘空间需要重装系统才能启用。好吧，正好我想将CentOS 6换成Arch（Arch用的太顺手了）。</p>
+<p>吭次吭次一阵捣鼓（其实重装系统就按一个按钮而已 ^_^），Arch装好了，然后发现系统无法启动了，悲剧鸟。</p>
+<p>继续咨询客服，恩，这里插播一下，PhotonVPS的客服回复都是英文，但是可以发送中文过去，貌似有翻译助阵（不过英文文档看多了，简单的也能来两句，hiahi
+a）。客服很快确认，Arch在目前VPS无法正常使用，坑爹阿。</p>
+<p>我继续捣鼓，尝试Ubunt/Cent OS，发现都无法启动vps（症状是启动一下下之后立马又变成离线状态）。</p>
+<p>继续找客服，最后客服给我重新分配了vps和ip，问题解决。</p>
+<p>然我我又开始吭次吭次的装软件，最近系统装多了，手慢慢就熟了。</p>
+<p>先升级一下系统<code>apt-get update upgrade</code>，然后创建用户，养成不使用root的好习惯。顺带装一些顺手工具vim/git/screen。</p>
+<p>Ubuntu 11.04下面官方源里面带nginx/php5/php-fpm/php-mysql/mysql-
+server，所以不用自己编译可以节省很多时间。</p>
+<p>最后装上pptpd，不解释。</p>
+<p>最近的装机事件频发，同志们阿，做好备份，备份才是王道阿。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -59,6 +440,112 @@
       
       <guid>https://blog.alswl.com/2011/12/linux-application/</guid>
       <description>重要通知：Log4D的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner的地址未发生变化） http://feed.dddspace.com 弃用 请订阅我博客的朋友更新一下订阅地址。 前天将arch32位换成64位的系统，想充分利用4G内存。 在mountpoint时候，我mount了 /root 和/home 盘，然后arch问需要 (re)create 分区么。 选项有 Yes 和 No ，看上去不选 No 就进行不下去，我就点了一下。 结果就悲剧了有没有！！！！！！！！！ home 盘有150G左右</description>
+      <content:encoded><![CDATA[<p>重要通知：Log4D的域名由 <a href="http://dddspace.com/">http://dddspace.com</a> 迁移到
+<a href="../">http://log4d.com</a> 。</p>
+<p>订阅地址现在改为 <a href="../feed">http://log4d.com/feed</a> 和
+<a href="http://feeds.feedburner.com/dddspace">http://feeds.feedburner.com/dddspace</a>
+。（FeedBurner的地址未发生变化）</p>
+<p><strike><a href="http://feed.dddspace.com">http://feed.dddspace.com</a></strike> 弃用</p>
+<p>请订阅我博客的朋友更新一下订阅地址。</p>
+<p>前天将arch32位换成64位的系统，想充分利用4G内存。 在mountpoint时候，我mount了 <code>/root</code> 和<code>/home</code>
+盘，然后arch问需要 <code>(re)create</code> 分区么。 选项有 <code>Yes</code> 和 <code>No</code> ，看上去不选 <code>No</code> 就进行不下去，我就点了一下。</p>
+<p>结果就悲剧了有没有！！！！！！！！！</p>
+<p><code>home</code> 盘有150G左右有木有！！！！！！！！</p>
+<p>日本岛国文化都有70G有木有！！！！！！！！六七年的心血有木有！！！！！</p>
+<p>上次备份是2个月前有木有，就算有Dropbox/github/cvs等等，还会丢失变更有木有！！</p>
+<p>两个月的数据变化阿，各种文档，照片和音乐阿！！！！！！</p>
+<p>你妹的arch格式化之前通知能不能明显一点，弄个 <code>format</code> 字眼吓不死我的！！！！</p>
+<p>上次备份是放在Dell笔记本里面的，主板坏了打不开有木有！！！！！！！</p>
+<p>最后我用移动硬盘装载老电脑的硬盘，勉强把数据恢复过来。</p>
+<p>又是一次苦逼的装机路，我一一记录下来。</p>
+<p>下面是官方指导文档配置完成之后的软件，在Arch官方库和ARU里面有。</p>
+<h2 id="常用工具">常用工具</h2>
+<ul>
+<li>tilda 一个小巧的Terminal Emulator</li>
+<li>fcitx 好用的输入法</li>
+</ul>
+<h2 id="应用软件">应用软件</h2>
+<ul>
+<li>asciidoc</li>
+<li>gnucash #财务软件</li>
+<li>libreoffice</li>
+<li>foxitreader #yaourt</li>
+<li>bc #计算器</li>
+<li>text-live-core #LaTex</li>
+</ul>
+<h2 id="网络应用">网络应用</h2>
+<ul>
+<li>firefox</li>
+<li>firefox-i18n-zh-cn</li>
+<li>chromium</li>
+<li>dropbox #yaourt</li>
+<li>wakoopa #跟踪系统软件的工具 yaourt</li>
+<li>wireshark-gtk #抓包用的wireshark</li>
+<li>thunderbird</li>
+<li>telepathy #empathy依赖</li>
+<li>nmap #网络工具</li>
+</ul>
+<h2 id="媒体软件">媒体软件</h2>
+<ul>
+<li>kid3 #mp3 idv2/idv3编辑器</li>
+<li>gimp</li>
+<li>smplayer #播放器</li>
+<li>rhythmbox #音乐播放器</li>
+<li>audacity #音频编辑器</li>
+<li>k3b #cd刻录</li>
+</ul>
+<h2 id="开发应用">开发应用</h2>
+<ul>
+<li>gvim</li>
+<li>git/svn/mercurial/cvs</li>
+<li>ctags</li>
+<li>jdk #yaourt sun官方jdk</li>
+<li>mysql</li>
+<li>mysql-workbench #mysql wrokbench</li>
+<li>nginx</li>
+<li>php</li>
+<li>php-fpm</li>
+<li>python-virtualenv #python版本管理</li>
+<li>python-virtualenvwrapper #pytohn版本管理增强工具</li>
+<li>memcached</li>
+</ul>
+<h2 id="系统工具">系统工具</h2>
+<ul>
+<li>net-tools #包含ifconfig/route，这个包现在不在BASE中，默认不安装</li>
+<li>inetutils #包含ftp/telnet，同上</li>
+<li>networkmanager-openconnect #networkmanager相关的插件</li>
+<li>networkmanager-openvpn</li>
+<li>networkmanager-pptp</li>
+<li>networkmanager-dispatcher-sshd</li>
+<li>virtualbox</li>
+<li>virtualbox-addtitions #virtualbox 增强包</li>
+<li>qt</li>
+<li>unrar zip unzip</li>
+<li>flashplugin</li>
+<li>bash-completion #bash自动完成</li>
+<li>nautilus-open-terminal</li>
+<li>avant-window-navigator #dock</li>
+<li>hardinfo #设备信息</li>
+<li>gpaste #多剪贴板 yaourt</li>
+<li>gstreamer0.10-ffmpeg #预览</li>
+<li>gparted #分区工具</li>
+<li>conky #系统运行状态</li>
+<li>ntp #网络时间校准工具</li>
+<li>dnsmasq #本地dns缓存</li>
+</ul>
+<h2 id="gnome相关">gnome相关</h2>
+<ul>
+<li>gnome-tweak-tool-3.2.2-2</li>
+</ul>
+<h2 id="gnome-shell扩展">gnome shell扩展</h2>
+<p>在 <a href="https://extensions.gnome.org/">https://extensions.gnome.org/</a> 可以下载Gnome3扩展。</p>
+<ul>
+<li>Alternative Status Menu</li>
+<li>gTile #桌面多窗口分割</li>
+<li>Places Status Indicator</li>
+<li>Workspace Navigator</li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -68,6 +555,58 @@
       
       <guid>https://blog.alswl.com/2011/11/archlinux-thinkpad-trackpoint/</guid>
       <description>重要通知：Log4D的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner的地址未发生变化） 请订阅我博客的朋友更新一下订阅地址。 关于Arch Arch是一款优秀的Linux发行版，使用它可以快速的学习Linux操作技巧。 Arch崇尚的原则是&amp;quot;保持简单，且一目了然&amp;quot;，这也是我崇尚的风格。 保持简单的同时也会给我带来一些小小的困扰，比如配置一下Thinkpad上面的小红帽 中</description>
+      <content:encoded><![CDATA[<p>重要通知：Log4D的域名由 <a href="http://dddspace.com">http://dddspace.com</a> 迁移到
+<a href="http://log4d.com">http://log4d.com</a> 。 订阅地址现在改为
+<a href="http://log4d.com/feed">http://log4d.com/feed</a> 和
+<a href="http://feeds.feedburner.com/dddspace">http://feeds.feedburner.com/dddspace</a>
+。（FeedBurner的地址未发生变化） 请订阅我博客的朋友更新一下订阅地址。</p>
+<h2 id="关于arch">关于Arch</h2>
+<p>Arch是一款优秀的Linux发行版，使用它可以快速的学习Linux操作技巧。 Arch崇尚的原则是&quot;保持简单，且一目了然&quot;，这也是我崇尚的风格。</p>
+<p>保持简单的同时也会给我带来一些小小的困扰，比如配置一下Thinkpad上面的小红帽
+中键都需要设定Xorg。Arch直接向我们展示了Linux美妙的侗体，没有任何遮掩。</p>
+<p>好在Arch有最完善的<a href="https://wiki.archlinux.org/index.php/Main_Page">官方Wiki</a>，
+Thinkpad爱好者也组建了一个专门的
+<a href="http://www.thinkwiki.org/wiki/ThinkWiki">ThinkWiki</a>来为大家答疑解惑。
+特别是官方Wiki，中文化做的非常好，是我见过最完善的中文linux wiki之一。</p>
+<h2 id="小红帽的中键">小红帽的中键</h2>
+<p>罗嗦完了，进入正题，我的环境是</p>
+<ul>
+<li>arch(Linux version 3.1.0-4-ARCH)</li>
+<li>Gnome3.2.1</li>
+<li>X.Org X Server 1.11.2</li>
+</ul>
+<p>根据 <a href="http://www.thinkwiki.org/wiki/How_to_configure_the_TrackPoint">How to configure the
+TrackPoint</a>
+描述，配置小红帽的中键有6种办法， 我使用的是xinput配置（这是推荐方法）。</p>
+<p>运行下列代码，即可启用小红帽中键上下滑动。</p>
+<pre><code>xinput set-int-prop 12 &quot;Evdev Wheel Emulation&quot; 8 1
+xinput set-int-prop 12 &quot;Evdev Wheel Emulation Button&quot; 8 2
+xinput set-int-prop 12 &quot;Evdev Wheel Emulation Timeout&quot; 8 200
+</code></pre>
+<p>现在运行下面代码，启用左右滑动。</p>
+<pre><code>xinput set-int-prop 12 &quot;Evdev Wheel Emulation Axes&quot; 8 6 7 4 5
+</code></pre>
+<p>创建自动脚本，在系统启动时候自动执行</p>
+<pre><code>#!/bin/sh
+xinput list | sed -ne 's/^[^ ][^V].*id=\([0-9]*\).*/\1/p' | while read id
+do
+        case `xinput list-props $id` in
+        *&quot;Middle Button Emulation&quot;*)
+                xinput set-int-prop $id &quot;Evdev Wheel Emulation&quot; 8 1
+                xinput set-int-prop $id &quot;Evdev Wheel Emulation Button&quot; 8 2
+                xinput set-int-prop $id &quot;Evdev Wheel Emulation Timeout&quot; 8 200
+                xinput set-int-prop $id &quot;Evdev Wheel Emulation Axes&quot; 8 6 7 4 5
+                xinput set-int-prop $id &quot;Evdev Middle Button Emulation&quot; 8 0
+                ;;
+        esac
+done
+</code></pre>
+<h1 id="disable-middle-button">disable middle button</h1>
+<p>xmodmap -e &ldquo;pointer = 1 9 3 4 5 6 7 8 2&rdquo;</p>
+<p>我将这个bash放在 <code>~/.xinitrc</code> 里面执行。</p>
+<p>PS：如果你使用这个方法有问题，建议检查一下当前环境。另外可以参考一下其他的设置方法 <a href="http://www.thinkwiki.org/wiki/How_to_configure_the_TrackPoint">How to configure the
+TrackPoint</a> 。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -77,6 +616,254 @@
       
       <guid>https://blog.alswl.com/2011/11/vps-lnmp-setup-config/</guid>
       <description>重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化） 这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。 现在使用的 VPS 是 PhotonVPS 。 月付5.95美元，使用优惠码 TENOFF 或 PHOTONLEB 可以打7折， 换算汇率之后是26人民币每月。 这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨， 我终于配置的可用率比较高，使用 siege -c 100 -t 100 时候可以保持 100%</description>
+      <content:encoded><![CDATA[<blockquote>
+<p>重要通知：Log4D 的域名由 <a href="http://dddspace.com">http://dddspace.com</a> 迁移到 <a href="http://log4d.com">http://log4d.com</a> 。
+订阅地址现在改为 <a href="http://log4d.com/feed">http://log4d.com/feed</a> 和
+<a href="http://feeds.feedburner.com/dddspace">http://feeds.feedburner.com/dddspace</a> 。（FeedBurner 的地址未发生变化）</p>
+</blockquote>
+<p>这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。
+现在使用的 VPS 是 <a href="http://www.photonvps.com/billing/aff.php?aff=2188">PhotonVPS</a> 。</p>
+<p>月付5.95美元，使用优惠码 <code>TENOFF</code> 或 <code>PHOTONLEB</code> 可以打7折，
+换算汇率之后是26人民币每月。</p>
+<p>这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨，
+我终于配置的可用率比较高，使用 <code>siege -c 100 -t 100</code> 时候可以保持 100% 可用率。
+（其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。</p>
+<!-- more -->
+<h1 id="安装-lnmp">安装 LNMP</h1>
+<h2 id="linux-发行版选用">Linux 发行版选用</h2>
+<p>CentOS 据说有较好的安全性和性能，我个人更喜欢 Arch。查询了相关资料，
+在生产环境使用 Arch 的似乎不多。</p>
+<p>CentOS 里面的包比较旧，不像 Arch 里面，滚动最新。
+所以这里需要用到的LNMP大部分都需要自行编译。</p>
+<h3 id="nginx-安装">Nginx 安装</h3>
+<p>Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。</p>
+<p>目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。</p>
+<p>准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers
+</span></span></code></pre></div><p>下载Nginx</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /tmp
+</span></span><span class="line"><span class="cl">wget http://nginx.org/download/nginx-1.0.9.tar.gz
+</span></span></code></pre></div><p>因为我们需要安装使用https，所以需要SSL模块支持，我们需要OpenSSL源码。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://openssl.org/source/openssl-1.0.0c.tar.gz
+</span></span><span class="line"><span class="cl">tar zxvf openssl-1.0.0c.tar.gz
+</span></span></code></pre></div><p>编译Nginx，使用www作为用户和用户组，同时加入http ssl模块支持。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./configure --user<span class="o">=</span>www --group<span class="o">=</span>www --prefix<span class="o">=</span>/usr/local/nginx --with-http_ssl_module --with-openssl<span class="o">=</span>/tmp/openssl-1.0.0c/
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">make install
+</span></span></code></pre></div><p>这样nginx就安装完了，执行 <code>/usr/local/ngxin/bin/nginx -V</code> 可以查看nginx信息。</p>
+<blockquote>
+<p>nginx: nginx version: nginx/1.0.9 nginx: built by gcc 4.4.4 20100726 (Red Hat 4.4.4-13) (GCC) nginx: TLS SNI support enabled nginx: configure arguments: &ndash;user=www &ndash;group=www &ndash;prefix=/usr/local/nginx &ndash;with-http_ssl_module &ndash;with-openssl=/tmp/openssl-1.0.0c/</p>
+</blockquote>
+<p>为nginx 创建软链接</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
+</span></span></code></pre></div><p>ngxin 启动关闭</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nginx <span class="c1">#启动</span>
+</span></span><span class="line"><span class="cl">nginx -s stop <span class="c1">#关闭</span>
+</span></span><span class="line"><span class="cl">nginx -s reload <span class="c1">#重启</span>
+</span></span></code></pre></div><p>运行 <code>nginx</code> 就可以启动服务器了，在浏览器输入服务器ip， 能够看见 <code>nginx</code> 的字样。</p>
+<h3 id="mysql安装">MySQL安装</h3>
+<p>MySQL我没有自行编译，使用CentOS官方源里面的Mysql。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install -y mysql-server
+</span></span></code></pre></div><h3 id="php安装">PHP安装</h3>
+<p>PHP需要自行编译，原因是Nginx使用Fast-CGI调用PHP服务。
+我们需要php-cgi常驻后台。在PHP 5.3.3之后，
+一个名为php-fpm的小东西被php核心加入。这个php-fpm可以常驻后台响应Fast-CGI请求。</p>
+<p>悲剧的是，截至目前位置，CentOS官方源里面PHP版本是5.3.2，
+好死不死的差一个小数点。只能自行编译了。</p>
+<p>安装libmcrypt，这是某个依赖包，另外phpmyadmin也需要这个模块。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://pkgs.repoforge.org/libmcrypt/libmcrypt-2.5.71.2.el6.rf.i686.rpm
+</span></span><span class="line"><span class="cl">ls
+</span></span><span class="line"><span class="cl">rpm -i libmcrypt-2.5.7-1.2.el6.rf.i686.rpm
+</span></span><span class="line"><span class="cl">rpm -i --force libmcrypt-2.5.7-1.2.el6.rf.i686.rpm
+</span></span></code></pre></div><p>安装php 5.3.8</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./configure --prefix<span class="o">=</span>/usr/local/php --with-config-file-path<span class="o">=</span>/usr/local/php/etc --with-mysql<span class="o">=</span>/usr/bin/ --with-mysqli<span class="o">=</span>/usr/bin/mysql_config --with-iconv-dir<span class="o">=</span>/usr/local/libiconv --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir<span class="o">=</span>/usr --enable-xml --with-curl --with-curlwrappers --with-mhash --with-mcrypt --with-gd --enable-gd-native-ttf --with-xsl --with-openssl --with-ldap --with-ldap-sasl --with-xmlrpc --without-pear --enable-zip --enable-soap --enable-mbstring --enable-ftp --enable-sockets --enable-pcntl --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --disable-rpath --enable-mbregex --enable-safe-mode --enable-fpm --with-fpm-user<span class="o">=</span>www --with-fpm-group<span class="o">=</span>www
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">make <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">make install
+</span></span></code></pre></div><h2 id="运行lamp">运行LAMP</h2>
+<p>现在环境已经安装好了，我们稍作配置，然后启动系统。</p>
+<p>在nginx的 <code>/usr/local/nginx/html/</code> 下创建 <code>info.php</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&lt;?php info<span class="o">()</span> ?&gt;
+</span></span></code></pre></div><p>配置nginx，编辑 <code>/usr/local/nginx/conf/nginx.conf</code> 其中的 <code>server</code> 段。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">location ~ <span class="se">\.</span>php$ <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        root           html<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_pass   unix:/var/run/php-cgi.sock<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_index  index.php<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_param  SCRIPT_FILENAME  /usr/local/nginx/html/<span class="nv">$fastcgi_script_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        include        fastcgi_params<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>配置php-fpm，编辑 <code>/usr/local/php/etc/php-fpm.conf</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">listen</span> <span class="o">=</span> /var/run/php-cgi.sock
+</span></span></code></pre></div><p>运行 <code>nginx -s reload</code> 重新启动nginx服务器。运行 <code>/etc/init.d/php-fpm start</code>
+启动php-cgi监听。</p>
+<p>在浏览器输入 <code>your.domain/info.php</code> 会出现php信息，成功的话，
+就说明LNMP配置成功了。</p>
+<h2 id="小内存主机配置">小内存主机配置</h2>
+<p>经过上面的步骤，已经可以成功的配置完LNMP系统，但是默认的配置情况下面，
+内存会相当吃紧。一会会就系统内存爆掉，Nginx会频繁报出
+<code>The page you are looking for is temporarily unavailable. Please try again later.</code>
+，不配置就不能用啊。</p>
+<h3 id="nginx配置">Nginx配置</h3>
+<p>我的nginx优化配置如下，主要是配置 <code>worker_processes</code> 数量和
+<code>fastcgi</code> 、 <code>gzip</code> 缓存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user  www www
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">worker_processes 1<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">events <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	worker_connections 1024<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	use epoll<span class="p">;</span> <span class="c1">#使用高效率的epool模式</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">http <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	include mime.types<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	default_type application/octet-stream<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	sendfile on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	keepalive_timeout <span class="m">65</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 下面是配置缓存</span>
+</span></span><span class="line"><span class="cl">	client_header_buffer_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	large_client_header_buffers <span class="m">4</span> 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	fastcgi_connect_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_send_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_read_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_buffer_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_buffers <span class="m">4</span> 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_busy_buffers_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_temp_file_write_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 下面是弃用gzip压缩缓存</span>
+</span></span><span class="line"><span class="cl">	gzip on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_min_length 1k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_buffers <span class="m">4</span> 16k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_http_version 1.0<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_comp_level 2<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_types text/plain application/x-javascript text/css application/xml<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_vary on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">#server 的内容我就不列出了</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#….</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span> 
+</span></span></code></pre></div><h3 id="mysql配置">MySQL配置</h3>
+<p>mysql的配置文件在 <code>/etc/my.cnf</code> ，我们需要配置两样东西，
+一个是禁用innodb，因为innodb比较消耗内存；另外是配置mysql缓存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[mysql]</span>
+</span></span><span class="line"><span class="cl"><span class="na">no-auto-rehash</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqld]</span>
+</span></span><span class="line"><span class="cl"><span class="na">datadir</span><span class="o">=</span><span class="s">/var/lib/mysql</span>
+</span></span><span class="line"><span class="cl"><span class="na">socket</span><span class="o">=</span><span class="s">/var/lib/mysql/mysql.sock</span>
+</span></span><span class="line"><span class="cl"><span class="na">user</span><span class="o">=</span><span class="s">mysql</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Disabling symbolic-links is recommended to prevent assorted security risks</span>
+</span></span><span class="line"><span class="cl"><span class="na">symbolic-links</span><span class="o">=</span><span class="s">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">open_files_limit</span> <span class="o">=</span> <span class="s">600</span>
+</span></span><span class="line"><span class="cl"><span class="na">back_log</span> <span class="o">=</span> <span class="s">20</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_connections</span> <span class="o">=</span> <span class="s">100</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_connect_errors</span> <span class="o">=</span> <span class="s">200</span>
+</span></span><span class="line"><span class="cl"><span class="na">table_cache</span> <span class="o">=</span> <span class="s">60</span>
+</span></span><span class="line"><span class="cl"><span class="na">external-locking</span> <span class="o">=</span> <span class="s">FALSE</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_allowed_packet</span> <span class="o">=</span> <span class="s">16M</span>
+</span></span><span class="line"><span class="cl"><span class="na">sort_buffer_size</span> <span class="o">=</span> <span class="s">128K</span>
+</span></span><span class="line"><span class="cl"><span class="na">join_buffer_size</span> <span class="o">=</span> <span class="s">128K</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_cache_size</span> <span class="o">=</span> <span class="s">10</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_concurrency</span> <span class="o">=</span> <span class="s">8</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_size</span> <span class="o">=</span> <span class="s">0M</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_limit</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_min_res_unit</span> <span class="o">=</span> <span class="s">2k</span>
+</span></span><span class="line"><span class="cl"><span class="na">default_table_type</span> <span class="o">=</span> <span class="s">MyISAM</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_stack</span> <span class="o">=</span> <span class="s">192K</span>
+</span></span><span class="line"><span class="cl"><span class="na">transaction_isolation</span> <span class="o">=</span> <span class="s">READ-UNCOMMITTED</span>
+</span></span><span class="line"><span class="cl"><span class="na">tmp_table_size</span> <span class="o">=</span> <span class="s">512K</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_heap_table_size</span> <span class="o">=</span> <span class="s">32M</span>
+</span></span><span class="line"><span class="cl"><span class="na">long_query_time</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">log_long_format</span>
+</span></span><span class="line"><span class="cl"><span class="na">server-id</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">binlog_cache_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_binlog_cache_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_binlog_size</span> <span class="o">=</span> <span class="s">512M</span>
+</span></span><span class="line"><span class="cl"><span class="na">expire_logs_days</span> <span class="o">=</span> <span class="s">7</span>
+</span></span><span class="line"><span class="cl"><span class="na">key_buffer_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">read_buffer_size</span> <span class="o">=</span> <span class="s">1M</span>
+</span></span><span class="line"><span class="cl"><span class="na">read_rnd_buffer_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">bulk_insert_buffer_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_sort_buffer_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_max_sort_file_size</span> <span class="o">=</span> <span class="s">10G</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_max_extra_sort_file_size</span> <span class="o">=</span> <span class="s">10G</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_repair_threads</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_recover</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">skip-innodb #禁用innodb数据库引擎</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqld_safe]</span>
+</span></span><span class="line"><span class="cl"><span class="na">log-error</span><span class="o">=</span><span class="s">/var/log/mysqld.log</span>
+</span></span><span class="line"><span class="cl"><span class="na">pid-file</span><span class="o">=</span><span class="s">/var/run/mysqld/mysqld.pid</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqldump]</span>
+</span></span><span class="line"><span class="cl"><span class="na">quick</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_allowed_packet</span> <span class="o">=</span> <span class="s">16M </span>
+</span></span></code></pre></div><h3 id="php配置">PHP配置</h3>
+<p>我们使用php-fpm来作为后台daemon响应FastCGI请求。
+默认的php-fpm会启动比较多的子进程，很容易耗光内存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">listen</span> <span class="o">=</span> /var/run/php-cgi.sock <span class="c1">#使用socket监听，不用端口监听</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pm.max_children <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是50  </span>
+</span></span><span class="line"><span class="cl">pm.start_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是20  </span>
+</span></span><span class="line"><span class="cl">pm.min_spare_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是5  </span>
+</span></span><span class="line"><span class="cl">pm.max_spare_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是35 </span>
+</span></span></code></pre></div><p>有的配置手记是建议把上面几个数字改为5，我经过多次调试之后，
+发现使用最小/最大连接数为2的时候，可用率比较高，内存消耗也比较小。</p>
+<h2 id="运行结果">运行结果</h2>
+<p>经过一番折腾之后，我的 <a href="http://log4d.com">Log4D</a> 终于配置完成了。
+打开速度还算凑合，用WebKaka测试截图如下。</p>
+<p>原来的虚拟主机 dddspace.com 的响应情况：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/dddspace.png" alt="dddspace"  />
+
+</p>
+<p>现在 log4d.com VPS 的响应情况：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/log4d.png" alt="log4d"  />
+
+</p>
+<p>内存使用情况：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/free.png" alt="free"  />
+
+</p>
+<p><code>siege -c 100 -t 100 log4d.com</code> 的测试结果：</p>
+<pre tabindex="0"><code>Transactions:		        1711 hits
+Availability:		       96.61 %
+Elapsed time:		      416.72 secs
+Data transferred:	       18.20 MB
+Response time:		       22.12 secs
+Transaction rate:	        4.11 trans/sec
+Throughput:		        0.04 MB/sec
+Concurrency:		       90.84
+Successful transactions:        1711
+Failed transactions:	          60
+Longest transaction:	       30.31
+Shortest transaction:	        1.06
+</code></pre><h2 id="参考链接">参考链接</h2>
+<ul>
+<li><a href="http://www.54chen.com/architecture/wordpress-nginx-php-cgi-mysql-memory-in-the-128m-to-install-and-optimize-the-vps-notes.html">wordpress nginx php-cgi mysql在128m内存下的vps安装和优化手记原创</a></li>
+<li><a href="http://www.xtgly.com/2011/05/17/centos-lanmp%E4%B9%8B%E4%B8%89%EF%BC%88%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-php-5-3-6%EF%BC%89.htm">centos LANMP之三（编译安装 php 5.3.6）</a></li>
+<li><a href="http://hi.baidu.com/xxjjyy2008/blog/item/b52d07943e4d1d02d21b70da.html">编译包含 SSL 模块的 Nginx 时使用新版本的 OpenSSL 避免已知的 SSL/TLS 协议弱点</a></li>
+</ul>
+]]></content:encoded>
     </item>
     
     <item>
@@ -86,6 +873,86 @@
       
       <guid>https://blog.alswl.com/2011/09/unison/</guid>
       <description>1. 同步控 我是一个同步控，会妄想自己的文件遭遇不可修复性的毁灭， 因此经常丧心病狂的做备份。 比如每每备份到移动硬盘中， 比如每年一次的刻盘备份，又比如我现在要介绍的同步软件unison。 据我自己考察，这种对备份文件丢失的恐惧来自于小时候一次意外格式化F盘， 从而导致我搜集的所有《龙珠》漫画丢失而产生的。 另一个同步文件的需求来自于我的两台电脑：常驻家中的DELL 6400，是我的大房； 最近得宠的小蜜Think</description>
+      <content:encoded><![CDATA[<h2 id="1-同步控">1. 同步控</h2>
+<p>我是一个同步控，会妄想自己的文件遭遇不可修复性的毁灭， 因此经常丧心病狂的做备份。 比如每每备份到移动硬盘中，
+比如每年一次的刻盘备份，又比如我现在要介绍的同步软件unison。</p>
+<p>据我自己考察，这种对备份文件丢失的恐惧来自于小时候一次意外格式化F盘， 从而导致我搜集的所有《龙珠》漫画丢失而产生的。</p>
+<p>另一个同步文件的需求来自于我的两台电脑：常驻家中的DELL 6400，是我的大房； 最近得宠的小蜜Thinkpad X201。其中6400是Win7系统，
+而X200是Arch Linux主打的双系统，我希望两者的文件保持同步， 便于我两边使用时候都能检索资料。如何实现跨平台同步方案让我头疼了好久，
+幸好有unison拯救了我。</p>
+<h2 id="2-同步历史">2. 同步历史</h2>
+<p>很久很久以前，那时候我还喝三鹿，我开始用TotalCmd来做同步文件， 依稀记得那个功能是在 <code>命令</code> 里面的 <code>比较文件夹</code> 。
+这个功能满足我当时简单粗糙的需求。只要把需要同步的文件夹分列TotalCmd两侧， 然后就可以通过命令自动查找相异的文件。</p>
+<p>当时在我看来，尤其神奇的是文件过滤功能和按照 <code>日期</code> 、 <code>文件内容</code> 比较功能。 着实帮了我很大忙。</p>
+<p>再过了几年，TotalCmd不能满足我了，我不想每次都选择需要同步的文件， 再用肉眼比对，同步功能也偏少。我搜寻到一款老牌的同步工具，
+叫做<a href="http://www.goodsync.com/">GoodSync</a>，这是一款商业软件，可以试用30天，
+作为专业的同步软件，这个GoodSync的确是蛮适用：支持大小写屏蔽、 文件过滤等等。</p>
+<p>GoodSync还可以支持网络映射硬盘，再通过Samba等协议支持，可以实现跨平台同步。
+可惜GoodSync要收费，而且通过网络映射的方式也不慎完美，所以最后也弃用了。</p>
+<h2 id="3-unison">3. unison</h2>
+<p>终于轮到<a href="http://www.cis.upenn.edu/~bcpierce/unison/">unison</a>闪亮登场了。
+unison解决了跨平台同步，文件过滤，断点续接，大小写同步等等各种问题。</p>
+<p>官方介绍：</p>
+<blockquote>
+<p>Unison is a file-synchronization tool for Unix and Windows. It allows two
+replicas of a collection of files and directories to be stored on different
+hosts (or different disks on the same host), modified separately, and then
+brought up to date by propagating the changes in each replica to the other.</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>Unison是一枚Unix和Windows通吃的文件同步工具。它允许不同电脑上（或者同一电脑上不同地方）的文件和目录之间惊心修改和同步更新。</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+</blockquote>
+<p>unison使用时候有服务器、客户机之分，客户机通过ssh连接到服务器端， 所以相对而言，数据通道还是安全的。</p>
+<h2 id="4-安装">4. 安装</h2>
+<pre><code>sudo pacman -S unison
+</code></pre>
+<p>感谢众神赐予我们各种软件包，以上是Arch Linux的安装命令。 Ubuntu之类的也差不多apt-get了。</p>
+<h2 id="5-配置">5. 配置</h2>
+<p>unison的传输通道用ssh，所以必须在同步的电脑上面配置好ssh， 服务端需要配置好sshd，另外最好配置好ssh公钥密钥，可以参考
+<a href="http://log4d.com/2011/06/ddns-ssh">使用DDNS+SSH连通家庭/工作电脑</a>。</p>
+<p>unison使用 <code>~/.unison/*.prf</code> 的配置文件，默认应该会有一个 <code>default.prf</code> ， 我的 <code>default.prf</code>
+配置如下。</p>
+<pre><code># Unison preferences file
+#root = /cygdrive/f
+#root = ssh://mm061.log4d.com//home/alswl
+</code></pre>
+<p>log = true</p>
+<p>logfile = /home/alswl/.unison/.unison.log</p>
+<p>#batch = true</p>
+<p>#auto = true</p>
+<p>#ignorecase = true</p>
+<p>ignore = Name {Thumbs.db}</p>
+<p>ignore = Path {music/iTunes}</p>
+<p>其中 <code>root</code> 表示同步的两个目录，ssh开头的服务器端路径。 <code>log</code> 设定log文件位置， <code>batch</code> 指自动同步而不经过确认， <code>auto</code>
+是同步之后列出同步建议清单， 选择 <code>yes</code> or <code>no</code> 即可。 <code>ignorecase</code> 是忽略大小写，在跨平台同步时候蛮有用。 <code>ignore</code>
+指忽略文件列表，分为 <code>Name</code> 和 <code>Path</code> 。</p>
+<p>我的default配置并不是一个可用配置，只是一个基础配置文件，用来给其他配置文件使用</p>
+<pre><code># Unison preferences file
+include default
+</code></pre>
+<p>root = /home/alswl</p>
+<p>root = ssh://mm061.log4d.com//home/alswl</p>
+<p>path = music</p>
+<p>我使用 <code>include</code> 选项来加入 <code>default</code> 配置，就可以使用通用配置了。</p>
+<h2 id="6-运行">6. 运行</h2>
+<p>终于到了激动人心的时刻了，我们使用下面命令同步文件夹。</p>
+<pre><code>unison music
+</code></pre>
+<p>其中 <code>music</code> 就是之前配置好的 <code>music.prf</code> 。Papapa之后，就是各种选项了。</p>
+<p>unison默认情况下面会依次提醒每个差异文件的差别，可以使用键盘命令查看具体差异。 依次查看文件会很烦，所以我习惯性使用 <code>auto</code> 命令来自动合并。
+<code>auto</code> 会根据文件的状态，最后更新日期来选择合适的同步操作。</p>
+<p>完了，没了，谢谢。</p>
+<p>哦，对了，当时写那篇 <a href="http://log4d.com/2011/06/ddns-ssh">使用DDNS+SSH连通家庭工作电脑</a>
+大部分原因就是因为这个同步需求。而且经过我3个月来的使用，unison真是个好工具。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -95,6 +962,117 @@
       
       <guid>https://blog.alswl.com/2011/09/pptpclient/</guid>
       <description>最近在ddwrt配置vpn，参考了arch的pptpclient配置文档[Microsoft VPN client setup with pptpclien t](https://wiki.archlinux.org/index.php/Microsoft_VPN_client_setup_with_pptpcl ient)，同时顺便花了一点时间翻译成中文，正文如下（使用wiky.js转换pe diawiki到html，原文会有更多的wiki模板样式便于查看，有问题请参照原文）。 pptpclient是一个实现Microsoft PPTP协议的程序。因此它能够被用来接入另一个Microsoft VPN网络，比如学</description>
+      <content:encoded><![CDATA[<p>最近在ddwrt配置vpn，参考了arch的pptpclient配置文档[Microsoft VPN client setup with pptpclien
+t](<a href="https://wiki.archlinux.org/index.php/Microsoft_VPN_client_setup_with_pptpcl">https://wiki.archlinux.org/index.php/Microsoft_VPN_client_setup_with_pptpcl</a>
+ient)，同时顺便花了一点时间翻译成中文，正文如下（使用<a href="https://github.com/tanin47/wiky.js">wiky.js</a>转换pe
+diawiki到html，原文会有更多的wiki模板样式便于查看，有问题请参照原文）。</p>
+<p>pptpclient是一个实现Microsoft PPTP协议的程序。因此它能够被用来接入另一个Microsoft VPN网络，比如学校和单位。</p>
+<h3 id="安装pptpclient">安装PPTPClient</h3>
+<p>pptpclient由安装包pptpclient提供，运行下列命令可以安装：</p>
+<h1 id="pacman--s-pptpclient">pacman -S pptpclient</h1>
+<h3 id="配置">配置</h3>
+<p>你需要从网络管理员获取以下信息来配置pptpclient:</p>
+<ul>
+<li>VPN服务器的ip或者域名</li>
+<li>VPN隧道名称</li>
+<li>Windows域（不是所有网络都需要）</li>
+<li>VPN用户名</li>
+<li>VPN密码</li>
+</ul>
+<h2 id="编辑配置文件">编辑配置文件</h2>
+<p>用你称手的编辑器打开/etc/ppp/options.pptp。这个文件为你的VPN连接启用了一系列默认安全设置。如果你连接时候出现问题，你可以自定义配置。
+你的options.pptp文件最少需要包含以下内容：</p>
+<pre><code>lock
+noauth
+nobsdcomp
+nodeflate
+</code></pre>
+<h2 id="编辑密码文件">编辑密码文件</h2>
+<p>下一步，打开或者创建/etc/ppp/chap-
+secrets。我们将在这个文件里面存储你的密码，记得修改权限让除root之外所有用户不能访问它。这个文件的格式如下：</p>
+<pre><code>&lt;DOMAIN&gt;\&lt;USERNAME&gt; PPTP &lt;PASSWORD&gt; *
+</code></pre>
+<p>如果你的服务器不要求域，则配置如下：</p>
+<pre><code>&lt;USERNAME&gt; PPTP &lt;PASSWORD&gt; *
+</code></pre>
+<p>替换掉上文中范例中的占位符。注意，如果你的密码包含特殊字符，比如&quot;$&quot;，你需要用双引号把它们包起来。</p>
+<h2 id="命名你的vpn隧道">命名你的VPN隧道</h2>
+<p>用你称手的编辑器创建类似/etc/ppp/peers/的文件，把这里替换成你的VPN连接名。这个文件设置之后看起来如下：</p>
+<pre><code>pty &quot;pptp &lt;SERVER&gt; --nolaunchpppd&quot;
+name &lt;DOMAIN&gt;\&lt;USERNAME&gt;
+remotename PPTP
+require-mppe-128
+file /etc/ppp/options.pptp
+ipparam &lt;TUNNEL&gt;
+</code></pre>
+<p>{{Note|跟刚才一样，如果你的连接不要求域，忽略范例中的&quot;&quot;}} {{Note|PPTP远程主机使用Chap-Secrets文件中的}}</p>
+<p>是VPN服务器的地址，是你所属的域，是你将要用来连接服务器的用户名，是连接的名称。</p>
+<p>{{Note|如果你不需要使用MPPE，你应当从/etc/ppp/options.pptp中移除require-mppe-128这个选项}}</p>
+<p>创建你的连接</p>
+<p>用root执行以下命令来确保配置是正确的： # pon $TUNNEL debug dump logfd 2 nodetach
+如果一切都配置好了，pon命令应当不会自动结束。一旦你感觉差不多OK了，就可以终止这个命令。 {{Note|另一个用来确保配置正确的命令是ifconfig
+-a，看看里面时候有一个名叫ppp0的新驱动，并且还是可用的}} 执行以下命令来连接VPN隧道： # pon
+是你之前命名过的VPN隧道名称。注意使用root命令执行。</p>
+<h2 id="配置路由">配置路由</h2>
+<p>一旦你成功连接上VPN，你就可以和VPN服务器交互了。当然在此之前，咱们需要添加一个新的路由到你的路由表，从而可以接入远程网络。</p>
+<p>{{Note|根据你的环境配置，你可能需要每次都重复添加路由信息}}</p>
+<p>你可以阅读<a href="http://pptpclient.sourceforge.net/routing.phtml">PPTP Routing Howto</a>来获得更
+多如何添加路由的信息，里面还有很多范例。</p>
+<h2 id="选择路由">选择路由</h2>
+<p>对我来说，只有传输到VPN网络的数据包才应该走VPN连接，所以我添加如下路由条目： # route add -net 192.168.10.0
+netmask 255.255.255.0 dev ppp0 这将路由所有目的地址为191.168.10.xxx的数据到VPN连接。</p>
+<h2 id="配置为默认路由">配置为默认路由</h2>
+<p>如果你想要所有数据从VPN连接走，下面这条命令包你爽： # route add default dev ppp0
+{{Note|所有数据从VPN连接走的话会比正常连接慢一些}}</p>
+<h3 id="断开连接">断开连接</h3>
+<p>下面这条命令用来断开VPN连接： # poff  是你VPN连接的名称。</p>
+<h3 id="把一个vpn连接配为默认启动">把一个VPN连接配为默认启动</h3>
+<p>你可以在rc.d创建一个快捷命令来实现自动在后台连接VPN网络。</p>
+<p>{{Note|和平常一样，是你隧道的名字，是你加入路由表的命令。}}</p>
+<pre><code>#!/bin/bash
+</code></pre>
+<p>. /etc/rc.conf</p>
+<p>. /etc/rc.d/functions</p>
+<p>DAEMON=<TUNNEL>-vpn</p>
+<p>ARGS=</p>
+<p>[ -r /etc/conf.d/$DAEMON ] &amp;&amp; . /etc/conf.d/$DAEMON</p>
+<p>case &ldquo;$1&rdquo; in</p>
+<p>start)</p>
+<p>stat_busy &ldquo;Starting $DAEMON&rdquo;</p>
+<p>pon <TUNNEL> updetach persist &amp;&gt; /dev/null &amp;&amp; <ROUTING COMMAND> &amp;&gt;/dev/null</p>
+<p>if [ $? = 0 ]; then</p>
+<p>add_daemon $DAEMON</p>
+<p>stat_done</p>
+<p>else</p>
+<p>stat_fail</p>
+<p>exit 1</p>
+<p>fi</p>
+<p>;;</p>
+<p>stop)</p>
+<p>stat_busy &ldquo;Stopping $DAEMON&rdquo;</p>
+<p>poff MST &amp;&gt;/dev/null</p>
+<p>if [ $? = 0 ]; then</p>
+<p>rm_daemon $DAEMON</p>
+<p>stat_done</p>
+<p>else</p>
+<p>stat_fail</p>
+<p>exit 1</p>
+<p>fi</p>
+<p>;;</p>
+<p>restart)</p>
+<p>$0 stop</p>
+<p>sleep 1</p>
+<p>$0 start</p>
+<p>;;</p>
+<p>*)<br />
+echo &ldquo;usage: $0 {start|stop|restart}&rdquo;</p>
+<p>esac</p>
+<p>注意，我们可以使用updetach和persist这两个附加命令在pon上。updetach保证pon阻塞知道连接被建立。另外一个命令persist保证网络
+自动重练。如果需要开机自动启动，则添加@-vpn到rc.conf的DAEMONS中去。</p>
+<h3 id="注意">注意</h3>
+<p>你可以在<a href="http://pptpclient.sourceforge.net/">pptpclient website</a>查到更多关于pptpclient的配
+置信息。Ubuntu的帮助手册也有一些帮助你配置的信息。这些范例能够很轻松的稍加变换从而添加到daemons中去，从而帮助你自动化运行。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -104,6 +1082,49 @@
       
       <guid>https://blog.alswl.com/2011/08/nxserver/</guid>
       <description>NX 是 NoMachine 公司推出的下一代远程桌面技术，可以说是用来替换 VNC 的一个较好方案。 VNC is remote control software which allows you to view and fully interact with one computer desktop (the &amp;ldquo;VNC server&amp;rdquo;) using a simple program (the &amp;ldquo;VNC viewer&amp;rdquo;) on another computer desktop anywhere on the Internet. VNC 是一个允许你从一台电脑（VNC 查看器）查看并且操作另外一台电脑（VNC 服务器）小程序。 我在 ArchLinux 上同时也使用 VNC 服务，我推荐使用 TightVNC。 NX优势 VNC 的缺点在于实时传输屏幕，图片的数据量比较大，所以会比较慢，并且有一条一条刷新的情况出现。 而 NX 则在客户端创建 Xorg</description>
+      <content:encoded><![CDATA[<p><a href="http://www.nomachine.com">NX</a> 是 NoMachine 公司推出的下一代远程桌面技术，可以说是用来替换 VNC
+的一个较好方案。</p>
+<blockquote>
+<p><a href="http://www.realvnc.com">VNC</a> is remote control software which allows you to
+view and fully interact with one computer desktop (the &ldquo;VNC server&rdquo;) using a
+simple program (the &ldquo;VNC viewer&rdquo;) on another computer desktop anywhere on the
+Internet.</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>VNC 是一个允许你从一台电脑（VNC 查看器）查看并且操作另外一台电脑（VNC 服务器）小程序。</p>
+</blockquote>
+<p>我在 ArchLinux 上同时也使用 VNC 服务，我推荐使用 <a href="http://www.tightvnc.com/">TightVNC</a>。</p>
+<h2 id="nx优势">NX优势</h2>
+<p>VNC 的缺点在于实时传输屏幕，图片的数据量比较大，所以会比较慢，并且有一条一条刷新的情况出现。</p>
+<p>而 NX 则在客户端创建 Xorg 服务器，在网络层只传输 XWindows 信号，这样就比直接传输数据提供更好的速度和实时响应效果。</p>
+<p>同时 NX 使用 SSH 作为安全传输保障，也就意味着它需要使用22端口，并且为了正常传输数据，需要预先配置好 sshd 服务和 安全密钥。</p>
+<p>由于使用 Xorg 实现图像传输，所以 NX 在 Windows 下面没有服务器。（我刚开始以为客户机在 Windows 下面也没有，今天才看到有
+<a href="http://www.nomachine.com/download-package.php?Prod_Id=3565">Windows 客户机</a>）</p>
+<h2 id="安装nx">安装NX</h2>
+<p>在 NX 官网可以下载二进制码，也可以用包管理工具安装，在 ArchLinux 下面安装如下：</p>
+<pre><code>pacman -S nxserver #使用pacman
+/opt/NX/bin/nxsetup --install #安装配置NX服务器
+/opt/NX/bin/nxsetup --test #测试NX服务器是否正常
+</code></pre>
+<h2 id="使用nxclient">使用NXClient</h2>
+<p>Windows 下面的 NXClient 下载即可使用，跟着 Wizard 走一下就完全没问题了。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201108/nxclient.png" alt="NXClient"  />
+
+</p>
+<p>Arch 下面使用 pacman 安装一下 nxclient 即可了。</p>
+<h2 id="ps">ps:</h2>
+<p>今天去参加 <a href="http://wiki.nanjinglug.org/moin.fcg/Meetings/2011/0828">Linux
+20周年纪念活动南京站</a>
+活动，听<a href="http://cloudgotech.com/">深圳云果</a> CTO 计文柯先生介绍 Amazon 的云服务，其实演示用了 NX，想到自己也受惠
+NX 颇久，就撰文推广。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -113,6 +1134,27 @@
       
       <guid>https://blog.alswl.com/2011/07/lrzsz/</guid>
       <description>lrzsz 是一款 Linux 下面的文件传输工具。实现原理是通过 Xmodem / Ymodem / Zmodem 协议传输文件。lrzsz 可以在支持这三种协议的Shell界面的工具下工作，比如XShell。 lrzsz是一个古老的软件，最新版本0.12.20是在1998年更新的。 大部分linux发行版的安装工具都可以直接安装 lrzsz，比如apt-get / pacman，当然我们也可以下载安装包手动安装。这次由于我所在的服务器没有管理员权限，我就使用源码包安装</description>
+      <content:encoded><![CDATA[<p>lrzsz 是一款 Linux 下面的文件传输工具。实现原理是通过 Xmodem / Ymodem / Zmodem 协议传输文件。lrzsz
+可以在支持这三种协议的Shell界面的工具下工作，比如XShell。</p>
+<blockquote>
+<p>lrzsz是一个古老的软件，最新版本0.12.20是在1998年更新的。</p>
+</blockquote>
+<p>大部分linux发行版的安装工具都可以直接安装 lrzsz，比如apt-get /
+pacman，当然我们也可以下载安装包手动安装。这次由于我所在的服务器没有管理员权限，我就使用源码包安装。</p>
+<pre><code>$ mkdir /home/alswl/app
+$ wget http://ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz
+$ tar xzvf lrzsz-0.12.20.tar.gz
+$ cd lrzsz-0.12.20
+$ ./configure --prefix=&quot;/home/alswl/app&quot;
+$ make
+$ make install
+$ export PATH=&quot;$PATH:/home/alswl/app/bin&quot;
+</code></pre>
+<p>安装上面步骤就可以安装完成了，重点在于<code> --prefix=&quot;/home/alswl/app&quot;</code>，这可以指定安装路径，安装到自己可以读写的地方去。</p>
+<p>export作用是添加安装目录到<code>$PATH</code>下面，这样可以直接使用 <code>lsz / lrz</code> 操作。</p>
+<p>好了，享受方便的上传下载吧。</p>
+<p>ps：买了一个新域名<a href="http://log4d.com">http://log4d.com</a>，下次改版时候换域名。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -122,6 +1164,164 @@
       
       <guid>https://blog.alswl.com/2011/06/ddns-ssh/</guid>
       <description>1. 背景 我目前有两台电脑，一台是家里使用的Linux笔记本（Dell 6400，4年）， 一台是公司使用的Windows笔记本（IBM X201，1个月）。 我有时候需要在办公室连入家庭电脑，进行一些操作，比如同步，比如使用linux特定服务。 完成这项工作需要两个条件，ip互通+对应通讯协议。被连接的服务器需要一个公网地址， 而非局域网的192.x.x.x。可供选择的协议比较多，http/ftp/ssh等常规</description>
+      <content:encoded><![CDATA[<h2 id="1-背景">1. 背景</h2>
+<p>我目前有两台电脑，一台是家里使用的Linux笔记本（Dell 6400，4年）， 一台是公司使用的Windows笔记本（IBM X201，1个月）。
+我有时候需要在办公室连入家庭电脑，进行一些操作，比如同步，比如使用linux特定服务。</p>
+<p>完成这项工作需要两个条件，ip互通+对应通讯协议。被连接的服务器需要一个公网地址，
+而非局域网的192.x.x.x。可供选择的协议比较多，http/ftp/ssh等常规协议都可以使用。</p>
+<blockquote>
+<p><strong>什么是<a href="http://www.oray.com/peanuthull/">花生壳</a></strong></p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>花生壳动态域名是全球用户量最大的完全免费的动态域名解析软件。当您使用花生壳服务，
+无论您在任何地点、任何时间、任何线路，均可通过固定的花生壳域名访问您的远程主机服务。</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>现在花生壳为千万的域名提供动态域名解析服务，并广泛应用于网站建设、视频监控、 遥感测绘、FTP、VPN、企业OA、ERP等应用领域。</p>
+</blockquote>
+<p>ps：除了花生壳，还有很多DDNS服务可以供选择。由于TP-Link和D-Link都默认内置花生壳， 我这里用花生壳做范例。而我使用的<a href="http://www.dd-wrt.com/">DD-
+WRT</a>不支持花生壳，</p>
+<p><strong>我列出DD-WRT支持的DDNS服务。</strong></p>
+<ul>
+<li>DynDNS</li>
+<li>3322.org（中国的，目前我在使用）</li>
+<li>freedns.afraid.org</li>
+<li>ZoneEdit.com</li>
+<li>No-IP.com</li>
+<li>easyDNS.com</li>
+<li>TZO.com</li>
+<li>DynSIP.org</li>
+</ul>
+<p>通俗的讲，花生壳提供一种动态DNS解析服务，可以让你用一个域名来替代随时会发生变化 的家庭拨号上网用户自动获取的ip。</p>
+<p>如果自己有域名的话，也可以查看自己ADSL公网ip地址，然后在DNS管理系统里面配置上
+这个ip，这样也可以在公网访问自己电脑。但是同时会带来一个问题，每当ADSL拨号
+之后，会更换新的ip，人工维护域名-&gt;ip太耗费精力，花生壳就是提供动态维护这种 对应关系的服务。</p>
+<blockquote>
+<p><strong>什么是<a href="http://zh.wikipedia.org/wiki/SSH">SSH</a></strong></p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>SSH为Secure Shell的缩写，由IETF的网络工作小组（Network Working Group）所制定；
+SSH为创建在应用层和传输层基础上的安全协议。</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>传统的网络服务程序，如FTP、POP和Telnet其本质上都是不安全的；因为它们在网络上用 明文传送数据、用户帐号和用户口令，很容易受到中间人（man-
+in-the-middle）攻击方式的攻击。 就是存在另一个人或者一台机器冒充真正的服务器接收用户传给服务器的数据， 然后再冒充用户把数据传给真正的服务器。</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>而SSH是目前较可靠，专为远程登录会话和其他网络服务提供安全性的协议。
+利用SSH协议可以有效防止远程管理过程中的信息泄露问题。通过SSH可以对所有传输的数据进行加密， 也能够防止DNS欺骗和IP欺骗。</p>
+</blockquote>
+<h2 id="2-准备工具">2. 准备工具</h2>
+<ul>
+<li>
+<p>服务器/客户端需要是Linux或者Windows+SSH客户端，如果双方都是Linux那当然最好， 而如果都是Window+SSH客户端则稍微麻烦一些。</p>
+</li>
+<li>
+<p>公网ip</p>
+<ul>
+<li>如果是客户机ADSL直接拨号上网，那获取的ip就是公网ip</li>
+<li>如果使用路由器，则需要建立一个端口映射</li>
+</ul>
+</li>
+<li>
+<p>花生壳帐号，到<a href="http://www.oray.com/peanuthull/">花生壳网站</a>注册一个账号</p>
+<ul>
+<li>使用路由器的用户，需要查看路由器是否支持花生壳，普通TP-Link/D-Link都支持， DD-WRT不支持，电信提供的宽带猫可能不支持</li>
+<li>直接ADSL拨号上网用户，需要在服务器上去花生壳官网下一款 <a href="http://www.oray.com/peanuthull/download.php">后台软件</a>。目前Windows/Linux都支持</li>
+<li>如果使用DD-WRT系列路由器系统，推荐使用<a href="http://www.3322.org/">3322</a>服务。</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-服务器配置">3. 服务器配置</h2>
+<p><strong>安装服务器SSH服务</strong><br />
+连接到服务器，需要服务器安装并启动SSH服务。Ubuntu下安装很简单。</p>
+<pre><code>$ sudo apt-get install ssh
+</code></pre>
+<p>这样就完成了SSH服务的安装，用 <code>service ssh status</code> 可以检查一下当前服务状态。</p>
+<p>Windows下面我用cygwin成功安装过一次，使用命令 <code>ssh-host-config</code> 具体细节请Google之。</p>
+<h2 id="4-客户机配置">4. 客户机配置</h2>
+<p>连接到服务器端的SSH服务器，我们可以使用SSH命令，Linux是原生支持的。Windows下面可以使用
+Putty或者cygwin解决。这里我强烈推荐cygwin，会省去很多麻烦。</p>
+<p><strong>检查服务器是否连通</strong><br />
+使用命令 <code>ping xxx.xxx.xxx.xxx</code> ，里面一串数字是服务器的公网ip，可以在路由器状态页面查找到， 如果ADSL直连用户
+<code>ipconfig</code> 或者 <code>ip addr</code> 也可以看到。</p>
+<p><strong>检查服务器SSH服务是否可用</strong><br />
+在cygwin下面键入 <code>ssh xxx.xxx.xxx.xxx</code> ，服务器有提示输入密码就证明SSH服务可用。
+如果是路由器用户，可能被直接拒绝，这是因为这个ip其实是路由器ip，路由器并不提供SSH服务， 我们需要配置路由器转发SSH请求到服务器上。</p>
+<h3 id="41-路由器虚拟端口配置">4.1. 路由器虚拟端口配置</h3>
+<p>下面就可以配置路由器的映射了。如果你没有路由器而直接使用电脑拨号，可以跳过这步，</p>
+<ul>
+<li>进入192.168.*.1，路由器管理界面（TP-Link默认为192.168.1.1，D-Link为192.168.0.1）</li>
+<li>进入 <code>端口转发</code> 或者类似功能菜单</li>
+<li>给22端口配置转发到服务器内网ip如192.168.1.105</li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201106/virtual-server.png" alt="虚拟端口配置"  />
+
+</p>
+<h2 id="5-花生壳配置">5. 花生壳配置</h2>
+<p>我们不能每次都获取一下路由器或者服务器公网ip再去连接服务器，这时候就轮到DDNS服务上场了。</p>
+<p>直接拨号上网的话，花生壳官网上面有服务器使用 <a href="http://service.oray.com/question/133.html">软件的说明</a></p>
+<p>路由器就可以直接在里面进行设定</p>
+<ul>
+<li>进入192.168.*.1，路由器管理界面（TP-Link默认为192.168.1.1，D-Link为192.168.0.1）</li>
+<li>找到 <code>动态DNS</code> 或者类似功能菜单</li>
+<li>填入申请好的花生壳帐号</li>
+<li>可能需要重新启动路由器</li>
+<li>稍过几分钟，等待DNS更新，ping 自己的域名，如 <code>ping dddspace.gicp.net</code> ，查看返回的ip 是否是自己路由器公网ip，ping成功就说明映射成功了</li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201106/tp-link.png" alt="tp-link"  />
+
+</p>
+<blockquote>
+<p><strong>DD-WRT的会有如下日程</strong></p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>Sun Jun 12 07:56:24 2011: INADYN: Started <em>INADYN Advanced version 1.96-ADV</em></p>
+</blockquote>
+<ul>
+<li>dynamic DNS updater.</li>
+</ul>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>Sun Jun 12 07:56:24 2011: INADYN: IP read from cache file is
+<em>114.221.117.88</em>. No update required.</p>
+</blockquote>
+<h2 id="6-安装公钥密钥">6. 安装公钥密钥</h2>
+<p>默认SSH登录，每次都要输入密码，这样会很麻烦，特别在使用 <code>scp</code> 这些SSH命令的时候。通过在 服务器上安装信任公钥，就可以免去登录这个环节</p>
+<p><strong>在客户机上运行这个命令</strong></p>
+<pre><code>$ ssh-keygen -t rsa
+scp /home/alswl/id_rsa.pub alswl@dddspace.gcip.net:/home/alswl/.ssh/authorized_keys
+</code></pre>
+<p>第一行是生成公钥密钥，第二行是将公钥发放到服务器上面，从而实现登录免密码。</p>
+<p>A生成的公钥/密钥，作用就是让别人知道A是A，让他人无法冒充A。</p>
+<h2 id="7-end">7. End</h2>
+<p>经过折返折腾之后，我们就能够在客户机上访问服务器的资源了。甚至还可以做一些规避公司防火墙 的事情。</p>
+<p>当然，我这么做并不是为了跳过公司防火墙，我有自己的VPN，何况公司网络环境很好， 我耗费力气打造这么一个环境，其实是为了下一步数据交互
+<strong>两台电脑双向同步</strong> 。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -131,6 +1331,128 @@
       
       <guid>https://blog.alswl.com/2011/04/ubuntu-setup/</guid>
       <description>前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。 这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。 = init Linux programs and setting = :author: alswl :email: alswlx#gmail.com :toc: :numbered: == first of all == .update (打补丁、升级) sudo apt-get update Update System(fix bugs for sercurity): 299.0MB .reset permission(谨慎使用，设定文件为644,设定文件夹为755) find /home/XXX -type d -exec chmod 755 {} ; find /home/XXX -type f -exec chmod 644 {} ; .nautilus (给鹦鹉螺加上o</description>
+      <content:encoded><![CDATA[<p>前几天使用chmod时候，多打了一个/，导致根目录下面所有文件权限设定出了问题，额~重装系统吧，正好把装系统之后的配置过程记录下来。</p>
+<p>这些都是我操作过的命令，确切可靠，适用于Ubuntu 10.10 Desktop Edtion。</p>
+<pre><code>= init Linux programs and setting =
+:author: alswl
+:email: alswlx#gmail.com
+:toc:
+:numbered:
+</code></pre>
+<p>== first of all ==</p>
+<p>.update (打补丁、升级)</p>
+<hr />
+<p>sudo apt-get update</p>
+<p>Update System(fix bugs for sercurity): 299.0MB</p>
+<hr />
+<p>.reset permission(谨慎使用，设定文件为644,设定文件夹为755)</p>
+<hr />
+<p>find /home/XXX -type d -exec chmod 755 {} ;</p>
+<p>find /home/XXX -type f -exec chmod 644 {} ;</p>
+<hr />
+<p>.nautilus (给鹦鹉螺加上open as administrator, open terminal)</p>
+<hr />
+<p>sudo apt-get install nautilus-open-terminal nautilus-gksu</p>
+<hr />
+<p>.pdf (我使用Foxit)</p>
+<hr />
+<p>@see <a href="http://www.fuxinsoftware.com.cn/downloads/">http://www.fuxinsoftware.com.cn/downloads/</a></p>
+<hr />
+<p>== application ==</p>
+<p>.fcitx (好用的中文输入法)</p>
+<hr />
+<p>sudo apt-get remove ibus</p>
+<p>sudo add-apt-repository ppa:wengxt/fcitx-nightly</p>
+<p>sudo apt-get update</p>
+<p>sudo apt-get install fcitx fcitx-config-gtk fcitx-sunpinyin</p>
+<p>im-switch -s fcitx -z default</p>
+<hr />
+<p>.crebs(auto change desktop wallpaper)</p>
+<hr />
+<p>sudo add-apt-repository ppa:crebs/ppa</p>
+<p>sudo apt-get update</p>
+<p>sudo apt-get install crebs</p>
+<hr />
+<p>.MÃ(C)tamorphose(rename tool)</p>
+<hr />
+<p><a href="http://file-folder-ren.sourceforge.net/">http://file-folder-ren.sourceforge.net/</a></p>
+<hr />
+<p>== programing ==</p>
+<p>.vim</p>
+<hr />
+<p>sudo apt-get install vim</p>
+<p>sudo apt-get install vim-gnome</p>
+<hr />
+<p>.jdk</p>
+<hr />
+<p>sudo add-apt-repository &ldquo;deb <a href="http://archive.canonical.com/ubuntu">http://archive.canonical.com/ubuntu</a> maverick
+partner&rdquo;</p>
+<p>sudo apt-get update</p>
+<p>sudo apt-get install sun-java6-jre sun-java6-plugin sun-java6-source</p>
+<p>sudo vi /etc/environment</p>
+<p>CLASSPATH=&quot;/usr/lib/jvm/java-6-sun-1.6.0.24/lib&quot;</p>
+<p>JAVA_HOME=&quot;/usr/lib/jvm/java-6-sun-1.6.0.24&quot;</p>
+<p>sudo update-alternatives &ndash;config java</p>
+<hr />
+<p>.eclipse</p>
+<hr />
+<p>@see <a href="http://blogold.chinaunix.net/u/21684/showart_367508.html">http://blogold.chinaunix.net/u/21684/showart_367508.html</a></p>
+<hr />
+<p>.idle(Python)</p>
+<hr />
+<p>sudo apt-get install idle</p>
+<hr />
+<p>.lamp(安装过程中，使用Tab选定按钮来接受许可协议)</p>
+<hr />
+<p>sudo apt-get install apache2 php5-mysql libapache2-mod-php5 mysql-server</p>
+<p>sudo apt-get install phpmyadmin</p>
+<hr />
+<p>.maven</p>
+<hr />
+<p>sudo apt-get install maven2</p>
+<hr />
+<p>.asciidoc(453MB)</p>
+<hr />
+<p>sudo apt-get install asciidoc</p>
+<hr />
+<p>== media ==</p>
+<p>.player</p>
+<hr />
+<p>sudo apt-get install smplayer</p>
+<hr />
+<p>.gimp</p>
+<hr />
+<p>sudo apt-get install gimp</p>
+<p>sudo apt-get install gimp-gap gimp-helpbrowser gimp-help-common gimp-help-zh-
+cn gimp-manual libgimp-perl</p>
+<hr />
+<p>.flash</p>
+<hr />
+<p>sudo apt-get install flashplugin-installer</p>
+<hr />
+<p>.easytag(mp3 id3修改器)</p>
+<hr />
+<p>sudo apt-get install easytag exfalso</p>
+<hr />
+<p>.picasa</p>
+<hr />
+<p>@see <a href="http://picasa.google.com/linux/">http://picasa.google.com/linux/</a></p>
+<hr />
+<p>== net ==</p>
+<p>.chrome</p>
+<hr />
+<p>sudo apt-get install chromium-browser</p>
+<hr />
+<p>.firefox4</p>
+<hr />
+<p>sudo add-apt-repository ppa:mozillateam/firefox-stable</p>
+<p>sudo apt-get update</p>
+<p>sudo apt-get install firefox</p>
+<hr />
+<p>另外，可以参见<a href="http://wiki.ubuntu.org.cn/">Ubuntu cn wiki</a>里面的<a href="http://wiki.ubuntu.org.cn/Qref/Lucid">Ubuntu 10.04
+速配指南</a>。</p>
+<p>最后，请大家使用sudo运行命令时候小心阿，别少了/或者~，惨痛教训呀。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -140,6 +1462,38 @@
       
       <guid>https://blog.alswl.com/2011/04/ubuntu-crebs/</guid>
       <description>GNOME桌面系统可以使用一系列的图片作为背景，每过一段时间能够自动更换。这个功能核Win7下面自动换背景效果一致。不过很可惜，系统自带的可自动更换图片集只 有几张，也找不到什么按钮可以直接设定。 下图就是系统自带的两个图片集（第二行第一组和第二组）。 我们可以通过撰写xml自己制作图片集，xml格式模板在/usr/share/gnome-background-properties/cosmos.xml</description>
+      <content:encoded><![CDATA[<p>GNOME桌面系统可以使用一系列的图片作为背景，每过一段时间能够自动更换。这个功能核Win7下面自动换背景效果一致。不过很可惜，系统自带的可自动更换图片集只
+有几张，也找不到什么按钮可以直接设定。</p>
+<p>下图就是系统自带的两个图片集（第二行第一组和第二组）。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201104/appearance_preferences.png" alt="image"  />
+
+</p>
+<p>我们可以通过撰写xml自己制作图片集，xml格式模板在<code>/usr/share/gnome-background-properties/cosmos.xml</code>
+，实际的xml存放在类似于<code>/usr/share/backgrounds/cosmos/background-1.xml</code>的配置文档里面。</p>
+<p>除了手工撰写xml，我们还可以通过crebs小软件来自动生成xml文件。</p>
+<p>官方介绍如下：</p>
+<blockquote>
+<p>A background slideshow creator for the GNOME desktop wallpaper.</p>
+</blockquote>
+<p>The GNOME desktop is able to use a sequence of images for its background
+wallpaper, changing them automatically over time, but does not include an
+interface for specifying which images should constitute such a slideshow.
+Create Background Slideshow (CreBS) is a small Python/GTK application that
+provides such an interface, saving users from having to manually edit XML
+files.</p>
+<p>安装方法是运行如下apt-get命令</p>
+<pre><code>sudo add-apt-repository ppa:crebs/ppa
+sudo apt-get update
+sudo apt-get install crebs
+</code></pre>
+<p>在shell里面运行crebs即可召唤出GUI界面，导入自己喜欢的图片保存，即可在背景设定程序里面看见刚刚保存的动态桌面拉。</p>
+<p>PS：很赞Launchpad.net的界面风格，非常简洁漂亮。</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -149,6 +1503,95 @@
       
       <guid>https://blog.alswl.com/2009/12/use-ssh-to-the-wordpress-directory-package/</guid>
       <description>最近用上了小张的10号主机，cPanel界面，支持SSH连接，DDD的一亩三分地也换了log4d.com域名。我想趁着这个机会对整个系统进行改版，迎 接2010年的到来。 我用Apache+PHP+MySQL在本地假设了服务器，然后取10号主机服务器上的wp- content界面。当准备把整个目录打包时候，居然发现没有打包命令，无奈之下，只能登录SSH，使用Linux命令打包了。 我连接SSH使用的是Pu</description>
+      <content:encoded><![CDATA[<p>最近用上了小张的10号主机，cPanel界面，支持SSH连接，<strong>DDD的一亩三分地</strong>也换了log4d.com域名。我想趁着这个机会对整个系统进行改版，迎
+接2010年的到来。</p>
+<p>我用<strong>Apache+PHP+MySQL</strong>在本地假设了服务器，然后取10号主机服务器上的<code>wp- content</code>界面。当准备把整个目录打包时候，居然发现没有打包命令，无奈之下，只能登录<strong>SSH</strong>，使用Linux命令打包了。</p>
+<p>我连接SSH使用的是<strong>Putty</strong>，点击[这里](<a href="http://www.xdowns.com/soft/6/65/2006/Soft_28585.htm">http://www.xdowns.com/soft/6/65/2006/Soft_28585.htm</a>
+l)下载(via 绿软)，这个是<strong>绿色中文Final</strong>版本，比较好使唤。</p>
+<p>用到几个简单的Linux命令如下（好在我学过几周Linux啊。。。- -#）</p>
+<blockquote>
+<p><code>ls/dir </code>命令显示目录</p>
+</blockquote>
+<p><code>cd </code>进入目录。</p>
+<p>一步一步进入<code>wp-content</code>目录后，运行<code>tar zcvf theme.tar.gz themes</code>命令</p>
+<p>具体操作如下：</p>
+<pre><code>login as: username
+username@log4d.com's password:
+Last login: ****************************************
+username@log4d.com [~]# ls
+./             .contactemail     .ftpquota        .mozilla/     tmp/
+../            .contactsavetime  .gemrc           public_ftp/   .trash/
+access-logs@   .cpanel/          .guestbook       public_html/  www@
+.bash_history  .dns              .htmltemplates/  .rnd          .zshrc
+.bash_logout   etc/              .htpasswds/      .rvskin/
+.bash_profile  .fantasticodata/  .lastlogin       .ssh/
+.bashrc        .fontconfig/      mail/            ssl/
+username@log4d.com [~]# cd public_html
+username@log4d.com [~/public_html]# cd wp-content
+username@log4d.com [~/public_html/wp-content]# tar zcvf theme.tar.gz themes
+</code></pre>
+<p><em><strong><strong><strong><strong><strong><strong>华丽的分割线下面是供参考的<strong>tar</strong>命令详解</strong></strong></strong></strong></strong></strong></em></p>
+<p>原文链接：<a href="http://www.ixpub.net/619016.html">Linux压缩打包命令使用方法 - Linux与开源世界 -
+IXPUB技术社区</a></p>
+<p>tar命令</p>
+<p>[root@linux ~]# tar [-cxtzjvfpPN] 文件与目录 &hellip;.</p>
+<p>参数：</p>
+<p>-c ：建立一个压缩文件的参数指令(create 的意思)；<br />
+-x ：解开一个压缩文件的参数指令！<br />
+-t ：查看 tarfile 里面的文件！<br />
+特别注意，在参数的下达中， c/x/t 仅能存在一个！不可同时存在！</p>
+<p>因为不可能同时压缩与解压缩。</p>
+<p>-z ：是否同时具有 gzip 的属性？亦即是否需要用 gzip 压缩？<br />
+-j ：是否同时具有 bzip2 的属性？亦即是否需要用 bzip2 压缩？<br />
+-v ：压缩的过程中显示文件！这个常用，但不建议用在背景执行过程！<br />
+-f ：使用档名，请留意，在 f 之后要立即接档名喔！不要再加参数！<br />
+例如使用『 tar -zcvfP tfile sfile』就是错误的写法，要写成</p>
+<p>『 tar -zcvPf tfile sfile』才对喔！</p>
+<p>-p ：使用原文件的原来属性（属性不会依据使用者而变）<br />
+-P ：可以使用绝对路径来压缩！<br />
+-N ：比后面接的日期(yyyy/mm/dd)还要新的才会被打包进新建的文件中！<br />
+&ndash;exclude FILE：在压缩的过程中，不要将 FILE 打包！<br />
+范例：</p>
+<p>范例一：将整个 /etc 目录下的文件全部打包成为 /tmp/etc.tar</p>
+<p>[root@linux ~]# tar -cvf /tmp/etc.tar /etc &lt;==仅打包，不压缩！</p>
+<p>[root@linux ~]# tar -zcvf /tmp/etc.tar.gz /etc &lt;==打包后，以 gzip 压缩</p>
+<p>[root@linux ~]# tar -jcvf /tmp/etc.tar.bz2 /etc &lt;==打包后，以 bzip2 压缩</p>
+<h1 id="特别注意在参数-f-之后的文件档名是自己取的我们习惯上都用-tar-来作为辨识">特别注意，在参数 f 之后的文件档名是自己取的，我们习惯上都用 .tar 来作为辨识。</h1>
+<h1 id="如果加-z-参数则以-targz-或-tgz-来代表-gzip-压缩过的-tar-file-">如果加 z 参数，则以 .tar.gz 或 .tgz 来代表 gzip 压缩过的 tar file ～</h1>
+<h1 id="如果加-j-参数则以-tarbz2-来作为附档名啊">如果加 j 参数，则以 .tar.bz2 来作为附档名啊～</h1>
+<h1 id="上述指令在执行的时候会显示一个警告讯息">上述指令在执行的时候，会显示一个警告讯息：</h1>
+<h1 id="tar-removing-leading--from-member-names那是关於绝对路径的特殊设定">『tar: Removing leading `/&rsquo; from member names』那是关於绝对路径的特殊设定。</h1>
+<p>范例二：查阅上述 /tmp/etc.tar.gz 文件内有哪些文件？</p>
+<p>[root@linux ~]# tar -ztvf /tmp/etc.tar.gz</p>
+<h1 id="由於我们使用-gzip-压缩所以要查阅该-tar-file-内的文件时">由於我们使用 gzip 压缩，所以要查阅该 tar file 内的文件时，</h1>
+<h1 id="就得要加上-z-这个参数了这很重要的">就得要加上 z 这个参数了！这很重要的！</h1>
+<p>范例三：将 /tmp/etc.tar.gz 文件解压缩在 /usr/local/src 底下</p>
+<p>[root@linux ~]# cd /usr/local/src</p>
+<p>[root@linux src]# tar -zxvf /tmp/etc.tar.gz</p>
+<h1 id="在预设的情况下我们可以将压缩档在任何地方解开的以这个范例来说">在预设的情况下，我们可以将压缩档在任何地方解开的！以这个范例来说，</h1>
+<h1 id="我先将工作目录变换到-usrlocalsrc-底下并且解开-tmpetctargz-">我先将工作目录变换到 /usr/local/src 底下，并且解开 /tmp/etc.tar.gz ，</h1>
+<h1 id="则解开的目录会在-usrlocalsrcetc-呢另外如果您进入-usrlocalsrcetc">则解开的目录会在 /usr/local/src/etc 呢！另外，如果您进入 /usr/local/src/etc</h1>
+<h1 id="则会发现该目录下的文件属性与-etc-可能会有所不同喔">则会发现，该目录下的文件属性与 /etc/ 可能会有所不同喔！</h1>
+<p>范例四：在 /tmp 底下，我只想要将 /tmp/etc.tar.gz 内的 etc/passwd 解开而已</p>
+<p>[root@linux ~]# cd /tmp</p>
+<p>[root@linux tmp]# tar -zxvf /tmp/etc.tar.gz etc/passwd</p>
+<h1 id="我可以透过-tar--ztvf-来查阅-tarfile-内的文件名称如果单只要一个文件">我可以透过 tar -ztvf 来查阅 tarfile 内的文件名称，如果单只要一个文件，</h1>
+<h1 id="就可以透过这个方式来下达注意到-etctargz-内的根目录--是被拿掉了">就可以透过这个方式来下达！注意到！ etc.tar.gz 内的根目录 / 是被拿掉了！</h1>
+<p>范例五：将 /etc/ 内的所有文件备份下来，并且保存其权限！</p>
+<p>[root@linux ~]# tar -zxvpf /tmp/etc.tar.gz /etc</p>
+<h1 id="这个--p-的属性是很重要的尤其是当您要保留原本文件的属性时">这个 -p 的属性是很重要的，尤其是当您要保留原本文件的属性时！</h1>
+<p>范例六：在 /home 当中，比 2005/06/01 新的文件才备份</p>
+<p>[root@linux ~]# tar -N &lsquo;2005/06/01&rsquo; -zcvf home.tar.gz /home</p>
+<p>范例七：我要备份 /home, /etc ，但不要 /home/dmtsai</p>
+<p>[root@linux ~]# tar &ndash;exclude /home/dmtsai -zcvf myfile.tar.gz /home/* /etc</p>
+<p>范例八：将 /etc/ 打包后直接解开在 /tmp 底下，而不产生文件！</p>
+<p>[root@linux ~]# cd /tmp</p>
+<p>[root@linux tmp]# tar -cvf - /etc | tar -xvf -</p>
+<h1 id="这个动作有点像是-cp--r-etc-tmp-啦依旧是有其有用途的">这个动作有点像是 cp -r /etc /tmp 啦～依旧是有其有用途的！</h1>
+<h1 id="要注意的地方在於输出档变成---而输入档也变成---又有一个--存在">要注意的地方在於输出档变成 - 而输入档也变成 - ，又有一个 | 存在～</h1>
+<h1 id="这分别代表-standard-output-standard-input-与管线命令啦">这分别代表 standard output, standard input 与管线命令啦！</h1>
+<h1 id="这部分我们会在-bash-shell-时再次提到这个指令跟大家再解释啰">这部分我们会在 Bash shell 时，再次提到这个指令跟大家再解释啰！</h1>
+<pre tabindex="0"><code class="language-原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~" data-lang="原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~"></code></pre>]]></content:encoded>
     </item>
     
     <item>
@@ -158,6 +1601,154 @@
       
       <guid>https://blog.alswl.com/2009/05/the-education-network-ubuntu8-04-source/</guid>
       <description>Google的话有很多源，北大的宣称5M，结果我都连不上，交大的宣称2M，我发现只有20kb/s，连更新语言包都超级慢。 最后经过我的测试，是成都电子科技大学的最快，2M左右，推荐使用。 特别注意，这是8.04的源，虽然8.10大部分能用，但会出现某些软件包找不到，请大家使用前做好备份。 速度的话，还是得自己测试，我只是推荐，下面的内容都是我复制过来自带的，不是我增加的。（PS:晚上时候我用官方的Mir</description>
+      <content:encoded><![CDATA[<p>Google的话有很多源，北大的宣称5M，结果我都连不上，交大的宣称2M，我发现只有20kb/s，连更新语言包都超级慢。</p>
+<p>最后经过我的测试，是成都电子科技大学的最快，2M左右，推荐使用。</p>
+<p>特别注意，这是8.04的源，虽然8.10大部分能用，但会出现某些软件包找不到，请大家使用前做好备份。</p>
+<p>速度的话，还是得自己测试，我只是推荐，下面的内容都是我复制过来自带的，不是我增加的。（PS:晚上时候我用官方的Mirror也3M/s）</p>
+<p>` #北京市清华大学更新服务器（教育网，推荐校园网和网通用户使用）：</p>
+<p>deb <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy main multiverse restricted universe</p>
+<p>deb <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-backports main multiverse restricted
+universe</p>
+<p>deb <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-proposed main multiverse restricted
+universe</p>
+<p>deb <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-security main multiverse restricted
+universe</p>
+<p>deb <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-updates main multiverse restricted
+universe</p>
+<p>deb-src <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy main multiverse restricted
+universe</p>
+<p>deb-src <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-backports main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-proposed main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-security main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-updates main multiverse
+restricted universe`</p>
+<p>#沈阳市东北大学更新服务器（教育网，推荐校园网和网通用户使用）：</p>
+<p>deb <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy main
+multiverse restricted universe</p>
+<p>deb <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-backports
+main multiverse restricted universe</p>
+<p>deb <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-proposed main
+multiverse restricted universe</p>
+<p>deb <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-security main
+multiverse restricted universe</p>
+<p>deb <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-updates main
+multiverse restricted universe</p>
+<p>deb-src <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy main
+multiverse restricted universe</p>
+<p>deb-src <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-backports
+main multiverse restricted universe</p>
+<p>deb-src <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-proposed
+main multiverse restricted universe</p>
+<p>deb-src <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-security
+main multiverse restricted universe</p>
+<p>deb-src <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-updates
+main multiverse restricted universe</p>
+<p>#厦门大学更新服务器（教育网服务器）：</p>
+<p>deb <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy main restricted universe multiverse</p>
+<p>deb <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-backports restricted universe
+multiverse</p>
+<p>deb <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-proposed main restricted universe
+multiverse</p>
+<p>deb <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-security main restricted universe
+multiverse</p>
+<p>deb <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-updates main restricted universe
+multiverse</p>
+<p>deb-src <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy main restricted universe
+multiverse</p>
+<p>deb-src <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-backports main restricted
+universe multiverse</p>
+<p>deb-src <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-proposed main restricted universe
+multiverse</p>
+<p>deb-src <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-security main restricted universe
+multiverse</p>
+<p>deb-src <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-updates main restricted universe
+multiverse</p>
+<p>#成都市 电子科技大学更新服务器（教育网，推荐校园网和网通用户使用）：</p>
+<p>deb <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy main multiverse restricted
+universe</p>
+<p>deb <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-backports main multiverse
+restricted universe</p>
+<p>deb <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-proposed main multiverse
+restricted universe</p>
+<p>deb <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-security main multiverse
+restricted universe</p>
+<p>deb <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-updates main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy main multiverse restricted
+universe</p>
+<p>deb-src <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-backports main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-proposed main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-security main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-updates main multiverse
+restricted universe</p>
+<p>deb <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy main multiverse restricted
+universe</p>
+<p>deb <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-backports main multiverse
+restricted universe</p>
+<p>deb <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-proposed main multiverse
+restricted universe</p>
+<p>deb <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-security main multiverse
+restricted universe</p>
+<p>deb <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-updates main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy main multiverse restricted
+universe</p>
+<p>deb-src <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-backports main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-proposed main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-security main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-updates main multiverse
+restricted universe</p>
+<p>#上海市上海交通大学更新服务器（教育网，推荐校园网和网通用户使用）：</p>
+<p>deb <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy main multiverse restricted universe</p>
+<p>deb <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-backports main multiverse restricted
+universe</p>
+<p>deb <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-proposed main multiverse restricted
+universe</p>
+<p>deb <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-security main multiverse restricted
+universe</p>
+<p>deb <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-updates main multiverse restricted
+universe</p>
+<p>deb-src <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy main multiverse restricted
+universe</p>
+<p>deb-src <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-backports main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-proposed main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-security main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-updates main multiverse
+restricted universe</p>
+<p>#中国科学技术大学更新服务器（教育网，推荐校园网和网通用户使用）：</p>
+<p>deb <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy main multiverse restricted
+universe</p>
+<p>deb <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-backports main multiverse
+restricted universe</p>
+<p>deb <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-proposed main multiverse
+restricted universe</p>
+<p>deb <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-security main multiverse
+restricted universe</p>
+<p>deb <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-updates main multiverse restricted
+universe</p>
+<p>deb-src <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy main multiverse restricted
+universe</p>
+<p>deb-src <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-backports main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-proposed main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-security main multiverse
+restricted universe</p>
+<p>deb-src <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-updates main multiverse
+restricted univers</p>
+]]></content:encoded>
     </item>
     
     <item>
@@ -167,6 +1758,61 @@
       
       <guid>https://blog.alswl.com/2009/05/ubuntu8-10-under-the-mysql-installation/</guid>
       <description>Ubuntu下的MySQL安装本应该很简单，但是如果因为修改了软件源的话，反而变得麻烦起来。 为了加快更新一些组件的速度，我加入了清华的、交大等大学的源，是8.04下Ubuntu版本的，这个直接导致了之后安装MySQL的问题。 当选择Mysql-server之后，需要一堆组建，要手动安装，基本上出现这种提示，就没戏了，硬着头皮查找软件包，最后到一个perl- api的软件包这里就再也进行不下去了。 Goo</description>
+      <content:encoded><![CDATA[<p>Ubuntu下的MySQL安装本应该很简单，但是如果因为修改了软件源的话，反而变得麻烦起来。</p>
+<p>为了加快更新一些组件的速度，我加入了清华的、交大等大学的源，是8.04下Ubuntu版本的，这个直接导致了之后安装MySQL的问题。</p>
+<p>当选择Mysql-server之后，需要一堆组建，要手动安装，基本上出现这种提示，就没戏了，硬着头皮查找软件包，最后到一个perl-
+api的软件包这里就再也进行不下去了。</p>
+<p>Google了好一会，才有一个人的答案正确，说是8.10下用8.04的源就会有这种问题，我换成原始的备份了的源</p>
+<p>下面就是原始的源，使用这个找到MySQL之后就一次成功了 ` # deb cdrom:[Ubuntu 8.10 <em>Intrepid Ibex</em> -
+Release i386 (20081029.5)]/ intrepid main restricted</p>
+<h1 id="see-httphelpubuntucomcommunityupgradenotes-for-how-to-upgrade-to">See <a href="http://help.ubuntu.com/community/UpgradeNotes">http://help.ubuntu.com/community/UpgradeNotes</a> for how to upgrade to</h1>
+<h1 id="newer-versions-of-the-distribution">newer versions of the distribution.`</h1>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid main restricted</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid main restricted</p>
+<h2 id="major-bug-fix-updates-produced-after-the-final-release-of-the">Major bug fix updates produced after the final release of the</h2>
+<h2 id="distribution">distribution.</h2>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates main restricted</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates main restricted</p>
+<h2 id="nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu">N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</h2>
+<h2 id="team-also-please-note-that-software-in-universe-will-not-receive-any">team. Also, please note that software in universe WILL NOT receive any</h2>
+<h2 id="review-or-updates-from-the-ubuntu-security-team">review or updates from the Ubuntu security team.</h2>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid universe</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid universe</p>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates universe</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates universe</p>
+<h2 id="nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu-1">N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</h2>
+<h2 id="team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to">team, and may not be under a free licence. Please satisfy yourself as to</h2>
+<h2 id="your-rights-to-use-the-software-also-please-note-that-software-in">your rights to use the software. Also, please note that software in</h2>
+<h2 id="multiverse-will-not-receive-any-review-or-updates-from-the-ubuntu">multiverse WILL NOT receive any review or updates from the Ubuntu</h2>
+<h2 id="security-team">security team.</h2>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid multiverse</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid multiverse</p>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates multiverse</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates multiverse</p>
+<h2 id="uncomment-the-following-two-lines-to-add-software-from-the-backports">Uncomment the following two lines to add software from the &lsquo;backports&rsquo;</h2>
+<h2 id="repository">repository.</h2>
+<h2 id="nb-software-from-this-repository-may-not-have-been-tested-as">N.B. software from this repository may not have been tested as</h2>
+<h2 id="extensively-as-that-contained-in-the-main-release-although-it-includes">extensively as that contained in the main release, although it includes</h2>
+<h2 id="newer-versions-of-some-applications-which-may-provide-useful-features">newer versions of some applications which may provide useful features.</h2>
+<h2 id="also-please-note-that-software-in-backports-will-not-receive-any-review">Also, please note that software in backports WILL NOT receive any review</h2>
+<h2 id="or-updates-from-the-ubuntu-security-team">or updates from the Ubuntu security team.</h2>
+<h1 id="deb-httpcnarchiveubuntucomubuntu-intrepid-backports-main-restricted">deb <a href="http://cn.archive.ubuntu.com/ubuntu/">http://cn.archive.ubuntu.com/ubuntu/</a> intrepid-backports main restricted</h1>
+<p>universe multiverse</p>
+<h1 id="deb-src-httpcnarchiveubuntucomubuntu-intrepid-backports-main">deb-src <a href="http://cn.archive.ubuntu.com/ubuntu/">http://cn.archive.ubuntu.com/ubuntu/</a> intrepid-backports main</h1>
+<p>restricted universe multiverse</p>
+<h2 id="uncomment-the-following-two-lines-to-add-software-from-canonicals">Uncomment the following two lines to add software from Canonical&rsquo;s</h2>
+<h2 id="partner-repository-this-software-is-not-part-of-ubuntu-but-is">&lsquo;partner&rsquo; repository. This software is not part of Ubuntu, but is</h2>
+<h2 id="offered-by-canonical-and-the-respective-vendors-as-a-service-to-ubuntu">offered by Canonical and the respective vendors as a service to Ubuntu</h2>
+<h2 id="users">users.</h2>
+<h1 id="deb-httparchivecanonicalcomubuntu-intrepid-partner">deb <a href="http://archive.canonical.com/ubuntu">http://archive.canonical.com/ubuntu</a> intrepid partner</h1>
+<h1 id="deb-src-httparchivecanonicalcomubuntu-intrepid-partner">deb-src <a href="http://archive.canonical.com/ubuntu">http://archive.canonical.com/ubuntu</a> intrepid partner</h1>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security main restricted</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security main restricted</p>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security universe</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security universe</p>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security multiverse</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security multiverse</p>
+]]></content:encoded>
     </item>
     
   </channel>
