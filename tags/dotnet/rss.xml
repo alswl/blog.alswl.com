@@ -1,0 +1,1616 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>dotnet on Log4D</title>
+    <link>https://blog.alswl.com/tags/dotnet/</link>
+    <description>Recent content in dotnet on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 15 Feb 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/dotnet/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用DataConnectionDialog来获取连接字符串</title>
+      <link>https://blog.alswl.com/2011/02/dataconnectiondialog/</link>
+      <pubDate>Tue, 15 Feb 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/02/dataconnectiondialog/</guid>
+      <description>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方 法来动态生成连接字符串，这种方法充满了Bad Smell。 昨天用CodeSmith时候，看到它的数据连接配置界面，如此的眼熟，如下图。 Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命名空间为Microsof</description>
+      <content:encoded><![CDATA[<p>在系统开发中，数据库连接字符串经常被保存到.config/.ini等配置文件中，以提高系统的灵活性。上大学时候，为了实现灵活配置数据库的效果，用拼字符串的方
+法来动态生成连接字符串，这种方法充满了Bad Smell。</p>
+<p>昨天用CodeSmith时候，看到它的数据连接配置界面，如此的眼熟，如下图。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201102/DataConnectionDialog.jpg" alt="image"  />
+
+</p>
+<p>Google了一下，原来这家伙的名字叫做DataConnectionDialog，所属命名空间为Microsoft.VisualStudio.Data。</p>
+<p>使用的方法也很简单，引用Microsoft.Data.ConnectionUI.dll和Microsoft.Data.ConnectionUI.Dialog
+.dll，这两个文件位于Microsoft Visual Studio 9.0Common7IDE下面。</p>
+<p>这两个dll并没有其他依赖关系，可以放心的放到自己的程序中使用。</p>
+<p>使用代码如下</p>
+<pre><code>DataConnectionDialog dataConnectionDialog = new DataConnectionDialog();
+DataSource.AddStandardDataSources(dataConnectionDialog);
+if (DataConnectionDialog.Show(dataConnectionDialog) == DialogResult.OK)
+{
+	targetDBConnectionString = dataConnectionDialog.ConnectionString;
+}
+</code></pre>
+<p>dataConnectionDialog.ConnectionString是完整的连接字符串，这样就可以比较优美的动态获取连接字符串了。</p>
+<p>参考文章</p>
+<ul>
+<li><a href="http://www.cnblogs.com/yans/archive/2010/12/04/1896285.html">DataConnectionDialog 旧事重提 - 名牌热狗 - 博客园</a></li>
+<li><a href="http://jayai.blog.51cto.com/510093/256313">C#&ndash;WinForm系统平台之登录界面及数据连接 - 天高行健，地厚载物 - 51CTO技术博客</a></li>
+<li><a href="http://msdn.microsoft.com/zh-cn/library/microsoft.visualstudio.data.dataconnectiondialog(v=vs.80).aspx">DataConnectionDialog Class (Microsoft.VisualStudio.Data)</a></li>
+</ul>
+<p>最后给大家拜个晚年，祝大家新年新气象。。。（此处省略1000字）</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>在.net中使用GAC</title>
+      <link>https://blog.alswl.com/2011/01/gac/</link>
+      <pubDate>Sun, 23 Jan 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/01/gac/</guid>
+      <description>GAC GAC是什么？是用来干嘛的？GAC的全称叫做全局程序集缓存，通俗的理解就是存放各种.net平台下面需要使用的dll的地方。GAC的具体目录在windows/ assembly。 喜欢使用破解软件的朋友可能会经常使用替换DLL这招，这个DLL虽然和.net下面的DLL有所不同，但大致起的作用还是一样的：使用共同的动态链接库来提高库复用 ，减少文件体积。在.net平台之前，程序们都把可能用到的公共DLL存</description>
+      <content:encoded><![CDATA[<h2 id="gac">GAC</h2>
+<p>GAC是什么？是用来干嘛的？GAC的全称叫做全局程序集缓存，通俗的理解就是存放各种.net平台下面需要使用的dll的地方。GAC的具体目录在windows/
+assembly。</p>
+<p>喜欢使用破解软件的朋友可能会经常使用替换DLL这招，这个DLL虽然和.net下面的DLL有所不同，但大致起的作用还是一样的：使用共同的动态链接库来提高库复用
+，减少文件体积。在.net平台之前，程序们都把可能用到的公共DLL存放到system32文件夹下。由于版本的不一致及其他原因（将控制信息存放到注册表），造成
+了很有名的<a href="http://zh.wikipedia.org/zh-cn/DLL%E5%9C%B0%E7%8D%84">DLL Hell</a>。</p>
+<p>最近在读俞甲子的《<a href="http://book.douban.com/subject/3652388/">程序员的自我修养</a>》，中间花了很大的篇幅描述程序编译中
+的链接这个过程。而比较巧合的是，我的《<a href="http://book.douban.com/subject/3563971/">C#与.NET 3.5高级程序设计</a>》也正好读到程序集这一块。微软使用了GAC来避免DLL重蹈覆辙。现在，我就来部署一个简单的通用类库到GAC中。</p>
+<h2 id="获取强名称签名">获取强名称（签名）</h2>
+<p>并不是随便一个DLL都可以放到GAC中，如果这样的话，和之前的DLL Hell也没什么区别了。GAC使用一个强名称（签名）的方式来区分不同的DLL。每个签名
+都是独一无二的公钥私钥对。现在我们使用SDK的sn工具为我的DUtil库生成一个snk签名。</p>
+<p>打开SDK中的Visual Studio 2008 命令提示，键入sn -k DUtil.snk，结果如下：</p>
+<pre tabindex="0"><code>F:WorkSpace.netDUtilbinDebug&gt;sn -k DUtil.snk
+</code></pre><p>Microsoft (R) .NET Framework 强名称实用工具 版本 3.5.21022.8</p>
+<p>Copyright (c) Microsoft Corporation. All rights reserved.</p>
+<p>密钥对被写入 DUtil.snk</p>
+<p>这样我们就得到了一个snk签名文件。</p>
+<h2 id="为程序集设置签名">为程序集设置签名</h2>
+<p>现在我们得到了一个签名文件，但是还没有把这个签名应用到程序中，在程序的assembly.cs文件中加入[assembly:
+AssemblyKeyFile(&ldquo;dutil.snk&rdquo;)]，这个dutil.snk可以是绝对路径，我使用的是主目录中的snk文件。</p>
+<p>编译解决方案，生成的.dll文件就包含了签名。</p>
+<p>此时编译器会出现一个警告：</p>
+<p>警告 1 使用命令行选项&quot;/keyfile&quot;或适当的项目设置代替&quot;AssemblyKeyFile&quot;
+F:WorkSpace.netDUtilPropertiesAssemblyInfo.cs 38 12 DUtil</p>
+<p>既然VS建议我们用选项设定，那我们就用项目选项页设定key。如下图所示：</p>
+<p>
+
+
+<img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201101/snk.jpg" alt="image"  />
+
+
+</p>
+<p>PS：我测试过，生成DLL之后，就算删除签名使用的snk文件，依然可以正常使用。即snk文件只有在编译时候使用。</p>
+<h2 id="安装到gac">安装到GAC</h2>
+<p>安装到GAC有两种办法，一种是把DLL拖入windows/assembly目录下（不是复制粘贴，是拖动），另外一种是使用gacutil。</p>
+<p>在Win7下，拖动的话会遇到权限问题，如下图所示</p>
+<p>
+
+
+<img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201101/gac_setup_error.jpg" alt="image"  />
+
+
+</p>
+<p>在gacutil下面也会遇到如下错误</p>
+<pre tabindex="0"><code>F:WorkSpace.netDUtilbinDebug&gt;gacutil -i DUtil.dll
+Microsoft (R) .NET Global Assembly Cache Utility.  Version 3.5.21022.8
+Copyright (c) Microsoft Corporation.  All rights reserved.
+</code></pre><p>将程序集添加到缓存失败: 拒绝访问。您可能没有执行此任务的管理凭据。请与您的系统管</p>
+<p>理员联系以获得帮助。</p>
+<p>解决的办法就是进入命令行时候用管理员身份进入，执行之后显示如下</p>
+<pre tabindex="0"><code>F:WorkSpace.netDUtilbinDebug&gt;gacutil -i DUtil.dll
+Microsoft (R) .NET Global Assembly Cache Utility.  Version 3.5.21022.8
+Copyright (c) Microsoft Corporation.  All rights reserved.
+</code></pre><p>程序集已成功添加到缓存中</p>
+<p>这时候查看windows/assembly目录，就会发现DUtil已经在里面了。</p>
+<p>用TotalCommander打开windows/assembly，会发现里面有GAC/GAC_32/GAC_MSIL这几个文件夹，我的DUtil安装到c:
+WindowsassemblyGAC_MSILDUtil�.1.0.0__35f4c1ba225b3cc6DUtil.dll，这个路径包含了版本，签名，通过
+这种方式，就能避免版本和错误dll的问题了。</p>
+<h2 id="使用gac的dll">使用GAC的dll</h2>
+<p>打开任意一个项目，添加引用时候，选择编译出来的DUtil.dll即可。查看具体属性，就会发现，这个DLL并未复制到本地，因为它可以从GAC中获取了。</p>
+<p>
+
+
+<img loading="lazy" src="https://4ocf5n.dijingchao.com/upload_dropbox/201101/dll_property.jpg" alt="image"  />
+
+
+</p>
+<p>这时候如果我们删除引用地方的DLL，会发现程序依然可以正确跑起来，说明我们的DLL确实来自GAC。（Update：当引用DLL文件存在时候，优先引用此DLL
+，不存在才引用GAC的DLL）</p>
+<p>PS:不要尝试去打开windows/assembly目录来引用，你会发现你徒劳的。</p>
+<h2 id="卸载gac中的dll">卸载GAC中的DLL</h2>
+<p>一句话搞定</p>
+<pre tabindex="0"><code>C:Windowssystem32&gt;gacutil -u DUtil
+Microsoft (R) .NET Global Assembly Cache Utility.  Version 3.5.21022.8
+Copyright (c) Microsoft Corporation.  All rights reserved.
+</code></pre><p>程序集: DUtil, Version=0.1.0.0, Culture=neutral, PublicKeyToken=35f4c1ba225b3cc6</p>
+<p>, processorArchitecture=MSIL</p>
+<p>已卸载: DUtil, Version=0.1.0.0, Culture=neutral, PublicKeyToken=35f4c1ba225b3cc6</p>
+<p>, processorArchitecture=MSIL</p>
+<p>卸载的程序集数 = 1</p>
+<p>失败次数 = 0</p>
+<p>这样就把特定目标的DLL卸载了。</p>
+<h2 id="参考文章">参考文章</h2>
+<p>除了上文提到的两本书，还参考了MSDN中的815808文章，文章名<a href="http://support.microsoft.com/kb/815808/zh-cn">如何在 Visual C# .NET 中将程序集安装到全局程序集缓存中</a>。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>C#&#43;VBA操作Excel总结</title>
+      <link>https://blog.alswl.com/2010/12/csharp-vba-excel/</link>
+      <pubDate>Tue, 14 Dec 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/12/csharp-vba-excel/</guid>
+      <description>Excel在日常办公中应用非常广泛，这次我接到一个案子，需要往Excel中写入数据并能够打印出固定格式，前前后后大概花了将近2星期才搞定，现在做一些分享。 一、关于操作Excel的几种方式 我们导出Excel，大抵是有两种方法，一种是在服务器端用一些类库或者COM组件直接生成Excel成品，其二是在后台只写入数据，而不写入具体格式，等用户下载完 Excel之后再在客户端上利用vba生成Excel成品。 1</description>
+      <content:encoded><![CDATA[<p>Excel在日常办公中应用非常广泛，这次我接到一个案子，需要往Excel中写入数据并能够打印出固定格式，前前后后大概花了将近2星期才搞定，现在做一些分享。</p>
+<h2 id="一关于操作excel的几种方式">一、关于操作Excel的几种方式</h2>
+<p>我们导出Excel，大抵是有两种方法，一种是在服务器端用一些类库或者COM组件直接生成Excel成品，其二是在后台只写入数据，而不写入具体格式，等用户下载完
+Excel之后再在客户端上利用vba生成Excel成品。</p>
+<h3 id="11使用自动化功能-后台生成成品">1.1使用&quot;自动化&quot;功能-后台生成成品</h3>
+<p>微软把后台使用COM组件称之为&quot;自动化&quot;，其实它本身是不建议这种用法，在<a href="http://support.microsoft.com/kb/257757">257757 号文章（服务器端 Office
+自动化注意事项）</a>也明文标出&quot;Microsoft
+目前建议不要从任何无人参与的、非交互式客户端应用程序或组件（包括 ASP、DCOM 和 NT Service）中进行 Microsoft Office
+应用程序的&quot;自动化&quot;，也不为此提供支持，因为 Office 在这种环境中运行时可能会出现不稳定的现象并且/或者会死锁。&quot;</p>
+<p>这种方法的优点是给用户更简洁的展现，毕竟原生的Excel成品比半成品来更容易接受，而且可以避免宏安全问题，万一客户端禁止了宏，就只能看到丑陋的模板界面+一坨
+数据。</p>
+<p>缺点是需要服务端支持，编写成本也比较高（VBA有时候可以直接录制）。服务端支持体现在需要安装一些微软或者第三方的类库。我当时采用的是Office类库，也就是
+在安装有Office的机器上面使用Interop.Excel.dll这个中间动态链接库进行操作，需要麻烦的安全设置，效率低不说还会扯出Excel无法关闭的B
+ug。</p>
+<p>关于效率低我深有体会，我使用这种方法生成5页数据大约2m，客户等的急死，其根本原因是由于COM组件在调用时候，每一个Range这种对象都会产生一个借口请求。</p>
+<h3 id="12使用adonet传输数据vba控制模板和数据">1.2、使用ADO.net传输数据+VBA控制模板和数据</h3>
+<p>这方法的优缺点正好与上文相反，由于只是写入数据，即通过ADO.net的连接方式INSERT一堆数据到Excel文件的隐藏Sheet里面去（别跟我说你不知道E
+xcel可以隐藏某个Sheet），所以速度后台速度极快。前台Excel文件虽然需要VBA编程支持，但是在理解Excel模型之后也不是很难的事情。</p>
+<h3 id="13">1.3</h3>
+<p>选择哪种方式，取决于你的需求，如果你在Java平台下面并且输出文件页面格式不复杂，我推荐第一种，如果是.net平台又或者要处理复杂的页面样式，就选用第二种吧
+（我前期使用第一种，后来因为效率问题和无法关闭Excel的问题，重写逻辑，选用第二种）。</p>
+<p>关于Excel导出方案的选择，微软官方也是不建议使用第一种方案，甚至不提供技术支持。它推荐了一些方案，包括使用报表导出Excel或者ADO.net方式导出（
+即第二种），具体文章见<a href="http://support.microsoft.com/kb/306023/zh-cn">如何使用 Visual C# 2005 或 Visual C# .NET 向 Excel
+工作簿传输数据</a>。</p>
+<h2 id="二office-excel文档模型">二、Office Excel文档模型</h2>
+<p>在写操作Excel代码之前，需要了解一下Excel的文档模型，才能想当然的把代码写出来。</p>
+<p>简单说来，我们只要了解Application 、Workbook 、Worksheet
+、Range这四种类型，如果需要操作图像的话，还需要多了解一种Chart。</p>
+<p>Application就是Excel实例，不仅仅是一个Excel文件，而是整体的Excel程序（Office都是MDI文档体系）。</p>
+<p>WorkBook就是实质意义上的某个Excel文件，你可以进行保存操作等等。</p>
+<p>Worksheet是某个工作簿类型。</p>
+<p>Range是我们打交道最多的，可以理解成一个区域快，也就是常见的&quot;A2:B5&quot;这种表示方式。</p>
+<p>了解这几种之后，我们就可以下手操作了。更详细的微软官方文档，可以在<a href="http://msdn.microsoft.com/zh-cn/library/wss56bz7(v=vs.80).aspx">Excel 对象模型概述</a>找到。</p>
+<h2 id="三使用c操作excel">三、使用C#操作Excel</h2>
+<p>我虽然不推荐第一种，但是毕竟是一种解决方案。</p>
+<p>需要使用的命名空间为using Excel = Microsoft.Office.Interop.Excel;（使用别名简化一下）</p>
+<p>另外需要项目引用Office的类库，如果不是项目形式而是网站形式，则需要手动编译对应Interop.Excel.dll到网站bin目录下面，我使用Excel
+2007编译出这个链接库，版本为1.6.0.0，需要的可以点击<a href="../../static/images/2010/12/Interop_Excel.zip">Interop.Excel.dll</a>下载。</p>
+<h3 id="31-编译interopexceldll">3.1 编译Interop.Excel.dll</h3>
+<p>编译的方法出自于&quot;[使用Office组件读取Excel，引用Microsoft.Office.Interop.Excel出现的问题](http://www.
+cnblogs.com/Mainz/archive/2009/11/11/Microsoft_Office_Interop_Excel.html)&quot;&amp;nbs
+p_place_holder;</p>
+<blockquote>
+<p>进入你的visual studio的sdk下的bin目录，找到TlbImp.exe文件，如果没有，请用光盘安装此文件，详细说明请参照MSDN。&amp;nbsp
+_place_holder;</p>
+</blockquote>
+<p>命令行(cmd)进入bin目录，运行TlbImp /out:Interop.Excel.dll
+Office安装目录+Excel.exe</p>
+<p>此时很可能会报错：TlbImp  error:  Unable
+to  locate  input
+type  library:
+&lsquo;c:program filesmcrosoft officeofficeEXCEL.EXE&rsquo;</p>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>此问题很有可能是TlbImp的bug，不支持空格式的路径；（具体原因不明）不要紧，将Excel.exe拷贝入bin目录，直接运行TlbImp
+/out:Interop.Excel.dll Excel.exe,提示&quot;Type library imported to
+Interop.Excel.dll路径&quot;</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<p>在bin目录下找到Interop.Excel.dll文件。在你的visual studio里将其引用即可。</p>
+</blockquote>
+<h3 id="32-封装的一个c操作excel类库">3.2 封装的一个C#操作Excel类库</h3>
+<p>我把我之前封装的C#操作Excel类库分享一下</p>
+<p>注：这个类的Dispose仍然没有解决Excel文件生成之后Excel进程无法正常关闭的问题，目前看来只有杀死进程方法才能起实质性作用。</p>
+<p>其实我觉得这个类库除了让我熟悉一下Excel模型之外，并没派上实质的用场~</p>
+<pre><code>/// &lt;summary&gt;
+/// Excel帮助类
+/// Add by alswl 20101130
+/// &lt;/summary&gt;
+public class ExcelHelper : IDisposable
+{
+    private Excel._Application excelApplication = null;
+    public Excel._Workbook workbook = null;
+    public Excel._Worksheet worksheet = null;
+    private object missing = System.Reflection.Missing.Value;
+</code></pre>
+<p>public ExcelHelper()</p>
+<p>{</p>
+<p>if (excelApplication == null)</p>
+<p>{</p>
+<p>excelApplication = new Excel.ApplicationClass();</p>
+<p>}</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// ~</p>
+<p>/// </summary></p>
+<p>~ExcelHelper()</p>
+<p>{</p>
+<p>if (excelApplication != null)</p>
+<p>excelApplication.Quit();</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 释放非托管资源</p>
+<p>/// </summary></p>
+<p>public void Dispose()</p>
+<p>{</p>
+<p>try</p>
+<p>{</p>
+<p>if (excelApplication != null)</p>
+<p>{</p>
+<p>if (!workbook.Saved)</p>
+<p>this.Close(false);</p>
+<p>excelApplication.Quit();</p>
+<p>System.Runtime.InteropServices.Marshal.ReleaseComObject(worksheet);</p>
+<p>System.Runtime.InteropServices.Marshal.ReleaseComObject(workbook);</p>
+<p>System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApplication);</p>
+<p>GC.Collect(System.GC.GetGeneration(worksheet));</p>
+<p>GC.Collect(System.GC.GetGeneration(workbook));</p>
+<p>GC.Collect(System.GC.GetGeneration(excelApplication));</p>
+<p>if (excelApplication != null)</p>
+<p>{</p>
+<p>excelApplication = null;</p>
+<p>}</p>
+<p>GC.WaitForPendingFinalizers();</p>
+<p>GC.Collect();</p>
+<p>GC.WaitForPendingFinalizers();</p>
+<p>GC.Collect();</p>
+<p>}</p>
+<p>}</p>
+<p>catch</p>
+<p>{</p>
+<p>}</p>
+<p>finally</p>
+<p>{</p>
+<p>GC.Collect();</p>
+<p>}</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设置当前工作表</p>
+<p>/// </summary></p>
+<p>public int CurrentWorksheetIndex</p>
+<p>{</p>
+<p>set</p>
+<p>{</p>
+<p>if (value &lt;= 0 || value &gt; workbook.Worksheets.Count)</p>
+<p>throw new ArgumentException(&ldquo;索引超出范围&rdquo;);</p>
+<p>else</p>
+<p>{</p>
+<p>object index = value;</p>
+<p>worksheet = workbook.Worksheets[index] as Excel._Worksheet;</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 打开一个Excel工作薄</p>
+<p>/// </summary></p>
+<p>/// <param name="fileName"></param></p>
+<p>public void OpenWorkbook(string fileName)</p>
+<p>{</p>
+<p>workbook = excelApplication.Workbooks.Open(fileName, missing, missing,
+missing, missing, missing,</p>
+<p>missing, missing, missing, missing, missing, missing, missing, missing,
+missing);</p>
+<p>if (workbook.Worksheets.Count &gt; 0)</p>
+<p>{</p>
+<p>int index = 1;</p>
+<p>worksheet = workbook.Worksheets[index] as Excel._Worksheet;</p>
+<p>}</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 添加一个工作表</p>
+<p>/// </summary></p>
+<p>/// <param name="SheetName"></param></p>
+<p>/// <returns></returns></p>
+<p>public Excel.Worksheet AddSheet(string sheetName)</p>
+<p>{</p>
+<p>Excel.Worksheet worksheet =
+(Excel.Worksheet)workbook.Worksheets.Add(Type.Missing, Type.Missing,
+Type.Missing, Type.Missing);</p>
+<p>worksheet.Name = sheetName;</p>
+<p>return worksheet;</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 删除一个Sheet</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetName"></param></p>
+<p>public void DeleteSheet(string sheetName)</p>
+<p>{</p>
+<p>Excel.Worksheet sheet = workbook.Worksheets[sheetName] as Excel.Worksheet;</p>
+<p>excelApplication.DisplayAlerts = false;</p>
+<p>sheet.Delete();</p>
+<p>excelApplication.DisplayAlerts = true;</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 保存数据</p>
+<p>/// </summary></p>
+<p>public void Save()</p>
+<p>{</p>
+<p>if (workbook != null)</p>
+<p>{</p>
+<p>workbook.Save();</p>
+<p>}</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 关闭文档</p>
+<p>/// </summary></p>
+<p>/// <param name="isSave"></param></p>
+<p>public void Close(bool isSave)</p>
+<p>{</p>
+<p>object obj_Save = isSave;</p>
+<p>workbook.Close(obj_Save, missing, missing);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设置当前工作表中某单元格的值</p>
+<p>/// </summary></p>
+<p>/// <param name="range"></param></p>
+<p>/// <param name="value"></param></p>
+<p>public void SetRangeValue(string range, object value)</p>
+<p>{</p>
+<p>SetRangeValue(worksheet.Name, range, value);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设置工作表中某单元格的值</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetName"></param></p>
+<p>/// <param name="range"></param></p>
+<p>/// <param name="value"></param></p>
+<p>public void SetRangeValue(string sheetName, string range, object value)</p>
+<p>{</p>
+<p>Excel.Worksheet sheet = workbook.Worksheets[sheetName] as Excel.Worksheet;</p>
+<p>sheet.get_Range(range, missing).Value2 = value;</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 删除某个Range，右侧左移</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetName"></param></p>
+<p>/// <param name="rangeStr"></param></p>
+<p>public void DeleteRange(string sheetName, string rangeStr)</p>
+<p>{</p>
+<p>Excel.Worksheet sheet = workbook.Worksheets[sheetName] as Excel.Worksheet;</p>
+<p>sheet.get_Range(rangeStr,
+missing).Delete(Excel.XlDeleteShiftDirection.xlShiftToLeft);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 删除某个Range，右侧左移</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetName"></param></p>
+<p>/// <param name="rangeStr"></param></p>
+<p>public void DeleteRange(string rangeStr)</p>
+<p>{</p>
+<p>DeleteRange(worksheet.Name, rangeStr);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 合并单元格</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetName"></param></p>
+<p>/// <param name="range1"></param></p>
+<p>/// <param name="range2"></param></p>
+<p>public void Merge(string sheetName, string range1, string range2)</p>
+<p>{</p>
+<p>Excel.Worksheet sheet = workbook.Worksheets[sheetName] as Excel.Worksheet;</p>
+<p>Excel.Range range = worksheet.get_Range(range1, range2);</p>
+<p>range.Merge(true);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 合并单元格</p>
+<p>/// </summary></p>
+<p>/// <param name="range1"></param></p>
+<p>/// <param name="range2"></param></p>
+<p>public void Merge(string range1, string range2)</p>
+<p>{</p>
+<p>Merge(worksheet.Name, range1, range2);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设置一个单元格的属性</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetName"></param></p>
+<p>/// <param name="range"></param></p>
+<p>/// <param name="size">大小</param></p>
+<p>/// <param name="name">字体</param></p>
+<p>/// <param name="color">颜色</param></p>
+<p>/// <param name="HorizontalAlignment">对齐方式</param></p>
+<p>public void SetCellProperty(string sheetName, string rangeStr, double
+fontSize, string fontName,</p>
+<p>double height, Excel.Constants horizontalStyle)</p>
+<p>{</p>
+<p>Excel.Worksheet sheet = workbook.Worksheets[sheetName] as Excel.Worksheet;</p>
+<p>Excel.Range range = sheet.get_Range(rangeStr, missing);</p>
+<p>range.Font.Size = fontSize;</p>
+<p>range.Font.Name = fontName;</p>
+<p>//range.Font.Color = fontColor;</p>
+<p>range.RowHeight = height;</p>
+<p>range.HorizontalAlignment = horizontalStyle;</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设置一个单元格的属性</p>
+<p>/// </summary></p>
+<p>/// <param name="range"></param></p>
+<p>/// <param name="fontSize"></param></p>
+<p>/// <param name="fontName"></param></p>
+<p>/// <param name="fontColor"></param></p>
+<p>/// <param name="horizontalStyle"></param></p>
+<p>public void SetCellProperty(string range, double fontSize, string fontName,</p>
+<p>double height, Excel.Constants horizontalStyle)</p>
+<p>{</p>
+<p>SetCellProperty(worksheet.Name, range, fontSize, fontName,</p>
+<p>height, horizontalStyle);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设定Range的边框格式</p>
+<p>/// </summary></p>
+<p>/// <param name="rangeStart"></param></p>
+<p>/// <param name="rangeEnd"></param></p>
+<p>/// <param name="topStyle"></param></p>
+<p>/// <param name="rightStyle"></param></p>
+<p>/// <param name="bottomStyle"></param></p>
+<p>/// <param name="leftStyle"></param></p>
+<p>public void SetRangeBorderStyle(string sheetName, string rangeStr,
+Excel.XlLineStyle topStyle,</p>
+<p>Excel.XlLineStyle rightStyle, Excel.XlLineStyle bottomStyle, Excel.XlLineStyle
+leftStyle)</p>
+<p>{</p>
+<p>Excel.Worksheet sheet = workbook.Worksheets[sheetName] as Excel.Worksheet;</p>
+<p>Excel.Range range = sheet.get_Range(rangeStr, missing);</p>
+<p>range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeTop].LineSty
+le = topStyle;</p>
+<p>range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeRight].LineS
+tyle = rightStyle;</p>
+<p>range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeBottom].Line
+Style = bottomStyle;</p>
+<p>range.Borders[Microsoft.Office.Interop.Excel.XlBordersIndex.xlEdgeLeft].LineSt
+yle = leftStyle;</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设定Range的边框格式</p>
+<p>/// </summary></p>
+<p>/// <param name="rangeStr"></param></p>
+<p>/// <param name="topStyle"></param></p>
+<p>/// <param name="rightStyle"></param></p>
+<p>/// <param name="bottomStyle"></param></p>
+<p>/// <param name="leftStyle"></param></p>
+<p>public void SetRangeBorderStyle(string rangeStr, Excel.XlLineStyle topStyle,</p>
+<p>Excel.XlLineStyle rightStyle, Excel.XlLineStyle bottomStyle, Excel.XlLineStyle
+leftStyle)</p>
+<p>{</p>
+<p>SetRangeBorderStyle(worksheet.Name, rangeStr, topStyle,</p>
+<p>rightStyle, bottomStyle, leftStyle);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设定Range数字格式</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetName"></param></p>
+<p>/// <param name="rangeStr"></param></p>
+<p>/// <param name="format"></param></p>
+<p>public void SetRangeNumberFormat(string sheetName, string rangeStr, string
+format)</p>
+<p>{</p>
+<p>Excel.Worksheet sheet = workbook.Worksheets[sheetName] as Excel.Worksheet;</p>
+<p>Excel.Range range = sheet.get_Range(rangeStr, missing);</p>
+<p>range.NumberFormat = format;//0%</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设定Range数字格式</p>
+<p>/// </summary></p>
+<p>/// <param name="rangeStr"></param></p>
+<p>/// <param name="format"></param></p>
+<p>public void SetRangeNumberFormat(string rangeStr, string format)</p>
+<p>{</p>
+<p>SetRangeNumberFormat(worksheet.Name, rangeStr, format);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 将数据表格添加到Excel指定工作表的指定位置</p>
+<p>/// </summary></p>
+<p>/// <param name="dt"></param></p>
+<p>/// <param name="ws"></param></p>
+<p>/// <param name="startX"></param></p>
+<p>/// <param name="startY"></param></p>
+<p>public void AddTable(System.Data.DataTable dt, int startX, int startY)</p>
+<p>{</p>
+<p>for (int i = 0; i &lt;= dt.Rows.Count - 1; i++)</p>
+<p>{</p>
+<p>for (int j = 0; j &lt;= dt.Columns.Count - 1; j++)</p>
+<p>{</p>
+<p>worksheet.Cells[i + startX, j + startY] = dt.Rows[i][j];</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 加入分页符</p>
+<p>/// </summary></p>
+<p>/// <param name="rangeStr"></param></p>
+<p>/// <param name="lineNumber"></param></p>
+<p>public void AddPageBreak(string rangeStr, int lineNumber)</p>
+<p>{</p>
+<p>Excel.Range range = worksheet.get_Range(&ldquo;A&rdquo; + lineNumber.ToString(), missing);</p>
+<p>worksheet.HPageBreaks.Add(range);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 加入分页符</p>
+<p>/// </summary></p>
+<p>/// <param name="lineNumber"></param></p>
+<p>public void AddPageBreak(int lineNumber)</p>
+<p>{</p>
+<p>AddPageBreak(worksheet.Name, lineNumber);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 从当前工作表数据区域复制数据到另一个区域</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetFromRange"></param></p>
+<p>/// <param name="sheetToRange"></param></p>
+<p>public void CopyRange2Range(string sheetFromRange, string sheetToRange)</p>
+<p>{</p>
+<p>CopyRange2Range(worksheet.Name, worksheet.Name, sheetFromRange, sheetToRange);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 从一个表的某个数据区域复制数据到另一个表的某个区域</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetFromName"></param></p>
+<p>/// <param name="sheetToName"></param></p>
+<p>/// <param name="sheetFromRange"></param></p>
+<p>/// <param name="sheetToRange"></param></p>
+<p>public void CopyRange2Range(string sheetFromName, string sheetToName, string
+sheetFromRange, string sheetToRange)</p>
+<p>{</p>
+<p>Excel.Worksheet sheetFrom = workbook.Worksheets[sheetFromName] as
+Excel.Worksheet;</p>
+<p>Excel.Worksheet sheetTo = workbook.Worksheets[sheetToName] as Excel.Worksheet;</p>
+<p>sheetFrom.get_Range(sheetFromRange,
+missing).Copy(sheetTo.get_Range(sheetToRange, missing));</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 移动Range到另一个Range</p>
+<p>/// </summary></p>
+<p>/// <param name="FromRange"></param></p>
+<p>/// <param name="ToRange"></param></p>
+<p>public void MoveRange2Range(string FromRange, string ToRange)</p>
+<p>{</p>
+<p>MoveRange2Range(worksheet.Name, FromRange, ToRange);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 移动Range到另一个Range</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetName"></param></p>
+<p>/// <param name="FromRange"></param></p>
+<p>/// <param name="ToRange"></param></p>
+<p>public void MoveRange2Range(string sheetName, string FromRange, string
+ToRange)</p>
+<p>{</p>
+<p>Excel.Worksheet sheet = workbook.Worksheets[sheetName] as Excel.Worksheet;</p>
+<p>sheet.get_Range(FromRange, missing).Cut(sheet.get_Range(ToRange, missing));</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 重设当前工作目录的打印区域</p>
+<p>/// </summary></p>
+<p>public void ResetPrintArea()</p>
+<p>{</p>
+<p>SetPrintArea(worksheet.Name, &ldquo;&rdquo;);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 重设工作目录的打印区域</p>
+<p>/// </summary></p>
+<p>public void ResetPrintArea(string sheetName)</p>
+<p>{</p>
+<p>SetPrintArea(sheetName, &ldquo;&rdquo;);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设定工作目录的打印区域</p>
+<p>/// </summary></p>
+<p>/// <param name="area"></param></p>
+<p>public void SetPrintArea(string area)</p>
+<p>{</p>
+<p>SetPrintArea(worksheet.Name, area);</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 设定工作目录的打印区域</p>
+<p>/// </summary></p>
+<p>/// <param name="sheetName"></param></p>
+<p>/// <param name="area"></param></p>
+<p>public void SetPrintArea(string sheetName, string area)</p>
+<p>{</p>
+<p>Excel.Worksheet sheet = workbook.Worksheets[sheetName] as Excel.Worksheet;</p>
+<p>sheet.PageSetup.PrintArea = area;</p>
+<p>}</p>
+<p>/// <summary></p>
+<p>/// 将当前工作表中的表格数据复制到剪切板</p>
+<p>/// </summary></p>
+<p>public void Copy()</p>
+<p>{</p>
+<p>if (worksheet != null)</p>
+<p>{</p>
+<p>try</p>
+<p>{</p>
+<p>worksheet.UsedRange.Select();</p>
+<p>}</p>
+<p>catch { }</p>
+<p>worksheet.UsedRange.Copy(missing);</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<h2 id="四使用adonetvba操作excel">四、使用ADO.net+VBA操作Excel</h2>
+<p>我手头的这个案子在用第一种方法撰写一个星期之后遇到效率瓶颈，无奈改为第二种方法，由于对Excel的文档模型有了较全面的认识，几个主流函数也很清楚，所以写的速
+度很快。</p>
+<p>这里我还是要佩服一下微软，曾经我对Office很不屑，后来看完《[Word排版艺术](<a href="http://book.douban.com/subject/1193">http://book.douban.com/subject/1193</a>
+565/)》才开始认识Office，再之后深入PPT和Excel，更是感觉文档模型了不起。。。咳咳咳，扯远了~</p>
+<h3 id="41-使用adonet写入数据到excel文件">4.1 使用ADO.net写入数据到Excel文件</h3>
+<p>废话不说了，上核心代码</p>
+<pre><code>System.Data.OleDb.OleDbConnection objConn = new System.Data.OleDb.OleDbConnection(&quot;Provider=Microsoft.Jet.OLEDB.4.0;Data Source=&quot; +
+                    destFileName + &quot;;Extended Properties=Excel 8.0;&quot;);
+objConn.Open();
+</code></pre>
+<p>System.Data.OleDb.OleDbCommand objCmd = new System.Data.OleDb.OleDbCommand();</p>
+<p>objCmd.Connection = objConn;</p>
+<p>foreach (DataRow row in dt.Rows)</p>
+<p>{ StringBuilder stringBuilder = new StringBuilder();</p>
+<p>stringBuilder.AppendFormat(&ldquo;INSERT INTO [{0}$] (&rdquo;, sheetName);</p>
+<p>for (int i = 0; i &lt; dt.Columns.Count; i++)</p>
+<p>{</p>
+<p>if (i &lt; dt.Columns.Count - 1)</p>
+<p>stringBuilder.Append(dt.Columns[i].ColumnName + &ldquo;,&rdquo;);</p>
+<p>else</p>
+<p>stringBuilder.Append(dt.Columns[i].ColumnName + &ldquo;) VALUES (&rdquo;);</p>
+<p>}</p>
+<p>for (int i = 0; i &lt; dt.Columns.Count; i++)</p>
+<p>{</p>
+<p>if (i &lt; dt.Columns.Count - 1)</p>
+<p>stringBuilder.Append(&quot;@&quot; + dt.Columns[i].ColumnName + &ldquo;,&rdquo;);</p>
+<p>else</p>
+<p>stringBuilder.Append(&quot;@&quot; + dt.Columns[i].ColumnName + &ldquo;);&rdquo;);</p>
+<p>}</p>
+<p>objCmd.Parameters.Clear();</p>
+<p>for (int i = 0; i &lt; dt.Columns.Count; i++)</p>
+<p>{</p>
+<p>objCmd.Parameters.Add(dt.Columns[i].ColumnName, row[i]);</p>
+<p>}</p>
+<p>objCmd.CommandText = stringBuilder.ToString();</p>
+<p>objCmd.ExecuteNonQuery();</p>
+<p>}</p>
+<p>注意点就是INSERT的表明就是Sheet的名字加上中括号和$符号。</p>
+<h3 id="42-使用vba操作模板和数据">4.2 使用VBA操作模板和数据</h3>
+<p>使用VBA操作模板和数据的过程是一个assign的过程，就是把数据和模板杂糅起来，类似于MVC中C控制M输出到V中，我建议针对不同类型的页面制作多个模板，而
+不要使用VBA进行各种样式修改操作，减少代码量。我这个案子中使用了8个不同类型模板，毕竟直接使用鼠标拖拽出一个模板比用VBA代码修改处一个模板简单的多。</p>
+<p>Excel2007的VBA界面在&quot;开发工具&quot;-&ldquo;Visual
+Basic&quot;中打开，千万不要以为写VBA就是录制宏呀~另外附赠一个小技巧，在VBA编辑界面里面使用Ctrl+J可以自动补全，相当实用。</p>
+<p>我把项目分成5个模块：Golbal 、Init 、Insert 、Finalize
+、Utils，看名字就知道意思了，其中Utils包含一个中文大写数字转换的函数，供前面使用。</p>
+<p>我们需要在Excel自动打开时候进行操作，需要使用函数Workbook_Open，另有Auto_Open，两个有不同之处，可以Google之。</p>
+<p>启用代码如下：</p>
+<pre><code>'开启工作簿时候动作
+Private Sub Workbook_Open()
+    
+    MAIN_SHEET = &quot;报价模板&quot;
+    For Each Sheet In Sheets
+        If Sheet.Name = MAIN_SHEET Then
+            Exit Sub
+        End If
+    Next
+    If Sheets(&quot;OPTION&quot;).Range(&quot;B2&quot;).Value = &quot;&quot; Then '如果不存在DH行数，则退出
+        Exit Sub
+    End If
+    
+    MsgBox (&quot;初始化数据，请稍等片刻！&quot;)
+    Call Run
+    Call DeleteSheets
+    'Call ActiveWorkbook.Save
+    MsgBox (&quot;初始化数据完成，请保存Excel文件！&quot;)
+</code></pre>
+<p>End Sub</p>
+<p>核心代码的话。。。其实没什么核心代码，就是频繁的使用赋值和Copy函数。。。。</p>
+<h2 id="五相关资料链接">五、相关资料链接</h2>
+<p>[C#操作Excel开发报表系列整理](<a href="http://www.cnblogs.com/dahuzizyd/archive/2007/04/11/CSharp">http://www.cnblogs.com/dahuzizyd/archive/2007/04/11/CSharp</a>
+_Excel_Report_Chart_All.html)</p>
+<p><a href="http://www.cnblogs.com/HQT/archive/2006/05/22/406345.html">检索 COM 类工厂中 CLSID 为 {00024500-0000-0000-C000-000000000046} 的组件时失败，原因是出现以下错误:
+80070005</a></p>
+<p>PS:8000401a的错误会在服务器上出现，不会在xp上出现，原因是交互式用户也没有Excel操作权限，这时候要给Excel手动制动一个有Excel操作权
+限用户，比如administrator。</p>
+<p><a href="http://archive.cnblogs.com/a/567305/">Office编程在dot Net环境中总结(Excel篇)</a></p>
+<p>好了，这就是我这次Excel学习的分享，谢谢大家耐着性子看完~</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>PDA&#34;未能建立与网络的连接&#34;的解决办法</title>
+      <link>https://blog.alswl.com/2010/03/solution-of-pda-failed-to-establish-a-network-connection/</link>
+      <pubDate>Wed, 31 Mar 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/03/solution-of-pda-failed-to-establish-a-network-connection/</guid>
+      <description>遇到这个问题大凡是因为模拟器或者真机无法连接网络，所以需要先测试网络是否畅通，在真机或者模拟器的IE中打开需要的WebService地址，看看是否能够正常获 取。 确定是网络原因后，可以采用多种方式连接网络，比如使用虚拟网卡来实现，又或者使用ActiveSync来实现。 使用本地网卡 在模拟器的文件-配置中的网卡中，选择本地网卡，可能会需要提示安装Virtual PC 2007，我不愿意装这么一个大家伙，也就没</description>
+      <content:encoded><![CDATA[<p>遇到这个问题大凡是因为模拟器或者真机无法连接网络，所以需要先测试网络是否畅通，在真机或者模拟器的IE中打开需要的WebService地址，看看是否能够正常获
+取。</p>
+<p>确定是网络原因后，可以采用多种方式连接网络，比如使用虚拟网卡来实现，又或者使用ActiveSync来实现。</p>
+<h3 id="使用本地网卡">使用本地网卡</h3>
+<p>在模拟器的文件-配置中的网卡中，选择本地网卡，可能会需要提示安装Virtual PC
+2007，我不愿意装这么一个大家伙，也就没有尝试这种方法，需要的朋友可以在[Download details: Virtual PC 2007](<a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=04d26402-3199-48a3-afa2-2d">http://www.microsoft.com/downloads/details.aspx?FamilyID=04d26402-3199-48a3-afa2-2d</a>
+c0b40a73b6&amp;DisplayLang=en)来下载Virtual PC 2007进而连接互联网。</p>
+<h3 id="使用activesync">使用ActiveSync</h3>
+<p>ActiveSync是一个连接Win系列手持到电脑的同步软件，通过它可以使真机或者模拟机连接网络，步骤如下。</p>
+<p>1、打开ActiveSync ，点击文件-连接设置，在&quot;允许连接到以下其中一个端口&quot;下选择&quot;DMA&quot;。</p>
+<p>2、打开 VS2005，点击菜单工具-设备仿真管理器，选择一个windows mobile 5.0 PocketPC
+模拟器。在右键菜单中点击&quot;连接&quot;。等模拟器启动后，再点击&quot;插入底座&quot;，此时，通过ActiveSync来连接到模拟器，并进行数据同步。</p>
+<p>3、测试一下能不能连上网络，比如说Baidu（现在G.cn已经不能作为能否上网的标志了）或者WebService地址。</p>
+<h3 id="参考连接">参考连接</h3>
+<p><a href="http://www.chinaret.com/user/topic_view.aspx?u=jianfangkk&amp;id=0b10f862-db59-4a52-9ceb-9ef1023acd9a">PDA智能程序访问WebService，报告&quot;未能建立与网络的连接&quot;? </a></p>
+<p><a href="http://topic.csdn.net/u/20080610/18/da506852-57da-4df0-beb4-6952eece2f4e.html">请问PDA智能程序访问WebService，报告&quot;未能建立与网络的连接&quot;?  </a></p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>VS2005无法创建或打开&#34;智能设备&#34;项目的一个问题的解决方法</title>
+      <link>https://blog.alswl.com/2010/03/a-solution-of-can-not-create-or-open-the-smart-device-project-in-vs2005/</link>
+      <pubDate>Mon, 29 Mar 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/03/a-solution-of-can-not-create-or-open-the-smart-device-project-in-vs2005/</guid>
+      <description>状况 在VS2005中创建或打开&amp;quot;智能设备&amp;quot;项目时，提示以下错误： &amp;ldquo;从用户数据存储中检索信息时出错。系统未找到指定的对象。&amp;rdquo; 和 &amp;ldquo;由于数据存储中不存在项目引用的设备平台，因此无法打开项目。&amp;rdquo; 在打开VS2005的&amp;quot;工具&amp;quot;－&amp;ldquo;设备仿真器管理器&amp;quot;时，提示以下错误： &amp;ldquo;未能正确加载包&amp;quo</description>
+      <content:encoded><![CDATA[<h3 id="状况">状况</h3>
+<p>在VS2005中创建或打开&quot;智能设备&quot;项目时，提示以下错误： &ldquo;从用户数据存储中检索信息时出错。系统未找到指定的对象。&rdquo; 和
+&ldquo;由于数据存储中不存在项目引用的设备平台，因此无法打开项目。&rdquo;</p>
+<p>在打开VS2005的&quot;工具&quot;－&ldquo;设备仿真器管理器&quot;时，提示以下错误： &ldquo;未能正确加载包&quot;Smart Device Configuration
+Package&rdquo;( GUID = {D245F354-3F45-4516-B1E6-04608DA126CC}
+)。请与包供应商联系以获得帮助。由于可能会发生环境损坏，建议重新启动应用程序。要禁止将来加载此包吗? 可以使用&quot;devenv
+/resetskippkgs&quot;重新启用包加载。&rdquo;</p>
+<h3 id="不成功的解决办法">不成功的解决办法</h3>
+<p>有说把.csproj文件中的<code>&lt;PlatformID&gt;4118C335-430C-497f- BE48-11C3316B135E&lt;/PlatformID&gt;</code>改成<code>&lt;PlatformID&gt;3C41C503-53EF-4c2a- 8DD4-A8217CAD115E&lt;/PlatformID&gt;</code>，原因说是&quot;3C41C503-53EF-4c2a-
+8DD4-A8217CAD115E&quot;来自任意一个能运行的.net
+cf2.0项目的.csproj文件，目标平台是ppc2003或wm5.0都可以&quot;，但是很可惜，这个办法在我电脑上没有起作用。</p>
+<h3 id="成功的解决方法">成功的解决方法</h3>
+<ol>
+<li>
+<p>关闭VS2005。</p>
+</li>
+<li>
+<p>重命名文件夹<code>c:Documents and Settings&lt;user&gt;Local SettingsApplication DataMicrosoftCoreCon1.0</code>，这将删除所有关于设备配置属性的定制。</p>
+</li>
+<li>
+<p>重启VS2005，VS2005会自动重建上述配置。</p>
+</li>
+</ol>
+<p>原文链接：<a href="http://blog.csdn.net/bingrrx/archive/2008/07/10/2634481.aspx">VS2005 无法创建或打开&quot;智能设备&quot;项目的一个问题的解决方法 - bingrrx的专栏 -
+CSDN博客</a></p>
+<p>原文的原文链接：<del><a href="http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=140668&amp;">http://forums.microsoft.com/MSDN/ShowPost.aspx?PostID=140668&amp;</a>
+SiteID=1</del>链接已失效</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>MemberShip使用心得</title>
+      <link>https://blog.alswl.com/2009/11/membership-the-use-of-experience/</link>
+      <pubDate>Thu, 05 Nov 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/11/membership-the-use-of-experience/</guid>
+      <description>花了很大一段时间在学习MemberShip，总是要留下一些纪念文章的。 我之前的日志提到过一个简单的用户权限设计：User+Role+UserInRole([http://log4d.com/2009/06/design-of-user-rights](http://log4d.com/2009/06/design-of-user- rights))，但是这样还是不够灵活，最好需要能够对每一个功能模块</description>
+      <content:encoded><![CDATA[<p>花了很大一段时间在学习MemberShip，总是要留下一些纪念文章的。
+我之前的日志提到过一个简单的用户权限设计：User+Role+UserInRole([http://log4d.com/2009/06/design-of-user-rights](<a href="http://log4d.com/2009/06/design-of-user-">http://log4d.com/2009/06/design-of-user-</a>
+rights))，但是这样还是不够灵活，最好需要能够对每一个功能模块进行权限控制，而且需要符合开闭原则。 MemberShip呢，是微软推出的一套很强大的用
+户权限管理系统。就我使用的两大部分，主要包括MemberShip和roleManager这两个模块，分别是对用户和角色进行管理。</p>
+<h2 id="membership对系统进行管理大致分为两个办法">MemberShip对系统进行管理大致分为两个办法</h2>
+<p>1.可以通过&quot;登录&quot;系列用户控件的任务窗口中的&quot;管理网站&quot;打开&quot;ASP.Net Web 应用程序管理&quot;。 可以控制用户、角色、权限三个主要属性，另外还能选择
+&ldquo;提供程序&rdquo;（这个provider分为MemberShip和RoleManager两种，如果同名的话，可以选择同一提供程序）
+
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200911/userControl.jpg" alt="userControl"  />
+
+
+
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200911/userManager.jpg" alt="userManager"  />
+
+
+2.使用Web.config进行配置
+其实上面的可视化界面在配置提供程序和访问规则（权限设定）时候，本质上修改的是根目录web.config和各个文件夹下对应的web.config</p>
+<p>我的根Web.config</p>
+<pre><code>&lt;authentication mode=&quot;Forms&quot;&gt;
+	&lt;forms name=&quot;ThisHouse&quot; defaultUrl=&quot;Default.aspx&quot; loginUrl=&quot;Signin.aspx&quot; protection=&quot;All&quot; timeout=&quot;30&quot;/&gt;
+&lt;/authentication&gt;
+&lt;membership defaultProvider=&quot;SqlProvider&quot;&gt;
+	&lt;providers&gt;
+		&lt;add connectionStringName=&quot;thisHouseConnectionString&quot; enablePasswordRetrieval=&quot;false&quot; enablePasswordReset=&quot;true&quot; requiresQuestionAndAnswer=&quot;true&quot; applicationName=&quot;ThisHouse&quot; requiresUniqueEmail=&quot;false&quot; passwordFormat=&quot;Clear&quot; maxInvalidPasswordAttempts=&quot;255&quot; minRequiredPasswordLength=&quot;1&quot; minRequiredNonalphanumericCharacters=&quot;1&quot; passwordAttemptWindow=&quot;10&quot; passwordStrengthRegularExpression=&quot;&quot; name=&quot;SqlProvider&quot; type=&quot;System.Web.Security.SqlMembershipProvider&quot;/&gt;
+	&lt;/providers&gt;
+&lt;/membership&gt;
+&lt;roleManager enabled=&quot;true&quot; cacheRolesInCookie=&quot;true&quot; defaultProvider=&quot;SqlProvider&quot;&gt;
+		&lt;providers&gt;
+			&lt;add connectionStringName=&quot;thisHouseConnectionString&quot; applicationName=&quot;ThisHouse&quot; name=&quot;SqlProvider&quot; type=&quot;System.Web.Security.SqlRoleProvider&quot;/&gt;
+		&lt;/providers&gt;
+&lt;/roleManager&gt;
+</code></pre>
+<p>我禁止User角色进入Admin文件夹，配置完&quot;访问规则&quot;后，会在Admin文件夹下生成相应web.config</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;configuration&gt;
+    &lt;system.web&gt;
+        &lt;authorization&gt;
+            &lt;allow roles=&quot;User&quot; /&gt;
+            &lt;allow roles=&quot;Admin&quot; /&gt;
+            &lt;deny users=&quot;?&quot; /&gt;
+        &lt;/authorization&gt;
+    &lt;/system.web&gt;
+&lt;/configuration&gt;
+</code></pre>
+<p>这种单纯的安全机制是以文件为单位进行配置的，不能说完美，但是有效且简单，不失为一种不错的权限控制方法。毕竟这样可以脱离在代码中的配置，而只要关注配置文件。缺
+点同样明显，如果想在同一个动作aspx文件中进行权限判断，就难以有效的实现，需要修改aspx代码了。</p>
+<h2 id="membership在net-35中方法的集成">MemberShip在.NET 3.5中方法的集成</h2>
+<p>这个标题有点大，实际上在我的课程设计中，用到了判断是否登录、判断用户角色这两个简单的方法。</p>
+<pre><code>if (Page.User.Identity.IsAuthenticated)
+{
+	this.Login1.Visible = false;
+	this.LoginStatus1.Visible = true;
+	this.pEditProfile.Visible = true;
+}
+foreach (string role in Roles.GetRolesForUser())
+{
+	if (role == &quot;Admin&quot;)
+	{
+		this.pAdmin.Visible = true;
+	}
+}
+</code></pre>
+<p>这段代码第一个if进行了是否登录的判断，然后foreach循环判断用户角色。 大部分方法在&quot;System.Web.Security.Roles&quot;、&ldquo;Syst
+em.Web.Security.Membership&quot;中，可以在MSDN查到相关内容。</p>
+<h2 id="后话">后话</h2>
+<p>MemberShip是一个很强大的框架，无论是使用还是学习，都是不错的对象。我这里只是一个星期使用的一点小心得，不是一个HowTo。 .NET既然提供了这么
+好的东西，希望大家可以用起来，而不要简单的使用User+代码中判断User的某个权限字段，要把耦合的思想和设计模式的思想在实际中进行一些尝试。（好吧，我设计
+模式其实基本不懂```会吹吹罢了）</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>ThisHouse房屋销售系统</title>
+      <link>https://blog.alswl.com/2009/11/thishouse-housing-sales-system/</link>
+      <pubDate>Thu, 05 Nov 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/11/thishouse-housing-sales-system/</guid>
+      <description>呃，这是我在一个星期内搞鼓的一个Asp.NET课程设计，没有什么太多的内容，把它发布到了Csdn了，开了5分，嗯，对得起我一个星期拼命码代码。（哦，我很无耻 的使用了MG12的iNove主题……） readme.txt内容： This House房屋销售系统 本人大四一个课程设计，大概花费1周时间，构架2天，编码3天，零碎程序1天，论文1天。 程序写的不好不坏，是DAL+BLL+Model+Web三层架构，使用的动</description>
+      <content:encoded><![CDATA[<p>呃，这是我在一个星期内搞鼓的一个Asp.NET课程设计，没有什么太多的内容，把它发布到了Csdn了，开了5分，嗯，对得起我一个星期拼命码代码。（哦，我很无耻
+的使用了<a href="http://www.neoease.com/">MG12</a>的iNove主题……）</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200911/thisHouse.jpg" alt="thisHouse"  />
+
+</p>
+<h2 id="readmetxt内容">readme.txt内容：</h2>
+<p>This House房屋销售系统 本人大四一个课程设计，大概花费1周时间，构架2天，编码3天，零碎程序1天，论文1天。</p>
+<p>程序写的不好不坏，是DAL+BLL+Model+Web三层架构，使用的动软生成器生成的简单三层框架。压缩包包括源码，数据库，一个star
+uml简单设计图，数据库文档，需求分析和论文。</p>
+<p>系统关键词是： <strong>Asp.NET</strong>; <strong>MemberShip</strong>;
+<strong>iBatisNet</strong>; <strong>AjaxControlToolkit</strong>; **房屋销售系统 **
+数据库使用的是一个完整的MemberShip 权限管理系统，而不是我自己写的简单User in Role，所以建议对这个MemberShip有一定了解。</p>
+<p>整个系统关注的是框架的使用，对于业务逻辑关注很少，实在是我时间有限，没有更多的精力搞.NET。（我学Asp.Net 3个月了，之前是搞Java的）
+如果有问题可以到http://log4d.com留言，本人大四，会在有时间前提下回答，毕竟现在我正在找工作。</p>
+<h2 id="我写代码时候总结的一些资料">我写代码时候总结的一些资料</h2>
+<p>[AjaxControlToolKit控件介绍[转载]](<a href="http://log4d.com/2009/10/ajaxcontroltoolkit-">http://log4d.com/2009/10/ajaxcontroltoolkit-</a>
+controls-introduced-reproduced)
+[MemberShip在动软生成器下UserId的问题](<a href="http://log4d.com/2009/10/membership-moving-soft-">http://log4d.com/2009/10/membership-moving-soft-</a>
+issue-of-builder-under-the-userid)</p>
+<h2 id="源码下载">源码下载</h2>
+<p><a href="http://download.csdn.net/source/1794504">点击这里到CSDN下载</a>[5分]</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>MemberShip在动软生成器下UserId的问题</title>
+      <link>https://blog.alswl.com/2009/10/membership-moving-soft-issue-of-builder-under-the-userid/</link>
+      <pubDate>Fri, 23 Oct 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/10/membership-moving-soft-issue-of-builder-under-the-userid/</guid>
+      <description>背景 这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N ET平台。我使用的主要工具是动软.NET代码生成器(一个很强大的.NET代码生成器)+Member Ship(微软推出的一个Asp.NET的权限系统)。 我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是</description>
+      <content:encoded><![CDATA[<h2 id="背景">背景</h2>
+<p>这个月的课程设计我抽签是「房屋销售系统」，一个比较简单的类CMS系统。考虑到时间的因素，我放弃了Python in Django，而是选择了我相对熟悉的.N
+ET平台。我使用的主要工具是<a href="http://www.maticsoft.com/">动软.NET代码生成器</a>(一个很强大的.NET代码生成器)+Member
+Ship(微软推出的一个Asp.NET的权限系统)。</p>
+<p>我之前只是对MemberShip略有耳闻，动软也是用过几次，所以在一个星期内完成这个课程设计还是比较冒险的。呃```呵呵，这也比较符合我的风格，总是要学点东
+西的嘛。</p>
+<h2 id="问题">问题</h2>
+<p>MemberShip本身是一个很强大的权限管理系统，其中UserId使用的是uniqueidentifier这种值类型，对应到微软提出的一种标示类型GUID
+(System.GUID)。这是一种类似「9498ea1f-ce4e-4e6d-b636-1bbbe3db9bde」的非字符串。</p>
+<p>动软.NET代码生成器会根据建好的数据库生成相应的代码，可以选择三层模式（BLL+DAL+Model+Web），他会自动生成每层代码。一般来说，生成的项目可
+以编译完成，但是如果在其中存在uniqueidentifier这种类型的表，就会产生错误，无法通过编译，错误「找不到类型或命名空间名称「uniqueiden
+tifier」（是否缺少 using 指令或程序集引用？）」</p>
+<h2 id="解决">解决</h2>
+<p>资料非常少，否则我就不会写日志了，直接转载了。</p>
+<p>参考一些零星的帖子+自己尝试，我把解决方法总结如下。</p>
+<p>1.修改Model中uniqueidentifier类型，因为C#中根本不存在这种类型，将相应的变量类型定义为Guid。</p>
+<pre><code>private Guid _userid;
+</code></pre>
+<p>public Guid userId</p>
+<p>{ set{ _userid=value;}</p>
+<p>get{return _userid;}</p>
+<p>} 2.修改相应的Guid&lt;-&gt;string之间的转换，这个根据错误列表一一修改即可。</p>
+<pre><code>this.lbluserId.Text=model.userId.ToString();//Guid拥有.ToString()方法
+model.userId = new Guid(userId)//new Guid(string)
+</code></pre>
+<p>3.修改DAL中数据读取/写入部分，其实这一部分还是Guid&lt;-&gt;string转换</p>
+<pre><code>//model.userId=ds.Tables[0].Rows[0][&quot;userId&quot;].ToString();
+//原始的加上了注释
+model.userId=new Guid(ds.Tables[0].Rows[0][&quot;userId&quot;].ToString());
+//使用new Guid(string)进行转换
+</code></pre>
+<p>经过上面3个部分，代码应该基本没有问题了，其实关键的还是Guid&lt;-&gt;string转换，跟着错误列表走一边就基本没有问题了。</p>
+<h2 id="新的问题">新的问题</h2>
+<p>发现用动软生成的Web层中的Add.aspx文件中，如果相对应数据库表有DataTime字段，就会运行时错误「基类包括字段「txtdatetime」，但其类
+型(System.Web.UI.WebControls.TextBox)与控件(System.Web.UI.HtmlControls.HtmlInputTe
+xt)的类型不兼容。」。</p>
+<p>我将<INPUT >中id修改后，能够运行Add.aspx，但是还是无法post提交，我正在尝试解决这个问题。这个问题与MemberShip无关，放在这里只
+是希望如果有过客了解Asp.NET，那么就提出一些建议。</p>
+<h2 id="相关链接">相关链接</h2>
+<p>GUID_百度百科：<a href="http://baike.baidu.com/view/185358.htm">http://baike.baidu.com/view/185358.htm</a></p>
+<p>SQL中的uniqueidentifier类型在c#中用什么类型表示：<a href="http://topic.csdn.net/t/20060918/17/5030341.html">http://topic.csdn.net/t/20060918/17/5030341.html</a></p>
+<p>关于ASP.NET中C#处理uniqueidentifier数据类型的问题：<a href="http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html">http://topic.csdn.net/u/20070517/17/9744a192-a062-4c51-bdf7-273b1480c1d6.html</a></p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>jQuery图片圈人功能在ASP.NET下的改进</title>
+      <link>https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/</link>
+      <pubDate>Wed, 02 Sep 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/09/jquery-to-achieve-the-school-network-image-circle-of-people-function-results/</guid>
+      <description>项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网&amp;quot;图片圈人 &amp;ldquo;功能效果》（强烈推荐这篇 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。 原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参</description>
+      <content:encoded><![CDATA[<p>项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《<a href="http://www.cnblogs.com/czy1121/archive/2009/03/03/1402105.html">JS实现校内网&quot;图片圈人 &ldquo;功能效果</a>》（强烈推荐这篇
+文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。</p>
+<h2 id="原始code">原始Code:</h2>
+<p>运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《<a href="http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.html">Javascript Resize和Drag类,基于jQuery</a>》
+）</p>
+<h3 id="样式">样式：</h3>
+<pre><code>#enclose-wrapper {
+	position: relative;
+	z-index: 0;
+	border: 4px solid #DDD;
+	background-color: #FFF;
+}
+#form-add-tag {
+	margin-left: 8px;
+	position: absolute;
+	padding: 5px 3px;
+	border: 1px solid #005EAC;
+	float: left;
+	display: inline;
+	background-color: #FFF;
+}
+#select-area-box {
+	position: absolute;
+	border: 5px solid #D8DFEA;
+	float: left;
+}
+#select-area {
+	position: relative;
+	padding: 0;
+	border: 2px solid #005EAC;
+	z-index: 15;
+	cursor: move;
+	background: url(spacer.gif) no-repeat -1px -1px;
+}
+#select-area-box span {
+	position: absolute;
+	border: 1px solid #005EAC;
+	width: 8px;
+	height: 8px;
+	background-color: #FFF;
+	font-size: 0;
+	z-index: 18;
+}
+#select-area-box span.north-west-resize {
+	cursor: nw-resize;
+	left: 0;
+	top: 0;
+	margin-left: -1px;
+	margin-top: -1px;
+}
+#select-area-box span.north-east-resize {
+	cursor: ne-resize;
+	right: 0;
+	top: 0;
+	margin-right: -1px;
+	margin-top: -1px;
+}
+#select-area-box span.south-west-resize {
+	cursor: sw-resize;
+	left: 0;
+	bottom: 0;
+	margin-left: -1px;
+	margin-bottom: -1px;
+}
+#select-area-box span.south-east-resize {
+	cursor: se-resize;
+	right: 0;
+	bottom: 0;
+	margin-right: -1px;
+	margin-bottom: -1px;
+}
+#enclose-wrapper ul#tag-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 13px;
+	float: left;
+}
+#enclose-wrapper ul#tag-list li {
+	list-style: none;
+	float: left;
+}
+#enclose-wrapper ul#tag-list li a {
+	color: #F60;
+}
+</code></pre>
+<h3 id="js实现代码">js实现代码：</h3>
+<pre><code>var photoTag = {
+    show: function(left, top, width, height, show_resize_square) {
+        $('#select-area-box').css({
+            'left': left - 7,
+            'top': top - 7
+        })
+        $('#select-area-box').width(width + 4).height(height + 4).show();
+        $('#select-area').width(width).height(height);
+        if (show_resize_square) $('#select-area-box span').show();
+        else $('#select-area-box span').hide();
+    },
+    hide: function() {
+        $('#select-area-box').hide();
+    },
+    add: function(tag_name, tag_value, left, top, width, height) {
+        var json = {
+            id: Math.floor(Math.random() * 10000)
+        };
+        var args = left + ',' + top + ',' + width + ',' + height;
+        var li = '
+
+  * ';         li += '';         li += '([删除](javascript:;))';         li += '';         li += '
+';
+        $('#tag-list').append(li);
+    },
+    remove: function(id, li) {
+        li.parentNode.removeChild(li);
+    }
+};
+$(function() {
+    var is_started = false;
+    // 选区左上角,和高宽
+    var info = {
+        'left': 0,
+        'top': 0,
+        'width': 0,
+        'height': 0
+    };
+    var origin = {
+        x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0),
+        y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0)
+    };
+    var dnr = new DragResize($('#select-area-box')[0], {
+        minWidth: 20,
+        minHeight: 20,
+        bound: {
+            left: 0,
+            top: 0,
+            right: 9999,
+            bottom: 9999
+        },
+        callback: function(i) {
+            // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和
+            info = {
+                'left': i.left + 7,
+                'top': i.top + 7,
+                'width': i.width - 4,
+                'height': i.height - 4
+            };
+            $('#select-area').width(info.width).height(info.height);
+            // 将添加标签的表单定位在选区的右边
+            $('#form-add-tag').css({
+                'left': i.left + i.width + 10,
+                'top': i.top
+            });
+        }
+    });
+    // 拖动选区
+    $('#select-area').mousedown(function(e) {
+        dnr.drag(e);
+    });
+    // 调整选区大小
+    $('#select-area-box span').mousedown(function(e) {
+        dnr.resize(e, this.className.replace('-resize', ''));
+    });
+    // 在图片上点击一下,开始获取选区
+    $('#photo-wrapper img').mousedown(function(e) {
+        if (is_started) return;
+        is_started = true;
+        var left = e.pageX - origin.x - 50 - 7;
+        var top = e.pageY - origin.y - 50 - 7;
+        info = {
+            'left': left + 7,
+            'top': top + 7,
+            'width': 100,
+            'height': 100
+        };
+        photoTag.show(info.left, info.top, info.width, info.height, true);
+        $('#form-add-tag').show().css({
+            'left': left + 100 + 4 + 10,
+            'top': top
+        });
+    });
+    // 鼠标进入图片内时,显示选区
+    $('#photo-wrapper img').bind('mouseenter',
+    function(e) {
+        if (!is_started) return;
+        photoTag.show(info.left, info.top, info.width, info.height, true);
+    });
+    // 确定添加一个标签,或取消
+    $('#btn-add-tag, #btn-cancel').click(function(e) {
+        if (this.id == 'btn-cancel') {
+            $('#form-add-tag, #select-area-box').hide();
+            is_started = false;
+            return false;
+        }
+        if (!$('#tag-name').val()) {
+            alert('标签名不能为空！');
+            return false;
+        }
+        // 添加标签
+        photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height);
+        // 隐藏选区和表单
+        $('#form-add-tag, #select-area-box').hide();
+        is_started = false;
+    });
+    photoTag.hide();
+});
+</code></pre>
+<h3 id="html代码">Html代码</h3>
+<pre><code>&lt;div id=&quot;enclose-wrapper&quot;&gt;
+  &lt;div id=&quot;photo-wrapper&quot; style=&quot;margin:15px auto;text-align:center;&quot;&gt; &lt;img id=&quot;photo&quot; src=&quot;heroes_s3_peter.jpg&quot; /&gt; &lt;/div&gt;
+  &lt;div&gt;
+    &lt;ul id=&quot;tag-list&quot;&gt;
+      &lt;li&gt;相片中：&lt;/li&gt;
+      &lt;li&gt; &lt;span onmouseover=&quot;photoTag.show(0,0,85,66);&quot; onmouseout=&quot;photoTag.hide();&quot;&gt;aaa&lt;/span&gt; (&lt;a href=&quot;javascript:;&quot; onclick=&quot;photoTag.remove('342',this.parentNode);&quot; onmouseover=&quot;photoTag.show(0,0,85,66);&quot; onmouseout=&quot;photoTag.hide();&quot;&gt;删除&lt;/a&gt;) &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;select-area-box&quot;&gt;
+    &lt;div id=&quot;select-area&quot;&gt;&lt;/div&gt;
+    &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;/div&gt;
+  &lt;div id=&quot;form-add-tag&quot; style=&quot;display:none;&quot;&gt; 输入标签：
+</code></pre>
+<input id="tag-name" name="tag-name" type="text" />
+<p><button id="btn-add-tag" type="button">确认</button></p>
+<p><button id="btn-cancel" type="button">取消</button></p>
+</div>
+</div>
+<h2 id="改进">改进</h2>
+<p>在Asp.NET下这段代码存在几个问题（毕竟这段代码应该只能算是Demo）：1.无法和服务器进行数据交互。2.无法在ASP.NET环境下获取相关id。3.只
+能提交到服务器一个&quot;标签&rdquo;，不足以完成需求。</p>
+<h3 id="修改后js">修改后js:</h3>
+<pre><code>var photoTag = {
+    show: function(left, top, width, height, show_resize_square) {
+        $('#select-area-box').css({
+            'left': left - 7,
+            'top': top - 7
+        })
+        $('#select-area-box').width(width + 4).height(height + 4).show();
+        $('#select-area').width(width).height(height);
+        if (show_resize_square) $('#select-area-box span').show();
+        else $('#select-area-box span').hide();
+    },
+    hide: function() {
+        $('#select-area-box').hide();
+    },
+    add: function(tag_name, tag_value, left, top, width, height) {
+        var json = {
+            id: Math.floor(Math.random() * 10000)
+        };
+        //$.getJSON('add_tag.php', {'name':tag_name,'left':left,'top':top,'width':width,'height':height}, function(json) {
+        //reflesh tag list
+        //    if(json.message) alert(json.message);
+        //    if(json.error == 0) {
+        var args = left + ',' + top + ',' + width + ',' + height;
+        var li = '
+
+  * ';         li += '';         li += '([删除](javascript:;))';         li += '';         li += '
+';
+        $('#tag-list').append(li);
+        //    }
+        //});
+    },
+    remove: function(id, li) {
+        //$.getJSON('remove_tag.php', {'tag_id':id}, function(json) {
+        //reflesh tag list
+        //    if(json.message) alert(json.message);
+        //    if(json.error == 0)
+        li.parentNode.removeChild(li);
+        //});
+    }
+};
+$(function() {
+    var is_started = false;
+    // 选区左上角,和高宽
+    var info = {
+        'left': 0,
+        'top': 0,
+        'width': 0,
+        'height': 0
+    };
+    var origin = {
+        x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0),
+        y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0)
+    };
+    var dnr = new DragResize($('#select-area-box')[0], {
+        minWidth: 20,
+        minHeight: 20,
+        bound: {
+            left: 0,
+            top: 0,
+            right: 9999,
+            bottom: 9999
+        },
+        callback: function(i) {
+            // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和
+            info = {
+                'left': i.left + 7,
+                'top': i.top + 7,
+                'width': i.width - 4,
+                'height': i.height - 4
+            };
+            $('#select-area').width(info.width).height(info.height);
+            // 将添加标签的表单定位在选区的右边
+            $('#form-add-tag').css({
+                'left': i.left + i.width + 10,
+                'top': i.top
+            });
+        }
+    });
+    // 拖动选区
+    $('#select-area').mousedown(function(e) {
+        dnr.drag(e);
+    });
+    // 调整选区大小
+    $('#select-area-box span').mousedown(function(e) {
+        dnr.resize(e, this.className.replace('-resize', ''));
+    });
+    // 在图片上点击一下,开始获取选区
+    $('#photo-wrapper img').mousedown(function(e) {
+        if (is_started) return;
+        is_started = true;
+        var left = e.pageX - origin.x - 50 - 7;
+        var top = e.pageY - origin.y - 50 - 7;
+        info = {
+            'left': left + 7,
+            'top': top + 7,
+            'width': 100,
+            'height': 100
+        };
+        photoTag.show(info.left, info.top, info.width, info.height, true);
+        $('#form-add-tag').show().css({
+            'left': left + 100 + 4 + 10,
+            'top': top
+        });
+    });
+    // 鼠标进入图片内时,显示选区
+    $('#photo-wrapper img').bind('mouseenter',
+    function(e) {
+        if (!is_started) return;
+        photoTag.show(info.left, info.top, info.width, info.height, true);
+    });
+    // 确定添加一个标签,或取消
+    $('#btn-add-tag, #btn-cancel').click(function(e) {
+        if (this.id == 'btn-cancel') {
+            $('#form-add-tag, #select-area-box').hide();
+            is_started = false;
+            return false;
+        }
+        if (!$('#tag-name').val()) {
+            alert('标签名不能为空！');
+            return false;
+        }
+        // 添加标签
+        photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height);
+        // 隐藏选区和表单
+        $('#form-add-tag, #select-area-box').hide();
+        is_started = false;
+    });
+    photoTag.hide();
+});
+</code></pre>
+<h3 id="html代码-1">Html代码：</h3>
+<pre><code>&lt;div id=&quot;enclose-wrapper&quot;&gt;
+  &lt;div id=&quot;photo-wrapper&quot;&gt;
+    &lt;asp:Image ID=&quot;ImgPhoto&quot; Visible=&quot;false&quot; runat=&quot;server&quot; /&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;ul id=&quot;tag-list&quot;&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;select-area-box&quot;&gt;
+    &lt;div id=&quot;select-area&quot;&gt; &lt;/div&gt;
+    &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;/div&gt;
+  &lt;div id=&quot;form-add-tag&quot; style=&quot;display: none;&quot;&gt; 名称：
+    &lt;input id=&quot;tag-name&quot; name=&quot;tag-name&quot; type=&quot;text&quot; /&gt;
+</code></pre>
+<p>数值：</p>
+<input id="tag-value" name="tag-value" type="text" />
+<p><button id="btn-add-tag" type="button"> 确认</button></p>
+<p><button id="btn-cancel" type="button"> 取消</button></p>
+</div>
+</div>
+<p>这边的主要修改在于把框子的右边的内容增加为名称和数值，方便数据的识别。</p>
+<h3 id="后台aspnet文件读取">后台ASP.NET文件读取</h3>
+<pre><code>string[] fields = Request.Params.GetValues(&quot;photoField&quot;);
+</code></pre>
+<p>这里呢，由于上传的元素<code>name</code>相同，都是<code>photoField</code>，所以通过<code>Params.GetValues()</code>就可以取出<code>string</code>数组，这样就
+能获取所有数据了。数据格式是&quot;<code>ddl:小楠,x:98.88333129882812,y:146,width:100,height:100</code>&ldquo;这种形式，依靠
+&ldquo;,&ldquo;分割。</p>
+<h3 id="相关下载">相关下载</h3>
+<p><a href="../../static/images/upload_dropbox/200909/DragResize.js">DragResize.js</a>
+<a href="../../static/images/upload_dropbox/200909/template.js">template.js</a>
+<a href="../../static/images/upload_dropbox/200909/css.css">css.css</a></p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>AjaxControlToolkit中CalendarExtender样式修正</title>
+      <link>https://blog.alswl.com/2009/08/ajaxcontroltoolkit-amendment-in-calendarextender-styles/</link>
+      <pubDate>Fri, 28 Aug 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/08/ajaxcontroltoolkit-amendment-in-calendarextender-styles/</guid>
+      <description>在The Official Microsoft ASP.NET Site上有一个很强大的控件[AJAX Control Toolkit](http://ajaxcontroltoolkit.codeplex.com/Release/ProjectRelease s.aspx?ReleaseId=27326)，其功能非常完整，几乎涵盖了表现层方面各种应用，使用也很方便，有中文详细支持，能给程序员很大帮助。 我现在使用的其中一款控件叫做CalendarExtender，其实是一个DatePicker（日期选择器），这个控件可以直接在Input控件上添加「扩展程序 」，就完成了所有工作。 让我意外的是，这个控件</description>
+      <content:encoded><![CDATA[<p>在<a href="http://www.asp.net">The Official Microsoft ASP.NET Site</a>上有一个很强大的控件[AJAX Control Toolkit](<a href="http://ajaxcontroltoolkit.codeplex.com/Release/ProjectRelease">http://ajaxcontroltoolkit.codeplex.com/Release/ProjectRelease</a>
+s.aspx?ReleaseId=27326)，其功能非常完整，几乎涵盖了表现层方面各种应用，使用也很方便，有中文详细支持，能给程序员很大帮助。</p>
+<p>我现在使用的其中一款控件叫做CalendarExtender，其实是一个DatePicker（日期选择器），这个控件可以直接在Input控件上添加「扩展程序
+」，就完成了所有工作。</p>
+<p><a href="../../static/images/upload_dropbox/200909/0e9aa6590cdc.jpg">
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200909/0e9aa6590cdc.jpg" alt="偏移"  />
+
+</a></p>
+<p>让我意外的是，这个控件在我的页面上工作时候样式似乎有些不正常。</p>
+<p>页面漂移了！我仔细检查了FireBug，发现下面的样式中的padding影响了其td。(页面可不是我设计的```)</p>
+<p><a href="../../static/images/upload_dropbox/200909/Firebug.jpg">
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200909/Firebug.jpg" alt="Firebug"  />
+
+</a></p>
+<p>如果修改CSS，就带来了大量的页面需要修改class/id，所以我只能修正CalendarExtender。（话说人家jQuery在这儿丝毫不受影响，全部元
+素都覆盖了样式，AJAX Control Toolkit在样式上还是不如jQuery）</p>
+<p>我在CalendarExtender外面包了一层div，再覆盖CalendarExtender的td属性。</p>
+<p>Html代码：</p>
+<pre><code>&lt;div&gt;
+&lt;asp:TextBox ID=&quot;TbBirthday&quot; runat=&quot;server&quot;&gt;&lt;/asp:TextBox&gt;
+&lt;cc1:CalendarExtender ID=&quot;TbBirthday_CldEx&quot; runat=&quot;server&quot; Enabled=&quot;True&quot; TargetControlID=&quot;TbBirthday&quot; FirstDayOfWeek=&quot;Monday&quot; Format=&quot;yyyy-MM-dd&quot; PopupPosition=&quot;BottomRight&quot;&gt;
+&lt;/cc1:CalendarExtender&gt;&lt;/div&gt;
+</code></pre>
+<p>CSS代码：</p>
+<pre><code>/*bugs for CalendarExtends*/
+.content .table .calendar td {/*.calender td 前的类是我网页中的上层元素*/
+margin: 0px;
+padding: 0px;
+}
+</code></pre>
+<p>这样一来，就可以解决这个问题了。</p>
+<p><a href="../../static/images/upload_dropbox/200909/e249092a13bc.jpg">
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200909/e249092a13bc.jpg" alt="修正"  />
+
+</a></p>
+<p>最后，附送一个汉化控件的技巧：其实下载后，已经有语言包在下载包里面，之所以没有启用中文，是因为没有打开ScriptManager的全球化控制，把Script
+Manager的EnableScriptGlobalization改为true即可。</p>
+<p>Asp.NET代码：</p>
+<pre><code>&lt;asp:ScriptManager ID=&quot;ScriptManager1&quot; runat=&quot;server&quot; EnableScriptGlobalization=&quot;True&quot;&gt;
+&lt;/asp:ScriptManager&gt;
+</code></pre>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>由No photo引起</title>
+      <link>https://blog.alswl.com/2009/08/no-photo-caused-by-the/</link>
+      <pubDate>Tue, 25 Aug 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/08/no-photo-caused-by-the/</guid>
+      <description>某个系统，检查用户照片，如果发现用户并没有设定照片就返回一张No Photo的图片。 返回数据库的图片代码比较格式化。 int Id = Int32.Parse(Request.Params.Get(&amp;quot;Id&amp;quot;)); string type = Request.Params.Get(&amp;quot;type&amp;quot;); BLL.Student bll = new JznuManager.BLL.Student(); student = new JznuManager.Model.Student(); student = bll.GetModel(Id); Response.ContentType = &amp;quot;image/jpeg&amp;quot;; Response.Cache.SetCacheability(HttpCacheability.Public); Response.BufferOutput = false; //输出图片文件二进制数据 Response.OutputStream.Write(student.entryPhoto, 0, (int)student.entryPhoto.Length); Response.End(); 而如果返回的图片为空时候，就需要填充原先的图片Img。 1.我起初设置了Img的默认背景background，当没有图片出来时候，就可以显示出原先背景，但很快发现这个办法的弊病，如果数据库图片过小则会</description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201612/404.png" alt="image"  />
+
+</p>
+<p>某个系统，检查用户照片，如果发现用户并没有设定照片就返回一张No Photo的图片。</p>
+<p>返回数据库的图片代码比较格式化。</p>
+<pre><code>int Id = Int32.Parse(Request.Params.Get(&quot;Id&quot;));
+string type = Request.Params.Get(&quot;type&quot;);
+BLL.Student bll = new JznuManager.BLL.Student();
+student = new JznuManager.Model.Student();
+student = bll.GetModel(Id);
+Response.ContentType = &quot;image/jpeg&quot;;
+Response.Cache.SetCacheability(HttpCacheability.Public);
+Response.BufferOutput = false;
+//输出图片文件二进制数据
+Response.OutputStream.Write(student.entryPhoto, 0, (int)student.entryPhoto.Length);
+Response.End();
+</code></pre>
+<p>而如果返回的图片为空时候，就需要填充原先的图片Img。</p>
+<p>1.我起初设置了Img的默认背景background，当没有图片出来时候，就可以显示出原先背景，但很快发现这个办法的弊病，如果数据库图片过小则会导致背景图片
+露出来。</p>
+<p>2.我考虑在GetPhoto.aspx这个方法内写入判断，在catch中读取一个本地图片文件，再转化为BitMap，再设置content-
+type，用Response.OutputStream输出</p>
+<p>3.上面这个方法调试了很久，老是参数错误，最后我突然想起来一个方法。</p>
+<pre tabindex="0"><code>Response.Redirect(&#34;./Images/nophot.gif&#34;);
+</code></pre><p>这几句话就能解决上述所有问题。</p>
+<p>呃，有时候花费了好久，饶了很多弯的问题，其实好好想想反而会很简单。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>课程设计作品大登场</title>
+      <link>https://blog.alswl.com/2008/07/course-design-works-great-debut/</link>
+      <pubDate>Fri, 11 Jul 2008 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2008/07/course-design-works-great-debut/</guid>
+      <description>本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉 这个系统我还是很得意的，是我大二时候学C#时候巅峰之作，那时候刚学完网络， 还没开任何网络编程，那时候第一次接触SourceForge，参考了好多英文资料。 AzaChat管理系统 Powered by DDD &amp;amp; King ZD 系统功能 登录，注册，群聊，私聊，踢人，聊天字体设置，字体颜色，图片插入，图文混编，音效播放，抖动窗体(模仿QQ) 聊天人员管理，数据库</description>
+      <content:encoded><![CDATA[<p>本文乃08-09校内日志存档，我一起给发布了，如果给大家阅读造成困难，我深感抱歉</p>
+<p>这个系统我还是很得意的，是我大二时候学C#时候巅峰之作，那时候刚学完网络，
+还没开任何网络编程，那时候第一次接触SourceForge，参考了好多英文资料。</p>
+<hr />
+<h1 id="azachat管理系统">AzaChat管理系统</h1>
+<p>Powered by DDD &amp; King ZD</p>
+<h2 id="系统功能">系统功能</h2>
+<ul>
+<li>登录，注册，群聊，私聊，踢人，聊天字体设置，字体颜色，图片插入，图文混编，音效播放，抖动窗体(模仿QQ)</li>
+<li>聊天人员管理，数据库管理，数据库查找功能</li>
+<li>皮肤更换功能</li>
+</ul>
+<h2 id="系统说明">系统说明</h2>
+<p>这个系统是我这个学期课程设计，花了我将近一个多月的时间(期末考试阶段，很忙 - -#)，在写之前，我完全不懂数据库和网络传输，C#和面向对象思想也是这学期刚开的。虽然Bug还很多，但我仍然写出来了，很是开心。</p>
+<p>上传到CSDN，希望对大家有帮助。
+Aza的来源是因为一个笑话，一个女人是500只鸭子，我想到聊天室就应该那种AzaAza的聊天声音，嘿嘿。</p>
+<p>代码我给，论文自己写。。。看懂了别人的代码就是你的，看不懂，还是我的。。。
+写了很多注释，相信对大家有帮助的</p>
+<h2 id="版本">版本</h2>
+<p>我是在VS2008下面开发的，下载包里面自带转换器可以将项目文件转换到VS2005。
+Sql server的版本是vs自带的sql server 2005 express</p>
+<h2 id="数据库说明">数据库说明</h2>
+<ol>
+<li>将自带的两个数据库文件User.mdf和Server_log附加到数据库</li>
+<li>将数据库登录方式打开为Windows身份验证和Sql Server验证</li>
+<li>sa的密码可以自己改</li>
+<li>如果想在数据库服务器和聊天服务器分开的话，必须将数据库服务器的远程连接选项打开</li>
+</ol>
+<p>更详细的设置方式可以去查CSDN</p>
+<pre tabindex="0"><code>服务器帐号：sa
+密码：123456
+
+管理员帐号：admin
+密码：admin
+
+用户帐号：123
+密码：123
+</code></pre><p>更多帐号可以注册和去服务器端管理。</p>
+<p>客户端普通帐号可以随时注册，服务器端必须是管理员帐号登录。
+用起来很简单，登录进去就知道了。</p>
+<p>PS:程序在.Net Framework2.0下写，请确保电脑已经有.Net Framework2.0或者更高版本，否则会报错</p>
+<p>Powered by DDD</p>
+<p>E-mail:alswlwangzi(a)163.com</p>
+<h2 id="更新">更新</h2>
+<p>2008.7.11更新</p>
+<p>更新内容：</p>
+<p>V1.3版本更新：修改图片传输大小限制Bug,增强数据管理删选功能，修改在线用户查看，增加查看对方IP地址和连接端口功能</p>
+<p>V1.2」版本更新：加入远程数据库登录管理功能</p>
+<p>V1.1版本更新：加入服务器数据管理，修改增加删除数据保存的一些Bug</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A972857781312POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A983104784976POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A979487865902POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A976688814655POT.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A039328251736CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A037255836541CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A016564641801CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A014442672895CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A009044384619CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A004793674766CUC.jpg" alt="img"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200910/A002612293529CUC.jpg" alt="img"  />
+
+</p>
+<p>终于写完了，虽然很累，不过真的很开心。</p>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

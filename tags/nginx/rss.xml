@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>nginx on Log4D</title>
+    <link>https://blog.alswl.com/tags/nginx/</link>
+    <description>Recent content in nginx on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Mon, 26 Dec 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/nginx/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用MoinMoin作为个人KMS</title>
+      <link>https://blog.alswl.com/2011/12/moinmoin-kms/</link>
+      <pubDate>Mon, 26 Dec 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/12/moinmoin-kms/</guid>
+      <description>去年9月份时候，我写过一篇《我所使用的知识管理系统》 来介绍我使用的KMS系统。当时经过我层层筛选之后，我选用了Wiz作为我的KMS。 一年多过去了，Wiz在Windows下面工作的非常不错，Wiz团队里陆续推出了iOS / Android / Web版本。我的Wiz收藏的内容也增加到近1000篇。 此时我遇到了KMS再选型的问题，原因很简单：我全线转换到Linux平台， Wiz不符合我的要求了。 我重新整理一下我要求KMS的</description>
+      <content:encoded><![CDATA[<p>去年9月份时候，我写过一篇《<a href="http://log4d.com/2010/09/my-kms">我所使用的知识管理系统</a>》
+来介绍我使用的KMS系统。当时经过我层层筛选之后，我选用了Wiz作为我的KMS。</p>
+<p>一年多过去了，Wiz在Windows下面工作的非常不错，Wiz团队里陆续推出了iOS / Android /
+<a href="http://service.wiz.cn/web/">Web</a>版本。我的Wiz收藏的内容也增加到近1000篇。</p>
+<p>此时我遇到了KMS再选型的问题，原因很简单：我全线转换到Linux平台， Wiz不符合我的要求了。</p>
+<p>我重新整理一下我要求KMS的特性：</p>
+<ul>
+<li>跨平台：Linux / Web / iOS / Android / Windows</li>
+<li>数据保存格式：移植方便，将图片保存到本地</li>
+<li>数据采集方式：支持网络直接拷贝复制</li>
+<li>数据索引：支持分类 + tag</li>
+<li>协同工作：方便的分享机制</li>
+<li>免费</li>
+</ul>
+<p>经过我历时N月的搜寻筛选，MoinMoin Wiki中标了！</p>
+<h2 id="1-关于moinmoin">1. 关于MoinMoin</h2>
+<p>MoinMoin是使用Python编写的Wiki实现，MoinMoin当前版本1.9。</p>
+<p>MoinMoin的优点是：</p>
+<ul>
+<li>安装简单;</li>
+<li>支持中文全文检索；</li>
+<li>汉化较好；</li>
+<li>不依赖外界的数据库, 使用纯文本保存, 备份非常容易, 直接复制即可。</li>
+<li>支持从html转换到MoinMoin Wiki格式，纯文本的wiki格式比html来的更纯粹，只保存需要的数据，而不保存冗余的样式，MoinMoin这点做的非常好，支持几乎全部html标记的转换。</li>
+</ul>
+<h2 id="2-安装moinmoin">2. 安装MoinMoin</h2>
+<p>MoinMoin基于Python，因此安装比基于php的MediaWiki麻烦一点。</p>
+<p>你也可以参考<a href="http://moinmo.in/HowTo">官方安装指导（英文）</a>，里面有 Ubuntu / CentOS / SuSE
+等系统的安装方法。</p>
+<h3 id="21-使用moinmoin桌面版最简单">2.1. 使用MoinMoin桌面版（最简单）</h3>
+<p>好在有MoinMoin下载包里面包含了简单的可执行版本，只需3个步骤就可以运行了。</p>
+<ol>
+<li>下载 MoinMoin <a href="https://moinmo.in/MoinMoinDownload">MoinMoinDownload - MoinMoin</a></li>
+<li>解压缩到合适的目录（安装目录）</li>
+<li>运行目录下面的 <code>wikiserver.py</code>
+<ol>
+<li>Linux/Unix：在命令行里面运行 <code>wikiserver.py</code></li>
+<li>Mac：在 <code>wikiserver.py</code> 上面点击右键，选择 <code>open with...</code> - <code>All Applications</code> - <code>Always Open With</code> - <code>Terminal.app</code></li>
+<li>Windows：下载 <a href="http://www.python.org/download/">Python</a> （2.5-2.6）， 安装之后双击 <code>wikiserver.py</code> 运行。</li>
+</ol>
+</li>
+</ol>
+<p>安装好之后，打开浏览器，在地址栏输入 <a href="http://localhost:8080/">http://localhost:8080/</a> 即可访问。</p>
+<p>PS：如果你将MoinMoin安装的优盘，甚至可以做成移动知识库哦~</p>
+<p>更多可以参考 <a href="http://moinmo.in/DesktopEdition">官方DesktopEdition帮助文档（英文）</a></p>
+<h3 id="22-nginxuwsgi方式程序员适用">2.2. nginx+uWsgi方式（程序员适用）</h3>
+<p><code>wikiserver.py</code> 虽然可以运行，但是作为开发者，我当然要使用效率更高的方式。 运行Python Web应用需要
+<code>Appach / ngnix + CGI / FastCGI / uWSGI</code> 环境。 我这里使用nginx + uWSGI进行环境配置。</p>
+<p>Google了N多资料之后，这篇 <a href="http://typedef.me/2011/08/30/archlinux-nginx-uwsgi-moinmoin-setup">ArchLinux 下使用 Nginx + uWSGI 部署 MoinMoin</a>
+最是详细，另外还可以参考 <a href="http://garfileo.is-programmer.com/2011/4/24/run-moinmoin-on-uwsgi-and-nginx.26347.html">运行在 nginx 与 uwsgi 之上的 moinmoin</a>。</p>
+<p>我将主要步骤和我的一些修改列出来。</p>
+<h4 id="221-安装需要软件">2.2.1. 安装需要软件</h4>
+<p>我当前系统是Arch，运行一下命令安装，其他系统也类似</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pacman -S nginx moinmoin
+</span></span><span class="line"><span class="cl">yaourt uwsgi
+</span></span></code></pre></div><h4 id="222-配置moinmoin">2.2.2. 配置MoinMoin</h4>
+<p>默认情况下，moinmoin 被安装在了 <code>/usr/lib/python2.7/site-packages/MoinMoin</code> 和
+<code>/usr/moin/share</code> 这两个目录下。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /usr/share/moin/
+</span></span><span class="line"><span class="cl">ln -s /usr/share/moin/server/moin.wsgi .
+</span></span><span class="line"><span class="cl">ln -s /usr/share/moin/config/wikiconfig.py .
+</span></span></code></pre></div><h4 id="223-配置nginx">2.2.3. 配置nginx</h4>
+<p>在上文的基础上，我做了一些小修改，我的nginx站点配置如下，我没有使用端口9090 作为uwsgi的监听端口，而是使用了UNIX
+Sock，这样相对安全一些。</p>
+<p>ps：貌似这个版本的uwsgi 0.9.9.2有点小问题，无法在 <code>/var/run</code> 里面创建sock， 我只能将 <code>uwsgi.sock</code> 放在
+<code>/tmp</code> 里面</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">listen</span>       <span class="mi">80</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">server_name</span>  <span class="s">wiki.localhost</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kn">location</span> <span class="s">/</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kn">include</span> <span class="s">uwsgi_params</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">#uwsgi_pass 127.0.0.1:9090;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kn">uwsgi_pass</span> <span class="s">unix:/tmp/uwsgi.sock</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="kn">uwsgi_param</span> <span class="s">UWSGI_PYHOME</span> <span class="s">/usr/lib/python2.7/site-packages/MoinMoin</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="kn">uwsgi_param</span> <span class="s">UWSGI_CHDIR</span> <span class="s">/usr/share/moin</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="kn">uwsgi_param</span> <span class="s">UWSGI_SCRIPT</span> <span class="s">moin_wsgi</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># vim: set ft=conf:
+</span></span></span></code></pre></div><h4 id="224-配置启动文件">2.2.4. 配置启动文件</h4>
+<p>因为使用 UNIX Sock 连接，所以 <code>/etc/rc.d/uwsgi</code> 启动文件也略做修改（ Ubunt 的启动配置文件在
+<code>/etc/init.d/</code> 下面）， 加入了 <code>SOCK</code> ，同时我为 uwsgi 指定运行用户 <code>http</code> ，避免root启动带来的安全隐患。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">#PORT=9090</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">SOCK</span><span class="o">=</span>/tmp/uwsgi.sock
+</span></span><span class="line"><span class="cl"><span class="nv">PROCESSES</span><span class="o">=</span><span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="nv">USER</span><span class="o">=</span><span class="nv">httpLOG</span><span class="o">=</span>/var/log/uwsgi.log
+</span></span><span class="line"><span class="cl"><span class="nv">PID</span><span class="o">=</span><span class="sb">`</span>pidof -o %PPID /usr/bin/uwsgi<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">. /etc/rc.conf
+</span></span><span class="line"><span class="cl">. /etc/rc.d/functions
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> in
+</span></span><span class="line"><span class="cl">	start<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		stat_busy <span class="s2">&#34;Starting uwsgi&#34;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$PID</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">			stat_busy <span class="s2">&#34;uwsgi is already running&#34;</span>
+</span></span><span class="line"><span class="cl">			stat_die
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">			<span class="c1">#uwsgi --uid $USER -s &#34;:$PORT&#34; -M -p $PROCESSES -d $LOG &amp;&gt; /dev/null # use socket port</span>
+</span></span><span class="line"><span class="cl">			uwsgi --uid <span class="nv">$USER</span> --socket <span class="nv">$SOCK</span> -M -p <span class="nv">$PROCESSES</span> -d <span class="nv">$LOG</span> <span class="p">&amp;</span>&gt; /dev/null <span class="c1"># use unix sock</span>
+</span></span><span class="line"><span class="cl">			add_daemon uwsgi
+</span></span><span class="line"><span class="cl">			stat_done
+</span></span><span class="line"><span class="cl">		<span class="k">fi</span>
+</span></span><span class="line"><span class="cl">		<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">	stop<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		stat_busy <span class="s2">&#34;Stopping uwsgi&#34;</span>
+</span></span><span class="line"><span class="cl">		killall -QUIT uwsgi <span class="p">&amp;</span>&gt; /dev/null
+</span></span><span class="line"><span class="cl">		rm_daemon uwsgi
+</span></span><span class="line"><span class="cl">		stat_done
+</span></span><span class="line"><span class="cl">		<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">	restart<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">$0</span> stop
+</span></span><span class="line"><span class="cl">		sleep <span class="m">1</span>
+</span></span><span class="line"><span class="cl">		<span class="nv">$0</span> start
+</span></span><span class="line"><span class="cl">		<span class="p">;;</span>
+</span></span><span class="line"><span class="cl">	*<span class="o">)</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">echo</span> <span class="s2">&#34;usage: </span><span class="nv">$0</span><span class="s2"> {start|stop|restart}&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">esac</span>
+</span></span><span class="line"><span class="cl"><span class="nb">exit</span> <span class="m">0</span>
+</span></span></code></pre></div><h2 id="3-image2attach">3. Image2Attach</h2>
+<p>去年我选择Wiz而不选择Wiki类产品时候，是考虑到一个图片保存本地化的问题。 即保存一篇网页时候，要将里面的图片保存到本地，而不是使用链接方式保存，
+因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。</p>
+<p>Wiz使用的方案是使用mht格式将图片保存在问题，而大部分 Wiki，包括 MoinMoin 都以 文本的形式保存数据，那就无法保存远程图片了。</p>
+<p>经我研究，MoinMoin 中有附件的方法可以保存文件，并且当这种附件存放的是图片文件时， 也可以直接使用 <code>{{attachment:xxx.jpg}}</code>
+这样的 Wiki 语法来查看图片。</p>
+<p>我尝试在 MoinMoin 插件库里面找将远程图片本地化的插件未果，于是就花了一个星期左右 时间写了一个实现这样功能的插件 Image2Attach。</p>
+<p>更多使用可以参考这篇文章 <a href="http://log4d.com/2011/12/moinmoin-plugin-image2attach">MoinMoin plugin: image2attach v0.0.2 released</a></p>
+<p>所以说，当程序员就是好，功能没有就自己实现呗。</p>
+<h2 id="4-moinmoin的简单上手">4. MoinMoin的简单上手</h2>
+<p><a href="http://zhanggang.net/">@张刚</a> 同学发邮件给我和我交流了两个问题，我顺便整理到这里。（2011-12-28更新）</p>
+<h3 id="安装语言包">安装语言包</h3>
+<ul>
+<li>首先请确保当前登录账户是超级用户，超级用户设置在 <code>/usr/share/moin/wikiconfig.py</code> （可能路径有所差异）里面的 <code>superuser = [u&quot;yourid&quot;]</code> ，加入你需要设定的用户id</li>
+<li>中文界面会根据浏览器语言设定获取，而相应的中文帮助文件默认没有安装，我建议安装。安装步骤如下：
+<ul>
+<li>访问http://localhost/LanguageSetup，里面有安装文档链接http://localhost/LanguageSetup?action=language_setup</li>
+<li>在http://wiki.localhost/LanguageSetup?action=language_setup中，选择 <code>Simplified_Chinese</code> 点击最下面 <code>all_pages</code></li>
+<li>同时我也建议安装英文版本的 <code>all_pages</code> ，因为中文有一些翻译不全。</li>
+</ul>
+</li>
+</ul>
+<p>更多的中文信息你可以访问<a href="http://master.moinmo.in/%E9%A6%96%E9%A1%B5">MoinMoin主版本中文网站</a>。</p>
+<h3 id="如何加入内容">如何加入内容</h3>
+<p>下面是我自己总结的步骤，目前工作的还不错。</p>
+<ul>
+<li>进入新页面http://localhost/newpage，如果不存在就会创建新页面</li>
+<li>默认是文本模式编辑器，切换到图形编辑模式（默认编辑器可以在个人设置里面修改）</li>
+<li>从某个网页粘帖内容到图形编辑模式（这个图形编辑器是CKEditor的精简版）。</li>
+<li>查看图形编辑器原始码，再返回&quot;所见即所得&quot;状态（这个步骤可以去除一些空格）</li>
+<li>返回文本模式编辑器，MoinMoin会自动转换html-&gt;wiki（目前我遇到3个bug，中文开头空格/BR换行/fieldset，前两个我已经修 复，diff文件在<a href="../../static/images/upload_dropbox/201112/moinmoin.diff">diff</a>）</li>
+<li>人工审核一下wiki，也顺便仔细看看文章内容</li>
+<li>加入Category，预览，保存</li>
+</ul>
+<h2 id="5-moinmoin的一些修改">5. MoinMoin的一些修改</h2>
+<p>在使用MoinMoin这段时间，我发现了一些小问题，就对源码做了一些小修改。 当然如果你觉得麻烦，不做这些修改也一样可以使用的很好。</p>
+<p>我修改了 <code>/usr/lib/python2.7/site-packages/MoinMoin/converter/text_html_text_moin_wiki.py</code> 这个文件。点击 <a href="../../static/images/upload_dropbox/201112/moinmoin.diff">diff文件</a>下载。</p>
+<h2 id="6-wiz转moinmoin经验">6. wiz转MoinMoin经验</h2>
+<p>Wiz中数据存储格式其实是mht，微软的鸟东西，数据转换颇为不方便。</p>
+<p>第一种方法是借助Wiz Web服务，Wiz小组推出的 <a href="http://service.wiz.cn/web">Web服务</a> 可以很方便的查看所有同步
+过的内容，里面就是标准的html代码了，直接可以复制粘帖。Wiz的Web端图片也不用 Cookie认证，取到图片地址就可以抓取了。</p>
+<p>另一种办法就是使用Wiz的导出功能，导出成mht格式， 然后使用MoinMoin站点提供的插件
+<a href="http://moinmo.in/MicrosoftWordConverter">Word2Moin</a> 脚本进行转换。</p>
+<p>我使用的方法是第一种。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>128M内存VPS LNMP安装优化小记</title>
+      <link>https://blog.alswl.com/2011/11/vps-lnmp-setup-config/</link>
+      <pubDate>Sun, 06 Nov 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/11/vps-lnmp-setup-config/</guid>
+      <description>重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化） 这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。 现在使用的 VPS 是 PhotonVPS 。 月付5.95美元，使用优惠码 TENOFF 或 PHOTONLEB 可以打7折， 换算汇率之后是26人民币每月。 这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨， 我终于配置的可用率比较高，使用 siege -c 100 -t 100 时候可以保持 100%</description>
+      <content:encoded><![CDATA[<blockquote>
+<p>重要通知：Log4D 的域名由 <a href="http://dddspace.com">http://dddspace.com</a> 迁移到 <a href="http://log4d.com">http://log4d.com</a> 。
+订阅地址现在改为 <a href="http://log4d.com/feed">http://log4d.com/feed</a> 和
+<a href="http://feeds.feedburner.com/dddspace">http://feeds.feedburner.com/dddspace</a> 。（FeedBurner 的地址未发生变化）</p>
+</blockquote>
+<p>这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。
+现在使用的 VPS 是 <a href="http://www.photonvps.com/billing/aff.php?aff=2188">PhotonVPS</a> 。</p>
+<p>月付5.95美元，使用优惠码 <code>TENOFF</code> 或 <code>PHOTONLEB</code> 可以打7折，
+换算汇率之后是26人民币每月。</p>
+<p>这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨，
+我终于配置的可用率比较高，使用 <code>siege -c 100 -t 100</code> 时候可以保持 100% 可用率。
+（其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。</p>
+<!-- more -->
+<h1 id="安装-lnmp">安装 LNMP</h1>
+<h2 id="linux-发行版选用">Linux 发行版选用</h2>
+<p>CentOS 据说有较好的安全性和性能，我个人更喜欢 Arch。查询了相关资料，
+在生产环境使用 Arch 的似乎不多。</p>
+<p>CentOS 里面的包比较旧，不像 Arch 里面，滚动最新。
+所以这里需要用到的LNMP大部分都需要自行编译。</p>
+<h3 id="nginx-安装">Nginx 安装</h3>
+<p>Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。</p>
+<p>目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。</p>
+<p>准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers
+</span></span></code></pre></div><p>下载Nginx</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /tmp
+</span></span><span class="line"><span class="cl">wget http://nginx.org/download/nginx-1.0.9.tar.gz
+</span></span></code></pre></div><p>因为我们需要安装使用https，所以需要SSL模块支持，我们需要OpenSSL源码。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://openssl.org/source/openssl-1.0.0c.tar.gz
+</span></span><span class="line"><span class="cl">tar zxvf openssl-1.0.0c.tar.gz
+</span></span></code></pre></div><p>编译Nginx，使用www作为用户和用户组，同时加入http ssl模块支持。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./configure --user<span class="o">=</span>www --group<span class="o">=</span>www --prefix<span class="o">=</span>/usr/local/nginx --with-http_ssl_module --with-openssl<span class="o">=</span>/tmp/openssl-1.0.0c/
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">make install
+</span></span></code></pre></div><p>这样nginx就安装完了，执行 <code>/usr/local/ngxin/bin/nginx -V</code> 可以查看nginx信息。</p>
+<blockquote>
+<p>nginx: nginx version: nginx/1.0.9 nginx: built by gcc 4.4.4 20100726 (Red Hat 4.4.4-13) (GCC) nginx: TLS SNI support enabled nginx: configure arguments: &ndash;user=www &ndash;group=www &ndash;prefix=/usr/local/nginx &ndash;with-http_ssl_module &ndash;with-openssl=/tmp/openssl-1.0.0c/</p>
+</blockquote>
+<p>为nginx 创建软链接</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
+</span></span></code></pre></div><p>ngxin 启动关闭</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nginx <span class="c1">#启动</span>
+</span></span><span class="line"><span class="cl">nginx -s stop <span class="c1">#关闭</span>
+</span></span><span class="line"><span class="cl">nginx -s reload <span class="c1">#重启</span>
+</span></span></code></pre></div><p>运行 <code>nginx</code> 就可以启动服务器了，在浏览器输入服务器ip， 能够看见 <code>nginx</code> 的字样。</p>
+<h3 id="mysql安装">MySQL安装</h3>
+<p>MySQL我没有自行编译，使用CentOS官方源里面的Mysql。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install -y mysql-server
+</span></span></code></pre></div><h3 id="php安装">PHP安装</h3>
+<p>PHP需要自行编译，原因是Nginx使用Fast-CGI调用PHP服务。
+我们需要php-cgi常驻后台。在PHP 5.3.3之后，
+一个名为php-fpm的小东西被php核心加入。这个php-fpm可以常驻后台响应Fast-CGI请求。</p>
+<p>悲剧的是，截至目前位置，CentOS官方源里面PHP版本是5.3.2，
+好死不死的差一个小数点。只能自行编译了。</p>
+<p>安装libmcrypt，这是某个依赖包，另外phpmyadmin也需要这个模块。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://pkgs.repoforge.org/libmcrypt/libmcrypt-2.5.71.2.el6.rf.i686.rpm
+</span></span><span class="line"><span class="cl">ls
+</span></span><span class="line"><span class="cl">rpm -i libmcrypt-2.5.7-1.2.el6.rf.i686.rpm
+</span></span><span class="line"><span class="cl">rpm -i --force libmcrypt-2.5.7-1.2.el6.rf.i686.rpm
+</span></span></code></pre></div><p>安装php 5.3.8</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./configure --prefix<span class="o">=</span>/usr/local/php --with-config-file-path<span class="o">=</span>/usr/local/php/etc --with-mysql<span class="o">=</span>/usr/bin/ --with-mysqli<span class="o">=</span>/usr/bin/mysql_config --with-iconv-dir<span class="o">=</span>/usr/local/libiconv --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir<span class="o">=</span>/usr --enable-xml --with-curl --with-curlwrappers --with-mhash --with-mcrypt --with-gd --enable-gd-native-ttf --with-xsl --with-openssl --with-ldap --with-ldap-sasl --with-xmlrpc --without-pear --enable-zip --enable-soap --enable-mbstring --enable-ftp --enable-sockets --enable-pcntl --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --disable-rpath --enable-mbregex --enable-safe-mode --enable-fpm --with-fpm-user<span class="o">=</span>www --with-fpm-group<span class="o">=</span>www
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">make <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">make install
+</span></span></code></pre></div><h2 id="运行lamp">运行LAMP</h2>
+<p>现在环境已经安装好了，我们稍作配置，然后启动系统。</p>
+<p>在nginx的 <code>/usr/local/nginx/html/</code> 下创建 <code>info.php</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&lt;?php info<span class="o">()</span> ?&gt;
+</span></span></code></pre></div><p>配置nginx，编辑 <code>/usr/local/nginx/conf/nginx.conf</code> 其中的 <code>server</code> 段。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">location ~ <span class="se">\.</span>php$ <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        root           html<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_pass   unix:/var/run/php-cgi.sock<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_index  index.php<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_param  SCRIPT_FILENAME  /usr/local/nginx/html/<span class="nv">$fastcgi_script_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        include        fastcgi_params<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>配置php-fpm，编辑 <code>/usr/local/php/etc/php-fpm.conf</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">listen</span> <span class="o">=</span> /var/run/php-cgi.sock
+</span></span></code></pre></div><p>运行 <code>nginx -s reload</code> 重新启动nginx服务器。运行 <code>/etc/init.d/php-fpm start</code>
+启动php-cgi监听。</p>
+<p>在浏览器输入 <code>your.domain/info.php</code> 会出现php信息，成功的话，
+就说明LNMP配置成功了。</p>
+<h2 id="小内存主机配置">小内存主机配置</h2>
+<p>经过上面的步骤，已经可以成功的配置完LNMP系统，但是默认的配置情况下面，
+内存会相当吃紧。一会会就系统内存爆掉，Nginx会频繁报出
+<code>The page you are looking for is temporarily unavailable. Please try again later.</code>
+，不配置就不能用啊。</p>
+<h3 id="nginx配置">Nginx配置</h3>
+<p>我的nginx优化配置如下，主要是配置 <code>worker_processes</code> 数量和
+<code>fastcgi</code> 、 <code>gzip</code> 缓存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user  www www
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">worker_processes 1<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">events <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	worker_connections 1024<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	use epoll<span class="p">;</span> <span class="c1">#使用高效率的epool模式</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">http <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	include mime.types<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	default_type application/octet-stream<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	sendfile on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	keepalive_timeout <span class="m">65</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 下面是配置缓存</span>
+</span></span><span class="line"><span class="cl">	client_header_buffer_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	large_client_header_buffers <span class="m">4</span> 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	fastcgi_connect_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_send_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_read_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_buffer_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_buffers <span class="m">4</span> 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_busy_buffers_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_temp_file_write_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 下面是弃用gzip压缩缓存</span>
+</span></span><span class="line"><span class="cl">	gzip on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_min_length 1k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_buffers <span class="m">4</span> 16k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_http_version 1.0<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_comp_level 2<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_types text/plain application/x-javascript text/css application/xml<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_vary on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">#server 的内容我就不列出了</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#….</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span> 
+</span></span></code></pre></div><h3 id="mysql配置">MySQL配置</h3>
+<p>mysql的配置文件在 <code>/etc/my.cnf</code> ，我们需要配置两样东西，
+一个是禁用innodb，因为innodb比较消耗内存；另外是配置mysql缓存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[mysql]</span>
+</span></span><span class="line"><span class="cl"><span class="na">no-auto-rehash</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqld]</span>
+</span></span><span class="line"><span class="cl"><span class="na">datadir</span><span class="o">=</span><span class="s">/var/lib/mysql</span>
+</span></span><span class="line"><span class="cl"><span class="na">socket</span><span class="o">=</span><span class="s">/var/lib/mysql/mysql.sock</span>
+</span></span><span class="line"><span class="cl"><span class="na">user</span><span class="o">=</span><span class="s">mysql</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Disabling symbolic-links is recommended to prevent assorted security risks</span>
+</span></span><span class="line"><span class="cl"><span class="na">symbolic-links</span><span class="o">=</span><span class="s">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">open_files_limit</span> <span class="o">=</span> <span class="s">600</span>
+</span></span><span class="line"><span class="cl"><span class="na">back_log</span> <span class="o">=</span> <span class="s">20</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_connections</span> <span class="o">=</span> <span class="s">100</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_connect_errors</span> <span class="o">=</span> <span class="s">200</span>
+</span></span><span class="line"><span class="cl"><span class="na">table_cache</span> <span class="o">=</span> <span class="s">60</span>
+</span></span><span class="line"><span class="cl"><span class="na">external-locking</span> <span class="o">=</span> <span class="s">FALSE</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_allowed_packet</span> <span class="o">=</span> <span class="s">16M</span>
+</span></span><span class="line"><span class="cl"><span class="na">sort_buffer_size</span> <span class="o">=</span> <span class="s">128K</span>
+</span></span><span class="line"><span class="cl"><span class="na">join_buffer_size</span> <span class="o">=</span> <span class="s">128K</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_cache_size</span> <span class="o">=</span> <span class="s">10</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_concurrency</span> <span class="o">=</span> <span class="s">8</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_size</span> <span class="o">=</span> <span class="s">0M</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_limit</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_min_res_unit</span> <span class="o">=</span> <span class="s">2k</span>
+</span></span><span class="line"><span class="cl"><span class="na">default_table_type</span> <span class="o">=</span> <span class="s">MyISAM</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_stack</span> <span class="o">=</span> <span class="s">192K</span>
+</span></span><span class="line"><span class="cl"><span class="na">transaction_isolation</span> <span class="o">=</span> <span class="s">READ-UNCOMMITTED</span>
+</span></span><span class="line"><span class="cl"><span class="na">tmp_table_size</span> <span class="o">=</span> <span class="s">512K</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_heap_table_size</span> <span class="o">=</span> <span class="s">32M</span>
+</span></span><span class="line"><span class="cl"><span class="na">long_query_time</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">log_long_format</span>
+</span></span><span class="line"><span class="cl"><span class="na">server-id</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">binlog_cache_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_binlog_cache_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_binlog_size</span> <span class="o">=</span> <span class="s">512M</span>
+</span></span><span class="line"><span class="cl"><span class="na">expire_logs_days</span> <span class="o">=</span> <span class="s">7</span>
+</span></span><span class="line"><span class="cl"><span class="na">key_buffer_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">read_buffer_size</span> <span class="o">=</span> <span class="s">1M</span>
+</span></span><span class="line"><span class="cl"><span class="na">read_rnd_buffer_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">bulk_insert_buffer_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_sort_buffer_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_max_sort_file_size</span> <span class="o">=</span> <span class="s">10G</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_max_extra_sort_file_size</span> <span class="o">=</span> <span class="s">10G</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_repair_threads</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_recover</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">skip-innodb #禁用innodb数据库引擎</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqld_safe]</span>
+</span></span><span class="line"><span class="cl"><span class="na">log-error</span><span class="o">=</span><span class="s">/var/log/mysqld.log</span>
+</span></span><span class="line"><span class="cl"><span class="na">pid-file</span><span class="o">=</span><span class="s">/var/run/mysqld/mysqld.pid</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqldump]</span>
+</span></span><span class="line"><span class="cl"><span class="na">quick</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_allowed_packet</span> <span class="o">=</span> <span class="s">16M </span>
+</span></span></code></pre></div><h3 id="php配置">PHP配置</h3>
+<p>我们使用php-fpm来作为后台daemon响应FastCGI请求。
+默认的php-fpm会启动比较多的子进程，很容易耗光内存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">listen</span> <span class="o">=</span> /var/run/php-cgi.sock <span class="c1">#使用socket监听，不用端口监听</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pm.max_children <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是50  </span>
+</span></span><span class="line"><span class="cl">pm.start_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是20  </span>
+</span></span><span class="line"><span class="cl">pm.min_spare_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是5  </span>
+</span></span><span class="line"><span class="cl">pm.max_spare_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是35 </span>
+</span></span></code></pre></div><p>有的配置手记是建议把上面几个数字改为5，我经过多次调试之后，
+发现使用最小/最大连接数为2的时候，可用率比较高，内存消耗也比较小。</p>
+<h2 id="运行结果">运行结果</h2>
+<p>经过一番折腾之后，我的 <a href="http://log4d.com">Log4D</a> 终于配置完成了。
+打开速度还算凑合，用WebKaka测试截图如下。</p>
+<p>原来的虚拟主机 dddspace.com 的响应情况：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/dddspace.png" alt="dddspace"  />
+
+</p>
+<p>现在 log4d.com VPS 的响应情况：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/log4d.png" alt="log4d"  />
+
+</p>
+<p>内存使用情况：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/free.png" alt="free"  />
+
+</p>
+<p><code>siege -c 100 -t 100 log4d.com</code> 的测试结果：</p>
+<pre tabindex="0"><code>Transactions:		        1711 hits
+Availability:		       96.61 %
+Elapsed time:		      416.72 secs
+Data transferred:	       18.20 MB
+Response time:		       22.12 secs
+Transaction rate:	        4.11 trans/sec
+Throughput:		        0.04 MB/sec
+Concurrency:		       90.84
+Successful transactions:        1711
+Failed transactions:	          60
+Longest transaction:	       30.31
+Shortest transaction:	        1.06
+</code></pre><h2 id="参考链接">参考链接</h2>
+<ul>
+<li><a href="http://www.54chen.com/architecture/wordpress-nginx-php-cgi-mysql-memory-in-the-128m-to-install-and-optimize-the-vps-notes.html">wordpress nginx php-cgi mysql在128m内存下的vps安装和优化手记原创</a></li>
+<li><a href="http://www.xtgly.com/2011/05/17/centos-lanmp%E4%B9%8B%E4%B8%89%EF%BC%88%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-php-5-3-6%EF%BC%89.htm">centos LANMP之三（编译安装 php 5.3.6）</a></li>
+<li><a href="http://hi.baidu.com/xxjjyy2008/blog/item/b52d07943e4d1d02d21b70da.html">编译包含 SSL 模块的 Nginx 时使用新版本的 OpenSSL 避免已知的 SSL/TLS 协议弱点</a></li>
+</ul>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

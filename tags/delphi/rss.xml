@@ -1,0 +1,2473 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>delphi on Log4D</title>
+    <link>https://blog.alswl.com/tags/delphi/</link>
+    <description>Recent content in delphi on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 29 Mar 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/delphi/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>历史记录-歌词复制器</title>
+      <link>https://blog.alswl.com/2011/03/plrcmatch4d/</link>
+      <pubDate>Tue, 29 Mar 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/03/plrcmatch4d/</guid>
+      <description>之前写过一个Java的小工具叫做Mp3Lrc歌词复制器，用来复制歌词到Mp3播放器中的对应目录下面。之前的文章参见[Mp3Lrc的可执行文件](http://log4d.com/2009/05/the-executable-file- mp3lrc)和[Java写的Mp3歌词复制器](http://log4d.com/2009/05/lyrics-written-in-java- replicator</description>
+      <content:encoded><![CDATA[<p>之前写过一个Java的小工具叫做Mp3Lrc歌词复制器，用来复制歌词到Mp3播放器中的对应目录下面。之前的文章参见[Mp3Lrc的可执行文件](<a href="http://log4d.com/2009/05/the-executable-file-">http://log4d.com/2009/05/the-executable-file-</a>
+mp3lrc)和[Java写的Mp3歌词复制器](<a href="http://log4d.com/2009/05/lyrics-written-in-java-">http://log4d.com/2009/05/lyrics-written-in-java-</a>
+replicator-mp3)。</p>
+<p>这几天整理硬盘时候发现大四时候还用Delphi写了一个完整的GUI界面的Mp3歌词复制工具叫做PLrcMatch4D。</p>
+<p>源码已经丢失，只剩下可执行文件，T_T。</p>
+<p>如果非要定义以下这个工具的作用，就是从某个固定文件夹（歌词文件夹）复制对应Mp3播放器中歌曲的lrc文件到目标文件夹，从而让Mp3播放器可以正常显示歌词。</p>
+<p>下载点击这里，<a href="../../static/images/upload_dropbox/201103/PLrcMatch4D.zip">PLrcMatch4D.zip</a></p>
+<p>界面比较实在，大致是这样：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201103/plrcmatch4d.jpg" alt="image"  />
+
+</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Delphi 的单元测试工具DUnit</title>
+      <link>https://blog.alswl.com/2010/01/delphi-unit-testing-tool-dunit/</link>
+      <pubDate>Wed, 06 Jan 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/01/delphi-unit-testing-tool-dunit/</guid>
+      <description>以前写Java时候经常使用一款单元测试工具JUnit，工作之后在用Delphi，自然也要换到Delphi下面的单元测试工具DUnit。 DUnit是XUnit家族中的一员，是Extreme Programming测试实现Xtreme Testing的一种工具。 DUnit的用法和JUnit很类似，如果有相关经验很容易上手。这里是DUnit的官方地址：http://dunit.sourceforge.net</description>
+      <content:encoded><![CDATA[<p>以前写Java时候经常使用一款单元测试工具JUnit，工作之后在用Delphi，自然也要换到Delphi下面的单元测试工具DUnit。</p>
+<p>DUnit是XUnit家族中的一员，是Extreme Programming测试实现Xtreme Testing的一种工具。</p>
+<p>DUnit的用法和JUnit很类似，如果有相关经验很容易上手。这里是DUnit的官方地址：<a href="http://dunit.sourceforge.net/">http://dunit.sourceforge.net/</a> ，
+下载地址：<a href="http://sourceforge.net/projects/dunit/">http://sourceforge.net/projects/dunit/</a></p>
+<p>将DUnit解压至任意目录（我习惯在<code>D:/Study/DelphiLib/</code>），打开Delphi 7，将DUnit路径添加到 Tools- &gt; Environment Options 里面的 Library -&gt; Library Path，这样DUnit就安装完成了。</p>
+<p>如果有装过CnPack 的Delphi工具包，就可以很轻松的在 File -&gt; New -&gt; Other -&gt; CnPack -&gt; DUnit测试实例生成向导 中建立新的测试用例。</p>
+<p>下面是我的一个简单的测试用例，测试AppFun中的<code>GetString()</code>和 <code>Add() </code>方法。</p>
+<p>TAppFun.pas</p>
+<pre tabindex="0"><code>(*
+UTest by Jason
+2010-01-06 21:30
+*)
+unit AppFun;
+interface
+uses SysUtils;
+type TAppFun = class(TObject)
+public
+	class function GetString(sName: string; iAge: Integer): string;
+	class function Add(iA: Integer; iB: Integer): Integer;
+end;
+implementation
+class function TAppFun.GetString(sName: string; iAge: Integer): string;
+begin
+	result := &#39;Hello &#39; + sName + &#39;, your age is &#39; +
+	IntToStr(iAge);
+end;
+class function TAppFun.Add(iA: Integer; iB: Integer): Integer;
+begin
+	Result := iA + iB;
+end;
+end.
+</code></pre><p>UTest.pas</p>
+<pre tabindex="0"><code>(*
+UTest by Jason
+2010-01-06 21:30
+*)
+unit UTest;
+interface
+uses
+	Windows, SysUtils, Classes, TestFramework, TestExtensions;
+type
+	TTest = class(TTestCase)
+protected
+procedure SetUp; override;
+procedure TearDown; override;
+published
+procedure Test;
+procedure TestGetString();
+end;
+implementation
+uses
+	AppFun, Dialogs;
+procedure TTest.Setup;
+begin
+	ShowMessage(&#39;In Setup!&#39;);
+end;
+procedure TTest.TearDown;
+begin
+	ShowMessage(&#39;In TearDown!&#39;);
+end;
+procedure TTest.Test;
+begin
+	Self.Check(TAppFun.GetString(&#39;Jason&#39;, 22) = &#39;Hello Jason, your age is 22&#39;,
+	&#39;Second Test&#39;);
+end;
+procedure TTest.TestGetString();
+begin
+	Check(TAppFun.Add(3, 5) = 8, &#39;First Test&#39;);
+end;
+initialization
+TestFramework.RegisterTest(TTest.Suite);
+end.
+</code></pre><p>从上面的代码可以看出，XUnit系列风格都比较类似，很容易操作。</p>
+<p><a href="../../static/images/upload_dropbox/201001/dunit.jpg">
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201001/dunit.jpg" alt="image"  />
+
+</a></p>
+<p>DUnit还有一些更高阶的操作，比如在控制台输出/在独立线程中运行测试/Exception测试等等，详细操作可以参考下列文档。目前我用到的就是简单的单元测试
+。</p>
+<p>一点资料：</p>
+<ol>
+<li><a href="http://dunit.sourceforge.net/">DUnit 的官方地址</a></li>
+<li><a href="http://sourceforge.net/projects/dunit/">DUnit 下载地址</a></li>
+<li><a href="http://dunit.sourceforge.net/README.html">DUnit 官方文档（英文）</a></li>
+<li><a href="http://dunit.sourceforge.net/README_CHT.html">DUnit 官方文档（繁体中文）</a></li>
+<li><a href="http://www.delphifans.com/infoview/Article_499.html">『Delphi园地』-Delphi单元测试工具Dunit介绍</a></li>
+<li><a href="http://www.51testing.com/html/32/297.html">Delphi单元测试工具Dunit介绍_51Testing软件测试网</a></li>
+</ol>
+<p>Delphi宝刀不老啊～呵呵～</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Delphi学习笔记06</title>
+      <link>https://blog.alswl.com/2009/12/delphi-study-notes-06/</link>
+      <pubDate>Sat, 05 Dec 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/12/delphi-study-notes-06/</guid>
+      <description>我的博客所在的江西服务器需要服务器搬迁，所以这两天博客无法访问，看到404错误的童鞋们对不起拉… 几个概念：Owner/Parent/Sender/Self Owner/Parent的字面意义都有点拥有者的意思，一个Button的Owner和Parent很有可能都是Form，但实际上这两个概念是没有关系的。 Owner和Parent的区别：Parent对应组件的视觉容器而不是拥有者，比如一个RadioG</description>
+      <content:encoded><![CDATA[<p>我的博客所在的江西服务器需要服务器搬迁，所以这两天博客无法访问，看到404错误的童鞋们对不起拉…</p>
+<h2 id="几个概念ownerparentsenderself">几个概念：Owner/Parent/Sender/Self</h2>
+<p>Owner/Parent的字面意义都有点拥有者的意思，一个Button的Owner和Parent很有可能都是Form，但实际上这两个概念是没有关系的。</p>
+<p>Owner和Parent的区别：Parent对应组件的视觉容器而不是拥有者，比如一个<code>RadioGroup</code>是<code>RadioButton</code>的Parent；Ow
+ner对应组件的拥有者。尽管Parent和Owner很多时候都是同一个对象，但是还是需要严格区分的。</p>
+<p>Sender代表的是触发事件的组件，有了Sender参数，能够使用多个组件配合使用。在代码中可以使用<code>(Sender as TButton).Caption</code>这种语句来转换<code>TObject</code>类型。</p>
+<p>Self呢，相当于C++/Java中的<code>this</code>，指向当前对象，代表自身的意思。没有太多可讲的，我觉得如果要获取某个属性，前面加上Self.是个好习惯。</p>
+<p>这几个关键字能够加深对面向对象的理解，在VCL编程中，也是必须掌握的。</p>
+<h2 id="vcl编程感观">VCL编程感观</h2>
+<p>VCL全程Visual Component Library（可视组件库），称为VCL编程不知道合适不合适，VCL是一个框架，包含相当丰富的控件，多到让我咂舌
+，长长的控件面板还要拖拉好几次才能看到全部。Delphi之所以强大，就是因为这个VCL。</p>
+<p>比如文件操作，有很多基于传统Pascal的方法，<code>FileExists()/DirectoryExists()/RenamFile()</code>这种原始的方法，完全
+不是基于面向对象思想的。就我这几天的感觉，应该使用<code>TFileStream</code>这样的类，官方描述是&quot;Use TFileStream to access the
+information in disk files. TFileStream will open a named file and provide
+methods to read from or write to it. &ldquo;，&ldquo;用来读取硬盘上文件的信息，打开一个文件并确定一种操作文件读写的权限&rdquo;，用这个
+类来操作文件就类似于Java那种方法，而不是C那样的大量繁琐的函数。这个类的被设计用来读取文件，而不擅长操作文件和文件夹。在这一点上我还是比较喜欢Java中
+<code>File</code>的操作方法。</p>
+<p>我一直把Delphi和C#进行对比，这两者都是出自于同一人。Delphi和C#很多编程思想和结构都非常类似。C#中窗体有<code>.cs</code>和<code>.desiner.cs </code>，Delphi中有<code>.dfm</code>和<code>.pas</code>。我对Delphi的一点点不喜欢是觉得他继承了太多的Pascal的东西，导致有时候不容易对设计进行思维转换。D
+elphi最强大的在于VCL，可惜现在Borland都被收购，Delphi成为一门强大而不够活力的语言。</p>
+<h2 id="cnpack包">CnPack包</h2>
+<p>我之前使用的<a href="http://www.xdowns.com/soft/38/121/2008/Soft_42203.html">DELPHI 7 绿色终结版</a>
+被我换成了原装的之后，发现之前很多功能消失了。检查后发现，原来DELPHI 7 绿色终结版集成了CnPack这一套组件包。</p>
+<p>CnPack 是由互联网上一群中国程序员开发的开放源码的自由软件项目，该项目组成立于2002年。当前该项目组的主要的工作成果包括 CnPack
+组件包、CnWizards 专家包以及 CVSTracNT 错误跟踪系统等。CnPack 开发团队目前规模有 200 余人，并且还在不断发展壮大中。</p>
+<p>下载CnPack，<a href="http://www.cnpack.org/">传送门</a></p>
+<h2 id="delphi的异常处理">Delphi的异常处理</h2>
+<p>这篇文章是这几天本地保存的内容合成的，所以有点乱。下面是我学Delphi基础的最后一块内容，异常处理，代码如下。</p>
+<pre><code>program P1;
+{try...catch, try...finally的使用}
+</code></pre>
+<p>{$APPTYPE CONSOLE}</p>
+<p>uses</p>
+<p>SysUtils;</p>
+<p>{创建异常MyErr,并使用Raise抛出}</p>
+<p>procedure RaiseTest();</p>
+<p>var</p>
+<p>MyErr : Exception;</p>
+<p>begin</p>
+<p>MyErr := Exception.Create(&lsquo;My Error&rsquo;);</p>
+<p>Writeln(MyErr.Message);</p>
+<p>Raise MyErr;</p>
+<p>MyErr.Free;</p>
+<p>end;</p>
+<p>{使用try&hellip;except来捕获错误，使用on&hellip;do</p>
+<p>来判断错误类型</p>
+<p>加入try&hellip;finally(这个语法结构真失败，无法</p>
+<p>嵌套try&hellip;except&hellip;finally)}</p>
+<p>procedure TryExceptTest();</p>
+<p>var</p>
+<p>i, j, k : Integer;</p>
+<p>begin</p>
+<p>Readln(i, j);</p>
+<p>try</p>
+<p>try</p>
+<p>k := i div j;</p>
+<p>Writeln(k);</p>
+<p>except</p>
+<p>on E : EInOutError do</p>
+<p>Writeln(&lsquo;Input Error! Message: &lsquo;, E.Message);</p>
+<p>on E : EdivByZero do</p>
+<p>Writeln(&rsquo;/ Error! Message: &lsquo;, E.Message);</p>
+<p>end;</p>
+<p>finally</p>
+<p>Writeln(&lsquo;in finally.&rsquo;);</p>
+<p>end;</p>
+<p>end;</p>
+<p>begin</p>
+<p>//RaiseTest();</p>
+<p>TryExceptTest();</p>
+<p>Readln;</p>
+<p>end.</p>
+<p>前天在把[Mp3Lrc](<a href="http://log4d.com/2009/05/the-executable-file-">http://log4d.com/2009/05/the-executable-file-</a>
+mp3lrc)这个小工具写成Delphi的GUI版本，由于昨天课程设计提前答辩，所以没能完成，争取今天晚上弄好。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Dlphi资料小汇总</title>
+      <link>https://blog.alswl.com/2009/12/dlphi-a-small-summary-of-knowledge/</link>
+      <pubDate>Sat, 05 Dec 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/12/dlphi-a-small-summary-of-knowledge/</guid>
+      <description>学Delphi大概一周时间，我经历从当初的初生牛犊不怕虎，到现在感慨Delphi的强大和复杂。说实话，我以前觉得Delphi是一门过气的语言，现在我重新修正 自己的观点，没有弱势的语言，只有菜鸟的程序员。 Delphi的整个架构让我叹为观止，我这么短的学习周期，只能学到一点基础的皮毛。由于完全自学，我花费很多精力在资料的收集上（很痛苦没有找到一本合适的书），现 在我把我这段时间的资料收集整理，分享我的所</description>
+      <content:encoded><![CDATA[<p>学Delphi大概一周时间，我经历从当初的初生牛犊不怕虎，到现在感慨Delphi的强大和复杂。说实话，我以前觉得Delphi是一门过气的语言，现在我重新修正
+自己的观点，没有弱势的语言，只有菜鸟的程序员。</p>
+<p>Delphi的整个架构让我叹为观止，我这么短的学习周期，只能学到一点基础的皮毛。由于完全自学，我花费很多精力在资料的收集上（很痛苦没有找到一本合适的书），现
+在我把我这段时间的资料收集整理，分享我的所得（这篇文章经历1个星期，发布时候遇到服务器卡住，丢失了一次，幸好我灵机一动，用FireFox脱机找回了缓存页面，
+还是得信春哥啊）。</p>
+<p>资料繁杂，很多都是来自信息采集站点，我无法一一署名，在这里对这些资料的原作者表示谢意。</p>
+<ol>
+<li>Delphi7的文件类型</li>
+<li>Delphi的关键字</li>
+<li>类型之间转换函数</li>
+<li>组件的常用属性</li>
+<li>组件的常用事件</li>
+<li>常用类型和函数的uses单元</li>
+<li>Delphi常用的ADO组件</li>
+<li>ADO组件常用属性</li>
+<li>ADO数据集类组件的共同方法</li>
+</ol>
+<h2 id="delphi7的文件类型">Delphi7的文件类型</h2>
+<p>文件扩展名 文件类型说明 产生时间</p>
+<p>BMP、ICO、CUR</p>
+<p>位图、图标及光标图像文件</p>
+<p>程序设计时</p>
+<p>BGP</p>
+<p>项目组文件，由多目标项目管理器产生</p>
+<p>程序设计时</p>
+<p>BPL</p>
+<p>BORLAND PACKAGE LIBRARY（组件库文件）</p>
+<p>编译连接后</p>
+<p>CBA</p>
+<p>压缩格式文件，做WEB发布时使用</p>
+<p>设计时</p>
+<p>CFG</p>
+<p>项目配置文件。项目配置文件保存着项目的配置信息</p>
+<p>设计时</p>
+<p>DCP</p>
+<p>DELPHI COMPONENT PACKAGE（Delphi组件包）</p>
+<p>编译时</p>
+<p>DCU</p>
+<p>DELPHI COMPILED UNIT，编译原始文件后的中间产物</p>
+<p>编译时</p>
+<p>DFM</p>
+<p>DELPHI FORM FILE（窗体文件）</p>
+<p>程序设计时</p>
+<p>~DFM</p>
+<p>DFM的备份文件</p>
+<p>程序设计时</p>
+<p>DLL</p>
+<p>DYNAMIC LINK LIBRARY（动态链接库文件）</p>
+<p>编译连接时</p>
+<p>DOF</p>
+<p>DELPHI OPTION FILE，设计多语言项目时使用的语言翻译配置文件，多语言项目中每个窗体的每一种语言都有一个DNF文件</p>
+<p>程序设计时</p>
+<p>DPK</p>
+<p>DELPHI PACKAGE，软件包项目的源代码文件</p>
+<p>程序设计时</p>
+<p>DPR</p>
+<p>项目文件</p>
+<p>程序设计时</p>
+<p>~DPR</p>
+<p>DPR的备份文件</p>
+<p>程序设计时</p>
+<p>DSK</p>
+<p>DESKTOP FILE，保存现在DELPHI视窗的位置、正在编辑的文件以及其它桌面的设定文件</p>
+<p>程序设计时</p>
+<p>LIC</p>
+<p>OCX文件相关的授权文件</p>
+<p>编译连接时</p>
+<p>OCX</p>
+<p>OLE控件文件，是一特殊的DLL文件可包含ACTIVEX控件或窗体</p>
+<p>编译连接时</p>
+<p>PAS</p>
+<p>DELPHI源代码文件</p>
+<p>程序设计时</p>
+<p>~PAS</p>
+<p>PAS的备份文件</p>
+<p>程序设计时</p>
+<p>RES、RC</p>
+<p>项目的资源文件,包含项目的图标、光标及字体等信息</p>
+<p>程序设计时</p>
+<p>EXE</p>
+<p>可执行文件</p>
+<p>编译连接时</p>
+<p>TLB</p>
+<p>类型库文件</p>
+<p>程序设计时</p>
+<h2 id="delphi的关键字">Delphi的关键字</h2>
+<p>and</p>
+<p>array</p>
+<p>As</p>
+<p>asm</p>
+<p>begin</p>
+<p>Case</p>
+<p>Class</p>
+<p>Const</p>
+<p>constructor</p>
+<p>destructor</p>
+<p>Dispinterface</p>
+<p>Div</p>
+<p>Do</p>
+<p>downto</p>
+<p>Else</p>
+<p>End</p>
+<p>except</p>
+<p>exports</p>
+<p>File</p>
+<p>Finalization</p>
+<p>Finally</p>
+<p>for</p>
+<p>function</p>
+<p>Goto</p>
+<p>If</p>
+<p>Implementation</p>
+<p>In</p>
+<p>inherited</p>
+<p>initialization</p>
+<p>inline</p>
+<p>Interface</p>
+<p>is</p>
+<p>label</p>
+<p>library</p>
+<p>Mod</p>
+<p>Nil</p>
+<p>not</p>
+<p>object</p>
+<p>Of</p>
+<p>or</p>
+<p>out</p>
+<p>packed</p>
+<p>procedure</p>
+<p>program</p>
+<p>property</p>
+<p>raise</p>
+<p>record</p>
+<p>repeat</p>
+<p>resourcestring</p>
+<p>set</p>
+<p>Shl</p>
+<p>shr</p>
+<p>string</p>
+<p>then</p>
+<p>threadvar</p>
+<p>To</p>
+<p>try</p>
+<p>type</p>
+<p>unit</p>
+<p>until</p>
+<p>uses</p>
+<p>var</p>
+<p>while</p>
+<p>With</p>
+<p>xor</p>
+<h2 id="类型之间转换函数">类型之间转换函数</h2>
+<p>函数 功能</p>
+<p>Chr</p>
+<p>将一个有序数据转换为一个ANSI字符</p>
+<p>Ord</p>
+<p>将一个有序类型值转换为它的序号</p>
+<p>Round</p>
+<p>转换一个实型值为四舍五入后的整型值</p>
+<p>Trunc</p>
+<p>转换一个实型值为小数截断后的整型值</p>
+<p>Int</p>
+<p>返回浮点数的整数部分</p>
+<p>IntToStr</p>
+<p>将数值转换为字符串</p>
+<p>IntToHex</p>
+<p>将数值转换为十六进制数字符串</p>
+<p>StrToInt</p>
+<p>将字符串转换为一个整型数，如字符串不是一个合法的整型将引发异常</p>
+<p>StrToIntDef</p>
+<p>将字符串转换为一个整数，如字符串不合法返回一个缺省值</p>
+<p>Val</p>
+<p>将字符串转换为一个数字（传统Turbo Pascal例程用于向后兼容）</p>
+<p>Str</p>
+<p>将数字转换为格式化字符串（传统Turbo Pascal例程用于向后兼容）</p>
+<p>StrPas</p>
+<p>将零终止字符串转换为Pascal类型字符串，在32位Delphi中这种类型转换是自动进行的</p>
+<p>StrPCopy</p>
+<p>拷贝一个Pascal类型字符串到一个零终止字符串, 在32位Delphi中这种类型转换是自动进行的</p>
+<p>StrPLCopy</p>
+<p>拷贝Pascal类型字符串的一部分到一个零终止字符串</p>
+<p>FloatToDecimal</p>
+<p>将一个浮点数转换为包含指数、数字及符号的十进制浮点记录类型</p>
+<p>FloatToStr</p>
+<p>将浮点值转换为缺省格式的字符串</p>
+<p>FloatToStrF</p>
+<p>将浮点值转换为特定格式的字符串</p>
+<p>FloatToText</p>
+<p>使用特定格式，将一个浮点值拷贝到一个字符串缓冲区</p>
+<p>FloatToTextFmt</p>
+<p>同上面例程，使用特定格式，将一个浮点值拷贝到一个字符串缓冲区</p>
+<p>StrToFloat</p>
+<p>将一个Pascal字符串转换为浮点数</p>
+<p>TextToFloat</p>
+<p>将一个零终止字符串转换为浮点数</p>
+<h2 id="组件的常用属性">组件的常用属性</h2>
+<p>属性 说明</p>
+<p>Height</p>
+<p>高度</p>
+<p>Width</p>
+<p>宽度</p>
+<p>Left</p>
+<p>组件在容器内的水平坐标，相对于容器左边。</p>
+<p>Top</p>
+<p>组件在容器内的垂直坐标，相对于容器上边。</p>
+<p>Align</p>
+<p>组件上的对齐方式（居上、居下、居左、居右、居中）</p>
+<p>Visible</p>
+<p>设置组件是否可见，默认值为可见（值为true）</p>
+<p>Caption</p>
+<p>显示类组件的标题</p>
+<p>Color</p>
+<p>组件的背景颜色</p>
+<p>Font</p>
+<p>设置组件显示文本的字体</p>
+<p>Ctl3D</p>
+<p>是否以3D方式显示组件，默认值为true</p>
+<p>ShowHint</p>
+<p>是否显示组件的提示信息，默认值为true，与Hint连用</p>
+<p>Hint</p>
+<p>当鼠标指针移到组件上时，组件显示的提示信息</p>
+<p>Enabled</p>
+<p>是否允许用户操作组件，true表示允许，false表示不允许</p>
+<p>Name</p>
+<p>用于标识组件的名称，在程序中通过Name可以调用该组件</p>
+<p>TabOrder</p>
+<p>Tab次序</p>
+<h2 id="组件的常用事件">组件的常用事件</h2>
+<p>事件 说明</p>
+<p>OnClick</p>
+<p>触发条件</p>
+<p>OnDblClick</p>
+<p>当鼠标双击时触发本事件</p>
+<p>OnMouseDown</p>
+<p>当鼠标左键按下时触发本事件</p>
+<p>OnMouseMove</p>
+<p>当鼠标移动时触发本事件</p>
+<p>OnKeyDown</p>
+<p>当按下任意键（包括组合键）时触发本事件</p>
+<p>OnKeyPress</p>
+<p>当按下任意键（单字符键）时触发本事件</p>
+<p>OnKeyUp</p>
+<p>当松开已按下键时触发本事件</p>
+<p>OnEnter</p>
+<p>当获得焦点时触发本事件</p>
+<p>OnExit</p>
+<p>当失去焦点时触发本事件</p>
+<p>OnStartDrag</p>
+<p>当开始拖动时触发本事件</p>
+<p>OnDragDrop</p>
+<p>当组件拖动操作结束时触发本事件</p>
+<h2 id="常用类型和函数的uses单元">常用类型和函数的uses单元</h2>
+<p>Type Unit</p>
+<p>_Stream</p>
+<p>ADODB_TLB</p>
+<p>akTop, akLeft, akRight, akBottom</p>
+<p>Controls</p>
+<p>Application (the variable not a type)</p>
+<p>Forms</p>
+<p>Beep</p>
+<p>SysUtils or Windows (different functions)</p>
+<p>CGID_EXPLORER</p>
+<p>ShlObj</p>
+<p>CN_BASE</p>
+<p>Controls</p>
+<p>CoInitialize</p>
+<p>ActiveX</p>
+<p>CopyFile</p>
+<p>Windows</p>
+<p>CoUnInitialize</p>
+<p>ActiveX</p>
+<p>CreateComObject</p>
+<p>ComObj</p>
+<p>CreateOleObject</p>
+<p>ComObj</p>
+<p>Date</p>
+<p>SysUtils</p>
+<p>DeleteFile</p>
+<p>SysUtils or Windows (different versions)</p>
+<p>DispatchInvokeError</p>
+<p>ComObj</p>
+<p>DWORD</p>
+<p>Windows</p>
+<p>EDatabaseError</p>
+<p>DB</p>
+<p>EncodeDateTime</p>
+<p>DateUtils</p>
+<p>EnumWindows</p>
+<p>Windows</p>
+<p>EOleError</p>
+<p>ComObj</p>
+<p>EOleException</p>
+<p>ComObj</p>
+<p>EOleSysError</p>
+<p>ComObj</p>
+<p>Exception</p>
+<p>SysUtils</p>
+<p>ExtractFileName</p>
+<p>SysUtils</p>
+<p>FileExists</p>
+<p>SysUtils</p>
+<p>FileOpen</p>
+<p>SysUtils</p>
+<p>FILETIME</p>
+<p>Windows</p>
+<p>FindFirst</p>
+<p>SysUtils</p>
+<p>FindFirstFile</p>
+<p>Windows</p>
+<p>FindWindow</p>
+<p>Windows</p>
+<p>FlushFileBuffers</p>
+<p>Windows</p>
+<p>fmOpenRead</p>
+<p>SysUtils</p>
+<p>fmShareDenyWrite</p>
+<p>SysUtils</p>
+<p>Format</p>
+<p>SysUtils</p>
+<p>FormatDateTime</p>
+<p>SysUtils</p>
+<p>FreeAndNil</p>
+<p>SysUtils</p>
+<p>fsBold</p>
+<p>Graphics</p>
+<p>ftWideString</p>
+<p>DB</p>
+<p>ftString</p>
+<p>DB</p>
+<p>GetCurrentProcessId</p>
+<p>Windows</p>
+<p>GetEnvironmentVariable</p>
+<p>SysUtils or Windows (different versions)</p>
+<p>GetFileAttributes</p>
+<p>Windows</p>
+<p>GetFileVersionInfoSize</p>
+<p>Windows</p>
+<p>GetWindowLong</p>
+<p>Windows</p>
+<p>GetStdHandle</p>
+<p>Windows</p>
+<p>HDC</p>
+<p>Windows</p>
+<p>HFont</p>
+<p>Windows</p>
+<p>HINTERNET</p>
+<p>WinInet</p>
+<p>HKEY_CURRENT_USER</p>
+<p>Windows</p>
+<p>IHTMLDocument2</p>
+<p>MSHTML or MSHTML_TLB</p>
+<p>IHTMLElement</p>
+<p>MSHTML or MSHTML_TLB</p>
+<p>IHTMLEventObj</p>
+<p>MSHTML or MSHTML_TLB</p>
+<p>IID_IWebBrowser2</p>
+<p>SHDocVw or SHDocVw_TLB</p>
+<p>IMessage</p>
+<p>CDO_TLB</p>
+<p>InternetClosehandle</p>
+<p>WinInet</p>
+<p>InternetOpenUrl</p>
+<p>WinInet</p>
+<p>InternetReadFile</p>
+<p>WinInet</p>
+<p>IntToHex</p>
+<p>SysUtils</p>
+<p>IntToStr</p>
+<p>SysUtils</p>
+<p>IOleCommandTarget</p>
+<p>ActiveX</p>
+<p>IOleContainer</p>
+<p>ActiveX</p>
+<p>IPersistStreamInit</p>
+<p>ActiveX</p>
+<p>IsSameDay</p>
+<p>DateUtils</p>
+<p>IStream</p>
+<p>ActiveX</p>
+<p>IWebBrowser2</p>
+<p>SHDocVw or SHDocVw_TLB</p>
+<p>LockWindowUpdate</p>
+<p>Windows</p>
+<p>Log10</p>
+<p>Math</p>
+<p>LowerCase</p>
+<p>SysUtils</p>
+<p>LPSTR</p>
+<p>Windows</p>
+<p>MAX_PATH</p>
+<p>Windows</p>
+<p>MessageBox</p>
+<p>Windows</p>
+<p>MessageDlg</p>
+<p>Dialogs</p>
+<p>MB_YESNO, MB_OK etc</p>
+<p>Windows</p>
+<p>MinutesBetween</p>
+<p>DateUtils</p>
+<p>Now</p>
+<p>SysUtils</p>
+<p>OleInitialize</p>
+<p>ActiveX</p>
+<p>OleUninitialize</p>
+<p>ActiveX</p>
+<p>PItemIDList</p>
+<p>ShlObj</p>
+<p>POleCmd</p>
+<p>ActiveX</p>
+<p>POleCmdText</p>
+<p>ActiveX</p>
+<p>PostMessage</p>
+<p>Windows</p>
+<p>PosX</p>
+<p>StrUtils</p>
+<p>QueryHighPerformanceCounter</p>
+<p>Windows</p>
+<p>QueryPerformanceCounter</p>
+<p>Windows</p>
+<p>ReverseString</p>
+<p>StrUtils</p>
+<p>RoundTo</p>
+<p>Math</p>
+<p>SendMessage</p>
+<p>Windows</p>
+<p>SetForegroundWindow</p>
+<p>Windows</p>
+<p>ShellExecute</p>
+<p>ShellAPI</p>
+<p>ShellExecuteEx</p>
+<p>ShellAPI</p>
+<p>SHGetFileInfo</p>
+<p>ShellAPI</p>
+<p>SHFILEINFO</p>
+<p>ShellAPI</p>
+<p>ShowMessage</p>
+<p>Dialogs</p>
+<p>Sleep</p>
+<p>SysUtils</p>
+<p>StrAlloc</p>
+<p>SysUtils</p>
+<p>StrPas</p>
+<p>SysUtils</p>
+<p>StrToDate</p>
+<p>SysUtils</p>
+<p>StrToInt</p>
+<p>SysUtils</p>
+<p>StrToIntDef</p>
+<p>SysUtils</p>
+<p>TAdoConnection</p>
+<p>ADODB</p>
+<p>TAdoQuery</p>
+<p>ADODB</p>
+<p>TAlign</p>
+<p>Controls</p>
+<p>TAlignment</p>
+<p>Classes</p>
+<p>TAnchors</p>
+<p>Controls</p>
+<p>TBitmap</p>
+<p>Graphics</p>
+<p>TBlobStream</p>
+<p>DBTables</p>
+<p>TCanvas</p>
+<p>Graphics</p>
+<p>TClientSocket</p>
+<p>ScktComp</p>
+<p>TComboBox</p>
+<p>StdCtrls</p>
+<p>TComponent</p>
+<p>Classes</p>
+<p>TControl</p>
+<p>Controls or QControls</p>
+<p>TCriticalSection</p>
+<p>SyncObjs</p>
+<p>TField</p>
+<p>DB</p>
+<p>TFieldType</p>
+<p>DB</p>
+<p>TFileName</p>
+<p>SysUtils</p>
+<p>TFileStream</p>
+<p>Classes</p>
+<p>TForm</p>
+<p>Forms</p>
+<p>TFrame</p>
+<p>Forms</p>
+<p>TGroupBox</p>
+<p>StdCtrls</p>
+<p>TIID</p>
+<p>ActiveX</p>
+<p>TIniFile</p>
+<p>IniFiles</p>
+<p>TJPEGImage</p>
+<p>Jpeg</p>
+<p>TLabel</p>
+<p>StdCtrls</p>
+<p>TList</p>
+<p>Classes</p>
+<p>TMemo</p>
+<p>StdCtrls</p>
+<p>TMemoryStream</p>
+<p>Classes</p>
+<p>TMouseButton</p>
+<p>Controls</p>
+<p>TNofityEvent</p>
+<p>Classes</p>
+<p>TObjectList</p>
+<p>Contnrs</p>
+<p>TOSVersionInfo</p>
+<p>Windows</p>
+<p>TPanel</p>
+<p>ExtCtrls</p>
+<p>TPoint</p>
+<p>Types</p>
+<p>TProcessEntry32</p>
+<p>TlHelp32</p>
+<p>TProgressBar</p>
+<p>ComCtrls or QComCtrls</p>
+<p>TRadioButton</p>
+<p>StdCtrls</p>
+<p>TRadioGroup</p>
+<p>ExtCtrls</p>
+<p>TRect</p>
+<p>Types</p>
+<p>TRegistry</p>
+<p>Registry</p>
+<p>Trim</p>
+<p>SysUtils</p>
+<p>TRoundToRange</p>
+<p>Math</p>
+<p>TSearchRec</p>
+<p>SysUtils</p>
+<p>TSize</p>
+<p>Windows</p>
+<p>TSocketAddrIn</p>
+<p>Winsock</p>
+<p>TStaticText</p>
+<p>StdCtrls</p>
+<p>TStream</p>
+<p>Classes</p>
+<p>TStringList</p>
+<p>Classes</p>
+<p>TStrings</p>
+<p>Classes</p>
+<p>TStringStream</p>
+<p>Classes</p>
+<p>TSystemTime</p>
+<p>Windows</p>
+<p>TTable</p>
+<p>DBTables</p>
+<p>TTabSheet</p>
+<p>ComCtrls</p>
+<p>TThread</p>
+<p>Classes</p>
+<p>TTreeNode</p>
+<p>ComCtrls</p>
+<p>TWebBrowser</p>
+<p>SHDocVw or SHDocVw_TLB</p>
+<p>TWinSocketStream</p>
+<p>ScktComp</p>
+<p>TWMCommand</p>
+<p>Messages</p>
+<p>Unassigned</p>
+<p>Variants</p>
+<p>VarArrayCreate</p>
+<p>Variants</p>
+<p>VarArrayOf</p>
+<p>Variants</p>
+<p>VirtualProtect</p>
+<p>Windows</p>
+<p>WM_USER</p>
+<p>Messages</p>
+<p>YearOf</p>
+<p>DateUtils</p>
+<h2 id="delphi常用的ado组件">Delphi常用的ADO组件</h2>
+<p>ADO组件 作用</p>
+<p>TADOConnection</p>
+<p>该组件用于建立数据库的连接。</p>
+<p>TADODataSet</p>
+<p>这是ADO提取及操作数据库数据的主要数据集，该组件可以从一个或多个基表中提取数据。</p>
+<p>TADOTable</p>
+<p>主要用于操作和提取单个基表的数据。</p>
+<p>TADOQuery</p>
+<p>该组件是通过SQL语句实现对数据库数据的提取及操作。</p>
+<p>TADOStoredProc</p>
+<p>该数据集是专门用于运行数据库中的存储过程的。</p>
+<p>TADOCommand</p>
+<p>该组件用于运行一些SQL命令。</p>
+<p>RDSConnection</p>
+<p>一个进程或一台计算机传递到另一个进程或计算机的数据集合，用于远程数据访问。</p>
+<h2 id="ado组件常用属性">ADO组件常用属性</h2>
+<p>属 性 说明</p>
+<p>Active</p>
+<p>Active属性指定数据集是否处于打开状态。设置Active属性为True,则数据集被打开；设置Active属性为False，则数据集被关闭。</p>
+<p>State</p>
+<p>State属性表明了当前数据集的状态</p>
+<p>CacheSize</p>
+<p>指定数据集的缓冲区大小。</p>
+<p>CommandTimeout</p>
+<p>CommandTimeout属性是一个整型数，指定执行一个命令的最大允许时间，默认值是30秒。</p>
+<p>Connection</p>
+<p>指定所使用的数据源连接组件的名称，即TADOConnection 组件的名称。</p>
+<p>ConnectionString</p>
+<p>即连接字符串，用于指定数据库的连接信息。</p>
+<p>CursorLocation</p>
+<p>指定数据库记录指针是采用客户端模式还是服务器端模式。</p>
+<p>CursorType</p>
+<p>指定在数据集中使用的记录指针类型。</p>
+<p>AutoCalcFields</p>
+<p>设为 True 则允许应用程序触发OnCalcFields事件。</p>
+<p>BOF</p>
+<p>为True时，表示当前指针指向第一条记录,否则为False。</p>
+<p>EOF</p>
+<p>为True时，表示当前指针指向最后一条记录,否则为False。</p>
+<p>Bookmark</p>
+<p>在数据集中设定标记，用于在一个数据集中获得或者设置当前记录。</p>
+<p>Filter</p>
+<p>设置过滤条件。</p>
+<p>Filtered</p>
+<p>相当于过滤的开关，当Filtered属性的值为True时，数据集从数据库中获取符合条件的记录；当Filtered属性的值为False时不执行过滤。</p>
+<p>FilterOptions</p>
+<p>确定过滤方式。</p>
+<p>FieldCount</p>
+<p>返回该数据集的字段数。</p>
+<p>FieldDefList</p>
+<p>返回数据集字段定义列表。</p>
+<p>FieldDefs</p>
+<p>表明数据集中字段的定义信息。如字段的数据类型、数据长度、名称等。</p>
+<p>FieldList</p>
+<p>数据集中字段组件的连续列表。</p>
+<p>Fields</p>
+<p>数据集中字段的集合，用于访问数据集中的字段。</p>
+<p>FieldValues</p>
+<p>可访问当前记录所有字段值列表。</p>
+<p>Found</p>
+<p>表示FindFirst、FindNext、FindLast或者FindPrior是否成功。</p>
+<p>IndexName</p>
+<p>指定当前使用的索引。</p>
+<p>LockType</p>
+<p>指定了数据集打开数据库时，对数据表中的记录的锁定类型。</p>
+<p>MaxRecords</p>
+<p>指定记录集中一次允许从数据库中返回的最大记录数。 默认值为0，表示不限制返回行数。</p>
+<p>Modified</p>
+<p>表示数据集是否被更改了。布尔型。</p>
+<p>Name</p>
+<p>数据集组件名称</p>
+<p>RecNo</p>
+<p>数据集的记录号。</p>
+<p>RecordCount</p>
+<p>与数据集相关的记录总数。</p>
+<p>RecordSize</p>
+<p>表示数据集中记录缓冲区的大小。</p>
+<h2 id="ado数据集类组件的共同方法">ADO数据集类组件的共同方法</h2>
+<p>方法 说明</p>
+<p>ActiveBuffer</p>
+<p>返回一个PChar，包含激活记录的数据</p>
+<p>Append</p>
+<p>添加一个新的记录到数据集中</p>
+<p>AppendRecord</p>
+<p>添加一个新的记录到数据集中。以数组参数传递来的值填充字段</p>
+<p>BookmarkValid</p>
+<p>该方法传递一个Bookmark参数，如果此Bookmark在数据集中有效则返回True</p>
+<p>Cancel</p>
+<p>取消对数据集的修改，并设置数据集的状态为dsBrowse</p>
+<p>CancelBatch</p>
+<p>在批更新模式下，撤销一批正等待处理的更新</p>
+<p>CancelUpdates</p>
+<p>撤消一个准备执行的更新操作。用于一般更新模式，在Post执行之前调用</p>
+<p>Clone</p>
+<p>克隆另外一个数据集到当前调用组件</p>
+<p>CheckBrowseMode</p>
+<p>当前记录更改时，自动提交或取消数据更改。</p>
+<p>ClearFields</p>
+<p>清除激活记录的所有字段值</p>
+<p>Close</p>
+<p>关闭数据集</p>
+<p>CompareBookmarks</p>
+<p>比较两个书签，如果这两个书签引用同样的记录则返回0，如果第一个书签指定所引用的记录在数据集中的位置比第二个书签在数据集中的位置靠前则返回一个小于0的值，否则
+返回一个大于0的值</p>
+<p>ControlsDisabled</p>
+<p>Boolean特性，表示相应的控件是否失效</p>
+<p>方法</p>
+<p>说明</p>
+<p>Create</p>
+<p>构造函数</p>
+<p>CreateBlobStream</p>
+<p>从一个Field参数创建一个BlobStream</p>
+<p>CursorPosChanged</p>
+<p>使内部光标定位无效</p>
+<p>Delete</p>
+<p>删除当前的记录</p>
+<p>DeleteRecords</p>
+<p>删除记录集中的一行或多行记录。</p>
+<p>Destroy</p>
+<p>析构函数</p>
+<p>DisableControls</p>
+<p>在更新过程中使相应的控件无效</p>
+<p>Edit</p>
+<p>将记录的状态设置为dsEdit；记录在编辑模式下</p>
+<p>EnableControls</p>
+<p>使相应的控件有效</p>
+<p>FieldByName</p>
+<p>返回动态的TField，通过字段名搜索</p>
+<p>FindField</p>
+<p>如果找到指定的字段名则返回一个TField；否则返回nil</p>
+<p>FindFirst</p>
+<p>返回一个Boolean值，表示查找的成功或者失败；将光标定位在数据集中的第一个记录上</p>
+<p>FindLast</p>
+<p>返回一个Boolean值，表示查找的成功或者失败；将光标定位在数据集中的最后一个记录上</p>
+<p>FindNext</p>
+<p>返回一个Boolean值，表示查找的成功或者失败；将光标定位在数据集中当前记录的下一个记录上</p>
+<p>方法</p>
+<p>说明</p>
+<p>FindPrior</p>
+<p>返回一个Boolean值，表示查找的成功或者失败；将光标定位在数据集中当前记录的前一个记录上</p>
+<p>First</p>
+<p>将光标定位在第一条记录上</p>
+<p>FreeBookmark</p>
+<p>该方法传递一个用GetBookmark方法返回的书签，释放这个书签</p>
+<p>GetBlobFieldData</p>
+<p>返回BLOB字段值，根据FieldNo将值返回到一个字节数组：TBlobFieldData</p>
+<p>GetBookmark</p>
+<p>返回代表当前记录的书签</p>
+<p>GetCurrentRecord</p>
+<p>返回一个Boolean值，表示Buffer参数是否被当前记录缓冲区的值所填充</p>
+<p>GetDetailDataSets</p>
+<p>用每一个嵌套的数据集填充TList参数</p>
+<p>GetDetailLinkFields</p>
+<p>用字段组件（此组件构成了一个主细节关系）填充两个TList参数</p>
+<p>GetFieldData</p>
+<p>如果成功的话以字段数据填充一个缓冲区</p>
+<p>GetFieldList</p>
+<p>将所有由FieldNames参数指定的字段组件拷贝到TList参数中</p>
+<p>GetFieldNames</p>
+<p>返回数据集中所有字段名的一个列表，保存在TStrings参数中</p>
+<p>GetIndexNames</p>
+<p>获取当前数据集的索引名称的列表。</p>
+<p>GotoBookmark</p>
+<p>将光标定位到由Bookmark参数指定的记录中</p>
+<p>Insert</p>
+<p>将数据集设置为插入模式（State = dsInsert）</p>
+<p>InsertRecord</p>
+<p>插入一个记录，字段值由传递过来的变体数的常量数组填充</p>
+<p>方法</p>
+<p>说明</p>
+<p>IsEmpty</p>
+<p>一个Boolean值，表示数据集是否为空</p>
+<p>IsLinkedTo</p>
+<p>如果数据集已经连接到参数TDataSource，则返回True</p>
+<p>IsSequenced</p>
+<p>如果数据库表格由数据集表示则返回True，表示记录号码是否代表记录的顺序</p>
+<p>Last</p>
+<p>将光标定位到数据集中的最后一个记录</p>
+<p>LoadFromFile</p>
+<p>从一个文件中读以数据到ADO数据集中。</p>
+<p>Locate</p>
+<p>定位一条记录并把这条记录作为当前记录。如果找到记录则返回True</p>
+<p>Lookup</p>
+<p>由找到的记录中返回指定字段的值</p>
+<p>MoveBy</p>
+<p>将光标定位到由当前记录加上偏移量所代表的记录上</p>
+<p>Next</p>
+<p>将光标定位到下一个记录</p>
+<p>Open</p>
+<p>打开数据集</p>
+<p>Post</p>
+<p>将记录中的修改发送到数据库</p>
+<p>Prior</p>
+<p>将光标定位到前一个记录</p>
+<p>Refresh</p>
+<p>重新从数据库读取数据</p>
+<p>Requery</p>
+<p>刷新记录集，可以保持数据集的数据和数据库一致</p>
+<p>Resync</p>
+<p>从数据库中重新获取前一个、当前的和下一个记录</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Delphi学习笔记04</title>
+      <link>https://blog.alswl.com/2009/12/delphi-study-notes-04/</link>
+      <pubDate>Tue, 01 Dec 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/12/delphi-study-notes-04/</guid>
+      <description>今天主要学习了Object Pascal的面向对象部分：类的定义、继承、多态这些基本操作。 1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。 2.语法结构严谨，比如类定义必须在interface之后，过程/函数的实现必须要分开，而无法写成C++/Java那种inner类定义，写起来难免缚手缚脚 。 3.大小写的语法规范很麻烦，像Int</description>
+      <content:encoded><![CDATA[<p>今天主要学习了Object Pascal的<strong>面向对象</strong>部分：类的定义、继承、多态这些基本操作。</p>
+<p>1.Delphi的关键词好麻烦，居然result都没法用，返回值的错误我查找了很久才明白为什么编译器说result重定义。</p>
+<p>2.语法结构严谨，比如类定义必须在<code>interface</code>之后，过程/函数的实现必须要分开，而无法写成C++/Java那种inner类定义，写起来难免缚手缚脚
+。</p>
+<p>3.大小写的语法规范很麻烦，像<code>Integer/String</code>这些关键词，我真不知道该不该首字母大写。还有变量的定义，按照&quot;Delphi编码规范&quot;是应该大写
+，可是这样就需要频繁的使用Shift，还是喜欢Java的那种首字符小写的驼峰式，能够清楚地把函数/过程/变量区分开。</p>
+<p>4.<code>fuction/procedure</code>除了返回值又没什么大区别，现在想来真爱死void了。</p>
+<p>下面上今天学习的代码，是类的<strong>定义</strong>、<strong>继承</strong>、<strong>多态</strong>这些。</p>
+<h2 id="1类的使用">1.类的使用</h2>
+<pre><code>unit USharp;
+</code></pre>
+<p>{接口定义}</p>
+<p>interface</p>
+<p>type</p>
+<p>{定义类TSharp}</p>
+<p>TSharp = class(TObject)</p>
+<p>private</p>
+<p>FWeight : Double;</p>
+<p>procedure SetWeight(Weight : Double);</p>
+<p>public</p>
+<p>{定义属性Weight}</p>
+<p>property Weight : Double read FWeight write SetWeight;</p>
+<p>procedure Display();</p>
+<p>procedure Draw() ;virtual;</p>
+<p>end;</p>
+<p>{实现}</p>
+<p>implementation</p>
+<p>procedure TSharp.SetWeight(Weight : Double);</p>
+<p>begin</p>
+<p>FWeight := Weight;</p>
+<p>end;</p>
+<p>procedure TSharp.Display();</p>
+<p>begin</p>
+<p>{Self.ClassName获取当前类名}</p>
+<p>Writeln(&lsquo;Im &lsquo;, Self.ClassName, &rsquo; , my weight is &lsquo;, FWeight);</p>
+<p>end;</p>
+<p>{空方法，我不明白虚方法为什么还需要在基类实现…}</p>
+<p>procedure TSharp.Draw();</p>
+<p>begin</p>
+<p>end;</p>
+<p>end.</p>
+<h2 id="2类的继承和多态">2.类的继承和多态</h2>
+<pre><code>unit UCircle;
+{Circle类模块}
+interface
+</code></pre>
+<p>uses</p>
+<p>USharp;</p>
+<p>type</p>
+<p>TCircle = class(TSharp)</p>
+<p>private</p>
+<p>FR : Double;</p>
+<p>procedure SetR (R : Double);</p>
+<p>public</p>
+<p>property R : Double read FR write SetR;</p>
+<p>{重载父类Display方法}</p>
+<p>procedure Display();</p>
+<p>{重写父类Draw虚方法，关键词override}</p>
+<p>procedure Draw(); override;</p>
+<p>end;</p>
+<p>implementation</p>
+<p>procedure TCircle.SetR(R : Double);</p>
+<p>begin</p>
+<p>FR := R;</p>
+<p>end;</p>
+<p>procedure TCircle.Display();</p>
+<p>begin</p>
+<p>Writeln(&lsquo;Im &lsquo;, Self.ClassName, &rsquo; , I am in TCircle.&rsquo;);</p>
+<p>end;</p>
+<p>procedure TCircle.Draw();</p>
+<p>begin</p>
+<p>Writeln(&lsquo;Draw a Circle.&rsquo;);</p>
+<p>end;</p>
+<p>end.</p>
+<pre><code>unit USquare;
+</code></pre>
+<p>interface</p>
+<p>uses</p>
+<p>USharp;</p>
+<p>type</p>
+<p>{定义类TSharp}</p>
+<p>TSquare = class(TSharp)</p>
+<p>private</p>
+<p>FX : Double;</p>
+<p>FY : Double;</p>
+<p>procedure SetX(X : Double);</p>
+<p>procedure SetY(Y : Double);</p>
+<p>public</p>
+<p>{定义属性Weight}</p>
+<p>property X : Double read FX write SetX;</p>
+<p>property Y : Double read FY write SetY;</p>
+<p>procedure Display();</p>
+<p>{重写父类Draw虚方法，关键词override}</p>
+<p>procedure Draw(); override;</p>
+<p>end;</p>
+<p>{实现}</p>
+<p>implementation</p>
+<p>procedure TSquare.SetX(X : Double);</p>
+<p>begin</p>
+<p>FX := X;</p>
+<p>end;</p>
+<p>procedure TSquare.SetY(Y : Double);</p>
+<p>begin</p>
+<p>FY := Y;</p>
+<p>end;</p>
+<p>procedure TSquare.Display();</p>
+<p>begin</p>
+<p>{Self.ClassName获取当前类名}</p>
+<p>Writeln(&lsquo;Im &lsquo;, Self.ClassName, &rsquo; , my x is &lsquo;, X, &lsquo;, y is &lsquo;, Y);</p>
+<p>end;</p>
+<p>procedure TSquare.Draw();</p>
+<p>begin</p>
+<p>Writeln(&lsquo;Draw a Square.&rsquo;);</p>
+<p>end;</p>
+<p>end.</p>
+<pre><code>program P2;
+{使用类继承和多.pas文件}
+</code></pre>
+<p>{$APPTYPE CONSOLE}</p>
+<p>uses</p>
+<p>SysUtils,</p>
+<p>USharp in &lsquo;USharp.pas&rsquo;,</p>
+<p>UCircle in &lsquo;UCircle.pas&rsquo;,</p>
+<p>USquare in &lsquo;USquare.pas&rsquo;;</p>
+<p>var</p>
+<p>Sharp : TSharp;</p>
+<p>Circle : TCircle;</p>
+<p>Square : TSquare;</p>
+<p>{用来进行多态的TSharp}</p>
+<p>SharpVirtual : TSharp;</p>
+<p>{用来进行类型转换的TSquare}</p>
+<p>SquareForAs : TSquare;</p>
+<p>begin</p>
+<p>Sharp := TSharp.Create();</p>
+<p>Sharp.Weight := 1.3;</p>
+<p>Sharp.Display();</p>
+<p>Circle := TCircle.Create();</p>
+<p>Circle.Weight := 2.2;</p>
+<p>Circle.R := 1.2;</p>
+<p>Circle.Display();</p>
+<p>Square := TSquare.Create();</p>
+<p>Square.Weight := 4.5;</p>
+<p>Square.X := 2;</p>
+<p>Square.Y := 3;</p>
+<p>Square.Display();</p>
+<p>{将变量分别指向TCicle和TSquare，运行Draw实现多态}</p>
+<p>SharpVirtual := TCircle.Create();</p>
+<p>SharpVirtual.Draw();</p>
+<p>SharpVirtual := TSquare.Create();</p>
+<p>SharpVirtual.Draw();</p>
+<p>{is操作符}</p>
+<p>Writeln(Circle is TCircle);</p>
+<p>Writeln(SharpVirtual is TCircle);</p>
+<p>Writeln(SharpVirtual is TSquare);</p>
+<p>{as类转换操作符}</p>
+<p>SquareForAs := SharpVirtual as TSquare;</p>
+<p>SquareForAs.Draw;</p>
+<p>Readln;</p>
+<p>end.</p>
+<p>本来准备入手<strong>VCL</strong>，结果事情太多，下午党员会议，晚上我又提前1个月过生日请朋友吃饭唱歌，耽误了```</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Delphi学习笔记05</title>
+      <link>https://blog.alswl.com/2009/12/delphi-study-notes-05/</link>
+      <pubDate>Tue, 01 Dec 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/12/delphi-study-notes-05/</guid>
+      <description>今天是第五天了，我对自己的学习速度很不满意，还是处在半懵懂状态。语法还要经过大脑才能想出来，一点不顺手。 VCL控件使用了几个简单的，BDE数据库和ADO数据库这一块还没有涉及，网络编程也没涉及到。 这几天事情很烦，18号的课程设计赶不上了，我之前又是做的&amp;quot;PylexChat&amp;ldquo;聊 天系统这么有挑战性的题目。唉，真开始后悔了，老师那里也不好说，郁闷。还得等我组员回来讨论一下，这周就得</description>
+      <content:encoded><![CDATA[<p>今天是第五天了，我对自己的学习速度很不满意，还是处在半懵懂状态。语法还要经过大脑才能想出来，一点不顺手。</p>
+<p>VCL控件使用了几个简单的，<strong>BDE数据库</strong>和<strong>ADO数据库</strong>这一块还没有涉及，<strong>网络编程</strong>也没涉及到。</p>
+<p>这几天事情很烦，18号的课程设计赶不上了，我之前又是做的&quot;<a href="http://log4d.com/tag/pylexchat"><strong>PylexChat</strong></a>&ldquo;聊
+天系统这么有挑战性的题目。唉，真开始后悔了，老师那里也不好说，郁闷。还得等我组员回来讨论一下，这周就得答辩了。当时老师突然说：&ldquo;那你不是在学Delphi么，
+就用Delphi写一个吧&rdquo;，我狂晕，学一门语言又不是吃菜，总得有个进度吧~</p>
+<p>昨天请同学吃饭，我把我生日提前一个月过，请一帮兔崽子吃饭唱歌，闹到11点多才回来，所以昨天的总结今天早晨才更新。</p>
+<p>ps:我之前使用的Delphi7版本是绿色精简完美版，在<strong>插入<code>AboutBox</code><strong>和</strong>跟踪源码</strong>（在某个VCL类名如TForm上Ctrl+单击）时
+候出现找不到&rdquo;.pas&quot;的错误，我之后重新安装了188MB的安装版，错误消失了，所以推荐大家使用安装版。</p>
+<p>以上废话结束，下面正文。</p>
+<h2 id="1同构数的delphi实现">1.同构数的Delphi实现</h2>
+<p>这道题目是在一个PPT上看到的,题目如下：&quot;<strong>如果一个数刚好出现在其平方的右边，如5的平方为25，6的平方为36，这样的数我们称为同构数，请编程找出1～9
+999的全部同构数</strong>&quot;。题目对我的难点在于类型的转换和<code>Math</code>函数的熟悉。</p>
+<pre><code>program P1;
+{如果一个数刚好出现在其平方的右边，如5的平方
+为25，6的平方为36，这样的数我们称为同构数，
+请编程找出1～9999的全部同构数}
+</code></pre>
+<p>{$APPTYPE CONSOLE}</p>
+<p>uses</p>
+<p>SysUtils, Math;</p>
+<p>var</p>
+<p>{定义这么多变量是为了容易调试}</p>
+<p>a, b, c, t : Double;</p>
+<p>i : Integer;</p>
+<p>begin</p>
+<p>for i := 1 to 9999 do</p>
+<p>begin</p>
+<p>a := i * i;</p>
+<p>{Trunc取整}</p>
+<p>t := Trunc(Log10(i)) + 1;</p>
+<p>{Power x^y}</p>
+<p>b := Power(10, t);</p>
+<p>c := Trunc(a) mod Trunc(b);</p>
+<p>if i = c then</p>
+<p>Write(i, &rsquo; &lsquo;);</p>
+<p>end;</p>
+<p>Readln;</p>
+<p>end.</p>
+<p>注意里面的几个<code>Math</code>方法，这些函数的熟悉和累计不是一朝一夕能够完成的，我现在正在总结一个&quot;Dlphi资料小汇总&quot;
+，总结好了之后再发布。</p>
+<h2 id="2仿window记事本的编辑器">2.仿Window记事本的编辑器</h2>
+<p>本来是有一道例题实现Windows计算器，我感觉实现记事本更能接触各种控件，于是花了2个小时摸索这块内容。</p>
+<p>代码我就贴一个核心区的，没写注释。如果学过C#，应该很容易看懂，都出自Heljsberg，Application的结构很类似。（等我空下来，好好写一篇文章了
+解一下Heljsberg）</p>
+<p>实现了打开、保存、字体功能，没有另存为和换行、查找功能。- -#（这是记事本？）</p>
+<p>一个小亮点就是如果文章修改了会有(*)标记，呵呵。</p>
+<p>上个小图</p>
+<p><a href="../../static/images/upload_dropbox/200912/delphi_editor.jpg">
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200912/delphi_editor.jpg" alt="image"  />
+
+</a></p>
+<pre><code>procedure TForm1.O1Click(Sender: TObject);
+begin
+  if odOpenFile.Execute() then
+  begin
+    FFileName := odOpenFile.FileName;
+    mmContent.Lines.LoadFromFile(odOpenFile.FileName);
+    Self.Caption := FFileName;
+    Self.FIsEdited := False;
+  end;
+</code></pre>
+<p>end;</p>
+<p>procedure TForm1.S1Click(Sender: TObject);</p>
+<p>begin</p>
+<p>if FFileName &lt;&gt; &rsquo;&rsquo; then</p>
+<p>begin</p>
+<p>mmContent.Lines.SaveToFile(FFileName);</p>
+<p>FFileName := odOpenFile.FileName;</p>
+<p>Self.Caption := FFileName;</p>
+<p>Self.FIsEdited := False;</p>
+<p>end</p>
+<p>else</p>
+<p>if sdSaveFile.Execute then</p>
+<p>begin</p>
+<p>FFileName := sdSaveFile.FileName;</p>
+<p>mmContent.Lines.SaveToFile(FFileName);</p>
+<p>Self.Caption := FFileName;</p>
+<p>Self.FIsEdited := False;</p>
+<p>end;</p>
+<p>end;</p>
+<p>procedure TForm1.T1Click(Sender: TObject);</p>
+<p>begin</p>
+<p>fdFont.Font := mmContent.Font;</p>
+<p>if fdFont.Execute then</p>
+<p>mmContent.Font := fdFont.Font;</p>
+<p>end;</p>
+<p>procedure TForm1.X1Click(Sender: TObject);</p>
+<p>begin</p>
+<p>Form1.Close();</p>
+<p>end;</p>
+<p>procedure TForm1.A1Click(Sender: TObject);</p>
+<p>begin</p>
+<p>abAbout.Show();</p>
+<p>end;</p>
+<p>procedure TForm1.FormCreate(Sender: TObject);</p>
+<p>begin</p>
+<p>FFileName := &lsquo;&rsquo;;</p>
+<p>FIsEdited := False;</p>
+<p>end;</p>
+<p>procedure TForm1.mmContentChange(Sender: TObject);</p>
+<p>begin</p>
+<p>if Self.FIsEdited = false then</p>
+<p>Self.Caption := Self.Caption + &rsquo; (*)&rsquo;;</p>
+<p>Self.FIsEdited := True;</p>
+<p>end;</p>
+<p>procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);</p>
+<p>var</p>
+<p>IsExit : Integer;</p>
+<p>begin</p>
+<p>if FIsEdited = True then</p>
+<p>begin</p>
+<p>isExit := MessageDlg(&lsquo;正文已修改，是否保存？&rsquo;, mtConfirmation,</p>
+<p>[mbYes, mbNo, mbCancel], 0);</p>
+<p>case IsExit of</p>
+<p>mrYes : Self.S1Click(Sender);</p>
+<p>mrCancel : CanClose := False;</p>
+<p>end;</p>
+<p>end;</p>
+<p>end;</p>
+<p>end.</p>
+<p>我把这个小程序打包，如果对源码有兴趣，可以看一下。</p>
+<p>点击这里下载<a href="../../static/images/upload_dropbox/200912/delphi_editor.zip">delphi_editor</a></p>
+<p>学校暖气坏了，我得跑出去洗澡，今天就先到这里吧。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Delphi源程序格式书写规范【转】</title>
+      <link>https://blog.alswl.com/2009/11/delphi-source-code-written-in-standard-format-switch/</link>
+      <pubDate>Mon, 30 Nov 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/11/delphi-source-code-written-in-standard-format-switch/</guid>
+      <description>话说我不喜欢转帖，可是看到实在好的东西又想留下来，真矛盾。为此，我凡是所有转的帖子都在标题上注明转帖，大家如果不感兴趣，可以直接略过。 下面的这篇文章出处：百度_delphi吧_Delphi 源程序格式书写规范 文章很长，我看了很长时间，好的代码风格将是一个程序员终身受益。文中的一些关于Tab/空格问题我完全同意，不过在个别地方，比如变量名定义上持中立意见，我觉得每 个人、每个公司的编码风格还是会有出入的</description>
+      <content:encoded><![CDATA[<p>话说我不喜欢转帖，可是看到实在好的东西又想留下来，真矛盾。为此，我凡是所有转的帖子都在标题上注明转帖，大家如果不感兴趣，可以直接略过。</p>
+<p>下面的这篇文章出处：<a href="http://tieba.baidu.com/f?kz=84767888">百度_delphi吧_Delphi 源程序格式书写规范</a></p>
+<p>文章很长，我看了很长时间，好的代码风格将是一个程序员终身受益。文中的一些关于Tab/空格问题我完全同意，不过在个别地方，比如变量名定义上持中立意见，我觉得每
+个人、每个公司的编码风格还是会有出入的。总体来说，这篇文章作为参考是很不错的。</p>
+<p>我整理了半小时，将原来的一个p分成3级h2/h3/p，呃，方便阅读吧。</p>
+<p><strong><strong><strong><strong><strong>原文送上</strong></strong></strong></strong></strong></p>
+<p>感谢tianhaiyise提供的来自<a href="http://www.delphiforums.com/">ht
+tp://www.delphiforums.com/</a>的译
+本</p>
+<h2 id="1规范简介">1.规范简介</h2>
+<p>本规范主要规定Delphi源程序在书写过程中所应遵循的规则及注意事项。编写该规范的目的是使公司软件开发人员的源代码书写习惯保持一致。这样做可以使每一个组员都
+可以理解其它组员的代码，以便于源代码的二次开发记忆系统的维护。</p>
+<h2 id="2一般格式规范">2.一般格式规范</h2>
+<h3 id="21缩进">2.1缩进</h3>
+<p>缩进就是在当源程序的级改变时为增加可读性而露出的两个空格。缩进的规则为每一级缩进两个空格。不准许使用Tab。因为Tab会因为用户所作的设 置不同而产生不同的
+效果。当遇到begin或进入判断、循环、异常处理、with语句、记录类型声明、类声明等的时侯增加一级，&amp;nbsp_pl
+ace_holder;当遇到end或退出判 断、循环、异常处理、with语句、记录类型声明、类声明等的时侯减少一级。例如：</p>
+<p>ifTmpInt&lt;&gt;100&amp;nbsp_pl
+ace_holder;then</p>
+<p>TmpInt:=&amp;nbsp_place_h
+older;100;</p>
+<h3 id="22beginend">2.2Begin..End</h3>
+<p>begin语句和end语句在源程序中要独占一行，例如:</p>
+<p>forI:=0&amp;nbsp_place_ho
+lder;to10dobegin&amp;nbsp
+_place_holder;//不正确的用法</p>
+<p>end;</p>
+<p>forI:=0&amp;nbsp_place_ho
+lder;to10do&amp;nbsp_plac
+e_holder;&amp;nbsp_place_
+holder;//正确的用法</p>
+<p>begin</p>
+<p>end;</p>
+<h3 id="23空格">2.3空格</h3>
+<p>在操作符及逻辑判断符号的两端添加空格，例如：I:=I&amp;nbsp_place_ho
+lder;+1;，aandb&amp;nbsp_p
+lace_holder;等，但添加括号时不需要空格。例如：if(a&amp;nbsp_p
+lace_holder;&gt;b)then&amp;n
+bsp_place_holder;//错误的用法</p>
+<p>If(a&gt;b)&amp;nbsp_place_ho
+lder;then//正确的用法</p>
+<p>又例如：procedureTest(Param1:integer;&amp;nbsp_p
+lace_holder;Param3:string);</p>
+<h2 id="3objectpascal语法书写格式规范">3.ObjectPascal语法书写格式规范</h2>
+<h3 id="31保留字">3.1保留字</h3>
+<p>ObjectPascal语言的保留字或关键词应全部使用小写字母。</p>
+<h3 id="32过程和函数">3.2过程和函数</h3>
+<h4 id="321命名及格式">3.2.1命名及格式</h4>
+<p>过程和函数的名称应全部使用有意义的单词组成，并且所有单词的第一个字母应该使用大写字母。例如：</p>
+<p>procedureformatharddisk;//不正确的命名</p>
+<p>procedureFormatHardDisk;//正确的命名</p>
+<p>设置变量内容的过程和函数，应使用Set作为前缀，例如：</p>
+<p>procedureSetUserName;</p>
+<p>读取变量内容的过程和函数，应使用Get作为前缀，例如：</p>
+<p>functionGetUserName:string;</p>
+<h4 id="322过程和函数的参数">3.2.2过程和函数的参数</h4>
+<p>3.2.2.1命名</p>
+<p>统一类型的参数写在同一句中:</p>
+<p>procedureFoo(Param1,Param2,&amp;nbsp_place_h
+older;Param3:Integer;Param4:&amp;nbsp_place_
+holder;string);</p>
+<p>3.2.2.2命名</p>
+<p>所有参数必须是有意义的；并且当参数名称和其它属性名称重了的时候，加一个前缀&rsquo;A&rsquo;,例如：</p>
+<p>procedureSomeProc(AUserName:string;&amp;nbsp
+_place_holder;AUserAge:integer);</p>
+<p>3.2.2.3命名冲突</p>
+<p>当使用的两个unit中包括一个重名的函数或过程时,那幺当你引用这一函数或过程时，将执行在use&amp;nbsp_place_
+holder;子句中后声明的那个unit中的函数或过程。为了避免这种&rsquo;uses-clause-
+dependent&rsquo;需要在引用函数或过程时，写完整函数或过程的出处。例如：</p>
+<p>SysUtils.FindClose(SR);</p>
+<p>Windows.FindClose(Handle);</p>
+<h3 id="33变量">3.3变量</h3>
+<h4 id="331变量命名及格式">3.3.1变量命名及格式</h4>
+<p>首先所有变量必须起有意义的名字，使其它组员可以很容易读懂变量所代表的意义，变量命名可以采用同义的英文命名，可使用几个英文单词，但每一单词的首字母必须大写。例
+如：</p>
+<p>var</p>
+<p>WriteFormat:：string；</p>
+<p>同时对于一些特定类型可采用一定的简写如下：</p>
+<p>指针类型</p>
+<p>P</p>
+<p>纪录类型</p>
+<p>Rec</p>
+<p>数组类型</p>
+<p>Arr</p>
+<p>类</p>
+<p>Class</p>
+<p>循环控制变量通常使用单一的字符如：i,j,或&amp;nbsp_place_holder
+;k。另外使用一个有意义的名字例如：UserIndex，也是准许的。</p>
+<h4 id="332局部变量">3.3.2局部变量</h4>
+<p>在过程中使用局部变量遵循所有其它变量的命名规则。</p>
+<h4 id="333全局变量">3.3.3全局变量</h4>
+<p>尽量不使用全局变量，如必须使用全局变量则必须加前缀&rsquo;g&rsquo;，同时应在变量名称中体现变量的类型。例如：</p>
+<p>gprecUserCount:point;
+//名称为UserCount的全局变量,其类型为指向一结构的指针</p>
+<p>但是在模块内部可以使用全局变量。所有模块内全局变量必须用&rsquo;F&rsquo;为前缀。如果几个模块之间需要进行资料交换，则需要通过声明属性的方法来实现。例如：</p>
+<p>type</p>
+<p>TFormOverdraftReturn=
+class(TForm)</p>
+<p>private</p>
+<p>{Privatedeclarations}</p>
+<p>FuserName:string;</p>
+<p>FuserCount:Integer;</p>
+<p>ProcedureSetUserName(Value:string);</p>
+<p>FunctionGetUserName:string;</p>
+<p>public</p>
+<p>{Publicdeclarations}</p>
+<p>propertyUserName:string&amp;nbsp_place_holde
+r;readGetUserNamewrite&amp;nbsp_place_holder
+;SetUserName;</p>
+<p>propertyUserCount:Integer&amp;nbsp_place_hol
+der;readFuserCountwrite&amp;nbsp_place_holde
+r;FuserCount;</p>
+<p>end;</p>
+<h3 id="34类型">3.4类型</h3>
+<h4 id="341大小写协议">3.4.1大小写协议</h4>
+<p>保留字的类型名称必须全部小写。Win32API的类型通常全部大写，对于其它类型则
+首字母大写，其余字母小写，例如：</p>
+<p>var</p>
+<p>MyString:string;&amp;nbsp
+_place_holder;//reser
+vedword</p>
+<p>WindowHandle:HWND;&amp;nb
+sp_place_holder;//Win32API&amp;nbsp_place_ho
+lder;type</p>
+<p>I:Integer;&amp;nbsp_place
+_holder;//&amp;nbsp_place
+_holder;typeidentifierintroduced&amp;nbsp_pl
+ace_holder;inSystemunit</p>
+<h4 id="342浮点类型">3.4.2浮点类型</h4>
+<p>尽量不使用Real类型，他只是为了和旧的Pascal代码兼容，尽量使用Doubl
+e类型。Double类型是对处理器和数据总线做过 最优化的并且是IEEE定义的标
+准数据结构。当数值超出Double的范围时，使用Extended。但Extended不被Jave支持。但使用其它
+语言编写的DLL时可能会使用Single类型。</p>
+<h4 id="343枚举类型">3.4.3枚举类型</h4>
+<p>枚举类型的名字必须有意义并且类型的名字之前要加前缀&rsquo;T&rsquo;。枚举类型的内容的名字必须包含枚举类型名称的简写，例如：</p>
+<p>TSongType=(stRock,stC
+lassical,stCountry,stAlternative,&amp;nbsp_p
+lace_holder;stHeavyMetal,stRB);</p>
+<h4 id="344数组类型">3.4.4数组类型</h4>
+<p>数组类型的名字必须有意义并且类型的名字之前要加前缀&rsquo;T&rsquo;。如果声明一个指向数组类型的指针必须在该类型的名字之前加前缀&rsquo;P&rsquo;，例如：</p>
+<p>type</p>
+<p>PCycleArray=&amp;nbsp_pla
+ce_holder;^TCycleArray;</p>
+<p>TCycleArray=&amp;nbsp_pla
+ce_holder;array[1..100]ofinteger;</p>
+<h5 id="345记录类型">3.4.5记录类型</h5>
+<p>记录类型的名字必须有意义并且类型的名字之前要加前缀&rsquo;T&rsquo;。如果声明一个指向数组类型的指针必须在该类型的名字之前加前缀&rsquo;P&rsquo;，例如：</p>
+<p>type</p>
+<p>PEmployee=&amp;nbsp_place
+_holder;^TEmployee;</p>
+<p>TEmployee=&amp;nbsp_place
+_holder;record</p>
+<p>Em
+ployeeName:string</p>
+<p>Em
+ployeeRate:Double;</p>
+<p>end;</p>
+<h3 id="35类">3.5类</h3>
+<h5 id="351命名及格式">3.5.1命名及格式</h5>
+<p>类的名字必须有意义并且类型的名字之前要加前缀&rsquo;T&rsquo;。例如：</p>
+<p>type</p>
+<p>TCustomer=class(TObje
+ct)</p>
+<p>类实例的名字通常是去掉&rsquo;T&rsquo;的类的名字。例如：</p>
+<p>var</p>
+<p>Customer:TCustomer;</p>
+<h5 id="352类中的变量">3.5.2类中的变量</h5>
+<p>3.5.2.1命名及格式</p>
+<p>类的名字必须有意义并且类型的名字之前要加前缀&rsquo;F&rsquo;。所有的变量必须是四有的。如果需要从外部访问此变量则需要声明一属性</p>
+<h4 id="353方法">3.5.3方法</h4>
+<p>3.5.3.1命名及格式</p>
+<p>同函数和过程的命名及格式。</p>
+<p>3.5.3.2属性访问方法</p>
+<p>所有的属性访问方法必须出现在private或protected&amp;nbsp_pla
+ce_holder;中。属性访问方法的命名同函数和过程的命名另外读方法 (readermethod)必须使用前缀&rsquo;Ge
+t&rsquo;.写方法(writermethod)必须使用前缀&rsquo;Set&rsquo;。写方法的参数必须
+命名为 &lsquo;Value&rsquo;，其类型同所要写的属性相一致。例如：</p>
+<p>TSomeClass=class(TObject)</p>
+<p>private</p>
+<p>FSomeField:Integer;</p>
+<p>protected</p>
+<p>functionGetSomeField:
+Integer;</p>
+<p>procedureSetSomeField(&amp;nbsp_place_holder
+;Value:Integer);</p>
+<p>public</p>
+<p>propertySomeField:Int
+egerreadGetSomeFieldw
+riteSetSomeField;</p>
+<p>end;</p>
+<h3 id="36属性">3.6属性</h3>
+<h4 id="361命名及格式">3.6.1命名及格式</h4>
+<p>同其用操作的，出去前缀&rsquo;F&rsquo;的类的变量的名称相一致。</p>
+<h3 id="37文件">3.7文件</h3>
+<h4 id="371项目文件">3.7.1项目文件</h4>
+<p>3.7.1.1项目目录结构</p>
+<p>程序主目录&ndash;Bin（应用程序所在路径）</p>
+<p>-Db（本地数据库所在路径）</p>
+<p>-Doc（文档所在路径）</p>
+<p>-Hlp（帮助文件所在路径）</p>
+<p>-Backup（备份路径）</p>
+<p>-Tmp（临时文件路径）</p>
+<p>3.7.1.2命名</p>
+<p>项目文件必须使用一个有意义的名字。例如：Delphi中系统信息的项目文件被命名为
+SysInfo.dpr。</p>
+<h4 id="372form文件">3.7.2Form文件</h4>
+<p>3.7.2.1命名</p>
+<p>同Form的名称相一致：例如：Form的名称为FormMain则Form文件的名称就为FormMain.frm。</p>
+<h4 id="heading"></h4>
+<p>3.7.3DataModule文件</p>
+<p>3.7.3.1命名</p>
+<p>datamodule文件的命名应该有意义，并且使用&rsquo;DM&rsquo;作为前缀。例如：用户d
+atamodule被命名为&rsquo;DMCustomers.dfm&rsquo;。</p>
+<h4 id="374remotedatam">3.7.4RemoteDataM</h4>
+<p>odule文件</p>
+<p>3.7.4.1命名</p>
+<p>remotedatamodule文件的命名应该有意义，并且使用&rsquo;RDM&rsquo;作为前缀
+。例如：用户remotedatamodule&amp;nbsp_place_holder
+;被命名为&rsquo;RDMCustomers.dfm&rsquo;。</p>
+<h4 id="375unit文件">3.7.5Unit文件</h4>
+<p>3.7.5.1普通Unit</p>
+<p>3.7.5.1.1Unit文件命名</p>
+<p>unit文件的命名应该有意义，并且使用&rsquo;unit&rsquo;作为前缀。例如：通用unit被
+命名为&rsquo;UnitGeneral&rsquo;。</p>
+<p>3.7.5.2FormUnits</p>
+<p>3.7.5.2.1命名</p>
+<p>Formunit文件的名字必须和Form的名称保持一致。例如：主窗体叫FormM
+ain.pas则FormUnit文件的名字为：UnitFormMain。</p>
+<p>3.7.5.3DataModuleUnit
+s</p>
+<p>3.7.5.3.1命名</p>
+<p>DataModuleunit文件的名字必须
+和DataModule的名称保持一致。例如：主DataModule叫DMMain
+.pas则DataModuleUnit文件
+的名字为：UnitDMMain。</p>
+<p>3.7.5.4文件头</p>
+<p>在所有文件的头部应写上此文件的用途，作者，日期及输入和输出。例如：</p>
+<p>{</p>
+<p>修改日期：</p>
+<p>作者：</p>
+<p>用途：</p>
+<p>本模块结构组成：</p>
+<p>}</p>
+<h4 id="376forms和datamodulesnbsp_place_h">3.7.6Forms和DataModules&amp;nbsp_place_h</h4>
+<p>older;Forms</p>
+<p>3.7.6.1Form类</p>
+<p>1.Form类命名标准</p>
+<p>Forms类的命名应该有意义，并且使用&rsquo;TForm&rsquo;作为前缀。例如：AboutF
+orm类的名字为:</p>
+<p>TAboutForm=class(TForm)</p>
+<p>主窗体的名字为</p>
+<p>TMainForm=class(TForm)</p>
+<p>2.Form类实例的命名标准</p>
+<p>Form的类实例的名字应同期掉&rsquo;T&rsquo;的Form类的名字相一致。例如：</p>
+<p>TypeName</p>
+<p>InstanceName</p>
+<p>TaboutForm</p>
+<p>AboutForm</p>
+<p>TmainForm</p>
+<p>MainForm</p>
+<p>TCustomerEntryForm</p>
+<p>CustomerEntryForm</p>
+<p>3.7.6.2DataModulesFor
+m</p>
+<p>3.7.6.2.1.DataModuleF
+orm命名标准</p>
+<p>DataModulesForms类的命名应该有意义，并且使用&rsquo;TDM&rsquo;作为前缀。
+例如：</p>
+<p>TDMCustomer=class(TDataModule)</p>
+<p>TDMOrders=class(TDataModule)</p>
+<p>3.7.6.2.2.DataModule实
+例命名标准</p>
+<p>DataModuleForm的类实例的名字
+应同期掉&rsquo;T&rsquo;的DataModuleForm类的名字相一致。例如：</p>
+<p>TypeName</p>
+<p>InstanceName</p>
+<p>TCustomerDataModule</p>
+<p>CustomerDataModule</p>
+<p>TordersDataModule</p>
+<p>OrdersDataModule</p>
+<h3 id="38控件">3.8控件</h3>
+<h4 id="381控件实例的命名">3.8.1控件实例的命名</h4>
+<p>控件的实例应使用去掉&rsquo;T&rsquo;该控件类的名称作为前缀，例如：</p>
+<p>输入用户姓名的Tedit的名字为：EditUserName。</p>
+<h4 id="382控件的简写">3.8.2控件的简写</h4>
+<p>控件的名称可使用以下简写，但所用简写于控件名称之间药添加&rsquo;_&rsquo;：</p>
+<p>3.8.2.1StandardTab</p>
+<p>mmTMainMenu</p>
+<p>pmTPopupMenu</p>
+<p>mmiTMainMenuItem</p>
+<p>pmiTPopupMenuItem</p>
+<p>lblTLabel</p>
+<p>edtTEdit</p>
+<p>memTMemo</p>
+<p>btnTButton</p>
+<p>cbTCheckBox</p>
+<p>rbTRadioButton</p>
+<p>lbTListBox</p>
+<p>cbTComboBox</p>
+<p>scbTScrollBar</p>
+<p>gbTGroupBox</p>
+<p>rgTRadioGroup</p>
+<p>pnlTPanel</p>
+<p>clTCommandList</p>
+<p>3.8.2.2AdditionalTab</p>
+<p>bbtnTBitBtn</p>
+<p>sbTSpeedButton</p>
+<p>meTMaskEdit</p>
+<p>sgTStringGrid</p>
+<p>dgTDrawGrid</p>
+<p>imgTImage</p>
+<p>shpTShape</p>
+<p>bvlTBevel</p>
+<p>sbxTScrollBox</p>
+<p>clbTCheckListbox</p>
+<p>splTSplitter</p>
+<p>stxTStaticText</p>
+<p>chtTChart</p>
+<p>3.8.2.3Win32Tab</p>
+<p>tbcTTabControl</p>
+<p>pgcTPageControl</p>
+<p>ilTImageList</p>
+<p>reTRichEdit</p>
+<p>tbrTTrackBar</p>
+<p>prbTProgressBar</p>
+<p>udTUpDown</p>
+<p>hkTHotKey</p>
+<p>aniTAnimate</p>
+<p>dtpTDateTimePicker</p>
+<p>tvTTreeView</p>
+<p>lvTListView</p>
+<p>hdrTHeaderControl</p>
+<p>stbTStatusBar</p>
+<p>tlbTToolBar</p>
+<p>clbTCoolBar</p>
+<p>3.8.2.4SystemTab</p>
+<p>tmTTimer</p>
+<p>pbTPaintBox</p>
+<p>mpTMediaPlayer</p>
+<p>olecTOleContainer</p>
+<p>ddccTDDEClientConv</p>
+<p>ddciTDDEClientItem</p>
+<p>ddscTDDEServerConv</p>
+<p>ddsiTDDEServerItem</p>
+<p>3.8.2.5InternetTab</p>
+<p>cskTClientSocket</p>
+<p>sskTServerSocket</p>
+<p>wbdTWebDispatcher</p>
+<p>ppTPageProducer</p>
+<p>tpTQueryTableProducer</p>
+<p>dstpTDataSetTableProducer</p>
+<p>nmdtTNMDayTime</p>
+<p>necTNMEcho</p>
+<p>nfTNMFinger</p>
+<p>nftpTNMFtp</p>
+<p>nhttpTNMHttp</p>
+<p>nMsgTNMMsg</p>
+<p>nmsgTNMMSGServ</p>
+<p>nntpTNMNNTP</p>
+<p>npopTNMPop3</p>
+<p>nuupTNMUUProcessor</p>
+<p>smtpTNMSMTP</p>
+<p>nstTNMStrm</p>
+<p>nstsTNMStrmServ</p>
+<p>ntmTNMTime</p>
+<p>nudpTNMUdp</p>
+<p>pskTPowerSock</p>
+<p>ngsTNMGeneralServer</p>
+<p>htmlTHtml</p>
+<p>urlTNMUrl</p>
+<p>smlTSimpleMail</p>
+<p>3.8.2.6DataAccessTab</p>
+<p>dsTDataSource</p>
+<p>tblTTable</p>
+<p>qryTQuery</p>
+<p>spTStoredProc</p>
+<p>dbTDataBase</p>
+<p>ssnTSession</p>
+<p>bmTBatchMove</p>
+<p>usqlTUpdateSQL</p>
+<p>3.8.2.7DataControlsTa
+b</p>
+<p>dbgTDBGrid</p>
+<p>dbnTDBNavigator</p>
+<p>dbtTDBText</p>
+<p>dbeTDBEdit</p>
+<p>dbmTDBMemo</p>
+<p>dbiTDBImage</p>
+<p>dblbTDBListBox</p>
+<p>dbcbTDBComboBox</p>
+<p>dbchTDBCheckBox</p>
+<p>dbrgTDBRadioGroup</p>
+<p>dbllTDBLookupListBox</p>
+<p>dblcTDBLookupComboBox</p>
+<p>dbreTDBRichEdit</p>
+<p>dbcgTDBCtrlGrid</p>
+<p>dbchTDBChart</p>
+<p>3.8.2.8DecisionCubeTa
+b</p>
+<p>dcbTDecisionCube</p>
+<p>dcqTDecisionQuery</p>
+<p>dcsTDecisionSource</p>
+<p>dcpTDecisionPivot</p>
+<p>dcgTDecisionGrid</p>
+<p>dcgrTDecisionGraph</p>
+<p>3.8.2.9QReportTab</p>
+<p>qrTQuickReport</p>
+<p>qrsdTQRSubDetail</p>
+<p>qrbTQRBand</p>
+<p>qrcbTQRChildBand</p>
+<p>qrgTQRGroup</p>
+<p>qrlTQRLabel</p>
+<p>qrtTQRText</p>
+<p>qreTQRExpr</p>
+<p>qrsTQRSysData</p>
+<p>qrmTQRMemo</p>
+<p>qrrtTQRRichText</p>
+<p>qrdrTQRDBRichText</p>
+<p>qrshTQRShape</p>
+<p>qriTQRImage</p>
+<p>qrdiTQRDBMImage</p>
+<p>qrcrTQRCompositeReport</p>
+<p>qrpTQRPreview</p>
+<p>qrchTQRChart</p>
+<p>3.8.2.10DialogsTab</p>
+<p>OpenDialogTOpenDialog</p>
+<p>SaveDialogTSaveDialog</p>
+<p>OpenPictureDialogTOpenPictureDialog</p>
+<p>SavePictureDialogTSavePictureDialog</p>
+<p>FontDialogTFontDialog</p>
+<p>ColorDialogTColorDialog</p>
+<p>PrintDialogTPrintDialog</p>
+<p>PrinterSetupDialogTPrintSetupDialog</p>
+<p>FindDialogTFindDialog</p>
+<p>ReplaceDialogTReplaceDialog</p>
+<p>3.8.2.11Win31Tab</p>
+<p>dbllTDBLookupList</p>
+<p>dblcTDBLookupCombo</p>
+<p>tsTTabSet</p>
+<p>olTOutline</p>
+<p>tnbTTabbedNoteBook</p>
+<p>nbTNoteBook</p>
+<p>hdrTHeader</p>
+<p>flbTFileListBox</p>
+<p>dlbTDirectoryListBox</p>
+<p>dcbTDriveComboBox</p>
+<p>fcbTFilterComboBox</p>
+<p>3.8.2.12SamplesTab</p>
+<p>ggTGauge</p>
+<p>cgTColorGrid</p>
+<p>spbTSpinButton</p>
+<p>speTSpinEdit</p>
+<p>dolTDirectoryOutline</p>
+<p>calTCalendar</p>
+<p>ibeaTIBEventAlerter</p>
+<p>3.8.2.13ActiveXTab</p>
+<p>cfxTChartFX</p>
+<p>vspTVSSpell</p>
+<p>f1bTF1Book</p>
+<p>vtcTVTChart</p>
+<p>grpTGraph</p>
+<p>3.8.2.14MidasTab</p>
+<p>prvTProvider</p>
+<p>cdsTClientDataSet</p>
+<p>qcdsTQueryClientDataSet</p>
+<p>dcomTDCOMConnection</p>
+<p>oleeTOleEnterpriseConnection</p>
+<p>sckTSocketConnection</p>
+<p>rmsTRemoteServer</p>
+<p>midTmidasConnection</p>
+<h2 id="4修改规范">4．修改规范</h2>
+<p>本规则所做的规定仅适用于已经纳入配置管理的程序。在这类修改中，要求保留修改前的内容、并标识出修改和新增的内容。并在文件
+头加入修改人、修改日期、修改说明等必要的信息。</p>
+<h3 id="41修改历史记录">4．1修改历史记录</h3>
+<p>对源文件进行经过批准的修改时，修改者应在程序文件头加入修改历史项。在以后的每一次修改时，修改者都必须在该项目中填写下列
+信息：</p>
+<p>修改人</p>
+<p>修改时间</p>
+<p>修改原因</p>
+<p>修改说明即如何修改</p>
+<h3 id="42新增代码行">4．2新增代码行</h3>
+<p>新增代码行的前后应有注释行说明。</p>
+<p>//修改人，修改时间，修改说明</p>
+<p>新增代码行</p>
+<p>//修改结束</p>
+<h3 id="43删除代码行">4．3删除代码行</h3>
+<p>删除代码行的前后用注释行说明。</p>
+<p>//修改人，修改时间，修改说明</p>
+<p>//要删除的代码行（将要删除的语句进行注释）</p>
+<p>//修改结束</p>
+<h3 id="44修改代码行">4．4修改代码行</h3>
+<p>修改代码行以删除代码行后在新增代码行的方式进行。</p>
+<p>//修改人，修改时间，修改说明</p>
+<p>//修改前的代码行</p>
+<p>//修改结束</p>
+<p>//修改后的代码行</p>
+<p>修改后的代码行</p>
+<p>//修改结束</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Delphi学习笔记03</title>
+      <link>https://blog.alswl.com/2009/11/delphi-study-notes-03/</link>
+      <pubDate>Sun, 29 Nov 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/11/delphi-study-notes-03/</guid>
+      <description>学习Delphi第三天，早晨起来之后跑去图书馆找了一本书《Delphi开发经验技巧宝典》，翻开这本书发现更适合作为手册查阅，而不是学习教材。最后借了一本《[Delphi面向对象程序设计](http://www .china-pub.com/734474)》的教材，属于&amp;quot;21世纪高等学校应用型教材&amp;quot;系列。 今天主要完成了Pascal到Delphi的过度，学习使用集合set、记录rec</description>
+      <content:encoded><![CDATA[<p>学习Delphi第三天，早晨起来之后跑去图书馆找了一本书《<a href="http://www.china-pub.com/36610">Delphi开发经验技巧宝典</a>》，翻开这本书发现更适合作为手册查阅，而不是学习教材。最后借了一本《[Delphi面向对象程序设计](http://www
+.china-pub.com/734474)》的教材，属于&quot;21世纪高等学校应用型教材&quot;系列。</p>
+<p>今天主要完成了Pascal到Delphi的过度，学习使用<strong>集合set</strong>、<strong>记录record</strong>、<strong>指针Pointer</strong>和<strong>简单的可视化编程</strong>。</p>
+<p>在百度<a href="http://tieba.baidu.com/f?kw=delphi">Delphi吧</a>逛时候发现<a href="http://passport.baidu.com/?business&amp;un=%CB%F7%D2%FD%D4%BD%BD%E7#0">索引越界</a>居然是Delphi吧主，里面有一篇文章关于<a href="http://tieba.baidu.com/f?kz=84767888">Delphi的编码风格</a>，我一会转过来。</p>
+<p>Ps:啊，你不知道索引越界？！那百度贴吧伴侣总应该听过吧，偷偷告诉你，这个软件就是索引越界用Delphi开发的。</p>
+<p>好了，下面是正文，我今天使用的代码，咱们让代码来反应思想吧（其实我是懒得总结每个用法~）。</p>
+<pre><code>program P2;
+{集合、记录、指针学习}
+{$APPTYPE CONSOLE}
+</code></pre>
+<p>uses</p>
+<p>SysUtils;</p>
+<p>{集合set}</p>
+<p>procedure SetTest();</p>
+<p>type</p>
+<p>{定义子集类型,子集类型元素不能超过256}</p>
+<p>TSomeInts = 1..250;</p>
+<p>TIntSet = set of TSomeInts;</p>
+<p>var</p>
+<p>set1, set2 : TIntSet;</p>
+<p>i : integer;</p>
+<p>begin</p>
+<p>set1 := [1, 3, 5, 7, 9];</p>
+<p>set2 := [2, 4, 6, 8, 10];</p>
+<p>{似乎Pascal不能输出Set内元素，书上解释是</p>
+<p>因为Set是无序的，只能使用下列方式来判断。</p>
+<p>使用Low()/Hign()函数获得有序数据类型的边</p>
+<p>界。}</p>
+<p>for i:= Low(TSomeInts) to High(TSomeInts) do</p>
+<p>begin</p>
+<p>{Set有一套操作方法，就是并、交、叉、等于</p>
+<p>、不等于、属于，下面就是用到属于in}</p>
+<p>if i in set1 then Write(i);</p>
+<p>end;</p>
+<p>Writeln;</p>
+<p>end;</p>
+<p>{记录record}</p>
+<p>procedure RecordTest ();</p>
+<p>type</p>
+<p>{这是定义一个记录，类似于结构体}</p>
+<p>TStudent = record</p>
+<p>StNumber : integer;</p>
+<p>StName : string;</p>
+<p>stScore : Real;</p>
+<p>end;</p>
+<p>var</p>
+<p>{其实我对这里的数据初始化不太懂，也许</p>
+<p>是因为受C++/Java影响，我始终觉得应该</p>
+<p>有一个构造过程，不知道这一个构造过程</p>
+<p>是在var实现还是在给成员变量初次赋值实</p>
+<p>现。}</p>
+<p>student1 : TStudent;</p>
+<p>begin</p>
+<p>student1.StNumber := 1000;</p>
+<p>student1.StName := &lsquo;张三&rsquo;;</p>
+<p>student1.stScore := 85.5;</p>
+<p>Writeln(student1.StName);</p>
+<p>end;</p>
+<p>{指针}</p>
+<p>procedure PointerTest ();</p>
+<p>var</p>
+<p>{定义指针}</p>
+<p>p1, p2 : ^integer;</p>
+<p>x : integer;</p>
+<p>begin</p>
+<p>x := 100;</p>
+<p>{使用@取变量地址}</p>
+<p>p1 := @x;</p>
+<p>Writeln(&lsquo;x = &lsquo;, x);</p>
+<p>{注意^的使用}</p>
+<p>Writeln(&lsquo;p1^ = &lsquo;, p1^);</p>
+<p>{使用New()对指针分配内存空间</p>
+<p>ps；Object Pascal有一种Pointer类型，使用GetMem()</p>
+<p>来分配未知大小内存情况，Pointer表示无类型指针。}</p>
+<p>New(p2);</p>
+<p>p2^ := 20;</p>
+<p>Writeln(&lsquo;p2 = &lsquo;, p2^);</p>
+<p>{使用Dispose()释放内存空间}</p>
+<p>Dispose(p2);</p>
+<p>end;</p>
+<p>begin</p>
+<p>SetTest();</p>
+<p>RecordTest();</p>
+<p>PointerTest ();</p>
+<p>Readln;</p>
+<p>end.</p>
+<p>下面是一个学生分数登记系统，用了<code>TEdit/TRadioGroup/TListBox</code>等简单控件。整个项目一共三个文
+件&quot;<code>P3.dpr</code>&quot;、&quot;<code>UScore.dfm</code>&quot;、&quot;<code>UScore.pas</code>&quot;，分别是项目文件、窗体文件、模块文件。下面是对应的代码（我发现Delphi
+7想在代码状态编辑.dpr/.dfm这种文件特别麻烦）。</p>
+<pre><code>program P3;
+{项目文件，也是入口程序，相当于C#的application.cs}
+uses
+  Forms,
+  UScore in 'UScore.pas' {FrmScore};
+</code></pre>
+<p>{$R *.res}</p>
+<p>begin</p>
+<p>{Hejlsberg不愧是Delphi/C#之父，如此神似}</p>
+<p>Application.Initialize;</p>
+<p>Application.CreateForm(TFrmScore, FrmScore);</p>
+<p>Application.Run;</p>
+<p>end.</p>
+<p>下面是窗体文件UScore.dfm，注释始终无法加入。</p>
+<pre><code>object FrmScore: TFrmScore
+  Left = 612
+  Top = 163
+  Width = 315
+  Height = 389
+  Caption = 'Student Score'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object edtNo: TEdit
+    Left = 32
+    Top = 32
+    Width = 121
+    Height = 21
+    TabOrder = 0
+  end
+  object edtName: TEdit
+    Left = 32
+    Top = 72
+    Width = 121
+    Height = 21
+    TabOrder = 1
+  end
+  object rgSex: TRadioGroup
+    Left = 176
+    Top = 32
+    Width = 105
+    Height = 65
+    Caption = #24615#21035
+    ItemIndex = 0
+    Items.Strings = (
+      #30007
+      #22899)
+    TabOrder = 2
+  end
+  object gbScore: TGroupBox
+    Left = 32
+    Top = 112
+    Width = 249
+    Height = 81
+    Caption = 'gbScore'
+    TabOrder = 3
+    object edtChinese: TEdit
+      Left = 16
+      Top = 16
+      Width = 121
+      Height = 21
+      TabOrder = 0
+    end
+    object edtMath: TEdit
+      Left = 16
+      Top = 48
+      Width = 121
+      Height = 21
+      TabOrder = 1
+    end
+  end
+  object lbDisplay: TListBox
+    Left = 32
+    Top = 248
+    Width = 249
+    Height = 105
+    ItemHeight = 13
+    TabOrder = 4
+  end
+  object btnAdd: TButton
+    Left = 56
+    Top = 208
+    Width = 75
+    Height = 25
+    Caption = 'btnAdd'
+    TabOrder = 5
+    OnClick = btnAddClick
+  end
+  object btnDisplay: TButton
+    Left = 168
+    Top = 208
+    Width = 75
+    Height = 25
+    Caption = 'btnDisplay'
+    TabOrder = 6
+    OnClick = btnDisplayClick
+  end
+end
+
+
+unit UScore;
+{UScore.pas，一个模块文件}
+</code></pre>
+<p>interface</p>
+<p>uses</p>
+<p>Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,</p>
+<p>Dialogs, StdCtrls, ExtCtrls;</p>
+<p>type</p>
+<p>TFrmScore = class(TForm)</p>
+<p>edtNo: TEdit;</p>
+<p>edtName: TEdit;</p>
+<p>rgSex: TRadioGroup;</p>
+<p>gbScore: TGroupBox;</p>
+<p>edtChinese: TEdit;</p>
+<p>edtMath: TEdit;</p>
+<p>lbDisplay: TListBox;</p>
+<p>btnAdd: TButton;</p>
+<p>btnDisplay: TButton;</p>
+<p>procedure btnAddClick(Sender: TObject);</p>
+<p>procedure btnDisplayClick(Sender: TObject);</p>
+<p>private</p>
+<p>{ Private declarations }</p>
+<p>public</p>
+<p>{ Public declarations }</p>
+<p>end;</p>
+<p>{定义一个Student类型记录}</p>
+<p>Student = record</p>
+<p>stuNo : string[8];</p>
+<p>name : String[8];</p>
+<p>sex : String[2];</p>
+<p>chinese, math : integer;</p>
+<p>end;</p>
+<p>var</p>
+<p>frmScore: TFrmScore;</p>
+<p>{定义Student类型动态数组}</p>
+<p>stus : array of Student;</p>
+<p>{我没找到这个count初始化为0，应该是自动初始化为0了}</p>
+<p>count : integer;</p>
+<p>{不知道书上原始代码定义这个file干嘛，莫非想写入文件？}</p>
+<p>f : file of Student;</p>
+<p>implementation</p>
+<p>{$R *.dfm}</p>
+<p>procedure TFrmScore.btnAddClick(Sender: TObject);</p>
+<p>begin</p>
+<p>count := count + 1;</p>
+<p>SetLength(stus, count);</p>
+<p>{这里使用了with开域语句，省去重复输入stus}</p>
+<p>with stus[count - 1] do</p>
+<p>begin</p>
+<p>stuNo := edtNo.Text;</p>
+<p>name := edtName.Text;</p>
+<p>if rgSex.ItemIndex = 0 then</p>
+<p>sex := &lsquo;男&rsquo;</p>
+<p>else</p>
+<p>sex := &lsquo;女&rsquo;;</p>
+<p>chinese := StrToInt(edtChinese.Text);</p>
+<p>math := StrToInt(edtMath.Text);</p>
+<p>end;</p>
+<p>ShowMessage(&lsquo;第&rsquo; + IntToStr(count) +&lsquo;条记录添加完毕。&rsquo;);</p>
+<p>{直接调用DisplayClick，使用Sender作为触发源}</p>
+<p>btnDisplayClick(Sender);</p>
+<p>end;</p>
+<p>procedure TFrmScore.btnDisplayClick(Sender: TObject);</p>
+<p>var</p>
+<p>i : integer;</p>
+<p>s : string;</p>
+<p>begin</p>
+<p>{ListBox增加Item}</p>
+<p>lbDisplay.Items.Clear();</p>
+<p>for i := Low(stus) to High(stus) do</p>
+<p>begin</p>
+<p>s := stus[i].stuNo + &lsquo;, &rsquo; + stus[i].name + &lsquo;, &rsquo; +</p>
+<p>stus[i].sex + IntToStr(stus[i].chinese) + &lsquo;, &rsquo; +</p>
+<p>IntToStr(stus[i].math);</p>
+<p>lbDisplay.Items.Add(s);</p>
+<p>end;</p>
+<p>end;</p>
+<p>end.</p>
+<p>这个分数记录系统的作用仅仅是为了熟悉Delphi可视化开发，没有任何可实用价值，Google过来的同学估计要哭了，哈哈~</p>
+<p>明天开始要准备Object Pascal的内容，再加强控件的认识和使用。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>一个C&#43;&#43;程序员的Delphi学习笔记【转】</title>
+      <link>https://blog.alswl.com/2009/11/a-c-programmers-delphi-study-notes/</link>
+      <pubDate>Sun, 29 Nov 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/11/a-c-programmers-delphi-study-notes/</guid>
+      <description>早晨起来就看到这篇好文章，转载过来。 作者：Dream_soft(via CSDN) 原文链接： 一个C++程序员的Delphi学习笔记 - Dream_soft的专栏 - CSDN博客 一个C++程序员的Delphi学习笔记(2) - Dream_soft的专栏 - CSDN博客 作者的学习经历和我比较类似，视角也比我广阔，这篇文章对程序员学习Delphi很有参考价值。 **以下为原文 说心里话，站在一个C++程序员的立场，是有那么一</description>
+      <content:encoded><![CDATA[<p>早晨起来就看到这篇好文章，转载过来。</p>
+<p>作者：<a href="http://hi.csdn.net/Dream_soft">Dream_soft</a>(via CSDN)</p>
+<p>原文链接：</p>
+<p><a href="http://blog.csdn.net/Dream_soft/archive/2001/09/17/12979.aspx">一个C++程序员的Delphi学习笔记 - Dream_soft的专栏 -
+CSDN博客</a></p>
+<p><a href="http://blog.csdn.net/Dream_soft/archive/2001/09/19/12980.aspx">一个C++程序员的Delphi学习笔记(2) - Dream_soft的专栏 -
+CSDN博客</a></p>
+<p>作者的学习经历和我比较类似，视角也比我广阔，这篇文章对程序员学习Delphi很有参考价值。</p>
+<p>**<em><strong><strong><strong><strong><strong><strong><strong><strong><strong>以下为原文</strong></strong></strong></strong></strong></strong></strong></strong></strong></em></p>
+<hr />
+<p>说心里话，站在一个C++程序员的立场，是有那么一点看不上用Delphi的开发者的。就几周前，我还撰文维护过C++的尊严。种种原因，今天我却须学习Delphi
+、熟悉Delphi，不由兴起人生无常的感慨。</p>
+<p>我给了自己十五天的时间，不知够否掌握一门语言？我选择了Marco
+cantu的《Delphi从入门到精通》及《Delphi高级开发指南》作为学习用书。第一本书名叫《从入门到精通》，但如果你不熟悉一门OOP语言，
+那这本书不合适你。对我，则正合适。二书总厚度共一千五百页，嗯，一天一百页就差不多了，希望自己能做到吧。</p>
+<p>我决定如实记下自己的思考与困惑，做为自己进军新领域的记念，也希望能为后行的同路者提供一点帮助。</p>
+<h2 id="一-环境">一 环境</h2>
+<p>&ldquo;工欲善其事，必先利其器&rdquo;，对开发环境的
+熟悉是非常重要的。不同于VC的MDI界面，Delphi采用了多个独立窗体设计。这是否预示Borland更提倡组件间进行对等的交互？我暗暗猜测着。</p>
+<p>1.Desktop设置是可以与Project分离的，而且Desktop设置优先于Project设置。</p>
+<p>2.To-Do列表无论是用于提醒自己还是别人，都是好工具。</p>
+<p>3.AppBrowser感觉上很相似于VC的主界面。也提供了符号提示，Code Completiont等功能。嗯，还有VC所没有的Class
+Completion，可以在声明和实现间双向自动补完。</p>
+<p>4.Project Group的概念，有点像.net平台中的Solution，不过.net是多语言协作的。</p>
+<h2 id="二-语言">二 语言</h2>
+<p>Delphi的核心是VCL库，其基础是Object
+Pascal。《从入门到精通》用两章的篇幅细说&quot;Object&quot;,却只字没有提到&quot;Pascal&quot;。嗯，还好，我隐隐记得。</p>
+<p>1.Use用于引用外部单元。与头文件不同，Use没有传递性。</p>
+<p>2.Delphi使用引用对象模型，对象变量只持有对象引用，不再持有对象本身，所有对象手动自堆中分配。</p>
+<p>3.Delphi的封装很奇怪，类成员访问权限的设定，只对单元外部起作用。在单元内，可以自对象外部任意访问类私有成员。朋友解释说相当于C++
+的友元，细想其实差异很大&ndash;友谊一定是双向的吗？（将Unit方式用作友元，A能访问B，B一定能访问A）友谊有传递性吗？（将Unit方式用作友
+元，A能访问B，B能访问C，A一定能访问C）。在我看来，这和友员的概念是不相容的。希望某天我能明白Delphi如此设计的考量。</p>
+<p>4.在声明对象变量后，Delphi对象的实际生成需调用构造器。构造器是特殊的类方法，自TObject继承并可重载。不使用关键字而用类方法构造对象，我认为这是
+单根继承的特有用法。</p>
+<p>5.书中有一段动态创建TButton的例子，使用Creat创建了对象，却没用Free显式的释放</p>
+<p>。我疑心会发生内存泄漏，细细想来，该是由持有TButton的容器TForm来负责释放，朋友证实了我的想法。Delphi以此避免了手动释放内存的麻烦。</p>
+<p>6.Delphi的关键字很烦，长而多，要键入的地方也多。好处是能为编译器提供更多的信息，用以查错和加快编译速度。</p>
+<p>7.因着引用对象模型，不再有C++中直接对象访问无多态，只在指针和引用下多态机制才起作用的问题。</p>
+<p>8.用message直接指出方法可以处理的事件，唉，让我想起OWL时Borland对C++语言的相似扩展，真是怀念。</p>
+<p>9.大量使用动态类型转换，该是Pascal本就具有的特点吧？</p>
+<p>10.窗体继承，好像连控件的属性都可以继承呢。</p>
+<p>11.很奇怪的设计。有类方法，却不提供类变量，需用Unit级的变量来模拟。</p>
+<p>12.如果我的猜想不错，控件的Events应该就是&quot;对象方法指针&quot;。</p>
+<p>13.极强有力的机制：类引用，可用相同的形式动态建立不同的数据类型。C++中相似的能力，怕要用Builder模式才行。</p>
+<p>14.参数对象按引用传递，按引用赋值，只有部分类提供Assign方法复制对像。唉，C++的值语意，好怀念。</p>
+<p>15.Finally块！解决了C++中好些需高度技巧的资源释放问题。但为什么不能和except一起使用？不太明白。</p>
+<p>16.属性和事件？？真是为VCL量身定制的语言啊。其实属性和事件并非面向对象的必要元素。</p>
+<p>17.我想VCL事件处理的委托模型，该是与JAVA相似的。只是Java的Listener可以处理多</p>
+<p>个Listener的存在，Delphi的事件属性好像只能处理一个吧？不过处理速度上要快多了。</p>
+<p>18.a)从TComponent类继承，b)新构造程序,c)例行的Register,d)安装。VCL组件创建的方便，真让人感动。</p>
+<p>19.书上说VCL优于ActiveX，因为ActiveX没有完全的继承机制，我不敢苟同。聚合该是先于继承选用的机制。</p>
+<p>20.Interface，丑死了！！我甚至怀疑这是否Hejlsberg的设计。完全像是为Com支持临时拼凑的语言成份，与整体毫不协调，像个
+外来户。接口本身是强大的东西，但糟糕的设计会让它的使用成为一种痛苦。除了COM和多重继承没有选择外，我想是没人愿意用它的。</p>
+<p>整个来说，Object
+pascal给我很深的映象。接下来就该学习VCL了，且看Borland是如何将这种种语言的成份，组装成为开发的利器。(续待）</p>
+<h2 id="三-vcl">三 VCL</h2>
+<p>《从入门到精通》，作者的安排可真大胆。不先讲如何在Form上摆控件，倒自VCL
+讲起。我佩服作者的气魄，直直的深入到问题的核心，剔筋去肉，先将脉络端到你的面前。要知道，这有着失去很多读者的危险。</p>
+<p>1.TObject，万类之源。RTTI信息就放在这里了，这算是单根单继承实现上的便利吧。</p>
+<p>2.一个细节：TButton.InstanceSize=504！真够浪费的。算法分析中常讲以空间换时间，这该算以空间换宜用性吧。</p>
+<p>3.作为TPersisitent的子类，TComponet拥有流化能力。IDE就用其将属性写入DFM文件中。</p>
+<p>4.TPersisitent委托TFiler和TStream两个辅助类来具体实现流化。具体实现中包括自RTTI中读出子类所有拥有的属性，使流化对程序员透明。</p>
+<p>5.非窗口控件？相信是对效率低的一种补偿。</p>
+<p>6.Componentsk中包含窗体所有上的控件，即使他们的Parent为别的组件容器，其Owner也是Form.</p>
+<p>7.Owner和Parent,两个易混淆的概念。我的理解：Owner是对象的持有者，Parent是对象的呈现者。</p>
+<p>8.窗体元素没有进行封装！带来访问的便利性的同时，也留下混乱的隐患，特别在大型工程中。</p>
+<p>9.控件位置的坐标原点对应Parent的客户区，这加强了我的信心：Parent是对象的呈现者。</p>
+<p>10.Frames，窗体继承的有力竞争者。其本质是以聚合代替继承。昨天有朋友提出：&ldquo;我觉得聚合是不可以取代继承
+的&rdquo;。的确，聚合不可能完全代替继承，但在两者同时适用的条件下，应该选择耦合较为松散、封装更为完全的聚合。具体到Frames和窗体继承来说，我感觉
+在不涉及多态时，是应该选用Frames的。</p>
+<p>11.Delphi提供的容器类，与C++的STL相比，从弹性到效率可就差远了，还容易出现类型安全问题。还好Delphi的RTTI机制强大，可以略补不足。这该
+是没有模板机制的副作用：整个的泛型思想都用不上。</p>
+<p>其实作者还是很为初学者着想的：并没有深入VCL。虽有点意犹未尽，但作为初学的我，也该是知足了。</p>
+<h2 id="四标准组件">四：标准组件</h2>
+<p>其实很多Delphi的使用者，都是看中众多的VCL组件支持。有朋友对我前文所说&quot;其实属性和事件并非面向对象的必要元素&quot;表示不敢苟同，我相信他是混
+淆面向对象和面向组件了。在我的记忆中，面向组件是面对对象的扩展，其本质虽仍是面向对象，但为之添加了众多的辅助特性，其中就包括属性（不是C++的&quot;
+属性&quot;）和事件。</p>
+<p>1.Form的Components，GroupBox的Controls，ListBox的Items，Delphi还真是喜欢用数组容器来表达组织结构。</p>
+<p>2.还有sleected数组，ItemEnabled数组，哦，值也是通过Items数组的对应项来存储的。</p>
+<p>3.Drag-Drop。看到书的标题，不由的就想到IDataObject、IDropSource、
+IDropTarget几个接口。其实Delphi的拖放要简单很多。就我的了解，本质是一个Drop通知，不像Com会将数据本身包装好传送。这该是不
+需支持跨进程Drag-Drop的原因吧。</p>
+<p>4.菜单不再做为资源出现，呈现给应用程序员的，是其包装后的TMenuItem和组织成嵌套形式的Items。两个优点：a)纯一，不再有菜单资源需程序员理解。2
+)在包装层中括展菜单功能极为方便，并对程序员透明。为此，ImageList也进行相应包装。</p>
+<p>5.Action，其实质为双向事件转发：各客户控件-&gt;Action-&gt;OnExecute，OnUpdata-&gt;Action属性改变-&gt;各客户控件。</p>
+<p>6.Owner-draw，还是定制控件画出自身？一个两难的选择。从一个OO纯化论者的角度看，Owner-
+draw实在是对封装的一种破坏。定制控件画出自身，却又未免劳民伤财，浪费资源。</p>
+<p>7.TreeView，树状视图。XML不正是擅长树的表达吗？干嘛不给他们结合结合？</p>
+<p>唉，操作性的东西，能想的能写的实在不多，对吧？希望接下来的几章，能激荡起脑力才是。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Delphi学习笔记01</title>
+      <link>https://blog.alswl.com/2009/11/delphi-study-notes-01/</link>
+      <pubDate>Sat, 28 Nov 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/11/delphi-study-notes-01/</guid>
+      <description>由于工作中需要使用Dephi，而此之前我对Delphi仅限于听过而已，所以我要在极短的时间内学会一门新的语言。这对我来 说是很有挑战性，也到了证明我以前反复强调&amp;quot;语法不是问题，语言才是跨度&amp;quot;的时候。我需要掌握的是Delphi基本使用和IDE工具使用。我认为，在熟悉C/Java /.NET的基础上快速掌握一门从未接触过的语言，并非不可完成的任务。 在学习这门未知的语言之前，首先要知道自</description>
+      <content:encoded><![CDATA[<p>由于工作中需要使用Dephi，而此之前我对Delphi仅限于听过而已，所以我要在极短的时间内学会一门新的语言。这对我来
+说是很有挑战性，也到了证明我以前反复强调&quot;语法不是问题，语言才是跨度&quot;的时候。我需要掌握的是Delphi基本使用和IDE工具使用。我认为，在熟悉C/Java
+/.NET的基础上快速掌握一门从未接触过的语言，并非不可完成的任务。</p>
+<p>在学习这门未知的语言之前，首先要知道自己学习的是什么东西，框架如何，用来开发哪些类型应用，IDE的情况，下面给出一些简
+单解释。</p>
+<p><a href="http://zh.wikipedia.org/zh-cn/Pascal">Pascal</a>
+<a href="http://zh.wikipedia.org/zh-cn/Delphi">Delphi</a> (via wiki)</p>
+<p><strong>我的主要教程</strong>（电子档）有如下几本：</p>
+<p>《<a href="http://www.tanghu.net/gr/zhoukun/pascal/pascal5.htm">Pascal基本教程</a>》([Google快照]
+(http://203.208.39.132/search?q=cache:EEjmkPEDtpQJ:www.tanghu.net/gr/zhoukun/p
+ascal/pascal5.htm+pascal%E6%95%99%E7%A8%8B&amp;cd=1&amp;hl=zh-
+CN&amp;ct=clnk&amp;gl=cn&amp;st_usg=ALhdy2-n00UsziHbgXqjlScPI4vUI2jwTw))</p>
+<p>下午在手机还能访问，晚上就无法访问了，只能从Google快照获取内容。教程中文字描述极为简单，通篇只有一页，但是浓缩的精华，对于我这种快速学习很有帮助。</p>
+<p>《[PASCAL语言培训教程](<a href="http://www.gougou.com/search?search=PASCAL%E8%AF%AD%E8%A8%80%25E">http://www.gougou.com/search?search=PASCAL%E8%AF%AD%E8%A8%80%E</a>
+5%9F%B9%E8%AE%AD%E6%95%99%E7%A8%8B&amp;id=1)》(via 狗狗)</p>
+<p>这个教程是信息学用到的，其中有一些例子和详细的截图（Turbo Pascal下），作为对上面Pascal基本教程的补充还是很不错的。</p>
+<p>《[Delphi程序设计基础》-李文池-电子教案](<a href="http://www.gougou.com/search?sear">http://www.gougou.com/search?sear</a>
+ch=Delphi%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%9F%BA%E7%A1%80%E3%80%8B-%E6%9
+D%8E%E6%96%87%E6%B1%A0-%E7%94%B5%E5%AD%90%E6%95%99%E6%A1%88&amp;restype=-1&amp;id=1000
+0001&amp;ty=0&amp;pattern=0&amp;xmp=0)》(via 狗狗)</p>
+<p>这是一套PPT，应该是一本教材的原装课件，内容很丰富，很适合快速学习，Delphi 7。</p>
+<p>《[delphi经典编程入门](<a href="http://www.gougou.com/search?search=delphi%E7%BB%8F%E5%85%B8%25E">http://www.gougou.com/search?search=delphi%E7%BB%8F%E5%85%B8%E</a>
+7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8&amp;restype=-1&amp;id=10000001&amp;ty=0&amp;pattern=0&amp;xmp=0
+)》(via 狗狗)</p>
+<p>这是我今天找的十余本Delphi教程中最完整的，内容比较全，缺点是没有截图，版本是Delphi 2.0 -_-!</p>
+<p>我并没有去买Dephi的书，我在China-Pub上找了一会，没找到那种大家都非常认可的教材书，罢了，就电子版上阵吧。</p>
+<p><strong>Delphi的学习曲线</strong></p>
+<p>一、Pascal 程序设计基础</p>
+<p>1.1 常量和变量</p>
+<p>1.2 数据类型</p>
+<p>1.3 语句</p>
+<p>1.4 过程和函数</p>
+<p>1.5 程序和单元</p>
+<p>1.6 嵌入式汇编</p>
+<p>二、OO（面向对象了）程序设计</p>
+<p>2.1 基本概念</p>
+<p>2.2 类</p>
+<p>2.3 方法</p>
+<p>2.4 继承和多态性</p>
+<p>2.5 对象和VRE</p>
+<p>2.6 属性</p>
+<p>2.7 消息</p>
+<p>2.8 异常处理</p>
+<p>2.9 VRE的实现</p>
+<p>所以第一步熟悉Pascal语法，第二步熟悉Dephi框架，第三步有时间再熟悉高阶内容，如网络编程，COM，VRE等</p>
+<p><strong>最后来一个Delphi的Hello World!</strong></p>
+<pre><code>program Project1;
+</code></pre>
+<p>{$APPTYPE CONSOLE}</p>
+<p>uses</p>
+<p>SysUtils;</p>
+<p>var</p>
+<p>s : String;</p>
+<p>begin</p>
+<p>Writeln(&lsquo;Hello world!&rsquo;);</p>
+<p>Readln(s);</p>
+<p>end.</p>
+<p>OK，今天花了2个小时熟悉了Delphi和Pascal，才收获这么多，明天得继续努力了。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Delphi学习笔记02</title>
+      <link>https://blog.alswl.com/2009/11/delphi-study-notes-02/</link>
+      <pubDate>Sat, 28 Nov 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/11/delphi-study-notes-02/</guid>
+      <description>今天算是学习Delphi的第二天，昨天熟悉了一下基本概念和开发环境，写了一个简单的Hello world!（传送门-Hello world!）。 说是学Delphi，其实今天我一下午都在学习Pascal语法，这里有一个要点我需要强调&amp;quot;Delphi与其说一门语言，不如说是一个开发环境和开发框架，使用的是 Object Pascal语言&amp;quot;。我今天还停留在Delphi基本语法、变量、数组、指针这些学习上</description>
+      <content:encoded><![CDATA[<p>今天算是学习Delphi的第二天，昨天熟悉了一下基本概念和开发环境，写了一个简单的Hello world!（传送门-<a href="http://log4d.com/2009/11/delphi-study-notes-01">Hello
+world!</a>）。</p>
+<p>说是学Delphi，其实今天我一下午都在学习Pascal语法，这里有一个要点我需要强调&quot;Delphi与其说一门语言，不如说是一个开发环境和开发框架，使用的是
+Object Pascal语言&quot;。我今天还停留在Delphi基本语法、变量、数组、指针这些学习上。</p>
+<p>说说我对Pascal的第一感觉吧：语法很繁琐，比起C/Java，<code>if/while/repeate/for</code>这些语法结构都<code>begin/end</code>才支持多语句
+（C/Java使用{}，Python使用缩进）。不过正是这个原因，所以代码特别直观，在教学使用和信息学比赛就很适合了。</p>
+<p>今天使用的教材是《Pascal基础教程》（传送门-[更多教程](<a href="http://log4d.com/2009/11/delphi-study-">http://log4d.com/2009/11/delphi-study-</a>
+notes-01)），还是那句话，相当精简，适合有编程基础的童鞋。</p>
+<p>下面是我今天使用的几个例子，我都尽量附带注释了，放在这里以后复习和分享。</p>
+<p><strong>常量、变量、函数、过程、If语句</strong></p>
+<pre><code>program p1;
+{常量、变量、函数、过程、If语句}
+</code></pre>
+<p>{加上$意味着编译指令}</p>
+<p>{$APPTYPE CONSOLE}</p>
+<p>uses</p>
+<p>SysUtils;</p>
+<p>const</p>
+<p>{标识符，有效长度为63个字符，并且大小写等效}</p>
+<p>{常量定义}</p>
+<p>pi = 3.14159;</p>
+<p>var</p>
+<p>{变量定义}</p>
+<p>s : Real;</p>
+<p>t1_ : String;</p>
+<p>_t2 : Integer;</p>
+<p>{函数}</p>
+<p>function Area(): Real;</p>
+<p>var</p>
+<p>r : Real;</p>
+<p>begin</p>
+<p>{输出一串字符串}</p>
+<p>Writeln(&lsquo;Pleae enter a number:&rsquo;);</p>
+<p>Readln(r);</p>
+<p>{标准函数-算术函数-sqr()}</p>
+<p>{赋值语句 :=}</p>
+<p>Area := pi * sqr(r);</p>
+<p>end;</p>
+<p>{过程定义-打印较大值}</p>
+<p>procedure Larger(x, y : Integer);</p>
+<p>begin</p>
+<p>{分支语句 if-then-else}</p>
+<p>if x &gt; y then</p>
+<p>Write(x)</p>
+<p>else</p>
+<p>Write(y);</p>
+<p>Writeln;</p>
+<p>end;</p>
+<p>begin</p>
+<p>Writeln(&lsquo;Call Area function&rsquo;);</p>
+<p>{调用函数Area()}</p>
+<p>s := Area();</p>
+<p>Writeln(&rsquo;s = &lsquo;, s);</p>
+<p>Writeln(&lsquo;back to main&rsquo;);</p>
+<p>Writeln(&lsquo;call Larger procedure&rsquo;);</p>
+<p>{调用过程Larger()}</p>
+<p>Larger(10, 9);</p>
+<p>Writeln(&lsquo;back to main&rsquo;);</p>
+<p>Readln;</p>
+<p>end.</p>
+<p><strong>学习if/case/while/repeat/for语句</strong></p>
+<pre><code>**program P2;
+{学习if/case/while/repeat/for语句}
+{$APPTYPE CONSOLE}**
+</code></pre>
+<p>uses</p>
+<p>SysUtils;</p>
+<p>{测试单语句if-then}</p>
+<p>procedure IfTest1(x : Real);</p>
+<p>var</p>
+<p>y : Real;</p>
+<p>begin</p>
+<p>if x &gt; 0 then</p>
+<p>y := 1;</p>
+<p>if x = 0 then</p>
+<p>y := 0;</p>
+<p>if x &lt; 0 then</p>
+<p>y := -1;</p>
+<p>Writeln(y);</p>
+<p>end;</p>
+<p>{测试多语句if-then，嵌套begin-&hellip;-end语句}</p>
+<p>procedure IfTest2(x : Integer);</p>
+<p>begin</p>
+<p>if x &gt; 0 then</p>
+<p>begin</p>
+<p>Writeln(&rsquo;test line1&rsquo;);</p>
+<p>Writeln(&rsquo;test line2&rsquo;);</p>
+<p>end</p>
+<p>else</p>
+<p>begin</p>
+<p>Writeln(&rsquo;test line3&rsquo;);</p>
+<p>Writeln(&rsquo;test line4&rsquo;);</p>
+<p>end;</p>
+<p>end;</p>
+<p>{Case语句}</p>
+<p>function CaseTest (score : Integer): Char;</p>
+<p>var</p>
+<p>r : Char;</p>
+<p>begin</p>
+<p>case score div 10 of</p>
+<p>10, 9 : r := &lsquo;A&rsquo;;</p>
+<p>8 : r := &lsquo;B&rsquo;;</p>
+<p>7, 6 : r := &lsquo;C&rsquo;;</p>
+<p>else</p>
+<p>r := &lsquo;D&rsquo;;</p>
+<p>end;</p>
+<p>CaseTest := r;</p>
+<p>end;</p>
+<p>{While&hellip;do语句}</p>
+<p>procedure WhileTest(n : Integer);</p>
+<p>begin</p>
+<p>while n &gt; 0 do</p>
+<p>begin</p>
+<p>{writeln(I：n)-单域宽输出格式}</p>
+<p>WriteLn(&rsquo;*&rsquo; : n);</p>
+<p>n := n - 1;</p>
+<p>end;</p>
+<p>end;</p>
+<p>{Repeat语句（自带语句括号功能）}</p>
+<p>procedure RepeatTest(n : Integer);</p>
+<p>begin</p>
+<p>repeat</p>
+<p>Writeln(&lsquo;Im in repeater &lsquo;);</p>
+<p>n := n -1;</p>
+<p>until n &lt; 0;</p>
+<p>end;</p>
+<p>{for&hellip;do语句}</p>
+<p>function ForTest(n : Integer): Integer;</p>
+<p>var</p>
+<p>i, sum : Integer;</p>
+<p>begin</p>
+<p>sum := 0;</p>
+<p>for i:=1 to 100 do</p>
+<p>sum := sum + i;</p>
+<p>Writeln(sum);</p>
+<p>end;</p>
+<p>begin</p>
+<p>IfTest1(10);</p>
+<p>IfTest1(-5);</p>
+<p>IfTest1(0);</p>
+<p>IfTest2(3);</p>
+<p>IfTest2(-2);</p>
+<p>Writeln(CaseTest(95));</p>
+<p>Writeln(CaseTest(85));</p>
+<p>Writeln(CaseTest(75));</p>
+<p>Writeln(CaseTest(65));</p>
+<p>Writeln(CaseTest(55));</p>
+<p>WhileTest(4);</p>
+<p>WhileTest(5);</p>
+<p>WhileTest(0);</p>
+<p>RepeatTest(5);</p>
+<p>ForTest(100);</p>
+<p>Readln;</p>
+<p>end.</p>
+<p><strong>使用数组</strong></p>
+<pre><code>program P3;
+{使用数组}
+{$APPTYPE CONSOLE}
+</code></pre>
+<p>uses</p>
+<p>SysUtils;</p>
+<p>const</p>
+<p>n = 5;</p>
+<p>type</p>
+<p>{定义类型-数组类型}</p>
+<p>No = array[1..n] of Integer;</p>
+<p>S = array[1..n] of Real;</p>
+<p>var</p>
+<p>i : Integer;</p>
+<p>k : Real;</p>
+<p>{创建数组类型变量}</p>
+<p>num : No;</p>
+<p>score : S;</p>
+<p>{直接创建一个数组变量}</p>
+<p>t : array[0..5] of Integer;</p>
+<p>begin</p>
+<p>k := 0;</p>
+<p>for i := 1 to n do</p>
+<p>begin</p>
+<p>Readln(score[i]);</p>
+<p>k := k + score[i];</p>
+<p>end;</p>
+<p>k := k / n;</p>
+<p>Writeln(&lsquo;平均分为：&rsquo;, k);</p>
+<p>Readln;</p>
+<p>end.</p>
+<p>今天基础部分到这儿，明天理一理集合、记录，再练习一些小程序，就可以由Pascal转入Delphi了~</p>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

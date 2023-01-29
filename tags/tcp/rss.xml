@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>tcp on Log4D</title>
+    <link>https://blog.alswl.com/tags/tcp/</link>
+    <description>Recent content in tcp on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 02 Feb 2016 23:34:44 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/tcp/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>一例 Timeout 故障</title>
+      <link>https://blog.alswl.com/2016/02/a-timeout-fault/</link>
+      <pubDate>Tue, 02 Feb 2016 23:34:44 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2016/02/a-timeout-fault/</guid>
+      <description>早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。 检查日志，并没有 ERROR 信息，但是大量 WARN 报错。 WARN [2015-12-09 11:01:02,730] org.eclipse.jetty.util.thread.QueuedThreadPool: dw{STARTED,8&amp;lt;=50&amp;lt;=50,i=0,q=1024} rejected org.eclipse.jetty.io.AbstractConne ction$2@62c021c6 WARN [2015-12-09 11:01:02,731] org.eclipse.jetty.io.SelectorManager: Could not process key for channel java.nio.channels.SocketChannel[connected local=/10. 1.1.78:8350 remote=/10.1.1.74:63290] ! java.util.concurrent.RejectedExecutionException: org.eclipse.jetty.io.AbstractConnection$2@62c021c6 ! at org.eclipse.jetty.util.thread.QueuedThreadPool.execute(QueuedThreadPool.java:362) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.AbstractConnection$FillingState.onEnter(AbstractConnection.java:379) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.AbstractConnection.next(AbstractConnection.java:273) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:563) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:82) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectChannelEndPoint.onSelected(SelectChannelEndPoint.java:109) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.processKey(SelectorManager.java:636) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:607) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.run(SelectorManager.java:545) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.util.thread.NonBlockingThread.run(NonBlockingThread.java:52) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at java.lang.Thread.run(Thread.java:745) [na:1.8.0_51] 这是七牛 API 调用出现问题，通过应用 Metrics API 检查 Threads： http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu 正常的实例： 异常的实例</description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201602/i_love_timeouts_digital_design_mugs.jpg" alt="i_love_timeouts_digital_design_mugs.jpg"  />
+
+</p>
+<p>早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。</p>
+<!-- more -->
+<p>检查日志，并没有 ERROR 信息，但是大量 WARN 报错。</p>
+<pre tabindex="0"><code>WARN  [2015-12-09 11:01:02,730] org.eclipse.jetty.util.thread.QueuedThreadPool: dw{STARTED,8&lt;=50&lt;=50,i=0,q=1024} rejected org.eclipse.jetty.io.AbstractConne
+ction$2@62c021c6
+WARN  [2015-12-09 11:01:02,731] org.eclipse.jetty.io.SelectorManager: Could not process key for channel java.nio.channels.SocketChannel[connected local=/10.
+1.1.78:8350 remote=/10.1.1.74:63290]
+! java.util.concurrent.RejectedExecutionException: org.eclipse.jetty.io.AbstractConnection$2@62c021c6
+! at org.eclipse.jetty.util.thread.QueuedThreadPool.execute(QueuedThreadPool.java:362) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.io.AbstractConnection$FillingState.onEnter(AbstractConnection.java:379) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.io.AbstractConnection.next(AbstractConnection.java:273) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:563) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:82) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.io.SelectChannelEndPoint.onSelected(SelectChannelEndPoint.java:109) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.processKey(SelectorManager.java:636) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:607) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.run(SelectorManager.java:545) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.util.thread.NonBlockingThread.run(NonBlockingThread.java:52) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
+! at java.lang.Thread.run(Thread.java:745) [na:1.8.0_51]
+</code></pre><p>这是七牛 API 调用出现问题，通过应用 Metrics API 检查 Threads：</p>
+<p><code>http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu</code></p>
+<p>正常的实例：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201602/image2015-12-9_1.png" alt="image2015-12-9_1.png"  />
+
+</p>
+<p>异常的实例：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201602/image2015-12-9_2.png" alt="image2015-12-9_2.png"  />
+
+</p>
+<p>确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？</p>
+<p>检查了 App 的配置文件，的确配置了 <code>maxThreads</code> 为 50:</p>
+<pre tabindex="0"><code>server:
+  gzip:
+    enabled: false
+  requestLog:
+    appenders: []
+  maxThreads: 50
+  applicationConnectors:
+    - type: http
+      port: 8350
+      acceptorThreads: 2
+      selectorThreads: 2
+  adminConnectors:
+    - type: http
+      port: 8351
+</code></pre><p>一般对应服务不稳定，有个简单策略，超时，那么七牛服务超时是多少？找了一下相关代码，下巴都没合上：</p>
+<pre tabindex="0"><code># com.qiniu.http.Client
+    this.httpClient.setConnectTimeout((long)Config.CONNECT_TIMEOUT, TimeUnit.SECONDS);
+    this.httpClient.setReadTimeout((long)Config.RESPONSE_TIMEOUT, TimeUnit.SECONDS);
+
+# com.qiniu.common.Config
+public static int CONNECT_TIMEOUT = 10000;
+public static int RESPONSE_TIMEOUT = 30000;
+</code></pre><p>超时时间 8h，吓得我赶紧关掉了显示器。
+赶紧将这个 Connection 改成了 2 分钟，Connect 改成了 5s。</p>
+<p>咨询了七牛的工程师故障当天的状况：</p>
+<blockquote>
+</blockquote>
+<p>sorry 忘了回复，问题已经定位，早上因为有个别用户list请求数量过大，导致了整个list接口出现大量满请求，影响返回是list接口的调用 和 portal上内容管理界面列取文件key的速度，目前已经恢复</p>
+<blockquote>
+<p>大量慢请求，这个已经内部有告警和恢复机制，11点25恢复的</p>
+</blockquote>
+<p>国内一线的云服务供应商也会出这样不可用故障，即便是有服务放在云上，还是要自己留一个心眼，多关注可用性啊。</p>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

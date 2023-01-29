@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>ie on Log4D</title>
+    <link>https://blog.alswl.com/tags/ie/</link>
+    <description>Recent content in ie on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Mon, 07 Nov 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/ie/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>jQuery.html()在IE下面错误解决办法</title>
+      <link>https://blog.alswl.com/2011/11/jquery-html-in-ie6/</link>
+      <pubDate>Mon, 07 Nov 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/11/jquery-html-in-ie6/</guid>
+      <description>今天遇到一个jQuery的.html()设定错误问题，FF和Chrome下面都能够正常工作，而IE下面却失败。 检查之后，我把问题定性到jQuery.html(html)设定在IE下有问题。当设定html文本中含有空行、空格、Tab时候，会出现异常中断，导致html ()设定失败，但是又不会引发js错误。 狗日的IE！ 下文是Google来的参考文章：使用 jQuery .html() 得到的string时, 在IE中出现错误的解决方</description>
+      <content:encoded><![CDATA[<p>今天遇到一个jQuery的<code>.html()</code>设定错误问题，FF和Chrome下面都能够正常工作，而IE下面却失败。</p>
+<p>检查之后，我把问题定性到jQuery.html(html)设定在IE下有问题。当设定html文本中含有空行、空格、Tab时候，会出现异常中断，导致<code>html ()</code>设定失败，但是又不会引发js错误。</p>
+<p>狗日的IE！</p>
+<p>下文是Google来的参考文章：<a href="http://sixpoint.me/808/jquery-html-function-ie-error/">使用 jQuery .html() 得到的string时,
+在IE中出现错误的解决方法</a></p>
+<hr />
+<p>使用 jQuery 的 .html() 函数( 使用 .text() 也类似 )得到元素内的值使用时，在IE6中出错，FireFox 中正常。</p>
+<p>基本代码如下:</p>
+<pre><code>&lt;ul class=&quot;demo&quot;&gt;
+    &lt;li&gt;easeInQuad&lt;/li&gt;
+    &lt;li&gt;easeOutQuad&lt;/li&gt;
+    &lt;li&gt;easeInOutQuad&lt;/li&gt;
+&lt;/ul&gt;
+
+
+$('.demo li').each(function(){
+    var action = $(this).html();
+    $(this).animate({'height': '-=50px' }, 2000, action);
+});
+</code></pre>
+<p>debug时将 action 直接用字符串初始化:</p>
+<pre><code>//...........
+    var action = 'easeInQuad';
+//...........
+</code></pre>
+<p>在IE6中正常执行。用 typeof 测 .html() 的值确实是 string。所以猜测是 .htlm() 在 IE6
+中使用时会有一些不干净的东西。。。所以使用 $.trim() 函数来把它清洁一下，就可以解决这个问题:</p>
+<pre><code>//...........
+var action = $.trim( $(this).html() );
+//...........
+</code></pre>
+<p>可是究竟是什么不干净的东西呢？还是因为别的原因？</p>
+<p>jQuery 文档中关于 .trim() 函数：</p>
+<blockquote>
+<p>The $.trim() function removes all newlines, spaces (including non-breaking
+spaces), and tabs from the beginning and end of the supplied string. If these
+whitespace characters occur in the middle of the string, they are preserved.</p>
+</blockquote>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>get json failed in IE</title>
+      <link>https://blog.alswl.com/2011/08/get-json-failed-in-ie/</link>
+      <pubDate>Sun, 14 Aug 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/08/get-json-failed-in-ie/</guid>
+      <description>半夜在开工打补丁，某个 bug 是 Firefox 下面能接受到 Ajax 回调请求，而 IE 不行。 解决方案在[http://stackoverflow.com/questions/425854/jquery-ajax-request-failing- in-ie](http://stackoverflow.com/questions/425854/jquery-ajax-request-failing- in-ie) 缘由是由于 IE 不能正常识别application/json; charset=utf8 于是修改为response.headers[&#39;Content-Type&#39;] = &#39;application/json&#39; 狗日的 IE！</description>
+      <content:encoded><![CDATA[<p>半夜在开工打补丁，某个 bug 是 Firefox 下面能接受到 Ajax 回调请求，而 IE 不行。</p>
+<p>解决方案在[http://stackoverflow.com/questions/425854/jquery-ajax-request-failing-
+in-ie](<a href="http://stackoverflow.com/questions/425854/jquery-ajax-request-failing-">http://stackoverflow.com/questions/425854/jquery-ajax-request-failing-</a>
+in-ie)</p>
+<p>缘由是由于 IE 不能正常识别<code>application/json; charset=utf8</code></p>
+<p>于是修改为<code>response.headers['Content-Type'] = 'application/json'</code></p>
+<p>狗日的 IE！</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>IE XML 缓存问题</title>
+      <link>https://blog.alswl.com/2010/06/ie-xml-cache-problem/</link>
+      <pubDate>Wed, 02 Jun 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/06/ie-xml-cache-problem/</guid>
+      <description>明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。 PS:之前已经有过3篇相关毕设的文章： [CakePHP的全局变量 ](http://log4d.com/2010/05/cakephp-global-variables) [FMS的80端口占用 ](http://log4d.com/2010/05/fms-80-port-used) [SWFObject 一款JavaScript的Flash检测与插入模块 ](http://log4d.com/2010/05/swfobject) &amp;mdash;- 正文开始 &amp;mdash;- 问题背景 系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即</description>
+      <content:encoded><![CDATA[<p>明天开始上交毕业设计初稿，其中有一节是遇到的问题和解决办法。我把平时在BooguNote 中的琐碎片段整理出来，便有了此文。</p>
+<p>PS:之前已经有过3篇相关毕设的文章：</p>
+<p>[CakePHP的全局变量</p>
+<p>](<a href="http://log4d.com/2010/05/cakephp-global-variables">http://log4d.com/2010/05/cakephp-global-variables</a>)</p>
+<p>[FMS的80端口占用</p>
+<p>](<a href="http://log4d.com/2010/05/fms-80-port-used">http://log4d.com/2010/05/fms-80-port-used</a>)</p>
+<p>[SWFObject 一款JavaScript的Flash检测与插入模块</p>
+<p>](<a href="http://log4d.com/2010/05/swfobject">http://log4d.com/2010/05/swfobject</a>)</p>
+<p>&mdash;- 正文开始 &mdash;-</p>
+<h2 id="问题背景">问题背景</h2>
+<p>系统要实现一个操作，即每次向同一个url 请求一个GET方法获取一个xml文件，这个xml文件记录着聊天数据并且是即时生成的。当用FireFox或者Chro
+me请求时候都能获得正确的数据，而IE则常常出现无法获取实时的XML数据。</p>
+<p>而如果在地址栏中填入 http://localhost/AzaAjaxChat/src/Chat/getXml?messageId=41
+这个原始的XML文件地址，就可以获取正确的XML文件。并且在下次IE 的 HTTPRequest请求时候就正常了。看来问题出在IE自身的缓存上面。</p>
+<h2 id="解决方法">解决方法</h2>
+<h3 id="1使用url参数随机事件">1.使用URL参数随机事件</h3>
+<p>在AJAX请求的页面后加个随机函数,我们可以使用随机时间函数，在javascript发送的URL后加上t=Math.random()。</p>
+<p>当然，不是直接把t=Math.random()拷贝到URL后面,应该像这样:</p>
+<pre><code>url = url + &quot;&amp; amp;&quot; + &quot;t=&quot; + Math.random();
+</code></pre>
+<h3 id="2修改header缓存时间">2.修改Header缓存时间</h3>
+<p>在XMLHttpRequest发送请求之前加上 XMLHttpRequest.setRequestHeader(&ldquo;If-Modified-
+Since&rdquo;,&ldquo;0&rdquo;)。一般情况下,这里的 XMLHttpRequest 不会直接使用。</p>
+<p>你应该可以找到这样的代码</p>
+<p>XXXXX.send(YYYYYY);</p>
+<p>那么,就把它变成</p>
+<p>XXXXX.setRequestHeader(&ldquo;If-Modified-Since&rdquo;,&ldquo;0&rdquo;);</p>
+<p>XXXXX.send(YYYYYY);</p>
+<h2 id="a-sample">a Sample</h2>
+<p>我选择的是第一种方法，我觉得这种更为直观。我的具体代码如下（使用jQuery）：</p>
+<pre><code>jQuery.get(&quot;http://localhost/AzaAjaxChat/src/Chat/getXml&quot;, {
+	messageId: aacGlobal.currentMessageId,
+	version: Math.random()
+}, getRemoteDataCallBack);
+</code></pre>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

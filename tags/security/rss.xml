@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>security on Log4D</title>
+    <link>https://blog.alswl.com/tags/security/</link>
+    <description>Recent content in security on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 31 May 2017 22:04:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/security/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>XSS 攻击的处理</title>
+      <link>https://blog.alswl.com/2017/05/xss/</link>
+      <pubDate>Wed, 31 May 2017 22:04:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2017/05/xss/</guid>
+      <description>这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。 谨以此文怀念 乌云。 事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件， 告知我厂网站上出现一例 XSS 漏洞。 因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞， 后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。 这里简单科普一下 XSS 跨网站脚本 -维基百科，自由的百科全书 中介绍到： 跨网站脚本（Cross-</description>
+      <content:encoded><![CDATA[<p>这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。
+谨以此文怀念 <a href="http://wooyun.org/">乌云</a>。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201705/wooyun.jpg" alt="201705/wooyun.jpg"  />
+
+</p>
+<hr />
+<h2 id="事情缘由">事情缘由</h2>
+<p>春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件，
+告知我厂网站上出现一例 XSS 漏洞。
+因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞，
+后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。</p>
+<p>这里简单科普一下 XSS
+<a href="https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC">跨网站脚本 -维基百科，自由的百科全书</a>
+中介绍到：</p>
+<blockquote>
+<p>跨网站脚本（Cross-site  scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。
+它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。</p>
+</blockquote>
+<p>XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，
+针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，
+所有访问被攻击的页面，都会触发用户被攻击行为。</p>
+<p>这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。
+时间紧迫，问题必须被解决。</p>
+<h2 id="xss-实现手段">XSS 实现手段</h2>
+<p>在解决问题之前，需要对这个问题有必要的基础认识。
+我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。</p>
+<p>XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式，
+让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。</p>
+<p>检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。</p>
+<p>常见的检测方法（来自 <a href="https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC#.E6.A3.80.E6.B5.8B.E6.96.B9.E6.B3.95">跨网站脚本 - 维基百科，自由的百科全书</a>：</p>
+<pre tabindex="0"><code>&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;
+=&#39;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;
+&#34;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt;
+&lt;script&gt;alert(document.cookie)&lt;/script&gt;
+&lt;script&gt;alert (vulnerable)&lt;/script&gt;
+%3Cscript%3Ealert(&#39;XSS&#39;)%3C/script%3E
+&lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt;
+&lt;img src=&#34;javascript:alert(&#39;XSS&#39;)&#34;&gt;
+&lt;img src=&#34;http://xxx.com/yyy.png&#34; onerror=&#34;alert(&#39;XSS&#39;)&#34;&gt;
+（这个仅限IE有效）
+</code></pre><p>攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。
+通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。
+PS：一个有效粗暴的方式，是将对公、对内系统的域名分离，对内部系统进行物理级别隔离。</p>
+<h2 id="我厂历史上的处理方案">我厂历史上的处理方案</h2>
+<p>XSS 问题又来已久，咱厂子开了这么久，历史上如何防御的呢？
+答案是用了两个策略：第一个是使用 <a href="https://www.owasp.org/index.php/Main_Page">OWASP</a>
+提供的库进行内容过滤，第二个是在存储数据时，存储了转义后的数据。</p>
+<p>在技术上处理 XSS，有两种态度可以选择：第一种是前置过滤，即将用户所有数据都进行转义，
+在输出时候在前端（模板渲染）层面直接输出。
+第二种是用户输入的数据不经过转义就直接存储起来，前端在使用时候保证对数据进行转义。</p>
+<p>我厂历史上使用的方案的前者，优点是在于前端不需要在每个地方转义，
+避免某个地方忘记了转义，从而导致漏洞。缺点则是在输出内容到非 Web 客户端时候，比如
+APP，需要进行额外的数据处理过程， 否则 HTMLEncode 的内容，在 APP
+上面无法正确输出。</p>
+<p>这个处理方案是稳妥的，那么为什么最近又暴露出问题了？
+排查之后发现，原来最近有若干个服务迁移到了一个新系统，
+而新系统在安全上面没有全局处理，所以爆出了漏洞。</p>
+<h2 id="本次处理方案">本次处理方案</h2>
+<p>知道了原因，那么可以快速解决问题了。在这次处理过程中，我们讨论了在当前移动平台增长迅速，Web 平台增长缓慢的大势下，能否直接存储用户原始数据？
+而且由于规范制定不严格，目前系统内有些地方存储转码后数据，有些地方存储转码前数据。
+导致在一些特殊的字符（颜文字）处理上不一致，从而导致在处理 <code>br</code> / <code>&lt;</code> 这类特殊字符时，表现不同。</p>
+<p>由于 DB 中有部分数据转义处理，部分数据原文存储，所以先处理输出后敏感信息，在模板层面启用全局
+encode。 将有危险的数据转移为在 HTML 文本。</p>
+<p>PS：现代 Web 框架的模板渲染引擎，一般会默认开启 HTMLEncode，而
+Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</p>
+<p>处理方案：</p>
+<ul>
+<li>开启全局 HTML 输出 Encode，有一个 <a href="http://watchitlater.com/blog/2011/10/default-html-escape-using-freemarker/">Default HTML-escape using Freemarker</a> 方案，可以默认开启 Html Encode，在这个处理方案中，需要注意有些地方真的需要输出原始 html，需要 <code>noescape</code> 特殊处理</li>
+<li>检查所有前端操作，禁止字符串拼接，使用框架支持的模板进行渲染，拖小菊的福，新系统在这块工作完成度一直比较好</li>
+<li>将 <a href="https://www.owasp.org/index.php/Main_Page">OWASP</a> 方案强制开启</li>
+</ul>
+<h2 id="其他-tips">其他 Tips</h2>
+<p>OWASP 有一个很长的 <a href="https://www.owasp.org/index.php/SS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet">列表</a>，教导如何避免 XSS，里面提到了：</p>
+<ul>
+<li>为何以及如何进行「积极防御」，对立面是仅仅输出时候转义内容本身</li>
+<li>几条对抗 XSS 的规则
+<ul>
+<li>尽量不在特定地方输出不可信变量：script / comment / attribute / tag / style， 因为逃脱 HTMl 规则的字符串太多了。</li>
+<li>将不可信变量输出到 div / body / attribute / javascript tag / style 之前，对 <code>&amp; &lt; &gt; &quot; ' /</code> 进行转义</li>
+<li>将不可信变量输出 URL 参数之前，进行 URLEncode</li>
+<li>使用合适的 HTML 过滤库进行过滤</li>
+<li>预防 DOM-based XSS，见 <a href="https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet">DOM based XSS Prevention Cheat Sheet</a></li>
+<li>开启 HTTPOnly cookie，让浏览器接触不到 cookie</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>最后送上一个 XSS 攻击工具 <a href="http://webxss.net/">http://webxss.net/</a>，知己知彼，百战不殆。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>几步拥有一个安全密码</title>
+      <link>https://blog.alswl.com/2015/10/a-security-password/</link>
+      <pubDate>Wed, 28 Oct 2015 00:17:44 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2015/10/a-security-password/</guid>
+      <description>给团队非开发同学写的邮件，对其他人也有些意义，遂贴出来。 这个互联网越来越不安全 https://www.baidu.com/s?wd=%E5%AF%86%E7%A0%81%E6%B3%84%E9%9C%B2%E4%BA%8B%E4%BB%B6。密码数据库泄露，黑客暴库攻击，社会工程学攻击层出不穷。我给大家介绍几个小方法，轻松提高自己各类密码的安全等级。 先给个地址，大家可以测试一下自己常用密码的复杂度</description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201512/password.jpg" alt="password.jpg"  />
+
+</p>
+<p>给团队非开发同学写的邮件，对其他人也有些意义，遂贴出来。</p>
+<hr />
+<p>这个互联网越来越不安全 <a href="https://www.baidu.com/s?wd=%E5%AF%86%E7%A0%81%E6%B3%84%E9%9C%B2%E4%BA%8B%E4%BB%B6&amp;rsp=3&amp;f=1&amp;oq=%E5%AF%86%E7%A0%81%E6%B3%84%E9%9C%B2&amp;ie=utf-8&amp;usm=2&amp;rsv_idx=1&amp;rsv_pq=f9362ac90000f994&amp;rsv_t=31d7A5Zyu36Hn4omAU5F9llRh3WBGl5tInDRywq%2FbPEwdPnyjCCcfGLdnNA&amp;rsv_ers=xn0&amp;rs_src=0">https://www.baidu.com/s?wd=%E5%AF%86%E7%A0%81%E6%B3%84%E9%9C%B2%E4%BA%8B%E4%BB%B6</a>。密码数据库泄露，黑客暴库攻击，社会工程学攻击层出不穷。我给大家介绍几个小方法，轻松提高自己各类密码的安全等级。</p>
+<p>先给个地址，大家可以测试一下自己常用密码的复杂度：<a href="https://howsecureismypassword.net/">https://howsecureismypassword.net/</a></p>
+<p>认为自己电脑水平还可以的，请直接翻到文章最后。</p>
+<h2 id="如何管理密码">如何管理密码</h2>
+<p>给普通用户的建议：</p>
+<ul>
+<li>密码设置复杂一些，不要使用生日、日期、姓名等有意义的信息</li>
+<li>使用一套合理的密码生成策略</li>
+</ul>
+<p>重点来了，密码生成策略：</p>
+<ul>
+<li>选择自己喜欢的诗词或者某句话，比如「床前明月光，疑是地上霜」，取其拼音的第一个字母 cqmygysdss</li>
+<li>将每个句子第一个单词大写，cqmygysdss -&gt; CqmygYsdss</li>
+<li>加上对应网站的信息，比如 163：CqmygYsdss163，qq： CqmygYsdssqq</li>
+</ul>
+<p>大功告成，你的密码安全级别提升了。</p>
+<p>&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash; 高手的分界线 &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash;</p>
+<p>给高水平选手推荐的方案：</p>
+<ul>
+<li>核心思想：密码分级，分离普通密码、重要密码（财务相关等）。</li>
+<li>普通密码使用大小写英文和数字混合</li>
+<li>重要密码和财务相关密码，独立生成密码，保存到 1Password / KeePass 等工具中，每个应用软件独立开来。</li>
+<li>推荐 KeePass，免费，参考 <a href="http://www.iplaysoft.com/keepass.html">http://www.iplaysoft.com/keepass.html</a></li>
+</ul>
+<h2 id="常见弱密码和暴力破解需要时间">常见弱密码和暴力破解需要时间</h2>
+<ul>
+<li>123456 / 不需要</li>
+<li>duitang / 2s</li>
+<li>huhela1993 / 10天</li>
+<li>huhela_1993 / 48年</li>
+<li>CqmygYsdssqq / 3千年</li>
+<li>]W?852HCMHFUYzrz,F / 10000^5 年（Keepass 生成的密码）</li>
+</ul>
+<h2 id="最后">最后</h2>
+<p>针对任何在邮箱中向大家索取：</p>
+<p>密码、员工信息、通讯录、组织架构等的邮件，请大家注意确认对方的真实身份，不要轻易透露重要信息。</p>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

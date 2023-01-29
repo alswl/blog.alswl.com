@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>lib on Log4D</title>
+    <link>https://blog.alswl.com/tags/lib/</link>
+    <description>Recent content in lib on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 06 Jan 2010 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/lib/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Delphi 的单元测试工具DUnit</title>
+      <link>https://blog.alswl.com/2010/01/delphi-unit-testing-tool-dunit/</link>
+      <pubDate>Wed, 06 Jan 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/01/delphi-unit-testing-tool-dunit/</guid>
+      <description>以前写Java时候经常使用一款单元测试工具JUnit，工作之后在用Delphi，自然也要换到Delphi下面的单元测试工具DUnit。 DUnit是XUnit家族中的一员，是Extreme Programming测试实现Xtreme Testing的一种工具。 DUnit的用法和JUnit很类似，如果有相关经验很容易上手。这里是DUnit的官方地址：http://dunit.sourceforge.net</description>
+      <content:encoded><![CDATA[<p>以前写Java时候经常使用一款单元测试工具JUnit，工作之后在用Delphi，自然也要换到Delphi下面的单元测试工具DUnit。</p>
+<p>DUnit是XUnit家族中的一员，是Extreme Programming测试实现Xtreme Testing的一种工具。</p>
+<p>DUnit的用法和JUnit很类似，如果有相关经验很容易上手。这里是DUnit的官方地址：<a href="http://dunit.sourceforge.net/">http://dunit.sourceforge.net/</a> ，
+下载地址：<a href="http://sourceforge.net/projects/dunit/">http://sourceforge.net/projects/dunit/</a></p>
+<p>将DUnit解压至任意目录（我习惯在<code>D:/Study/DelphiLib/</code>），打开Delphi 7，将DUnit路径添加到 Tools- &gt; Environment Options 里面的 Library -&gt; Library Path，这样DUnit就安装完成了。</p>
+<p>如果有装过CnPack 的Delphi工具包，就可以很轻松的在 File -&gt; New -&gt; Other -&gt; CnPack -&gt; DUnit测试实例生成向导 中建立新的测试用例。</p>
+<p>下面是我的一个简单的测试用例，测试AppFun中的<code>GetString()</code>和 <code>Add() </code>方法。</p>
+<p>TAppFun.pas</p>
+<pre tabindex="0"><code>(*
+UTest by Jason
+2010-01-06 21:30
+*)
+unit AppFun;
+interface
+uses SysUtils;
+type TAppFun = class(TObject)
+public
+	class function GetString(sName: string; iAge: Integer): string;
+	class function Add(iA: Integer; iB: Integer): Integer;
+end;
+implementation
+class function TAppFun.GetString(sName: string; iAge: Integer): string;
+begin
+	result := &#39;Hello &#39; + sName + &#39;, your age is &#39; +
+	IntToStr(iAge);
+end;
+class function TAppFun.Add(iA: Integer; iB: Integer): Integer;
+begin
+	Result := iA + iB;
+end;
+end.
+</code></pre><p>UTest.pas</p>
+<pre tabindex="0"><code>(*
+UTest by Jason
+2010-01-06 21:30
+*)
+unit UTest;
+interface
+uses
+	Windows, SysUtils, Classes, TestFramework, TestExtensions;
+type
+	TTest = class(TTestCase)
+protected
+procedure SetUp; override;
+procedure TearDown; override;
+published
+procedure Test;
+procedure TestGetString();
+end;
+implementation
+uses
+	AppFun, Dialogs;
+procedure TTest.Setup;
+begin
+	ShowMessage(&#39;In Setup!&#39;);
+end;
+procedure TTest.TearDown;
+begin
+	ShowMessage(&#39;In TearDown!&#39;);
+end;
+procedure TTest.Test;
+begin
+	Self.Check(TAppFun.GetString(&#39;Jason&#39;, 22) = &#39;Hello Jason, your age is 22&#39;,
+	&#39;Second Test&#39;);
+end;
+procedure TTest.TestGetString();
+begin
+	Check(TAppFun.Add(3, 5) = 8, &#39;First Test&#39;);
+end;
+initialization
+TestFramework.RegisterTest(TTest.Suite);
+end.
+</code></pre><p>从上面的代码可以看出，XUnit系列风格都比较类似，很容易操作。</p>
+<p><a href="../../static/images/upload_dropbox/201001/dunit.jpg">
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201001/dunit.jpg" alt="image"  />
+
+</a></p>
+<p>DUnit还有一些更高阶的操作，比如在控制台输出/在独立线程中运行测试/Exception测试等等，详细操作可以参考下列文档。目前我用到的就是简单的单元测试
+。</p>
+<p>一点资料：</p>
+<ol>
+<li><a href="http://dunit.sourceforge.net/">DUnit 的官方地址</a></li>
+<li><a href="http://sourceforge.net/projects/dunit/">DUnit 下载地址</a></li>
+<li><a href="http://dunit.sourceforge.net/README.html">DUnit 官方文档（英文）</a></li>
+<li><a href="http://dunit.sourceforge.net/README_CHT.html">DUnit 官方文档（繁体中文）</a></li>
+<li><a href="http://www.delphifans.com/infoview/Article_499.html">『Delphi园地』-Delphi单元测试工具Dunit介绍</a></li>
+<li><a href="http://www.51testing.com/html/32/297.html">Delphi单元测试工具Dunit介绍_51Testing软件测试网</a></li>
+</ol>
+<p>Delphi宝刀不老啊～呵呵～</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>将Python程序编译为exe可执行程序</title>
+      <link>https://blog.alswl.com/2009/09/python-program-will-be-compiled-into-an-executable-program-exe/</link>
+      <pubDate>Tue, 15 Sep 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/09/python-program-will-be-compiled-into-an-executable-program-exe/</guid>
+      <description>Python很强大，这个py2exe程序能够把.py文件编译为.exe可执行文件，真是如虎添翼啊。 我注意到这个细节：这篇文章发表于 2005-6-5 23:34作者wolfg太犀利了。 原文出处：py2exe初接触（一） - Python - ChinaUnix.net py2exe是什么？ py2exe是一种python发布工具，可以把python脚本转换成windows下的可执行程序，不需要安装python便可运行。 py2exe现在可以用来创建使用了wxPy</description>
+      <content:encoded><![CDATA[<p>Python很强大，这个py2exe程序能够把.py文件编译为.exe可执行文件，真是如虎添翼啊。</p>
+<p>我注意到这个细节：这篇文章发表于 2005-6-5 23:34作者wolfg太犀利了。</p>
+<p>原文出处：<a href="http://bbs3.chinaunix.net/thread-556861-1-1.html">py2exe初接触（一） - Python -
+ChinaUnix.net</a></p>
+<h2 id="py2exe是什么">py2exe是什么？</h2>
+<p>py2exe是一种python发布工具，可以把python脚本转换成windows下的可执行程序，不需要安装python便可运行。</p>
+<p>py2exe现在可以用来创建使用了wxPython, Tkinter, Pmw, PyGTK, pygame, win32com client and
+server 等模块的程序。</p>
+<p>详细介绍可以看它的官方网站 <a href="http://starship.python.net/crew/theller/py2exe/">http://starship.python.net/crew/theller/py2exe/</a></p>
+<h3 id="1-下载安装py2exe">1. 下载安装py2exe</h3>
+<p>py2exe目前的版本是0.5.4，根据你安装的python的版本选择下载的文件</p>
+<p>[py2exe-0.5.4.win32-py2.3.exe](<a href="http://prdownloads.sourceforge.net/py2exe/py2ex">http://prdownloads.sourceforge.net/py2exe/py2ex</a>
+e-0.5.4.win32-py2.3.exe?download) (现在是0.6.9-alswl)</p>
+<p>或</p>
+<p>[py2exe-0.5.4.win32-py2.4.exe](<a href="http://prdownloads.sourceforge.net/py2exe/py2ex">http://prdownloads.sourceforge.net/py2exe/py2ex</a>
+e-0.5.4.win32-py2.4.exe?download)</p>
+<p>安装后的文件应该在你的python安装目录下的Libsite-packagespy2exe</p>
+<h3 id="2-使用py2exe">2.  使用py2exe</h3>
+<p>我们先准备一个简单的python程序hello.py</p>
+<pre><code># hello.py
+def main():
+    print &quot;Hello, World!&quot;
+if __name__ == '__main__':
+     main()
+</code></pre>
+<p>然后为使用py2exe写一个脚本setup.py</p>
+<pre><code># setup.py
+from distutils.core import setup
+import py2exe
+setup(console=[&quot;hello.py&quot;])
+</code></pre>
+<p>运行setup.py，记得要传一个参数给它</p>
+<pre><code>python setup.py py2exe
+</code></pre>
+<p>应该看到一些输出信息</p>
+<pre><code>running py2exe
+creating E:ProjectsWorkSpacePythonbuild
+creating E:ProjectsWorkSpacePythonbuildbdist.win32
+creating E:ProjectsWorkSpacePythonbuildbdist.win32winexe
+creating E:ProjectsWorkSpacePythonbuildbdist.win32winexecollect
+creating E:ProjectsWorkSpacePythonbuildbdist.win32winexetemp
+creating E:ProjectsWorkSpacePythondist
+*** searching for required modules ***
+*** parsing results ***
+creating python loader for extension '_sre'
+*** finding dlls needed ***
+*** create binaries ***
+*** byte compile python files ***
+byte-compiling C:Python23libcopy_reg.py to copy_reg.pyc
+byte-compiling C:Python23libsre_compile.py to sre_compile.pyc
+byte-compiling E:ProjectsWorkSpacePythonbuildbdist.win32winexetemp_sre.py to _sre.pyc
+byte-compiling C:Python23libmacpath.py to macpath.pyc
+byte-compiling C:Python23libpopen2.py to popen2.pyc
+byte-compiling C:Python23libatexit.py to atexit.pyc
+byte-compiling C:Python23libos2emxpath.py to os2emxpath.pyc
+byte-compiling C:Python23libsre_constants.py to sre_constants.pyc
+byte-compiling C:Python23libre.py to re.pyc
+byte-compiling C:Python23libntpath.py to ntpath.pyc
+byte-compiling C:Python23libstat.py to stat.pyc
+byte-compiling C:Python23libstring.py to string.pyc
+byte-compiling C:Python23libwarnings.py to warnings.pyc
+byte-compiling C:Python23libUserDict.py to UserDict.pyc
+byte-compiling C:Python23librepr.py to repr.pyc
+byte-compiling C:Python23libcopy.py to copy.pyc
+byte-compiling C:Python23libtypes.py to types.pyc
+byte-compiling C:Python23libposixpath.py to posixpath.pyc
+byte-compiling C:Python23libsre.py to sre.pyc
+byte-compiling C:Python23liblinecache.py to linecache.pyc
+byte-compiling C:Python23libsre_parse.py to sre_parse.pyc
+byte-compiling C:Python23libos.py to os.pyc
+*** copy extensions ***
+copying C:Python23DLLs_sre.pyd -&gt;; E:ProjectsWorkSpacePythondist
+*** copy dlls ***
+</code></pre>
+<p>py2exe会在当前目录下生成两个目录 build和dist</p>
+<p>build里是一些py2exe运行时产生的中间文件，dist里有最终的可执行文件</p>
+<p>library.zip</p>
+<p>w9xpopen.exe</p>
+<p>python23.dll</p>
+<p>hello.exe</p>
+<p>现在可以运行hello.exe了</p>
+<pre><code>E:ProjectsWorkSpacePythondist&gt;;hello
+Hello, World!
+</code></pre>
+<p>不过记得如果要发布到别的机器上时，library.zip、
+w9xpopen.exe、python23.dll这几个文件是必须要和hello.exe在一起的。</p>
+<p>好了，这次先到这里，下次我们做一个wxPython的例子</p>
+<p>最后，大家试试运行</p>
+<pre><code>python setup.py py2exe --help
+</code></pre>
+<p>看看py2exe都有哪些参数</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>使用XOM类库对Java对象进行序列化</title>
+      <link>https://blog.alswl.com/2009/06/xom-class-library-to-use-java-objects-serialization/</link>
+      <pubDate>Wed, 10 Jun 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/06/xom-class-library-to-use-java-objects-serialization/</guid>
+      <description>校内工具需要保存用户名和帐号，我就想把帐号信息作为一个XiaoneiUser类，然后对其进行对象持久化。 Google下的方法有好几种方法进行持久化，JDOM， DOM4J, SAX等。我看了之后，感觉都比较麻烦，我个人比较喜欢使用jdk自带的工具，但是查阅jdk api之后，感觉使用 javax.xml.* 下工具开发更加困难。 我仅仅是需要对一个简单的对象进行持久化来保存数据，并不需要太多太复杂的功能。最后我决定使用《Thinking in</description>
+      <content:encoded><![CDATA[<p>校内工具需要保存用户名和帐号，我就想把帐号信息作为一个XiaoneiUser类，然后对其进行对象持久化。
+Google下的方法有好几种方法进行持久化，JDOM， DOM4J,
+SAX等。我看了之后，感觉都比较麻烦，我个人比较喜欢使用jdk自带的工具，但是查阅jdk api之后，感觉使用 <code>javax.xml.*</code> 下工具开发更加困难。
+我仅仅是需要对一个简单的对象进行持久化来保存数据，并不需要太多太复杂的功能。最后我决定使用《Thinking in Java》推荐的开源类库：XOM
+<a href="http://www.xom.nu">猛击这里打开www.xom.nu</a> 友情提示一下，网站可以打开，但是下载的连接貌似被墙了，至少我教育网连不上去。推荐
+一个在线代理服务器古狗在线代理（<a href="http://www.ggproxy.com/">猛击这里打开</a>），通过它就可以下载类库了。
+使用类库非常简单，我这里提供个小例子。XiaoneiUser类</p>
+<pre tabindex="0"><code>package cn.dddspace.xiaonei.bean;
+
+import java.io.OutputStream;
+
+import nu.xom.*;
+
+public class XiaoneiUser {
+
+    /**
+
+    * 用户Email  
+    */
+    private String userEmail;
+
+    /**
+
+    * 用户Password  
+    */
+    private String userPassword;
+
+    public String getUserEmail() {
+
+        return userEmail;
+
+    }
+
+    public void setUserEmail(String userEmail) {
+
+        this.userEmail = userEmail;
+
+    }
+
+    public String getUserPassword() {
+
+        return userPassword;
+
+    }
+
+    public void setUserPassword(String userPassword) {
+
+        this.userPassword = userPassword;
+
+    }
+
+    /**
+
+    * 将类转换为XML  
+    *   
+    * @return  
+    */
+    public Element getXML() {
+
+        Element userE = new Element(&#34;xiaoneiUser&#34;);
+
+        Element userEmailE = new Element(&#34;userEmail&#34;);
+
+        userEmailE.appendChild(userEmail);
+
+        Element userPasswordE = new Element(&#34;userPassword&#34;);
+
+        userPasswordE.appendChild(userPassword);
+
+        userE.appendChild(userEmailE);
+
+        userE.appendChild(userPasswordE);
+
+        return userE;
+
+    }
+
+    /**
+
+    * 复制构造函数  
+    *   
+    * @param xiaoneiUser  
+    */
+    public XiaoneiUser(Element xiaoneiUser) {
+
+        userEmail = xiaoneiUser.getFirstChildElement(&#34;userEmail&#34;).getValue();
+
+        userPassword = xiaoneiUser.getFirstChildElement(&#34;userPassword&#34;)
+
+            .getValue();
+
+    }
+
+    /**
+
+    * 构造函数  
+    *   
+    * @param userEmail  
+    * @param userPassword  
+    */
+    public XiaoneiUser(String userEmail, String userPassword) {
+
+        this.userEmail = userEmail;
+
+        this.userPassword = userPassword;
+
+    }
+
+    /**
+
+    * Format输出函数  
+    *   
+    * @param os  
+    * @param doc  
+    * @throws Exception  
+    */
+    public void format(OutputStream os, Document doc) throws Exception {
+
+        Serializer serializer = new Serializer(os, &#34;UTF-8&#34;);
+
+        serializer.setIndent(4);
+
+        serializer.setMaxLength(60);
+
+        serializer.write(doc);
+
+        serializer.flush();
+
+    }
+
+}
+</code></pre><p>Test类入口函数</p>
+<pre tabindex="0"><code>/**
+ * @title Test.java
+ * @author ddd
+ * @time 2009-6-10 16:35:36
+ * @site http://log4d.com
+ */
+package cn.dddspace.xiaonei.test;
+
+import java.io.BufferedOutputStream;
+
+import java.io.File;
+
+import java.io.FileNotFoundException;
+
+import java.io.FileOutputStream;
+
+import cn.dddspace.xiaonei.bean.XiaoneiUser;
+
+import nu.xom.*;
+
+public class Test {
+
+/**
+
+* @param args  
+* @throws Exception   
+* @throws FileNotFoundException   
+*/  
+public static void main(String[] args) throws FileNotFoundException, Exception
+{
+
+XiaoneiUser user = new XiaoneiUser(&#34;a@a.com&#34;, &#34;123&#34;);
+
+  
+//序列化user为xml文档
+
+Document doc = new Document(user.getXML());
+
+//输出到屏幕
+
+user.format(System.out, doc);
+
+//输出到XML文件user.xml
+
+user.format(new BufferedOutputStream(new FileOutputStream(
+
+&#34;user.xml&#34;)), doc);
+
+  
+//反序列化XML文件为XiaoneiUser对象
+
+Document doc2 = new Builder().build(&#34;user.xml&#34;);
+
+Element element = doc2.getRootElement();
+
+XiaoneiUser user2 = new XiaoneiUser(element);
+
+//输出对象信息，验证对象
+
+System.out.println(user2.getUserEmail());
+
+System.out.println(user2.getUserPassword());
+
+}
+
+}
+</code></pre><p>代码非常简单，如果要进行简单的对象序列化，我觉得这个400kb的类库非常实用</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>java.net.*操作session/GET/POST方法</title>
+      <link>https://blog.alswl.com/2009/06/java-net-operation-session-get-post-method/</link>
+      <pubDate>Tue, 09 Jun 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/06/java-net-operation-session-get-post-method/</guid>
+      <description>终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具- 全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统 的浏览器或者之间创建一个Browser。 开始写了自己的第一个版本。 import java.io.BufferedReader; import java.io.IOException; import java.io.InputStreamReader; import java.net.MalformedURLException; import java.net.ProtocolException; import java.net.URL;</description>
+      <content:encoded><![CDATA[<p>终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具-
+全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统
+的浏览器或者之间创建一个Browser。</p>
+<p>开始写了自己的第一个版本。</p>
+<pre><code>import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.HttpURLConnection;
+</code></pre>
+<p>public class FarmerHelper {</p>
+<p>/**</p>
+<ul>
+<li>@param args</li>
+<li>@throws ProtocolException<br />
+*/<br />
+public static void main(String[] args) throws ProtocolException {</li>
+</ul>
+<p>String loginUrlStr = &ldquo;<a href="http://login.xiaonei.com/Login.do%22;">http://login.xiaonei.com/Login.do&quot;;</a></p>
+<p>String homeUrlStr = &ldquo;<a href="http://home.xiaonei.com/Home.do%22;">http://home.xiaonei.com/Home.do&quot;;</a></p>
+<p>URL loginUrl = null;</p>
+<p>URL homeUrl = null;</p>
+<p>HttpURLConnection loginConn = null;</p>
+<p>HttpURLConnection homeConn = null;</p>
+<p>try {</p>
+<p>loginUrl = new URL(loginUrlStr);</p>
+<p>homeUrl = new URL(homeUrlStr);</p>
+<p>try {</p>
+<p>loginConn = (HttpURLConnection) loginUrl.openConnection();</p>
+<p>homeConn = (HttpURLConnection) homeUrl.openConnection();</p>
+<p>} catch (IOException e) {</p>
+<p>print(&ldquo;Conn&rsquo;t open the url connection!&rdquo;);</p>
+<p>e.printStackTrace();</p>
+<p>}</p>
+<p>} catch (MalformedURLException e) {</p>
+<p>print(&ldquo;Illegal URL!&rdquo;);</p>
+<p>e.printStackTrace();</p>
+<p>return;</p>
+<p>}</p>
+<p>loginConn.setRequestMethod(&ldquo;POST&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;User-Agent&rdquo;,</p>
+<p>&ldquo;Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.0.10)&rdquo;</p>
+<ul>
+<li>&quot; Gecko/2009042316 Firefox/3.0.10&rdquo;);</li>
+</ul>
+<p>loginConn.setRequestProperty(&ldquo;Keep-Alive&rdquo;, &ldquo;300&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;Connection&rdquo;, &ldquo;keep-alive&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;email&rdquo;, &ldquo;<a href="mailto:alswlwangzi@163.com">alswlwangzi@163.com</a>&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;password&rdquo;, &ldquo;xh77Gffb_i&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;submit&rdquo;, &ldquo;登录&rdquo;);</p>
+<p>loginConn.setRequestProperty(&ldquo;Keep-Alive&rdquo;, &ldquo;300&rdquo;);</p>
+<p>try {</p>
+<p>loginConn.connect();</p>
+<p>String headerName = null;</p>
+<p>String cookie = &ldquo;&rdquo;;</p>
+<p>/*</p>
+<ul>
+<li>for (int i=0; (headerName =</li>
+<li>loginConn.getHeaderFieldKey(i))!=null; i++) { if</li>
+<li>(headerName.equals(&ldquo;Set-Cookie&rdquo;)) { cookie =</li>
+<li>loginConn.getHeaderField(i); print(cookie); } }<br />
+*/<br />
+cookie = loginConn.getHeaderField(&ldquo;Set-Cookie&rdquo;);</li>
+</ul>
+<p>print(cookie);</p>
+<p>homeConn.setRequestProperty(&ldquo;Cookie&rdquo;, cookie);</p>
+<p>homeConn.setRequestMethod(&ldquo;GET&rdquo;);</p>
+<p>homeConn.connect();</p>
+<p>BufferedReader in = new BufferedReader(new InputStreamReader(</p>
+<p>homeConn.getInputStream()));</p>
+<p>String lineStr = null;</p>
+<p>while ((lineStr = in.readLine()) != null) {</p>
+<p>// print(lineStr);</p>
+<p>print(new String(lineStr.getBytes(&ldquo;GBK&rdquo;), &ldquo;UTF-8&rdquo;));</p>
+<p>}</p>
+<p>} catch (IOException e) {</p>
+<p>print(&ldquo;conn&rsquo;t connect to the server!&rdquo;);</p>
+<p>e.printStackTrace();</p>
+<p>}</p>
+<p>}</p>
+<p>private static void print(Object o) {</p>
+<p>System.out.println(o);</p>
+<p>}</p>
+<p>}</p>
+<p>想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length
+Required错误，这个比较头疼，我感觉是我session传递的问题（其实不是，后来发现是Post的格式问题），于是网上找来一个Session操作类。</p>
+<p><a href="../../static/images/upload_dropbox/200906/cookiemanager.java">猛击这里下载cookiemanager</a> 同时你可以参考这个类作者的文章
+<a href="http://www.hccp.org/java-net-cookie-how-to.html">猛击这里打开HOW-TO: Handling cookies using the java.net.* API</a>，谢谢这位外国朋友的帮助。 可惜尽管有这个外国朋友帮助，我写了第二个版本，仍然遇到了相同问题，Length
+Required&hellip; 崩溃了，开始查找网络编程书，同时参考WireShark的抓包，我惊讶的发现，我把数据域写到了Headers里面去了。
+这个致命性的错误导致服务器不能找到正确的数据，并且没有提供数据域的大小Content-Length，所以导致服务器报错。
+最后再借花献佛，送上一个完整操作Http GET/POST的类<a href="../../static/images/upload_dropbox/200906/httprequestproxy.java">猛击这里下载httprequestproxy</a>依然感谢原作者，</p>
+<p><a href="http://benlsoft.javaeye.com/blog/97059">猛击这里打开原文链接</a>友情提示一下，这个类是07年写的，里面有一些注释说明在1.4和1.5下几个参数不一样，我没有亲测，建议使用1.5
+的设置 嗯，有这两个类，明天工作应该会轻松一些，继续fighting!</p>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

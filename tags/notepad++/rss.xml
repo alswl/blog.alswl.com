@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>notepad&#43;&#43; on Log4D</title>
+    <link>https://blog.alswl.com/tags/notepad&#43;&#43;/</link>
+    <description>Recent content in notepad&#43;&#43; on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 19 Jan 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/notepad++/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>正则表达式抓捕替换</title>
+      <link>https://blog.alswl.com/2011/01/regex-group-catch/</link>
+      <pubDate>Wed, 19 Jan 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/01/regex-group-catch/</guid>
+      <description>问题情境 需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value, &amp;ldquo;ReportConnection0107&amp;rdquo;)。 思路 使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。 Vim实现 %s/GetComment(((sw+!w+.w+s,){2}s*&amp;ldquo;w+&amp;ldquo;s*,sw+!w+.w+s))/GetCommentForReport(1 , &amp;ldquo;ReportConnection0107&amp;rdquo;)/gc 解释：%为全局替换，s为替换。后面则是表达式，和正则表达式</description>
+      <content:encoded><![CDATA[<h2 id="问题情境">问题情境</h2>
+<p>需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value
+,&ldquo;total&rdquo;, Parameters!Language.Value)函数修改为GetCommentForComment(
+Parameters!F0001.Value , Parameters!F0002.Value ,&ldquo;total&rdquo;,
+Parameters!Language.Value, &ldquo;ReportConnection0107&rdquo;)。</p>
+<h2 id="思路">思路</h2>
+<p>使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。</p>
+<h3 id="vim实现">Vim实现</h3>
+<p>%s/GetComment(((s<em>w+!w+.w+s</em>,){2}s*&ldquo;w+&ldquo;s*,s<em>w+!w+.w+s</em>))/GetCommentForReport(1
+, &ldquo;ReportConnection0107&rdquo;)/gc</p>
+<p>解释：%为全局替换，s为替换。后面则是表达式，和正则表达式差不多，注意是*不需要转义，+ 和 .需要转义，最后的g代表当前行替换，c代表每次替换需要确认。</p>
+<p>目标表达式中有1，代表抓获的第一个字符串，多个字符串抓获则依次往下排列。�表示原始字符串。</p>
+<h3 id="notepadeditplus实现">NotePad++/EditPlus实现</h3>
+<p>GetComment(( *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *,
+*[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *&quot;[a-zA-Z0-9]+&rdquo; *,
+*[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *))</p>
+<p>替换为GetCommentForReport(1, &ldquo;ReportConnection0107&rdquo;)</p>
+<p>解释：不知道为何，我无法使用ws匹配文字和空格，只能使用[a-zA-Z0-9]表示（完整的是[a-zA-Z0-9_]）w，用空格表示s。</p>
+<h3 id="visualstudio">VisualStudio</h3>
+<p>由于RDL开发必然使用VisualStudio，所以用VS替换更方便。</p>
+<p>GetComment({ *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *,
+*[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *&quot;[a-zA-Z0-9]+&rdquo; *,
+*[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *})</p>
+<p>依旧替换为GetCommentForReport(1, &ldquo;ReportConnection0107&rdquo;)</p>
+<p>解释：VS除了NotePad++/EditPlus的问题外，还有一个严重的问题就是他抓取的不是分组()，而是抓获的花括号{}抓捕的字符串，官方的称呼叫做&quot;带
+标记的表达式&quot;，详情可以参考<a href="http://msdn.microsoft.com/zh-cn/library/2k3te2cs.aspx">MSDN正则表达式 (Visual Studio)</a>。</p>
+<h2 id="ps">PS</h2>
+<p>所以咯，Vimer，你懂的~</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>最常用的Notepad&#43;&#43;的快捷键</title>
+      <link>https://blog.alswl.com/2010/04/notepad-shortcut-keys/</link>
+      <pubDate>Thu, 01 Apr 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/04/notepad-shortcut-keys/</guid>
+      <description>原文连接：Hanyi on ET: 最常用的Notepad++的快捷键 友情提示：今天愚人节哦～愚人节快乐～ 如果Notepad++是程序员的一个生产工具，那么快捷键的使用就可以提高生产效率，记住一些快捷键是挺有用的:-)。 http://notepad-plus.sourceforge.net/uk/shortcuts.php这上面有完整的快捷键表格， 但是很多都记不住，因为很少用。 除了Ctrl-C，Ctrl-X，</description>
+      <content:encoded><![CDATA[<p>原文连接：<a href="http://hanyionet.blogspot.com/2009/09/notepad.html">Hanyi on ET: 最常用的Notepad++的快捷键</a></p>
+<p>友情提示：今天愚人节哦～愚人节快乐～</p>
+<hr />
+<p>如果Notepad++是程序员的一个生产工具，那么快捷键的使用就可以提高生产效率，记住一些快捷键是挺有用的:-)。</p>
+<p><a href="http://notepad-plus.sourceforge.net/uk/shortcuts.php">http://notepad-plus.sourceforge.net/uk/shortcuts.php</a>这上面有完整的快捷键表格，
+但是很多都记不住，因为很少用。
+除了Ctrl-C，Ctrl-X，Ctrl-V，Ctrl-Y，Ctrl-A，Ctrl-F，Ctrl-S，Ctrl-O，Ctrl-N，
+Ctrl-W，Ctrl-Tab，Ctrl-P，Alt- F4这些基本的，
+也许有些简单的比较有用的快捷键，你可能有兴趣知道。</p>
+<ul>
+<li>Ctrl-H 打开Find / Replace 对话框</li>
+<li>Ctrl-D 复制当前行</li>
+<li>Ctrl-L 删除当前行</li>
+<li>Ctrl-T 上下行交换</li>
+<li>F3 找下一个</li>
+<li>Shift-F3 找上一个</li>
+<li>Ctrl-Shift-F 在文件中找</li>
+<li>Ctrl-F2 触发书签</li>
+<li>F2 到前一个书签</li>
+<li>Shift-F2 到下一个书签</li>
+<li>F5 打开run对话框</li>
+<li>Ctrl-Space 打开CallTip列表框</li>
+<li>Tab (selection of several lines) 加入Space</li>
+<li>Shift-Tab (selection of several lines) 移除Space</li>
+<li>F11 全屏</li>
+<li>Alt-0 折叠全部</li>
+<li>Alt-Shift-0 展开全部</li>
+<li>Ctrl-U 变为小写</li>
+<li>Ctrl-Shift-U 变为大写</li>
+<li>Ctrl-Q 块注释/消除注释</li>
+</ul>
+<hr />
+<p>-转载结束-</p>
+<p>这是alswl从Notepad++的<a href="http://notepad-plus.sourceforge.net/tw/site.htm">官网</a>整理过来的快捷键～</p>
+<ul>
+<li><strong>Ctrl-C</strong> Copy</li>
+<li><strong>Ctrl-X</strong> Cut</li>
+<li><strong>Ctrl-V</strong> Paste</li>
+<li><strong>Ctrl-Z</strong> Undo</li>
+<li><strong>Ctrl-Y</strong> Redo</li>
+<li><strong>Ctrl-A</strong> Select All</li>
+<li><strong>Ctrl-F</strong> Launch Find Dialog</li>
+<li><strong>Ctrl-H</strong> Launch Find / Replace Dialog</li>
+<li><strong>Ctrl-D</strong> Duplicate Current Line</li>
+<li><strong>Ctrl-L</strong> Delete Current Line</li>
+<li><strong>Ctrl-T</strong> Switch the current line position with the previous line position</li>
+<li><strong>F3</strong> Find Next</li>
+<li><strong>Shift-F3</strong> Find Previous</li>
+<li><strong>Ctrl-Shift-F</strong> Find in Files</li>
+<li><strong>Ctrl-F3</strong> Find (volatil) Next</li>
+<li><strong>Ctrl-Shift-F3</strong> Find (volatil) Previous</li>
+<li><strong>Ctrl-Shift-I</strong> Incremental Search</li>
+<li><strong>Ctrl-S</strong> Save File</li>
+<li><strong>Ctrl-Alt-S</strong> Save As</li>
+<li><strong>Ctrl-Shift-S</strong> Save All</li>
+<li><strong>Ctrl-O</strong> Open File</li>
+<li><strong>Ctrl-N</strong> New File</li>
+<li><strong>Ctrl-F2</strong> Toggle Bookmark</li>
+<li><strong>F2</strong> Go To Next Bookmark</li>
+<li><strong>Shift-F2</strong> Go To Previous Bookmark</li>
+<li><strong>Ctrl-G</strong> Launch GoToLine Dialog</li>
+<li><strong>Ctrl-W</strong> Close Current Document</li>
+<li><strong>Alt-Shift-Arrow keys or   Alt + Left mouse click</strong></li>
+<li>Column Mode Select</li>
+<li>Launch Run Dialog</li>
+<li>Launch CallTip ListBox</li>
+<li>Launch Word Completion ListBox</li>
+<li>Insert Tabulation or Space (Indent)</li>
+<li>Remove Tabulation or Space (outdent)</li>
+<li>Ctrl + mouse wheel button (if any)**</li>
+<li><strong>Ctrl-Keypad/</strong></li>
+<li><strong>F11</strong></li>
+<li><strong>Ctrl-Tab</strong></li>
+<li><strong>Ctrl-Shift-Tab</strong></li>
+<li><strong>Ctrl-Shift-Up</strong></li>
+<li><strong>Ctrl-Shift-Down</strong></li>
+<li><strong>Ctrl-Alt-F</strong></li>
+<li><strong>Ctrl-Alt-Shift-F</strong></li>
+<li><strong>Alt-0</strong></li>
+<li><strong>Alt-(1~8)</strong></li>
+<li><strong>Alt-Shift-0</strong></li>
+<li><strong>Alt-Shift-(1~8)</strong></li>
+<li><strong>Ctrl-BackSpace</strong></li>
+<li><strong>Ctrl-Delete</strong></li>
+<li><strong>Ctrl-Shift-BackSpace</strong></li>
+<li><strong>Ctrl-Shift-Delete</strong></li>
+<li><strong>Ctrl-U</strong></li>
+<li><strong>Ctrl-Shift-U</strong> Convert to UPPER CASE</li>
+<li><strong>Ctrl-B</strong> Go to matching brace</li>
+<li><strong>Ctrl-Shift-R</strong> Start to record /Stop recording the macro</li>
+<li><strong>Ctrl-Shift-P</strong> Play recorded macro</li>
+<li><strong>Ctrl-Q</strong> Block comment/uncomment</li>
+<li><strong>Ctrl-Shift-Q</strong> Stream comment</li>
+<li><strong>Ctrl-Shift-T</strong> Copy current line to clipboard</li>
+<li><strong>Ctrl-P</strong> Print</li>
+<li><strong>Alt-F4</strong> Exit</li>
+<li><strong>Ctrl-I</strong> Split Lines</li>
+<li><strong>Ctrl-J</strong> Join Lines</li>
+<li><strong>Ctrl-Alt-R</strong> Text Direction RTL</li>
+<li><strong>Ctrl-Alt-L</strong> Text Direction LTR</li>
+<li><strong>F1</strong> About</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

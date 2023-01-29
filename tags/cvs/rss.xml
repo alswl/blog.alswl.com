@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>cvs on Log4D</title>
+    <link>https://blog.alswl.com/tags/cvs/</link>
+    <description>Recent content in cvs on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 26 Nov 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/cvs/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gource-可视化你的代码历史</title>
+      <link>https://blog.alswl.com/2011/11/gource/</link>
+      <pubDate>Sat, 26 Nov 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/11/gource/</guid>
+      <description>昨天我在sunng 那里看到一个非常好玩的东西Gource。 Gource可以将代码版本控制系统里面的日志全部可视化， 所谓可视化就是可以看见每个成员在系统里面提交代码的行为。 Gource目前支持git/hg/svn，cvs通过一个简单的脚本也可以被Gource支持。 官方视频在这里[Gource - Software Version Control Visualization Tool](http://www.youtu be.com/watch?v=E5xPMW5fg48&amp;amp;feature=player_emb</description>
+      <content:encoded><![CDATA[<p>昨天我在<a href="http://sunng.info/blog/2011/10/clojalk-scm-visualization/">sunng</a>
+那里看到一个非常好玩的东西<a href="http://code.google.com/p/gource/">Gource</a>。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/gource-logo.png" alt="gource"  />
+
+</p>
+<p>Gource可以将代码版本控制系统里面的日志全部可视化， 所谓可视化就是可以看见每个成员在系统里面提交代码的行为。
+Gource目前支持git/hg/svn，cvs通过一个简单的脚本也可以被Gource支持。</p>
+<p>官方视频在这里[Gource - Software Version Control Visualization Tool](<a href="http://www.youtu">http://www.youtu</a>
+be.com/watch?v=E5xPMW5fg48&amp;feature=player_embedded)，里面有Moodle/Git/Drupal/Postg
+reSQL/Ruby on Rails/Linux/VLC Player这几个非常漂亮的开源软件视频。Ruby on Rails那一段特别帅有没有。</p>
+<p>使用下列命令可以将视频录制下来(via <a href="http://code.google.com/p/gource/wiki/Videos">wiki</a>)：</p>
+<pre><code>pacman -S x264 #在archlinux下安装H264支持
+gource -1280x720 -o gource.ppm #在项目目录下运行，生成ppm文件
+#生成mp4文件，官方文档里面有-vpre slow项，会报错，去掉即可
+ffmpeg -y -b 10000K -r 60 -f image2pipe -vcodec ppm -i gource.ppm -vcodec libx264 -threads 0 -bf 0 gource.x264.mp4
+</code></pre>
+<p>使用<a href="http://www.red-bean.com/cvs2cl/">cvs2cl</a>来支持CVS （via
+<a href="http://code.google.com/p/gource/wiki/CVS">wiki</a>)：</p>
+<pre><code>cd my-cvs-project
+cvs2cl --chrono --stdout --xml -g-q &gt; my-cvs-project.xml
+gource my-cvs-project.xml
+</code></pre>
+<p>Gource里面有几个快捷键，我常用的有<code>[</code>放大，<code>]</code>缩小，方向键移动，<code>+</code>加速，<code>-</code>减速。</p>
+<p>我本来想把我的dbevent2gc拿来凑了一个热闹，结果h264编码传到要哭土豆似乎一直有问题，只能作罢。ps：3分钟的视频，生成的ppm有1.2个G，转换
+成mp4是1.2M。</p>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>正则表达式 on Log4D</title>
+    <link>https://blog.alswl.com/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</link>
+    <description>Recent content in 正则表达式 on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 19 Jan 2011 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>正则表达式抓捕替换</title>
+      <link>https://blog.alswl.com/2011/01/regex-group-catch/</link>
+      <pubDate>Wed, 19 Jan 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/01/regex-group-catch/</guid>
+      <description>问题情境 需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value, &amp;ldquo;ReportConnection0107&amp;rdquo;)。 思路 使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。 Vim实现 %s/GetComment(((sw+!w+.w+s,){2}s*&amp;ldquo;w+&amp;ldquo;s*,sw+!w+.w+s))/GetCommentForReport(1 , &amp;ldquo;ReportConnection0107&amp;rdquo;)/gc 解释：%为全局替换，s为替换。后面则是表达式，和正则表达式</description>
+      <content:encoded><![CDATA[<h2 id="问题情境">问题情境</h2>
+<p>需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value
+,&ldquo;total&rdquo;, Parameters!Language.Value)函数修改为GetCommentForComment(
+Parameters!F0001.Value , Parameters!F0002.Value ,&ldquo;total&rdquo;,
+Parameters!Language.Value, &ldquo;ReportConnection0107&rdquo;)。</p>
+<h2 id="思路">思路</h2>
+<p>使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。</p>
+<h3 id="vim实现">Vim实现</h3>
+<p>%s/GetComment(((s<em>w+!w+.w+s</em>,){2}s*&ldquo;w+&ldquo;s*,s<em>w+!w+.w+s</em>))/GetCommentForReport(1
+, &ldquo;ReportConnection0107&rdquo;)/gc</p>
+<p>解释：%为全局替换，s为替换。后面则是表达式，和正则表达式差不多，注意是*不需要转义，+ 和 .需要转义，最后的g代表当前行替换，c代表每次替换需要确认。</p>
+<p>目标表达式中有1，代表抓获的第一个字符串，多个字符串抓获则依次往下排列。�表示原始字符串。</p>
+<h3 id="notepadeditplus实现">NotePad++/EditPlus实现</h3>
+<p>GetComment(( *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *,
+*[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *&quot;[a-zA-Z0-9]+&rdquo; *,
+*[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *))</p>
+<p>替换为GetCommentForReport(1, &ldquo;ReportConnection0107&rdquo;)</p>
+<p>解释：不知道为何，我无法使用ws匹配文字和空格，只能使用[a-zA-Z0-9]表示（完整的是[a-zA-Z0-9_]）w，用空格表示s。</p>
+<h3 id="visualstudio">VisualStudio</h3>
+<p>由于RDL开发必然使用VisualStudio，所以用VS替换更方便。</p>
+<p>GetComment({ *[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *,
+*[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *, *&quot;[a-zA-Z0-9]+&rdquo; *,
+*[a-zA-Z0-9]+![a-zA-Z0-9]+.[a-zA-Z0-9]+ *})</p>
+<p>依旧替换为GetCommentForReport(1, &ldquo;ReportConnection0107&rdquo;)</p>
+<p>解释：VS除了NotePad++/EditPlus的问题外，还有一个严重的问题就是他抓取的不是分组()，而是抓获的花括号{}抓捕的字符串，官方的称呼叫做&quot;带
+标记的表达式&quot;，详情可以参考<a href="http://msdn.microsoft.com/zh-cn/library/2k3te2cs.aspx">MSDN正则表达式 (Visual Studio)</a>。</p>
+<h2 id="ps">PS</h2>
+<p>所以咯，Vimer，你懂的~</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>正则表达式中的零宽断言</title>
+      <link>https://blog.alswl.com/2010/01/regular-expressions-in-the-zero-width-assertion/</link>
+      <pubDate>Tue, 26 Jan 2010 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2010/01/regular-expressions-in-the-zero-width-assertion/</guid>
+      <description>这文是上个月开始写的，本来想深入的分析一下零宽断言，可惜工作一直忙，现在又要去转战DWR&amp;hellip;OMG~~ 起因 将要上线的系统中有一个字符规则：&amp;ldquo;13位的字符串，其中有8位连续数字&amp;rdquo;，需要用这则表达式对这个字符串进行判断。而我之前对正则的认识仅仅停留在匹配固定的字符上 ，对这个问题一筹莫展。 这时候热心的小邪出现了，我在他的博客 邪罗刹的菠萝阁 留下这个[问题](http:/</description>
+      <content:encoded><![CDATA[<p>这文是上个月开始写的，本来想深入的分析一下零宽断言，可惜工作一直忙，现在又要去转战<strong>DWR</strong>&hellip;OMG~~</p>
+<h2 id="起因">起因</h2>
+<p>将要上线的系统中有一个字符规则：&ldquo;13位的字符串，其中有8位连续数字&rdquo;，需要用这则表达式对这个字符串进行判断。而我之前对正则的认识仅仅停留在匹配固定的字符上
+，对这个问题一筹莫展。</p>
+<p>这时候热心的小邪出现了，我在他的博客 <a href="http://www.evlos.org">邪罗刹的菠萝阁</a>
+留下这个[问题](<a href="http://www.evlos.org/2010/01/05/use-regex-to-clear-the-mix-of-tag-">http://www.evlos.org/2010/01/05/use-regex-to-clear-the-mix-of-tag-</a>
+img/#comment-5968)</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201001/alswl_ask.jpg" alt="image"  />
+
+</p>
+<p>小邪很热心的撰写了一篇文章给出回答：<a href="http://www.evlos.org/2010/01/07/a-cuptool-and-a-washtool"> 一个杯具和一个洗具与最近学习手记 :
+邪罗刹的菠萝阁</a>。</p>
+<h2 id="解答">解答</h2>
+<p>核心字符串如下： &lsquo;/^(?!(.<em>?d){9,})(?!(.</em>?D){6,}).{13}$/&rsquo;;</p>
+<p>小邪的文章给了很详细的解答，比我自己解释要好得多～我就索性copy过来，如下：</p>
+<blockquote>
+<blockquote>
+<p>小邪是这个样子解答的，首先两边的斜杠是 Perl 正则式的要求。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>然后两边的 ^ 和 $ 用来表示对应的是字符串的开始和结束。</p>
+</blockquote>
+<blockquote>
+<p>接着<code> .{13}</code>，. 表示除了换行以外的所有字符，<code>13</code> 规定了匹配长度。</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>我们这里前面用了两次零宽断言，第一次，<code>(?!exp) </code>这里的 exp 是 <code>(.*?d){9,}</code>。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>表示数字的个数大于等于 9，零宽断言把它反过来就是数字的个数小于 9。</p>
+</blockquote>
+<blockquote>
+<p>第二次 exp 是<code> (.*?D){6,}</code> 表示非数字大于等于 6 个以上。</p>
+</blockquote>
+<blockquote>
+<p>即表示非数字的个数大于等于 6，把它反过来就是非数字的个数小于 6。</p>
+</blockquote>
+<blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>而这里<code>.*</code>表示<code> ?d</code> 和 <code>?D </code>的前面可能有零次或更多次的其他字符。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>而这里的 <code>? </code>表示这段连续的字符会重复零次或一次。</p>
+</blockquote>
+<h3 id="python下的实现和测试代码">Python下的实现和测试代码</h3>
+<pre tabindex="0"><code>import re
+
+def fun(p, datas):
+
+for data in datas:
+
+print p.match(data)
+
+if __name__ == &#39;__main__&#39;:
+
+p = re.compile(r&#39;^(?!(.*?d){9,})(?!(.*?D){6,}).{13}$&#39;);
+
+datas = [&#39;asss13336644ss&#39;, &#39;aas15151515ss&#39;, &#39;aa15151515sss&#39;,
+
+&#39;aa15151515ss1&#39;, &#39;aa15151515ss11&#39;, &#39;aa151515151ss&#39;,
+
+&#39;aa15151511ssss&#39;]
+
+fun(p, datas)
+</code></pre><p>恩，问题解决了，不过，如果想把零宽断言彻底搞清楚，还需要深入学习一下～</p>
+<h2 id="深入零宽断言">深入零宽断言</h2>
+<p><a href="http://www.cnblogs.com/xiehuiqi220/archive/2009/02/06/1385481.html">正则表达式的零宽断言的一个小应用 - 楼兰之风&hellip; - 博客园</a></p>
+<p><a href="http://blog.csdn.net/panhf2003/archive/2008/11/19/3337163.aspx">正则表达式&ndash;零宽断言 - panhf2003的专栏 - CSDN博客</a></p>
+<p><a href="http://deerchao.net/tutorials/regex/regex.htm">正则表达式30分钟入门教程</a></p>
+<p><a href="http://wiki.ubuntu.org.cn/Python%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97#.E5.8F.8D.E6.96.9C.E6.9D.A0.E7.9A.84.E9.BA.BB.E7.83.A6">Python正则表达式操作指南 - Ubuntu中文</a></p>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

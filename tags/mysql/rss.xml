@@ -1,0 +1,1930 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>mysql on Log4D</title>
+    <link>https://blog.alswl.com/tags/mysql/</link>
+    <description>Recent content in mysql on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 20 Jun 2018 20:18:52 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/mysql/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量</title>
+      <link>https://blog.alswl.com/2018/06/sql-server-migration-3/</link>
+      <pubDate>Wed, 20 Jun 2018 20:18:52 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2018/06/sql-server-migration-3/</guid>
+      <description>该系列三篇文章已经全部完成： 从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D 我们用了两章文章 从 SQL Server 到 MySQL（一）：异构数据库迁移 / 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 介绍我们遇到问题和解决方案。 不管是离线全量迁移还是在线无缝迁移， 核心 ETL 工具就是 yugong。 Yugong 是一个成熟工具， 在阿里巴巴去</description>
+      <content:encoded><![CDATA[<p>该系列三篇文章已经全部完成：</p>
+<ul>
+<li><a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/refactor.png" alt="201806/refactor.png"  />
+
+</p>
+<p>我们用了两章文章
+<a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移</a>
+/
+<a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机</a>
+介绍我们遇到问题和解决方案。
+不管是离线全量迁移还是在线无缝迁移，
+核心 ETL 工具就是 yugong。</p>
+<p>Yugong 是一个成熟工具， 在阿里巴巴去 IOE 行动中起了重要作用，
+它与 Otter / Canal 都是阿里中间件团队出品。
+它们三者各有分工：
+Yugong 设计目标是异构数据库迁移；
+Canal 设计用来解决 MySQL binlog 订阅和消费问题；
+Otter 则是在 Canal 之上，以准实时标准解决数据库同步问题。
+Otter 配备了相对 yugong 更健壮管理工具、分布式协调工具，
+从而长期稳定运行。Yugong 设计目标则是一次性迁移工作，偏 Job 类型。
+当然 yugong 本身质量不错，长期运行也没问题。
+我们有个产线小伙伴使用我们魔改后 yugong，
+用来将数据从管理平台同步数据到用户前台，已经稳定跑了半年多了。</p>
+<!-- more -->
+<h2 id="yugong-系统结构">yugong 系统结构</h2>
+<p>这里我不赘述如何使用 yugong，有需求同学直接去
+<a href="https://github.com/alibaba/yugong">官方文档</a> 查看使用文档。</p>
+<p>我直接进入关键环节：解剖 yugong 核心模块。
+Yugong 数据流是标准 ETL 流程，分别有 Extractor / Translator / Applier
+这三个大类来实现 ETL 过程:</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/etl.png" alt="ETL &amp;amp; Java Class"  />
+
+</p>
+<p>我们依次来看看这三大类具体设计。</p>
+<h3 id="extractor">Extractor</h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/extractor.png" alt="Extractor Class"  />
+
+</p>
+<ul>
+<li><code>YuGongLifeCycle</code>：Yugong 组件生命周期声明</li>
+<li><code>AbstractYuGongLifeCycle</code>：Yugong 组件生命周期一些实现</li>
+<li><code>RecordExtractor</code>：基础 Extractor Interface</li>
+<li><code>AbstractRecordExtractor</code>：基础 Extractor 虚拟类，做了一部分实现</li>
+<li><code>AbstractOracleRecordExtractor</code>：Oracle Extractor 虚拟类，做了一部分 Oracle 相关实现</li>
+<li><code>OracleOnceFullRecordExtractor</code>：Oracle 基于特定 SQL 一次性 Extractor</li>
+<li><code>OracleFullRecordExtractor</code>：Oracle 全量 Extractor</li>
+<li><code>OracleRecRecordExtractor</code>：Oracle 记录 Extractor，用来创建物化视图</li>
+<li><code>OracleMaterializedIncRecordExtractor</code>：基于（已有）物化视图 Oracle 增量 Extrator</li>
+<li><code>OracleAllRecordExtractor</code>：Oracle 自动化 Extractor，先 Mark 再 Full，再 Inc</li>
+</ul>
+<p>Exctractor 从 Source DB 读取数据写入内存，
+Yugong 官方提供 Extractor 抽象出 <code>AbstractRecordExtractor</code> 类，
+其余类都是围绕 Oracle 实现。
+另外 Yugong 设计了 <code>YuGongLifeCycle</code> 类实现了组件生命周期管理。</p>
+<h3 id="translator">Translator</h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/translator.png" alt="Translator Class"  />
+
+</p>
+<ul>
+<li><code>DataTranslator</code>：Translator 基类，为 Row 级别数据处理</li>
+<li><code>TableTranslator</code>：Translator 基类，为 Table 级别提供处理（官方代码中没有使用）</li>
+<li><code>AbstractDataTranslator</code>：Data Translator 虚拟类，做了部分实现</li>
+<li><code>EncodeDataTranslator</code>：转换编码格式 Translator</li>
+<li><code>OracleIncreamentDataTranslator</code>：为 Oracle 增量数据准备 Translator，会调整一些数据状态</li>
+<li><code>BackTableDataTranslator</code>：Demo，允许在 Translator 中做回写数据操作</li>
+<li><code>BillOutDataTranslator</code>：Demo，包含一些阿里业务逻辑 Translator</li>
+<li><code>MidBillOutDetailDataTranslator</code>：Demo，包含一些阿里业务逻辑 Translator</li>
+</ul>
+<p>Translator 读取内存中 RowData 然后变换，
+大部分 Translator 做一些无状态操作，比如编码转换。
+另外还有一小部分 Translator 做了业务逻辑操作，比如做一些数据回写。</p>
+<h3 id="applier">Applier</h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/applier.png" alt="Applier Class"  />
+
+</p>
+<ul>
+<li><code>RecordApplier</code>：基础 Applier Interface</li>
+<li><code>AbstractRecordApplier</code>：基础 Applier 虚拟类，做了一部分实现</li>
+<li><code>CheckRecordRecordApplier</code>：检查数据一致性 Applier，不做数据写入</li>
+<li><code>FullRecordRecordApplier</code>：全量数据 Applier，使用 UPSERT 做数据更新</li>
+<li><code>IncreamentRecordApplier</code>：增量 Applier，使用 Oracle 物化视图为数据源</li>
+<li><code>AllRecordRecordApplier</code>：自动化 Applier，先使用全量数据 Applier，然后使用增量数据 Applier</li>
+</ul>
+<p>Applier 将经过 Translator 处理过的数据写入 Target DB。
+Yugong 提供了一致性检查、全量、增量 Applier。
+比较特殊是 <code>AllRecordRecordApplier</code> 提供了全套自动化操作。</p>
+<h3 id="others">Others</h3>
+<p>除了 ETL 三个要素，yugong 还有一些重要类：控制类和工具类。</p>
+<ul>
+<li><code>SqlTemplate</code>：提供 CRUD / UPSERT 等操作的基类 SQL 模板</li>
+<li><code>OracleSqlTemplate</code>：基于 SqlTemplate 实现的 Oracle SQL 模板</li>
+<li><code>RecordDiffer</code>：一致性检查 differ</li>
+<li><code>YugongController</code>：应用控制器，控制整个应用数据流向</li>
+<li><code>YugongInstance</code>：控制单个迁移任务实例，一张表对应一个 YugongInstance</li>
+</ul>
+<h2 id="老战士的问题">老战士的问题</h2>
+<p>说 yugong 有问题会有些标题党，毕竟它是久经考验老战士了。
+但对我们来说，开源版本 yugong 还有一些不足：</p>
+<ul>
+<li>不支持 SQL Server 读取</li>
+<li>不支持 SQL Server 写入（Rollback 需要写入 SQL Server）</li>
+<li>不支持 MySQL 读取</li>
+</ul>
+<p>除了数据库支持，Yugong 在工程上面倒是也有一些改善空间。
+我们最后花费了不少时间，做了工程上改进。</p>
+<ul>
+<li>抛弃默认打包方式（基于 maven-assembly-plugin 生成类似 LFS 结构 tar.gz 文件），
+改为使用 fat jar 模式打包，仅生成单文件可执行 jar 包</li>
+<li>抛弃 ini 配置文件，使用 YAML 配置文件格式（已有老配置仍然使用 ini 文件，YAML 主要管理表结构变更）</li>
+<li>改造 Plugin 模式，将 Java 运行时编译改为反射获取 Java 类</li>
+<li>拆分 Unit Test / Integration Test，降低重构成本</li>
+<li>重构 Oracle 继承结构，使其开放 SQL Server / MySQL 接口</li>
+<li>支持 Canal Redis 格式数据作为 MySQL 在线增量数据源</li>
+</ul>
+<h2 id="改造之后结构">改造之后结构</h2>
+<h3 id="extractor-1">Extractor</h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/extractor-new.png" alt="Extractor New Class"  />
+
+</p>
+<ul>
+<li><code>AbstractSqlServerExtractor</code>：新增抽象 SqlServer Extractor</li>
+<li><code>AbstractMysqlExtractor</code>：新增抽象 MySQL Extractor</li>
+<li><code>AbstractFullRecordExtractor</code>：新增抽象 Full 模式 Extractor</li>
+<li><code>SqlServerCdcExtractor</code>：新增 SQL Server CDC 增量模式 Extractor</li>
+<li><code>MysqlCanalExtractor</code>：新增 MySQL Canal 格式增量消费 Extractor</li>
+<li><code>MysqlCanalRedisExtractor</code>：新增 MySQL Canal 格式增量消费 Extractor，使用 Redis 做回溯</li>
+<li><code>MysqlFullExtractor</code>：新增 MySQL 全量 Extractor</li>
+<li><code>SqlServerFullExtractor</code>：新增 SQL Server 全量 Extractor</li>
+</ul>
+<p>在抽象出三个抽象类之后，整体逻辑更为清晰，如果未来要增加新数据库格式支持，也更为简单。</p>
+<h3 id="translator-1">Translator</h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/translator-new.png" alt="Translator New Class"  />
+
+</p>
+<ul>
+<li><code>Sha1ShardingTranslator</code>：根据 Sha1 Sharding Translator</li>
+<li><code>ModShardingTranslator</code>：根据 Value Mode Sharding Translator</li>
+<li><code>RangeShardingTranslator</code>：根据范围 Sharding Translator</li>
+<li><code>UserRouterMapShardingTranslator</code>：特定业务使用， 用户分表 Sharding Translator</li>
+<li><code>UserRouterMapMobileShardingTranslator</code>：特定业务使用， 用户分表 Sharding Translator</li>
+<li><code>ClassLearningNoteInfoShardingTranslator</code>：特定业务使用自定义 Translator</li>
+<li><code>ClassLearningIsActiveReverseShardingTranslator</code>：特定业务使用自定义 Translator</li>
+<li><code>ColumnFixDataTranslator</code>：调整表结构 Translator</li>
+<li><code>NameStyleDataTranslator</code>：调整表字段名 Translator，支持按风格对整个表自动转换</li>
+<li><code>CompositeIndexesDataTranslator</code>：解决复合主键下唯一 PK 确定问题的 Translator</li>
+</ul>
+<p>新增了一系列 Translator。</p>
+<h3 id="applier-1">Applier</h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/applier-new.png" alt="Applier New Class"  />
+
+</p>
+<ul>
+<li><code>SqlServerIncreamentRecordApplier</code>：新增 SQL Server 增量消费 Applier</li>
+</ul>
+<p>Applier 结构调整挺小，主要是增加了 SQL Server 的支持。</p>
+<h2 id="二次开发心得">二次开发心得</h2>
+<p>如何快速了解一个开源项目？很多同学第一反应就是阅读源码。
+看源码固然是有效果，但是性价比太低。
+如果项目设计不合理，很快会迷失在代码细节之中。
+我的经验是先阅读官方出品的一些 Slide 分享，然后阅读官方核心文档。
+Slide 含金量高，在讲述核心中核心。</p>
+<p>如果真要去了解细节去阅读源码，那我建议要善用工具，
+比如使用 IntelliJ 的 Diagram 功能，抽象出核心类。
+还有一些插件比如 SequencePluginReload 方便地生成函数之间调用，实为查看数据流利器。
+我在这次开发过程中，也根据生成类图发现了一些问题，
+从而在进入 Coding 之前，先对框架继承结构重构。提高了整体开发效率</p>
+<p>根据代码风格判断，Yugong 并非是出自一个人之手。这多少会导致代码风格和设计上面不一致。
+我自己也常年在业务线里面摸爬滚打，能想象到在快速推进项目中需要糙快猛。
+但后人接受开发，多少会有些头疼。
+于是我在进入开发之前，引入标准化 CheckStyle，用 Google Style 全局格式化，
+使用 Sonar 扫描保证一个代码质量基线。
+同时这也是一把双刃剑，格式化项目会导致大量 diff，
+这也给我自己埋下了一个苦果，在后期给上游提交 PR 引入无尽问题。</p>
+<p>开发过程中我也犯了一些错误。最为头疼是没有在早期考虑到向开源社区贡献，
+导致未来向上游合并困难重重，现在还在头疼合并代码中。
+另外，由于整体项目时间紧，我贪图实现速度，没有做更详尽单元测试覆盖。
+这里没有遵循开源软件的最佳实践。</p>
+<p>经过我改造的 Yugong 版本开源地址是：https://github.com/alswl/yugong 。
+我也提交了 Pull Request <a href="https://github.com/alibaba/yugong/pull/66">https://github.com/alibaba/yugong/pull/66</a> ，
+正在与官方沟通如何将这部分提交并入上游。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机</title>
+      <link>https://blog.alswl.com/2018/05/sql-server-migration-2/</link>
+      <pubDate>Mon, 21 May 2018 11:24:36 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2018/05/sql-server-migration-2/</guid>
+      <description>该系列三篇文章已经全部完成： 从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D （image via https://pixabay.com/en/military-stealth-bomber-refueling-602729/ ） 在上篇文章 从 SQL Server 到 MySQL （一）：异构数据库迁移 - Log4D 中，我们给大家介绍了从 SQL Server 到 MySQL 异构数据库迁移的基本问题和全量解决方案。 全量方案可以满足一部分场景的需求，但是这个方案仍然是有缺陷的： 迁移过程中需要停机，停机的时长和</description>
+      <content:encoded><![CDATA[<p>该系列三篇文章已经全部完成：</p>
+<ul>
+<li><a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/flying-tanker.png" alt="flying-tanker"  />
+
+</p>
+<p><smaill>（image via <a href="https://pixabay.com/en/military-stealth-bomber-refueling-602729/">https://pixabay.com/en/military-stealth-bomber-refueling-602729/</a> ）</small></p>
+<p>在上篇文章
+<a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL （一）：异构数据库迁移 - Log4D</a>
+中，我们给大家介绍了从 SQL Server 到 MySQL 异构数据库迁移的基本问题和全量解决方案。
+全量方案可以满足一部分场景的需求，但是这个方案仍然是有缺陷的：
+迁移过程中需要停机，停机的时长和数据量相关。
+对于核心业务来说，停机就意味着损失。
+比如用户中心的服务，以它的数据量来使用全量方案，会导致迁移过程中停机若干个小时。
+而一旦用户中心停止服务，几乎所有依赖于这个中央服务的系统都会停摆。</p>
+<p>能不能做到无缝的在线迁移呢？系统不需要或者只需要极短暂的停机？
+作为有追求的技术人，我们一定要想办法解决上面的问题。</p>
+<!-- more -->
+<h2 id="在线迁移的原理和流程">在线迁移的原理和流程</h2>
+<p>针对 Oracle 到 MySQL，市面上已经有比较成熟的解决方案 - alibaba 的
+<a href="https://github.com/alibaba/yugong">yugong</a>
+项目。
+在解决 SQL Server 到 MySQL 在线迁移之前，我们先研究一下 yugong 是如何做到 Oracle
+的在线迁移。</p>
+<p>下图是 yugong 针对 Oracle 到 MySQL 的增量迁移流程：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/yugong-oracle.png" alt="yugong-oracle.png"  />
+
+</p>
+<p>这其中有四个步骤：</p>
+<ol>
+<li>增量数据收集 (创建 Oracle 表的增量物化视图)</li>
+<li>进行全量复制</li>
+<li>进行增量复制 (可并行进行数据校验)</li>
+<li>原库停写，切到新库</li>
+</ol>
+<p>Oracle 物化视图（Materialized View）是 Oracle 提供的一个机制。
+一个物化视图就是主库在某一个时间点上的复制，可以理解为是这个时间点上的 Snapshot。
+当主库的数据持续更新时，物化视图的更新可以通过独立的批量更新完成，称之为 <code>refreshes</code>。
+一批 <code>refreshes</code> 之间的变化，就对应到数据库的内容变化情况。
+物化视图经常用来将主库的数据复制到从库，也常常在数据仓库用来缓存复杂查询。</p>
+<p>物化视图有多种配置方式，这里比较关心刷新方式和刷新时间。
+刷新方式有三种：</p>
+<ul>
+<li>Complete Refresh：删除所有数据记录重新生成物化视图</li>
+<li>Fast Refresh：增量刷新</li>
+<li>Force Refresh：根据条件判断使用 Complete Refresh 和 Fast Refres</li>
+</ul>
+<p>刷新机制有两种模式： Refresh-on-commit 和 Refresh-On-Demand。</p>
+<p>Oracle 基于物化视图，就可以完成增量数据的获取，从而满足阿里的数据在线迁移。
+将这个技术问题泛化一下，想做到在线增量迁移需要有哪些特性？
+我们得到如下结论（针对源数据库）：</p>
+<ul>
+<li>增量变化：支持增量获得增量数据库变化</li>
+<li>延迟：获取变化数据这个动作耗时需要尽可能低</li>
+<li>幂等一致性：变化数据的消费应当做到幂等，即不管目标数据库已有数据什么状态，都可以无差别消费</li>
+</ul>
+<p>回到我们面临的问题上来，SQL Server 是否有这个机制满足这三个特性呢？
+答案是肯定的，SQL Server 官方提供了 CDC 功能。</p>
+<h2 id="cdc-的工作原理">CDC 的工作原理</h2>
+<p>什么是 CDC？
+CDC 全称 Change Data Capture，设计目的就是用来解决增量数据的。
+它是 SQL Server 2008 新增的特性，
+在这之前只能使用 SQl Server 2005 中的 <code>after insert</code> / <code>after delete</code>
+/ <code>after update</code> Trigger 功能来获得数据变化。</p>
+<p>CDC 的工作原理如下：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-data-flow.png" alt="cdc-data-flow.png"  />
+
+</p>
+<p>当数据库表发生变化时候，Capture process 会从 transaction log 里面获取数据变化，
+然后将这些数据记录到 Change Table 里面。
+有了这些数据，用户可以通过特定的 CDC 查询函数将这些变化数据查出来。</p>
+<h2 id="cdc-的数据结构和基本使用">CDC 的数据结构和基本使用</h2>
+<p>CDC 的核心数据就是那些 Change Table 了，这里我们给大家看一下
+Change Table 长什么样，可以有个直观的认识。</p>
+<p>通过以下的函数打开一张表（fruits）的 CDC 功能。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- enable cdc for db
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">sys</span><span class="p">.</span><span class="n">sp_cdc_enable_db</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- enable by table
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">EXEC</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">sp_cdc_enable_table</span><span class="w"> </span><span class="o">@</span><span class="n">source_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;dbo&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">source_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;fruits&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">role_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- list cdc enabled table
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">databases</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>至此 CDC 功能已经开启，如果需要查看哪些表开启了 CDC 功能，可以使用一下 SQL：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- list cdc enabled table
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">databases</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>开启 CDC 会导致产生一张 Change Table 表 <code>cdc.dbo_fruits_CT</code>，这张表的表结构如何呢？</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="p">.</span><span class="k">schema</span><span class="w"> </span><span class="n">cdc</span><span class="p">.</span><span class="n">dbo_fruits_CT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">name</span><span class="w">            </span><span class="k">default</span><span class="w">  </span><span class="k">nullable</span><span class="w">  </span><span class="k">type</span><span class="w">          </span><span class="k">length</span><span class="w">  </span><span class="n">indexed</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">--------------  -------  --------  ------------  ------  -------
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__$end_lsn</span><span class="w">      </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="nb">binary</span><span class="w">        </span><span class="mi">10</span><span class="w">      </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">__$operation</span><span class="w">    </span><span class="k">null</span><span class="w">     </span><span class="k">NO</span><span class="w">        </span><span class="nb">int</span><span class="w">           </span><span class="mi">4</span><span class="w">       </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">__$seqval</span><span class="w">       </span><span class="k">null</span><span class="w">     </span><span class="k">NO</span><span class="w">        </span><span class="nb">binary</span><span class="w">        </span><span class="mi">10</span><span class="w">      </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">__$start_lsn</span><span class="w">    </span><span class="k">null</span><span class="w">     </span><span class="k">NO</span><span class="w">        </span><span class="nb">binary</span><span class="w">        </span><span class="mi">10</span><span class="w">      </span><span class="n">YES</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">__$update_mask</span><span class="w">  </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="n">varbinary</span><span class="w">     </span><span class="mi">128</span><span class="w">     </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">id</span><span class="w">              </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="nb">int</span><span class="w">           </span><span class="mi">4</span><span class="w">       </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">name</span><span class="w">            </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w">  </span><span class="mi">255</span><span class="w">     </span><span class="k">NO</span><span class="w">
+</span></span></span></code></pre></div><p>这张表中以 <code>__</code> 开头的字段是 CDC 所记录的元数据，<code>id</code> 和 <code>name</code> 是 fruits 表的原始字段。
+这意味着 CDC 的表结构和原始表结构是一一对应的。</p>
+<p>接下来我们做一些业务操作，让数据库的数据发生一些变化，然后查看 CDC 的 Change Table：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- 1 step
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">DECLARE</span><span class="w"> </span><span class="o">@</span><span class="n">begin_time</span><span class="w"> </span><span class="n">datetime</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">end_time</span><span class="w"> </span><span class="n">datetime</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">begin_lsn</span><span class="w"> </span><span class="nb">binary</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="o">@</span><span class="n">end_lsn</span><span class="w"> </span><span class="nb">binary</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 2 step
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SET</span><span class="w"> </span><span class="o">@</span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2017-09-11 14:03:00.000&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="o">@</span><span class="n">end_time</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2017-09-11 14:10:00.000&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 3 step
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">@</span><span class="n">begin_lsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">fn_cdc_map_time_to_lsn</span><span class="p">(</span><span class="s1">&#39;smallest greater than&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">begin_time</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">@</span><span class="n">end_lsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">fn_cdc_map_time_to_lsn</span><span class="p">(</span><span class="s1">&#39;largest less than or equal&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">end_time</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 4 step
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cdc</span><span class="p">.</span><span class="n">fn_cdc_get_all_changes_dbo_fruits</span><span class="p">(</span><span class="o">@</span><span class="n">begin_lsn</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">end_lsn</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;all&#39;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>这里的操作含义是：</p>
+<ol>
+<li>定义存储过程中需要使用的 4 个变量</li>
+<li>begin_time / end_time 是 Human Readable 的字符串格式时间</li>
+<li>begin_lsn / end_lsn 是通过 CDC 函数转化过的 Log Sequence Number，代表数据库变更的唯一操作 ID</li>
+<li>根据 begin_lsn / end_lsn 查询到 CDC 变化数据</li>
+</ol>
+<p>查询出来的数据如下所示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">__$start_lsn</span><span class="w">          </span><span class="n">__$end_lsn</span><span class="w">  </span><span class="n">__$seqval</span><span class="w">             </span><span class="n">__$operation</span><span class="w">  </span><span class="n">__$update_mask</span><span class="w">  </span><span class="n">id</span><span class="w">  </span><span class="n">name</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">--------------------  ----------  --------------------  ------------  --------------  --  ------
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">0000</span><span class="n">dede0000019f001a</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede0000019f0018</span><span class="w">  </span><span class="mi">2</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">1</span><span class="w">   </span><span class="n">apple</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0000</span><span class="n">dede000001ad0004</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001ad0003</span><span class="w">  </span><span class="mi">2</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">2</span><span class="w">   </span><span class="n">apple2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0000</span><span class="n">dede000001ba0003</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001ba0002</span><span class="w">  </span><span class="mi">3</span><span class="w">             </span><span class="mi">02</span><span class="w">              </span><span class="mi">2</span><span class="w">   </span><span class="n">apple2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0000</span><span class="n">dede000001ba0003</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001ba0002</span><span class="w">  </span><span class="mi">4</span><span class="w">             </span><span class="mi">02</span><span class="w">              </span><span class="mi">2</span><span class="w">   </span><span class="n">apple3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0000</span><span class="n">dede000001c10003</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001c10002</span><span class="w">  </span><span class="mi">2</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">3</span><span class="w">   </span><span class="n">apple4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0000</span><span class="n">dede000001cc0005</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001cc0002</span><span class="w">  </span><span class="mi">1</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">3</span><span class="w">   </span><span class="n">apple4</span><span class="w">
+</span></span></span></code></pre></div><p>可以看到 Change Table 已经如实的记录了我们操作内容，注意 <code>__$operation</code>
+代表了数据库操作：</p>
+<ul>
+<li>1  =&gt; 删除</li>
+<li>2  =&gt; 插入</li>
+<li>3  =&gt; 更新前数据</li>
+<li>4  =&gt; 更新后数据</li>
+</ul>
+<p>根据查出来的数据，我们可以重现这段时间数据库的操作：</p>
+<ul>
+<li>新增了 <code>id</code> 为 1 / 2 的两条数据</li>
+<li>更新了 <code>id</code> 为 2 的数据</li>
+<li>插入了 <code>id</code> 为 3 的数据</li>
+<li>删除了 <code>id</code> 为 3 的数据</li>
+</ul>
+<h2 id="cdc-调优">CDC 调优</h2>
+<p>有了 CDC 这个利器，终于意味着我们的方向是没有问题的，我们终于稍稍吁了一口气。
+但除了了解原理和使用方式，我们还需要深入了解 CDC 的工作机制，对其进行压测、调优，
+了解其极限和边界，否则一旦线上出现不可控的情况，就会对业务带来巨大损失。</p>
+<p>我们先看看 CDC 的工作流程，就可以知道有哪些核心参数可以调整：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-influence.png" alt="Influence of capture job parameters"  />
+
+</p>
+<p>上图是 CDC Job 的工作流程：</p>
+<ul>
+<li>蓝色区域是一次 Log 扫描执行的最大扫描次数：maxscans number（<code>maxscans</code>）</li>
+<li>蓝色区域同时被最大扫描 transcation 数量控制：<code>maxtrans</code></li>
+<li>浅蓝色区域是扫描间隔时间，单位是秒：<code>pollinginterval</code></li>
+</ul>
+<p>这三个参数平衡着 CDC 的服务器资源消耗、吞吐量和延迟，
+根据具体场景，比如大字段，宽表，BLOB 表，可以调整从而达到满足业务需要。
+他们的默认值如下：</p>
+<ul>
+<li><code>maxscan</code> 默认值 10</li>
+<li><code>maxtrans</code> 默认值 500</li>
+<li><code>pollinginterval</code> 默认值 5 秒</li>
+</ul>
+<h2 id="cdc-压测">CDC 压测</h2>
+<p>掌握了能够调整的核心参数，我们即将对 CDC 进行了多种形式的测试。
+在压测之前，我们还需要确定关键的健康指标，这些指标有：</p>
+<ul>
+<li>内存：buffer-cache-hit / page-life-expectancy / page-split 等</li>
+<li>吞吐：batch-requets / sql-compilations / sql-re-compilations / transactions count</li>
+<li>资源消耗：user-connections / processes-blocked / lock-waits / checkpoint-pages</li>
+<li>操作系统层面：CPU 利用率、磁盘 IO</li>
+</ul>
+<p>出于篇幅考虑，我们无法将所有测试结果贴出来，
+这里放一个在并发 30 下面插入一百万数据（随机数据）进行展示：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-metrics.png" alt="cdc-metrics.png"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-system-load.png" alt="cdc-system-load.png"  />
+
+</p>
+<p>测试结论是，在默认的 CDC 参数下面：</p>
+<p>CDC 的开启/关闭过程中会导致若干个 Process Block，
+大流量请求下面（15k TPS）过程会导致约 20 个左右 Process Block。
+这个过程中对服务器的 IO / CPU 无明显波动，
+开启/关闭瞬间会带来 mssql.sql-statistics.sql-compilations 剧烈波动。
+CDC 开启后，在大流量请求下面对 QPS / Page IO 无明显波动，
+对服务器的 IO / CPU 也无明显波动， CDC 开启后可以在 16k TPS 下正常工作。</p>
+<p>如果对性能不达标，官方有一些简单的优化指南：</p>
+<ul>
+<li>调整 maxscan maxtrans pollinginterval</li>
+<li>减少在插入后立刻插入</li>
+<li>避免大批量写操作</li>
+<li>限制需要记录的字段</li>
+<li>尽可能关闭 net changes</li>
+<li>没任务压力时跑 cleanup</li>
+<li>监控 log file 大小和 IO 压力，确保不会写爆磁盘</li>
+<li>要设置 filegroup_name</li>
+<li>开启 sp_cdc_enable_table 之前设置 filegroup</li>
+</ul>
+<h2 id="yugong-的在线迁移机制">yugong 的在线迁移机制</h2>
+<p>OK，截目前位置，我们已经具备了 CDC 这个工具，但是这仅仅提供了一种可能性，
+我们还需要一个工具将 CDC 的数据消费出来，并喂到 MySQL 里面去。</p>
+<p>好在有 yugong。
+Yugong 官方提供了 Oracle 到 MySQL 的封装，并且抽象了 Source / Target /
+SQL Tempalte 等接口，
+我们只要实现相关接口，就可以完成从 SQL Server 消费数据到 MySQL 了。</p>
+<p>这里我们不展开，我还会花专门的一篇文章讲如何在 yugong 上面进行开发。
+可以提前剧透一下，我们已经将支持 SQL Server 的 yugong 版本开源了。</p>
+<h2 id="如何回滚">如何回滚</h2>
+<p>数据库迁移这样的项目，我们不仅仅要保证单向从 SQL Server 到 MySQL 的写入，
+同时要从 MySQL 写入 SQL Server。</p>
+<p>这个流程同样考虑增量写入的要素：增量消费，延迟，幂等一致性。</p>
+<p>MySQL 的 binlog 可以满足这三个要素，需要注意的是，MySQL binlog 有三种模式，
+Statement based，Row based 和 Mixed。只有 Row based 才能满足幂等一致性的要求。</p>
+<p>确认理论上可行之后，我们一样需要一个工具将 binlog 读取出来，并且将其转化为
+SQL Server 可以消费的数据格式，然后写入 SQL Server。</p>
+<p>我们目光转到 alibaba 的另外一个项目 Canal。
+Canal 是阿里中间件团队提供的 binlog 增量订阅 &amp; 消费组件。
+之所以叫组件，是由于 Canal 提供了 Canal-Server 应用和 Canal Client Library，
+Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
+然后实时将 binlog 读取出来。
+至于 binlog 读出之后想怎么使用，权看用户如何使用。</p>
+<p>我们基于 Canal 设计了一个简单的数据流，在 yugong 中增加了这么几个功能：</p>
+<ul>
+<li>SQL Server 的写入功能</li>
+<li>消费 Canal 数据源的功能</li>
+</ul>
+<p>Canal Server 中的 binlog 只能做一次性消费，
+内部实现是一个 Queue，
+为了满足我们可以重复消费数据的能力，我们还额外设计了一个环节，将 Canal
+的数据放到 Queue 中，在未来任意时间可以重复消费数据。
+我们选择了 Redis 作为这个 Queue，数据流如下。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/canal.png" alt="canal.png"  />
+
+</p>
+<h2 id="最佳实践">最佳实践</h2>
+<p>数据库的迁移在去 Windows 中，是最不容得出错的环节。
+应用是无状态的，出现问题可以通过回切较快地回滚。
+但数据库的迁移就需要考虑周到，做好资源准备，发布流程，
+故障预案处理。</p>
+<p>考虑到多个事业部都需要经历这个一个过程，我们项目组将每一个步骤都固化下来，
+形成了一个最佳实践。我们的迁移步骤如下，供大家参考：</p>
+<table>
+<thead>
+<tr>
+<th>大阶段</th>
+<th>阶段</th>
+<th>事项</th>
+<th>是否完成</th>
+<th>负责人</th>
+<th>耗时</th>
+<th>开始时间</th>
+<th>完成时间</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>白天</td>
+<td>存量数据阶段</td>
+<td>创建 MySQL 数据库，准备相关账号资源</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>开启 CDC</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>从 Slave SQLServer dump 一份 snapshot 到 Backup SQL Server</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>Backup SQL Server 消费数据， ETL 到 MySQL</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td>增量数据阶段</td>
+<td>确认 ETL 数据已经消费完成，检查数据总条数</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>从 Slave SQLServer 开始消费 CDC 数据，持续写入 MySQL</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>使用 yugong 检查一天内数据的一致性</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>检查不一致的数据，10 分钟之后人工进行检查，确认是 CDC 延迟带来的问题</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>检查数据总量条目</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>使用 yugong 对抽样表进行全量检查</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>凌晨</td>
+<td>应用发布阶段</td>
+<td>停止 SQL Server 的应用</td>
+<td> </td>
+<td>技术经理</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>检查没有连接进入 SQL Server</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>使用 yugong 检查一天内数据的一致性</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>检查数据总量条目</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>启用基于 MySQL 的应用</td>
+<td> </td>
+<td>运维</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td>测试阶段</td>
+<td>测试应用是否正常，回归所有功能</td>
+<td> </td>
+<td>QA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>（临时新增）测试 ReadOnly DB 的应用访问情况</td>
+<td> </td>
+<td>QA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td>完成阶段</td>
+<td>接入流量</td>
+<td> </td>
+<td>运维</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td>（可选）回滚阶段</td>
+<td>发现问题，直接将应用切回 SQL Server</td>
+<td> </td>
+<td>运维</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>事后进行数据审计，进行新增数据补偿</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td> </td>
+<td> </td>
+<td>（可选）回滚过程中，使用 Canal 读取 binlog，并使用 Canal Client 重放到 SQL Server</td>
+<td> </td>
+<td>DBA</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://docs.oracle.com/cd/B10500_01/server.920/a96567/repmview.htm">Materialized View Concepts and Architecture</a></li>
+<li><a href="https://docs.microsoft.com/en-us/previous-versions/sql/sql-server-2008/dd266396(v=sql.100)">Tuning the Performance of Change Data Capture in SQL Server 2008 | Microsoft Docs</a></li>
+<li><a href="https://github.com/alibaba/yugong">alibaba/yugong: 阿里巴巴去Oracle数据迁移同步工具(全量+增量,目标支持MySQL/DRDS)</a></li>
+<li><a href="https://github.com/alibaba/canal">alibaba/canal: 阿里巴巴mysql数据库binlog的增量订阅&amp;消费组件 。阿里云DRDS( https://www.aliyun.com/product/drds )、阿里巴巴TDDL 二级索引、小表复制powerd by canal.</a></li>
+</ul>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>从 SQL Server 到 MySQL（一）：异构数据库迁移</title>
+      <link>https://blog.alswl.com/2018/03/sql-server-migration-1/</link>
+      <pubDate>Mon, 12 Mar 2018 21:08:56 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2018/03/sql-server-migration-1/</guid>
+      <description>该系列三篇文章已经全部完成： 从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D 背景 沪江成立于 2001 年，作为较早期的教育学习网站， 当时技术选型范围并不大： Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购， 版本号是 3.23。 工程师们选择了当时最合适的微软体系，并在日后的岁月里， 逐步从 ASP 过度到 .net，数据</description>
+      <content:encoded><![CDATA[<p>该系列三篇文章已经全部完成：</p>
+<ul>
+<li><a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D</a></li>
+<li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-bird.png" alt="201803/migration-bird.png"  />
+
+</p>
+<h2 id="背景">背景</h2>
+<p>沪江成立于 2001 年，作为较早期的教育学习网站，
+当时技术选型范围并不大：
+Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
+版本号是 3.23。
+工程师们选择了当时最合适的微软体系，并在日后的岁月里，
+逐步从 ASP 过度到 .net，数据库也跟随 SQL Server 进行版本升级。</p>
+<p>十几年过去了，技术社区已经发生了天翻地覆的变化。
+沪江的技术栈还基本在 .net 体系上，这给业务持续发展带来了一些限制。
+人才招聘、社区生态、架构优化、成本风险方面都面临挑战。
+集团经过慎重考虑，发起了大规模的去 Windows 化项目。
+这其中包含两个重点子项目：开发语言从 C# 迁移到 Java，
+数据库从 SQL Server 迁移到 MySQL。</p>
+<p>本系列文章就是向大家介绍，
+从 SQL Server 迁移到 MySQL 所面临的问题和我们的解决方案。</p>
+<!-- more -->
+<h2 id="迁移方案的基本流程">迁移方案的基本流程</h2>
+<p>设计迁移方案需要考量以下几个指标：</p>
+<ul>
+<li>迁移前后的数据一致性</li>
+<li>业务停机时间</li>
+<li>迁移项目是否对业务代码有侵入</li>
+<li>需要提供额外的功能：表结构重构、字段调整</li>
+</ul>
+<p>经过仔细调研，在平衡复杂性和业务方需求后，
+迁移方案设计为两种：停机数据迁移和在线数据迁移。
+如果业务场景允许数小时的停机，那么使用停机迁移方案，
+复杂度低，数据损失风险低。
+如果业务场景不允许长时间停机，或者迁移数据量过大，
+无法在几个小时内迁移完成，那么就需要使用在线迁移方案了。</p>
+<p>数据库停机迁移的流程：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-db-offline-readonly.png" alt="201803/migration-db-offline-readonly.png"  />
+
+</p>
+<p>停机迁移逻辑比较简单，使用 ETL（Extract Translate Load）
+工具从 Source 写入 Target，然后进行一致性校验，最后确认应用运行 OK，
+将 Source 表名改掉进行备份。</p>
+<p>在线迁移的流程：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-db-online.png" alt="201803/migration-db-online.png"  />
+
+</p>
+<p>在线迁移的方案稍微复杂一些，流程上有准备全量数据，然后实时同步增量数据，
+在数据同步跟上（延迟秒级别）之后，进行短暂停机（Hang 住，确保没有流量），
+就可以使用新的应用配置，并使用新的数据库。</p>
+<h2 id="需要解决的问题">需要解决的问题</h2>
+<p>从 SQL Server 迁移到 MySQL，核心是完成异构数据库的迁移。</p>
+<p>基于两种数据迁移方案，我们需要解决以下问题：</p>
+<ul>
+<li>两个数据库的数据结构是否可以一一对应？出现不一致如何处理？</li>
+<li>MySQL 的使用方式和 SQL Server 使用方式是否一致？有哪些地方需要注意？</li>
+<li>如何确保迁移前后的数据一致性？</li>
+<li>在迁移中，如何支持数据结构调整？</li>
+<li>如何保证业务不停情况下面，实现在线迁移？</li>
+<li>数据迁移后如果发现业务异常需要回滚，如何处理新产生的数据？</li>
+</ul>
+<p>为了解决以上的问题，我们需要引入一整套解决方案，包含以下部分：</p>
+<ul>
+<li>指导文档 A：SQL Server 转换 MySQL 的数据类型对应表</li>
+<li>指导文档 B：MySQL 的使用方式以及注意点</li>
+<li>支持表结构变更，从 SQL Server 到 MySQL 的 ETL 工具</li>
+<li>支持 SQL Server 到 MySQL 的在线 ETL 工具</li>
+<li>一致性校验工具</li>
+<li>一个回滚工具</li>
+</ul>
+<p>让我们一一来解决这些问题。</p>
+<h2 id="sql-server-到-mysql-指导文档">SQL Server 到 MySQL 指导文档</h2>
+<p>非常幸运的是，MySQL 官方早就准备了一份如何其他数据库迁移到
+MySQL 的白皮书。
+<a href="https://www.mysql.com/it/why-mysql/white-papers/guide-to-migrating-from-sql-server-to-mysql/">MySQL :: Guide to Migrating from Microsoft SQL Server to MySQL</a>
+里提供了详尽的 SQL Server 到 MySQL 的对应方案。
+包含了：</p>
+<ul>
+<li>SQL Server to MySQL - Datatypes 数据类型对应表</li>
+<li>SQL Server to MySQL - Predicates 逻辑算子对应表</li>
+<li>SQL Server to MySQL – Operators and Date Functions 函数对应表</li>
+<li>T-SQL Conversion Suggestions 存储过程转换建议</li>
+</ul>
+<p>需要额外处理的数据类型：</p>
+<table>
+<thead>
+<tr>
+<th>SQL Server</th>
+<th>MySQL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IDENTITY</td>
+<td>AUTO_INCREMENT</td>
+</tr>
+<tr>
+<td>NTEXT, NATIONAL TEXT</td>
+<td>TEXT CHARACTER SET UTF8</td>
+</tr>
+<tr>
+<td>SMALLDATETIME</td>
+<td>DATETIME</td>
+</tr>
+<tr>
+<td>MONEY</td>
+<td>DECIMAL(19,4)</td>
+</tr>
+<tr>
+<td>SMALL MONEY</td>
+<td>DECIMAL(10,4)</td>
+</tr>
+<tr>
+<td>UNIQUEIDENTIFIER</td>
+<td>BINARY(16)</td>
+</tr>
+<tr>
+<td>SYSNAME</td>
+<td>CHAR(256)</td>
+</tr>
+</tbody>
+</table>
+<p>在实际进行中，还额外遇到了一个用来解决树形结构存储的字段类型
+Hierarchyid。这个场景需要额外进行业务调整。</p>
+<p>我们在内部做了针对 MySQL 知识的摸底排查工作，
+并进行了若干次的 MySQL 使用技巧培训，
+将工程师对 MySQL 的认知拉到一根统一的线。</p>
+<p>关于存储过程使用，我们和业务方也达成了一致：所有 SQL Server
+存储过程使用业务代码进行重构，不能在 MySQL 中使用存储过程。
+原因是存储过程增加了业务和 DB 的耦合，会让维护成本变得极高。
+另外 MySQL 的存储过程功能和性能都较弱，无法大规模使用。</p>
+<p>最后我们提供了一个 MySQL 开发规范文档，借数据库迁移的机会，
+将之前相对混乱的表结构设计做了统一了约束（部分有业务绑定的设计，
+在考虑成本之后没有做调整）。</p>
+<h2 id="etl-工具">ETL 工具</h2>
+<p>ETL 的全称是 Extract Translate Load（读取、转换、载入），
+数据库迁移最核心过程就是 ETL 过程。
+如果将 ETL 过程简化，去掉 Translate 过程，
+就退化为一个简单的数据导入导出工具。
+我们可以先看一下市面上常见的导入导出工具，
+了解他们的原理和特性，方便我们选型。</p>
+<p>MySQL 同构数据库数据迁移工具：</p>
+<ul>
+<li><a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html">mysqldump</a>
+和 <a href="https://dev.mysql.com/doc/refman/5.7/en/mysqlimport.html">mysqlimport</a>
+MySQL 官方提供的 SQL 导出导出工具</li>
+<li><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-table-sync.html">pt-table-sync</a>
+Percona 提供的主从同步工具</li>
+<li><a href="https://www.percona.com/software/mysql-database/percona-xtrabackup">XtraBackup</a>
+Percona 提供的备份工具</li>
+</ul>
+<p>异构数据库迁移工具：</p>
+<ul>
+<li><a href="https://www.convert-in.com/">Database migration and synchronization tools</a>
+：国外一家提供数据库迁移解决方案的公司</li>
+<li><a href="https://github.com/alibaba/DataX">DataX</a>
+：阿里巴巴开发的数据库同步工具</li>
+<li><a href="https://github.com/alibaba/yugong">yugong</a>
+：阿里巴巴开发的数据库迁移工具</li>
+<li><a href="https://www.mysql.com/cn/products/workbench/">MySQL Workbench</a>
+：MySQL 提供的 GUI 管理工具，包含数据库迁移功能</li>
+<li><a href="https://community.hds.com/docs/DOC-1009855">Data Integration - Kettle</a>
+：国外的一款 GUI ETL 工具</li>
+<li><a href="https://www.ispirer.cn/products/sql-server-to-mysql-migration">Ispirer</a>
+：提供应用程序、数据库异构迁移方案的公司</li>
+<li><a href="http://www.szmesoft.com/DB2DB">DB2DB 数据库转换工具</a>
+：一个国产的商业数据库迁移软件</li>
+<li><a href="https://www.navicat.com/en/products/navicat-premium">Navicat Premium</a>
+：经典的数据库管理工具，带数据迁移功能</li>
+<li><a href="http://www.cnblogs.com/cyq1162/p/5637978.html">DBImport</a>
+：个人维护的迁移工具，非常简陋，需要付费</li>
+</ul>
+<p>看上去异构数据库迁移工具和方案很多，但是经过我们调研，其中不少是为老派的传统行业服务的。
+比如 Kettle / Ispirerer，他们关注的特性，不能满足互联网公司对性能、迁移耗时的要求。
+简单筛选后，以下几个工具进入我们候选列表（为了做特性对比，加入几个同构数据库迁移工具）：</p>
+<table>
+<thead>
+<tr>
+<th>工具名称</th>
+<th>热数据备份保证一致性</th>
+<th>batch 操作</th>
+<th>支持异构数据库</th>
+<th>断点续接</th>
+<th>开源</th>
+<th>开发语言</th>
+<th>GUI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mysqldump</td>
+<td>V 使用 <code>single-transaction</code></td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>V</td>
+<td>C</td>
+<td>X</td>
+</tr>
+<tr>
+<td>pt-table-sync</td>
+<td>V 使用 transaction 或 <code>lock table</code> 的 FTWRL</td>
+<td>V</td>
+<td>X</td>
+<td>V</td>
+<td>V</td>
+<td>Pell</td>
+<td>X</td>
+</tr>
+<tr>
+<td>DataX</td>
+<td>X</td>
+<td>V</td>
+<td>V</td>
+<td>X</td>
+<td>V</td>
+<td>Java</td>
+<td>X</td>
+</tr>
+<tr>
+<td>yugong</td>
+<td>X</td>
+<td>V</td>
+<td>V</td>
+<td>V</td>
+<td>V</td>
+<td>Java</td>
+<td>X</td>
+</tr>
+<tr>
+<td>DB2DB</td>
+<td>X</td>
+<td>V</td>
+<td>V</td>
+<td>X</td>
+<td>X</td>
+<td>.net</td>
+<td>V</td>
+</tr>
+<tr>
+<td>MySQL Workbench</td>
+<td>X</td>
+<td>?</td>
+<td>V</td>
+<td>X</td>
+<td>V</td>
+<td>C++</td>
+<td>V</td>
+</tr>
+</tbody>
+</table>
+<p>由于异构数据库迁移，真正能够进入我们选型的只有
+DataX / yugong / DB2DB / MySQL Workbench。
+经过综合考虑，我们最终选用了三种方案，
+DB2DB 提供小数据量、简单模式的停机模式支持，
+足以应付小数据量的停机迁移，开发工程师可以自助完成。
+DataX 为大数据量的停机模式提供服务，
+使用 JSON 进行配置，通过修改查询 SQL，可以完成一部分结构调整工程。
+yugong 的强大可定制性也为在线迁移提供了基础，
+我们在官方开源版本的基础之上，增加了以下额外功能：</p>
+<ul>
+<li>支持 SQL Server 作为 Source 和 Target</li>
+<li>支持 MySQL 作为 Source</li>
+<li>支持 SQL Server 增量更新</li>
+<li>支持使用 YAML 作为配置格式</li>
+<li>调整 yugong 为 fat jar 模式运行</li>
+<li>支持表名、字段名大小写格式变化，驼峰和下划线自由转换</li>
+<li>支持表名、字段名细粒度自定义</li>
+<li>支持复合主键迁移</li>
+<li>支持迁移过程中完成 Range / Time / Mod / Hash 分表</li>
+<li>支持新增、删除字段</li>
+</ul>
+<p>关于 yugong 的二次开发，我们也积累了一些经验，这个我们下篇文章会来分享。</p>
+<h2 id="一致性校验工具">一致性校验工具</h2>
+<p>在 ETL 之后，需要有一个流程来确认数据迁移前后是否一致。
+虽然理论上不会有差异，但是如果中间有程序异常，
+或者数据库在迁移过程中发生操作，数据就会不一致。</p>
+<p>业界有没有类似的工具呢？
+有，Percona 提供了 pt-table-checksum 这样的工具，
+这个工具设计从 master 使用 <code>checksum</code> 来和 slave 进行数据对比。
+这个设计场景是为 MySQL 主从同步设计，
+显然无法完成从 SQL Server 到 MySQL 的一致性校验。
+尽管如此，它的一些技术设计特性也值得参考：</p>
+<ul>
+<li>一次检查一张表</li>
+<li>每次检查表，将表数据拆分为多个 trunk 进行检查</li>
+<li>使用 <code>REPLACE...SELECT</code> 查询，避免大表查询的长时间带来的不一致性</li>
+<li>每个 trunk 的查询预期时间是 0.5s</li>
+<li>动态调整 trunk 大小，使用指数级增长控制大小</li>
+<li>查询超时时间 1s / 并发量 25</li>
+<li>支持故障后断点恢复</li>
+<li>在数据库内部维护 src / diff，meta 信息</li>
+<li>通过 Master 提供的信息自动连接上 slave</li>
+<li>必须 Schema 结构一致</li>
+</ul>
+<p>我们选择 yugong 作为 ETL 工具的一大原因也是因为它提供了多种模式。
+支持 CHECK / FULL / INC / AUTO 四种模式。
+其中 CHECK 模式就是将 yugong 作为数据一致性检查工具使用。
+yugong 工作原理是通过 JDBC 根据主键范围变化，将数据取出进行批量对比。</p>
+<p>这个模式会遇到一点点小问题，如果数据库表没有主键，将无法进行顺序对比。
+其实不同数据库有自己的逻辑主键，Oracle 有 <code>rowid</code>，
+SQL Server 有 <code>physloc</code>。这种方案可以解决无主键进行比对的问题。</p>
+<h2 id="如何回滚">如何回滚</h2>
+<p>我们需要考虑一个场景，在数据库迁移成功之后业务已经运行了几个小时，
+但是遇到了一些 Critical 级别的问题，必须回滚到迁移之前状态。
+这时候如何保证这段时间内的数据更新到老的数据库里面去？</p>
+<p>最朴素的做法是，在业务层面植入 DAO 层的打点，
+将 SQL 操作记录下来到老数据库进行重放。
+这种方式虽然直观，但是要侵入业务系统，直接被我们否决了。
+其实这种方式是 binlog statement based 模式，
+理论上我们可以直接从 MySQL 的 binlog 里面获取数据变更记录。
+以 row based 方式重放到 SQL Server。</p>
+<p>这时候又涉及到逆向 ETL 过程，
+因为很可能 Translate 过程中，做了表结构重构。
+我们的解决方法是，使用 Canal 对 MySQL binlog 进行解析，
+然后将解析之后的数据作为数据源，
+将其中的变更重放到 SQL Server。</p>
+<p>由于回滚的过程也是 ETL，基于 yugong，
+我们继续定制了 SQL Server 的写入功能，
+这个模式类似于在线迁移，只不过方向是从 MySQL 到 SQL Server。</p>
+<h2 id="其他实践">其他实践</h2>
+<p>我们在迁移之前做了大量压测工作，
+并针对每个迁移的 DB 进行线上环境一致的全真演练。
+我们构建了和生产环境机器配置一样，
+数据量一样的测试环境，并要求每个系统在上线之前都进行若干次演练。
+演练之前准备详尽的操作手册和事故处理方案。
+演练准出的标准是：能够在单次演练中不出任何意外，时间在估计范围内。
+通过演练我们保证了整个操作时间可控，减少操作时候的风险。</p>
+<p>为了让数据库的状态更为直观的展现出来，
+我们对 MySQL / SQL Server 添加了细致的 Metrics 监控。
+在测试和迁移过程中，可以便利地看到数据库的响应情况。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/sql-server-metrics.png" alt="201803/sql-server-metrics.png"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/mysql-metrics.png" alt="201803/mysql-metrics.png"  />
+
+</p>
+<p>为了方便 DBA 快速 Review SQL。
+我们提供了一些工具，直接将代码库中的 SQL 拎出来，
+可以方便地进行 SQL Review。
+再配合其他 SQL Review 工具，
+比如 <a href="https://github.com/Meituan-Dianping/SQLAdvisor">Meituan-Dianping/SQLAdvisor</a>，
+可以实现一部分自动化，提高 DBA 效率，避免线上出现明显的 Slow SQL。</p>
+<h2 id="最后">最后</h2>
+<p>基于这几种方案我们打了一套组合拳。经过将近一年的使用，
+进行了 28 个通宵，迁移了 42 个系统，
+完成了包括用户、订单、支付、电商、学习、社群、内容和工具的迁移。
+迁移的数据总规模接近百亿，所有迁移项目均一次成功。
+迁移过程中积累了丰富的实战经验，保障了业务快速向前发展。</p>
+<p>下一篇：<a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D</a></p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>一个关于 nolock 的故事：深入理解数据库隔离级别</title>
+      <link>https://blog.alswl.com/2017/09/sql-server-nolock/</link>
+      <pubDate>Tue, 19 Sep 2017 16:43:45 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2017/09/sql-server-nolock/</guid>
+      <description>加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里， 同时伴随进行的还有 .net 系统迁移到 Java 系统。 在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中， 几乎所有的 SQL 中都会使用一个关键字：nolock。 这让我很困惑，nolock 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？ 我找了一个范例如下： SELECT [id] FROM [dbo].[foos] WITH(nolock) WHERE aField = 42 AND bField = 1 作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server 迁移到 My</description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/sql-server.png" alt="sql-server.png"  />
+
+</p>
+<p>加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里，
+同时伴随进行的还有 .net 系统迁移到 Java 系统。
+在这个过程中我发现了一个很有趣的现象：历史遗留的 .net 项目中，
+几乎所有的 SQL 中都会使用一个关键字：<code>nolock</code>。
+这让我很困惑，<code>nolock</code> 的字面意思是对当前技术不使用锁技术，为什么要这样用呢？</p>
+<!-- more -->
+<p>我找了一个范例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w">   </span><span class="p">[</span><span class="n">dbo</span><span class="p">].[</span><span class="n">foos</span><span class="p">]</span><span class="w"> </span><span class="k">WITH</span><span class="p">(</span><span class="n">nolock</span><span class="p">)</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w">  </span><span class="n">aField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">AND</span><span class="w"> </span><span class="n">bField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> 
+</span></span></span></code></pre></div><p>作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server
+迁移到 MySQL，我们编码中还需要使用 <code>nolock</code> 么？
+MySQL 里面对应的写法是什么？」。
+我并没有 SQL Server 的生产环境使用经验，一时间无法回答。
+于是课后做相关知识学习，这里就是这次学习的一点成果。</p>
+<p>这个问题将被拆解成三个小问题进行回答：</p>
+<ul>
+<li><code>nolock</code> 是什么？</li>
+<li>为什么会需要在每个 Query 语句使用 <code>nolock</code>？</li>
+<li>MySQL 的对应写法是什么？</li>
+</ul>
+<p>让我们一个一个来看。</p>
+<h2 id="第一个问题nolock-是什么">第一个问题：nolock 是什么？</h2>
+<p><code>nolock</code> 是 SQL Server 的一个关键字，这类关键字官方将其称之为 Hints。
+Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查询优化器的行为。
+在语法上，Hints 以 <code>WITH</code> 开头。除了 <code>WITH(nolock)</code>，
+还有 <code>TABLOCK</code> / <code>INDEX</code> / <code>ROWLOCK</code> 等常见的 Hints。</p>
+<p>让我们仔细看看 MSDN 文档上的解释：</p>
+<blockquote>
+<p><code>nolock</code> 的作用等同于 <code>READUNCOMMITTED</code></p>
+</blockquote>
+<p><code>READUNCOMMITTED</code> 这是一种 RDBMS 隔离级别。
+使用 <code>nolock</code> 这个关键词，可以将当前查询语句隔离级别调整为 <code>READ UNCOMMITTED</code>。</p>
+<p>计算机基础好的同学，应该对 <code>READUNCOMMITTED</code> 这个关键词还有印象。
+而基础不扎实的同学，也许只是觉得这个关键词眼熟，但是讲不清楚这是什么。
+如果阅读这句话完全没有理解困难，那恭喜你，你可以直接跳到下一节了。
+其他朋友就跟随我继续探索一下 RDMBS 的世界，复习一下隔离级别相关的知识。</p>
+<h3 id="隔离级别">隔离级别</h3>
+<p>SQL 92 定义了四个隔离级别
+（<a href="https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels">Isolation (database systems) - Wikipedia</a>），
+其隔离程度由高到低是：</p>
+<ul>
+<li>可序列化（Serializable）</li>
+<li>可重复读（Repeatable reads）</li>
+<li>提交读（Read committed）</li>
+<li>未提交读（Read uncommitted）</li>
+</ul>
+<p>单单将这几个技术名词简单地罗列出来并没有什么意义，还有这几个问题需要搞清楚：</p>
+<ul>
+<li>隔离级别解决什么问题？</li>
+<li>为什么存在多种隔离级别？</li>
+<li>我们所谓的隔离级别从高到低，是什么含义，如何逐层降低的？</li>
+</ul>
+<p>首先是「隔离级别解决什么问题？」，
+用通俗的语言描述就是：加一个针对数据资源的锁，从而保证数据操作过程中的一致性。</p>
+<p>这是最简单的实现方式，过于粗暴的隔离性将大幅降低性能，
+多种隔离级别就是是为了取得两者的平衡。</p>
+<p>接下来我们来回答第二个问题「为什么存在多种粒度的隔离级别？」
+这其实是一个需求和性能逐步平衡的过程，</p>
+<p>我们逐层递进，将隔离级别由低到高逐层面临进行分析。</p>
+<h3 id="read-uncommitted">Read Uncommitted</h3>
+<p>Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
+如同它的名字一般，它允许在操作过程中不会锁，从而让当前事务读取到其他事务的数据。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-uncommitted.png" alt="read-uncommitted.png"  />
+
+</p>
+<p>如上图所示，在 Transaction 2 查询时候，Transaction 1 未提交的数据就已经对外暴露。
+如果 Transaction 1 最后 Rollback 了，那么 Transaction 读取的数据就是错误的。</p>
+<p>「读到了其他事务修改了但是未提交的数据」即是<strong>脏读</strong>。</p>
+<h3 id="read-committed">Read Committed</h3>
+<p>想要避免脏读，最简单的方式就是在事务更新操作上加一把写锁，
+其他事务需要读取数据时候，需要等待这把写锁释放。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-committed-1.png" alt="read-committed-1.png"  />
+
+</p>
+<p>如上图所示，Transaction 1 在写操作时候，对数据 A 加了写锁，
+那么 Transaction 2 想要读取 A，就必须等待这把锁释放。
+这样就避免当前事务读取其他事务的未提交数据。</p>
+<p>但是除了脏读，一致性的要求还需要「可重复读」，即
+「在一个事务内，多次读取的特定数据都必须是一致的
+（即便在这过程中该数据被其他事务修改）」。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-committed-2.png" alt="read-committed-2.png"  />
+
+</p>
+<p>上图就是没能保证「可重复度」，Transaction 2 第一次读取到了数据 A，
+然后 Transaction 1 对数据 A 更新到 A&rsquo;，那么当 Tranction 2 再次读取 A 时候，
+它本来期望读到 A，但是却读到了 A&rsquo;，这和它的预期不相符了。
+解决这个问题，就需要提升隔离级别到「Repeatable Read」。</p>
+<h3 id="repeatable-read">Repeatable Read</h3>
+<p>这个名字非常容易理解，即保障在一个事务内重复读取时，
+始终能够读取到相同的内容。来看图：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/repeatable-read.png" alt="repeatable-read.png"  />
+
+</p>
+<p>如上所示，当 Transation 2 读取 A 时候，会同时加上一把 Read Lock，
+这把锁会阻止 Transaction 1 将 A 更新为 A&rsquo;，Transaction 1 要么选择等待，
+要么就选择结束。</p>
+<p>当我们将隔离级别升到这里是，似乎已经完美无缺了。
+不管是写入还是读取，我们都可以保证数据的一致性不被破坏。
+但是其实还有漏洞：新增数据的一致性！</p>
+<p>上述的三个隔离级别，都是对特定的一行数据进行加锁，
+那假如将要更新的数据还没有写入数据库，如何进行加锁呢？
+比如自增表的新键，或者现有数据内的空缺 Key？</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/repeatable-read-2.png" alt="repeatable-read-2.png"  />
+
+</p>
+<p>如图所示，在上述操作中，Transaction 2 查询了一个范围 Range 之后，Transaction 1
+在这个范围内插入了一条新的数据。此时 Transaction 2 再次进行范围查询时候，
+会发现查询到的 Range 和上次已经不一样了，多了一个 newA。</p>
+<p>这就是最高隔离级别才能解决的「幻影读」：
+当两个完全相同的查询语句执行得到不同的结果集，
+这常常在范围查询中出现。</p>
+<h3 id="serializable">Serializable</h3>
+<p>从字面意思看，该隔离级别需要将被操作的数据加锁加一把锁。
+任何读写操作都需要先获得这把锁才能进行。如果操作中带 WHERE 条件，
+还需要将 WHERE 条件相关的范围全部加锁。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/serializable.png" alt="serializable.png"  />
+
+</p>
+<p>如图所示，在 Transaction 2 操作过程中，会对 Range 进行加锁，
+此时其他事务无法操作其中的数据，只能等待或者放弃。</p>
+<h3 id="db-的默认隔离级别">DB 的默认隔离级别</h3>
+<p>现在我们已经理解了隔离级别，那么「SQL Server 默认使用的隔离级别是什么呢？」
+根据 <a href="https://msdn.microsoft.com/en-us/library/ms175909.aspx">Customizing Transaction Isolation Level</a>
+这个文档描述，SQL Server 默认隔离级别是 READ COMMITTED。</p>
+<p>MySQL InnoDB 的默认隔离级别可以在 <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-transaction-isolation-levels.html">MySQL :: MySQL 5.7 Reference Manual :: 14.5.2.1 Transaction Isolation Levels</a>
+查询到，是 Read-Repeatable。</p>
+<p>隔离级别并没有最好之说，越高隔离级别会导致性能降低。
+隔离级别的设定需要考虑业务场景。</p>
+<h2 id="第二个问题为什么要使用-nolock">第二个问题：为什么要使用 nolock？</h2>
+<p>我们已经知道 <code>nolock</code> 的作用是动态调整隔离级别。
+那为什么在 SQL Server 的 Query 操作中，需要启用 <code>nolock</code> 呢？
+我问了几个工程师，他们都语焉不详，或者是很泛泛地说：禁用读写锁，可以提升查询性能。</p>
+<p>此时我产生了困惑：「那么此时的数据一致性就不需要考虑了么？
+我们的数据库，已经到了需要禁用锁的程度来进行优化了么？」
+我于是自己去探索，想知道为何广泛使用 <code>nolock</code> 会成为一个「最佳实践」？</p>
+<p>由于时代久远，我只能追述到一些相关信息，比如
+<a href="https://blogs.msdn.microsoft.com/sqlcat/2013/09/16/top-10-sql-server-integration-services-best-practices/">Top 10 SQL Server Integration Services Best Practices | SQL Server Customer Advisory Team</a>
+中提到 「Use the NOLOCK or TABLOCK hints to remove locking overhead.」
+但这个是针对于 SSIS 查询器，并不是针对业务内部使用。
+反而能找到一大堆的文档，在反对使用 <code>nolock</code> 这个关键字。</p>
+<p>继续追查下去，还从蛛丝马迹中寻找到一个使用 <code>nolock</code> 的理由，
+SQL Server 默认是 Read Committed，
+更新操作会产生排它锁，会 block 这个资源的查询操作，
+已插入但未提交的数据主键也会产生一个共享锁，
+而此时则会 block 这张表的全表查询和 Insert 操作。
+为了避免 Insert 被 Block，就会推荐使用 <code>nolock</code>。</p>
+<p>为了验证这是原因，我做一些 <code>nolock</code> 测试。</p>
+<h3 id="nolock-测试">nolock 测试</h3>
+<p>检查当前 SQL Server 隔离级别，确认隔离级别是默认的 Read Committed：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="k">CASE</span><span class="w"> </span><span class="n">transaction_isolation_level</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Unspecified&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;ReadUncommitted&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;ReadCommitted&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Repeatable&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Serializable&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">       </span><span class="k">WHEN</span><span class="w"> </span><span class="mi">5</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">         </span><span class="k">THEN</span><span class="w"> </span><span class="s1">&#39;Snapshot&#39;</span><span class="w"> </span><span class="k">END</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">TRANSACTION_ISOLATION_LEVEL</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">FROM</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">dm_exec_sessions</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">WHERE</span><span class="w"> </span><span class="n">session_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">@@</span><span class="n">SPID</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- ReadCommitted
+</span></span></span></code></pre></div><p>创建表，初始化数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">id</span><span class="w">    </span><span class="nb">BIGINT</span><span class="w">    </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="n">value</span><span class="w"> </span><span class="k">NCHAR</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">pk</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="n">clustered</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;2&#39;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>在 Transaction 1 中发起 Update 操作（INSERT / DELETE 同理），但是并不做 Commit 提交：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">BEGIN</span><span class="w"> </span><span class="k">TRANSACTION</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;3&#39;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>开启一个新的 Session，发起全表查询和新增 PK 查询操作：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">foos</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>不出所料，此时查询果然会被 Block 住。</p>
+<h3 id="mvcc">MVCC</h3>
+<p>并发控制的手段有这些：封锁、时间戳、乐观并发控制、悲观并发控制。
+SQL Server 在 2005 后，引入了 MVCC（多版本控制）。
+如果最终数据是一致，会允许数据写入，否则其他事务会被阻止写入。
+那么 MVCC 引入是否可以解决 Insert 数据的锁问题？
+同样，我做了以下测试：</p>
+<p>查询 SQL Server 使用启用 MVCC ALLOW_SNAPSHOT_ISOLATION：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">snapshot_isolation_state</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">databases</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>使用 T-SQL 启用测试表的 SNAPSHOT_ISOLATION：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="n">HJ_Test3D</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">ALLOW_SNAPSHOT_ISOLATION</span><span class="w"> </span><span class="k">ON</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>接着重复上面里面的 Insert 试验，依然被 Block 住。
+看来 MVCC 并不能解决 Insert 锁的问题。</p>
+<h3 id="sql-server-2005-之后还需要使用-nolock-么">SQL Server 2005 之后还需要使用 nolock 么？</h3>
+<p>从官方文档和上文测试可以看到，在 Insert 时候，由于排它锁的存在，
+会导致 <code>SELECT ALL</code> 以及 <code>SELECT</code> 新插入数据的相关信息被锁住。
+在这两种情景下面是需要使用 <code>nolock</code> 的。</p>
+<p>除此之外，有这么几类场景可以使用 <code>nolock</code>：</p>
+<ul>
+<li>在 SSIS 查询器中进行数据分析，不需要精准数据</li>
+<li>历史数据进行查询，没有数据更新操作，也不会产生脏数据</li>
+</ul>
+<p>我们需要思考一下，性能和数据一致性上的权衡上，
+我们是否愿意放弃数据一致性而为了提高一丝丝性能？
+以及我们有多少场景，会频繁使用 <code>SELECT ALL</code> 操作而没有查询条件？</p>
+<p><del>微软官方在 2008 的特性列表里面，明确地指出 <code>nolock</code> 特性未来会在某个版本被废除：</del></p>
+<blockquote>
+<p><del>Specifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.</del></p>
+</blockquote>
+<p><del>而改为推荐：</del></p>
+<blockquote>
+<p><del>Remove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.</del></p>
+</blockquote>
+<p>事实上，我听过不少团队会禁止在生产环境使用不带 WHERE 条件的 SQL。
+那在这种模式下，产生相关的问题的几率也就更小了。
+如果有很高的并发需求，那需要考虑一下是否需要其他优化策略：比如使用主从分离、
+Snapshot 导出、流式分析等技术。</p>
+<h2 id="第三个问题mysql-的对应写法是什么">第三个问题：MySQL 的对应写法是什么？</h2>
+<p>终于轮到 MySQL 的讨论了。MySQL，InnoDB 天生支持 MVCC，
+并且支持 <code>innodb_autoinc_lock_mode</code> <a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-auto-increment-handling.html">AUTO_INCREMENT Handling in InnoDB</a>。
+这样可以避免 Insert 操作锁住全局 Select 操作。
+只有在同时 Insert 时候，才会被 Block 住。</p>
+<p><code>innodb_autoinc_lock_mode</code> 支持几种模式：</p>
+<ul>
+<li>innodb_autoinc_lock_mode = 0 (“traditional” lock mode)
+<ul>
+<li>涉及auto-increment列的插入语句加的表级AUTO-INC锁，只有插入执行结束后才会释放锁</li>
+</ul>
+</li>
+<li>innodb_autoinc_lock_mode = 1 (“consecutive” lock mode)
+<ul>
+<li>可以事先确定插入行数的语句，分配连续的确定的 auto-increment 值</li>
+<li>对于插入行数不确定的插入语句，仍加表锁</li>
+<li>这种模式下，事务回滚，auto-increment 值不会回滚，换句话说，自增列内容会不连续</li>
+</ul>
+</li>
+<li>innodb_autoinc_lock_mode = 2 (“interleaved” lock mode)
+<ul>
+<li>同一时刻多条 SQL 语句产生交错的 auto-increment 值</li>
+</ul>
+</li>
+</ul>
+<p>这里也做了相应的测试。首先检查数据库隔离级别和 <code>innodb_autoinc_lock_mode</code> 模式：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">@@</span><span class="k">global</span><span class="p">.</span><span class="n">tx_isolation</span><span class="p">,</span><span class="w"> </span><span class="o">@@</span><span class="k">session</span><span class="p">.</span><span class="n">tx_isolation</span><span class="p">,</span><span class="w"> </span><span class="o">@@</span><span class="n">tx_isolation</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SHOW</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;innodb_autoinc_lock_mode&#39;</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>检查后发现都是 Repeatable Read，<code>innodb_autoinc_lock_mode</code> 模式是 1。
+然后创建测试表：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">foos</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="o">=</span><span class="mi">18</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>在 Transaction 1 中 Insert 数据：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">START</span><span class="w"> </span><span class="k">TRANSACTION</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s2">&#34;a&#34;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>在 Transaction 2 中 Select 数据，可以正常查询：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w">   </span><span class="n">foos</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>在 Transaction 2 中 Insert 数据，会被 Block 住：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">START</span><span class="w"> </span><span class="k">TRANSACTION</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">foos</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="s2">&#34;a&#34;</span><span class="p">);</span><span class="w">
+</span></span></span></code></pre></div><p>这个测试可以证明 MySQL 可以在 <code>innodb_autoinc_lock_mode</code>=1 下，
+Insert 同时 Query 不会被 Block，
+但是在另外一个事务中 Insert 会被 Block。
+结论是，由于 <code>innodb_autoinc_lock_mode</code> 的存在，MySQL 中可以不需要使用 <code>nolock</code>
+关键词进行查询。</p>
+<h2 id="回顾一下">回顾一下</h2>
+<p>本文着重去回答这么几个问题：</p>
+<ul>
+<li>为什么要用 <code>noloc</code>？</li>
+<li>为什么要改变隔离级别？</li>
+<li>为什么 MySQL 不需要做类似的事情？</li>
+</ul>
+<p>虽然只凑足了三个 「为什么」 的排比，
+但是聪明的读者仍然会发现，我是使用了著名的
+<a href="https://zh.wikipedia.org/wiki/%E4%BA%94%E4%B8%AA%E4%B8%BA%E4%BB%80%E4%B9%88">五个为什么</a>
+方法思考问题。
+通过使用这个方法，我们最后不但打破了老旧的最佳实践，还了解了本质原理，
+并找到了新的最佳实践。</p>
+<p>希望读者朋友在遇到困难时候，多问几个为什么，多抱着打破砂锅问到底的精神，
+这样才能让每个困难成为我们成长的垫脚石。</p>
+<h2 id="相关资料">相关资料</h2>
+<ul>
+<li><a href="https://zh.wikipedia.org/zh-cn/%E4%BA%8B%E5%8B%99%E9%9A%94%E9%9B%A2">事务隔离 - 维基百科，自由的百科全书</a></li>
+<li><a href="https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table">Table Hints (Transact-SQL) | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server">Snapshot Isolation in SQL Server | Microsoft Docs</a></li>
+<li><a href="https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-databases-transact-sql">sys.databases (Transact-SQL) | Microsoft Docs</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-multi-versioning.html">MySQL :: MySQL 5.7 Reference Manual :: 15.3 InnoDB Multi-Versioning</a></li>
+</ul>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>128M内存VPS LNMP安装优化小记</title>
+      <link>https://blog.alswl.com/2011/11/vps-lnmp-setup-config/</link>
+      <pubDate>Sun, 06 Nov 2011 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2011/11/vps-lnmp-setup-config/</guid>
+      <description>重要通知：Log4D 的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner 的地址未发生变化） 这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。 现在使用的 VPS 是 PhotonVPS 。 月付5.95美元，使用优惠码 TENOFF 或 PHOTONLEB 可以打7折， 换算汇率之后是26人民币每月。 这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨， 我终于配置的可用率比较高，使用 siege -c 100 -t 100 时候可以保持 100%</description>
+      <content:encoded><![CDATA[<blockquote>
+<p>重要通知：Log4D 的域名由 <a href="http://dddspace.com">http://dddspace.com</a> 迁移到 <a href="http://log4d.com">http://log4d.com</a> 。
+订阅地址现在改为 <a href="http://log4d.com/feed">http://log4d.com/feed</a> 和
+<a href="http://feeds.feedburner.com/dddspace">http://feeds.feedburner.com/dddspace</a> 。（FeedBurner 的地址未发生变化）</p>
+</blockquote>
+<p>这一次域名迁移的同时，我更换了服务器，由原先的虚拟空间迁移到独立 VPS。
+现在使用的 VPS 是 <a href="http://www.photonvps.com/billing/aff.php?aff=2188">PhotonVPS</a> 。</p>
+<p>月付5.95美元，使用优惠码 <code>TENOFF</code> 或 <code>PHOTONLEB</code> 可以打7折，
+换算汇率之后是26人民币每月。</p>
+<p>这款VPS的内存只有128,我们就要精打细算考虑如何省内存。经过我几天琢磨，
+我终于配置的可用率比较高，使用 <code>siege -c 100 -t 100</code> 时候可以保持 100% 可用率。
+（其实做不到这么高的并发，大概10个并发每秒）下面就是我记录的安装配置过程。</p>
+<!-- more -->
+<h1 id="安装-lnmp">安装 LNMP</h1>
+<h2 id="linux-发行版选用">Linux 发行版选用</h2>
+<p>CentOS 据说有较好的安全性和性能，我个人更喜欢 Arch。查询了相关资料，
+在生产环境使用 Arch 的似乎不多。</p>
+<p>CentOS 里面的包比较旧，不像 Arch 里面，滚动最新。
+所以这里需要用到的LNMP大部分都需要自行编译。</p>
+<h3 id="nginx-安装">Nginx 安装</h3>
+<p>Nginx 的性能在小内存低配置的服务器上跑得比 Apache 要好。这是我们为什么选用 Nginx。</p>
+<p>目前 Nginx 的最新稳定版是1.0.9版。CentOS 官方源里面搜索不到 Nginx，需要自行编译。</p>
+<p>准备编译环境，需要安装一堆工具，使用下面这个命令 yum 安装。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers
+</span></span></code></pre></div><p>下载Nginx</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /tmp
+</span></span><span class="line"><span class="cl">wget http://nginx.org/download/nginx-1.0.9.tar.gz
+</span></span></code></pre></div><p>因为我们需要安装使用https，所以需要SSL模块支持，我们需要OpenSSL源码。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://openssl.org/source/openssl-1.0.0c.tar.gz
+</span></span><span class="line"><span class="cl">tar zxvf openssl-1.0.0c.tar.gz
+</span></span></code></pre></div><p>编译Nginx，使用www作为用户和用户组，同时加入http ssl模块支持。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./configure --user<span class="o">=</span>www --group<span class="o">=</span>www --prefix<span class="o">=</span>/usr/local/nginx --with-http_ssl_module --with-openssl<span class="o">=</span>/tmp/openssl-1.0.0c/
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">make install
+</span></span></code></pre></div><p>这样nginx就安装完了，执行 <code>/usr/local/ngxin/bin/nginx -V</code> 可以查看nginx信息。</p>
+<blockquote>
+<p>nginx: nginx version: nginx/1.0.9 nginx: built by gcc 4.4.4 20100726 (Red Hat 4.4.4-13) (GCC) nginx: TLS SNI support enabled nginx: configure arguments: &ndash;user=www &ndash;group=www &ndash;prefix=/usr/local/nginx &ndash;with-http_ssl_module &ndash;with-openssl=/tmp/openssl-1.0.0c/</p>
+</blockquote>
+<p>为nginx 创建软链接</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ln -s /usr/local/nginx/sbin/nginx /usr/bin/nginx
+</span></span></code></pre></div><p>ngxin 启动关闭</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nginx <span class="c1">#启动</span>
+</span></span><span class="line"><span class="cl">nginx -s stop <span class="c1">#关闭</span>
+</span></span><span class="line"><span class="cl">nginx -s reload <span class="c1">#重启</span>
+</span></span></code></pre></div><p>运行 <code>nginx</code> 就可以启动服务器了，在浏览器输入服务器ip， 能够看见 <code>nginx</code> 的字样。</p>
+<h3 id="mysql安装">MySQL安装</h3>
+<p>MySQL我没有自行编译，使用CentOS官方源里面的Mysql。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install -y mysql-server
+</span></span></code></pre></div><h3 id="php安装">PHP安装</h3>
+<p>PHP需要自行编译，原因是Nginx使用Fast-CGI调用PHP服务。
+我们需要php-cgi常驻后台。在PHP 5.3.3之后，
+一个名为php-fpm的小东西被php核心加入。这个php-fpm可以常驻后台响应Fast-CGI请求。</p>
+<p>悲剧的是，截至目前位置，CentOS官方源里面PHP版本是5.3.2，
+好死不死的差一个小数点。只能自行编译了。</p>
+<p>安装libmcrypt，这是某个依赖包，另外phpmyadmin也需要这个模块。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget http://pkgs.repoforge.org/libmcrypt/libmcrypt-2.5.71.2.el6.rf.i686.rpm
+</span></span><span class="line"><span class="cl">ls
+</span></span><span class="line"><span class="cl">rpm -i libmcrypt-2.5.7-1.2.el6.rf.i686.rpm
+</span></span><span class="line"><span class="cl">rpm -i --force libmcrypt-2.5.7-1.2.el6.rf.i686.rpm
+</span></span></code></pre></div><p>安装php 5.3.8</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./configure --prefix<span class="o">=</span>/usr/local/php --with-config-file-path<span class="o">=</span>/usr/local/php/etc --with-mysql<span class="o">=</span>/usr/bin/ --with-mysqli<span class="o">=</span>/usr/bin/mysql_config --with-iconv-dir<span class="o">=</span>/usr/local/libiconv --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir<span class="o">=</span>/usr --enable-xml --with-curl --with-curlwrappers --with-mhash --with-mcrypt --with-gd --enable-gd-native-ttf --with-xsl --with-openssl --with-ldap --with-ldap-sasl --with-xmlrpc --without-pear --enable-zip --enable-soap --enable-mbstring --enable-ftp --enable-sockets --enable-pcntl --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --disable-rpath --enable-mbregex --enable-safe-mode --enable-fpm --with-fpm-user<span class="o">=</span>www --with-fpm-group<span class="o">=</span>www
+</span></span><span class="line"><span class="cl">make
+</span></span><span class="line"><span class="cl">make <span class="nb">test</span>
+</span></span><span class="line"><span class="cl">make install
+</span></span></code></pre></div><h2 id="运行lamp">运行LAMP</h2>
+<p>现在环境已经安装好了，我们稍作配置，然后启动系统。</p>
+<p>在nginx的 <code>/usr/local/nginx/html/</code> 下创建 <code>info.php</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&lt;?php info<span class="o">()</span> ?&gt;
+</span></span></code></pre></div><p>配置nginx，编辑 <code>/usr/local/nginx/conf/nginx.conf</code> 其中的 <code>server</code> 段。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">location ~ <span class="se">\.</span>php$ <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        root           html<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_pass   unix:/var/run/php-cgi.sock<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_index  index.php<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        fastcgi_param  SCRIPT_FILENAME  /usr/local/nginx/html/<span class="nv">$fastcgi_script_name</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        include        fastcgi_params<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><p>配置php-fpm，编辑 <code>/usr/local/php/etc/php-fpm.conf</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">listen</span> <span class="o">=</span> /var/run/php-cgi.sock
+</span></span></code></pre></div><p>运行 <code>nginx -s reload</code> 重新启动nginx服务器。运行 <code>/etc/init.d/php-fpm start</code>
+启动php-cgi监听。</p>
+<p>在浏览器输入 <code>your.domain/info.php</code> 会出现php信息，成功的话，
+就说明LNMP配置成功了。</p>
+<h2 id="小内存主机配置">小内存主机配置</h2>
+<p>经过上面的步骤，已经可以成功的配置完LNMP系统，但是默认的配置情况下面，
+内存会相当吃紧。一会会就系统内存爆掉，Nginx会频繁报出
+<code>The page you are looking for is temporarily unavailable. Please try again later.</code>
+，不配置就不能用啊。</p>
+<h3 id="nginx配置">Nginx配置</h3>
+<p>我的nginx优化配置如下，主要是配置 <code>worker_processes</code> 数量和
+<code>fastcgi</code> 、 <code>gzip</code> 缓存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">user  www www
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">worker_processes 1<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">events <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	worker_connections 1024<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	use epoll<span class="p">;</span> <span class="c1">#使用高效率的epool模式</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">http <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	include mime.types<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	default_type application/octet-stream<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	sendfile on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	keepalive_timeout <span class="m">65</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 下面是配置缓存</span>
+</span></span><span class="line"><span class="cl">	client_header_buffer_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	large_client_header_buffers <span class="m">4</span> 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	fastcgi_connect_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_send_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_read_timeout 300<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_buffer_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_buffers <span class="m">4</span> 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_busy_buffers_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	fastcgi_temp_file_write_size 32k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1"># 下面是弃用gzip压缩缓存</span>
+</span></span><span class="line"><span class="cl">	gzip on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_min_length 1k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_buffers <span class="m">4</span> 16k<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_http_version 1.0<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_comp_level 2<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_types text/plain application/x-javascript text/css application/xml<span class="p">;</span>
+</span></span><span class="line"><span class="cl">	gzip_vary on<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">#server 的内容我就不列出了</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">#….</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span> 
+</span></span></code></pre></div><h3 id="mysql配置">MySQL配置</h3>
+<p>mysql的配置文件在 <code>/etc/my.cnf</code> ，我们需要配置两样东西，
+一个是禁用innodb，因为innodb比较消耗内存；另外是配置mysql缓存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="k">[mysql]</span>
+</span></span><span class="line"><span class="cl"><span class="na">no-auto-rehash</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqld]</span>
+</span></span><span class="line"><span class="cl"><span class="na">datadir</span><span class="o">=</span><span class="s">/var/lib/mysql</span>
+</span></span><span class="line"><span class="cl"><span class="na">socket</span><span class="o">=</span><span class="s">/var/lib/mysql/mysql.sock</span>
+</span></span><span class="line"><span class="cl"><span class="na">user</span><span class="o">=</span><span class="s">mysql</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Disabling symbolic-links is recommended to prevent assorted security risks</span>
+</span></span><span class="line"><span class="cl"><span class="na">symbolic-links</span><span class="o">=</span><span class="s">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">open_files_limit</span> <span class="o">=</span> <span class="s">600</span>
+</span></span><span class="line"><span class="cl"><span class="na">back_log</span> <span class="o">=</span> <span class="s">20</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_connections</span> <span class="o">=</span> <span class="s">100</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_connect_errors</span> <span class="o">=</span> <span class="s">200</span>
+</span></span><span class="line"><span class="cl"><span class="na">table_cache</span> <span class="o">=</span> <span class="s">60</span>
+</span></span><span class="line"><span class="cl"><span class="na">external-locking</span> <span class="o">=</span> <span class="s">FALSE</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_allowed_packet</span> <span class="o">=</span> <span class="s">16M</span>
+</span></span><span class="line"><span class="cl"><span class="na">sort_buffer_size</span> <span class="o">=</span> <span class="s">128K</span>
+</span></span><span class="line"><span class="cl"><span class="na">join_buffer_size</span> <span class="o">=</span> <span class="s">128K</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_cache_size</span> <span class="o">=</span> <span class="s">10</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_concurrency</span> <span class="o">=</span> <span class="s">8</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_size</span> <span class="o">=</span> <span class="s">0M</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_limit</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">query_cache_min_res_unit</span> <span class="o">=</span> <span class="s">2k</span>
+</span></span><span class="line"><span class="cl"><span class="na">default_table_type</span> <span class="o">=</span> <span class="s">MyISAM</span>
+</span></span><span class="line"><span class="cl"><span class="na">thread_stack</span> <span class="o">=</span> <span class="s">192K</span>
+</span></span><span class="line"><span class="cl"><span class="na">transaction_isolation</span> <span class="o">=</span> <span class="s">READ-UNCOMMITTED</span>
+</span></span><span class="line"><span class="cl"><span class="na">tmp_table_size</span> <span class="o">=</span> <span class="s">512K</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_heap_table_size</span> <span class="o">=</span> <span class="s">32M</span>
+</span></span><span class="line"><span class="cl"><span class="na">long_query_time</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">log_long_format</span>
+</span></span><span class="line"><span class="cl"><span class="na">server-id</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">binlog_cache_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_binlog_cache_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_binlog_size</span> <span class="o">=</span> <span class="s">512M</span>
+</span></span><span class="line"><span class="cl"><span class="na">expire_logs_days</span> <span class="o">=</span> <span class="s">7</span>
+</span></span><span class="line"><span class="cl"><span class="na">key_buffer_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">read_buffer_size</span> <span class="o">=</span> <span class="s">1M</span>
+</span></span><span class="line"><span class="cl"><span class="na">read_rnd_buffer_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">bulk_insert_buffer_size</span> <span class="o">=</span> <span class="s">2M</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_sort_buffer_size</span> <span class="o">=</span> <span class="s">4M</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_max_sort_file_size</span> <span class="o">=</span> <span class="s">10G</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_max_extra_sort_file_size</span> <span class="o">=</span> <span class="s">10G</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_repair_threads</span> <span class="o">=</span> <span class="s">1</span>
+</span></span><span class="line"><span class="cl"><span class="na">myisam_recover</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">skip-innodb #禁用innodb数据库引擎</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqld_safe]</span>
+</span></span><span class="line"><span class="cl"><span class="na">log-error</span><span class="o">=</span><span class="s">/var/log/mysqld.log</span>
+</span></span><span class="line"><span class="cl"><span class="na">pid-file</span><span class="o">=</span><span class="s">/var/run/mysqld/mysqld.pid</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[mysqldump]</span>
+</span></span><span class="line"><span class="cl"><span class="na">quick</span>
+</span></span><span class="line"><span class="cl"><span class="na">max_allowed_packet</span> <span class="o">=</span> <span class="s">16M </span>
+</span></span></code></pre></div><h3 id="php配置">PHP配置</h3>
+<p>我们使用php-fpm来作为后台daemon响应FastCGI请求。
+默认的php-fpm会启动比较多的子进程，很容易耗光内存。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">listen</span> <span class="o">=</span> /var/run/php-cgi.sock <span class="c1">#使用socket监听，不用端口监听</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pm.max_children <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是50  </span>
+</span></span><span class="line"><span class="cl">pm.start_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是20  </span>
+</span></span><span class="line"><span class="cl">pm.min_spare_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是5  </span>
+</span></span><span class="line"><span class="cl">pm.max_spare_servers <span class="o">=</span> <span class="m">2</span> <span class="c1">#默认是35 </span>
+</span></span></code></pre></div><p>有的配置手记是建议把上面几个数字改为5，我经过多次调试之后，
+发现使用最小/最大连接数为2的时候，可用率比较高，内存消耗也比较小。</p>
+<h2 id="运行结果">运行结果</h2>
+<p>经过一番折腾之后，我的 <a href="http://log4d.com">Log4D</a> 终于配置完成了。
+打开速度还算凑合，用WebKaka测试截图如下。</p>
+<p>原来的虚拟主机 dddspace.com 的响应情况：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/dddspace.png" alt="dddspace"  />
+
+</p>
+<p>现在 log4d.com VPS 的响应情况：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/log4d.png" alt="log4d"  />
+
+</p>
+<p>内存使用情况：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/free.png" alt="free"  />
+
+</p>
+<p><code>siege -c 100 -t 100 log4d.com</code> 的测试结果：</p>
+<pre tabindex="0"><code>Transactions:		        1711 hits
+Availability:		       96.61 %
+Elapsed time:		      416.72 secs
+Data transferred:	       18.20 MB
+Response time:		       22.12 secs
+Transaction rate:	        4.11 trans/sec
+Throughput:		        0.04 MB/sec
+Concurrency:		       90.84
+Successful transactions:        1711
+Failed transactions:	          60
+Longest transaction:	       30.31
+Shortest transaction:	        1.06
+</code></pre><h2 id="参考链接">参考链接</h2>
+<ul>
+<li><a href="http://www.54chen.com/architecture/wordpress-nginx-php-cgi-mysql-memory-in-the-128m-to-install-and-optimize-the-vps-notes.html">wordpress nginx php-cgi mysql在128m内存下的vps安装和优化手记原创</a></li>
+<li><a href="http://www.xtgly.com/2011/05/17/centos-lanmp%E4%B9%8B%E4%B8%89%EF%BC%88%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-php-5-3-6%EF%BC%89.htm">centos LANMP之三（编译安装 php 5.3.6）</a></li>
+<li><a href="http://hi.baidu.com/xxjjyy2008/blog/item/b52d07943e4d1d02d21b70da.html">编译包含 SSL 模块的 Nginx 时使用新版本的 OpenSSL 避免已知的 SSL/TLS 协议弱点</a></li>
+</ul>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>MySQL Command Line Client乱码问题及解决方案</title>
+      <link>https://blog.alswl.com/2009/07/mysql-command-line-client-garbled-problems-and-solutions/</link>
+      <pubDate>Mon, 06 Jul 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/07/mysql-command-line-client-garbled-problems-and-solutions/</guid>
+      <description>以前用MySQL时候都是可视化界面，如MySQL Admin使用，现在学着使用MySQL Command Line client，初次接触，就遇到乱码问题。 乱码是中文字符串的，Google后，找到一些解决方案。摘录如下： 引用自今天去祸害哪家的闺女呢？&amp;lt;猛击这里打开&amp;gt; 1:改变数据库的默认编码配置，在MYSQL的安装目录中，找到my.ini，修改默认编 码为：default-character-set=utf8 2:建</description>
+      <content:encoded><![CDATA[<p>以前用MySQL时候都是可视化界面，如MySQL Admin使用，现在学着使用MySQL Command Line client，初次接触，就遇到乱码问题。</p>
+<p>乱码是中文字符串的，Google后，找到一些解决方案。摘录如下：</p>
+<p>引用自今天去祸害哪家的闺女呢？&lt;<a href="http://leonel.javaeye.com/blog/315090">猛击这里打开</a>&gt;</p>
+<p>1:改变数据库的默认编码配置，在MYSQL的安装目录中，找到my.ini，修改默认编</p>
+<p>码为：default-character-set=utf8</p>
+<p>2:建立数据库时，CREATE DATABASE ms_db CHARACTER SET utf8 COLLATE</p>
+<p>utf8_general_ci;</p>
+<p>3:执行脚本：指定编码格式set names utf8(注意，不是UTF-8)</p>
+<p>4:如果你采用的是外部接入的方式，在连接中确定请求的编码格式如：</p>
+<p>jdbc:mysql://localhost:3306 /ms_db?</p>
+<p>useUnicode=true&amp;characterEncoding=UTF-8(不要出现任何空格，否则出错)</p>
+<p>我使用的是第3种方法，由于我的数据库是Hibernate生成的，所以编码集改为utf8依然乱码，使用gbk就可以了。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>MYSQL数据类型长度常规的建库策略</title>
+      <link>https://blog.alswl.com/2009/06/mysql-data-type-of-the-length-of-conventional-library-strategy/</link>
+      <pubDate>Thu, 25 Jun 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/06/mysql-data-type-of-the-length-of-conventional-library-strategy/</guid>
+      <description>无论是在小得可怜的免费数据库空间或是大型电子商务网站，合理的设计表结构、充分利用空间是十分必要的。这就要求我们对数据库系统的常用数据类型有充分的认识。下面我 就将我的一点心得写出来跟大家分享。 一、数字类型 数字类型按照我的分类方法分为三类：整数类、小数类和数字类。 我所谓的「数字类」，就是指DECIMAL和NUMERIC，它们是同一种类型。它严格的说不是一种数字类型，因为他们实际上是将数字以字符串形式保</description>
+      <content:encoded><![CDATA[<p>无论是在小得可怜的免费数据库空间或是大型电子商务网站，合理的设计表结构、充分利用空间是十分必要的。这就要求我们对数据库系统的常用数据类型有充分的认识。下面我
+就将我的一点心得写出来跟大家分享。</p>
+<h3 id="一数字类型">一、数字类型</h3>
+<p>数字类型按照我的分类方法分为三类：整数类、小数类和数字类。</p>
+<p>我所谓的「数字类」，就是指DECIMAL和NUMERIC，它们是同一种类型。它严格的说不是一种数字类型，因为他们实际上是将数字以字符串形式保存的；他的值的每
+一位（包括小数点）占一个字节的存储空间，因此这种类型耗费空间比较大。但是它的一个突出的优点是小数的位数固定，在运算中不会「失真」，所以比较适合用于「价格」、
+「金额」这样对精度要求不高但准确度要求非常高的字段。</p>
+<p>小数类，即浮点数类型，根据精度的不同，有 FLOAT（单精度）和DOUBLE（双精度）两种。它们的优势是精确度，FLOAT可以表示绝对值非常小、小到约
+1.17E- 38 （0.000&hellip;0117， 小数点后面有37个零）的小数，而DOUBLE更是可以表示绝对值小到约 2.22E- 308
+（0.000&hellip;0222， 小数点后面有307个零）的小数。FLOAT类型和DOUBLE类型占用存储空间分别是4字节和8字节。如果需要用到小数的字段，精度
+要求不高的，当然用FLOAT了！可是说句实在话，我们「民用」的数据，哪有要求精度那么高的呢？这两种类型至今我没有用过——我还没有遇到适合于使用它们的事例。</p>
+<p>用的最多的，最值得精打细算的，是整数类型。从只占一个字节存储空间的TINYINT到占8个字节的
+BIGINT，挑选一个「够用」并且占用存储空间最小的类型是设计数据库时应该考虑的。TINYINT、SMALLINT、MEDIUMINT、INT和
+BIGINT占用存储空间分别为1字节、2字节、3字节、4字节和8字节，就无符号的整数而言，这些类型能表示的最大整数分别为255、65535、 1677721
+5、4294967295和18446744073709551615。如果用来保存用户的年龄（举例来说，数据库中保存年龄是不可取的），用TINYINT就够了；
+九城的《纵横》里，各项技能值，用SMALLINT也够了；如果要用作一个肯定不会超过16000000行的表的
+AUTO_INCREMENT的IDENTIFY字段，当然用 MEDIUMINT 不用 INT
+，试想，每行节约一个字节，16000000行可以节约10兆多呢！</p>
+<h3 id="二日期时间类型">二、日期时间类型</h3>
+<p>日期和时间类型比较简单，无非是 DATE、TIME、DATETIME、TIMESTAMP
+和YEAR等几个类型。只对日期敏感，而对时间没有要求的字段，就用DATE而不用DATETIME是不用说的了；单独使用时间的情况也时有发生——使用
+TIME；但最多用到的还是用DATETIME。在日期时间类型上没有什么文章可做，这里就不再详述。</p>
+<h3 id="三字符串类型">三、字符（串）类型</h3>
+<p>不要以为字符类型就是 CHAR！CHAR和VARCHAR的区别在于CHAR是固定长度，只要你定义一个字段是CHAR(10),那么不论你存储的数据是否达到了1
+0个字节，它都要占去10个字节的空间；而VARVHAR则是可变长度的，如果一个字段可能的值是不固定长度的，我们只知道它不可能超过10个字符，把它定义为
+VARCHAR(10)是最合算的，VARCHAR 类型的实际长度是它的值的(实际长度+1)。为什么「+1」呢？这一个字节用于保存实际使用了多大的长度呀！从这
+个「+1」中也应该看到，如果一个字段，它的可能值最长是10个字符，而多数情况下也就是用到了10个字符时，用
+VARCHAR就不合算了：因为在多数情况下，实际占用空间是11个字节，比用CHAR(10)还多占用一个字节！</p>
+<p>举个例子，就是一个存储股票名称和代码的表，股票名称绝大部分是四个字的，即8个字节；股票代码，上海的是六位数字，深圳的是四位数字。这些都是固定长度的，股票名称
+当然要用CHAR(8 )；股票代码虽然是不固定长度，但如果使用VARVHAR(6)，一个深圳的股票代码实际占用空间是5个字节，而一个上海的股票代码要占用7个
+字节！考虑到上海的股票数目比深圳的多，那么用VARCHAR(6)就不如CHAR(6)合算了。</p>
+<p>虽然一个CHAR或
+VARVHAR的最大长度可以到255，我认为大于20的CHAR是几乎用不到的——很少有大于20个字节长度的固定长度的东东吧？不是固定长度的就用 VARCHA
+R！大于100的VARCHAR也是几乎用不到的——比这更大的用TEXT就好了。TINYTEXT，最大长度为255，占用空间也是(实际长度+1)；TEXT，最
+大长度65535，占用空间是(实际长度+2)；MEDIUMTEXT，最大长度16777215，占用空间是(实际长度+3)；LONGTEXT，最大长度4294
+967295，占用空间是(实际长度+4)。为什么「+1」？「+2」？「+3」？「+4」？你要是还不知道就该打PP了。这些可以用在论坛啊、新闻啊，什么的，用来
+保存文章的正文。根据实际情况的不同，选择从小到大的不同类型。</p>
+<h3 id="四枚举和集合类型">四、枚举和集合类型</h3>
+<p>枚举（ENUM）类型，最多可以定义65535种不同的字符串从中做出选择，只能并且必须选择其中一种，占用存储空间是一个或两个字节，由枚举值的数目决定；集合（S
+ET）类型，最多可以有64个成员，可以选择其中的零个到不限定的多个，占用存储空间是一个到八个字节，由集合可能的成员数目决定。</p>
+<p>举个例子来说，在SQLServer中，你可以节约到用一个Bit类型来表示性别（男/女），但MySQL没有Bit，用TINTINT？不，可以用
+ENUM(帅哥,美眉)！只有两种选择，所以只需一个字节——跟TINYINT一样大，但却可以直接用字符串帅哥和美眉来存取。真是太方便啦！</p>
+<p>好了，MySQL的数据类型介绍得差不多，我的建库策略也随着介绍数据类型介绍给大家一些。但这只是其中一部分，篇幅有限，不能再细说；其他的，就靠各人在对数据类型
+理解的基础上，多多实践、多多讨论。</p>
+<p>转载自YD631.com&lt;<a href="http://www.yd631.com/blog/article.asp?id=179">猛击这里打开</a>&gt;，原始作者信息不详，
+感谢该作者的文章。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Ubuntu8.10下MySQL的安装</title>
+      <link>https://blog.alswl.com/2009/05/ubuntu8-10-under-the-mysql-installation/</link>
+      <pubDate>Wed, 27 May 2009 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2009/05/ubuntu8-10-under-the-mysql-installation/</guid>
+      <description>Ubuntu下的MySQL安装本应该很简单，但是如果因为修改了软件源的话，反而变得麻烦起来。 为了加快更新一些组件的速度，我加入了清华的、交大等大学的源，是8.04下Ubuntu版本的，这个直接导致了之后安装MySQL的问题。 当选择Mysql-server之后，需要一堆组建，要手动安装，基本上出现这种提示，就没戏了，硬着头皮查找软件包，最后到一个perl- api的软件包这里就再也进行不下去了。 Goo</description>
+      <content:encoded><![CDATA[<p>Ubuntu下的MySQL安装本应该很简单，但是如果因为修改了软件源的话，反而变得麻烦起来。</p>
+<p>为了加快更新一些组件的速度，我加入了清华的、交大等大学的源，是8.04下Ubuntu版本的，这个直接导致了之后安装MySQL的问题。</p>
+<p>当选择Mysql-server之后，需要一堆组建，要手动安装，基本上出现这种提示，就没戏了，硬着头皮查找软件包，最后到一个perl-
+api的软件包这里就再也进行不下去了。</p>
+<p>Google了好一会，才有一个人的答案正确，说是8.10下用8.04的源就会有这种问题，我换成原始的备份了的源</p>
+<p>下面就是原始的源，使用这个找到MySQL之后就一次成功了 ` # deb cdrom:[Ubuntu 8.10 <em>Intrepid Ibex</em> -
+Release i386 (20081029.5)]/ intrepid main restricted</p>
+<h1 id="see-httphelpubuntucomcommunityupgradenotes-for-how-to-upgrade-to">See <a href="http://help.ubuntu.com/community/UpgradeNotes">http://help.ubuntu.com/community/UpgradeNotes</a> for how to upgrade to</h1>
+<h1 id="newer-versions-of-the-distribution">newer versions of the distribution.`</h1>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid main restricted</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid main restricted</p>
+<h2 id="major-bug-fix-updates-produced-after-the-final-release-of-the">Major bug fix updates produced after the final release of the</h2>
+<h2 id="distribution">distribution.</h2>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates main restricted</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates main restricted</p>
+<h2 id="nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu">N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</h2>
+<h2 id="team-also-please-note-that-software-in-universe-will-not-receive-any">team. Also, please note that software in universe WILL NOT receive any</h2>
+<h2 id="review-or-updates-from-the-ubuntu-security-team">review or updates from the Ubuntu security team.</h2>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid universe</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid universe</p>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates universe</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates universe</p>
+<h2 id="nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu-1">N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</h2>
+<h2 id="team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to">team, and may not be under a free licence. Please satisfy yourself as to</h2>
+<h2 id="your-rights-to-use-the-software-also-please-note-that-software-in">your rights to use the software. Also, please note that software in</h2>
+<h2 id="multiverse-will-not-receive-any-review-or-updates-from-the-ubuntu">multiverse WILL NOT receive any review or updates from the Ubuntu</h2>
+<h2 id="security-team">security team.</h2>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid multiverse</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid multiverse</p>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates multiverse</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates multiverse</p>
+<h2 id="uncomment-the-following-two-lines-to-add-software-from-the-backports">Uncomment the following two lines to add software from the &lsquo;backports&rsquo;</h2>
+<h2 id="repository">repository.</h2>
+<h2 id="nb-software-from-this-repository-may-not-have-been-tested-as">N.B. software from this repository may not have been tested as</h2>
+<h2 id="extensively-as-that-contained-in-the-main-release-although-it-includes">extensively as that contained in the main release, although it includes</h2>
+<h2 id="newer-versions-of-some-applications-which-may-provide-useful-features">newer versions of some applications which may provide useful features.</h2>
+<h2 id="also-please-note-that-software-in-backports-will-not-receive-any-review">Also, please note that software in backports WILL NOT receive any review</h2>
+<h2 id="or-updates-from-the-ubuntu-security-team">or updates from the Ubuntu security team.</h2>
+<h1 id="deb-httpcnarchiveubuntucomubuntu-intrepid-backports-main-restricted">deb <a href="http://cn.archive.ubuntu.com/ubuntu/">http://cn.archive.ubuntu.com/ubuntu/</a> intrepid-backports main restricted</h1>
+<p>universe multiverse</p>
+<h1 id="deb-src-httpcnarchiveubuntucomubuntu-intrepid-backports-main">deb-src <a href="http://cn.archive.ubuntu.com/ubuntu/">http://cn.archive.ubuntu.com/ubuntu/</a> intrepid-backports main</h1>
+<p>restricted universe multiverse</p>
+<h2 id="uncomment-the-following-two-lines-to-add-software-from-canonicals">Uncomment the following two lines to add software from Canonical&rsquo;s</h2>
+<h2 id="partner-repository-this-software-is-not-part-of-ubuntu-but-is">&lsquo;partner&rsquo; repository. This software is not part of Ubuntu, but is</h2>
+<h2 id="offered-by-canonical-and-the-respective-vendors-as-a-service-to-ubuntu">offered by Canonical and the respective vendors as a service to Ubuntu</h2>
+<h2 id="users">users.</h2>
+<h1 id="deb-httparchivecanonicalcomubuntu-intrepid-partner">deb <a href="http://archive.canonical.com/ubuntu">http://archive.canonical.com/ubuntu</a> intrepid partner</h1>
+<h1 id="deb-src-httparchivecanonicalcomubuntu-intrepid-partner">deb-src <a href="http://archive.canonical.com/ubuntu">http://archive.canonical.com/ubuntu</a> intrepid partner</h1>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security main restricted</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security main restricted</p>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security universe</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security universe</p>
+<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security multiverse</p>
+<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security multiverse</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>mysql 数据库导出/导入</title>
+      <link>https://blog.alswl.com/2008/10/mysql-database-export-import/</link>
+      <pubDate>Thu, 23 Oct 2008 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2008/10/mysql-database-export-import/</guid>
+      <description>正在学JSP，用的TomCat和MySQL，没有用CSV控制，所以数据库靠导出导入 导出： cd bin; mysqldump -uroot -proot xxx &amp;gt; xxx.sql; 导入： cd bin; create xxx; source xxx.sql;</description>
+      <content:encoded><![CDATA[<p>正在学JSP，用的TomCat和MySQL，没有用CSV控制，所以数据库靠导出导入</p>
+<p>导出：</p>
+<p>cd bin;</p>
+<p>mysqldump -uroot -proot xxx &gt; xxx.sql;</p>
+<p>导入：</p>
+<p>cd bin;</p>
+<p>create xxx;</p>
+<p>source xxx.sql;</p>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

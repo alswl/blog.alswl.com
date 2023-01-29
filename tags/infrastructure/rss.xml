@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>infrastructure on Log4D</title>
+    <link>https://blog.alswl.com/tags/infrastructure/</link>
+    <description>Recent content in infrastructure on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 03 Jan 2017 23:20:50 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/infrastructure/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>👷如何做年前大扫除</title>
+      <link>https://blog.alswl.com/2017/01/spring-cleaning/</link>
+      <pubDate>Tue, 03 Jan 2017 23:20:50 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2017/01/spring-cleaning/</guid>
+      <description>今年过年特别早，离春节只剩下二十多天了。 为期 7 天的春节里，工程师们不上班，那万一线上业务出现了故障怎么办？ 大公司的朋友们会安排专门的人进行值班（此处心疼一下那些需要大年三十还要值班保证高峰的工程师们）， 而作为创业团队人少，难做到在线值守，就需要对线上进行一些整理盘点，找出潜在问题，为春节长假做一些准备。 我们称之为年前大扫除。 大扫除需要做些什么呢，且听我一一道来。 PS: 冷知识，大扫除英文是 spring cleani</description>
+      <content:encoded><![CDATA[<p>今年过年特别早，离春节只剩下二十多天了。
+为期 7 天的春节里，工程师们不上班，那万一线上业务出现了故障怎么办？
+大公司的朋友们会安排专门的人进行值班（此处心疼一下那些需要大年三十还要值班保证高峰的工程师们），
+而作为创业团队人少，难做到在线值守，就需要对线上进行一些整理盘点，找出潜在问题，为春节长假做一些准备。</p>
+<p>我们称之为年前大扫除。</p>
+<p>大扫除需要做些什么呢，且听我一一道来。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201701/saber.jpeg" alt="201701/saber.jpeg"  />
+
+</p>
+<p>PS: 冷知识，大扫除英文是 spring cleaning，所以春节大扫除是 Spring Festival spring cleaning。</p>
+<h2 id="大扫除的内容">大扫除的内容</h2>
+<p>大扫除其实是一个查漏补缺+囤积粮草的事情。</p>
+<p>查漏补缺，即找出潜在的问题。这些问题平时可能不会特意去查看，
+借助大扫除这个运动，恰好进行盘点。
+计算机的世界里，有一个方法论非常好使，在极多场景可以见到其身影：分层。
+TCP 的七层模型，架构设计的 N 层 模型，都是对分层思想的使用。
+查漏补缺也不例外，我们可以按照业务访问流程，将需要排查的问题拆分为：业务、应用、中间件、网络、物理、存储 etc。</p>
+<p>通过分层，不仅仅完成了自上而下地遍历整个技术栈，也同时将不同模块的内容交给不同的责任方，
+确保任务的分割。</p>
+<p>分完模块，还要告知大家如何具体查找问题。
+这里我介绍一个通用的方法：USE<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>：</p>
+<blockquote>
+<p>For every resource, check Utilization, Saturation, and Errors.</p>
+</blockquote>
+<p>USE 方法是从 Brend Gregg 那里学来的。
+在技术设施的领域里，Resource 即是指各种类型的资源，比如 CPU、磁盘、网络、内存，
+Utilization 指的是使用率，可以简单分为百分制和非百分制。
+Saturation 是指饱和率，支持 queue 的资源，就会有这个指标。
+Error 即错误，可以从错误统计和日志得知。<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<p>业务领域里面，USE 也有相对应的含义。以审核系统举例，
+对应的 USE 可以理解为「审核应用实例跑的 CPU 占用如何，任务队列是否塞满，业务日志是否有异常」。</p>
+<p>除了 USE 里面提到的指标，还有几个指标特别重要：
+TPS 、Latency 和 Capacity。
+这几个指标对性能敏感的尤为重要。
+检查 USE 的同时，我们必须关注一下这三个指标，
+确保 TPS / Latency 是否满足我们预期的 SLA。
+哦？压根没有制定 SLA，不要慌，和历史数据对比，先制定一个粗糙的 SLA。
+哦？连历史数据都没有？那只能找你 Leader 让他考量一下了。</p>
+<p>负责每个子系统的同学，记得检查时候将这些收集到的数据列下来。
+在 Metric 做的还不够完善时候，这些数据也是很宝贵的。</p>
+<p>在我看来，检查 USE / TPS / Latency ，<strong><strong>最大的作用是将抽象的可用性指标描述为几个易于理解的数值进行量化。
+一旦能够量化，就可以对比、观测、监控，并且 Review 起来也异常轻松</strong></strong>。</p>
+<h2 id="应对方案">应对方案</h2>
+<p>检查出问题之后，就要考虑应对了。时间急任务多，我们的应对方案是是囤积粮草 / 写救命笔记。</p>
+<p>囤积粮草比较好理解，<strong><strong>基于已有的容量预估，为容易出问题的系统提供一份冗余</strong></strong>。
+有些团队平时做基础设施就比较，做 Scale 就是小轻松。
+那平时 Scalable 做的不好的朋友，就只能将应用实例多开一些，以避免临时出现的流量波动。</p>
+<p>无状态的服务好搞，有状态的 DB 就很难在短时间内做 Scale。
+检查这些服务的容量，如果重点资源临近阈值，比如 DB 的硬盘资源，缓存的内存容量。
+核心服务的余量在检查中真的发现问题的话，那也只能短期内做扩容了。</p>
+<p>对于小团队来说，春节长假的特殊性在于响应会变慢甚至是联系不上。
+一旦线上有异常，可能找不到合适的人员来进行处理。
+所以第二条写救命笔记则更为重要。
+「Google SRE」里面有个小段子，一个绝对不能被按的按钮，
+这个按钮会清空内存数据，在飞行过程中被宇航员按了。幸亏美女工程师（下图）写了相关的救命手册，
+专门写了针对这种情况的操作，救了这些宇航员的命。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201701/sre.jpeg" alt="201701/sre.jpeg"  />
+
+</p>
+<p>图片来自 「Google SRE」</p>
+<p>从这个故事里面可以看到，一个紧急操作手册是多么重要。
+<strong><strong>所以在大扫除期间，我们还要补一补平时的文档，将一些常见问题 / 常规操作记录下来。</strong></strong>
+步骤需要细致到能让让每个远程值班的同学做到 step by step 操作。</p>
+<hr />
+<p>啰嗦了这么多，相信大家对大扫除要做些什么已经有所印象了，祝大家过个好年，流量涨涨涨，还能平平安安的。</p>
+<div class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn:1">
+<p>[The USE Method] <a href="http://www.brendangregg.com/usemethod.html">http://www.brendangregg.com/usemethod.html</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>[USE Method: Linux Performance Checklist] <a href="http://www.brendangregg.com/USEmethod/use-linux.html">http://www.brendangregg.com/USEmethod/use-linux.html</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

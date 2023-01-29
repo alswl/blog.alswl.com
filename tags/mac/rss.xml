@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>mac on Log4D</title>
+    <link>https://blog.alswl.com/tags/mac/</link>
+    <description>Recent content in mac on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 24 Apr 2016 16:36:16 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/mac/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Windows management for hacker</title>
+      <link>https://blog.alswl.com/2016/04/windows-management-for-hacker/</link>
+      <pubDate>Sun, 24 Apr 2016 16:36:16 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2016/04/windows-management-for-hacker/</guid>
+      <description>团队里的同学有时看见我键指如飞，可以用快捷键将 Mac 的窗口玩转于手心。他们表示酷炫非常， 心生羡慕的同时，希望掌握这门技艺，我就把使用的 Phoenix 介绍给大家。结果过了一段时间， 发现普及率并不高，本着好为人师的精神，今天我就来八一八这款优秀的桌面管理工具。 在介绍我使用的工具之前，我要先介绍一下我选择的原因和历史。 ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的时候，请留步思考 5s）。 Alt+Tab = 苦难的历史</description>
+      <content:encoded><![CDATA[<p>团队里的同学有时看见我键指如飞，可以用快捷键将 Mac 的窗口玩转于手心。他们表示酷炫非常，
+心生羡慕的同时，希望掌握这门技艺，我就把使用的 Phoenix 介绍给大家。结果过了一段时间，
+发现普及率并不高，本着好为人师的精神，今天我就来八一八这款优秀的桌面管理工具。</p>
+<p>在介绍我使用的工具之前，我要先介绍一下我选择的原因和历史。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201604/ergodox_infinity.jpg" alt="201604/ergodox_infinity.jpg"  />
+
+</p>
+<p>ps：配图是我长草多年的 Ergodox Infinity。（@夫人，看到这里的时候，请留步思考 5s）。</p>
+<h2 id="alttab--苦难的历史">Alt+Tab = 苦难的历史</h2>
+<p>当我还年轻的时候，曾经对 Alt+Tab 这个快捷键愤慨无比，觉得这种设计虽然简单但是很蠢。</p>
+<!-- more -->
+<ul>
+<li><strong>命中率低</strong>。要在茫茫图标中查找自己需要的窗口，如果开了 20 个应用，切换到一个非常用窗口至多可能需要 20-1 次按键。
+不要跟我说有 Alt+Shift+Tab 的反向循环操作，估计大部分用户都不知道。而且 正向/反向 切换伤脑子。</li>
+<li><strong>交互方式耗时</strong>。由于 Alt+Tab 的操作需要用户进行反馈才能进行，是 <code>眼-手-眼-手</code> 的操作反馈方式，
+这种交互模式费时费脑子。跟这种需要实时反馈对立的交互模式应当是类似「一键呼出」的操作。</li>
+<li><strong>在大显示器、多显示器的环境下面，Alt-Tab 模式没有做任何优化</strong>。</li>
+<li>频繁切出窗口进行切换，容易让人分神，比如切换时候看到某个播放器的标题，在放一首喜欢的歌，很可能吸引过去。</li>
+</ul>
+<p>有人会问，难道不优化都是缺陷么？
+我的答案是肯定的。Alt+Tab 是几乎除鼠标之外的唯一一种窗口操作方式。如果它不能跟上时代的步伐，
+对大显示器、多显示器做优化，那就是不作为，不努力，不上进。跟不上变化是要被淘汰的！</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201604/alt_tab_windows.jpeg" alt="201604/alt_tab_windows.jpeg"  />
+
+</p>
+<h2 id="平铺式窗口管理器">平铺式窗口管理器</h2>
+<p>在被 Windows Alt-Tab 虐了多年之后，我长大了，开始接触 Linux，但是这种痛苦仍然时刻包围着我。
+当我分期购买一个外置显示器之后，这种痛苦到达到了顶端。
+恰好彼时我是 <a href="https://www.archlinux.org/">ArchLinux</a> 的信徒，很快就发现了一片桃源：
+自己安装 <a href="https://wiki.archlinux.org/index.php/window_manager">Window manager</a>。</p>
+<p>我重新认识了桌面系统世界，除了介绍常规的 Gnome / KDE / xfce 之外，还有一类窗口管理系统，他们叫做「平铺式窗口管理器」。
+（严格来说，Gnome / KDE / xfce 属于 Desktop environment，层级比「窗口管理系统」要高，我这里不做严格区分）。</p>
+<p>什么是平铺式窗口管理器？来一个直观的认识：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201604/awesome_1.jpeg" alt="201604/awesome_1.jpeg"  />
+
+</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201604/awesome_2.jpeg" alt="201604/awesome_2.jpeg"  />
+
+</p>
+<p>官方的解释是……呵呵，自己点进去看解释吧。平铺式桌面管理器（包括同时支持平铺式和堆叠式的混合式桌面管理器）给我带来了新的认知，
+原来桌面系统是可以进行接口编程的，我不那么 care 到底是哪种风格，我 care 的是，
+能否通过编程定制来解决我的 Alt-Tab 问题。</p>
+<h2 id="我期望的窗口管理模式">我期望的窗口管理模式</h2>
+<ul>
+<li>快速启动最常用的应用，同时也能将其快速呼出</li>
+<li>对大屏幕友好，现在显示器普遍是大屏幕，可以自由控制窗体的移动，方便多个窗口同时进行操作</li>
+<li>对多屏幕友好，多屏幕间的切换，要友好。可以快速屏幕间切换</li>
+<li>对键盘友好，对鼠标友好，全键盘操作模式，但同时要对鼠标友好，比如鼠标跟随焦点功能，毕竟一些操作还是鼠标方便</li>
+<li>帮助集中注意力，将操作界面隔离成多个目的区分的空间，比如写作时候，期望只有一个 Evernote + Chrome 在眼前</li>
+</ul>
+<h2 id="我在-mac-下面的方案">我在 Mac 下面的方案</h2>
+<p>呜呼，感谢伟大的 <a href="https://github.com/jasonm23/">Jason Milkins</a> 做了一堆尝试，
+创造了一堆乱七八糟的桌面管理器。然后感谢 <a href="https://github.com/kasper">Kasper Hirvikoski</a>
+在 Jason 拍拍屁股走人之后，接过了 Jason 的棒子，将 Phoenix 这个项目快速推进，解决了一堆导致不可用的 bug，
+并新增了很多特性。</p>
+<p>回到要介绍的主角身上，<a href="https://github.com/kasper/phoenix">Phoenix</a>：</p>
+<blockquote>
+<p>A lightweight OS X window and app manager scriptable with JavaScript</p>
+</blockquote>
+<p>基本特性是：</p>
+<ul>
+<li>Javascript 作为配置文件，定制性超级强</li>
+<li>支持 App / Window / Space / Screen 等对象的操作</li>
+</ul>
+<p>基于 Phoenix，我达成了我的窗口管理模式的目标：</p>
+<ul>
+<li>快速启动
+<ul>
+<li>使用 <code>Option</code> + ` / 1 / 2 / 3 / 4 / 8 / 9 / e / a / s / z /, / . / / 启动</li>
+<li>iTerm / Chrome / Safari / QQ / Bearychat / Wechat / Neteasy Music / MacVim / IntelliJ IDEA / Macdown / Mail / Evernote / Finder</li>
+</ul>
+</li>
+<li>窗口操作
+<ul>
+<li>Option + - / =
+<ul>
+<li>大小控制</li>
+</ul>
+</li>
+<li>Option + m
+<ul>
+<li>窗口移动到屏幕中央</li>
+</ul>
+</li>
+<li>Option + Space
+<ul>
+<li>鼠标找回到窗口中央</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>屏幕内操作
+<ul>
+<li>Option + J / K
+<ul>
+<li>焦点在同屏幕窗口切换</li>
+</ul>
+</li>
+<li>Ctrl + Option + J / K / H / L
+<ul>
+<li>窗口移动</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>屏幕间操作
+<ul>
+<li>Option + H / L
+<ul>
+<li>焦点左右屏幕切换</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Space 操作
+<ul>
+<li>Option + I / O
+<ul>
+<li>Space 左右切换</li>
+</ul>
+</li>
+<li>Option + Ctrl + I / O
+<ul>
+<li>将当前窗口移动到相邻 Space</li>
+</ul>
+</li>
+<li>Option + Enter
+<ul>
+<li>将当前窗口移动到 Work Space</li>
+</ul>
+</li>
+<li>Option + Delete
+<ul>
+<li>将当前窗口移动到 Park Space</li>
+</ul>
+</li>
+<li>Work / Park Space 就是用来帮助我集中精力的</li>
+</ul>
+</li>
+</ul>
+<p>我的配置文件在 <a href="https://github.com/alswl/.oOo./tree/master/mac/phoenix">.oOo./mac/phoenix at master · alswl/.oOo.</a>。
+我的配置文件可以开箱即用，但这是我自己的工作模式，想要获得自己最舒适的效果，需要自己进行一些研究和定制。</p>
+<h2 id="其他一些替代方案">其他一些替代方案</h2>
+<ul>
+<li>Mac
+<ul>
+<li>SizeUp  # 简单的桌面平铺工具，不支持一键切换</li>
+<li>Spectacle  # 类 SizeUp</li>
+<li>Divvy  # 类 SizeUp，收费</li>
+<li>Slate  # 支持配置，支持一键切换（推荐）</li>
+</ul>
+</li>
+<li>Linux
+<ul>
+<li>Awesome
+<ul>
+<li><a href="http://hahack.com/tools/awesome/">平铺式窗口管理器-Awesome | HaHack</a></li>
+<li><a href="https://github.com/alswl/awesome">我的 Awesome 配置文件（停止位置）</a></li>
+</ul>
+</li>
+<li>xmonad</li>
+</ul>
+</li>
+<li>Windows
+<ul>
+<li><a href="https://github.com/fuhsjr00/bug.n">fuhsjr00/bug.n: Tiling Window Manager for Windows</a></li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>我曾经写过一篇 <a href="http://blog.alswl.com/2013/12/mac/">Linux 程序员的 Mac 安装记录</a>，
+告诉大家我在 Mac 上面常用的工具、包管理器。</p>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>Linux 程序员的 Mac 安装记录</title>
+      <link>https://blog.alswl.com/2013/12/mac/</link>
+      <pubDate>Sun, 08 Dec 2013 15:44:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2013/12/mac/</guid>
+      <description>作为一个 Linux 的老用户，我再一次验证了那句老话「Linux 用户有钱就换 Mac」。 前段时间，托朋友从香港购入一台 rMBP，下面就是我的 Mac 使用安装记录。 Brew Brew 是 Mac 下面的包管理工具，通过 Github 托管适合 Mac 的编译配置以及 Patch，可以方便的安装开发工具。 安装 Brew： ruby -e &amp;#34;$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)&amp;#34; 我安装的 Brew 包： brew install ack brew install adns brew install android-sdk brew install ansible brew install ansible20 brew install apple-gcc42 brew install apr brew install apr-util brew install archey brew install aria2 brew install asciidoc brew install asio brew install atk brew install augeas brew install autoconf brew install autojump brew install automake brew install avr-binutils brew install avr-gcc brew install avr-libc brew install awscli</description>
+      <content:encoded><![CDATA[<p>作为一个 Linux 的老用户，我再一次验证了那句老话「Linux 用户有钱就换 Mac」。
+前段时间，托朋友从香港购入一台 rMBP，下面就是我的 Mac 使用安装记录。</p>
+<h2 id="brew">Brew</h2>
+<p><a href="http://brew.sh/">Brew</a> 是 Mac 下面的包管理工具，通过 Github 托管适合 Mac
+的编译配置以及 Patch，可以方便的安装开发工具。</p>
+<p>安装 Brew：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ruby -e <span class="s2">&#34;</span><span class="k">$(</span>curl -fsSL https://raw.github.com/mxcl/homebrew/go/install<span class="k">)</span><span class="s2">&#34;</span>
+</span></span></code></pre></div><p>我安装的 Brew 包：</p>
+<!-- more -->
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew install ack
+</span></span><span class="line"><span class="cl">brew install adns
+</span></span><span class="line"><span class="cl">brew install android-sdk
+</span></span><span class="line"><span class="cl">brew install ansible
+</span></span><span class="line"><span class="cl">brew install ansible20
+</span></span><span class="line"><span class="cl">brew install apple-gcc42
+</span></span><span class="line"><span class="cl">brew install apr
+</span></span><span class="line"><span class="cl">brew install apr-util
+</span></span><span class="line"><span class="cl">brew install archey
+</span></span><span class="line"><span class="cl">brew install aria2
+</span></span><span class="line"><span class="cl">brew install asciidoc
+</span></span><span class="line"><span class="cl">brew install asio
+</span></span><span class="line"><span class="cl">brew install atk
+</span></span><span class="line"><span class="cl">brew install augeas
+</span></span><span class="line"><span class="cl">brew install autoconf
+</span></span><span class="line"><span class="cl">brew install autojump
+</span></span><span class="line"><span class="cl">brew install automake
+</span></span><span class="line"><span class="cl">brew install avr-binutils
+</span></span><span class="line"><span class="cl">brew install avr-gcc
+</span></span><span class="line"><span class="cl">brew install avr-libc
+</span></span><span class="line"><span class="cl">brew install awscli
+</span></span><span class="line"><span class="cl">brew install axel
+</span></span><span class="line"><span class="cl">brew install bdw-gc
+</span></span><span class="line"><span class="cl">brew install bfg
+</span></span><span class="line"><span class="cl">brew install boost
+</span></span><span class="line"><span class="cl">brew install burp
+</span></span><span class="line"><span class="cl">brew install c-ares
+</span></span><span class="line"><span class="cl">brew install cabal-install
+</span></span><span class="line"><span class="cl">brew install cairo
+</span></span><span class="line"><span class="cl">brew install certbot
+</span></span><span class="line"><span class="cl">brew install cliclick
+</span></span><span class="line"><span class="cl">brew install cloog
+</span></span><span class="line"><span class="cl">brew install cmake
+</span></span><span class="line"><span class="cl">brew install cmatrix
+</span></span><span class="line"><span class="cl">brew install colordiff
+</span></span><span class="line"><span class="cl">brew install connect
+</span></span><span class="line"><span class="cl">brew install coreutils
+</span></span><span class="line"><span class="cl">brew install cowsay
+</span></span><span class="line"><span class="cl">brew install cpp-netlib
+</span></span><span class="line"><span class="cl">brew install cscope
+</span></span><span class="line"><span class="cl">brew install ctags
+</span></span><span class="line"><span class="cl">brew install curl
+</span></span><span class="line"><span class="cl">brew install curl-ca-bundle
+</span></span><span class="line"><span class="cl">brew install dcfldd
+</span></span><span class="line"><span class="cl">brew install ddrescue
+</span></span><span class="line"><span class="cl">brew install dialog
+</span></span><span class="line"><span class="cl">brew install dirmngr
+</span></span><span class="line"><span class="cl">brew install dnstop
+</span></span><span class="line"><span class="cl">brew install docbook
+</span></span><span class="line"><span class="cl">brew install docker
+</span></span><span class="line"><span class="cl">brew install docker-compose
+</span></span><span class="line"><span class="cl">brew install docker-machine
+</span></span><span class="line"><span class="cl">brew install dos2unix
+</span></span><span class="line"><span class="cl">brew install erlang
+</span></span><span class="line"><span class="cl">brew install ettercap
+</span></span><span class="line"><span class="cl">brew install ext4fuse
+</span></span><span class="line"><span class="cl">brew install faac
+</span></span><span class="line"><span class="cl">brew install fcitx-remote-for-osx
+</span></span><span class="line"><span class="cl">brew install fd
+</span></span><span class="line"><span class="cl">brew install fetchmail
+</span></span><span class="line"><span class="cl">brew install ffind
+</span></span><span class="line"><span class="cl">brew install ffmpeg
+</span></span><span class="line"><span class="cl">brew install figlet
+</span></span><span class="line"><span class="cl">brew install findutils
+</span></span><span class="line"><span class="cl">brew install fontconfig
+</span></span><span class="line"><span class="cl">brew install fortune
+</span></span><span class="line"><span class="cl">brew install fping
+</span></span><span class="line"><span class="cl">brew install freetype
+</span></span><span class="line"><span class="cl">brew install fzf
+</span></span><span class="line"><span class="cl">brew install gcc
+</span></span><span class="line"><span class="cl">brew install gd
+</span></span><span class="line"><span class="cl">brew install gdbm
+</span></span><span class="line"><span class="cl">brew install gdk-pixbuf
+</span></span><span class="line"><span class="cl">brew install gettext
+</span></span><span class="line"><span class="cl">brew install gflags
+</span></span><span class="line"><span class="cl">brew install gfortran
+</span></span><span class="line"><span class="cl">brew install ghc
+</span></span><span class="line"><span class="cl">brew install ghc@8.0
+</span></span><span class="line"><span class="cl">brew install gifsicle
+</span></span><span class="line"><span class="cl">brew install git
+</span></span><span class="line"><span class="cl">brew install git-extras
+</span></span><span class="line"><span class="cl">brew install git-flow
+</span></span><span class="line"><span class="cl">brew install git-lfs
+</span></span><span class="line"><span class="cl">brew install git-number
+</span></span><span class="line"><span class="cl">brew install giter8
+</span></span><span class="line"><span class="cl">brew install glew
+</span></span><span class="line"><span class="cl">brew install glib
+</span></span><span class="line"><span class="cl">brew install glog
+</span></span><span class="line"><span class="cl">brew install gmp
+</span></span><span class="line"><span class="cl">brew install gmp@4
+</span></span><span class="line"><span class="cl">brew install gnu-getopt
+</span></span><span class="line"><span class="cl">brew install gnu-sed
+</span></span><span class="line"><span class="cl">brew install gnu-tar
+</span></span><span class="line"><span class="cl">brew install gnu-time
+</span></span><span class="line"><span class="cl">brew install gnupg
+</span></span><span class="line"><span class="cl">brew install gnupg2
+</span></span><span class="line"><span class="cl">brew install gnutls
+</span></span><span class="line"><span class="cl">brew install go
+</span></span><span class="line"><span class="cl">brew install goaccess
+</span></span><span class="line"><span class="cl">brew install gobject-introspection
+</span></span><span class="line"><span class="cl">brew install godep
+</span></span><span class="line"><span class="cl">brew install gource
+</span></span><span class="line"><span class="cl">brew install gpg-agent
+</span></span><span class="line"><span class="cl">brew install gradle
+</span></span><span class="line"><span class="cl">brew install grafana
+</span></span><span class="line"><span class="cl">brew install graphite2
+</span></span><span class="line"><span class="cl">brew install graphviz
+</span></span><span class="line"><span class="cl">brew install grep
+</span></span><span class="line"><span class="cl">brew install grok
+</span></span><span class="line"><span class="cl">brew install groovy
+</span></span><span class="line"><span class="cl">brew install gtk+
+</span></span><span class="line"><span class="cl">brew install haproxy
+</span></span><span class="line"><span class="cl">brew install harfbuzz
+</span></span><span class="line"><span class="cl">brew install hicolor-icon-theme
+</span></span><span class="line"><span class="cl">brew install html2text
+</span></span><span class="line"><span class="cl">brew install htop-osx
+</span></span><span class="line"><span class="cl">brew install httpie
+</span></span><span class="line"><span class="cl">brew install hydra
+</span></span><span class="line"><span class="cl">brew install icu4c
+</span></span><span class="line"><span class="cl">brew install ifstat
+</span></span><span class="line"><span class="cl">brew install iftop
+</span></span><span class="line"><span class="cl">brew install imagemagick
+</span></span><span class="line"><span class="cl">brew install influxdb
+</span></span><span class="line"><span class="cl">brew install ipcalc
+</span></span><span class="line"><span class="cl">brew install iperf
+</span></span><span class="line"><span class="cl">brew install isl
+</span></span><span class="line"><span class="cl">brew install isl@0.12
+</span></span><span class="line"><span class="cl">brew install jansson
+</span></span><span class="line"><span class="cl">brew install jemalloc
+</span></span><span class="line"><span class="cl">brew install jenv
+</span></span><span class="line"><span class="cl">brew install jetty
+</span></span><span class="line"><span class="cl">brew install jnettop
+</span></span><span class="line"><span class="cl">brew install jpeg
+</span></span><span class="line"><span class="cl">brew install jq
+</span></span><span class="line"><span class="cl">brew install jshon
+</span></span><span class="line"><span class="cl">brew install kafka
+</span></span><span class="line"><span class="cl">brew install lame
+</span></span><span class="line"><span class="cl">brew install languagetool
+</span></span><span class="line"><span class="cl">brew install libao
+</span></span><span class="line"><span class="cl">brew install libarchive
+</span></span><span class="line"><span class="cl">brew install libassuan
+</span></span><span class="line"><span class="cl">brew install libconfig
+</span></span><span class="line"><span class="cl">brew install libdaemon
+</span></span><span class="line"><span class="cl">brew install libev
+</span></span><span class="line"><span class="cl">brew install libevent
+</span></span><span class="line"><span class="cl">brew install libexif
+</span></span><span class="line"><span class="cl">brew install libffi
+</span></span><span class="line"><span class="cl">brew install libgcrypt
+</span></span><span class="line"><span class="cl">brew install libgpg-error
+</span></span><span class="line"><span class="cl">brew install libiodbc
+</span></span><span class="line"><span class="cl">brew install libksba
+</span></span><span class="line"><span class="cl">brew install libmagic
+</span></span><span class="line"><span class="cl">brew install libmpc
+</span></span><span class="line"><span class="cl">brew install libnet
+</span></span><span class="line"><span class="cl">brew install libpng
+</span></span><span class="line"><span class="cl">brew install librdkafka
+</span></span><span class="line"><span class="cl">brew install libressl
+</span></span><span class="line"><span class="cl">brew install librsync
+</span></span><span class="line"><span class="cl">brew install libsodium
+</span></span><span class="line"><span class="cl">brew install libsoxr
+</span></span><span class="line"><span class="cl">brew install libssh
+</span></span><span class="line"><span class="cl">brew install libtasn1
+</span></span><span class="line"><span class="cl">brew install libtermkey
+</span></span><span class="line"><span class="cl">brew install libtiff
+</span></span><span class="line"><span class="cl">brew install libtool
+</span></span><span class="line"><span class="cl">brew install libunistring
+</span></span><span class="line"><span class="cl">brew install libusb
+</span></span><span class="line"><span class="cl">brew install libusb-compat
+</span></span><span class="line"><span class="cl">brew install libuv
+</span></span><span class="line"><span class="cl">brew install libvo-aacenc
+</span></span><span class="line"><span class="cl">brew install libvterm
+</span></span><span class="line"><span class="cl">brew install libxml2
+</span></span><span class="line"><span class="cl">brew install libyaml
+</span></span><span class="line"><span class="cl">brew install libzip
+</span></span><span class="line"><span class="cl">brew install little-cms
+</span></span><span class="line"><span class="cl">brew install lldpd
+</span></span><span class="line"><span class="cl">brew install lrzsz
+</span></span><span class="line"><span class="cl">brew install lsyncd
+</span></span><span class="line"><span class="cl">brew install lua
+</span></span><span class="line"><span class="cl">brew install lua52
+</span></span><span class="line"><span class="cl">brew install luajit
+</span></span><span class="line"><span class="cl">brew install luarocks
+</span></span><span class="line"><span class="cl">brew install lynx
+</span></span><span class="line"><span class="cl">brew install lz4
+</span></span><span class="line"><span class="cl">brew install lzlib
+</span></span><span class="line"><span class="cl">brew install lzo
+</span></span><span class="line"><span class="cl">brew install makedepend
+</span></span><span class="line"><span class="cl">brew install maven
+</span></span><span class="line"><span class="cl">brew install mbedtls
+</span></span><span class="line"><span class="cl">brew install memcache-top
+</span></span><span class="line"><span class="cl">brew install memcached
+</span></span><span class="line"><span class="cl">brew install mercurial
+</span></span><span class="line"><span class="cl">brew install mit-scheme
+</span></span><span class="line"><span class="cl">brew install mitmproxy
+</span></span><span class="line"><span class="cl">brew install mongodb
+</span></span><span class="line"><span class="cl">brew install mono
+</span></span><span class="line"><span class="cl">brew install mp4v2
+</span></span><span class="line"><span class="cl">brew install mpfr
+</span></span><span class="line"><span class="cl">brew install mpg123
+</span></span><span class="line"><span class="cl">brew install msgpack
+</span></span><span class="line"><span class="cl">brew install msodbcsql
+</span></span><span class="line"><span class="cl">brew install mssql-tools
+</span></span><span class="line"><span class="cl">brew install mtr
+</span></span><span class="line"><span class="cl">brew install multitail
+</span></span><span class="line"><span class="cl">brew install mycli
+</span></span><span class="line"><span class="cl">brew install mysql
+</span></span><span class="line"><span class="cl">brew install neovim
+</span></span><span class="line"><span class="cl">brew install nettle
+</span></span><span class="line"><span class="cl">brew install nghttp2
+</span></span><span class="line"><span class="cl">brew install nginx
+</span></span><span class="line"><span class="cl">brew install nload
+</span></span><span class="line"><span class="cl">brew install nmap
+</span></span><span class="line"><span class="cl">brew install node
+</span></span><span class="line"><span class="cl">brew install nodeenv
+</span></span><span class="line"><span class="cl">brew install npth
+</span></span><span class="line"><span class="cl">brew install nspr
+</span></span><span class="line"><span class="cl">brew install nsq
+</span></span><span class="line"><span class="cl">brew install nuget
+</span></span><span class="line"><span class="cl">brew install objective-caml
+</span></span><span class="line"><span class="cl">brew install ocaml
+</span></span><span class="line"><span class="cl">brew install oniguruma
+</span></span><span class="line"><span class="cl">brew install opencc
+</span></span><span class="line"><span class="cl">brew install openssl
+</span></span><span class="line"><span class="cl">brew install openssl101
+</span></span><span class="line"><span class="cl">brew install openssl@1.1
+</span></span><span class="line"><span class="cl">brew install openvpn
+</span></span><span class="line"><span class="cl">brew install osquery
+</span></span><span class="line"><span class="cl">brew install ossp-uuid
+</span></span><span class="line"><span class="cl">brew install p11-kit
+</span></span><span class="line"><span class="cl">brew install p7zip
+</span></span><span class="line"><span class="cl">brew install pandoc
+</span></span><span class="line"><span class="cl">brew install pango
+</span></span><span class="line"><span class="cl">brew install pcre
+</span></span><span class="line"><span class="cl">brew install perl
+</span></span><span class="line"><span class="cl">brew install phantomjs
+</span></span><span class="line"><span class="cl">brew install pinentry
+</span></span><span class="line"><span class="cl">brew install pixman
+</span></span><span class="line"><span class="cl">brew install pkg-config
+</span></span><span class="line"><span class="cl">brew install plantuml
+</span></span><span class="line"><span class="cl">brew install pngpaste
+</span></span><span class="line"><span class="cl">brew install popt
+</span></span><span class="line"><span class="cl">brew install privoxy
+</span></span><span class="line"><span class="cl">brew install protobuf
+</span></span><span class="line"><span class="cl">brew install proxychains-ng
+</span></span><span class="line"><span class="cl">brew install pth
+</span></span><span class="line"><span class="cl">brew install pwgen
+</span></span><span class="line"><span class="cl">brew install python
+</span></span><span class="line"><span class="cl">brew install python3
+</span></span><span class="line"><span class="cl">brew install qt
+</span></span><span class="line"><span class="cl">brew install qt5
+</span></span><span class="line"><span class="cl">brew install r
+</span></span><span class="line"><span class="cl">brew install rapidjson
+</span></span><span class="line"><span class="cl">brew install rclone
+</span></span><span class="line"><span class="cl">brew install readline
+</span></span><span class="line"><span class="cl">brew install reattach-to-user-namespace
+</span></span><span class="line"><span class="cl">brew install redis
+</span></span><span class="line"><span class="cl">brew install rename
+</span></span><span class="line"><span class="cl">brew install rlwrap
+</span></span><span class="line"><span class="cl">brew install rmtrash
+</span></span><span class="line"><span class="cl">brew install rocksdb
+</span></span><span class="line"><span class="cl">brew install rsync
+</span></span><span class="line"><span class="cl">brew install ruby
+</span></span><span class="line"><span class="cl">brew install ruby-build
+</span></span><span class="line"><span class="cl">brew install s-lang
+</span></span><span class="line"><span class="cl">brew install s3cmd
+</span></span><span class="line"><span class="cl">brew install sbt
+</span></span><span class="line"><span class="cl">brew install scala
+</span></span><span class="line"><span class="cl">brew install scons
+</span></span><span class="line"><span class="cl">brew install sdl2
+</span></span><span class="line"><span class="cl">brew install sdl2_image
+</span></span><span class="line"><span class="cl">brew install shadowsocks-libev
+</span></span><span class="line"><span class="cl">brew install shairport
+</span></span><span class="line"><span class="cl">brew install shairport-sync
+</span></span><span class="line"><span class="cl">brew install shared-mime-info
+</span></span><span class="line"><span class="cl">brew install shyaml
+</span></span><span class="line"><span class="cl">brew install siege
+</span></span><span class="line"><span class="cl">brew install sleuthkit
+</span></span><span class="line"><span class="cl">brew install snappy
+</span></span><span class="line"><span class="cl">brew install sntop
+</span></span><span class="line"><span class="cl">brew install socat
+</span></span><span class="line"><span class="cl">brew install source-highlight
+</span></span><span class="line"><span class="cl">brew install spark
+</span></span><span class="line"><span class="cl">brew install spdylay
+</span></span><span class="line"><span class="cl">brew install sphinx-doc
+</span></span><span class="line"><span class="cl">brew install springboot
+</span></span><span class="line"><span class="cl">brew install sqlite
+</span></span><span class="line"><span class="cl">brew install sqlmap
+</span></span><span class="line"><span class="cl">brew install ssh-copy-id
+</span></span><span class="line"><span class="cl">brew install sshfs
+</span></span><span class="line"><span class="cl">brew install sshpass
+</span></span><span class="line"><span class="cl">brew install stunnel
+</span></span><span class="line"><span class="cl">brew install subversion
+</span></span><span class="line"><span class="cl">brew install swig
+</span></span><span class="line"><span class="cl">brew install sysbench
+</span></span><span class="line"><span class="cl">brew install taglib
+</span></span><span class="line"><span class="cl">brew install texi2html
+</span></span><span class="line"><span class="cl">brew install the_silver_searcher
+</span></span><span class="line"><span class="cl">brew install thefuck
+</span></span><span class="line"><span class="cl">brew install thrift
+</span></span><span class="line"><span class="cl">brew install tidy-html5
+</span></span><span class="line"><span class="cl">brew install tig
+</span></span><span class="line"><span class="cl">brew install tinyproxy
+</span></span><span class="line"><span class="cl">brew install tldr
+</span></span><span class="line"><span class="cl">brew install tmate
+</span></span><span class="line"><span class="cl">brew install tmux
+</span></span><span class="line"><span class="cl">brew install tokyo-cabinet
+</span></span><span class="line"><span class="cl">brew install tree
+</span></span><span class="line"><span class="cl">brew install typescript
+</span></span><span class="line"><span class="cl">brew install udns
+</span></span><span class="line"><span class="cl">brew install udptunnel
+</span></span><span class="line"><span class="cl">brew install unibilium
+</span></span><span class="line"><span class="cl">brew install unison
+</span></span><span class="line"><span class="cl">brew install unixodbc
+</span></span><span class="line"><span class="cl">brew install utf8proc
+</span></span><span class="line"><span class="cl">brew install vim
+</span></span><span class="line"><span class="cl">brew install w3m
+</span></span><span class="line"><span class="cl">brew install watch
+</span></span><span class="line"><span class="cl">brew install watchman
+</span></span><span class="line"><span class="cl">brew install webkit2png
+</span></span><span class="line"><span class="cl">brew install webp
+</span></span><span class="line"><span class="cl">brew install wget
+</span></span><span class="line"><span class="cl">brew install wxmac
+</span></span><span class="line"><span class="cl">brew install x264
+</span></span><span class="line"><span class="cl">brew install xclip
+</span></span><span class="line"><span class="cl">brew install xvid
+</span></span><span class="line"><span class="cl">brew install xz
+</span></span><span class="line"><span class="cl">brew install yara
+</span></span><span class="line"><span class="cl">brew install yasm
+</span></span><span class="line"><span class="cl">brew install yuicompressor
+</span></span><span class="line"><span class="cl">brew install zookeeper
+</span></span><span class="line"><span class="cl">brew install zsh
+</span></span><span class="line"><span class="cl">brew install zstd
+</span></span></code></pre></div><h2 id="brew-cask">Brew cask</h2>
+<p><a href="https://github.com/phinze/homebrew-cask">Brew cask</a> 是类似 Brew 的管理工具，
+直接提供 dmg 级别的二进制包，（Brew 是不带源码，只有对应项目所在的 URL）。</p>
+<p>Brew cask 安装：</p>
+<pre tabindex="0"><code>brew tap phinze/homebrew-cask
+brew install brew-cask
+</code></pre><p>我通过 Brew cask 安装的软件：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">brew cask install airdisplay
+</span></span><span class="line"><span class="cl">brew cask install alfred
+</span></span><span class="line"><span class="cl">brew cask install aliwangwang
+</span></span><span class="line"><span class="cl">brew cask install android-studio
+</span></span><span class="line"><span class="cl">brew cask install apache-directory-studio
+</span></span><span class="line"><span class="cl">brew cask install appcleaner
+</span></span><span class="line"><span class="cl">brew cask install appium
+</span></span><span class="line"><span class="cl">brew cask install atom
+</span></span><span class="line"><span class="cl">brew cask install balsamiq-mockups
+</span></span><span class="line"><span class="cl">brew cask install battle-net
+</span></span><span class="line"><span class="cl">brew cask install bearychat
+</span></span><span class="line"><span class="cl">brew cask install bee
+</span></span><span class="line"><span class="cl">brew cask install bonjour-browser
+</span></span><span class="line"><span class="cl">brew cask install caffeine
+</span></span><span class="line"><span class="cl">brew cask install cctalk
+</span></span><span class="line"><span class="cl">brew cask install dash
+</span></span><span class="line"><span class="cl">brew cask install dbeaver-community
+</span></span><span class="line"><span class="cl">brew cask install dingtalk
+</span></span><span class="line"><span class="cl">brew cask install dotnet-sdk
+</span></span><span class="line"><span class="cl">brew cask install dropbox
+</span></span><span class="line"><span class="cl">brew cask install eclipse-java
+</span></span><span class="line"><span class="cl">brew cask install evernote
+</span></span><span class="line"><span class="cl">brew cask install filezilla
+</span></span><span class="line"><span class="cl">brew cask install firefox
+</span></span><span class="line"><span class="cl">brew cask install folx
+</span></span><span class="line"><span class="cl">brew cask install ganttproject
+</span></span><span class="line"><span class="cl">brew cask install gimp
+</span></span><span class="line"><span class="cl">brew cask install github-desktop
+</span></span><span class="line"><span class="cl">brew cask install gitup
+</span></span><span class="line"><span class="cl">brew cask install gnucash
+</span></span><span class="line"><span class="cl">brew cask install google-chrome
+</span></span><span class="line"><span class="cl">brew cask install google-cloud-sdk
+</span></span><span class="line"><span class="cl">brew cask install google-drive
+</span></span><span class="line"><span class="cl">brew cask install google-earth
+</span></span><span class="line"><span class="cl">brew cask install haroopad
+</span></span><span class="line"><span class="cl">brew cask install ichm
+</span></span><span class="line"><span class="cl">brew cask install icq
+</span></span><span class="line"><span class="cl">brew cask install iina
+</span></span><span class="line"><span class="cl">brew cask install inkscape
+</span></span><span class="line"><span class="cl">brew cask install intellij-idea
+</span></span><span class="line"><span class="cl">brew cask install istat-menus
+</span></span><span class="line"><span class="cl">brew cask install iterm2
+</span></span><span class="line"><span class="cl">brew cask install itools
+</span></span><span class="line"><span class="cl">brew cask install java
+</span></span><span class="line"><span class="cl">brew cask install jumpcut
+</span></span><span class="line"><span class="cl">brew cask install jxplorer
+</span></span><span class="line"><span class="cl">brew cask install karabiner
+</span></span><span class="line"><span class="cl">brew cask install keepassx
+</span></span><span class="line"><span class="cl">brew cask install kid3
+</span></span><span class="line"><span class="cl">brew cask install kindle
+</span></span><span class="line"><span class="cl">brew cask install kindlegen
+</span></span><span class="line"><span class="cl">brew cask install krita
+</span></span><span class="line"><span class="cl">brew cask install licecap
+</span></span><span class="line"><span class="cl">brew cask install limechat
+</span></span><span class="line"><span class="cl">brew cask install macdown
+</span></span><span class="line"><span class="cl">brew cask install mactex
+</span></span><span class="line"><span class="cl">brew cask install macvim
+</span></span><span class="line"><span class="cl">brew cask install mat
+</span></span><span class="line"><span class="cl">brew cask install mongohub
+</span></span><span class="line"><span class="cl">brew cask install mono-mdk
+</span></span><span class="line"><span class="cl">brew cask install musicbrainz-picard
+</span></span><span class="line"><span class="cl">brew cask install mysql-utilities
+</span></span><span class="line"><span class="cl">brew cask install mysqlworkbench
+</span></span><span class="line"><span class="cl">brew cask install netbeans
+</span></span><span class="line"><span class="cl">brew cask install neteasemusic
+</span></span><span class="line"><span class="cl">brew cask install omnidisksweeper
+</span></span><span class="line"><span class="cl">brew cask install osxfuse
+</span></span><span class="line"><span class="cl">brew cask install phoenix
+</span></span><span class="line"><span class="cl">brew cask install postman
+</span></span><span class="line"><span class="cl">brew cask install proxifier
+</span></span><span class="line"><span class="cl">brew cask install psequel
+</span></span><span class="line"><span class="cl">brew cask install qlmarkdown
+</span></span><span class="line"><span class="cl">brew cask install qq
+</span></span><span class="line"><span class="cl">brew cask install qqmusic
+</span></span><span class="line"><span class="cl">brew cask install qutebrowser
+</span></span><span class="line"><span class="cl">brew cask install rescuetime
+</span></span><span class="line"><span class="cl">brew cask install robo-3t
+</span></span><span class="line"><span class="cl">brew cask install robomongo
+</span></span><span class="line"><span class="cl">brew cask install screenhero
+</span></span><span class="line"><span class="cl">brew cask install sequel-pro
+</span></span><span class="line"><span class="cl">brew cask install shadowsocksx
+</span></span><span class="line"><span class="cl">brew cask install skitch
+</span></span><span class="line"><span class="cl">brew cask install slack
+</span></span><span class="line"><span class="cl">brew cask install smartsynchronize
+</span></span><span class="line"><span class="cl">brew cask install sourcetree
+</span></span><span class="line"><span class="cl">brew cask install splayerx
+</span></span><span class="line"><span class="cl">brew cask install sqlitebrowser
+</span></span><span class="line"><span class="cl">brew cask install sqlpro-for-mssql
+</span></span><span class="line"><span class="cl">brew cask install squirrelsql
+</span></span><span class="line"><span class="cl">brew cask install steam
+</span></span><span class="line"><span class="cl">brew cask install sublime-text
+</span></span><span class="line"><span class="cl">brew cask install surge
+</span></span><span class="line"><span class="cl">brew cask install taskwarrior-pomodoro
+</span></span><span class="line"><span class="cl">brew cask install teamviewer
+</span></span><span class="line"><span class="cl">brew cask install teensy
+</span></span><span class="line"><span class="cl">brew cask install telegram
+</span></span><span class="line"><span class="cl">brew cask install the-unarchiver
+</span></span><span class="line"><span class="cl">brew cask install thunder
+</span></span><span class="line"><span class="cl">brew cask install toodledo
+</span></span><span class="line"><span class="cl">brew cask install tripmode
+</span></span><span class="line"><span class="cl">brew cask install typora
+</span></span><span class="line"><span class="cl">brew cask install universal-media-server
+</span></span><span class="line"><span class="cl">brew cask install vanilla
+</span></span><span class="line"><span class="cl">brew cask install vimr
+</span></span><span class="line"><span class="cl">brew cask install virtualbox
+</span></span><span class="line"><span class="cl">brew cask install virtualbox-extension-pack
+</span></span><span class="line"><span class="cl">brew cask install viscosity
+</span></span><span class="line"><span class="cl">brew cask install visual-studio-code
+</span></span><span class="line"><span class="cl">brew cask install visualvm
+</span></span><span class="line"><span class="cl">brew cask install vlc
+</span></span><span class="line"><span class="cl">brew cask install vnc-viewer
+</span></span><span class="line"><span class="cl">brew cask install wechatwebdevtools
+</span></span><span class="line"><span class="cl">brew cask install wewechat
+</span></span><span class="line"><span class="cl">brew cask install wifimasterkey
+</span></span><span class="line"><span class="cl">brew cask install wireshark
+</span></span><span class="line"><span class="cl">brew cask install wxwork
+</span></span><span class="line"><span class="cl">brew cask install xamarin-studio
+</span></span><span class="line"><span class="cl">brew cask install xiami
+</span></span><span class="line"><span class="cl">brew cask install xmind
+</span></span><span class="line"><span class="cl">brew cask install xquartz
+</span></span><span class="line"><span class="cl">brew cask install yed
+</span></span><span class="line"><span class="cl">brew cask install zeronet
+</span></span></code></pre></div><h2 id="按键配置">按键配置</h2>
+<p>（2016-02-23 update: Slate 之后，我尝试了其他的伪平铺式管理系统，最后使用了
+<a href="https://github.com/kasper/phoenix">Phoenix</a>，我的配置文件在
+<a href="https://github.com/alswl/.oOo./blob/master/mac/.phoenix.js">.oOo./.phoenix.js at master · alswl/.oOo.</a>）</p>
+<p>作为 <a href="http://awesome.naquadah.org/">Awesome</a> 的用户，我实在是受不了 Mac
+默认的按键控制，太渣。在两天狂搜之后，尝试了 Divvy / BetterTouchToll
+这些按键控制软件之后，还是觉得按键不够自由，直到我发现了
+<a href="https://github.com/jigish/slate">Slate</a>。</p>
+<p>Slate 可以管理几乎所有按键，并进行 窗口/Workspace/Shell 控制，配合
+<a href="https://github.com/BlueM/cliclick">Cliclick</a> 可以完全完成桌面控制。</p>
+<p>下面是我配置的 <code>.slate</code> 文件：</p>
+<p>详细代码可以参见 <a href="https://github.com/alswl/.oOo.">alswl/.oOo.</a></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># This is the default .slate file.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># If no ~/.slate file exists this is the file that will be used.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">config defaultToCurrentScreen <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">config nudgePercentOf screenSize
+</span></span><span class="line"><span class="cl">config resizePercentOf screenSize
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Alias</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> mouse_left shell path:~/ <span class="s1">&#39;/usr/local/bin/cliclick m:640,400 &amp;&amp; /Users/alswl/dev/myproject/.oOo./local/bin/mouse_restore.sh&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> mouse_right shell path:~/ <span class="s1">&#39;/usr/local/bin/cliclick m:1920,400 &amp;&amp; /Users/alswl/dev/myproject/.oOo./local/bin/mouse_restore.sh&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> mouse_iTerm shell path:~/ <span class="s1">&#39;/Users/alswl/dev/myproject/.oOo./local/bin/mouse_restore.sh iTerm&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> mouse_Firefox shell path:~/ <span class="s1">&#39;/Users/alswl/dev/myproject/.oOo./local/bin/mouse_restore.sh Firefox&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> mouse_Google_Chrome shell path:~/ <span class="s1">&#39;/Users/alswl/dev/myproject/.oOo./local/bin/mouse_restore.sh Google_Chrome&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> mouse_QQ shell path:~/ <span class="s1">&#39;/Users/alswl/dev/myproject/.oOo./local/bin/mouse_restore.sh QQ&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">alias</span> mouse_MacVim shell path:~/ <span class="s1">&#39;/Users/alswl/dev/myproject/.oOo./local/bin/mouse_restore.sh MacVim&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Resize Bindings</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind right:alt       resize +10% +0</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind left:alt        resize -10% +0</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind up:alt          resize +0   -10%</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind down:alt        resize +0   +10%</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind right:ctrl;alt  resize -10% +0 bottom-right</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind left:ctrl;alt   resize +10% +0 bottom-right</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind up:ctrl;alt     resize +0   +10% bottom-right</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind down:ctrl;alt   resize +0   -10% bottom-right</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Push Bindings</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind right:ctrl;cmd  push right bar-resize:screenSizeX/3</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind left:ctrl;cmd   push left  bar-resize:screenSizeX/3</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind up:ctrl;cmd     push up    bar-resize:screenSizeY/2</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind down:ctrl;cmd   push down  bar-resize:screenSizeY/2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Nudge Bindings</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind right:shift;alt nudge +10% +0</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind left:shift;alt  nudge -10% +0</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind up:shift;alt    nudge +0   -10%</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind down:shift;alt  nudge +0   +10%</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Throw Bindings</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> 1:ctrl<span class="p">;</span>alt         throw <span class="m">0</span> resize
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> 2:ctrl<span class="p">;</span>alt         throw <span class="m">1</span> resize
+</span></span><span class="line"><span class="cl"><span class="c1">#bind 3:ctrl;alt         throw 2 resize</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind right:ctrl;alt;cmd throw right resize</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind left:ctrl;alt;cmd  throw left  resize</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind up:ctrl;alt;cmd    throw up    resize</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind down:ctrl;alt;cmd  throw down  resize</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Focus Bindings</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> <span class="sb">`</span>:alt     sequence <span class="si">${</span><span class="nv">mouse_iTerm</span><span class="si">}</span> &gt; focus <span class="s1">&#39;iTerm&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> 1:alt     sequence <span class="si">${</span><span class="nv">mouse_Firefox</span><span class="si">}</span> &gt; focus <span class="s1">&#39;Firefox&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> 2:alt     sequence <span class="si">${</span><span class="nv">mouse_Google_Chrome</span><span class="si">}</span> &gt; focus <span class="s1">&#39;Google Chrome&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> 3:alt     sequence <span class="si">${</span><span class="nv">mouse_QQ</span><span class="si">}</span> &gt; focus <span class="s1">&#39;QQ&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> q:alt     sequence <span class="si">${</span><span class="nv">mouse_MacVim</span><span class="si">}</span> &gt; focus <span class="s1">&#39;MacVim&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> h:alt     sequence <span class="si">${</span><span class="nv">mouse_left</span><span class="si">}</span> &gt; focus left
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> l:alt     sequence <span class="si">${</span><span class="nv">mouse_right</span><span class="si">}</span> &gt; focus right
+</span></span><span class="line"><span class="cl"><span class="c1">#bind up:cmd       focus up</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind down:cmd     focus down</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> k:alt   focus behind
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> j:alt focus behind
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Window Hints</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind esc:cmd hint</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Toogle Application</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#bind `:alt toggle &#39;iTerm&#39;</span>
+</span></span></code></pre></div><p>其中用到的鼠标位置记忆脚本是这样的：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">## Save</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># get current postion, save to last</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CURRENT_WINDOW</span><span class="o">=</span>iTerm
+</span></span><span class="line"><span class="cl"><span class="o">[</span> -f /tmp/SLATE_M_CURR <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">CURRENT_WINDOW</span><span class="o">=</span><span class="sb">`</span>cat /tmp/SLATE_M_CURR<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># save now pos</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">NOW_POS</span><span class="o">=</span><span class="sb">`</span>/usr/local/bin/cliclick p <span class="p">|</span> /usr/bin/awk <span class="s1">&#39;{print $4}&#39;</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="nv">$NOW_POS</span> &gt; /tmp/SLATE_M_<span class="nv">$CURRENT_WINDOW</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Restore</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> <span class="nv">$1</span> !<span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># get wanted position</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">POS</span><span class="o">=</span>500,400
+</span></span><span class="line"><span class="cl">        <span class="o">[</span> -f /tmp/SLATE_M_<span class="nv">$1</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">POS</span><span class="o">=</span><span class="sb">`</span>cat /tmp/SLATE_M_<span class="nv">$1</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># restore postion</span>
+</span></span><span class="line"><span class="cl">        /usr/local/bin/cliclick m:<span class="nv">$POS</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">#LAST_WINDOW=iTerm</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">#[ -f /tmp/SLATE_M_LAST_WINDOW ] &amp;&amp; LAST_WINDOW=`cat /tmp/SLATE_M_LAST_WINDOW`</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="nv">$1</span> &gt; /tmp/SLATE_M_CURR
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span></code></pre></div><ul>
+<li>2016-02-23 updated: brew / brew cask list.</li>
+<li>2017-10-09 updated: brew / brew cask list.</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

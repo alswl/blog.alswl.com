@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>devops on Log4D</title>
+    <link>https://blog.alswl.com/tags/devops/</link>
+    <description>Recent content in devops on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Sun, 09 Sep 2018 23:21:40 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/devops/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DevOps 和 SRE</title>
+      <link>https://blog.alswl.com/2018/09/devops-and-sre/</link>
+      <pubDate>Sun, 09 Sep 2018 23:21:40 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2018/09/devops-and-sre/</guid>
+      <description>最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。 我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。 现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。 于是我给了一些见解并整理成文章以饕大众。 最常见的误区： DevOps 新概念，好高级哦 SRE 是高级版 DevOps 运维可以轻松转身 DevOps 工程师 让我一一给你讲解吧。 image via YouTube DevOps 和 SRE 定义 DevOps 是字面上 Dev 开发 / Ops 运维两者组合， 严格意义上 DevOps 如下（vi</description>
+      <content:encoded><![CDATA[<p>最近有一位朋友和我聊职业发展方向问题，聊了不少 DevOps 和 SRE 话题。
+我几年前刚接触这两个概念时也常常将之混淆，可惜当时没有人来解答我困惑。
+现在这虽然已经极为流行，但是我发现我这位朋友对这两个职位还存在一些误区。
+于是我给了一些见解并整理成文章以饕大众。</p>
+<p>最常见的误区：</p>
+<ul>
+<li>DevOps 新概念，好高级哦</li>
+<li>SRE 是高级版 DevOps</li>
+<li>运维可以轻松转身 DevOps 工程师</li>
+</ul>
+<p>让我一一给你讲解吧。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201809/sre-and-devops.png" alt="sre-and-devops.png"  />
+
+
+<small><a href="https://www.youtube.com/watch?v=uTEL8Ff1Zvk">image via YouTube</a></small></p>
+<!-- more -->
+<h2 id="devops-和-sre-定义">DevOps 和 SRE 定义</h2>
+<p>DevOps 是字面上 Dev 开发 / Ops 运维两者组合，
+严格意义上 DevOps 如下（via <a href="https://en.wikipedia.org/wiki/DevOps">DevOps - Wikipedia</a>）：</p>
+<blockquote>
+<p>DevOps（Development 和 Operations 的组合词）是一种重视“软件开发人员（Dev）
+”和“IT 运维技术人员（Ops）”之间沟通合作的文化、运动或惯例。</p>
+</blockquote>
+<p>SRE 全称是 Site Reliability Engineering，最早是由 Google 提出，并且在其工程实践中发扬光大。
+他们还出了一本同名书籍「<a href="https://landing.google.com/sre/book.html">Site Reliability Engineering</a>」，
+让这个理念在互联网工程师圈子里广泛传播。</p>
+<p>Google 对 SRE 解释是（via <a href="https://en.wikipedia.org/wiki/Site_Reliability_Engineering">Site Reliability Engineering - Wikipedia</a>）：</p>
+<blockquote>
+<p>Site reliability engineering (SRE) is a discipline that incorporates aspects of
+software engineering and applies that to operations whose goals are to
+create ultra-scalable and highly reliable software systems.</p>
+</blockquote>
+<p>我将其翻译翻译为中文：</p>
+<blockquote>
+<p>网站稳定性工程师是致力于打造「高扩展、高可用系统」，并将其贯彻为原则的软件工程师。</p>
+</blockquote>
+<p>从定义来看，DevOps 是文化、运动和惯例，而 SRE 是有严格任职要求的职位。
+文化是软性定义，文化有更多概念可以捏造，而 SRE 定义精准，就少了想象空间（也可能 SRE 门槛高 😄）。
+按 Google 给出的说法是，SRE 工程师实践了 DevOps 文化。这个观点没错，但是国内的 DevOps 逐步独立出 DevOps 工程师，
+所以在本文，我着重讨论的是 DevOps 工程师和 SRE 工程师两种职位对比。</p>
+<h2 id="两者产生背景和历史">两者产生背景和历史</h2>
+<p>互联网需求催生了 DevOps 。在最传统软件企业中，是只有 Dev 没有 Ops，
+那时 Ops 可能还是只是技术支持人员。开发按照瀑布流：需求分析、系统设计、开发、测试、交付、运行，
+传统软件发布是一个重量级操作。一旦发布，Dev 几乎不再直接操作。
+80 后可能会记得 QQ 每年都会有一个大版本发布吧，QQ 2000 / 2003 / 2004 等等。
+此时 Ops 不用和 Dev 直接高频接触，甚至针对一些纯离线业务，压根没有设立 Ops 这个岗位。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201809/qq-2004.png" alt="qq-2004.png"  />
+
+</p>
+<p>互联网浪潮之后，软件由传统意义上桌面软件演变为面向网站、手机应用。
+这时候业务核心逻辑，比如交易，社交行为都不在用户桌面完成，而是在服务器后端完成。
+这给互联网企业给予了极大操作空间：随时可以改变业务逻辑，这促进了业务快速迭代变更。
+但即便这样，Dev 和 Ops 是极其分裂的两个环节。Ops 不关心代码是如何运作的，Dev 不知道代码如何运行在服务器上。</p>
+<p>当业界还沉浸在可以每周发布版本喜悦中时，2009 年，Flicker 提出了每天发布 10+ 次概念，大大震撼了业界。
+Flicker 提出了几个核心理念：</p>
+<ul>
+<li>业务快速发展，需要拥抱变更，小步快跑</li>
+<li>Ops 目标不是为了网站稳定和快速，而是推动业务快速发展</li>
+<li>基于自动化工具提高 Dev / Ops 联接：代码版本管理、监控</li>
+<li>高效沟通：IRC / IM Robot（现在那些 ChatBot 套路，10 年前就被 Flicker 玩过了）</li>
+<li>信任、透明、高效、互助的沟通文化</li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201809/flicker.png" alt="flicker.png"  />
+
+</p>
+<p>原文 SlideShare 在这
+<a href="https://www.slideshare.net/jallspaw/10-deploys-per-day-dev-and-ops-cooperation-at-flickr">10+ Deploys Per Day: Dev and Ops Cooperation at Flickr</a></p>
+<p>真是让人难以想象，今天各种培训公司和一些知名大 V 在呼唤这些 DevOps 理念，
+竟然在 2009 年一份幻灯片中就展现淋漓尽致。经典总是不过时，在尘封下闪耀着智慧光芒。
+有些人将 DevOps 和运维自动化等同，这是只看到表象。
+DevOps 目标是提高业务系统交付速度，并为之提供相关工具、制度和服务。
+一些个人或培训机构添油加醋和衍生含义，都是围绕这 DevOps 本质而发散。</p>
+<p>接下来聊聊 SRE 历史， SRE 出现要晚一些。在 2003 年时候 Google 的 Ben Treynor
+招募了几个软件工程师，这个团队设立目的是帮助 Google 生产环境服务运行更稳定、健壮、可靠。
+不同于中小型规模公司，Google 服务于十几亿用户服务，短暂服务不可用会带来致命后果。
+因此 Google 走在了时代最前面，SRE 产生了。</p>
+<p>这个职位为大规模集群服务，小型团队不需要这样职位设定（可能也招不起真正 SRE 😊）。
+Google 在探索若干年之后，SRE 团队开始将自己心得体会写在线上，并在 2016 年将此书出版。</p>
+<h2 id="两者的职能不同">两者的职能不同</h2>
+<p>DevOps 文化，那么就没有一个具象职能要求。现在不少公司将 DevOps 职能单独抽取出来，称之为 DevOps 工程师。
+那让我们看看 DevOps 工程师关心什么：DevOps 文化目的是提交交付速度， DevOps 工程师就自然会关心软件 / 服务的整个生命周期。</p>
+<p>一个简单的公式：<code>速度 = 总量 / 时间</code>，添上工程行业术语，即 <code>交付速度 = （（功能特性 * 工程质量） / 交付时间） * 交付风险</code>。</p>
+<p>功能特性交给产品经理和项目经理管理，DevOps 工程师需要关心剩下几个因素：工程质量 / 交付时间 / 交付风险。
+DevOps 工程师职能如下：</p>
+<ul>
+<li>管理应用全生命周期（需求、设计、开发、QA、发布、运行）</li>
+<li>关注全流程效率提升，挖掘瓶颈点并将其解决</li>
+<li>自动化运维平台设计和研发工作（标准化、自动化、平台化）</li>
+<li>支持运维系统，包括 虚拟化技术、资源管理技术、监控技术、网络技术</li>
+</ul>
+<p>SRE 关键词是「高扩展性」「高可用性」。高扩展性是指当服务用户数量暴增时，
+应用系统以及支撑其服务（服务器资源、网络系统、数据库资源）可以在不调整系统结构，不强化机器本身性能
+，仅仅增加实例数量方式进行扩容。高可用性是指，应用架构中任何环节出现不可用时，比如应用服务、网关、数据库
+等系统挂掉，整个系统可以在可预见时间内恢复并重新提供服务。当然，既然是「高」可用，
+那么这个时间一般期望在分钟级别。SRE 职能可以概括为以下：</p>
+<ul>
+<li>为 应用、中间件、基础设施等提供 选型、设计、开发、容量规划、调优、故障处理</li>
+<li>为业务系统提供基于可用性、可扩展性考虑决策，参与业务系统设计和实施</li>
+<li>定位、处理、管理故障，优化导致故障发生相关部件</li>
+<li>提高各部件资源利用率</li>
+</ul>
+<h2 id="工作内容不同">工作内容不同</h2>
+<p>职责不同导致两个职位工作内容也不尽相同，我将 DevOps 工程师和 SRE 工程师职能列举如下：</p>
+<ul>
+<li>DevOps
+<ul>
+<li>设定应用生命管理周期制度，扭转流程</li>
+<li>开发、管理 开发工程师 /QA 工程师使用 开发平台系统</li>
+<li>开发、管理 发布系统</li>
+<li>开发、选型、管理 监控、报警系统</li>
+<li>开发、管理 权限系统</li>
+<li>开发、选型、管理 CMBD</li>
+<li>管理变更</li>
+<li>管理故障</li>
+</ul>
+</li>
+<li>SRE
+<ul>
+<li>管理变更</li>
+<li>管理故障</li>
+<li>制定 SLA 服务标准</li>
+<li>开发、选型、管理 各类中间件</li>
+<li>开发、管理 分布式监控系统</li>
+<li>开发、管理 分布式追踪系统</li>
+<li>开发、管理 性能监控、探测系统（dtrace、火焰图）</li>
+<li>开发、选型、培训 性能调优工具</li>
+</ul>
+</li>
+</ul>
+<p>很有趣的对比，DevOps 和 SRE 都会关心应用生命周期，特别是生命周期里面中变更和故障。
+但是 DevOps 工作内容是主要为开发链路服务，一个 DevOps Team 通常会提供一串工具链，
+这其中会包括：开发工具、版本管理工具、CI 持续交付工具、CD 持续发布工具、报警工具、故障处理。
+而 SRE Team 则关注更为关注变更、故障、性能、容量相关问题，会涉及具体业务，产出工具链会有：
+容量测量工具、Logging 日志工具、Tracing 调用链路跟踪工具、Metrics 性能度量工具、监控报警工具等。</p>
+<h2 id="devops-和-sre-关系">DevOps 和 SRE 关系</h2>
+<p>DevOps 首先是一种文化，后期逐渐独立成一个职位；SRE 一开始就明确是一个职位；
+不少同学把 DevOps 和 SRE 搞混，是被两者表象锁迷惑，看上去这两者都有的工具属性、自动化要求也相似。
+甚至有一些开发同学把这类运维工作都统一理解为：服务器 + 工具 + 自动化。这是盲人摸象，管中窥豹。</p>
+<p>从技能上来说，两者都需要较强的运维技能。
+在职业发展天花板上，DevOps 可能缺乏 SRE 在一些专业领域的技能：
+计算机体系结构能力；高吞吐高并发优化能力；可扩展系统设计能力；复杂系统设计能力；业务系统排查能力。
+两者都需要软实力，但是 SRE 面临复杂度更高，挑战更大，要求也更高：</p>
+<ul>
+<li>分析问题、解决问题能力</li>
+<li>对业务系统更了解</li>
+<li>具备高并发、高可用系统设计实施经验</li>
+<li>对整个系统链路有更全面认识</li>
+</ul>
+<p>DevOps 具有普遍意义，现代互联网公司都需要 DevOps，但是并非所有团队对高可用性、高扩展性存在需求，它们不需要 SRE。
+DevOps 工程师掌握相关技能之后，也有机会可以发展为 SRE 工程师。
+而一位合格 SRE 工程师，在有选择情况下面，我相信不会去转型为 DevOps 工程师。</p>
+<p>从专业背景来看，无论是 DevOps 还是 SRE 工程师，都需要研发背景，前者需要开发工具链，后者需要有较强架构设计经验。
+如果有运维工程师想转型成为 DevOps 或者 SRE，那么需要补上相关技术知识。
+毕竟，不是会搭建一套 Jenkins + Kubernetes 就可以自称为 DevOps / SRE 工程师。</p>
+<p>怎么样，有没有解开这几个常见误区呢？希望你看到这里可以豁然开朗，最后附上两个工程师的技能点，
+期望有志成为这两种工程师的同学，加油努力。</p>
+<h2 id="附录技能点">附录：技能点</h2>
+<p>DevOps：</p>
+<ul>
+<li>Operator 技能
+<ul>
+<li>Linux Basis
+<ul>
+<li>基本命令操作</li>
+<li>Linux FHS（Filesystem Hierarchy Standard 文件系统层次结构标准）</li>
+<li>Linux 系统（差异、历史、标准、发展）</li>
+</ul>
+</li>
+<li>脚本
+<ul>
+<li>Bash / Python</li>
+</ul>
+</li>
+<li>基础服务
+<ul>
+<li>DHCP / NTP / DNS / SSH / iptables / LDAP / CMDB</li>
+</ul>
+</li>
+<li>自动化工具
+<ul>
+<li>Fabric / Saltstack / Chef / Ansible</li>
+</ul>
+</li>
+<li>基础监控工具
+<ul>
+<li>Zabbix / Nagios / Cacti</li>
+</ul>
+</li>
+<li>虚拟化
+<ul>
+<li>KVM 管理 / XEN 管理 / vSphere 管理 / Docker</li>
+<li>容器编排 / Mesos / Kubernetes</li>
+</ul>
+</li>
+<li>服务
+<ul>
+<li>Nginx / F5 / HAProxy / LVS 负载均衡</li>
+<li>常见中间件 Operate（启动、关闭、重启、扩容）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Dev
+<ul>
+<li>语言
+<ul>
+<li>Python</li>
+<li>Go（可选）</li>
+<li>Java（了解部署）</li>
+</ul>
+</li>
+<li>流程和理论
+<ul>
+<li>Application Life Cycle</li>
+<li>12 Factor</li>
+<li>微服务概念、部署、生命周期</li>
+<li>CI 持续集成 / Jenkins / Pipeline / Git Repo Web Hook</li>
+<li>CD 持续发布系统</li>
+</ul>
+</li>
+<li>基础设施
+<ul>
+<li>Git Repo / Gitlab / Github</li>
+<li>Logstash / Flume 日志收集</li>
+<li>配置文件管理（应用、中间件等）</li>
+<li>Nexus / JFrog / Pypi 包依赖管理</li>
+<li>面向 开发 / QA 开发环境管理系统</li>
+<li>线上权限分配系统</li>
+<li>监控报警系统</li>
+<li>基于 Fabric / Saltstack / Chef / Ansible 自动化工具开发</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>SRE：</p>
+<ul>
+<li>语言和工程实现
+<ul>
+<li>深入理解开发语言（假设是 Java）
+<ul>
+<li>业务部门使用开发框架</li>
+<li>并发、多线程和锁</li>
+<li>资源模型理解：网络、内存、CPU</li>
+<li>故障处理能力（分析瓶颈、熟悉相关工具、还原现场、提供方案）</li>
+</ul>
+</li>
+<li>常见业务设计方案和陷阱（比如 Business Modeling，N+1、远程调用、不合理 DB 结构）</li>
+<li>MySQL / Mongo OLTP 类型查询优化</li>
+<li>多种并发模型，以及相关 Scalable 设计</li>
+</ul>
+</li>
+<li>问题定位工具
+<ul>
+<li>容量管理</li>
+<li>Tracing 链路追踪</li>
+<li>Metrics 度量工具</li>
+<li>Logging 日志系统</li>
+</ul>
+</li>
+<li>运维架构能力
+<ul>
+<li>Linux 精通，理解 Linux 负载模型，资源模型</li>
+<li>熟悉常规中间件（MySQL Nginx Redis Mongo ZooKeeper 等），能够调优</li>
+<li>Linux 网络调优，网络 IO 模型以及在语言里面实现</li>
+<li>资源编排系统（Mesos / Kubernetes）</li>
+</ul>
+</li>
+<li>理论
+<ul>
+<li>容量规划方案</li>
+<li>熟悉分布式理论（Paxos / Raft / BigTable / MapReduce / Spanner 等），能够为场景决策合适方案</li>
+<li>性能模型（比如 Pxx 理解、Metrics、Dapper）</li>
+<li>资源模型（比如 Queuing Theory、负载方案、雪崩问题）</li>
+<li>资源编排系统（Mesos / Kurbernetes）</li>
+</ul>
+</li>
+</ul>
+<h2 id="ref">Ref</h2>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/DevOps">DevOps - 维基百科，自由的百科全书</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Site_reliability_engineering">Site reliability engineering - Wikipedia</a></li>
+<li><a href="http://skill-map.stuq.org/">StuQ 技能图谱</a></li>
+<li><a href="https://12factor.net/zh_cn/">The Twelve-Factor App （简体中文）</a></li>
+<li><a href="https://landing.google.com/sre/book/chapters/communication-and-collaboration.html">Google - Site Reliability Engineering</a></li>
+<li><a href="https://www.youtube.com/watch?v=uTEL8Ff1Zvk">What&rsquo;s the Difference Between DevOps and SRE? - YouTube</a></li>
+</ul>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>👷如何做年前大扫除</title>
+      <link>https://blog.alswl.com/2017/01/spring-cleaning/</link>
+      <pubDate>Tue, 03 Jan 2017 23:20:50 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2017/01/spring-cleaning/</guid>
+      <description>今年过年特别早，离春节只剩下二十多天了。 为期 7 天的春节里，工程师们不上班，那万一线上业务出现了故障怎么办？ 大公司的朋友们会安排专门的人进行值班（此处心疼一下那些需要大年三十还要值班保证高峰的工程师们）， 而作为创业团队人少，难做到在线值守，就需要对线上进行一些整理盘点，找出潜在问题，为春节长假做一些准备。 我们称之为年前大扫除。 大扫除需要做些什么呢，且听我一一道来。 PS: 冷知识，大扫除英文是 spring cleani</description>
+      <content:encoded><![CDATA[<p>今年过年特别早，离春节只剩下二十多天了。
+为期 7 天的春节里，工程师们不上班，那万一线上业务出现了故障怎么办？
+大公司的朋友们会安排专门的人进行值班（此处心疼一下那些需要大年三十还要值班保证高峰的工程师们），
+而作为创业团队人少，难做到在线值守，就需要对线上进行一些整理盘点，找出潜在问题，为春节长假做一些准备。</p>
+<p>我们称之为年前大扫除。</p>
+<p>大扫除需要做些什么呢，且听我一一道来。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201701/saber.jpeg" alt="201701/saber.jpeg"  />
+
+</p>
+<p>PS: 冷知识，大扫除英文是 spring cleaning，所以春节大扫除是 Spring Festival spring cleaning。</p>
+<h2 id="大扫除的内容">大扫除的内容</h2>
+<p>大扫除其实是一个查漏补缺+囤积粮草的事情。</p>
+<p>查漏补缺，即找出潜在的问题。这些问题平时可能不会特意去查看，
+借助大扫除这个运动，恰好进行盘点。
+计算机的世界里，有一个方法论非常好使，在极多场景可以见到其身影：分层。
+TCP 的七层模型，架构设计的 N 层 模型，都是对分层思想的使用。
+查漏补缺也不例外，我们可以按照业务访问流程，将需要排查的问题拆分为：业务、应用、中间件、网络、物理、存储 etc。</p>
+<p>通过分层，不仅仅完成了自上而下地遍历整个技术栈，也同时将不同模块的内容交给不同的责任方，
+确保任务的分割。</p>
+<p>分完模块，还要告知大家如何具体查找问题。
+这里我介绍一个通用的方法：USE<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>：</p>
+<blockquote>
+<p>For every resource, check Utilization, Saturation, and Errors.</p>
+</blockquote>
+<p>USE 方法是从 Brend Gregg 那里学来的。
+在技术设施的领域里，Resource 即是指各种类型的资源，比如 CPU、磁盘、网络、内存，
+Utilization 指的是使用率，可以简单分为百分制和非百分制。
+Saturation 是指饱和率，支持 queue 的资源，就会有这个指标。
+Error 即错误，可以从错误统计和日志得知。<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<p>业务领域里面，USE 也有相对应的含义。以审核系统举例，
+对应的 USE 可以理解为「审核应用实例跑的 CPU 占用如何，任务队列是否塞满，业务日志是否有异常」。</p>
+<p>除了 USE 里面提到的指标，还有几个指标特别重要：
+TPS 、Latency 和 Capacity。
+这几个指标对性能敏感的尤为重要。
+检查 USE 的同时，我们必须关注一下这三个指标，
+确保 TPS / Latency 是否满足我们预期的 SLA。
+哦？压根没有制定 SLA，不要慌，和历史数据对比，先制定一个粗糙的 SLA。
+哦？连历史数据都没有？那只能找你 Leader 让他考量一下了。</p>
+<p>负责每个子系统的同学，记得检查时候将这些收集到的数据列下来。
+在 Metric 做的还不够完善时候，这些数据也是很宝贵的。</p>
+<p>在我看来，检查 USE / TPS / Latency ，<strong><strong>最大的作用是将抽象的可用性指标描述为几个易于理解的数值进行量化。
+一旦能够量化，就可以对比、观测、监控，并且 Review 起来也异常轻松</strong></strong>。</p>
+<h2 id="应对方案">应对方案</h2>
+<p>检查出问题之后，就要考虑应对了。时间急任务多，我们的应对方案是是囤积粮草 / 写救命笔记。</p>
+<p>囤积粮草比较好理解，<strong><strong>基于已有的容量预估，为容易出问题的系统提供一份冗余</strong></strong>。
+有些团队平时做基础设施就比较，做 Scale 就是小轻松。
+那平时 Scalable 做的不好的朋友，就只能将应用实例多开一些，以避免临时出现的流量波动。</p>
+<p>无状态的服务好搞，有状态的 DB 就很难在短时间内做 Scale。
+检查这些服务的容量，如果重点资源临近阈值，比如 DB 的硬盘资源，缓存的内存容量。
+核心服务的余量在检查中真的发现问题的话，那也只能短期内做扩容了。</p>
+<p>对于小团队来说，春节长假的特殊性在于响应会变慢甚至是联系不上。
+一旦线上有异常，可能找不到合适的人员来进行处理。
+所以第二条写救命笔记则更为重要。
+「Google SRE」里面有个小段子，一个绝对不能被按的按钮，
+这个按钮会清空内存数据，在飞行过程中被宇航员按了。幸亏美女工程师（下图）写了相关的救命手册，
+专门写了针对这种情况的操作，救了这些宇航员的命。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201701/sre.jpeg" alt="201701/sre.jpeg"  />
+
+</p>
+<p>图片来自 「Google SRE」</p>
+<p>从这个故事里面可以看到，一个紧急操作手册是多么重要。
+<strong><strong>所以在大扫除期间，我们还要补一补平时的文档，将一些常见问题 / 常规操作记录下来。</strong></strong>
+步骤需要细致到能让让每个远程值班的同学做到 step by step 操作。</p>
+<hr />
+<p>啰嗦了这么多，相信大家对大扫除要做些什么已经有所印象了，祝大家过个好年，流量涨涨涨，还能平平安安的。</p>
+<div class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn:1">
+<p>[The USE Method] <a href="http://www.brendangregg.com/usemethod.html">http://www.brendangregg.com/usemethod.html</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>[USE Method: Linux Performance Checklist] <a href="http://www.brendangregg.com/USEmethod/use-linux.html">http://www.brendangregg.com/USEmethod/use-linux.html</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>tingdownload on Log4D</title>
+    <link>https://blog.alswl.com/tags/tingdownload/</link>
+    <description>Recent content in tingdownload on Log4D</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Tue, 03 Jan 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/tingdownload/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>baidu ting下载音乐脚本</title>
+      <link>https://blog.alswl.com/2012/01/tingdownload/</link>
+      <pubDate>Tue, 03 Jan 2012 00:00:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2012/01/tingdownload/</guid>
+      <description>度娘终于干了一件好事，Baidu Ting上线了， 正版音乐免费下载，类似于谷歌音乐。 关于音乐版权和免费的问题， 有很多问题需要取讨论， 比如说这种商业模式是否对传统唱片业产生冲击又或是有积极影响？ 作为普通消费者，暂时不用考虑这些问题，先享受这些服务好了。 Baidu Ting的音乐质量是128KBps，音质算好，里面的idv3信息也勉强可以，有: 歌名 歌手 部分专辑名（偶尔也出现&amp;quot;201-8月新歌快递&amp;quo</description>
+      <content:encoded><![CDATA[<p>度娘终于干了一件好事，<a href="http://ting.baidu.com">Baidu Ting</a>上线了，
+正版音乐免费下载，类似于<a href="http://www.google.cn/music">谷歌音乐</a>。 关于音乐版权和免费的问题， 有很多问题需要取讨论，
+比如说这种商业模式是否对传统唱片业产生冲击又或是有积极影响？ 作为普通消费者，暂时不用考虑这些问题，先享受这些服务好了。</p>
+<p>Baidu Ting的音乐质量是128KBps，音质算好，里面的idv3信息也勉强可以，有:</p>
+<ul>
+<li>歌名</li>
+<li>歌手</li>
+<li>部分专辑名（偶尔也出现&quot;201-8月新歌快递&quot;这种比较山寨的字）</li>
+<li>部分唱片封面图片</li>
+</ul>
+<p>虽然比不上谷歌音乐连歌曲风格都准备好了，但是比杂乱无章的那些音乐mp3要好太多了。</p>
+<h2 id="自动下载脚本tingdownload">自动下载脚本tingdownload</h2>
+<p>早上下了几首音乐，就顺手写了一个脚本，用来批量从Badu Ting下载音乐。</p>
+<p>代码在<a href="https://github.com/alswl/tingdownload">github-tingdownload</a></p>
+<h2 id="需要">需要</h2>
+<ul>
+<li>Python 2 (仅在Python2.7下测试)</li>
+<li>BeautifulSoup(已包含在目录下)</li>
+<li>simplejson（已包含在目录下)</li>
+<li>一点点Python基础</li>
+<li>Linux/Windows（我在Linux没问题，Windows应该也可以）</li>
+</ul>
+<h2 id="使用方法">使用方法</h2>
+<p>在Shell(命令行)里输入下面随便一个命令，就会在当前目录下面出现 <code>musics</code> 文件夹， 里面就有下载好的音乐。</p>
+<pre><code># 使用说明
+usage: tingdownload.py [-h] [--input INPUT] [Keyword [Keyword ...]]
+</code></pre>
+<p>A script to download music from ting.baidu.com.</p>
+<p>positional arguments:</p>
+<p>Keyword</p>
+<p>optional arguments:</p>
+<p>-h, &ndash;help show this help message and exit<br />
+&ndash;input INPUT, -i INPUT<br />
+a list file to input musics</p>
+<pre><code># 示例
+python tingdownload.py 老男孩 #单个文件下载
+./tingdownload.py 老男孩 #单个文件下载（给python文件加上可执行权限）
+python tingdownload.py 老男孩 Raise\n Me\n Up # 多文件名，如果有空格，请记得加上空格反转'\n'
+</code></pre>
+<p>批量下载的话，可以准备一个列表文件，每个歌曲名用回车隔开，如下：</p>
+<pre><code>还过得去
+不敢太幸福
+小情歌
+爱情靠不住
+我爱我
+你可以不用给我答案     金莎
+没有这首歌         后弦
+        回不去了吗         萧亚轩
+        有些事现在不做 一辈子都不会做了  五月天
+        第一夫人    张杰
+</code></pre>
+<p>将这个list文件作为输入传入执行脚本：</p>
+<pre><code>python2.7 tingdownload.py --input ~/music.txt
+</code></pre>
+<p>运行结果如下，列出四种情况：</p>
+<ul>
+<li>
+<p>下载成功，如果文件已经存在，会跳过</p>
+</li>
+<li>
+<p>下载失败，由于网络原因</p>
+</li>
+<li>
+<p>下载失败，由于关键词不准确而出现太多结果</p>
+</li>
+<li>
+<p>下载失败，没有关键词匹配的结果</p>
+<p>█▓▒░alswl@x201█▓▒░ ~/dev/project/python/tingdownload/ ./tingdownload.py 黄昏\ 周传雄 考试什么 &ndash;input ~/a.txt</p>
+<blockquote>
+<p>Start download 黄昏 周传雄&hellip;</p>
+</blockquote>
+<h1 id="info-file-homealswldevprojectpythontingdownloadmusics周传雄-黄昏mp3-exists">Info: File &ldquo;/home/alswl/dev/project/python/tingdownload/musics/周传雄-黄昏.mp3&rdquo; exists.</h1>
+<blockquote>
+<p>Start download 考试什么&hellip;</p>
+</blockquote>
+<h1 id="info-file-homealswldevprojectpythontingdownloadmusics徐良-考试什么的去死吧mp3-exists">Info: File &ldquo;/home/alswl/dev/project/python/tingdownload/musics/徐良-考试什么的去死吧.mp3&rdquo; exists.</h1>
+<blockquote>
+<p>Start download 还过得去&hellip;</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>Start download 不敢太幸福&hellip;</p>
+</blockquote>
+<blockquote>
+<p>Start download 小情歌&hellip;</p>
+</blockquote>
+<h1 id="failed-too-more-result-found-for-keyword-小情歌">Failed: Too more result found for keyword 小情歌.</h1>
+<blockquote>
+<p>Start download 爱情靠不住&hellip;</p>
+</blockquote>
+<p>== Download success (4) ==</p>
+<p>黄昏 周传雄</p>
+<p>考试什么</p>
+<p>还过得去</p>
+<p>不敢太幸福</p>
+<p>== Download failed for too many result (1) ==</p>
+<p>小情歌</p>
+<p>Enjoy it.</p>
+]]></content:encoded>
+    </item>
+    
+  </channel>
+</rss>
