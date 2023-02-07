@@ -15,7 +15,7 @@ categories: [fun]
 
 如上图所示，在本文点击「▶️ Apple Music」按钮，会打开 Apple Music 网站，点左侧的「Open in Music」即可在 Apple Music 打开。
 
-PS：如果把这些链接复制到 Notes 里面，可以直接在 Apple Music 打开。
+PS：iPhone 上点击链接（Notes / Safari 等）会直接在 Apple Music 打开。
 
 
 
