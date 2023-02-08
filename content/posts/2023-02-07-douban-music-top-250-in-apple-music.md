@@ -458,6 +458,8 @@ Linkin Park / 2003-03-25 / Enhanced / Audio CD / 摇滚
 
 ![](../../static/images/202302/1675664271308-ce8eec50-4589-4721-b627-db0f2b77295d.jpeg)
 
+[▶️ Apple Music](https://music.apple.com/cn/album/meteora/528435845?l=en)
+
 
 ## [Back To Bedlam \| 不安於室](https://music.douban.com/subject/1401550/)
 
@@ -465,7 +467,9 @@ James Blunt / 2004 / Explicit Lyrics / Audio CD / 流行
 
 9.0 ( 43229人评价 )
 
-[▶️ Apple Music](https://music.apple.com/cn/album/meteora/528435845?l=en)
+![img](../../static/images/202302/s1461123.jpg)
+
+[▶️ Apple Music](https://music.apple.com/cn/album/back-to-bedlam/714602877?l=en)
 
 
 ## [苏打绿同名专辑](https://music.douban.com/subject/1421488/)
@@ -474,7 +478,9 @@ James Blunt / 2004 / Explicit Lyrics / Audio CD / 流行
 
 8.9 ( 53849人评价 )
 
-[▶️ Apple Music](https://music.apple.com/cn/album/back-to-bedlam/714602877?l=en)
+![img](../../static/images/202302/s2360790.jpg)
+
+[▶️ Apple Music](https://music.apple.com/cn/album/%E8%98%87%E6%89%93%E7%B6%A0%E5%90%8C%E5%90%8D%E5%B0%88%E8%BC%AF/1443094831?l=en)
 
 
 ## [静茹&情歌 别再为他流泪 \| 别再为他流泪](https://music.douban.com/subject/3427630/)
@@ -483,7 +489,7 @@ James Blunt / 2004 / Explicit Lyrics / Audio CD / 流行
 
 8.5 ( 46781人评价 )
 
-[▶️ Apple Music](https://music.apple.com/cn/album/%E8%98%87%E6%89%93%E7%B6%A0%E5%90%8C%E5%90%8D%E5%B0%88%E8%BC%AF/1443094831?l=en)
+![img](../../static/images/202302/s3551584.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E5%88%AB%E5%86%8D%E4%B8%BA%E4%BB%96%E6%B5%81%E6%B3%AA/1095630068?l=en)
 
@@ -1102,6 +1108,7 @@ Jack Johnson / 2005-03-22 / 专辑 / Audio CD / 民谣
 
 ![](../../static/images/202302/1675664293030-b50a5320-1358-4402-be8c-cc4dd938077f.jpeg)
 
+[▶️ Apple Music](https://music.apple.com/cn/album/%E4%B8%8D%E6%83%B3%E6%94%BE%E6%89%8B/1443493887?l=en)
 
 ## [我的歌声里](https://music.douban.com/subject/5395505/)
 
@@ -1109,7 +1116,7 @@ Jack Johnson / 2005-03-22 / 专辑 / Audio CD / 民谣
 
 数字(Digital) / 流行 8.7 ( 46762人评价 )
 
-[▶️ Apple Music](https://music.apple.com/cn/album/%E4%B8%8D%E6%83%B3%E6%94%BE%E6%89%8B/1443493887?l=en)
+![img](../../static/images/202302/s9127241.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E6%88%91%E7%9A%84%E6%AD%8C%E8%81%B2%E8%A3%A1-deluxe-version/1442661002?l=en)
 
@@ -1272,6 +1279,8 @@ nil
 
 8.2 ( 34393人评价 )
 
+![img](../../static/images/202302/s1876827.jpg)
+
 [▶️ Apple Music](https://music.apple.com/cn/album/my-love/544154095?l=en)
 
 
@@ -1280,6 +1289,8 @@ nil
 王菲 / 2002 / 选集 / CD / 流行 
 
 9.5 ( 35275人评价 )
+
+![img](../../static/images/202302/s2951748.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E4%BA%B2%E4%BA%B2/1095245171?l=en)
 
@@ -1290,7 +1301,7 @@ nil
 
 8.8 ( 31725人评价 )
 
-nil
+![img](../../static/images/202302/s4644120.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/stranger-under-my-skin/1443711302?l=en)
 
@@ -1436,13 +1447,19 @@ nil
 ![](../../static/images/202302/1675664325299-f6c103fd-fd57-4556-b4ec-a4fc6280238b.jpeg)
 
 
+
+[▶️ Apple Music](https://music.apple.com/cn/album/%E9%BB%91%E5%A4%A2/158796449?l=en)
+
+
 ## [不能说的秘密 \| 不能說的秘密](https://music.douban.com/subject/2164654/)
 
 周杰倫,Terdsak Janpan,詹宇豪,陳承麒,黃婉琦,姚蘇蓉,黃俊郎,江語晨,長榮交響樂團 / 2007-08-13 / Soundtrack / CD / 原声 
 
 9.1 ( 45209人评价 )
 
-[▶️ Apple Music](https://music.apple.com/cn/album/%E9%BB%91%E5%A4%A2/158796449?l=en)
+![img](../../static/images/202302/s2652097.jpg)
+
+[▶️ Apple Music](https://music.apple.com/cn/album/%E4%B8%8D%E8%83%BD%E8%AA%AC%E7%9A%84%E7%A7%98%E5%AF%86-original-soundtrack/1624051140?l=en)
 
 
 ## [丝路 \| 通往爱的路途](https://music.douban.com/subject/1427941/)
@@ -1451,7 +1468,9 @@ nil
 
 8.3 ( 32166人评价 )
 
-[▶️ Apple Music](https://music.apple.com/cn/album/%E4%B8%8D%E8%83%BD%E8%AA%AC%E7%9A%84%E7%A7%98%E5%AF%86-original-soundtrack/1624051140?l=en)
+![img](../../static/images/202302/s1966952.jpg)
+
+[▶️ Apple Music](https://music.apple.com/cn/album/%E7%B5%B2%E8%B7%AF/151338382?l=en)
 
 
 ## [All The Lost Souls](https://music.douban.com/subject/2153935/)
@@ -1460,7 +1479,9 @@ James Blunt / 2007-09-18 / Import / Audio CD / 流行
 
 8.6 ( 26484人评价 )
 
-[▶️ Apple Music](https://music.apple.com/cn/album/%E7%B5%B2%E8%B7%AF/151338382?l=en)
+![img](../../static/images/202302/s2609413.jpg)
+
+[▶️ Apple Music](https://music.apple.com/cn/album/all-the-lost-souls-deluxe/714586416?l=en)
 
 
 ## [F.I.R.](https://music.douban.com/subject/1408794/)
@@ -1469,7 +1490,9 @@ James Blunt / 2007-09-18 / Import / Audio CD / 流行
 
 8.9 ( 41045人评价 )
 
-[▶️ Apple Music](https://music.apple.com/cn/album/all-the-lost-souls-deluxe/714586416?l=en)
+![img](../../static/images/202302/s4124010.jpg)
+
+
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E9%A3%9B%E5%85%92%E6%A8%82%E5%9C%98/255920685?l=en)
 
@@ -1621,6 +1644,8 @@ GALA / 2011-03-24 / 专辑 / CD / 摇滚
 
 9.3 ( 30585人评价 )
 
+![img](../../static/images/202302/s3268875.jpg)
+
 [▶️ Apple Music](https://music.apple.com/cn/album/prisoner-of-love-ep/1444873685?l=en)
 
 
@@ -1629,6 +1654,8 @@ GALA / 2011-03-24 / 专辑 / CD / 摇滚
 The Innocence Mission / 2004 / 专辑 / CD / 民谣 
 
 8.5 ( 24692人评价 )
+
+![img](../../static/images/202302/s1506405.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E5%90%89%E4%BB%96%E6%89%8B/152197399?l=en)
 
@@ -1639,6 +1666,8 @@ Timbaland,OneRepublic / 2007-11-06 / Single / Audio CD / 放克/灵歌/R&B
 
 9.2 ( 32971人评价 )
 
+![img](../../static/images/202302/s6780751.jpg)
+
 [▶️ Apple Music](https://music.apple.com/cn/album/now-the-day-is-over/270127395?l=en)
 
 
@@ -1648,7 +1677,9 @@ Timbaland,OneRepublic / 2007-11-06 / Single / Audio CD / 放克/灵歌/R&B
 
 9.4 ( 26218人评价 )
 
-nil
+![img](../../static/images/202302/s3850703.jpg)
+
+[▶️ Apple Music](https://music.apple.com/cn/album/%E9%98%BF%E8%8F%B2%E6%AD%A3%E5%82%B3/1443424435?l=en)
 
 
 ## [跨时代](https://music.douban.com/subject/4820650/)
@@ -1657,7 +1688,7 @@ nil
 
 7.8 ( 41601人评价 )
 
-[▶️ Apple Music](https://music.apple.com/cn/album/%E9%98%BF%E8%8F%B2%E6%AD%A3%E5%82%B3/1443424435?l=en)
+![img](../../static/images/202302/s4364499.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E8%B7%A8%E6%99%82%E4%BB%A3/536247746?l=en)
 
@@ -1809,6 +1840,8 @@ Lily Allen / 2009-02-09 / 专辑 / Audio CD / 流行
 
 8.2 ( 24122人评价 )
 
+![](../../static/images/202302/s4716636.jpg)
+
 [▶️ Apple Music](https://music.apple.com/cn/album/%E9%99%AA%E6%88%91%E6%AD%8C%E5%94%B1-live/1461050682?l=en)
 
 
@@ -1817,6 +1850,8 @@ Lily Allen / 2009-02-09 / 专辑 / Audio CD / 流行
 手嶌葵 / 2008-03-05 / Import / CD / 流行 
 
 9.3 ( 24179人评价 )
+
+![img](../../static/images/202302/s2969728.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/its-not-me-its-you/732024535?l=en)
 
@@ -1827,6 +1862,8 @@ Lily Allen / 2009-02-09 / 专辑 / Audio CD / 流行
 
 8.9 ( 32777人评价 )
 
+![img](../../static/images/202302/s4008894.jpg)
+
 [▶️ Apple Music](https://music.apple.com/cn/album/la-vie-en-rose-i-love-cinemas/1609484079?l=en)
 
 
@@ -1836,6 +1873,8 @@ Lily Allen / 2009-02-09 / 专辑 / Audio CD / 流行
 
 8.3 ( 23581人评价 )
 
+![img](../../static/images/202302/s2616588.jpg)
+
 nil
 
 
@@ -1844,6 +1883,8 @@ nil
 范晓萱 / 2004 / 专辑 / CD / 流行 
 
 8.7 ( 22928人评价 )
+
+![img](../../static/images/202302/s1399764.jpg)
 
 nil
 
@@ -2008,6 +2049,8 @@ nil
 
 7.9 ( 22531人评价 )
 
+![img](../../static/images/202302/s4039256.jpg)
+
 [▶️ Apple Music](https://music.apple.com/cn/album/%E4%B8%96%E7%95%8C/1542187294?l=en)
 
 
@@ -2016,6 +2059,8 @@ nil
 Nirvana / 2002-10-29 / Extra tracks / Audio CD / 摇滚 
 
 9.3 ( 22711人评价 )
+
+![img](../../static/images/202302/s3020073.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E4%B8%83%E5%A4%A9/1601755025?l=en)
 
