@@ -49,7 +49,7 @@ Coldplay / 2008-06-17 / 专辑 / CD / 摇滚
 
 ![](../../static/images/202302/1675664205663-d9bf1dcd-cdf6-4130-aaae-860132d9b084.png)
 
-[](https://music.apple.com/cn/album/%E8%8F%AF%E9%BA%97%E7%9A%84%E5%86%92%E9%9A%AA/1598245172?l=en)
+[▶️ Apple Music](https://music.apple.com/cn/album/%E8%8F%AF%E9%BA%97%E7%9A%84%E5%86%92%E9%9A%AA/1598245172?l=en)
 
 
 ## [范特西 \| Fantasy](https://music.douban.com/subject/1403307/)
