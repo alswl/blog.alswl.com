@@ -33,7 +33,7 @@ Asset prefix:
 **Wechat mp link process**:
 
 
-- sed
+- <del>sed</del>
 
   ```
   MD=content/some-md.md
@@ -65,7 +65,7 @@ Asset prefix:
 **Markdown to GFM**:
 
 ```bash
-cat content/some-md.md | pandoc -f markdown_mmd -t gfm --wrap=none | pbcopy
+cat content/some-md.md | pandoc -f markdown_mmd -t gfm+implicit_figures --wrap=none | pbcopy
 ```
 
 **Image size nomalize**:
@@ -78,6 +78,5 @@ for i in $(ls); do convert $i -resize 1000x1000\> $i; donen
 **Replace URL**
 
 ```
-c content/posts/your.md | gsed 's#../../static/images#https://d05fae.dijingchao.com#g' C
-c content/posts/your.md | gsed 's#../../static/images#https://d05fae.dijingchao.com#g' | pandoc -f markdown_mmd -t gfm --wrap=none C
+c content/posts/your.md | gsed 's#../../static/images#https://d05fae.dijingchao.com#g' | pandoc -f markdown_mmd -t gfm+implicit_figures --wrap=none C
 ```
