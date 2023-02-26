@@ -5,7 +5,7 @@ date: {{ .Date }}
 categories: [""]
 tags: [""]
 draft: true
-typora-copy-images-to: ../../static/images/{{ now.Format "2006-01-02" }}
+typora-copy-images-to: ../../static/images/{{ now.Format "200601" }}
 
 ---
 
