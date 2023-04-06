@@ -6,7 +6,1290 @@
     <description>Recent content in Posts on Log4D</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sun, 26 Feb 2023 18:50:50 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/posts/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 03 Apr 2023 11:34:18 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/posts/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>实用 Web API 规范</title>
+      <link>https://blog.alswl.com/2023/04/web-api-guidelines/</link>
+      <pubDate>Mon, 03 Apr 2023 11:34:18 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2023/04/web-api-guidelines/</guid>
+      <description>当开始创建一个新系统，或参与一个新团队或项目时，都会面临一个简单却深刻的问题：这个系统（Web Server）的 API 是否有设计规范？ image by stable difussion, prompt by alswl 这个问题困扰了我很长时间，始于我求学时期，每一次都需要与团队成员进行交流和讨论。 从最初的自由风格到后来的 REST，我经常向项目组引用 Github v3 和 Foursqure API（已经无法访问，暴露年龄） 文档。 然而，在实践过程中，仍然会有一些与实际工作或公司通用规范不匹配的情况， 这时候我需</description>
+      <content:encoded><![CDATA[<p>当开始创建一个新系统，或参与一个新团队或项目时，都会面临一个简单却深刻的问题：这个系统（Web Server）的 API 是否有设计规范？</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/202304/pyramid.png" alt="pyramid"  />
+
+</p>
+<p><small>image by stable difussion, prompt by alswl</small></p>
+<p>这个问题困扰了我很长时间，始于我求学时期，每一次都需要与团队成员进行交流和讨论。
+从最初的自由风格到后来的 REST，我经常向项目组引用 <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28">Github v3</a> 和
+Foursqure API（已经无法访问，暴露年龄） 文档。
+然而，在实践过程中，仍然会有一些与实际工作或公司通用规范不匹配的情况，
+这时候我需要做一些补充工作。最终，我会撰写一个简要的 <code>DEVELOPMENT.md</code> 文档，以描述设计方案。</p>
+<p>但我对该文档一直有更多的想法，它还不够完善。因此，我想整理出一份<mark>简单（Simple）而实用（Pragmatic）</mark>的 Web API 最佳实践，也就是本文。</p>
+<h2 id="为什么我们需要-api-统一规范">为什么我们需要 API 统一规范</h2>
+<p>这个问题似乎很明显，但是深入剖析涉及团队协作效率和工程设计哲学。</p>
+<p>API（Application Programming Interface，应用程序编程接口）是不同软件系统之间交互的桥梁。在不同软件系统之间进行通信时，
+API 可以通过标准化的方式进行数据传输和处理，从而实现各种应用程序的集成。</p>
+<p>当我们开始撰写 API 文档时，就会出现一个范式（Design Pattern），这是显式还是隐式的，
+是每个人一套还是公用同一套。这就像我们使用统一的 USB 接口一样，统一降低了成本，避免了可能存在的错误。具体来说，这有以下几个原因：</p>
+<ul>
+<li>容易理解，提高效率：服务提供方和消费方使用统一形式、结构和使用方式，以及统一的生产消费协议，从而减少沟通成本。</li>
+<li>专家经验：它包含最佳的工程实践，常见场景都有对应的解决方案，避免了每个人都要重新思考整个 API 系统。
+例如，如何处理 API 缓存？如何进行鉴权？如何进行数据格式处理？</li>
+<li>面向未来的扩展，需要稳定的协议：协议是抽象的、独立于实现的，不是每个人都具备
+设计面向不确定系统的能力，一些广泛使用的技术则为更广泛的场景做了规划。</li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/202304/why.png" alt="why"  />
+
+</p>
+<p><small>image by alswl</small></p>
+<p>虽然使用统一规范确实有一些成本，需要框架性的了解和推广，但我相信在大部分场景下，
+统一规范所带来的收益远远高于这些成本。</p>
+<p>然而，并非所有的情况下都需要考虑 API 规范。对于一些短生命周期的项目、影响面非常小的内部项目和产品，
+可能并不需要过多关注规范。 此外，在一些特殊的业务场景下，
+协议底层可能会发生变化，这时候既有的规范可能不再适用。但即使如此，我仍然建议重新起草新的规范，而不是放弃规范不顾。</p>
+<h2 id="规范的原则">规范的原则</h2>
+<p>在制定 API 规范时，我们应该遵循一些基本原则，以应对技术上的分歧，我总结了三个获得广泛认可的原则：</p>
+<ul>
+<li>简洁：简洁是抵抗复杂性的最直接和最有效的策略，利用简洁原则降低复杂度，避免复杂性的滋生和扩散；</li>
+<li>一致性：统一的设计模式和延续的设计风格有助于降低工程成本和工程师的心理负担；</li>
+<li>遵循现实：遵循现有工程领域的抽象和分层（例如 HTTP，REST，RBAC，OIDC 等），不要自己发明新的概念，
+要始终思考这个问题是否只有自己遇到了（答案肯定是否定的）。</li>
+</ul>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/202304/principle.png" alt="principle"  />
+
+</p>
+<p><small>image by alswl</small></p>
+<h2 id="rest-到底行不行">REST 到底行不行？</h2>
+<p>在 Web API 领域，<a href="https://en.wikipedia.org/wiki/Representational_state_transfer">RESTful API</a> 已经成为广受欢迎的协议。
+其广泛适用性和受众范围之广源于其与 HTTP 协议的绑定，这使得 RESTful API 能够轻松地与现有的 Web 技术进行交互。如果您对 REST 不熟悉，
+可以查看 <a href="https://www.ruanyifeng.com/blog/2014/05/restful_api.html">阮一峰的 RESTful API 设计指南</a> 以及
+<a href="https://www.oschina.net/translate/best-practices-for-a-pragmatic-restful-api?print">RESTful API 设计最佳实践</a>。</p>
+<p>REST 是一种成熟度较高的协议，<a href="https://martinfowler.com/articles/richardsonMaturityModel.html#level0">Leonard Richardson</a>
+将其描述为四种成熟度级别：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/202304/rest-four-level.png" alt="rest-four-level"  />
+
+</p>
+<p><small>image by alswl</small></p>
+<ol>
+<li>The Swamp of POX，使用 HTTP 承载 Legacy 协议（XML）</li>
+<li>Resources：使用资源抽象</li>
+<li>HTTP Verbs：使用丰富的 HTTP Verbs</li>
+<li>Hypermedia Controls：使用 <code>rel</code> 链接进行 API 资源整合，<a href="https://jsonapi.org/">JSON:API</a> 是登峰造极的表现</li>
+</ol>
+<p>REST 的核心优势在于：</p>
+<ul>
+<li>它充分利用了 HTTP 协议的设计（HTTP Protocol）</li>
+<li>它具有出色的资源定位能力（Identification of resources）</li>
+<li>它设计了完备的资源操作方式（Manipulation of resources）</li>
+<li>它具备自解释性（Self-descriptive messages）</li>
+<li>它支持多种形态的呈现方式（hypermedia as the engine of application state）</li>
+</ul>
+<p>然而，<mark>REST 并非一种具体的协议或规范，而是一种风格理念</mark>。尽管 REST 定义了一些规则和原则，如资源的标识、统一接口、无状态通信等，
+但它并没有规定一种具体的实现方式。因此，在实际开发中，不同的团队可能会有不同的理解和实践，
+从而导致 API 的不一致性和可维护性降低。</p>
+<p>此外，REST 也有一些局限性和缺陷：</p>
+<ul>
+<li>并非所有请求都可以用资源描述，比如登录（<code>/login</code>）操作，转换成 <code>session</code> 就非常绕口；
+同样的问题在转账这种业务也会出现。HTTP 有限的动词无法支撑所有业务场景。</li>
+<li>REST 并未提供针对必然面临的问题，如分页、返回体具体结构、错误处理和鉴权等，明确的解决方案。</li>
+<li>对于复杂的查询（如搜索 Search），RESTful API 的查询参数可能会变得非常复杂，难以维护。</li>
+</ul>
+<p>因此，虽然 REST 风格是一个不错的指导思想，但在具体实现时需要结合具体业务需求和技术特点，有所取舍，才能实现良好的 API 设计。
+最后，我们是否需要 Web API 设计规范，遵循 REST 风格呢？我认为 REST 能够解决 90% 的问题，但还有 10% 需要明确规定细节。</p>
+<h2 id="web-api-规范的选择题">Web API 规范的选择题</h2>
+<p>因为我们的协议基于 HTTP 和 REST 设计，我们将以 HTTP 请求的四个核心部分为基础展
+开讨论，这些部分分别是：URL、Header、Request 和 Response。</p>
+<h3 id="url-最佳实践">URL 最佳实践</h3>
+<p>我的 URL 设计启蒙来自于 <a href="https://guides.rubyonrails.org/routing.html">Ruby on Rails</a>。
+在此之前，我总是本能地将模型信息放到 URL 之上，但实际上良好的 URL 设计应该是针对系统信息结构的规划。
+因此，URL 设计不仅仅要考虑 API，还要考虑面向用户的 Web URL。</p>
+<p>为了达到良好的 URL 设计，我总结了以下几个规则：</p>
+<ul>
+<li>定位资源（这就回答分页是否应该在 Header）</li>
+<li>自解释（可读性强，URL 自身即包含核心信息）</li>
+<li>安全（不能包含用户认证信息，OAuth 为了解这个花了很多精力，防伪造）</li>
+</ul>
+<p>通常情况下，URL 的模型如下所示：</p>
+<p><code>/$(prefix)/$(module)/$(model)/$(sub-model)/$(verb)?$(query)#${fragment}</code></p>
+<p>其中，Prefix 可能是 API 的版本，也可能是特殊限定，如有些公司会靠此进行接入层分流；
+Module 是业务模块，也可以省略；Model 是模型；SubModel 是子模型，可以省略；
+Verb 是动词，也可以省略；Query 是请求参数；Fragment 是 HTTP 原语 Fragment。</p>
+<p>需要注意的是，并非所有的组成部分都是必须出现的。例如，SubModel 和 Verb 等字段可
+以在不同的 URL 风格中被允许隐藏。</p>
+<p><strong>设计风格选择</strong></p>
+<p>注：<strong>请注意，方案 A / B / C 之间没有关联，每行上下也没有关联</strong></p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解释（见下方单列分析）</th>
+<th>方案 A</th>
+<th>方案 B</th>
+<th>方案 C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>API Path 里面 Prefix</td>
+<td></td>
+<td><code>/apis</code></td>
+<td><code>/api</code></td>
+<td>二级域名</td>
+</tr>
+<tr>
+<td>Path 里面是否包含 API 版本</td>
+<td><strong>版本在 URL 的优势</strong></td>
+<td>✅</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>Path 是否包含 Group</td>
+<td></td>
+<td>✅</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>Path 是否包含动作</td>
+<td><strong>HTTP Verb 不够用的情况</strong></td>
+<td>✅</td>
+<td>🚫 （纯 REST）</td>
+<td>看情况（如果 HTTP Verb CRUD 无法满足就包含）</td>
+</tr>
+<tr>
+<td>模型 ID 形式</td>
+<td><strong>Readable Stable Identity 解释</strong></td>
+<td>自增 ID</td>
+<td>GUID</td>
+<td><mark>Readable Stable ID</mark></td>
+</tr>
+<tr>
+<td>URL 中模型单数还是复数</td>
+<td></td>
+<td>单数</td>
+<td>复数</td>
+<td>列表复数，单向单数</td>
+</tr>
+<tr>
+<td>资源是一级（平铺）还是多级（嵌套）</td>
+<td><strong>一级和多级的解释</strong></td>
+<td>一级（平铺）</td>
+<td>多级（嵌套）</td>
+<td></td>
+</tr>
+<tr>
+<td>搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
+<td></td>
+<td>独立</td>
+<td>合并</td>
+<td></td>
+</tr>
+<tr>
+<td>是否有 Alias URL</td>
+<td><strong>Alias URL 解释</strong></td>
+<td>✅</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>URL 中模型是否允许缩写（或精简）</td>
+<td><strong>模型缩写解释</strong></td>
+<td>✅</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>URL 中模型多个词语拼接的连字符</td>
+<td></td>
+<td><code>-</code></td>
+<td><code>_</code></td>
+<td>Camel</td>
+</tr>
+<tr>
+<td>是否要区分 Web API 以及 Open API（面向非浏览器）</td>
+<td></td>
+<td>✅</td>
+<td>🚫</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>版本在 URL 的优势</strong></p>
+<p>我们在设计 URL 时遵循一致性的原则，无论是哪种身份或状态，都会使用相同的 URL 来访问同一个资源。
+这也是 Uniform Resource Location 的基本原则。虽然我们可以接受不同的内容格式（例如 JSON / YAML / HTML / PDF / etc），
+但是我们希望资源的位置是唯一的。</p>
+<p>然而，问题是，对于同一资源在不同版本之间的呈现，是否应该在 URL 中体现呢？这取决于设计者是否认为版本化属于位置信息的范畴。</p>
+<p>根据 RFC 的设计，除了 URL 还有 <a href="https://en.wikipedia.org/wiki/Uniform_Resource_Name">URN（Uniform Resource Name）</a>，
+后者是用来标识资源的，而 URL 则指向资源地址。实际上，URN 没有得到广泛的使用，以至于 URI 几乎等同于 URL。</p>
+<p><strong>HTTP Verb 不够用的情况</strong></p>
+<p>在 REST 设计中，我们需要使用 HTTP 的 GET / POST / PUT / DELETE / PATCH / HEAD 等动词对资源进行操作。
+比如使用 API <code>GET /apis/books</code> 查看书籍列别，这个自然且合理。
+但是，当需要执行类似「借一本书」这样的动作时，
+我们没有合适的动词（BORROW）来表示。针对这种情况，有两种可行的选择：</p>
+<ol>
+<li>使用 POST 方法与自定义动词，例如 <code>POST /apis/books/borrow</code>，表示借书这一动作；</li>
+<li>创建一个借书记录，使用资源新增方式来结构不存在的动作，例如 <code>POST /apis/books/borrow-log/</code>；</li>
+</ol>
+<p>这个问题在复杂的场景中会经常出现，例如用户登录（<code>POST /api/auth/login</code> vs <code>POST /api/session</code>）和帐户转账（vs 转账记录创建）等等。
+<mark>API 抽象还是具体，始终离不开业务的解释。</mark>我们不能简单地将所有业务都笼统概括到 CRUD 上面，
+而是需要合理划分业务，以便更清晰地实现和让用户理解。</p>
+<p>在进行设计时，我们可以考虑是否需要为每个 API 创建一个对应的按钮来方便用户的操作。
+如果系统中只有一个名为 <code>/api/do</code> 的 API 并将所有业务都绑定在其中，虽然技术上可行，
+但这种设计不符合业务需求，每一层的抽象都是为了标准化解决特定问题的解法，TCP L7 设计就是这种理念的体现。</p>
+<p><strong>Readable Stable Identity 解释</strong></p>
+<p>在标记一个资源时，我们通常有几种选择：</p>
+<ul>
+<li>使用 ID：ID 通常与数据库自增 ID 绑定。</li>
+<li>使用 GUID：例如 UUID，尽管不那么精确。</li>
+<li>使用可读性和稳定性标识符（Readable Stable Identity）：通常使用名称、UID 或特定 ID（如主机名、IP 地址或序列号）来标识，
+要求该标识符具有稳定性且全局唯一，在内部系统中非常有用。</li>
+</ul>
+<p>我个人有一个设计小技巧：使用 <code>${type}/${type-id}</code> 形式的 slug 来描述标识符。Slug 是一种人类可读的唯一标识符，
+例如 <code>hostname/abc.sqa</code> 或 <code>ip/172.133.2.1</code>。
+这种设计方式可以在可读性和唯一性之间实现很好的平衡。</p>
+<blockquote>
+<p>A slug is a human-readable, unique identifier, used to identify a resource instead of a less human-readable identifier like an id .</p>
+</blockquote>
+<p>from <a href="https://itnext.io/whats-a-slug-f7e74b6c23e0">What’s a slug. and why would I use one? | by Dave Sag</a></p>
+<p>PS：文章最末我还会介绍一套 Apple Music 方案，这个方案兼顾了 ID / Readable / Stable 的特性。</p>
+<p><strong>一级和多级的解释</strong></p>
+<p>URL 的层级设计可以根据建模来进行，也可以采用直接单层结构的设计。具体问题的解决方式，
+例如在设计用户拥有的书籍时，可以选择多级结构的 <code>/api/users/foo/books</code> 或一级结构的 <code>/api/books?owner=foo</code>。</p>
+<p>技术上这两种方案都可以，<mark>前者尊重模型的归属关系，后者则是注重 URL 结构的简单</mark>。</p>
+<p>多级结构更直观，但也需要解决可能存在的多种组织方式的问题，例如图书馆中书籍按照作者或类别进行组织？
+这种情况下，可以考虑在多级结构中明确模型的归属关系，
+例如 <code>/api/author/foo/books</code>（基于作者）或 <code>/api/category/computer/books</code>（基于类别）。</p>
+<p><strong>Alias URL 解释</strong></p>
+<p>对于一些频繁使用的 URL，虽然可以按照 URL 规则进行设计，但我们仍然可以设计出一个更为简洁的 URL，
+以方便用户的展示和使用。这种设计在 Web URL 中尤其常见。比如一个图书馆最热门书籍的 API：</p>
+<pre tabindex="0"><code># 原始 URL
+https://test.com/apis/v3/books?sort=hot&amp;limit=10
+
+# Alias URL
+https://test.com/apis/v3/books/hot
+</code></pre><p><strong>模型缩写解释</strong></p>
+<p>通常，在对资源进行建模时，会使用较长的名称来命名，例如书籍索引可能被命名为 <code>BookIndex</code> ，而不是 <code>Index</code>。
+在 URL 中呈现时，由于 <code>/book/book-index</code> 的 URL 前缀包含了 Book，我们可以减少一层描述，
+使 URL 更为简洁，例如使用 <code>/book/index</code>。这种技巧在 Web URL 设计中非常常见。</p>
+<p>此外，还有一种模型缩写的策略，即提供一套完整的别名注册方案。别名是全局唯一的，
+例如在 Kubernetes 中， <a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/#deployment-v1-apps">Deployment</a>
+是一种常见的命名，而 <code>apps/v1/Deployment</code> 是通过添加 Group 限定来表示完整的名称，
+同时还有一个简写为 <code>deploy</code>。这个机制依赖于 Kubernetes 的 API Schema 系统进行注册和工作。</p>
+<h3 id="header-最佳实践">Header 最佳实践</h3>
+<p>我们常常会忽略 Header 的重要性。实际上，HTTP 动词的选择、HTTP 状态码以及各种身
+份验证逻辑（例如 Cookie / Basic Auth / Berear Token）都依赖于 Header 的设计。</p>
+<p><strong>设计风格选择</strong></p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解释（见下方单列分析）</th>
+<th>方案 A</th>
+<th>方案 B</th>
+<th>方案 C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>是否所有 Verb 都使用 POST</td>
+<td><strong>关于全盘 POST</strong></td>
+<td>✅</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>修改（Modify）动作是 POST 还是 PATCH？</td>
+<td></td>
+<td>POST</td>
+<td>PATCH</td>
+<td></td>
+</tr>
+<tr>
+<td>HTTP Status 返回值</td>
+<td><strong>2XX 家族</strong></td>
+<td>充分利用 HTTP Status</td>
+<td>只用核心状态（200 404 302 等）</td>
+<td>只用 200</td>
+</tr>
+<tr>
+<td>是否使用考虑限流系统</td>
+<td></td>
+<td>✅ 429</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>是否使用缓存系统</td>
+<td></td>
+<td>✅  ETag / Last Modify</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>是否校验 UserAgent</td>
+<td></td>
+<td>✅</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>是否校验  Referrral</td>
+<td></td>
+<td>✅</td>
+<td>🚫</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>关于全盘 POST</strong></p>
+<p>有些新手（或者自认为有经验的人）可能得出一个错误的结论，即除了 GET 请求以外，
+所有的 HTTP 请求都应该使用 POST 方法。甚至有些人要求 <a href="https://www.zhihu.com/question/336797348">所有行为（即使是只读的请求）也应该使用 POST 方法</a>。
+这种观点通常会以“简单一致”、“避免缓存”或者“运营商的要求”为由来支持。</p>
+<p>然而，我们必须明白 HTTP 方法的设计初衷：它是用来描述资源操作类型的，从而派生出了包括缓存、安全、幂等性等一系列问题。
+在相对简单的场景下，省略掉这一层抽象的确不会带来太大的问题，但一旦进入到复杂的领域中，
+使用 HTTP 方法这一层抽象就显得非常重要了。<mark>这是否遵循标准将决定你是否能够获得标准化带来的好处</mark>，
+类比一下就像一个新的手机厂商可以选择不使用 USB TypeC 接口。
+技术上来说是可行的，但同时也失去了很多标准化支持和大家心智上的约定俗成。</p>
+<p>我特别喜欢一位 <a href="https://www.zhihu.com/people/huixiong-19">知乎网友</a> 的
+<a href="https://www.zhihu.com/question/336797348/answer/2198634068">评论</a>：「<mark>路由没有消失，只是转移了</mark>」。</p>
+<p><strong>2XX 家族</strong></p>
+<p>HTTP 状态码的用途在于表明客户端与服务器间通信的结果。2XX 状态码系列代表服务器已经成功接收、
+理解并处理了客户端请求，回应的内容是成功的。以下是 2XX 系列中常见的状态码及其含义：</p>
+<ul>
+<li>200 OK：请求已成功处理，服务器返回了响应。</li>
+<li>201 Created：请求已经被成功处理，并且在服务器上创建了一个新的资源。</li>
+<li>202 Accepted：请求已被服务器接受，但尚未执行。该状态码通常用于异步处理。</li>
+<li>204 No Content：请求已成功处理，但是服务器没有返回任何响应体内容。</li>
+</ul>
+<p>2XX 系列的状态码表示请求已被成功处理，这些状态码可以让客户端明确知晓请求已被正确处理，从而进行下一步操作。</p>
+<p>是否需要全面使用 2XX 系列的状态码，取决于是否需要向客户端明确/显示的信息，
+告知它下一步动作。如果已经通过其他方式（包括文档、口头协议）描述清楚，
+那么确实可以通盘使用 200 状态码进行返回。但基于行为传递含义，
+或是基于文档（甚至口头协议）传递含义，哪种更优秀呢？是更为复杂还是更为简洁？</p>
+<h3 id="request-最佳实践">Request 最佳实践</h3>
+<p><strong>设计风格选择</strong></p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解释（见下方单列分析）</th>
+<th>方案 A</th>
+<th>方案 B</th>
+<th>方案 C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
+<td></td>
+<td>Form Fields</td>
+<td>Body</td>
+<td></td>
+</tr>
+<tr>
+<td>子资源是一次性查询还是独立查询</td>
+<td></td>
+<td>嵌套</td>
+<td>独立查询</td>
+<td></td>
+</tr>
+<tr>
+<td>分页参数存放</td>
+<td></td>
+<td>Header</td>
+<td>URL Query</td>
+<td></td>
+</tr>
+<tr>
+<td>分页方式</td>
+<td><strong>分页方式解释</strong></td>
+<td>Page based</td>
+<td>Offset based</td>
+<td>Continuation token</td>
+</tr>
+<tr>
+<td>分页控制者</td>
+<td><strong>分页控制着解释</strong></td>
+<td>客户端</td>
+<td>服务端</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>分页方式解释</strong></p>
+<p>我们最为常见的两种分页方式是 Page-based 和 Offset-based，可以通过公式进行映射。
+此外，还存在一种称为 Continuation Token 的方式，其技术类似于 Oracle 的
+<a href="https://stackoverflow.com/questions/241622/paging-with-oracle">rownum 分页方案</a>，使用参数 <code>start-from=?</code> 进行描述。
+虽然 Continuation Token 的优缺点都十分突出，使用此种方式可以将顺序性用于替代随机性。</p>
+<p><strong>分页控制着解释</strong></p>
+<p>在某些情况下，我们需要区分客户端分页（Client Pagination）和服务器分页（Server Pagniation）。
+客户端分页是指下一页的参数由客户端计算而来，而服务器分页则是由服务器返回 <code>rel</code> 或 JSON.API 等协议。
+使用服务器分页可以避免一些问题，例如批量屏蔽了一些内容，如果使用客户端分页，可能会导致缺页或者白屏。</p>
+<h3 id="response-最佳实践">Response 最佳实践</h3>
+<p><strong>设计风格选择</strong></p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>解释（见下方单列分析）</th>
+<th>方案 A</th>
+<th>方案 B</th>
+<th>方案 C</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模型呈现种类</td>
+<td><strong>模型的几种形式</strong></td>
+<td>单一模型</td>
+<td>多种模型</td>
+<td></td>
+</tr>
+<tr>
+<td>大模型如何包含子模型模型</td>
+<td><strong>模型的连接、侧载和嵌入</strong></td>
+<td>嵌入</td>
+<td>核心模型 + 多次关联资源查询</td>
+<td>链接</td>
+</tr>
+<tr>
+<td>字段返回是按需还是归并还是统一</td>
+<td></td>
+<td>统一</td>
+<td>使用 <code>fields</code> 字段按需</td>
+<td></td>
+</tr>
+<tr>
+<td>字段表现格式</td>
+<td></td>
+<td>Snake</td>
+<td>Camel</td>
+<td></td>
+</tr>
+<tr>
+<td>错误码</td>
+<td></td>
+<td>无自定，使用 Message</td>
+<td>自定义</td>
+<td></td>
+</tr>
+<tr>
+<td>错误格式</td>
+<td></td>
+<td>全局统一</td>
+<td>按需</td>
+<td></td>
+</tr>
+<tr>
+<td>时区</td>
+<td></td>
+<td>UTC</td>
+<td>Local</td>
+<td>Local + TZ</td>
+</tr>
+<tr>
+<td>HATEOAS</td>
+<td></td>
+<td>✅</td>
+<td>🚫</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>模型的几种形式</strong></p>
+<p>在 API 设计中，对于模型的表现形式有多种定义。虽然这并不是 API 规范必须讨论的话题，但它对于 API 设计来说是非常重要的。</p>
+<p>我将模型常说的模型呈现方式分为一下几类，这并非是专业的界定，借用了 Java 语境下面的一些定义。
+这些名称在不同公司甚至不同团队会有不一样的叫法：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/202304/models.png" alt="models"  />
+
+</p>
+<p><small>image by alswl</small></p>
+<ul>
+<li>Business Object（BO）：原始的业务模型</li>
+<li>Data Object（DO）：存储到 RDBMS 的模型，所以必须是打平的字段结构，有时候一个 BO 会对应到多个 DO</li>
+<li>View Object（VO）：呈现到表现层的模型，只保留用户需要看到信息，比如会去掉敏感信息</li>
+<li>Data Transfer Object（DTO）：用来在 RPC 系统进行传输的模型，一般和 原始的 Model 差异不大，根据不同序列化系统会有差异
+（比如枚举的处理）</li>
+</ul>
+<p>除此之外，还经常使用两类：Rich Model 和 Tiny Model（请忽略命名，不同团队叫法差异比较大）：</p>
+<ul>
+<li>Rich Model：用来描述一个丰富模型，这个模型包含了几乎所有需要用的的数据，也允许子资源进行嵌套</li>
+<li>Tiny Model：是一个精简模型，往往用来在列表 API 里面被使用</li>
+</ul>
+<p><strong>模型的连接、侧载和嵌入</strong></p>
+<p>在 API 设计中，我们经常需要处理一个模型中包含多个子模型的情况，例如 Book 包含 Comments。
+对于这种情况，通常有三种表现形式可供选择：链接（Link）、侧载（Side）和嵌入（Embed）。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/202304/models-with-children.png" alt="models-with-children"  />
+
+</p>
+<p><small>image by alswl</small></p>
+<p>链接（有时候这个 URL 也会隐藏，基于客户端和服务端的隐式协议进行请求）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;data&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;朝花夕拾&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;relationships&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;comments&#34;</span><span class="p">:</span> <span class="s2">&#34;http://www.domain.com/book/42/comments&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;author&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;http://www.domain.com/author/鲁迅&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>侧载：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;data&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;朝花夕拾&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;relationships&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;comments&#34;</span><span class="p">:</span> <span class="s2">&#34;http://www.domain.com/book/42/comments&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;authors&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;http://www.domain.com/author/鲁迅&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;includes&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comments&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">91</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;author&#34;</span><span class="p">:</span> <span class="s2">&#34;匿名&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;非常棒&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;authors&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;鲁迅&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;鲁迅原名周树人&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>嵌入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;data&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;朝花夕拾&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comments&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">91</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;author&#34;</span><span class="p">:</span> <span class="s2">&#34;匿名&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;content&#34;</span><span class="p">:</span> <span class="s2">&#34;非常棒&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;authors&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;鲁迅&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;鲁迅原名周树人&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="其他">其他</h3>
+<p>还有一些问题没有收敛在四要素里面，但是我们在工程实践中也经常遇到，我将其捋出来：</p>
+<p><strong>我不是 HTTP 协议，怎么办？</strong></p>
+<p>Web API 中较少遇到非 HTTP 协议，新建一套协议的成本太高了。在某些特定领域会引入一些协议，
+比如 IoT 领域的 <a href="https://mqtt.org/">MQTT</a>。</p>
+<p>此外，RPC 是一个涉及广泛领域的概念，其内容远远不止于协议层面。
+通常我们会将 HTTP 和 RPC 的传输协议以及序列化协议进行对比。
+我认为，本文中的许多讨论也对 RPC 领域具有重要意义。</p>
+<p>有些团队或个人计划使用自己创建的协议，但我的观点是应尽量避免自建协议，因为真正需要创建协议的情况非常罕见。
+如果确实存在强烈的需要，那么我会问两个问题：是否通读过 HTTP RFC 文档和 HTTP/2 RFC 文档？</p>
+<p><strong>我不是远程服务（RPC / HTTP 等），而是 SDK 怎么办？</strong></p>
+<p>本文主要讨论的是 Web API（HTTP）的设计规范，并且其中一些规则可以借鉴到 RPC 系统中。
+然而，讨论的基础都是建立在远程服务（Remote Service）的基础之上的。
+如果你是 SDK 开发人员，你会有两个角色，可能会作为客户端和远程服务器进行通信，
+同时还会作为 SDK 提供面向开发人员的接口。对于后者，以下几个规范可以作为参考：</p>
+<p>后者可以参考一下这么几个规范：</p>
+<ul>
+<li>Azure SDK 设计规范 <a href="https://azure.github.io/azure-sdk/general_design.html">General Guidelines: API Design | Azure SDKs</a></li>
+<li>Posix API 范例（比如 File <a href="https://www.gnu.org/software/libc/manual/html_node/Low_002dLevel-I_002fO.html">Low-Level I/O (The GNU C Library)</a>)</li>
+</ul>
+<p><strong>认证鉴权方案</strong></p>
+<p>一般而言，Web API 设计中会明确描述所采用的认证和鉴权系统。
+需要注意区分「认证」和「鉴权」两个概念。关于「认证」这一话题，可以在单独的章节中进行讨论，因此本文不会展开这一方面的内容。</p>
+<p>在 Web API 设计中，常见的认证方式包括：HTTP Basic Auth、OAuth2 和账号密码登录等。
+常用的状态管理方式则有 Bearer Token 和 Cookie。此外，在防篡改等方面，还会采用基于 HMac 算法的防重放和篡改方案。</p>
+<p><strong>忽略掉的话题</strong></p>
+<p>在本次讨论中，我未涉及以下话题：异步协议（Web Socket / Long Pulling / 轮训）、CORS、以及安全问题。
+虽然这些话题重要，但是在本文中不予展开。</p>
+<p><strong>什么时候打破规则</strong></p>
+<p>有些开发者认为规则就是为了打破而存在的。现实往往非常复杂，我们难以讨论清楚各个细节。
+如果开发者觉得规则不符合实际需求，有两种处理方式：修改规则或打破规则。
+然而，我更倾向于讨论和更新规则，明确规范不足之处，确定是否存在特殊情况。
+如果确实需要创建特例，一定要在文档中详细描述，告知接任者和消费者这是一个特例，说明特例产生的原因以及特例是如何应对的。</p>
+<h2 id="一张风格-checklist">一张风格 Checklist</h2>
+<h3 id="github-风格">Github 风格</h3>
+<p>Github 的 API 是我常常参考的对象。它对其业务领域建模非常清晰，提供了详尽的文档，使得沟通成本大大降低。
+我主要参考以下两个链接：
+API 定义 <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28">GitHub REST API documentation</a> 和
+面向应用程序提供的 API 列表 <a href="https://docs.github.com/en/rest/overview/endpoints-available-for-github-apps?apiVersion=2022-11-28">Endpoints available for GitHub Apps</a>
+，该列表几乎包含了 Github 的全部 API。</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>选择</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>URL</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>API Path 里面 Prefix</td>
+<td>二级域名</td>
+<td><a href="https://api.github.com">https://api.github.com</a></td>
+</tr>
+<tr>
+<td>Path 里面是否包含 API 版本</td>
+<td>🚫</td>
+<td>Header <code>X-GitHub-Api-Version</code> <a href="https://docs.github.com/en/rest/overview/api-versions?apiVersion=2022-11-28">API Versions</a></td>
+</tr>
+<tr>
+<td>Path 是否包含 Group</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>Path 是否包含动作</td>
+<td>看情况（如果 HTTP Verb CRUD 无法满足就包含）</td>
+<td>比如 <code>PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge</code> <code>POST /repos/{owner}/{repo}/releases/generate-notes</code></td>
+</tr>
+<tr>
+<td>模型 ID 形式</td>
+<td>Readable Stable Identity</td>
+<td></td>
+</tr>
+<tr>
+<td>URL 中模型单数还是复数</td>
+<td>复数</td>
+<td></td>
+</tr>
+<tr>
+<td>资源是一级（平铺）还是多级（嵌套）</td>
+<td>多级</td>
+<td></td>
+</tr>
+<tr>
+<td>搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
+<td>独立</td>
+<td></td>
+</tr>
+<tr>
+<td>是否有 Alias URL</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>URL 中模型是否允许缩写（或精简）</td>
+<td>🚫</td>
+<td>没有看到明显信息，基于多级模型也不需要，但是存在 <code>GET /orgs/{org}/actions/required_workflows</code></td>
+</tr>
+<tr>
+<td>URL 中模型多个词语拼接的连字符</td>
+<td><code>-</code> 和 <code>_</code></td>
+<td><code>GET /repos/{owner}/{repo}/git/matching-refs/{ref}</code> vs <code>GET /orgs/{org}/actions/required_workflows</code></td>
+</tr>
+<tr>
+<td>是否要区分 Web API 以及 Open API（面向非浏览器）</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Header</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>是否所有 Verb 都使用 POST</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>修改（Modify）动作是 POST 还是 PATCH？</td>
+<td>PATCH</td>
+<td></td>
+</tr>
+<tr>
+<td>HTTP Status 返回值</td>
+<td>充分利用 HTTP Status</td>
+<td>常用，包括限流洗损</td>
+</tr>
+<tr>
+<td>是否使用考虑限流系统</td>
+<td>✅ 429</td>
+<td></td>
+</tr>
+<tr>
+<td>是否使用缓存系统</td>
+<td>✅  ETag / Last Modify</td>
+<td><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors">Resources in the REST API#client-errors</a></td>
+</tr>
+<tr>
+<td>是否校验 UserAgent</td>
+<td>✅</td>
+<td></td>
+</tr>
+<tr>
+<td>是否校验 Referrral</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Request</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
+<td>Body</td>
+<td>参考 <a href="https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#create-a-pull-request">Pulls#create-a-pull-request</a></td>
+</tr>
+<tr>
+<td>子资源是一次性查询还是独立查询</td>
+<td>嵌套</td>
+<td>从 Pulls 进行判断</td>
+</tr>
+<tr>
+<td>分页参数存放</td>
+<td>URL Query</td>
+<td></td>
+</tr>
+<tr>
+<td>分页方式</td>
+<td>Page</td>
+<td><a href="https://docs.github.com/en/rest/guides/using-pagination-in-the-rest-api?apiVersion=2022-11-28">Using pagination in the REST API</a></td>
+</tr>
+<tr>
+<td>分页控制者</td>
+<td>服务端</td>
+<td>同上</td>
+</tr>
+<tr>
+<td><strong>Response</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>模型呈现种类</td>
+<td>多种模型</td>
+<td>比如 Commits 里面的 明细和 Parent <a href="https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28">Commits</a></td>
+</tr>
+<tr>
+<td>大模型如何包含子模型模型</td>
+<td>核心模型 + 多次关联资源查询？</td>
+<td>没有明确说明，根据几个核心 API 反推</td>
+</tr>
+<tr>
+<td>字段返回是按需还是归并还是统一</td>
+<td>统一</td>
+<td></td>
+</tr>
+<tr>
+<td>字段表现格式</td>
+<td>Snake</td>
+<td></td>
+</tr>
+<tr>
+<td>错误码</td>
+<td>无</td>
+<td><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors">Resources in the REST API#client-errors</a></td>
+</tr>
+<tr>
+<td>错误格式</td>
+<td>全局统一</td>
+<td><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors">Resources in the REST API#client-errors</a></td>
+</tr>
+<tr>
+<td>时区</td>
+<td>复合方案（ISO 8601 &gt; Time-Zone Header &gt; User Last &gt; UTC）</td>
+<td><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#timezones">Resources in the REST API#Timezones</a></td>
+</tr>
+<tr>
+<td>HATEOAS</td>
+<td>🚫</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="azure-风格">Azure 风格</h3>
+<p>Azure 的 API 设计遵循 <a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md">api-guidelines/Guidelines.md at master · microsoft/api-guidelines</a>，
+这篇文章偏原理性，另外还有一份实用指导手册在 <a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/index-best-practices">Best practices in cloud applications</a>
+和 <a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design">Web API design best practices</a>。</p>
+<p>需要注意的是，Azure 的产品线远比 Github 丰富，一些 API 也没有遵循 Azure 自己的规范。
+在找实例时候，我主要参考
+<a href="https://learn.microsoft.com/en-us/rest/api/?view=Azure">REST API Browser </a>，
+<a href="https://learn.microsoft.com/en-us/rest/api/storageservices/">Azure Storage REST API Reference </a>。
+如果具体实现和 Guidelines.md 冲突，我会采用 Guidelines.md 结论。</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>选择</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>URL</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>API Path 里面 Prefix</td>
+<td>二级域名</td>
+<td></td>
+</tr>
+<tr>
+<td>Path 里面是否包含 API 版本</td>
+<td>🚫</td>
+<td><code>x-ms-version</code></td>
+</tr>
+<tr>
+<td>Path 是否包含 Group</td>
+<td>✅</td>
+<td></td>
+</tr>
+<tr>
+<td>Path 是否包含动作</td>
+<td>🚫？</td>
+<td>没有明确说明，但是有倾向使用 <code>comp</code> 参数来进行动作，保持 URL 的 RESTful 参考 <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/lease-container?tabs=azure-ad">Lease Container (REST API) - Azure Storage</a></td>
+</tr>
+<tr>
+<td>模型 ID 形式</td>
+<td>Readable Stable Identity</td>
+<td><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#73-canonical-identifier">Guidelines.md#73-canonical-identifier</a></td>
+</tr>
+<tr>
+<td>URL 中模型单数还是复数</td>
+<td>复数</td>
+<td><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#93-collection-url-patterns">Guidelines.md#93-collection-url-patterns</a></td>
+</tr>
+<tr>
+<td>资源是一级（平铺）还是多级（嵌套）</td>
+<td>多级 / 一级</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design#define-api-operations-in-terms-of-http-methods">api-design#define-api-operations-in-terms-of-http-methods</a>，注 MS 有 <code>comp=?</code> 这种参数，用来处理特别的命令</td>
+</tr>
+<tr>
+<td>搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
+<td>?</td>
+<td>倾向于基于列表，因为大量使用 <code>comp=</code> 这个 URL Param 来进行子命令，比如 <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/incremental-copy-blob">Incremental Copy Blob (REST API) - Azure Storage</a></td>
+</tr>
+<tr>
+<td>是否有 Alias URL</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>URL 中模型是否允许缩写（或精简）</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>URL 中模型多个词语拼接的连字符</td>
+<td>Camel</td>
+<td><a href="https://learn.microsoft.com/en-us/rest/api/storagemover/job-runs/list?tabs=HTTP">Job Runs - List - REST API (Azure Storage Mover)</a></td>
+</tr>
+<tr>
+<td>是否要区分 Web API 以及 Open API（面向非浏览器）</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Header</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>是否所有 Verb 都使用 POST</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>修改（Modify）动作是 POST 还是 PATCH？</td>
+<td>PATCH</td>
+<td><a href="https://learn.microsoft.com/en-us/rest/api/storagemover/agents/update?tabs=HTTP">Agents - Update - REST API (Azure Storage Mover)</a></td>
+</tr>
+<tr>
+<td>HTTP Status 返回值</td>
+<td>充分利用 HTTP Status</td>
+<td><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#711-http-status-codes">Guidelines.md#711-http-status-codes</a></td>
+</tr>
+<tr>
+<td>是否使用考虑限流系统</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>是否使用缓存系统</td>
+<td>✅</td>
+<td><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#75-standard-request-headers">Guidelines.md#75-standard-request-headers</a></td>
+</tr>
+<tr>
+<td>是否校验 UserAgent</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>是否校验 Referrral</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Request</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
+<td>Body</td>
+<td>参考 <a href="https://learn.microsoft.com/en-us/rest/api/storagemover/agents/create-or-update?tabs=HTTP">Agents - Create Or Update - REST API (Azure Storage Mover)</a></td>
+</tr>
+<tr>
+<td>子资源是一次性查询还是独立查询</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>分页参数存放</td>
+<td>?</td>
+<td>没有结论</td>
+</tr>
+<tr>
+<td>分页方式</td>
+<td>Page based</td>
+<td></td>
+</tr>
+<tr>
+<td>分页控制者</td>
+<td>服务端</td>
+<td><a href="https://learn.microsoft.com/en-us/rest/api/storagemover/agents/list?tabs=HTTP">Agents - List - REST API (Azure Storage Mover)</a></td>
+</tr>
+<tr>
+<td><strong>Response</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>模型呈现种类</td>
+<td>单一模型</td>
+<td>推测</td>
+</tr>
+<tr>
+<td>大模型如何包含子模型模型</td>
+<td>?</td>
+<td>场景过于复杂，没有单一结论</td>
+</tr>
+<tr>
+<td>字段返回是按需还是归并还是统一</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>字段表现格式</td>
+<td>Camel</td>
+<td></td>
+</tr>
+<tr>
+<td>错误码</td>
+<td>使用自定错误码清单</td>
+<td>至少在各自产品内</td>
+</tr>
+<tr>
+<td>错误格式</td>
+<td>自定义</td>
+<td></td>
+</tr>
+<tr>
+<td>时区</td>
+<td>?</td>
+<td></td>
+</tr>
+<tr>
+<td>HATEOAS</td>
+<td>?</td>
+<td><a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design#use-hateoas-to-enable-navigation-to-related-resources">api-design#use-hateoas-to-enable-navigation-to-related-resources</a></td>
+</tr>
+</tbody>
+</table>
+<p>Azure 的整体设计风格要比 Github API 更复杂，同一个产品的也有多个版本的差异，看
+上去统一性要更差一些。这种复杂场景想用单一的规范约束所有团队的确也是更困难的。
+我们可以看到 Azaure 团队在 Guidelines 上面努力，他们最近正在推出 vNext 规范。</p>
+<h3 id="我个人风格">我个人风格</h3>
+<p>我个人风格基本继承自 Github API 风格，做了一些微调，更适合中小型产品开发。
+我的改动原因都在备注中解释，改动出发点是：简化 / 减少歧义 / 考虑实际成本。如果备注里面标记了「注」，则是遵循 Github 方案并添加一些观点。</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>选择</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>URL</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>API Path 里面 Prefix</td>
+<td><code>/apis</code></td>
+<td>我们往往只有一个系统，一个域名要承载 API 和 Web Page</td>
+</tr>
+<tr>
+<td>Path 里面是否包含 API 版本</td>
+<td>✅</td>
+<td></td>
+</tr>
+<tr>
+<td>Path 是否包含 Group</td>
+<td>✅</td>
+<td>做一层业务模块拆分，隔离一定合作边界</td>
+</tr>
+<tr>
+<td>Path 是否包含动作</td>
+<td>看情况（如果 HTTP Verb CRUD 无法满足就包含）</td>
+<td></td>
+</tr>
+<tr>
+<td>模型 ID 形式</td>
+<td>Readable Stable Identity</td>
+<td></td>
+</tr>
+<tr>
+<td>URL 中模型单数还是复数</td>
+<td>复数</td>
+<td></td>
+</tr>
+<tr>
+<td>资源是一级（平铺）还是多级（嵌套）</td>
+<td>多级 + 一级</td>
+<td>注：80% 情况都是遵循模型的归属，少量情况（常见在搜索）使用一级</td>
+</tr>
+<tr>
+<td>搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
+<td>统一 &gt; 独立</td>
+<td>低成本实现一些（早期 Github Issue 也是没有 <code>/search</code> 接口</td>
+</tr>
+<tr>
+<td>是否有 Alias URL</td>
+<td>🚫</td>
+<td>简单点</td>
+</tr>
+<tr>
+<td>URL 中模型是否允许缩写（或精简）</td>
+<td>✅</td>
+<td>一旦做了精简，需要在术语表标记出来</td>
+</tr>
+<tr>
+<td>URL 中模型多个词语拼接的连字符</td>
+<td><code>-</code></td>
+<td></td>
+</tr>
+<tr>
+<td>是否要区分 Web API 以及 Open API（面向非浏览器）</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Header</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>是否所有 Verb 都使用 POST</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td>修改（Modify）动作是 POST 还是 PATCH？</td>
+<td>PATCH</td>
+<td></td>
+</tr>
+<tr>
+<td>HTTP Status 返回值</td>
+<td>充分利用 HTTP Status</td>
+<td></td>
+</tr>
+<tr>
+<td>是否使用考虑限流系统</td>
+<td>✅ 429</td>
+<td></td>
+</tr>
+<tr>
+<td>是否使用缓存系统</td>
+<td>🚫</td>
+<td>简单一些，使用动态数据，去除缓存能力</td>
+</tr>
+<tr>
+<td>是否校验 UserAgent</td>
+<td>✅</td>
+<td></td>
+</tr>
+<tr>
+<td>是否校验 Referrral</td>
+<td>🚫</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Request</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
+<td>Body</td>
+<td></td>
+</tr>
+<tr>
+<td>子资源是一次性查询还是独立查询</td>
+<td>嵌套</td>
+<td></td>
+</tr>
+<tr>
+<td>分页参数存放</td>
+<td>URL Query</td>
+<td></td>
+</tr>
+<tr>
+<td>分页方式</td>
+<td>Page</td>
+<td></td>
+</tr>
+<tr>
+<td>分页控制者</td>
+<td>客户端</td>
+<td>降低服务端成本，容忍极端情况空白</td>
+</tr>
+<tr>
+<td><strong>Response</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>模型呈现种类</td>
+<td>多种模型</td>
+<td>使用的 BO / VO / Tiny / Rich</td>
+</tr>
+<tr>
+<td>大模型如何包含子模型模型</td>
+<td>核心模型 + 多次关联资源查询</td>
+<td></td>
+</tr>
+<tr>
+<td>字段返回是按需还是归并还是统一</td>
+<td>统一</td>
+<td>Tiny Model（可选） / Model（默认） / Rich Model（可选）</td>
+</tr>
+<tr>
+<td>字段表现格式</td>
+<td>Snake</td>
+<td></td>
+</tr>
+<tr>
+<td>错误码</td>
+<td>无</td>
+<td>注：很多场景只要 message</td>
+</tr>
+<tr>
+<td>错误格式</td>
+<td>全局统一</td>
+<td></td>
+</tr>
+<tr>
+<td>时区</td>
+<td>ISO 8601</td>
+<td>只使用一种格式，不再支持多种方案</td>
+</tr>
+<tr>
+<td>HATEOAS</td>
+<td>🚫</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="题外话---apple-music-的一个有趣设计">题外话 - Apple Music 的一个有趣设计</h2>
+<p>
+
+
+
+
+<img loading="lazy" src="https://d05fae.dijingchao.com/202304/apple-music.png" alt="Apple Music"  />
+
+</p>
+<p><small>image from Apple Music</small></p>
+<p>我最近在使用 Apple Music 时注意到了其 Web 页面的 URL 结构：</p>
+<p><code>/cn/album/we-sing-we-dance-we-steal-things/277635758?l=en</code></p>
+<p>仔细看这个 URL 结构，可以发现其中 Path 包含了人类可读的 slug，分为三个部分：<code>alumn/$(name)/$(id)</code> （其中包含了 ID）。
+我立即想到了一个问题：中间的可读名称是否无机器意义，纯粹面向自然人？
+于是我测试了一个捏造的地址：<code>/cn/album/foobar/277635758?l=en</code>。
+在您尝试访问之前，您能猜出结果是否可以访问吗？</p>
+<p>这种设计范式比我现在常用的 URL 设计规范要复杂一些。我的规范要求将资源定位使用两层 slug 组织，即 <code>$(type)/$(id)</code>。
+而苹果使用了 <code>$(type)/(type-id)/$(id)</code>，同时照顾了可读性和准确性。</p>
+<h2 id="题外话---为什么-graphql-不行">题外话 - 为什么 GraphQL 不行</h2>
+<p><a href="https://graphql.org/">GraphQL</a> 是一种通过使用自定义查询语言来请求 API 的方式，它的优点在于可以提供更灵活的数据获取方式。
+相比于 RESTful API 需要一次请求获取所有需要的数据，GraphQL 允许客户端明确指定需要的数据，从而减少不必要的数据传输和处理。</p>
+<p>然而，GraphQL 的过于灵活也是它的缺点之一。由于它没有像 REST API 那样有一些业务场景建模的规范，
+开发人员需要自己考虑数据的处理方式。
+这可能导致一些不合理的查询请求，对后端数据库造成过度的压力。此外，GraphQL 的实现和文档相对较少，也需要更多的学习成本。</p>
+<p>因此，虽然 GraphQL 可以在一些特定的场景下提供更好的效果，但它并不适合所有的 API 设计需求。
+实际上，一些公司甚至选择放弃支持 GraphQL，例如 Github 的 <a href="https://github.blog/changelog/2022-08-18-deprecation-notice-graphql-for-packages/">一些项目</a>。</p>
+<h2 id="最后">最后</h2>
+<blockquote>
+<p>Complexity is incremental （复杂度是递增的）</p>
+<ul>
+<li>John Ousterhout (<a href="https://web.stanford.edu/~ouster/cgi-bin/cs190-winter18/lecture.php?topic=complexity">via</a>）</li>
+</ul>
+</blockquote>
+<p><mark>风格没有最好，只有最适合，但是拥有风格是很重要的。</mark></p>
+<p>建立一个优秀的规则不仅需要对现有机制有深刻的理解，还需要对业务领域有全面的掌握，并在团队内进行有效的协作与沟通， 推广并实施规则。
+不过，一旦规则建立起来，就能够有效降低系统的复杂度，避免随着时间和业务的推进而不断增加的复杂性， 并减少研发方面的沟通成本。</p>
+<p>这是一项长期的投资，但能够获得持久的回报。希望有长远眼光的人能够注意到这篇文章。</p>
+<p>主要参考文档：</p>
+<ul>
+<li><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md">api-guidelines/Guidelines.md at master · microsoft/api-guidelines</a></li>
+<li><a href="https://docs.github.com/en/rest/overview/about-githubs-apis?apiVersion=2022-11-28">GitHub&rsquo;s APIs</a></li>
+<li><a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design">Web API design best practices - Azure Architecture Center | Microsoft Learn</a></li>
+<li><a href="https://developer.aliyun.com/article/701810">API 设计最佳实践的思考 - 谷朴</a></li>
+</ul>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>从 Toodledo 到 Obsidian Tasks - 我的 GTD 最佳实践</title>
       <link>https://blog.alswl.com/2023/02/gtd/</link>
@@ -11079,394 +12362,6 @@ Google 有一系列方法，包括 OKR 透明化，TGIF（Thank God It’s Frida
 那么十几年的企业寿命也能为股东赚回足够的钱，死海效应是存在即合理的现象。
 低质量的人才管理成本也低，人才死海效应和业务劣化恶性循环，
 最后进入企业衰老期，天道轮回，有生必有死，看开就好。</p>
-]]></content:encoded>
-    </item>
-    
-    <item>
-      <title>从 SQL Server 到 MySQL（一）：异构数据库迁移</title>
-      <link>https://blog.alswl.com/2018/03/sql-server-migration-1/</link>
-      <pubDate>Mon, 12 Mar 2018 21:08:56 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2018/03/sql-server-migration-1/</guid>
-      <description>该系列三篇文章已经全部完成： 从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D 背景 沪江成立于 2001 年，作为较早期的教育学习网站， 当时技术选型范围并不大： Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购， 版本号是 3.23。 工程师们选择了当时最合适的微软体系，并在日后的岁月里， 逐步从 ASP 过度到 .net，数据</description>
-      <content:encoded><![CDATA[<p>该系列三篇文章已经全部完成：</p>
-<ul>
-<li><a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D</a></li>
-<li><a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D</a></li>
-<li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
-</ul>
-<p>
-
-
-
-
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-bird.png" alt="201803/migration-bird.png"  />
-
-</p>
-<h2 id="背景">背景</h2>
-<p>沪江成立于 2001 年，作为较早期的教育学习网站，
-当时技术选型范围并不大：
-Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
-版本号是 3.23。
-工程师们选择了当时最合适的微软体系，并在日后的岁月里，
-逐步从 ASP 过度到 .net，数据库也跟随 SQL Server 进行版本升级。</p>
-<p>十几年过去了，技术社区已经发生了天翻地覆的变化。
-沪江的技术栈还基本在 .net 体系上，这给业务持续发展带来了一些限制。
-人才招聘、社区生态、架构优化、成本风险方面都面临挑战。
-集团经过慎重考虑，发起了大规模的去 Windows 化项目。
-这其中包含两个重点子项目：开发语言从 C# 迁移到 Java，
-数据库从 SQL Server 迁移到 MySQL。</p>
-<p>本系列文章就是向大家介绍，
-从 SQL Server 迁移到 MySQL 所面临的问题和我们的解决方案。</p>
-<!-- more -->
-<h2 id="迁移方案的基本流程">迁移方案的基本流程</h2>
-<p>设计迁移方案需要考量以下几个指标：</p>
-<ul>
-<li>迁移前后的数据一致性</li>
-<li>业务停机时间</li>
-<li>迁移项目是否对业务代码有侵入</li>
-<li>需要提供额外的功能：表结构重构、字段调整</li>
-</ul>
-<p>经过仔细调研，在平衡复杂性和业务方需求后，
-迁移方案设计为两种：停机数据迁移和在线数据迁移。
-如果业务场景允许数小时的停机，那么使用停机迁移方案，
-复杂度低，数据损失风险低。
-如果业务场景不允许长时间停机，或者迁移数据量过大，
-无法在几个小时内迁移完成，那么就需要使用在线迁移方案了。</p>
-<p>数据库停机迁移的流程：</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-db-offline-readonly.png" alt="201803/migration-db-offline-readonly.png"  />
-
-</p>
-<p>停机迁移逻辑比较简单，使用 ETL（Extract Translate Load）
-工具从 Source 写入 Target，然后进行一致性校验，最后确认应用运行 OK，
-将 Source 表名改掉进行备份。</p>
-<p>在线迁移的流程：</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-db-online.png" alt="201803/migration-db-online.png"  />
-
-</p>
-<p>在线迁移的方案稍微复杂一些，流程上有准备全量数据，然后实时同步增量数据，
-在数据同步跟上（延迟秒级别）之后，进行短暂停机（Hang 住，确保没有流量），
-就可以使用新的应用配置，并使用新的数据库。</p>
-<h2 id="需要解决的问题">需要解决的问题</h2>
-<p>从 SQL Server 迁移到 MySQL，核心是完成异构数据库的迁移。</p>
-<p>基于两种数据迁移方案，我们需要解决以下问题：</p>
-<ul>
-<li>两个数据库的数据结构是否可以一一对应？出现不一致如何处理？</li>
-<li>MySQL 的使用方式和 SQL Server 使用方式是否一致？有哪些地方需要注意？</li>
-<li>如何确保迁移前后的数据一致性？</li>
-<li>在迁移中，如何支持数据结构调整？</li>
-<li>如何保证业务不停情况下面，实现在线迁移？</li>
-<li>数据迁移后如果发现业务异常需要回滚，如何处理新产生的数据？</li>
-</ul>
-<p>为了解决以上的问题，我们需要引入一整套解决方案，包含以下部分：</p>
-<ul>
-<li>指导文档 A：SQL Server 转换 MySQL 的数据类型对应表</li>
-<li>指导文档 B：MySQL 的使用方式以及注意点</li>
-<li>支持表结构变更，从 SQL Server 到 MySQL 的 ETL 工具</li>
-<li>支持 SQL Server 到 MySQL 的在线 ETL 工具</li>
-<li>一致性校验工具</li>
-<li>一个回滚工具</li>
-</ul>
-<p>让我们一一来解决这些问题。</p>
-<h2 id="sql-server-到-mysql-指导文档">SQL Server 到 MySQL 指导文档</h2>
-<p>非常幸运的是，MySQL 官方早就准备了一份如何其他数据库迁移到
-MySQL 的白皮书。
-<a href="https://www.mysql.com/it/why-mysql/white-papers/guide-to-migrating-from-sql-server-to-mysql/">MySQL :: Guide to Migrating from Microsoft SQL Server to MySQL</a>
-里提供了详尽的 SQL Server 到 MySQL 的对应方案。
-包含了：</p>
-<ul>
-<li>SQL Server to MySQL - Datatypes 数据类型对应表</li>
-<li>SQL Server to MySQL - Predicates 逻辑算子对应表</li>
-<li>SQL Server to MySQL – Operators and Date Functions 函数对应表</li>
-<li>T-SQL Conversion Suggestions 存储过程转换建议</li>
-</ul>
-<p>需要额外处理的数据类型：</p>
-<table>
-<thead>
-<tr>
-<th>SQL Server</th>
-<th>MySQL</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>IDENTITY</td>
-<td>AUTO_INCREMENT</td>
-</tr>
-<tr>
-<td>NTEXT, NATIONAL TEXT</td>
-<td>TEXT CHARACTER SET UTF8</td>
-</tr>
-<tr>
-<td>SMALLDATETIME</td>
-<td>DATETIME</td>
-</tr>
-<tr>
-<td>MONEY</td>
-<td>DECIMAL(19,4)</td>
-</tr>
-<tr>
-<td>SMALL MONEY</td>
-<td>DECIMAL(10,4)</td>
-</tr>
-<tr>
-<td>UNIQUEIDENTIFIER</td>
-<td>BINARY(16)</td>
-</tr>
-<tr>
-<td>SYSNAME</td>
-<td>CHAR(256)</td>
-</tr>
-</tbody>
-</table>
-<p>在实际进行中，还额外遇到了一个用来解决树形结构存储的字段类型
-Hierarchyid。这个场景需要额外进行业务调整。</p>
-<p>我们在内部做了针对 MySQL 知识的摸底排查工作，
-并进行了若干次的 MySQL 使用技巧培训，
-将工程师对 MySQL 的认知拉到一根统一的线。</p>
-<p>关于存储过程使用，我们和业务方也达成了一致：所有 SQL Server
-存储过程使用业务代码进行重构，不能在 MySQL 中使用存储过程。
-原因是存储过程增加了业务和 DB 的耦合，会让维护成本变得极高。
-另外 MySQL 的存储过程功能和性能都较弱，无法大规模使用。</p>
-<p>最后我们提供了一个 MySQL 开发规范文档，借数据库迁移的机会，
-将之前相对混乱的表结构设计做了统一了约束（部分有业务绑定的设计，
-在考虑成本之后没有做调整）。</p>
-<h2 id="etl-工具">ETL 工具</h2>
-<p>ETL 的全称是 Extract Translate Load（读取、转换、载入），
-数据库迁移最核心过程就是 ETL 过程。
-如果将 ETL 过程简化，去掉 Translate 过程，
-就退化为一个简单的数据导入导出工具。
-我们可以先看一下市面上常见的导入导出工具，
-了解他们的原理和特性，方便我们选型。</p>
-<p>MySQL 同构数据库数据迁移工具：</p>
-<ul>
-<li><a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html">mysqldump</a>
-和 <a href="https://dev.mysql.com/doc/refman/5.7/en/mysqlimport.html">mysqlimport</a>
-MySQL 官方提供的 SQL 导出导出工具</li>
-<li><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-table-sync.html">pt-table-sync</a>
-Percona 提供的主从同步工具</li>
-<li><a href="https://www.percona.com/software/mysql-database/percona-xtrabackup">XtraBackup</a>
-Percona 提供的备份工具</li>
-</ul>
-<p>异构数据库迁移工具：</p>
-<ul>
-<li><a href="https://www.convert-in.com/">Database migration and synchronization tools</a>
-：国外一家提供数据库迁移解决方案的公司</li>
-<li><a href="https://github.com/alibaba/DataX">DataX</a>
-：阿里巴巴开发的数据库同步工具</li>
-<li><a href="https://github.com/alibaba/yugong">yugong</a>
-：阿里巴巴开发的数据库迁移工具</li>
-<li><a href="https://www.mysql.com/cn/products/workbench/">MySQL Workbench</a>
-：MySQL 提供的 GUI 管理工具，包含数据库迁移功能</li>
-<li><a href="https://community.hds.com/docs/DOC-1009855">Data Integration - Kettle</a>
-：国外的一款 GUI ETL 工具</li>
-<li><a href="https://www.ispirer.cn/products/sql-server-to-mysql-migration">Ispirer</a>
-：提供应用程序、数据库异构迁移方案的公司</li>
-<li><a href="http://www.szmesoft.com/DB2DB">DB2DB 数据库转换工具</a>
-：一个国产的商业数据库迁移软件</li>
-<li><a href="https://www.navicat.com/en/products/navicat-premium">Navicat Premium</a>
-：经典的数据库管理工具，带数据迁移功能</li>
-<li><a href="http://www.cnblogs.com/cyq1162/p/5637978.html">DBImport</a>
-：个人维护的迁移工具，非常简陋，需要付费</li>
-</ul>
-<p>看上去异构数据库迁移工具和方案很多，但是经过我们调研，其中不少是为老派的传统行业服务的。
-比如 Kettle / Ispirerer，他们关注的特性，不能满足互联网公司对性能、迁移耗时的要求。
-简单筛选后，以下几个工具进入我们候选列表（为了做特性对比，加入几个同构数据库迁移工具）：</p>
-<table>
-<thead>
-<tr>
-<th>工具名称</th>
-<th>热数据备份保证一致性</th>
-<th>batch 操作</th>
-<th>支持异构数据库</th>
-<th>断点续接</th>
-<th>开源</th>
-<th>开发语言</th>
-<th>GUI</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>mysqldump</td>
-<td>V 使用 <code>single-transaction</code></td>
-<td>X</td>
-<td>X</td>
-<td>X</td>
-<td>V</td>
-<td>C</td>
-<td>X</td>
-</tr>
-<tr>
-<td>pt-table-sync</td>
-<td>V 使用 transaction 或 <code>lock table</code> 的 FTWRL</td>
-<td>V</td>
-<td>X</td>
-<td>V</td>
-<td>V</td>
-<td>Pell</td>
-<td>X</td>
-</tr>
-<tr>
-<td>DataX</td>
-<td>X</td>
-<td>V</td>
-<td>V</td>
-<td>X</td>
-<td>V</td>
-<td>Java</td>
-<td>X</td>
-</tr>
-<tr>
-<td>yugong</td>
-<td>X</td>
-<td>V</td>
-<td>V</td>
-<td>V</td>
-<td>V</td>
-<td>Java</td>
-<td>X</td>
-</tr>
-<tr>
-<td>DB2DB</td>
-<td>X</td>
-<td>V</td>
-<td>V</td>
-<td>X</td>
-<td>X</td>
-<td>.net</td>
-<td>V</td>
-</tr>
-<tr>
-<td>MySQL Workbench</td>
-<td>X</td>
-<td>?</td>
-<td>V</td>
-<td>X</td>
-<td>V</td>
-<td>C++</td>
-<td>V</td>
-</tr>
-</tbody>
-</table>
-<p>由于异构数据库迁移，真正能够进入我们选型的只有
-DataX / yugong / DB2DB / MySQL Workbench。
-经过综合考虑，我们最终选用了三种方案，
-DB2DB 提供小数据量、简单模式的停机模式支持，
-足以应付小数据量的停机迁移，开发工程师可以自助完成。
-DataX 为大数据量的停机模式提供服务，
-使用 JSON 进行配置，通过修改查询 SQL，可以完成一部分结构调整工程。
-yugong 的强大可定制性也为在线迁移提供了基础，
-我们在官方开源版本的基础之上，增加了以下额外功能：</p>
-<ul>
-<li>支持 SQL Server 作为 Source 和 Target</li>
-<li>支持 MySQL 作为 Source</li>
-<li>支持 SQL Server 增量更新</li>
-<li>支持使用 YAML 作为配置格式</li>
-<li>调整 yugong 为 fat jar 模式运行</li>
-<li>支持表名、字段名大小写格式变化，驼峰和下划线自由转换</li>
-<li>支持表名、字段名细粒度自定义</li>
-<li>支持复合主键迁移</li>
-<li>支持迁移过程中完成 Range / Time / Mod / Hash 分表</li>
-<li>支持新增、删除字段</li>
-</ul>
-<p>关于 yugong 的二次开发，我们也积累了一些经验，这个我们下篇文章会来分享。</p>
-<h2 id="一致性校验工具">一致性校验工具</h2>
-<p>在 ETL 之后，需要有一个流程来确认数据迁移前后是否一致。
-虽然理论上不会有差异，但是如果中间有程序异常，
-或者数据库在迁移过程中发生操作，数据就会不一致。</p>
-<p>业界有没有类似的工具呢？
-有，Percona 提供了 pt-table-checksum 这样的工具，
-这个工具设计从 master 使用 <code>checksum</code> 来和 slave 进行数据对比。
-这个设计场景是为 MySQL 主从同步设计，
-显然无法完成从 SQL Server 到 MySQL 的一致性校验。
-尽管如此，它的一些技术设计特性也值得参考：</p>
-<ul>
-<li>一次检查一张表</li>
-<li>每次检查表，将表数据拆分为多个 trunk 进行检查</li>
-<li>使用 <code>REPLACE...SELECT</code> 查询，避免大表查询的长时间带来的不一致性</li>
-<li>每个 trunk 的查询预期时间是 0.5s</li>
-<li>动态调整 trunk 大小，使用指数级增长控制大小</li>
-<li>查询超时时间 1s / 并发量 25</li>
-<li>支持故障后断点恢复</li>
-<li>在数据库内部维护 src / diff，meta 信息</li>
-<li>通过 Master 提供的信息自动连接上 slave</li>
-<li>必须 Schema 结构一致</li>
-</ul>
-<p>我们选择 yugong 作为 ETL 工具的一大原因也是因为它提供了多种模式。
-支持 CHECK / FULL / INC / AUTO 四种模式。
-其中 CHECK 模式就是将 yugong 作为数据一致性检查工具使用。
-yugong 工作原理是通过 JDBC 根据主键范围变化，将数据取出进行批量对比。</p>
-<p>这个模式会遇到一点点小问题，如果数据库表没有主键，将无法进行顺序对比。
-其实不同数据库有自己的逻辑主键，Oracle 有 <code>rowid</code>，
-SQL Server 有 <code>physloc</code>。这种方案可以解决无主键进行比对的问题。</p>
-<h2 id="如何回滚">如何回滚</h2>
-<p>我们需要考虑一个场景，在数据库迁移成功之后业务已经运行了几个小时，
-但是遇到了一些 Critical 级别的问题，必须回滚到迁移之前状态。
-这时候如何保证这段时间内的数据更新到老的数据库里面去？</p>
-<p>最朴素的做法是，在业务层面植入 DAO 层的打点，
-将 SQL 操作记录下来到老数据库进行重放。
-这种方式虽然直观，但是要侵入业务系统，直接被我们否决了。
-其实这种方式是 binlog statement based 模式，
-理论上我们可以直接从 MySQL 的 binlog 里面获取数据变更记录。
-以 row based 方式重放到 SQL Server。</p>
-<p>这时候又涉及到逆向 ETL 过程，
-因为很可能 Translate 过程中，做了表结构重构。
-我们的解决方法是，使用 Canal 对 MySQL binlog 进行解析，
-然后将解析之后的数据作为数据源，
-将其中的变更重放到 SQL Server。</p>
-<p>由于回滚的过程也是 ETL，基于 yugong，
-我们继续定制了 SQL Server 的写入功能，
-这个模式类似于在线迁移，只不过方向是从 MySQL 到 SQL Server。</p>
-<h2 id="其他实践">其他实践</h2>
-<p>我们在迁移之前做了大量压测工作，
-并针对每个迁移的 DB 进行线上环境一致的全真演练。
-我们构建了和生产环境机器配置一样，
-数据量一样的测试环境，并要求每个系统在上线之前都进行若干次演练。
-演练之前准备详尽的操作手册和事故处理方案。
-演练准出的标准是：能够在单次演练中不出任何意外，时间在估计范围内。
-通过演练我们保证了整个操作时间可控，减少操作时候的风险。</p>
-<p>为了让数据库的状态更为直观的展现出来，
-我们对 MySQL / SQL Server 添加了细致的 Metrics 监控。
-在测试和迁移过程中，可以便利地看到数据库的响应情况。</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/sql-server-metrics.png" alt="201803/sql-server-metrics.png"  />
-
-</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/mysql-metrics.png" alt="201803/mysql-metrics.png"  />
-
-</p>
-<p>为了方便 DBA 快速 Review SQL。
-我们提供了一些工具，直接将代码库中的 SQL 拎出来，
-可以方便地进行 SQL Review。
-再配合其他 SQL Review 工具，
-比如 <a href="https://github.com/Meituan-Dianping/SQLAdvisor">Meituan-Dianping/SQLAdvisor</a>，
-可以实现一部分自动化，提高 DBA 效率，避免线上出现明显的 Slow SQL。</p>
-<h2 id="最后">最后</h2>
-<p>基于这几种方案我们打了一套组合拳。经过将近一年的使用，
-进行了 28 个通宵，迁移了 42 个系统，
-完成了包括用户、订单、支付、电商、学习、社群、内容和工具的迁移。
-迁移的数据总规模接近百亿，所有迁移项目均一次成功。
-迁移过程中积累了丰富的实战经验，保障了业务快速向前发展。</p>
-<p>下一篇：<a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D</a></p>
 ]]></content:encoded>
     </item>
     
