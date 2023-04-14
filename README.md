@@ -54,12 +54,9 @@ Asset prefix:
 --------------------------------------------------------------------------
 
 原文链接: yours
-
+欢迎关注我的微信公众号：窥豹。
 3a1ff193cee606bd1e2ea554a16353ee
 
-欢迎关注我的微信公众号：[窥豹](http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&wechat_redirect)
-
-![窥豹](https://4ocf5n.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg)
 ```
 
 **Markdown to GFM**:
