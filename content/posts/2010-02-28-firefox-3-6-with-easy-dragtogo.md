@@ -7,8 +7,7 @@ tags: ["技术达人", "firefox"]
 categories: ["efficiency"]
 ---
 
-Easy DragToGo是一款很不错的FireFox插件，能够实现一些鼠标手势功能。你可以在[Easy DragToGo :: Firefox
-附加组件](https://addons.mozilla.org/zh-CN/firefox/addon/6639)下载这个插件。
+Easy DragToGo是一款很不错的FireFox插件，能够实现一些鼠标手势功能。你可以在[Easy DragToGo :: Firefox 附加组件](https://addons.mozilla.org/zh-CN/firefox/addon/6639)下载这个插件。
 
 下面是一段[官方](http://addons.sociz.com/firefox/700/)的介绍。
 
@@ -51,8 +50,7 @@ Easy DragToGo图图
 但是似乎作者最近很忙，自从2009 年06月13日以来都没有进行插件更新。导致的结果就是在FireFox升级到3.6之后，Easy DragToGo悲惨的标
 记上了"**这是一个针对旧版本Firefox的附加组件**"字样。我苦苦等了近两个月，依然没有等到作者放出新版本，终于忍不住找第三方修改版。
 
-很幸运，在[「Firefox扩展」Easy DragToGo 1.1.2.4a修改版 -- 支持在Firefox 3.6和3.7a1拖动文本框文字搜索 |
-软件集散地](http://my219.cn/archives/41051.html)找到了修改版的Easy DragToGo，上面说可以在FireFox
+很幸运，在[「Firefox扩展」Easy DragToGo 1.1.2.4a修改版 -- 支持在Firefox 3.6和3.7a1拖动文本框文字搜索 | 软件集散地](http://my219.cn/archives/41051.html)找到了修改版的Easy DragToGo，上面说可以在FireFox
 3.7a1下使用，我实测在3.6下没有问题。喜欢Easy　DragToGo的朋友们这下可以满意了。
 
 有图为证

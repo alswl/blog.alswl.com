@@ -11,8 +11,7 @@ Python很强大，这个py2exe程序能够把.py文件编译为.exe可执行文�
 
 我注意到这个细节：这篇文章发表于 2005-6-5 23:34作者wolfg太犀利了。
 
-原文出处：[py2exe初接触（一） - Python -
-ChinaUnix.net](http://bbs3.chinaunix.net/thread-556861-1-1.html)
+原文出处：[py2exe初接触（一） - Python -ChinaUnix.net](http://bbs3.chinaunix.net/thread-556861-1-1.html)
 
 ## py2exe是什么？
 
@@ -41,7 +40,7 @@ e-0.5.4.win32-py2.4.exe?download)
 
 我们先准备一个简单的python程序hello.py
 
-    
+
     # hello.py
     def main():
         print "Hello, World!"
@@ -50,7 +49,7 @@ e-0.5.4.win32-py2.4.exe?download)
 
 然后为使用py2exe写一个脚本setup.py
 
-    
+
     # setup.py
     from distutils.core import setup
     import py2exe
@@ -58,12 +57,12 @@ e-0.5.4.win32-py2.4.exe?download)
 
 运行setup.py，记得要传一个参数给它
 
-    
+
     python setup.py py2exe
 
 应该看到一些输出信息
 
-    
+
     running py2exe
     creating E:ProjectsWorkSpacePythonbuild
     creating E:ProjectsWorkSpacePythonbuildbdist.win32
@@ -109,18 +108,18 @@ build里是一些py2exe运行时产生的中间文件，dist里有最终的可�
 
 library.zip
 
-  
+
 w9xpopen.exe
 
-  
+
 python23.dll
 
-  
+
 hello.exe
 
 现在可以运行hello.exe了
 
-    
+
     E:ProjectsWorkSpacePythondist>;hello
     Hello, World!
 
@@ -131,7 +130,7 @@ w9xpopen.exe、python23.dll这几个文件是必须要和hello.exe在一起的�
 
 最后，大家试试运行
 
-    
+
     python setup.py py2exe --help
 
 看看py2exe都有哪些参数

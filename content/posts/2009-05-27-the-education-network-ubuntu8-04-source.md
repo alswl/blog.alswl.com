@@ -15,7 +15,8 @@ Google的话有很多源，北大的宣称5M，结果我都连不上，交大的
 
 速度的话，还是得自己测试，我只是推荐，下面的内容都是我复制过来自带的，不是我增加的。（PS:晚上时候我用官方的Mirror也3M/s）
 
-` #北京市清华大学更新服务器（教育网，推荐校园网和网通用户使用）：
+```
+#北京市清华大学更新服务器（教育网，推荐校园网和网通用户使用）：
 
 deb http://mirror9.net9.org/ubuntu/ hardy main multiverse restricted universe
 
@@ -233,4 +234,4 @@ restricted universe
 
 deb-src http://debian.ustc.edu.cn/ubuntu/ hardy-updates main multiverse
 restricted univers
-
+```

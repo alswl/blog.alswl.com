@@ -14,7 +14,7 @@ categories: ["coding"]
 
 C语言其中有函数strtok，就是按某些char对字符串进行切割。下面给出一个C下面的范例
 
-    
+```
     char str[] = "now # is the time for all # good men to come to the # aid of their country";
     char delims[] = "#";
     char *result = NULL;
@@ -28,11 +28,12 @@ printf( "result is "%s"n", result );
 result = strtok( NULL, delims );
 
 }
+```
 
 在Java中也有类似的StringTokenizer，但是在JDK5中，已经被标记为Legacy
 Class(遗产类)，推荐使用String.split(String regex)，可以接受正则表达式。范例如下。
 
-    
+```
     private void init() {
     	Scanner scanner = new Scanner(System.in);
 
@@ -89,14 +90,15 @@ i++;
 return result;
 
 }
+```
 
 ## 不定长度参数
 
 听名字这东西就相当有用，也是JDK5开始支持的。（话说现在都JDK6.0了，我们很多童鞋对Java的概念还停留在最开始，其中也包括我，咱们要与时俱进嘛）直接
 上代码，就知道怎么用了。
 
-    
-    package dddspace.job.exercise1115;
+```
+package dddspace.job.exercise1115;
 
 /**
 
@@ -108,14 +110,14 @@ public class VarArgs {
 
 public static void main(String[] args) {
 
-  
+
 int sum = 0;
 
 sum = VarArgs.sum(1, 2);
 
 System.out.println(sum);
 
-  
+
 sum = VarArgs.sum(1, 3, 5, 7);
 
 System.out.println(sum);
@@ -139,6 +141,7 @@ return sum;
 }
 
 }
+```
 
 ## 泛型类型通配符
 
@@ -148,8 +151,8 @@ tml?wtp=tt))，这个在C++中运用广泛，在JDK5.0加入Java大家族。我�
 
 咱们还是让代码来反应思想吧。
 
-    
-    package dddspace.job.exercise1115;
+```
+package dddspace.job.exercise1115;
 
 import java.util.ArrayList;
 
@@ -167,7 +170,7 @@ public class WildcardTest<T> {
 
 public static void main(String[] args) {
 
-  
+
 /*想定义泛型为List接口，错误
 
 WildcardTest<List> wildcardTestW= null;
@@ -177,7 +180,7 @@ wildcardTestW = new WildcardTest<ArrayList>();
 wildcardTestW = new WildcardTest<LinkedList>();
 
 */  
-  
+
 //关键词 "<? extends Class>"匹配正确
 
 WildcardTest<? extends List> wildcardTest= null;
@@ -189,13 +192,12 @@ wildcardTest = new WildcardTest<LinkedList>();
 }
 
 }
+```
 
 ## 补遗：关于String/StringBuilder/StringBuffer
 
 简单来说，String是不可变的，每次都是指向不同的内存空间。StringBuilder是可变的，线程不安全。StringBuffer是可变的并且线程安全。
 StringBuilder是JDK5.0加入的。（今天5.0开心了，都是推它的）
 
-A.shun有一篇关于String/StringBuilder/StringBuffer的文，可以移步到[这里](http://www.a18zhizao.
-cn/y2009/1060_string-stringbuffer-and-stringbuilders-the-
-difference.html)看详细介绍。
+A.shun有一篇关于String/StringBuilder/StringBuffer的文，可以移步到[这里](http://www.a18zhizao.cn/y2009/1060_string-stringbuffer-and-stringbuilders-the-difference.html)看详细介绍。
 

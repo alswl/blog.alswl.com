@@ -12,8 +12,7 @@ categories: ["coding"]
 我遇到I am unable to access the ./demoCA/newcerts directory ./demoCA/newcerts: No
 such file or directory 然后找到这篇文章，只要用生成相应的目录就可以了。
 
-我遇到的第二个问题是TXT_DB error number 2 在redhat的网站[kbase.redhat.com/faq/docs/DOC-3624]
-(http://kbase.redhat.com/faq/docs/DOC-3624)这篇文章。
+我遇到的第二个问题是TXT_DB error number 2 在redhat的网站[kbase.redhat.com/faq/docs/DOC-3624](http://kbase.redhat.com/faq/docs/DOC-3624)这篇文章。
 
 我将原来index.txt里面的内容剪切出，然后重新签证，再把剪切出的内容粘贴到后来生成文件之前，就解决了那个问题。
 
@@ -30,7 +29,7 @@ such file or directory 然后找到这篇文章，只要用生成相应的目录
 Generating RSA private key, 1024 bit long modulus ....++++++ .......++++++ e
 is 65537 (0x10001)
 
-  
+
 2、生成带加密口令的密钥：
 
   
@@ -51,7 +50,7 @@ privatekey.key: Verifying - Enter pass phrase for privatekey.key:
 
 -aes128, -aes192, -aes256 encrypt PEM output with cbc aes
 
-  
+
 去除密钥的口令：
 
 [weigw@TEST src]$ openssl rsa -in privatekey.key -out
@@ -92,7 +91,7 @@ Email Address []:weigongwan@sina.com
 
 在生成证书的时候需要按照提示输入一些个人信息。
 
-  
+
 通过私钥生成公钥：
 
   
@@ -100,7 +99,7 @@ Email Address []:weigongwan@sina.com
 [weigw@TEST src]$ openssl rsa -in privatekey.key -pubout -out pubkey.key
 writing RSA key
 
-  
+
 格式转换：（证书、私钥、公钥）（PEM <----->DER）
 
   
@@ -124,17 +123,17 @@ pubkey.der -outform DER
 
 writing RSA key
 
-  
+
 从DER格式转换成PEM格式一样，就是把inform的格式改成DERoutform的格式改成PEM即可。
 
   
-  
+
 下面是一个服务器和客户端认证的证书、私钥生成方法：（server.crt、client.crt、ca.crt）
 
-  
+
 第一步： 生成私钥
 
-    
+
     [weigw@TEST bin]$ openssl genrsa -out server.key 1024    Generating RSA private key, 1024 bit long modulus .++++++ .. .........++++++ e is 65537 (0x10001)    [weigw@TEST bin]$ openssl genrsa -out client.key 1024    Generating RSA private key, 1024 bit long modulus ...++++++ ...... ..........++++++ e is 65537 (0x10001)    [weigw@TEST bin]$ openssl genrsa -out ca.key 1024  Generating RSA private key, 1024 bit long modulus ....... ..++++++ .........++++++ e is 65537 (0x10001)    [weigw@TEST bin]$
 
 　　第三步： 申请证书（为请求文件签名）
@@ -145,7 +144,7 @@ writing RSA key
 [weigw@TEST bin]$ openssl ca -in client.csr -out client.crt -cert ca.crt
 -keyfile ca.key
 
-  
+
 如果在这步出现错误信息：
 
   
@@ -158,7 +157,7 @@ Using configuration from /usr/share/ssl/openssl.cnf I am unable to access the
 
 [weigw@TEST bin]$
 
-  
+
 自己手动创建一个CA目录结构：
 
 [weigw@TEST bin]$ mkdir ./demoCA
@@ -173,7 +172,7 @@ Using configuration from /usr/share/ssl/openssl.cnf I am unable to access the
 
 [weigw@TEST bin]$ vi demoCA/serial
 
-  
+
 合并证书文件（crt）和私钥文件（key）：
 
   
@@ -181,7 +180,7 @@ Using configuration from /usr/share/ssl/openssl.cnf I am unable to access the
 [weigw@TEST bin]$ cat client.crt client.key > client.pem [weigw@TEST bin]$ cat
 server.crt server.key > server.pem
 
-  
+
 合并成pfx证书：
 
   
@@ -200,7 +199,7 @@ Enter Export Password:
 
 Verifying - Enter Export Password:
 
-  
+
 文本化证书：
 
   
@@ -220,7 +219,7 @@ MAC verified OK
 
 Enter PEM pass phrase: Verifying - Enter PEM pass phrase:
 
-  
+
 屏幕模式显式：（证书、私钥、公钥）
 
   
@@ -231,7 +230,7 @@ Enter PEM pass phrase: Verifying - Enter PEM pass phrase:
 
 [weigw@TEST bin]$ openssl rsa -in server.pub -noout -text -modulus
 
-  
+
 得到DH：
 
   

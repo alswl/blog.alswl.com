@@ -5,6 +5,7 @@ slug: "servlet-jsp-s-java-type-of-the-most-simple-mvc-model"
 date: "2009-02-18T00:00:00+08:00"
 tags: ["java", "mvc"]
 categories: ["coding"]
+draft: true
 ---
 
 来自Head First Servlet and JSP
@@ -22,7 +23,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
 
 version="2.4"> -->
 
-  
+
 <servlet>
 
 <servlet-name>Ch3 Beer</servlet-name>
@@ -31,7 +32,7 @@ version="2.4"> -->
 
 </servlet>
 
-  
+
 <servlet-mapping>
 
 <servlet-name>Ch3 Beer</servlet-name>
@@ -40,7 +41,7 @@ version="2.4"> -->
 
 </servlet-mapping>
 
-  
+
 </web-app>
 
 _HTML语言_: [form.html](http://www.fayaa.com/code/view//)
@@ -55,7 +56,7 @@ _HTML语言_: [form.html](http://www.fayaa.com/code/view//)
 
 </head>
 
-  
+
 <body>
 
 <h1 align="center">Beer Selection Page</h1>
@@ -98,7 +99,7 @@ _Java语言_: [BeerSelect](http://www.fayaa.com/code/view//)
 
 package com.example.web;
 
-  
+
 import com.example.model.*;
 
 import javax.servlet.*;
@@ -109,7 +110,7 @@ import java.io.*;
 
 import java.util.*;
 
-  
+
 public class BeerSelect extends HttpServlet
 
 {
@@ -132,12 +133,12 @@ String c = request.getParameter("color");
 
 // out.println("<br>Got beer color " + c);
 
-  
+
 BeerExpert be = new BeerExpert();
 
 List result = be.getBrands(c);
 
-  
+
 // Iterator it = result.iterator();
 
 // while (it.hasNext())
@@ -148,7 +149,7 @@ List result = be.getBrands(c);
 
 // }
 
-  
+
 request.setAttribute("styles", result);
 
 RequestDispatcher view = request.getRequestDispatcher("result.jsp");
@@ -163,10 +164,10 @@ _Java语言_: [BeerExpert](http://www.fayaa.com/code/view//)
 
 package com.example.model;
 
-  
+
 import java.util.*;
 
-  
+
 public class BeerExpert
 
 {
@@ -207,7 +208,7 @@ _Java Server Page语言_: [result.jsp](http://www.fayaa.com/code/view//)
 
 <%@ page import="java.util.*"%>
 
-  
+
 <html>
 
 <head>
@@ -216,7 +217,7 @@ _Java Server Page语言_: [result.jsp](http://www.fayaa.com/code/view//)
 
 </head>
 
-  
+
 <body>
 
 <h1 align="center">Beer Recommendations JSP</h1>

@@ -15,12 +15,9 @@ e.net/tortoisesvn/TortoiseSVN-1.6.7.18415-win32-svn-1.6.9.msi?download)
 
 下面是一片TortoiseSVN中文版的安装方法，转载过来。
 
-原文出处：[TortoiseSVN 中文版 安装 -
-Svn中文网](http://www.svn8.com/svnpz/20090622/6696.html)
+原文出处：[TortoiseSVN 中文版 安装 -Svn中文网](http://www.svn8.com/svnpz/20090622/6696.html)
 
-××××______××××[
-
-](http://www.svn8.com/svnpz/20090622/6696.html)
+××××______××××[](http://www.svn8.com/svnpz/20090622/6696.html)
 
 TortoiseSVN 是 Subversion 版本控制系统的一个免费开源客户端，可以超越时间的管理文件和目录。
 
@@ -46,8 +43,7 @@ GnuPG这东西对于很多人来说不怎么熟识.而且在windows下,我只下
 
 2,对于已经安装旧版的TortoiseSVN的人来说,可能已经找不到语言包的安装了.
 
-不过没有关系,可以自己重写一下载的url http://sourceforge.net/project/downloading.php?groupname=
-tortoisesvn&filename=LanguagePack_1.6.2.16344-win32-zh_CN.msi&use_mirror=nchc
+不过没有关系,可以自己重写一下载的url http://sourceforge.net/project/downloading.php?groupname=tortoisesvn&filename=LanguagePack_1.6.2.16344-win32-zh_CN.msi&use_mirror=nchc
 看url很容易 看出来filenamer=后面的就是我们需要下载的文件名.而且文件名都很有规则.
 
 只要TortoiseSVN的 about us里就会看到以下的内容了。

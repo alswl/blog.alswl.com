@@ -9,15 +9,15 @@ categories: ["coding"]
 
 1.编译时候会出现函数问题
 
+```
 'pcap_findalldevs_ex' : undeclared identifier
-
 'PCAP_SRC_IF_STRING' : undeclared identifier
-
 'pcap_open' : undeclared identifier
-
 'PCAP_OPENFLAG_PROMISCUOUS' : undeclared identifier
-
 '=' : cannot convert from 'int' to 'struct pcap *'
+```
+
+
 
 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个
 
@@ -35,10 +35,12 @@ categories: ["coding"]
 
 2.出现连接错误
 
+```
 Cpp3.obj : error LNK2001: unresolved external symbol
 [__imp__ntohs@4](mailto:__imp__ntohs@4)
 
 Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals
+```
 
 一般添加工程只需要添加wpcap.lib这个库文件，而在分析数据包这段代码里，光这个头文件
 

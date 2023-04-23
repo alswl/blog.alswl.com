@@ -16,9 +16,9 @@ api的软件包这里就再也进行不下去了。
 
 Google了好一会，才有一个人的答案正确，说是8.10下用8.04的源就会有这种问题，我换成原始的备份了的源
 
-下面就是原始的源，使用这个找到MySQL之后就一次成功了 ` # deb cdrom:[Ubuntu 8.10 _Intrepid Ibex_ -
-Release i386 (20081029.5)]/ intrepid main restricted
+下面就是原始的源，使用这个找到MySQL之后就一次成功了 `# deb cdrom:[Ubuntu 8.10 _Intrepid Ibex_ -Release i386 (20081029.5)]/ intrepid main restricted`
 
+```
 # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
 
 # newer versions of the distribution.`
@@ -111,3 +111,4 @@ deb http://mirror.rootguide.org/ubuntu/ intrepid-security multiverse
 
 deb-src http://mirror.rootguide.org/ubuntu/ intrepid-security multiverse
 
+```

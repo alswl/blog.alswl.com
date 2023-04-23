@@ -13,14 +13,14 @@ categories: ["coding"]
 
 开始写了自己的第一个版本。
 
-    
-    import java.io.BufferedReader;
-    import java.io.IOException;
-    import java.io.InputStreamReader;
-    import java.net.MalformedURLException;
-    import java.net.ProtocolException;
-    import java.net.URL;
-    import java.net.HttpURLConnection;
+```
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.HttpURLConnection;
 
 public class FarmerHelper {
 
@@ -149,6 +149,7 @@ System.out.println(o);
 }
 
 }
+```
 
 想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length
 Required错误，这个比较头疼，我感觉是我session传递的问题（其实不是，后来发现是Post的格式问题），于是网上找来一个Session操作类。

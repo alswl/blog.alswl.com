@@ -7,8 +7,7 @@ tags: ["工欲善其事必先利其器", "eclipse", "vss"]
 categories: ["efficiency"]
 ---
 
-原文链接：[Eclipse中安装配置VSS -
-51CTO.COM](http://developer.51cto.com/art/200906/127171.htm)
+原文链接：[Eclipse中安装配置VSS - 51CTO.COM](http://developer.51cto.com/art/200906/127171.htm)
 
 alswl友情提示：**VSS Plugin for Eclipse
 **已经更新至1.6.2，链接在[这里](http://sourceforge.net/projects/vssplugin/)

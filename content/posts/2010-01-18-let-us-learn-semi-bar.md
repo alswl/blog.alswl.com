@@ -159,8 +159,7 @@ Z
 
 ing（英）
 
-相关网址：[[分享]微软双拼口诀 - HAKO FTP专区 - 输入法 -
-上海大学乐乎论坛](http://bbs.lehu.shu.edu.cn/Article.aspx?aid=24955)
+相关网址：[[分享]微软双拼口诀 - HAKO FTP专区 - 输入法 -上海大学乐乎论坛](http://bbs.lehu.shu.edu.cn/Article.aspx?aid=24955)
 
 ## 双拼练习
 
@@ -188,7 +187,7 @@ ing（英）
 
 插播一个双拼练习的Flash
 
-  
+
 来源：[双拼练习----试用版，请多提宝贵意见 - Typingfaster -博客园](http://www.cnblogs.com/typingfaster/archive/2008/04/11/1147679.html)
 
 ## 手机输入法上的双拼

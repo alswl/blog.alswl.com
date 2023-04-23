@@ -13,11 +13,9 @@ categories: ["coding"]
 
 原文链接：
 
-[一个C++程序员的Delphi学习笔记 - Dream_soft的专栏 -
-CSDN博客](http://blog.csdn.net/Dream_soft/archive/2001/09/17/12979.aspx)
+[一个C++程序员的Delphi学习笔记 - Dream_soft的专栏 -CSDN博客](http://blog.csdn.net/Dream_soft/archive/2001/09/17/12979.aspx)
 
-[一个C++程序员的Delphi学习笔记(2) - Dream_soft的专栏 -
-CSDN博客](http://blog.csdn.net/Dream_soft/archive/2001/09/19/12980.aspx)
+[一个C++程序员的Delphi学习笔记(2) - Dream_soft的专栏 -CSDN博客](http://blog.csdn.net/Dream_soft/archive/2001/09/19/12980.aspx)
 
 作者的学习经历和我比较类似，视角也比我广阔，这篇文章对程序员学习Delphi很有参考价值。
 
@@ -51,7 +49,7 @@ Completion，可以在声明和实现间双向自动补完。
 
 ## 二 语言
 
- 
+
 Delphi的核心是VCL库，其基础是Object
 Pascal。《从入门到精通》用两章的篇幅细说"Object",却只字没有提到"Pascal"。嗯，还好，我隐隐记得。
 

@@ -20,12 +20,10 @@ Code提供的Project Host，今天就自己动手，丰衣足食吧。
 
 关于SVN / VSS / CVS等源代码管理系统已经有很多比较的文章了，我这里推荐几篇
 
-[Better SCM Initiative : Comparison](http://better-
-scm.berlios.de/comparison/comparison.html)
+[Better SCM Initiative : Comparison](http://better-scm.berlios.de/comparison/comparison.html)
 这篇是老外写的一篇各种SCM比较，内容相当翔实，可以作为论文参考资料了都
 
-[SVN对比VSS,不知这样够了没 - 哥不是传说，是寂寞 -
-博客园](http://www.cnblogs.com/yansc/archive/2008/09/27/1300954.html) 国人的一篇比较
+[SVN对比VSS,不知这样够了没 - 哥不是传说，是寂寞 -博客园](http://www.cnblogs.com/yansc/archive/2008/09/27/1300954.html) 国人的一篇比较
 
 ## SVN服务端安装
 
@@ -33,8 +31,7 @@ Subversion官网已经迁移到Apache项目组下了，点击[Apache Subversion]
 g/)访问Subversion官网，上面提供各个操作系统的版本下载，Windows环境下面分了**CollabNet **/ **Tigris.org
 **/ **SlikSVN **/ **VisualSVN** 四个链接，我选择Tigris.org进行下载。
 
-点击[Setup-
-Subversion-1.6.6.msi](http://subversion.tigris.org/files/documents/15/46906
+点击[Setup-Subversion-1.6.6.msi](http://subversion.tigris.org/files/documents/15/46906
 /Setup-Subversion-1.6.6.msi)下载截至2010-03-02的最新版
 
 下载完之后，一路Next就可以安装完毕，使用 **svn --version** 测试一下能不能显示以下信息，如果可以，则说明安装没有问题了。
@@ -45,17 +42,17 @@ svn，版本 1.6.6 (r40053)
 
  编译于 Oct 26 2009，20:14:36
 
-  
+
 版权所有 (C) 2000-2009 CollabNet。
 
 Subversion 是开放源代码软件，请参阅 http://subversion.tigris.org/ 站点。
 
 此产品包含由 CollabNet(http://www.Collab.Net/) 开发的软件。
 
-  
+
 可使用以下的版本库访问模块:
 
-  
+
 * ra_neon : 通过 WebDAV 协议使用 neon 访问版本库的模块。  
  - 处理"http"方案
 
@@ -94,7 +91,7 @@ start= auto` 就可以将svnserve程序作为服务载入。关于sc命令，可
 
 设定SVN服务器用户的权限，需要修改 confsvnserve.conf 文件，如下所示
 
-    
+
     [general]
     # password-db = passwd
     # anon-access = none
@@ -107,7 +104,7 @@ start= auto` 就可以将svnserve程序作为服务载入。关于sc命令，可
 
 用户管理相当简单，只需要在confpasswd中打开相应的权限，之后在confpasswd 加入用户就可以了。
 
-    
+
     [users]
     # harry = harryssecret
     # sally = sallyssecret

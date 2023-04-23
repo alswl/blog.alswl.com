@@ -14,8 +14,7 @@ categories: ["coding"]
 我不太喜欢用太多插件，于是就测试了一下自己电脑上的几个图片编辑软件：PhotoCap3,
 HyperSnap，发现他们水印功能都不是那么理想。我不想专门为一个水印去安装一个软件，最后决定用Photoshop写一个Acion动作自己批处理。
 
-参考这篇文章：《[PS制作水印的简单教程_ps制作实例-photoshop](http://www.16xx8.com/photoshop/zhizuoshili/photoshop-4274.html)》和《[Photoshop批量处理动作的录制与运用  - 21CN.COM - IT频道](http://i
-t.21cn.com/software/pingmian/adobe/2006/01/19/2441838.shtml)》，基本步骤为（我使用的PhotoS
+参考这篇文章：《[PS制作水印的简单教程_ps制作实例-photoshop](http://www.16xx8.com/photoshop/zhizuoshili/photoshop-4274.html)》和《[Photoshop批量处理动作的录制与运用  - 21CN.COM - IT频道](http://it.21cn.com/software/pingmian/adobe/2006/01/19/2441838.shtml)》，基本步骤为（我使用的PhotoS
 hopCS3精简版）：
 
 1.制作一个80×80的小Logo,主意背景透明，文本设为30%透明度，讲文字45°倾斜放置。
@@ -28,8 +27,7 @@ hopCS3精简版）：
 
 图片效果可以参考我之前的图片，效果略微稍挤，我以后会继续修改的。
 
-[caption id="attachment_12362" align="alignnone" width="500"
-caption="龙珠·改"][![龙珠·改](../../static/images/upload_dropbox/200906/2009050421141455.jpg)](../../static/images/upload_dropbox/200906/2009050421141455.jpg)[/caption]
+![龙珠·改](../../static/images/upload_dropbox/200906/2009050421141455.jpg)
 
 09_07_21更新： [小丑](http://loli-ta.com/)同学提了一个建议：不需要大量水印，如果原创有版权的，加上水印无所谓，非原创的就不用加水印了。
 
@@ -37,5 +35,5 @@ caption="龙珠·改"][![龙珠·改](../../static/images/upload_dropbox/200906/
 
 如果只增加一个角落的水印，可以使用「图案印章」工具，选择之前使用的图案，一样可以达到水印效果。
 
-[![naruto_xiaoyin_cubao](../../static/images/upload_dropbox/200907/snapshot20090720180858.jpg)](../../static/images/upload_dropbox/200907/snapshot20090720180858.jpg)
+![naruto_xiaoyin_cubao](../../static/images/upload_dropbox/200907/snapshot20090720180858.jpg)
 

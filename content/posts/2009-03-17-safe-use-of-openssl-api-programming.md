@@ -5,19 +5,20 @@ slug: "safe-use-of-openssl-api-programming"
 date: "2009-03-17T00:00:00+08:00"
 tags: ["c", "openssl", "ssl"]
 categories: ["coding"]
+
 ---
 
 使用 OpenSSL API 进行安全编程
 
 创建基本的安全连接和非安全连接
 
-  
+
 级别： 初级
 
 Kenneth Ballard ([kenneth.ballard@ptk.org](mailto:kenneth.ballard@ptk.org)),
 自由程序员
 
-  
+
 2004 年 8 月 09 日
 
 学习如何使用 OpenSSL ---- 用于安全通信的最著名的开放库 ---- 的 API
@@ -53,7 +54,7 @@ NSS 比 OpenSSL 大，并且需要其他外部库来对库进行编译，而 Ope
 并不绝对要求您熟悉 SSL ，因为稍后将给出对 SLL 的简短说明；不过，如果您希望得到详细论述 SSL 的文章的链接，请参阅
 参考资料部分。拥有密码学方面的知识固然好，但这并不是必需的。
 
-  
+
 回页首
 
 什么是 SSL？
@@ -68,7 +69,7 @@ OpenSSL，您将有机会切身体会它们。
 可以将 SSL 和安全连接用于 Internet 上任何类型的协议，不管是 HTTP、POP3，还是 FTP。还可以用 SSL 来保护 Telnet
 会话。虽然可以用 SSL 保护任何连接，但是不必对每一类连接都使用 SSL。如果连接传输敏感信息，则应使用 SSL。
 
-  
+
 回页首
 
 什么是 OpenSSL？
@@ -79,7 +80,7 @@ OpenSSL 不仅仅是 SSL。它可以实现消息摘要、文件的加密和解�
 OpenSSL 不只是 API，它还是一个命令行工具。命令行工具可以完成与 API 同样的工作，而且更进一步，可以测试 SSL
 服务器和客户机。它还让开发人员对 OpenSSL 的能力有一个认识。要获得关于如何使用 OpenSSL 命令行工具的资料，请参阅 参考资料部分。
 
-  
+
 回页首
 
 您需要什么
@@ -101,7 +102,7 @@ OpenSSL，那么建议您只覆盖库文件，不要覆盖可执行文件。Open
 openssl.cnf 的可用模板文件。我不会对该文件进行讨论，因为这不在本文要求范围之内。不过，该模板文件有一些非常好的注释，而且如果在 Internet
 上搜索，您可以找到很多讨论修改该文件的教程。
 
-  
+
 回页首
 
 头文件和初始化
@@ -109,7 +110,7 @@ openssl.cnf 的可用模板文件。我不会对该文件进行讨论，因为�
 本教程所使用的头文件只有三个：ssl.h、bio.h 和 err.h。它们都位于 openssl 子目录中，而且都是开发您的项目所必需的。要初始化
 OpenSSL 库，只需要三个代码行即可。清单 1 中列出了所有内容。其他的头文件 和/或 初始化函数可能是其他一些功能所必需的。
 
-  
+
 清单 1. 必需的头文件
 
 /* OpenSSL headers */
@@ -128,7 +129,7 @@ ERR_load_BIO_strings();
 
 OpenSSL_add_all_algorithms();
 
-  
+
 回页首
 
 建立非安全连接
@@ -141,12 +142,12 @@ OpenSSL_add_all_algorithms();
 
 在建立连接（无论安全与否）之前，要创建一个指向 BIO 对象的指针。这类似于在标准 C 中为文件流创建 FILE 指针。
 
-  
+
 清单 2. 指针
 
 BIO * bio;
 
-  
+
 打开连接
 
 创建新的连接需要调用 BIO_new_connect
@@ -156,7 +157,7 @@ BIO * bio;
 不管怎样，一旦 BIO 的主机名和端口号都已指定，该指针会尝试打开连接。没有什么可以影响它。如果创建 BIO 对象时遇到问题，指针将会是
 NULL。为了确保连接成功，必须执行 BIO_do_connect 调用。
 
-  
+
 清单 3. 创建并打开连接
 
 bio = BIO_new_connect("hostname:port");
@@ -179,7 +180,7 @@ connection */
 
 }
 
-  
+
 在这里，第一行代码使用指定的主机名和端口创建了一个新的 BIO 对象，并以所示风格对该对象进行 格式化。例如，如果您要连接到
 [www.ibm.com](http://www.ibm.com/) 的 80 端口，那么该字符串将是
 [www.ibm.com:80](http://www.ibm.com/) 。调用 BIO_do_connect 检查连接是否成功。如果出错，则返回 0 或
@@ -194,7 +195,7 @@ BIO_read 将尝试从服务器读取一定数目的字节。它返回读取的�
 则表示连接出现错误。在非阻塞连接的情况下，返回 0 表示没有可以获得的数据，返回 -1 表示连接出错。可以调用 BIO_should_retry
 来确定是否可能重复出现该错误。
 
-  
+
 清单 4. 从连接读取
 
 int x = BIO_read(bio, buf, len);
@@ -227,11 +228,11 @@ handle the retry */
 
 }
 
-  
+
 BIO_write 会试着将字节写入套接字。它将返回实际写入的字节数、0 或者 -1。同 BIO_read ，0 或 -1 不一定表示错误。
 BIO_should_retry 是找出问题的途径。如果需要重试写操作，它必须使用和前一次完全相同的参数。
 
-  
+
 清单 5. 写入到连接
 
 if(BIO_write(bio, buf, len) <= 0)
@@ -254,7 +255,7 @@ handle the retry */
 
 }
 
-  
+
 关闭连接
 
 关闭连接也很简单。您可以使用以下两种方式之一来关闭连接： BIO_reset 或 BIO_free_all
@@ -266,7 +267,7 @@ BIO_reset 关闭连接并重新设置 BIO
 BIO_free_all 所做正如其所言：它释放内部结构体，并释放所有相关联的内存，其中包括关闭相关联的套接字。如果将 BIO
 嵌入于一个类中，那么应该在类的析构函数中使用这个调用。
 
-  
+
 清单 6. 关闭连接
 
 /* To reuse the connection, use this line */
@@ -277,7 +278,7 @@ BIO_reset(bio);
 
 BIO_free_all(bio);
 
-  
+
 回页首
 
 建立安全连接
@@ -300,14 +301,14 @@ BIO_free_all(bio);
 还需要另一个 SSL 类型的指针来保持 SSL 连接结构（这是短时间就能完成的一些连接所必需的）。以后还可以用该 SSL 指针来检查连接信息或设置其他
 SSL 参数。
 
-  
+
 清单 7. 设置 SSL 指针
 
 SSL_CTX * ctx = SSL_CTX_new(SSLv23_client_method());
 
 SSL * ssl;
 
-  
+
 加载可信任证书库
 
 在创建上下文结构之后，必须加载一个可信任证书库。这是成功验证每个证书所必需的。如果不能确认证书是可信任的，那么 OpenSSL
@@ -323,7 +324,7 @@ Store.pem"的单个文件中。如果已经有了一个可信任证书库，并�
 可以调用 SSL_CTX_load_verify_locations 来加载可信任证书库文件。这里要用到三个参数：上下文指针、可信任库文件的路径和文件名，以
 及证书所在目录的路径。必须指定可信任库文件或证书的目录。如果指定成功，则返回 1，如果遇到问题，则返回 0。
 
-  
+
 清单 8. 加载信任库
 
 if(! SSL_CTX_load_verify_locations(ctx, "/path/to/TrustStore.pem", NULL))
@@ -335,11 +336,11 @@ load here */
 
 }
 
-  
+
 如果打算使用目录存储可信任库，那么必须要以特定的方式命名文件。OpenSSL 文档清楚地说明了应该如何去做，不过，OpenSSL 附带了一个名为
 c_rehash 的工具，它可以将文件夹配置为可用于 SSL_CTX_load_verify_locations 的路径参数。
 
-  
+
 清单 9. 配置证书文件夹并使用它
 
 /* Use this at the command line */
@@ -357,7 +358,7 @@ if(! SSL_CTX_load_verify_locations(ctx, NULL, "/path/to/certfolder"))
 
 }
 
-  
+
 为了指定所有需要的验证证书，您可以根据需要命名任意数量的单独文件或文件夹。您还可以同时指定文件和文件夹。
 
 创建连接
@@ -367,7 +368,7 @@ if(! SSL_CTX_load_verify_locations(ctx, NULL, "/path/to/certfolder"))
 标记的。使用这个选项进行设置，如果服务器突然希望进行一次新的握手，那么 OpenSSL
 可以在后台处理它。如果没有这个选项，当服务器希望进行一次新的握手时，进行读或写操作都将返回一个错误，同时还会在该过程中设置 retry 标记。
 
-  
+
 清单 10. 设置 BIO 对象
 
 bio = BIO_new_ssl_connect(ctx);
@@ -376,12 +377,12 @@ BIO_get_ssl(bio, & ssl);
 
 SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
 
-  
+
 设置 SSL 上下文结构之后，就可以创建连接了。主机名是使用 BIO_set_conn_hostname
 函数设置的。主机名和端口的指定格式与前面的相同。该函数还可以打开到主机的连接。为了确认已经成功打开连接，必须执行对 BIO_do_connect
 的调用。该调用还将执行握手来建立安全连接。
 
-  
+
 清单 11. 打开安全连接
 
 /* Attempt to connect */
@@ -399,7 +400,7 @@ connection */
 
 }
 
-  
+
 连接建立后，必须检查证书，以确定它是否有效。实际上，OpenSSL 为我们完成了这项任务。如果证书有致命的问题（例如，哈希值无效），那么将无法建立连接。但是
 ，如果证书的问题并不是致命的（当它已经过期或者尚不合法时），那么仍可以继续使用连接。
 
@@ -410,7 +411,7 @@ X509_V_OK。如果有地方出了问题，则返回一个错误代码，该代�
 应该注意的是，验证失败并不意味着连接不能使用。是否应该使用连接取决于验证结果和安全方面的考虑。例如，失败的信任验证可能只是意味着没有可信任的证书。连接仍然可
 用，只是需要从思想上提高安全意识。
 
-  
+
 清单 12. 检查证书是否有效
 
 if(SSL_get_verify_result(ssl) != X509_V_OK)
@@ -422,18 +423,18 @@ verification */
 
 }
 
-  
+
 这就是所需要的全部操作。通常，与服务器进行通信都要使用 BIO_read 和 BIO_write 。并且只需调用 BIO_free_all 或
 BIO_reset ，就可以关闭连接，具体调用哪一个方法取决于是否重用 BIO。
 
 必须在结束应用程序之前的某个时刻释放 SSL 上下文结构。可以调用 SSL_CTX_free 来释放该结构。
 
-  
+
 清单 13. 清除 SSL 上下文
 
 SSL_CTX_free(ctx);
 
-  
+
 回页首
 
 错误检测
@@ -456,18 +457,18 @@ ERR_func_error_string 返回导致错误的 OpenSSL 函数
 
 printf("Error: %sn", ERR_reason_error_string(ERR_get_error()));
 
-  
+
 您还可以让库给出预先格式化了的错误字符串。可以调用 ERR_error_string
 来得到该字符串。该函数将错误代码和一个预分配的缓冲区作为参数。而这个缓冲区必须是 256 字节长。如果参数为 NULL，则 OpenSSL
 会将字符串写入到一个长度为 256 字节的静态缓冲区中，并返回指向该缓冲区的指针。否则，它将返回您给出的指针。如果您选择的是静态缓冲区选项，那么在下一次调用
 ERR_error_string 时，该缓冲区会被覆盖。
 
-  
+
 清单 15. 获得预先格式化的错误字符串
 
 printf("%sn", ERR_error_string(ERR_get_error(), NULL));
 
-  
+
 您还可以将整个错误队列转储到文件或 BIO 中。可以通过 ERR_print_errors 或 ERR_print_errors_fp
 来实现这项操作。队列是以可读格式被转储的。第一个函数将队列发送到 BIO ，第二个函数将队列发送到 FILE 。字符串格式如下（引自 OpenSSL
 文档）：
@@ -478,14 +479,14 @@ name]:[line]:[optional text message]
 其中， [pid] 是进程 ID， [error code] 是一个 8 位十六进制代码， [file name] 是 OpenSSL 库中的源代码文件，
 [line] 是源文件中的行号。
 
-  
+
 清单 16. 转储错误队列
 
 ERR_print_errors_fp(FILE *);
 
 ERR_print_errors(BIO *);
 
-  
+
 回页首
 
 开始做吧
@@ -499,80 +500,80 @@ ERR_print_errors(BIO *);
 
 在任何支持的平台上，源代码的编译都应该是非常容易的，不过我建议您使用最新版本的 OpenSSL。在撰写本文时，OpenSSL 的最新版本是 0.9.7d。
 
-  
+
 参考资料
 
 您可以参阅本文在 developerWorks 全球站点上的 英文原文.
 
-  
+
 下载本文中用到的 源代码。
 
-  
+
 您可以从 OpenSSL Project 下载 OpenSSL 源文件；一定要去查看一下 文档 的当前状态。您还可以从
 邮件列表（滚动到底部，以获得到存档文件的链接）中学到很多知识，而且应该----当然，如往常一样----花一些时间去 阅读 FAQ！
 
-  
+
 OpenSSL 源自 SSLeay （它甚至有非常 完善的文档）。
 
-  
+
 此外，请参阅由两部分构成的文章" An Introduction to OpenSSL Programming"（ Linux Journal，2001
 年）（以及 第二部分），而且可以通过（ informIT， 2001 年）获得的另一篇来自 Sams 的文章 " Securing Sockets with
 OpenSSL"和它的 第二部分，该文章也是由两部分构成的。
 
-  
+
 在线阅读 BIO library documentation 和 Network Security with OpenSSL （O'Reilly &
 Associates，2002 年）的样例章节。 Linux Socket Programming （Sams，2001 年）摘自 Sams 的书。
 
-  
+
 OpenSSL 的发布遵循 BSD/Apache-type 许可。如果您是自由软件（Free Software）的支持者（或者是 good
 documentation 的支持者），您可能还希望查看 The GNU Transport Layer Security Library
 （注意，如果没有异常子句，GPL 的软件不能针对 OpenSSL 进行链接）。 Mozilla Network Security Services（NSS）
 是双许可的，它既遵循 Mozilla Public License（MPL）又遵循 GNU General Public License （GNU
 GPL），而且有相当好的 文档。要深入了解 TLS，请阅读 Wikipedia 的文章 Transport Layer Security。
 
-  
+
 可以在 RFC 2246 中找到关于 Transport Layer Security 的备忘录和技术细节，RFC 2246 定义了标准，并且它被 RFC
 3546 更新，后者定义了对 TLS 协议的扩展。
 
-  
+
 " 使用 Twisted 框架进行网络编程, 第 4 部分"（ developerWorks，2003 年 9 月）中 David Mertz 讨论了使用
 Python twisted 框架进行 SSL 编程。
 
-  
+
 要深入学习套接字编程，请参阅 Linux Socket 编程，第一部分（ developerWorks，2003 年 10 月）和 Linux Socket
 编程，第二部分，这也是 David Mertz 的一个教程系列（ developerWorks，2004 年 1 月）。对那些刚开始进行套接字编程的人来说，
 Beej's Guide to Network Programming Using Internet Sockets 也是一个不错的参考资料。
 
-  
+
 如果您是 刚刚 开始接触套接字，那么请先阅读 " Understanding Sockets in Unix, NT, and Java"（
 developerWorks，1998 年 6 月），那篇文章提供了什么是套接字以及它们适用于何处的极好的入门级概述。
 
-  
+
 此外，还可以参阅来自 Communications Programming Concepts Sockets 的关于 Sockets 的 IBM
 文档，以及来自 Technical Reference: Communications, Volume 2 的 Programming sockets on
 AIX。
 
-  
+
 可以通过" Encryption using OpenSSL's crypto libraries" （ Linux Gazette，2003
 年）初步了解加密，并通过 " Introduction to Cryptography" （ PGP Corporation，2003 年 5 月 ----
 XPDF 格式） 或 " Introduction to cryptography" （ developerWorks，2001 年 3
 月）获得对加密的总体上的深入理解。可以以 Postscript 和 PDF 格式在线获得 Handbook of Appplied Cryptography
 （CRC Press，1996 年）（可以通过订购获得更新后的 2001 版本）。
 
-  
+
 在 developerWorks Linux 专区 可以找到更多为 Linux 开发人员准备的参考资料。
 
-  
+
 可以在 Developer Bookstore Linux 区中定购 打折出售的 Linux 书籍。
 
-  
+
 从 developerWorks 的 Speed-start your Linux app 专区下载可以运行于 Linux 之上的精选的
 developerWorks Subscription 产品免费测试版本，其中包括 WebSphere Studio Site
 Developer、WebSphere SDK for Web services、WebSphere Application Server、DB2
 Universal Database Personal Developers Edition、Tivoli Access Manager 和 Lotus
 Domino Server。想更快地开始上手，请参阅针对各个产品的 how-to 文章和技术支持。
 
-  
+
 关于作者
 
 Kenneth 是 Peru State College（位于 Peru, Nebraska）计算机科学专业的大四学生。他还是学生报 The Peru
@@ -581,7 +582,7 @@ Iowa）计算机编程专业的理学副学士（Associate of Science）学位�
 Java、C++、COBOL、 Visual Basic 和网络。
 
   
-  
+
 原出处:
 
 [www.ibm.com/developerworks/cn/linux/l-openssl.html#Resources](http://www.ibm.

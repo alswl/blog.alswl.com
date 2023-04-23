@@ -15,8 +15,7 @@ Eclipse的代理设置在"**General-Network Connections**"中设置，很明显�
 PS：在写的是一个DataBase->Java 3层代码生成器，想仿照[**动软.NET生成器**](http://www.maticsoft.com/)那
 样写，今天刚写完生成Bean的一些版本，自己计划在半年时间内写一个beta版。
 
-下面是解决办法，来自 [百亩森林 »
-解决windows下subclipse穿过代理连接subversion服务器](http://blog.baimusenlin.com/83.html)
+下面是解决办法，来自 [百亩森林 » 解决windows下subclipse穿过代理连接subversion服务器](http://blog.baimusenlin.com/83.html)
 
 ×××××&&以下原文&&×××××
 
@@ -29,7 +28,7 @@ SettingsAdministratorApplication DataSubversion)，注意此目录为隐藏目�
 
 3、在servers文件中的最后[global]后增加
 
-    
+
     http-proxy-host =192.168.1.1
     http-proxy-port =80
     http-proxy-username =username

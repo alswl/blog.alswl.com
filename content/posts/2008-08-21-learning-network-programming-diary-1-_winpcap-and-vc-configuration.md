@@ -28,6 +28,7 @@ ude "remote-ext.h"里面，加上去就可以运行了。
 
 第二个程序错误更多，
 
+```
 F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: 'socklen_t' : undeclared
 identifier
 
@@ -42,6 +43,9 @@ identifier
 
 F:学习网络WiPcap8_08_202Cpp1.cpp(170) : error C2065: 'NI_NUMERICHOST' : undeclared
 identifier
+```
+
+
 
 错误根由是因为WinPcap支持ipv6,而VC的winsock2.h太老了，很多结构都没有被支持，所以产生错误。网上有人说可以用VS新版本调试，我电脑里面
 是VS2008，但是仍然产生错误
@@ -55,9 +59,7 @@ SDK开发包，里面包含了新的头文件，就可以支持WinPcap了。
 
 网址如下
 
-[http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.ht
-m](http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.
-htm)
+[http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.htm](http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.htm)
 
 里面好几个Cab，网页里面有完整的安装说明。
 

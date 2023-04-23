@@ -16,8 +16,7 @@ gle服务器误判本博客。
 
 Update 09_11_17
 
-我按照"[修改 mail to commenter,让邮件通知更加友好 | Simple
-happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-
+我按照"[修改 mail to commenter,让邮件通知更加友好 | Simple happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-
 user-friendly-e-mail-notification.html)"修改了Mail To Comment插件。请大家帮忙在这个页面测试回复
 ^_^
 
@@ -31,7 +30,6 @@ Update third
 
 Update fourth
 
-问题已经解决，解决方案我定时发布在[http://log4d.com/2009/11/mailtocommenter-of-the-spam-
-problem](http://log4d.com/2009/11/mailtocommenter-of-the-spam-
+问题已经解决，解决方案我定时发布在[http://log4d.com/2009/11/mailtocommenter-of-the-spam-problem](http://log4d.com/2009/11/mailtocommenter-of-the-spam-
 problem)，定在12点发布，不过现在也能够点击，呵呵。
 

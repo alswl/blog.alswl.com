@@ -11,10 +11,10 @@ categories: ["coding"]
 
 在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。
 
-    
-    
-    if exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1)
-    DROP TABLE [province]
+
+```
+if exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1)
+DROP TABLE [province]
 
 CREATE TABLE [province] (
 
@@ -1150,3 +1150,4 @@ INSERT [area] ([id],[cityID],[city],[father]) VALUES (
 INSERT [area] ([id],[cityID],[city],[father]) VALUES (
 345,'659000','省直辖行政单位','650000')
 
+```

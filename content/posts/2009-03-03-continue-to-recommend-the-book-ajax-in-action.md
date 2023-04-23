@@ -17,4 +17,4 @@ categories: ["coding"]
 
 链接地址：
 
-# Ajax实战:实例详解 [全场购物满58元免配送费！](http://www.china-pub.com/STATIC07/0902/zh_spfv09_090202.asp)
+Ajax实战:实例详解 [全场购物满58元免配送费！](http://www.china-pub.com/STATIC07/0902/zh_spfv09_090202.asp)

@@ -9,12 +9,10 @@ categories: ["coding"]
 
 首先，祝福祖国60华诞，我爱这个国家。
 
-刚才在GR读到[Here Comes The Sun](http://www.classicning.com)的[A shorten url
-app](http://www.classicning.com/blog/2009/09/a-shorten-url-app/-shorten-url-
+刚才在GR读到[Here Comes The Sun](http://www.classicning.com)的[A shorten url app](http://www.classicning.com/blog/2009/09/a-shorten-url-app/-shorten-url-
 app/)，其中提到了Python下Django框架的一些问题，我很感兴趣，搜索了一下MTV模型，资料很少。但有一篇我读后很有启发，现在转载如下。
 
-原文链接：[python+django MTV框架 和php MVC框架的不同之处 - PHP+MYSQL+APACHE -
-ThinkPHP官方论坛](http://bbs.thinkphp.cn/viewthread.php?tid=5022)
+原文链接：[python+django MTV框架 和php MVC框架的不同之处 - PHP+MYSQL+APACHE -ThinkPHP官方论坛](http://bbs.thinkphp.cn/viewthread.php?tid=5022)
 
 作者：乔峰
 

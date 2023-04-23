@@ -13,17 +13,16 @@ categories: ["coding"]
 
 看看一般的heading，下图是LightWord的
 
-[caption id="attachment_12635" align="alignnone" width="250"
-caption="lightWord的heading"][![7color的heading](../../static/images/upload_dropbox/200909/7colorHeading.jpg)](../../static/images/upload_dropbox/200909/7colorHeading.jpg)[/caption]
+![7color的heading](../../static/images/upload_dropbox/200909/7colorHeading.jpg)
 
 再看看iNove的
 
-[caption id="attachment_12636" align="alignnone" width="200"
-caption="iNove的Heading"][![iNove的Heading](../../static/images/upload_dropbox/200909/iNoveHeading.jpg)](../../static/images/upload_dropbox/200909/iNoveHeading.jpg)[/caption]
+![iNove的Heading](../../static/images/upload_dropbox/200909/iNoveHeading.jpg)
 
 iNove的文章内容Heading CSS和主题的Heading混合在一起，非常不雅观。我稍作修改，在iNove的style.css最后加上一些样式。
 
-`/* dddspace.cn heading fix STAET */
+```
+/* dddspace.cn heading fix STAET */
 
 .post .content h1 {
 
@@ -182,11 +181,13 @@ line-height:19px;
 font-size:1em;
 
 } /* dddspace.cn heading fix END */`
+```
 
 好了，这下子样式就修复了，基本覆盖了边框，位置，文字大小宽度这些元素了。
 
 现在的样式：
 
+```
 # <h1>Heading1</h1>
 
 ## <h2>Heading1</h2>
@@ -199,3 +200,4 @@ font-size:1em;
 
 ###### <h6>Heading1</h6>
 
+```

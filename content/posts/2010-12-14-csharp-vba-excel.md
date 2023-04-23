@@ -16,8 +16,7 @@ Excel之后再在客户端上利用vba生成Excel成品。
 
 ### 1.1使用"自动化"功能-后台生成成品
 
-微软把后台使用COM组件称之为"自动化"，其实它本身是不建议这种用法，在[257757 号文章（服务器端 Office
-自动化注意事项）](http://support.microsoft.com/kb/257757)也明文标出"Microsoft
+微软把后台使用COM组件称之为"自动化"，其实它本身是不建议这种用法，在[257757 号文章（服务器端 Office自动化注意事项）](http://support.microsoft.com/kb/257757)也明文标出"Microsoft
 目前建议不要从任何无人参与的、非交互式客户端应用程序或组件（包括 ASP、DCOM 和 NT Service）中进行 Microsoft Office
 应用程序的"自动化"，也不为此提供支持，因为 Office 在这种环境中运行时可能会出现不稳定的现象并且/或者会死锁。"
 
@@ -41,8 +40,7 @@ xcel可以隐藏某个Sheet），所以速度后台速度极快。前台Excel文
 （我前期使用第一种，后来因为效率问题和无法关闭Excel的问题，重写逻辑，选用第二种）。
 
 关于Excel导出方案的选择，微软官方也是不建议使用第一种方案，甚至不提供技术支持。它推荐了一些方案，包括使用报表导出Excel或者ADO.net方式导出（
-即第二种），具体文章见[如何使用 Visual C# 2005 或 Visual C# .NET 向 Excel
-工作簿传输数据](http://support.microsoft.com/kb/306023/zh-cn)。
+即第二种），具体文章见[如何使用 Visual C# 2005 或 Visual C# .NET 向 Excel 工作簿传输数据](http://support.microsoft.com/kb/306023/zh-cn)。
 
 ## 二、Office Excel文档模型
 
@@ -105,7 +103,7 @@ Interop.Excel.dll路径"
 
 其实我觉得这个类库除了让我熟悉一下Excel模型之外，并没派上实质的用场~
 
-    
+
     /// <summary>
     /// Excel帮助类
     /// Add by alswl 20101130
@@ -937,7 +935,7 @@ worksheet.UsedRange.Copy(missing);
 
 废话不说了，上核心代码
 
-    
+
     System.Data.OleDb.OleDbConnection objConn = new System.Data.OleDb.OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" +
                         destFileName + ";Extended Properties=Excel 8.0;");
     objConn.Open();
@@ -1013,7 +1011,7 @@ Basic"中打开，千万不要以为写VBA就是录制宏呀~另外附赠一个�
 
 启用代码如下：
 
-    
+
     '开启工作簿时候动作
     Private Sub Workbook_Open()
         

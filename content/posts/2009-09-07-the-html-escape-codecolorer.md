@@ -19,24 +19,26 @@ categories: ["coding"]
 
 ## 症状
 
-[caption id="attachment_12631" align="alignnone" width="345" caption="开启CodeColorer+可视化界面编辑结果"][![Snap2](../../static/images/upload_dropbox/200909/Snap2.jpg)](../../static/images/upload_dropbox/200909/Snap2.jpg)[/caption]
+![开启CodeColorer+可视化界面编辑结果](../../static/images/upload_dropbox/200909/Snap2.jpg)
 
-[caption id="attachment_12632" align="alignnone" width="304" caption="关闭CodeColorer+HTML编辑结果在首页显示"][![关闭CodeColorer+HTML编辑结果](../../static/images/upload_dropbox/200909/Snap3.jpg)](../../static/images/upload_dropbox/200909/Snap3.jpg)[/caption]
+![关闭CodeColorer+HTML编辑结果](../../static/images/upload_dropbox/200909/Snap3.jpg)
 
-[caption id="attachment_12633" align="alignnone" width="312" caption="关闭CodeColorer+HTML编辑结果在内容页"][![关闭CodeColorer+HTML编辑结果在内容页](../../static/images/upload_dropbox/200909/Snap4.jpg)](../../static/images/upload_dropbox/200909/Snap4.jpg)[/caption]
+![关闭CodeColorer+HTML编辑结果在内容页](../../static/images/upload_dropbox/200909/Snap4.jpg)
 
-[caption id="attachment_12634" align="alignnone" width="365" caption="正确显示"][![正确显示](../../static/images/upload_dropbox/200909/Snap5.jpg)](../../static/images/upload_dropbox/200909/Snap5.jpg)[/caption]
+[![正确显示](../../static/images/upload_dropbox/200909/Snap5.jpg)
+
 
 ## 解决方法
 
-CodeColorer开着和关着都成问题，要么影响我之前的代码，要么影响我后来的代码。所以必须有第三种方法解决，我检查了CodeColorer源码
-，发现了在codecolorer-core.php一段代码。
+CodeColorer开着和关着都成问题，要么影响我之前的代码，要么影响我后来的代码。所以必须有第三种方法解决，我检查了CodeColorer源码，发现了在codecolorer-core.php一段代码。
 
-`if ($options['escaped']) {
+```
+if ($options['escaped']) {
 
 $text = html_entity_decode($text);
 
-}`
+}
+```
 
 大意是如果选项有escaped的话，就对text进行html转换。
 

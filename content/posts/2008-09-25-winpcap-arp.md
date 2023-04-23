@@ -1,7 +1,7 @@
 ---
 title: "网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受"
 author: "alswl"
-slug: "e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97"
+slug: "winpcap-arp"
 date: "2008-09-25T00:00:00+08:00"
 tags: ["c", "winpcap", "网络编程"]
 categories: ["coding"]

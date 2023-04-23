@@ -28,8 +28,8 @@ Hi的一部分内容导入了！）
 
 下面的一段Python代码就是我测试缩进用的，代码大意是…呃…哦，是输出一段XNML
 
-    
-    # coding=utf-8
+```
+# coding=utf-8
 
 #!/usr/bin/env python
 
@@ -96,4 +96,4 @@ wsgiref.handlers.CGIHandler().run(application)
 if __name__ == '__main__':
 
 main()
-
+```

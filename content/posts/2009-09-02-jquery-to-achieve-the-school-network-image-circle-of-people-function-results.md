@@ -12,13 +12,12 @@ categories: ["coding"]
 
 ## 原始Code:
 
-运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《[Javascript Resize和Drag类,基于jQuery](http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.html)》
-）
+运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《[Javascript Resize和Drag类,基于jQuery](http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.html)》）
 
 ### 样式：
 
-    
-    
+
+​    
     #enclose-wrapper {
     	position: relative;
     	z-index: 0;
@@ -98,12 +97,12 @@ categories: ["coding"]
     #enclose-wrapper ul#tag-list li a {
     	color: #F60;
     }
-    
+
 
 ### js实现代码：
 
-    
-    
+
+​    
     var photoTag = {
         show: function(left, top, width, height, show_resize_square) {
             $('#select-area-box').css({
@@ -225,8 +224,8 @@ categories: ["coding"]
 
 ### Html代码
 
-    
-    
+
+​    
     <div id="enclose-wrapper">
       <div id="photo-wrapper" style="margin:15px auto;text-align:center;"> <img id="photo" src="heroes_s3_peter.jpg" /> </div>
       <div>
@@ -257,8 +256,8 @@ categories: ["coding"]
 
 ### 修改后js:
 
-    
-    
+
+​    
     var photoTag = {
         show: function(left, top, width, height, show_resize_square) {
             $('#select-area-box').css({
@@ -391,8 +390,8 @@ categories: ["coding"]
 
 ### Html代码：
 
-    
-    
+
+​    
     <div id="enclose-wrapper">
       <div id="photo-wrapper">
         <asp:Image ID="ImgPhoto" Visible="false" runat="server" />
@@ -406,7 +405,7 @@ categories: ["coding"]
         <span></span><span></span><span></span><span></span> </div>
       <div id="form-add-tag" style="display: none;"> 名称：
         <input id="tag-name" name="tag-name" type="text" />
-        
+
 
 数值：
 
@@ -424,8 +423,8 @@ categories: ["coding"]
 
 ### 后台ASP.NET文件读取
 
-    
-    
+
+​    
     string[] fields = Request.Params.GetValues("photoField");
 
 这里呢，由于上传的元素`name`相同，都是`photoField`，所以通过`Params.GetValues()`就可以取出`string`数组，这样就

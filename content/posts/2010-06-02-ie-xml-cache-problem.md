@@ -11,17 +11,11 @@ categories: ["coding"]
 
 PS:之前已经有过3篇相关毕设的文章：
 
-[CakePHP的全局变量
+[CakePHP的全局变量](http://log4d.com/2010/05/cakephp-global-variables)
 
-](http://log4d.com/2010/05/cakephp-global-variables)
+[FMS的80端口占用](http://log4d.com/2010/05/fms-80-port-used)
 
-[FMS的80端口占用
-
-](http://log4d.com/2010/05/fms-80-port-used)
-
-[SWFObject 一款JavaScript的Flash检测与插入模块
-
-](http://log4d.com/2010/05/swfobject)
+[SWFObject 一款JavaScript的Flash检测与插入模块](http://log4d.com/2010/05/swfobject)
 
 ---- 正文开始 ----
 
@@ -41,7 +35,7 @@ me请求时候都能获得正确的数据，而IE则常常出现无法获取实�
 
 当然，不是直接把t=Math.random()拷贝到URL后面,应该像这样:
 
-    
+
     url = url + "& amp;" + "t=" + Math.random();
 
 ### 2.修改Header缓存时间
@@ -63,7 +57,7 @@ XXXXX.send(YYYYYY);
 
 我选择的是第一种方法，我觉得这种更为直观。我的具体代码如下（使用jQuery）：
 
-    
+
     jQuery.get("http://localhost/AzaAjaxChat/src/Chat/getXml", {
     	messageId: aacGlobal.currentMessageId,
     	version: Math.random()

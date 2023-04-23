@@ -7,8 +7,7 @@ tags: ["关注互联网", "gae", "twitter"]
 categories: ["internet"]
 ---
 
-来源：[Google App Engine搭建Twitter API
-Proxy教程](http://www.williamlong.info/archives/1956.html)
+来源：[Google App Engine搭建Twitter API Proxy教程](http://www.williamlong.info/archives/1956.html)
 
 alswl:今天我本来想使用[GAppProxy](http://gappproxy.googlecode.com/)搭建自己的[服务器](http://j
 asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之
@@ -25,8 +24,7 @@ n，目前第一次使用需要验证用户手机，输入手机号码就收验�
 
 此外，还需要下载安装Google APP Engine的开发环境，注意Python的版本，需要是2.5系列的，不能使用2.6或更高的版本，否则运行会出错。
 
-Google App Engine SDK 下载地址 [http://code.google.com/intl/zh-
-CN/appengine/downloads.html](http://code.google.com/intl/zh-
+Google App Engine SDK 下载地址 [http://code.google.com/intl/zh-CN/appengine/downloads.html](http://code.google.com/intl/zh-
 CN/appengine/downloads.html)
 
 Python 2.5.4 下载地址 [http://www.python.org/download/releases/2.5.4/](http://www.

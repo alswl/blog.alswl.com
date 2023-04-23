@@ -15,8 +15,7 @@ reFox下需要正常运行。
 
 顺便推荐一本JavaScript书《**JavaScript语言精粹** 》，是大名鼎鼎的"O'Reilly"系列，我只看了试读的第一章节，斗胆推荐
 
-在[随网之舞](http://dancewithnet.com)的[《JavaScript语言精粹》 @
-随网之舞](http://dancewithnet.com/2009/04/02/javascript-the-good-parts/)有更详细的介绍。
+在[随网之舞](http://dancewithnet.com)的[《JavaScript语言精粹》 @ 随网之舞](http://dancewithnet.com/2009/04/02/javascript-the-good-parts/)有更详细的介绍。
 
 ![image](../../static/images/upload_dropbox/201001/s3651235.jpg)
 

@@ -30,6 +30,5 @@ Code之后，基本接近我之前自己完成的程度，但我觉得这次的�
 
 PostBar in Google Project Host<[猛击这里打开](http://code.google.com/p/postbar/)>
 
-PostBar svn-readonly<[猛击这里打开](http://postbar.googlecode.com/svn/trunk/
-postbar-read-only)>
+PostBar svn-readonly<[猛击这里打开](http://postbar.googlecode.com/svn/trunk/postbar-read-only)>
 

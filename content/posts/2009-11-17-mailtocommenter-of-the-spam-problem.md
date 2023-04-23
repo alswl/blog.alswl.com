@@ -13,16 +13,13 @@ Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题�
 于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查`Mail To
 Commenter的`mailtocommenter_send_email`函数，终于修改如下代码。`
 
-`代码部分分别参考`[修改 mail to commenter,让邮件通知更加友好 | Simple
-happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-
-user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 »
-如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of-
+`代码部分分别参考`[修改 mail to commenter,让邮件通知更加友好 | Simple happiness](http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 »如何修改MailToCommenter插件的发件人](http://www.evlos.org/2009/11/03/edit-the-poster-of-
 mailtocomments/#comment-1278)，html部分代码是模仿[邪 罗刹](http://www.evlos.org/)的回复修改。
 
 修改`wp-content/plugins/mailtocommenter`下面的`mailtocommenter_functions.php`
 
-    
-    
+
+```
     function mailtocommenter_send_email($to,$subject,$message){
     	$hostname = get_option('home');
     	preg_match("/^(http://)?([^/]+)/i",$hostname, $matches);
@@ -45,11 +42,12 @@ $to = strtolower($to);
 return @wp_mail($to, $subject, $message, $headers);
 
 }
+```
 
 修改Mail To Commenter的邮件代码，我的如下
 
-    
-    
+
+```
     <div style="border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 0pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);">
       <p>Hi！<strong>%user%</strong>，你在 <strong>%post_title%</strong> 上的评论有了新回复</p>
     </div>
@@ -61,7 +59,7 @@ return @wp_mail($to, $subject, $message, $headers);
       <p>>> 查看原文，请至： <a href="%comment_link%" target="_blank">%comment_link%</a></p>
       <p style="float: right;"> ---- From <a target="_blank" href="%blog_link%/"><strong>%blog_name%</strong></a></p>
     </div>
-    
+```
 
 收到邮件的效果如下
 

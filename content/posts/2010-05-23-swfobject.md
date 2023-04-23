@@ -26,13 +26,9 @@ cript脚本能够自动检测PC、Mac机器上各种主流浏览器对Flash插�
 
 相关链接：
 
-[swfobject - Project Hosting on Google Code
+[swfobject - Project Hosting on Google Code](http://code.google.com/p/swfobject)
 
-](http://code.google.com/p/swfobject)
-
-[SWFObject中文的帮助文档
-
-](http://www.awflasher.com/flash/articles/swfobj.htm)
+[SWFObject中文的帮助文档](http://www.awflasher.com/flash/articles/swfobj.htm)
 
 如果你也像我这样为Flash发愁，不妨试试这个小巧的js~
 

@@ -17,19 +17,15 @@ categories: ["coding"]
 [TinyMCE-Advanced-WP插件 | 80](http://blog.hi1980.com/2009/04/01/tinymce-
 advanced-wp-plugins.html)
 
-[「不聪明」的wordpress在线编辑器-Dean... For Wordpress |
-素食勤俭敬老孝慈](http://veryi.com/w/104.html)
+[「不聪明」的wordpress在线编辑器-Dean... For Wordpress |素食勤俭敬老孝慈](http://veryi.com/w/104.html)
 
-[TinyMce对火狐不太好 - 我的博客 - 真空实验室 VLab
-2.2](http://blog.tgb.net.cn/index.php?load=read&id=161)
+[TinyMce对火狐不太好 - 我的博客 - 真空实验室 VLab2.2](http://blog.tgb.net.cn/index.php?load=read&id=161)
 
-[F2blog和Wordpress的空格那点事 - 我的博客 - 真空实验室 VLab
-2.2](http://blog.tgb.net.cn/index.php?load=read&id=615)
+[F2blog和Wordpress的空格那点事 - 我的博客 - 真空实验室 VLab2.2](http://blog.tgb.net.cn/index.php?load=read&id=615)
 
 我又考虑FireFox粘贴的问题，考虑是不是这个原因，给FireFox取消了粘贴限制。
 
-[关于firefox粘贴问题的解决方法 - 愿得一心人，白首不相离 -
-博客大巴](http://chifanhezhou.blogbus.com/logs/1406504.html)
+[关于firefox粘贴问题的解决方法 - 愿得一心人，白首不相离 -博客大巴](http://chifanhezhou.blogbus.com/logs/1406504.html)
 
 还是无用。
 
@@ -38,8 +34,7 @@ advanced-wp-plugins.html)
 [TinyMCE:Configuration/entity encoding - Moxiecode Documentation Wiki](http://
 wiki.moxiecode.com/index.php/TinyMCE:Configuration/entity_encoding)
 
-[TinyMCE wipes out non-breaking space characters (&nbsp;) |
-drupal.org](http://drupal.org/node/72570)
+[TinyMCE wipes out non-breaking space characters  |drupal.org](http://drupal.org/node/72570)
 
 依然失败。
 

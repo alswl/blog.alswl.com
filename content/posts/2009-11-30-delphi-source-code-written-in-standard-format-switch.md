@@ -18,9 +18,7 @@ categories: ["coding"]
 
 **********原文送上**********
 
-感谢tianhaiyise提供的来自[ht
-tp://www.delphiforums.com/](http://www.delphiforums.com/)的译
-本
+感谢tianhaiyise提供的来自[http://www.delphiforums.com/](http://www.delphiforums.com/)的译本
 
 ## 1.规范简介
 

@@ -78,12 +78,8 @@ Google App Engine在用户使用一定的资源时是免费的。支付额外的
 一般的C/S模式程序都会考虑套接字连接方式，这是性能最高的交互方式。使用TCP/IP协议，能够有效的避免Python/Flex语言带来的数据交换问题。我查阅
 了Flex文档，在`flash.net.Socket`下有套接字使用的API，这说明Flex在套接字支持上没有问题。接下来我查阅了GAE的文档，资料比较难找
 ，最后我查阅了[沙盒](http://code.google.com/intl/zh-CN/appengine/docs/java/runtime.html
-#The_Sandbox)的定义、Python/Java在GAE的限制（参考文献-[Will it play in App
-Engine](http://groups.google.com/group/google-appengine-java/web/will-it-play-
-in-app-engine)），确定GAE不支持套接字和多线程。引用文字如下：[
-
-](http://groups.google.com/group/google-appengine-java/web/will-it-play-in-
-app-engine)
+#The_Sandbox)的定义、Python/Java在GAE的限制（参考文献-[Will it play in AppEngine](http://groups.google.com/group/google-appengine-java/web/will-it-play-
+in-app-engine)），确定GAE不支持套接字和多线程。引用文字如下：[via](http://groups.google.com/group/google-appengine-java/web/will-it-play-in-app-engine)
 
 > #### 沙盒
 

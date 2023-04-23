@@ -19,9 +19,7 @@ categories: ["coding"]
 
 **我的主要教程**（电子档）有如下几本：
 
-《[Pascal基本教程](http://www.tanghu.net/gr/zhoukun/pascal/pascal5.htm)》([Google快照]
-(http://203.208.39.132/search?q=cache:EEjmkPEDtpQJ:www.tanghu.net/gr/zhoukun/p
-ascal/pascal5.htm+pascal%E6%95%99%E7%A8%8B&cd=1&hl=zh-
+《[Pascal基本教程](http://www.tanghu.net/gr/zhoukun/pascal/pascal5.htm)》([Google快照](http://203.208.39.132/search?q=cache:EEjmkPEDtpQJ:www.tanghu.net/gr/zhoukun/pascal/pascal5.htm+pascal%E6%95%99%E7%A8%8B&cd=1&hl=zh-
 CN&ct=clnk&gl=cn&st_usg=ALhdy2-n00UsziHbgXqjlScPI4vUI2jwTw))
 
 下午在手机还能访问，晚上就无法访问了，只能从Google快照获取内容。教程中文字描述极为简单，通篇只有一页，但是浓缩的精华，对于我这种快速学习很有帮助。
@@ -62,7 +60,7 @@ D%8E%E6%96%87%E6%B1%A0-%E7%94%B5%E5%AD%90%E6%95%99%E6%A1%88&restype=-1&id=1000
 
  1.6 嵌入式汇编
 
-  
+
 二、OO（面向对象了）程序设计
 
  2.1 基本概念

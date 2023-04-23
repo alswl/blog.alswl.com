@@ -11,15 +11,15 @@ categories: ["coding"]
 
 导出：
 
+```
 cd bin;
-
 mysqldump -uroot -proot xxx > xxx.sql;
-
 导入：
-
 cd bin;
-
 create xxx;
-
 source xxx.sql;
+
+```
+
+
 

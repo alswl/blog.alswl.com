@@ -7,8 +7,7 @@ tags: ["python"]
 categories: ["coding"]
 ---
 
-本文来源：[Python模块学习 ---- struct 数据格式转换 - JGood的专栏 -
-CSDN博客](http://blog.csdn.net/JGood/archive/2009/06/22/4290158.aspx)
+本文来源：[Python模块学习 ---- struct 数据格式转换 - JGood的专栏 - CSDN博客](http://blog.csdn.net/JGood/archive/2009/06/22/4290158.aspx)
 
 Python是一门非常简洁的语言，对于数据类型的表示，不像其他语言预定义了许多类型（如：在C#中，光整型就定义了8种），它只定义了六种基本类型：字符串，整数
 ，浮点数，元组，列表，字典。通过这六种数据类型，我们可以完成大部分工作。但当Python需要通过网络与其他的平台进行交互的时候，必须考虑到将这些数据类型与其
@@ -25,7 +24,7 @@ struct.pack用于将Python的值根据格式符，转换为字符串（因为Pyt
 og.csdn.net/JGood/archive/2009/06/22/4290158.aspx#fmt)有所介绍。v1, v2,
 ...表示要转换的python值。下面的例子将两个整数转换为字符串（字节流）:
 
-    
+
     import struct  
       
     a = 20  
@@ -51,7 +50,7 @@ print 'length:', len(str) print str print repr(str)
 struct.unpack做的工作刚好与struct.pack相反，用于将字节流转换成python数据类型。它的函数原型为：struct.unpack(fm
 t, string)，该函数返回一个**元组**。 下面是一个简单的例子：
 
-    
+
     str = struct.pack("ii", 20, 400)  
     a1, a2 = struct.unpack("ii", str)  
     print 'a1:', a1  
@@ -70,7 +69,7 @@ struct.calcsize用于计算格式字符串所对应的结果的长度，如：st
 
 这两个函数在Python手册中有所介绍，但没有给出如何使用的例子。其实它们在实际应用中用的并不多。Google了很久，才找到一个例子，贴出来共享一下：
 
-    
+
     import struct
     from ctypes import create_string_buffer
 

@@ -27,8 +27,7 @@ Delicious可以直接从IE、FireFox、Opera等中导入链接文件，我把Fir
 ### 将Delicious加入WordPress
 
 在**Setting**中有**Blogging**选项，有四种方式：在博客显示Delicious图标、显示Delicious最近收藏书签、显示Delici
-ous收藏Tag、使用Delicious来发布书签文章到自己博客（我就是在[WebLeOn'
-blog](http://webleon.org/)看到他发布的delicious文章才想到去Delicious注册的）。
+ous收藏Tag、使用Delicious来发布书签文章到自己博客（我就是在[WebLeOn' blog](http://webleon.org/)看到他发布的delicious文章才想到去Delicious注册的）。
 
 选择一种Blogging方式，Delicous就会提供相应的代码，将它复制到自己博客相应的位置即可。WordPress可以在**小工具**中加入一个文本，然
 后在其中粘贴相应代码即可。

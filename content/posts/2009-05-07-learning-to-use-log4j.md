@@ -11,6 +11,7 @@ categories: ["coding"]
 
 果不其然：相关配置参数如下
 
+```
 # Pattern to output the caller's file name and line number.
 
 # %m 输出代码中指定的消息
@@ -29,6 +30,7 @@ categories: ["coding"]
 HH:mm:ss,SSS}，输出类似：2002年10月18日 22：10：28，921
 
 # %l 输出日志事件的发生位置，包括类目名、发生的线程，以及在代码中的行数。
+```
 
 通过配置这些参数可以定制自己想要的记录。
 
@@ -40,6 +42,7 @@ HH:mm:ss,SSS}，输出类似：2002年10月18日 22：10：28，921
 
 下面是我完整的 log4j.properties
 
+```
 # Set root logger level to DEBUG and its only appender to A1.
 
 log4j.rootLogger=INFO,A1
@@ -53,6 +56,7 @@ log4j.appender.A1=org.apache.log4j.ConsoleAppender
 log4j.appender.A1.layout=org.apache.log4j.PatternLayout
 
 log4j.appender.A1.layout.ConversionPattern=%d{yy-MM-dd hh:mm} %p [%c] - %m%n
+```
 
 输出的样式如下
 

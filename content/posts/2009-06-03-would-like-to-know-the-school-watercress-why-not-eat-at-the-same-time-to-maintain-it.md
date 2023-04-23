@@ -11,8 +11,7 @@ categories: ["viewpoint"]
 
 为了防止被水产。提供链接如下
 
-[中国互联网网站集体维护名单](http://spreadsheets.google.com/pub?key=rcz-
-FpRKSsvyQUnLL1UMjcg&single=true&gid=0&output=html)
+[中国互联网网站集体维护名单](http://spreadsheets.google.com/pub?key=rcz-FpRKSsvyQUnLL1UMjcg&single=true&gid=0&output=html)
 
-是Google的doc链接
+是Google的doc链接。
 

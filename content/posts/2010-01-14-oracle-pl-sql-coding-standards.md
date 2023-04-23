@@ -11,11 +11,9 @@ categories: ["coding"]
 
 当然，各个公司和个人有自己的风格和规范，甚至Oracle官方的教程代码也没有完全遵守这些规则，这里只是一个推荐和介绍。
 
-来源：[Oracle PL/SQL编程规范指南 -
-51CTO.COM](http://database.51cto.com/art/200907/138973.htm)
+来源：[Oracle PL/SQL编程规范指南 -51CTO.COM](http://database.51cto.com/art/200907/138973.htm)
 
-更多参考：[SQL,PL/SQL编程规范 - PL/SQL -
-IT民工杂谈](http://blog.chinaunix.net/u1/57759/showart_458439.html)
+更多参考：[SQL,PL/SQL编程规范 - PL/SQL -IT民工杂谈](http://blog.chinaunix.net/u1/57759/showart_458439.html)
 
 *****分割线，Google真汉子*****
 
@@ -79,8 +77,8 @@ e_异常名 （用户定义的异常）
 
 例如：
 
-    
-    
+
+​    
     PACKAGE student_admin
     --admin 后缀可能是用于表示管理功能.
     PROCEDURE remove_student (i_student_id IN student.studid%TYPE);
@@ -103,8 +101,8 @@ PL/SQL中的注释如同SQL中的注释一样重要。他们应该解释程序�
 例如：下面的这个示例体现了上述建议。请注意该示例还使用了等宽字体（Courier
 New），因为每个字体占据同等宽度可以使格式化更加简便。等比例空格字体会隐藏空格使得行间对齐比较困难。多数文本和程序编辑器默认使用等宽字体。
 
-    
-    
+
+​    
     /********************************************************
     * 文件名：coursediscount01.sql  
     * 版本：1  
@@ -164,7 +162,7 @@ New），因为每个字体占据同等宽度可以使格式化更加简便。�
       WHEN OTHERS THEN
         NULL;
     END;
-    
+
 
 -EOF-
 

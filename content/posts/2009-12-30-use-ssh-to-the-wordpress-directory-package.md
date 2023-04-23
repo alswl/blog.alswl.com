@@ -26,7 +26,7 @@ l)下载(via 绿软)，这个是**绿色中文Final**版本，比较好使唤。
 
 具体操作如下：
 
-    
+
     login as: username
     username@log4d.com's password:
     Last login: ****************************************
@@ -41,7 +41,7 @@ l)下载(via 绿软)，这个是**绿色中文Final**版本，比较好使唤。
     username@log4d.com [~]# cd public_html
     username@log4d.com [~/public_html]# cd wp-content
     username@log4d.com [~/public_html/wp-content]# tar zcvf theme.tar.gz themes
-    
+
 
 *************华丽的分割线下面是供参考的**tar**命令详解*************
 
@@ -77,6 +77,7 @@ tar命令
 
 范例一：将整个 /etc 目录下的文件全部打包成为 /tmp/etc.tar
 
+```
 [root@linux ~]# tar -cvf /tmp/etc.tar /etc <==仅打包，不压缩！
 
 [root@linux ~]# tar -zcvf /tmp/etc.tar.gz /etc <==打包后，以 gzip 压缩
@@ -101,7 +102,7 @@ tar命令
 
 # 就得要加上 z 这个参数了！这很重要的！
 
-  
+
 范例三：将 /tmp/etc.tar.gz 文件解压缩在 /usr/local/src 底下
 
 [root@linux ~]# cd /usr/local/src
@@ -116,7 +117,7 @@ tar命令
 
 # 则会发现，该目录下的文件属性与 /etc/ 可能会有所不同喔！
 
-  
+
 范例四：在 /tmp 底下，我只想要将 /tmp/etc.tar.gz 内的 etc/passwd 解开而已
 
 [root@linux ~]# cd /tmp
@@ -127,24 +128,24 @@ tar命令
 
 # 就可以透过这个方式来下达！注意到！ etc.tar.gz 内的根目录 / 是被拿掉了！
 
-  
+
 范例五：将 /etc/ 内的所有文件备份下来，并且保存其权限！
 
 [root@linux ~]# tar -zxvpf /tmp/etc.tar.gz /etc
 
 # 这个 -p 的属性是很重要的，尤其是当您要保留原本文件的属性时！
 
-  
+
 范例六：在 /home 当中，比 2005/06/01 新的文件才备份
 
 [root@linux ~]# tar -N '2005/06/01' -zcvf home.tar.gz /home
 
-  
+
 范例七：我要备份 /home, /etc ，但不要 /home/dmtsai
 
 [root@linux ~]# tar --exclude /home/dmtsai -zcvf myfile.tar.gz /home/* /etc
 
-  
+
 范例八：将 /etc/ 打包后直接解开在 /tmp 底下，而不产生文件！
 
 [root@linux ~]# cd /tmp
@@ -158,6 +159,6 @@ tar命令
 # 这分别代表 standard output, standard input 与管线命令啦！
 
 # 这部分我们会在 Bash shell 时，再次提到这个指令跟大家再解释啰！
-
+```
 ~~~~~~~~~~原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~
 

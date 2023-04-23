@@ -7,8 +7,7 @@ tags: ["delphi", "pascal"]
 categories: ["coding"]
 ---
 
-今天算是学习Delphi的第二天，昨天熟悉了一下基本概念和开发环境，写了一个简单的Hello world!（传送门-[Hello
-world!](http://log4d.com/2009/11/delphi-study-notes-01)）。
+今天算是学习Delphi的第二天，昨天熟悉了一下基本概念和开发环境，写了一个简单的Hello world!（传送门-[Hello world!](http://log4d.com/2009/11/delphi-study-notes-01)）。
 
 说是学Delphi，其实今天我一下午都在学习Pascal语法，这里有一个要点我需要强调"Delphi与其说一门语言，不如说是一个开发环境和开发框架，使用的是
 Object Pascal语言"。我今天还停留在Delphi基本语法、变量、数组、指针这些学习上。
@@ -116,7 +115,7 @@ Larger(10, 9);
 
 Writeln('back to main');
 
-  
+
 Readln;
 
 end.
@@ -125,7 +124,7 @@ end.
 
 
 
-    
+
     **program P2;
     {学习if/case/while/repeat/for语句}
     {$APPTYPE CONSOLE}**

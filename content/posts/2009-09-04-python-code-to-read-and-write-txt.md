@@ -18,8 +18,8 @@ OK，这几天写的两段小代码，来自《[Python核心编程（第二版�
 
 makeTextFile.py
 
-    
-    'makeTextFile.py -- create text file'
+```
+'makeTextFile.py -- create text file'
 
 import os ls = os.linesep
 
@@ -59,7 +59,7 @@ fobj.writelines(['%s%s' %(x, ls) for x in all])
 
 fobj.close() print 'Done' raw_input('Press Enter to close') readTextFile.py
 
-    
+
     'readTextFile.py -- read and display text file'
     fname = raw_input('Enter filename:')
     print
@@ -79,6 +79,8 @@ for eachLine in fobj:
 print eachLine,
 
 fobj.close raw_input('Press Enter to close')
+```
+
 原书中的输入在while那里出现了错误，压根没有raw_input这行代码，看了china-
 pub评论，这本书的确存在一些错误，不过在我看来，瑕不掩瑜拉，还是一本入门的好书。
 

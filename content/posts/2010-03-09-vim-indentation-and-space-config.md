@@ -7,8 +7,7 @@ tags: ["工欲善其事必先利其器", "vim"]
 categories: ["efficiency"]
 ---
 
-原文链接：[WindStorm的技术空间: vim中缩进与空格的设置介绍](http://windwithstorm.blogspot.com/)（Blog
-Spot）
+原文链接：[WindStorm的技术空间: vim中缩进与空格的设置介绍](http://windwithstorm.blogspot.com/)（Blog Spot）
 
 对于使用vim的程序员来说，`shiftwidth`，`tabstop`，`softtabstop`绝对是经常接触的三个缩进因素。能否有方便美观的，整体化的
 缩进，主要是由他们相互间的配合决定。在经过一段时间试用后，总结一下我的设置经验。
@@ -35,13 +34,13 @@ stop`是"逢8空格进1制表符",前提是你`tabstop=8`。
 
 举个例子，在多人一起开发项目时，为了使代码风格尽量保持一致，一般不允许在代码使用TAB符，而以4个空格代之。我们可以编辑一个文件，包含下面的内容：
 
-    
+
     set shiftwidth=4
     set expandtab
 
 然后把下面的命令加入到.vimrc中：
 
-    
+
     autocmd FileType c,cpp set shiftwidth=4 | set expandtab
 
 就可以只在编辑c和cpp文件时实行这种设置了。

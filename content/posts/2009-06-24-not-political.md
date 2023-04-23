@@ -15,6 +15,5 @@ categories: ["viewpoint"]
 
 我们都是沉默的羔羊
 
-顺便推荐一个网站，是哈佛大学一个教授发起的研究，关注全球范围内某一些地区不能登陆某些网站的现象www.herdict.org<[猛击这儿打开](http:/
-/www.herdict.org/web/)>。
+顺便推荐一个网站，是哈佛大学一个教授发起的研究，关注全球范围内某一些地区不能登陆某些网站的现象www.herdict.org<[猛击这儿打开](http://www.herdict.org/web/)>。
 

@@ -21,7 +21,7 @@ DAO的全称是Data Access Object数据访问接口。数据访问：顾名思�
 在Java1.5出来之前，用Object来操作对象，实现方法复用，就可以达到上面的目的，但是，存在类型安全的问题。Java1.5提出了泛型的概念，类似与C+
 +中的Template，Java运行环境帮助会检查类型的安全。
 
-这里有一篇IBM资料库的文章，详细阐述了泛型在DAO设计的使用「不要重复DAO」<[猛击这里打开](http://www.ibm.com/developerworks/cn/java/j-genericdao.html)>，作者[PerMellqvist](http://www.ibm.com/developerworks/cn/java/j-genericdao.html#author)
+这里有一篇IBM资料库的文章，详细阐述了泛型在DAO设计的使用「不要重复DAO」<[猛击这里打开](http://www.ibm.com/developerworks/cn/java/j-genericdao.html)>，作者[PerMellqvist (http://www.ibm.com/developerworks/cn/java/j-genericdao.html#author)
 ([per@mellqvist.name](mailto:per@mellqvist.name?subject=%E4%B8%8D%E8%A6%81%E9%87%8D%E5%A4%8D%20DAO%EF%BC%81)), 系统架构师, 自由作家
 
 我的贴吧里面DAO最后的UML类图设计如下：
