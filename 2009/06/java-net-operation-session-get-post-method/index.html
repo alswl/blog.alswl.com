@@ -110,8 +110,8 @@ if (!doNotTrack) {
   "keywords": [
     "java", "javase", "lib", "网络编程"
   ],
-  "articleBody": "终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具- 全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统 的浏览器或者之间创建一个Browser。\n开始写了自己的第一个版本。\nimport java.io.BufferedReader; import java.io.IOException; import java.io.InputStreamReader; import java.net.MalformedURLException; import java.net.ProtocolException; import java.net.URL; import java.net.HttpURLConnection; public class FarmerHelper {\n/**\n@param args @throws ProtocolException\n*/\npublic static void main(String[] args) throws ProtocolException { String loginUrlStr = “http://login.xiaonei.com/Login.do\";\nString homeUrlStr = “http://home.xiaonei.com/Home.do\";\nURL loginUrl = null;\nURL homeUrl = null;\nHttpURLConnection loginConn = null;\nHttpURLConnection homeConn = null;\ntry {\nloginUrl = new URL(loginUrlStr);\nhomeUrl = new URL(homeUrlStr);\ntry {\nloginConn = (HttpURLConnection) loginUrl.openConnection();\nhomeConn = (HttpURLConnection) homeUrl.openConnection();\n} catch (IOException e) {\nprint(“Conn’t open the url connection!”);\ne.printStackTrace();\n}\n} catch (MalformedURLException e) {\nprint(“Illegal URL!”);\ne.printStackTrace();\nreturn;\n}\nloginConn.setRequestMethod(“POST”);\nloginConn.setRequestProperty(“User-Agent”,\n“Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.0.10)”\n\" Gecko/2009042316 Firefox/3.0.10”); loginConn.setRequestProperty(“Keep-Alive”, “300”);\nloginConn.setRequestProperty(“Connection”, “keep-alive”);\nloginConn.setRequestProperty(“email”, “alswlwangzi@163.com”);\nloginConn.setRequestProperty(“password”, “xh77Gffb_i”);\nloginConn.setRequestProperty(“submit”, “登录”);\nloginConn.setRequestProperty(“Keep-Alive”, “300”);\ntry {\nloginConn.connect();\nString headerName = null;\nString cookie = “”;\n/*\nfor (int i=0; (headerName = loginConn.getHeaderFieldKey(i))!=null; i++) { if (headerName.equals(“Set-Cookie”)) { cookie = loginConn.getHeaderField(i); print(cookie); } }\n*/\ncookie = loginConn.getHeaderField(“Set-Cookie”); print(cookie);\nhomeConn.setRequestProperty(“Cookie”, cookie);\nhomeConn.setRequestMethod(“GET”);\nhomeConn.connect();\nBufferedReader in = new BufferedReader(new InputStreamReader(\nhomeConn.getInputStream()));\nString lineStr = null;\nwhile ((lineStr = in.readLine()) != null) {\n// print(lineStr);\nprint(new String(lineStr.getBytes(“GBK”), “UTF-8”));\n}\n} catch (IOException e) {\nprint(“conn’t connect to the server!”);\ne.printStackTrace();\n}\n}\nprivate static void print(Object o) {\nSystem.out.println(o);\n}\n}\n想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length Required错误，这个比较头疼，我感觉是我session传递的问题（其实不是，后来发现是Post的格式问题），于是网上找来一个Session操作类。\n猛击这里下载cookiemanager 同时你可以参考这个类作者的文章 猛击这里打开HOW-TO: Handling cookies using the java.net.* API，谢谢这位外国朋友的帮助。 可惜尽管有这个外国朋友帮助，我写了第二个版本，仍然遇到了相同问题，Length Required… 崩溃了，开始查找网络编程书，同时参考WireShark的抓包，我惊讶的发现，我把数据域写到了Headers里面去了。 这个致命性的错误导致服务器不能找到正确的数据，并且没有提供数据域的大小Content-Length，所以导致服务器报错。 最后再借花献佛，送上一个完整操作Http GET/POST的类猛击这里下载httprequestproxy依然感谢原作者，\n猛击这里打开原文链接友情提示一下，这个类是07年写的，里面有一些注释说明在1.4和1.5下几个参数不一样，我没有亲测，建议使用1.5 的设置 嗯，有这两个类，明天工作应该会轻松一些，继续fighting!\n",
-  "wordCount" : "916",
+  "articleBody": "终于又考完一门试，开始做课程设计了，结果课程设计给工作室一个尾气3个月的项目，而这次的先用我写的贴吧放上去，我变得暂时空闲了，开始着手写校内开心农场小工具- 全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统 的浏览器或者之间创建一个Browser。\n开始写了自己的第一个版本。\nimport java.io.BufferedReader; import java.io.IOException; import java.io.InputStreamReader; import java.net.MalformedURLException; import java.net.ProtocolException; import java.net.URL; import java.net.HttpURLConnection; public class FarmerHelper { /** * @param args * @throws ProtocolException */ public static void main(String[] args) throws ProtocolException { String loginUrlStr = \"http://login.xiaonei.com/Login.do\"; String homeUrlStr = \"http://home.xiaonei.com/Home.do\"; URL loginUrl = null; URL homeUrl = null; HttpURLConnection loginConn = null; HttpURLConnection homeConn = null; try { loginUrl = new URL(loginUrlStr); homeUrl = new URL(homeUrlStr); try { loginConn = (HttpURLConnection) loginUrl.openConnection(); homeConn = (HttpURLConnection) homeUrl.openConnection(); } catch (IOException e) { print(\"Conn't open the url connection!\"); e.printStackTrace(); } } catch (MalformedURLException e) { print(\"Illegal URL!\"); e.printStackTrace(); return; } loginConn.setRequestMethod(\"POST\"); loginConn.setRequestProperty(\"User-Agent\", \"Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.0.10)\" + \" Gecko/2009042316 Firefox/3.0.10\"); loginConn.setRequestProperty(\"Keep-Alive\", \"300\"); loginConn.setRequestProperty(\"Connection\", \"keep-alive\"); loginConn.setRequestProperty(\"email\", \"alswlwangzi@163.com\"); loginConn.setRequestProperty(\"password\", \"xh77Gffb_i\"); loginConn.setRequestProperty(\"submit\", \"登录\"); loginConn.setRequestProperty(\"Keep-Alive\", \"300\"); try { loginConn.connect(); String headerName = null; String cookie = \"\"; /* * for (int i=0; (headerName = * loginConn.getHeaderFieldKey(i))!=null; i++) { if * (headerName.equals(\"Set-Cookie\")) { cookie = * loginConn.getHeaderField(i); print(cookie); } } */ cookie = loginConn.getHeaderField(\"Set-Cookie\"); print(cookie); homeConn.setRequestProperty(\"Cookie\", cookie); homeConn.setRequestMethod(\"GET\"); homeConn.connect(); BufferedReader in = new BufferedReader(new InputStreamReader( homeConn.getInputStream())); String lineStr = null; while ((lineStr = in.readLine()) != null) { // print(lineStr); print(new String(lineStr.getBytes(\"GBK\"), \"UTF-8\")); } } catch (IOException e) { print(\"conn't connect to the server!\"); e.printStackTrace(); } } private static void print(Object o) { System.out.println(o); } } 想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length Required错误，这个比较头疼，我感觉是我session传递的问题（其实不是，后来发现是Post的格式问题），于是网上找来一个Session操作类。\n猛击这里下载cookiemanager 同时你可以参考这个类作者的文章 猛击这里打开HOW-TO: Handling cookies using the java.net.* API，谢谢这位外国朋友的帮助。 可惜尽管有这个外国朋友帮助，我写了第二个版本，仍然遇到了相同问题，Length Required… 崩溃了，开始查找网络编程书，同时参考WireShark的抓包，我惊讶的发现，我把数据域写到了Headers里面去了。 这个致命性的错误导致服务器不能找到正确的数据，并且没有提供数据域的大小Content-Length，所以导致服务器报错。 最后再借花献佛，送上一个完整操作Http GET/POST的类猛击这里下载httprequestproxy依然感谢原作者，\n猛击这里打开原文链接友情提示一下，这个类是07年写的，里面有一些注释说明在1.4和1.5下几个参数不一样，我没有亲测，建议使用1.5 的设置 嗯，有这两个类，明天工作应该会轻松一些，继续fighting!\n",
+  "wordCount" : "919",
   "inLanguage": "en",
   "datePublished": "2009-06-09T00:00:00+08:00",
   "dateModified": "2009-06-09T00:00:00+08:00",
@@ -226,89 +226,142 @@ if (!doNotTrack) {
 全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统
 的浏览器或者之间创建一个Browser。</p>
 <p>开始写了自己的第一个版本。</p>
-<pre><code>import java.io.BufferedReader;
+<pre tabindex="0"><code>import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.HttpURLConnection;
-</code></pre>
-<p>public class FarmerHelper {</p>
-<p>/**</p>
-<ul>
-<li>@param args</li>
-<li>@throws ProtocolException<br />
-*/<br />
-public static void main(String[] args) throws ProtocolException {</li>
-</ul>
-<p>String loginUrlStr = &ldquo;<a href="http://login.xiaonei.com/Login.do%22;">http://login.xiaonei.com/Login.do&quot;;</a></p>
-<p>String homeUrlStr = &ldquo;<a href="http://home.xiaonei.com/Home.do%22;">http://home.xiaonei.com/Home.do&quot;;</a></p>
-<p>URL loginUrl = null;</p>
-<p>URL homeUrl = null;</p>
-<p>HttpURLConnection loginConn = null;</p>
-<p>HttpURLConnection homeConn = null;</p>
-<p>try {</p>
-<p>loginUrl = new URL(loginUrlStr);</p>
-<p>homeUrl = new URL(homeUrlStr);</p>
-<p>try {</p>
-<p>loginConn = (HttpURLConnection) loginUrl.openConnection();</p>
-<p>homeConn = (HttpURLConnection) homeUrl.openConnection();</p>
-<p>} catch (IOException e) {</p>
-<p>print(&ldquo;Conn&rsquo;t open the url connection!&rdquo;);</p>
-<p>e.printStackTrace();</p>
-<p>}</p>
-<p>} catch (MalformedURLException e) {</p>
-<p>print(&ldquo;Illegal URL!&rdquo;);</p>
-<p>e.printStackTrace();</p>
-<p>return;</p>
-<p>}</p>
-<p>loginConn.setRequestMethod(&ldquo;POST&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;User-Agent&rdquo;,</p>
-<p>&ldquo;Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.0.10)&rdquo;</p>
-<ul>
-<li>&quot; Gecko/2009042316 Firefox/3.0.10&rdquo;);</li>
-</ul>
-<p>loginConn.setRequestProperty(&ldquo;Keep-Alive&rdquo;, &ldquo;300&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;Connection&rdquo;, &ldquo;keep-alive&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;email&rdquo;, &ldquo;<a href="mailto:alswlwangzi@163.com">alswlwangzi@163.com</a>&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;password&rdquo;, &ldquo;xh77Gffb_i&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;submit&rdquo;, &ldquo;登录&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;Keep-Alive&rdquo;, &ldquo;300&rdquo;);</p>
-<p>try {</p>
-<p>loginConn.connect();</p>
-<p>String headerName = null;</p>
-<p>String cookie = &ldquo;&rdquo;;</p>
-<p>/*</p>
-<ul>
-<li>for (int i=0; (headerName =</li>
-<li>loginConn.getHeaderFieldKey(i))!=null; i++) { if</li>
-<li>(headerName.equals(&ldquo;Set-Cookie&rdquo;)) { cookie =</li>
-<li>loginConn.getHeaderField(i); print(cookie); } }<br />
-*/<br />
-cookie = loginConn.getHeaderField(&ldquo;Set-Cookie&rdquo;);</li>
-</ul>
-<p>print(cookie);</p>
-<p>homeConn.setRequestProperty(&ldquo;Cookie&rdquo;, cookie);</p>
-<p>homeConn.setRequestMethod(&ldquo;GET&rdquo;);</p>
-<p>homeConn.connect();</p>
-<p>BufferedReader in = new BufferedReader(new InputStreamReader(</p>
-<p>homeConn.getInputStream()));</p>
-<p>String lineStr = null;</p>
-<p>while ((lineStr = in.readLine()) != null) {</p>
-<p>// print(lineStr);</p>
-<p>print(new String(lineStr.getBytes(&ldquo;GBK&rdquo;), &ldquo;UTF-8&rdquo;));</p>
-<p>}</p>
-<p>} catch (IOException e) {</p>
-<p>print(&ldquo;conn&rsquo;t connect to the server!&rdquo;);</p>
-<p>e.printStackTrace();</p>
-<p>}</p>
-<p>}</p>
-<p>private static void print(Object o) {</p>
-<p>System.out.println(o);</p>
-<p>}</p>
-<p>}</p>
-<p>想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length
+
+public class FarmerHelper {
+
+/**
+
+* @param args  
+* @throws ProtocolException  
+*/  
+public static void main(String[] args) throws ProtocolException {
+
+String loginUrlStr = &#34;http://login.xiaonei.com/Login.do&#34;;
+
+String homeUrlStr = &#34;http://home.xiaonei.com/Home.do&#34;;
+
+URL loginUrl = null;
+
+URL homeUrl = null;
+
+HttpURLConnection loginConn = null;
+
+HttpURLConnection homeConn = null;
+
+try {
+
+loginUrl = new URL(loginUrlStr);
+
+homeUrl = new URL(homeUrlStr);
+
+try {
+
+loginConn = (HttpURLConnection) loginUrl.openConnection();
+
+homeConn = (HttpURLConnection) homeUrl.openConnection();
+
+} catch (IOException e) {
+
+print(&#34;Conn&#39;t open the url connection!&#34;);
+
+e.printStackTrace();
+
+}
+
+} catch (MalformedURLException e) {
+
+print(&#34;Illegal URL!&#34;);
+
+e.printStackTrace();
+
+return;
+
+}
+
+loginConn.setRequestMethod(&#34;POST&#34;);
+
+loginConn.setRequestProperty(&#34;User-Agent&#34;,
+
+&#34;Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.0.10)&#34;
+
++ &#34; Gecko/2009042316 Firefox/3.0.10&#34;);
+
+loginConn.setRequestProperty(&#34;Keep-Alive&#34;, &#34;300&#34;);
+
+loginConn.setRequestProperty(&#34;Connection&#34;, &#34;keep-alive&#34;);
+
+loginConn.setRequestProperty(&#34;email&#34;, &#34;alswlwangzi@163.com&#34;);
+
+loginConn.setRequestProperty(&#34;password&#34;, &#34;xh77Gffb_i&#34;);
+
+loginConn.setRequestProperty(&#34;submit&#34;, &#34;登录&#34;);
+
+loginConn.setRequestProperty(&#34;Keep-Alive&#34;, &#34;300&#34;);
+
+try {
+
+loginConn.connect();
+
+String headerName = null;
+
+String cookie = &#34;&#34;;
+
+/*
+
+* for (int i=0; (headerName =  
+* loginConn.getHeaderFieldKey(i))!=null; i++) { if  
+* (headerName.equals(&#34;Set-Cookie&#34;)) { cookie =  
+* loginConn.getHeaderField(i); print(cookie); } }  
+*/  
+cookie = loginConn.getHeaderField(&#34;Set-Cookie&#34;);
+
+print(cookie);
+
+homeConn.setRequestProperty(&#34;Cookie&#34;, cookie);
+
+homeConn.setRequestMethod(&#34;GET&#34;);
+
+homeConn.connect();
+
+BufferedReader in = new BufferedReader(new InputStreamReader(
+
+homeConn.getInputStream()));
+
+String lineStr = null;
+
+while ((lineStr = in.readLine()) != null) {
+
+// print(lineStr);
+
+print(new String(lineStr.getBytes(&#34;GBK&#34;), &#34;UTF-8&#34;));
+
+}
+
+} catch (IOException e) {
+
+print(&#34;conn&#39;t connect to the server!&#34;);
+
+e.printStackTrace();
+
+}
+
+}
+
+private static void print(Object o) {
+
+System.out.println(o);
+
+}
+
+}
+</code></pre><p>想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length
 Required错误，这个比较头疼，我感觉是我session传递的问题（其实不是，后来发现是Post的格式问题），于是网上找来一个Session操作类。</p>
 <p><a href="../../static/images/upload_dropbox/200906/cookiemanager.java">猛击这里下载cookiemanager</a> 同时你可以参考这个类作者的文章
 <a href="http://www.hccp.org/java-net-cookie-how-to.html">猛击这里打开HOW-TO: Handling cookies using the java.net.* API</a>，谢谢这位外国朋友的帮助。 可惜尽管有这个外国朋友帮助，我写了第二个版本，仍然遇到了相同问题，Length

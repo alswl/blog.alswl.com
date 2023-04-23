@@ -101,138 +101,164 @@ Bus，即企业服务总线。它是传统中间件技术与XML、Web服务等�
       <pubDate>Tue, 17 Nov 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/</guid>
-      <description>关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&amp;quot;观察&amp;ldquo;并且修改自己的行为。 Java中的反射示例如下： package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void main(String[] args) throws SecurityException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // 不使用反射 Foo foo = new Foo(); foo.fun(&amp;ldquo;no reflection&amp;rdquo;); // 使用反射 String className = &amp;ldquo;dddspace.job.exercise1116.Foo&amp;rdquo;; String funName = &amp;ldquo;fun&amp;rdquo;; // 获取类</description>
+      <description>关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&amp;quot;观察&amp;ldquo;并且修改自己的行为。 Java中的反射示例如下： package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void main(String[] args) throws SecurityException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // 不使用反射 Foo foo = new Foo(); foo.fun(&amp;#34;no reflection&amp;#34;); // 使用反射 String className = &amp;#34;dddspace.job.exercise1116.Foo&amp;#34;; String funName = &amp;#34;fun&amp;#34;; // 获取类</description>
       <content:encoded><![CDATA[<h2 id="关于反射">关于反射</h2>
 <p>反射的定义（via <a href="http://zh.wikipedia.org/zh-cn/%E5%8F%8D%E5%B0%84_%28%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%29">Wiki</a>）：在计算机科学中，反射是<strong>指一种特定类型的计算机程序能够在运行时以一种依
 赖于它的代码的抽象特性和它的运行时行为的方式被更改</strong>的特性。用比喻来说，那种程式能够&quot;<strong>观察</strong>&ldquo;并且修改自己的行为。</p>
 <p>Java中的反射示例如下：</p>
-<pre><code>package dddspace.job.exercise1116;
-</code></pre>
-<p>public class Foo {</p>
-<p>public void fun(String str) {</p>
-<p>System.out.println(str);</p>
-<p>}</p>
-<p>}</p>
-<pre><code>package dddspace.job.exercise1116;
-</code></pre>
-<p>import java.lang.reflect.InvocationTargetException;</p>
-<p>import java.lang.reflect.Method;</p>
-<p>public class ReflectionDemo {</p>
-<p>public static void main(String[] args) throws SecurityException,</p>
-<p>NoSuchMethodException, ClassNotFoundException, InstantiationException,</p>
-<p>IllegalAccessException, IllegalArgumentException,</p>
-<p>InvocationTargetException {</p>
-<p>// 不使用反射</p>
-<p>Foo foo = new Foo();</p>
-<p>foo.fun(&ldquo;no reflection&rdquo;);</p>
-<p>// 使用反射</p>
-<p>String className = &ldquo;dddspace.job.exercise1116.Foo&rdquo;;</p>
-<p>String funName = &ldquo;fun&rdquo;;</p>
-<p>// 获取类名</p>
-<p>Class cls = Class.forName(className);</p>
-<p>// 创建Object实例</p>
-<p>Object foo2 = cls.newInstance();</p>
-<p>// 创建Method hello</p>
-<p>Method method = cls.getMethod(&ldquo;fun&rdquo;, String.class);</p>
-<p>// 使用反射来调用Method的invode方法，参数是目标对象+参数</p>
-<p>method.invoke(foo, &ldquo;use reflection&rdquo;);</p>
-<p>}</p>
-<p>}</p>
-<h2 id="原始basedao设计">原始BaseDao设计</h2>
-<p>我先阐述一下BaseDao的设计想法：BaseDao是一个<strong>抽象类</strong>，提供一系列Dao方法&rdquo;<strong>get()/getAll()/add()/update(
-)/delete()/getCount()</strong>&quot;，通过<strong>泛型匹配</strong>的获取类，我取出一个方法来做示例。</p>
-<pre><code>public int getCount()
-{
-	int count = 0;
-	Session session = null;
-	Transaction tx = null;
-	String Tstr = getClass().getSimpleName().substring (0,
-			getClass().getSimpleName().length() - 3);
-	String hql = &quot;select count(*) from &quot; + Tstr;
-	try {
-		session = HibernateSessionFactory.currentSession();
-		tx = session.beginTransaction();
-		Query query = session.createQuery(hql);
-		count = Integer.parseInt(query.uniqueResult().toString());
-		query = null;
-		tx.commit();
-	} catch (HibernateException e) {
-		if (tx != null) {
-			tx.rollback();
-		}
-		throw e;
-	} finally {
-		HibernateSessionFactory.closeSession();
-	}				
-	return count;
+<pre tabindex="0"><code>    package dddspace.job.exercise1116;
+
+public class Foo {
+
+public void fun(String str) {
+
+System.out.println(str);
+
 }
-</code></pre>
-<p>其中有一段<strong>dirty work</strong>，就是TStr的获取，这段TStr是想从实现Dao类获取实体类的类型名称，也就是
+
+}
+
+
+    package dddspace.job.exercise1116;
+
+import java.lang.reflect.InvocationTargetException;
+
+import java.lang.reflect.Method;
+
+public class ReflectionDemo {
+
+public static void main(String[] args) throws SecurityException,
+
+NoSuchMethodException, ClassNotFoundException, InstantiationException,
+
+IllegalAccessException, IllegalArgumentException,
+
+InvocationTargetException {
+
+// 不使用反射
+
+Foo foo = new Foo();
+
+foo.fun(&#34;no reflection&#34;);
+
+
+// 使用反射
+
+String className = &#34;dddspace.job.exercise1116.Foo&#34;;
+
+String funName = &#34;fun&#34;;
+
+// 获取类名
+
+Class cls = Class.forName(className);
+
+// 创建Object实例
+
+Object foo2 = cls.newInstance();
+
+// 创建Method hello
+
+Method method = cls.getMethod(&#34;fun&#34;, String.class);
+
+// 使用反射来调用Method的invode方法，参数是目标对象+参数
+
+method.invoke(foo, &#34;use reflection&#34;);
+
+}
+
+}
+</code></pre><h2 id="原始basedao设计">原始BaseDao设计</h2>
+<p>我先阐述一下BaseDao的设计想法：BaseDao是一个<strong>抽象类</strong>，提供一系列Dao方法&rdquo;<strong>get()/getAll()/add()/update()/delete()/getCount()</strong>&quot;，通过<strong>泛型匹配</strong>的获取类，我取出一个方法来做示例。</p>
+<pre tabindex="0"><code>    public int getCount()
+    {
+    	int count = 0;
+    	Session session = null;
+    	Transaction tx = null;
+    	String Tstr = getClass().getSimpleName().substring (0,
+    			getClass().getSimpleName().length() - 3);
+    	String hql = &#34;select count(*) from &#34; + Tstr;
+    	try {
+    		session = HibernateSessionFactory.currentSession();
+    		tx = session.beginTransaction();
+    		Query query = session.createQuery(hql);
+    		count = Integer.parseInt(query.uniqueResult().toString());
+    		query = null;
+    		tx.commit();
+    	} catch (HibernateException e) {
+    		if (tx != null) {
+    			tx.rollback();
+    		}
+    		throw e;
+    	} finally {
+    		HibernateSessionFactory.closeSession();
+    	}				
+    	return count;
+    }
+</code></pre><p>其中有一段<strong>dirty work</strong>，就是TStr的获取，这段TStr是想从实现Dao类获取实体类的类型名称，也就是
 从&quot;TopicDao&quot;获取&quot;Topic&quot;这个类型名称。整个BaseDao的泛型设计不错，但是在这一段上面存在一段dirty work，始终让我不爽。</p>
 <h2 id="重构basedao和topicdao">重构BaseDao和TopicDao</h2>
 <p>我今天复习完抽象类/接口/反射这些内容，又在纸上画了一个模型，觉得用这种新方法解决会更好一点。</p>
 <p>给抽象类BasoDao加入新的变量Class c，然后在TopicDao初始化时候对Class
 c进行设置为Topic.class，这样就比原来的拼字符串好的多。耦合也显得漂亮了</p>
-<pre><code>public abstract class BaseDAO&lt;T&gt; {
-	
-	protected Class c;
-	
-	private Logger logger = Logger.getLogger(this.getClass());
-	
-	/**
-	 * 根据某个Bean的beanId取出Bean
-	 * @param tId
-	 * @return Bean
-	 */
-	public T get(int tId)
-	{
-		T t=null;
-		Session session = null;
-		Transaction tx = null;
-		// 原始设计
-//		String Tstr = getClass().getSimpleName().substring (0,
-//				getClass().getSimpleName().length() - 3);
-		// 获取c的名称
-		String Tstr = c.getSimpleName();
-		String TstrId = Tstr+&quot;Id&quot;;
-		String hql = &quot;from &quot; + Tstr + &quot; where &quot; +
-			TstrId.substring(0, 1).toLowerCase() + TstrId.substring(1) + &quot; = ?&quot;;
-		try {
-			session = HibernateSessionFactory.currentSession();
-			tx = session.beginTransaction();
-			Query query = session.createQuery(hql);
-			query.setInteger(0,tId);
-			t = (T)query.uniqueResult();
-			query = null;
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx != null) {
-				tx.rollback();
-			}
-			throw e;
-		} finally {
-			HibernateSessionFactory.closeSession();
-		}		
-		return t;
-	}
-
-public class TopicDAO extends BaseDAO&lt;Topic&gt;{
-		
-	private Logger logger = Logger.getLogger(this.getClass());
-	/**
-	 * 根据froumId取出某一吧内的所有没被屏蔽的帖子
-	 * @param froumId
-	 * @return ArrayList&lt;Topic&gt; 
-	 * @throws HibernateException
-	 */
-	// 在构造函数中进行c的设置
-	public TopicDAO () {
-		c = Topic.class;
-	}
-	//doSomething
-}
-</code></pre>
-<p>这样完成之后，就完成了一次简单的重构，实现了<strong>变化点分离</strong>，而且不那么dirty。</p>
+<pre tabindex="0"><code>    public abstract class BaseDAO&lt;T&gt; {
+    	
+    	protected Class c;
+    	
+    	private Logger logger = Logger.getLogger(this.getClass());
+    	
+    	/**
+    	 * 根据某个Bean的beanId取出Bean
+    	 * @param tId
+    	 * @return Bean
+    	 */
+    	public T get(int tId)
+    	{
+    		T t=null;
+    		Session session = null;
+    		Transaction tx = null;
+    		// 原始设计
+    //		String Tstr = getClass().getSimpleName().substring (0,
+    //				getClass().getSimpleName().length() - 3);
+    		// 获取c的名称
+    		String Tstr = c.getSimpleName();
+    		String TstrId = Tstr+&#34;Id&#34;;
+    		String hql = &#34;from &#34; + Tstr + &#34; where &#34; +
+    			TstrId.substring(0, 1).toLowerCase() + TstrId.substring(1) + &#34; = ?&#34;;
+    		try {
+    			session = HibernateSessionFactory.currentSession();
+    			tx = session.beginTransaction();
+    			Query query = session.createQuery(hql);
+    			query.setInteger(0,tId);
+    			t = (T)query.uniqueResult();
+    			query = null;
+    			tx.commit();
+    		} catch (HibernateException e) {
+    			if (tx != null) {
+    				tx.rollback();
+    			}
+    			throw e;
+    		} finally {
+    			HibernateSessionFactory.closeSession();
+    		}		
+    		return t;
+    	}
+    
+    public class TopicDAO extends BaseDAO&lt;Topic&gt;{
+    		
+    	private Logger logger = Logger.getLogger(this.getClass());
+    	/**
+    	 * 根据froumId取出某一吧内的所有没被屏蔽的帖子
+    	 * @param froumId
+    	 * @return ArrayList&lt;Topic&gt; 
+    	 * @throws HibernateException
+    	 */
+    	// 在构造函数中进行c的设置
+    	public TopicDAO () {
+    		c = Topic.class;
+    	}
+    	//doSomething
+    }
+</code></pre><p>这样完成之后，就完成了一次简单的重构，实现了<strong>变化点分离</strong>，而且不那么dirty。</p>
 <p>本文的代码来源自PostBar项目。这里有<a href="http://code.google.com/p/postbar/">Google Code链接</a>，v1.0.1的代码并没有上文的实现，本文中的修改还在trunk中。</p>
 ]]></content:encoded>
     </item>
@@ -319,117 +345,177 @@ SE6的新功能，对Java lang等套件的功能加强，以及JDBC4.0、Apache 
       <pubDate>Sun, 15 Nov 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/11/java-notes-_split-variable-length-parameter-generic-type-wildcard/</guid>
-      <description>今天看了一下午《Java学习笔记》，作者林信良，花名良葛格。从书中所获颇 多，正所谓温故而知新，我就把今天的&amp;quot;新&amp;quot;总结一下，加深记忆。良葛格也提倡&amp;quot;在网上写文章是我记录所学的一种方式&amp;quot;。 split的正则式和其中的正则式 C语言其中有函数strtok，就是按某些char对字符串进行切割。下面给出一个C下面的范例 char str[] = &amp;quot;now # is the time for all # good men to come to the # aid of their country&amp;quot;; char delims[] = &amp;quot;#&amp;quot;; char</description>
+      <description>今天看了一下午《Java学习笔记》，作者林信良，花名良葛格。从书中所获颇 多，正所谓温故而知新，我就把今天的&amp;quot;新&amp;quot;总结一下，加深记忆。良葛格也提倡&amp;quot;在网上写文章是我记录所学的一种方式&amp;quot;。 split的正则式和其中的正则式 C语言其中有函数strtok，就是按某些char对字符串进行切割。下面给出一个C下面的范例 char str[] = &amp;#34;now # is the time for all # good men to come to the # aid of their country&amp;#34;; char delims[] = &amp;#34;#&amp;#34;; char</description>
       <content:encoded><![CDATA[<p>今天看了一下午《<a href="http://www.douban.com/subject/2057790/">Java学习笔记</a>》，作者林信良，花名良葛格。从书中所获颇
 多，正所谓温故而知新，我就把今天的&quot;新&quot;总结一下，加深记忆。良葛格也提倡&quot;在网上写文章是我记录所学的一种方式&quot;。</p>
 <h2 id="split的正则式和其中的正则式">split的正则式和其中的正则式</h2>
 <p>C语言其中有函数strtok，就是按某些char对字符串进行切割。下面给出一个C下面的范例</p>
-<pre><code>char str[] = &quot;now # is the time for all # good men to come to the # aid of their country&quot;;
-char delims[] = &quot;#&quot;;
-char *result = NULL;
-</code></pre>
-<p>result = strtok( str, delims );</p>
-<p>while( result != NULL ) {</p>
-<p>printf( &ldquo;result is &ldquo;%s&quot;n&rdquo;, result );</p>
-<p>result = strtok( NULL, delims );</p>
-<p>}</p>
-<p>在Java中也有类似的StringTokenizer，但是在JDK5中，已经被标记为Legacy
+<pre tabindex="0"><code>    char str[] = &#34;now # is the time for all # good men to come to the # aid of their country&#34;;
+    char delims[] = &#34;#&#34;;
+    char *result = NULL;
+
+result = strtok( str, delims );
+
+while( result != NULL ) {
+
+printf( &#34;result is &#34;%s&#34;n&#34;, result );
+
+result = strtok( NULL, delims );
+
+}
+</code></pre><p>在Java中也有类似的StringTokenizer，但是在JDK5中，已经被标记为Legacy
 Class(遗产类)，推荐使用String.split(String regex)，可以接受正则表达式。范例如下。</p>
-<pre><code>private void init() {
-	Scanner scanner = new Scanner(System.in);
-</code></pre>
-<p>System.out.println(&ldquo;input n and data&rdquo;);</p>
-<p>n = scanner.nextInt();</p>
-<p>data = new int[n];</p>
-<p>String input = scanner.next().trim();</p>
-<p>//String[] strData = splitByTokenizer(input);</p>
-<p>String[] strData = input.split(&rdquo;[,\s]&quot;);</p>
-<p>int i = 0;</p>
-<p>for (String t : strData) {</p>
-<p>data[i] = Integer.parseInt(t);</p>
-<p>i++;</p>
-<p>}</p>
-<p>}</p>
-<p>//已过时，Legacy Class(遗产类)</p>
-<p>private String[] splitByTokenizer (String input, String regex) {</p>
-<p>String [] result = null;</p>
-<p>if (input != null &amp;&amp; !input.equals(&quot;&quot;)) {</p>
-<p>StringTokenizer commaToker = new StringTokenizer(input, &ldquo;,&rdquo;);</p>
-<p>result = new String[commaToker.countTokens()];</p>
-<p>int i = 0;</p>
-<p>while (commaToker.hasMoreTokens())</p>
-<p>{</p>
-<p>result[i] = commaToker.nextToken();</p>
-<p>i++;</p>
-<p>}</p>
-<p>}</p>
-<p>return result;</p>
-<p>}</p>
-<h2 id="不定长度参数">不定长度参数</h2>
+<pre tabindex="0"><code>    private void init() {
+    	Scanner scanner = new Scanner(System.in);
+
+System.out.println(&#34;input n and data&#34;);
+
+n = scanner.nextInt();
+
+data = new int[n];
+
+String input = scanner.next().trim();
+
+//String[] strData = splitByTokenizer(input);
+
+String[] strData = input.split(&#34;[,\s]&#34;);
+
+int i = 0;
+
+for (String t : strData) {
+
+data[i] = Integer.parseInt(t);
+
+i++;
+
+}
+
+}
+
+//已过时，Legacy Class(遗产类)
+
+private String[] splitByTokenizer (String input, String regex) {
+
+String [] result = null;
+
+if (input != null &amp;&amp; !input.equals(&#34;&#34;)) {
+
+StringTokenizer commaToker = new StringTokenizer(input, &#34;,&#34;);
+
+result = new String[commaToker.countTokens()];
+
+int i = 0;
+
+while (commaToker.hasMoreTokens())
+
+{
+
+result[i] = commaToker.nextToken();
+
+i++;
+
+}
+
+}
+
+return result;
+
+}
+</code></pre><h2 id="不定长度参数">不定长度参数</h2>
 <p>听名字这东西就相当有用，也是JDK5开始支持的。（话说现在都JDK6.0了，我们很多童鞋对Java的概念还停留在最开始，其中也包括我，咱们要与时俱进嘛）直接
 上代码，就知道怎么用了。</p>
-<pre><code>package dddspace.job.exercise1115;
-</code></pre>
-<p>/**</p>
-<ul>
-<li>使用不定长度参数</li>
-<li>参考《Java学习笔记》P153相关内容</li>
-<li></li>
-</ul>
-<p>*/<br />
-public class VarArgs {</p>
-<p>public static void main(String[] args) {</p>
-<p>int sum = 0;</p>
-<p>sum = VarArgs.sum(1, 2);</p>
-<p>System.out.println(sum);</p>
-<p>sum = VarArgs.sum(1, 3, 5, 7);</p>
-<p>System.out.println(sum);</p>
-<p>}</p>
-<p>//关键在 &ldquo;int&hellip;&rdquo;</p>
-<p>private static int sum(int&hellip; nums) {</p>
-<p>int sum = 0;</p>
-<p>for (int num : nums) {</p>
-<p>sum += num;</p>
-<p>}</p>
-<p>return sum;</p>
-<p>}</p>
-<p>}</p>
-<h2 id="泛型类型通配符">泛型类型通配符</h2>
+<pre tabindex="0"><code>package dddspace.job.exercise1115;
+
+/**
+
+* 使用不定长度参数  
+* 参考《Java学习笔记》P153相关内容  
+*   
+*/  
+public class VarArgs {
+
+public static void main(String[] args) {
+
+
+int sum = 0;
+
+sum = VarArgs.sum(1, 2);
+
+System.out.println(sum);
+
+
+sum = VarArgs.sum(1, 3, 5, 7);
+
+System.out.println(sum);
+
+}
+
+//关键在 &#34;int...&#34;
+
+private static int sum(int... nums) {
+
+int sum = 0;
+
+for (int num : nums) {
+
+sum += num;
+
+}
+
+return sum;
+
+}
+
+}
+</code></pre><h2 id="泛型类型通配符">泛型类型通配符</h2>
 <p>如果你还不知道泛型是什么，那么最好补一下基础(via [Baidu Zhidao](<a href="http://baike.baidu.com/view/965887.h">http://baike.baidu.com/view/965887.h</a>
 tml?wtp=tt))，这个在C++中运用广泛，在JDK5.0加入Java大家族。我这里要解释的是泛型类型的通配符，呃，有点绕口。其实就是让泛型T这个T通
 过支持一个接口来支持其实现类。</p>
 <p>咱们还是让代码来反应思想吧。</p>
-<pre><code>package dddspace.job.exercise1115;
-</code></pre>
-<p>import java.util.ArrayList;</p>
-<p>import java.util.LinkedList;</p>
-<p>import java.util.List;</p>
-<p>/**</p>
-<ul>
-<li>泛型类型通配符</li>
-<li>参考《Java学习笔记》P249相关内容</li>
-<li></li>
-</ul>
-<p>*/<br />
-public class WildcardTest<T> {</p>
-<p>public static void main(String[] args) {</p>
-<p>/*想定义泛型为List接口，错误</p>
-<p>WildcardTest<List> wildcardTestW= null;</p>
-<p>wildcardTestW = new WildcardTest<ArrayList>();</p>
-<p>wildcardTestW = new WildcardTest<LinkedList>();</p>
-<p>*/</p>
-<p>//关键词 &ldquo;&lt;? extends Class&gt;&ldquo;匹配正确</p>
-<p>WildcardTest&lt;? extends List&gt; wildcardTest= null;</p>
-<p>wildcardTest = new WildcardTest<ArrayList>();</p>
-<p>wildcardTest = new WildcardTest<LinkedList>();</p>
-<p>}</p>
-<p>}</p>
-<h2 id="补遗关于stringstringbuilderstringbuffer">补遗：关于String/StringBuilder/StringBuffer</h2>
+<pre tabindex="0"><code>package dddspace.job.exercise1115;
+
+import java.util.ArrayList;
+
+import java.util.LinkedList;
+
+import java.util.List;
+
+/**
+
+* 泛型类型通配符  
+* 参考《Java学习笔记》P249相关内容  
+*  
+*/  
+public class WildcardTest&lt;T&gt; {
+
+public static void main(String[] args) {
+
+
+/*想定义泛型为List接口，错误
+
+WildcardTest&lt;List&gt; wildcardTestW= null;
+
+wildcardTestW = new WildcardTest&lt;ArrayList&gt;();
+
+wildcardTestW = new WildcardTest&lt;LinkedList&gt;();
+
+*/  
+
+//关键词 &#34;&lt;? extends Class&gt;&#34;匹配正确
+
+WildcardTest&lt;? extends List&gt; wildcardTest= null;
+
+wildcardTest = new WildcardTest&lt;ArrayList&gt;();
+
+wildcardTest = new WildcardTest&lt;LinkedList&gt;();
+
+}
+
+}
+</code></pre><h2 id="补遗关于stringstringbuilderstringbuffer">补遗：关于String/StringBuilder/StringBuffer</h2>
 <p>简单来说，String是不可变的，每次都是指向不同的内存空间。StringBuilder是可变的，线程不安全。StringBuffer是可变的并且线程安全。
 StringBuilder是JDK5.0加入的。（今天5.0开心了，都是推它的）</p>
-<p>A.shun有一篇关于String/StringBuilder/StringBuffer的文，可以移步到[这里](<a href="http://www.a">http://www.a</a>18zhizao.
-cn/y2009/1060_string-stringbuffer-and-stringbuilders-the-
-difference.html)看详细介绍。</p>
+<p>A.shun有一篇关于String/StringBuilder/StringBuffer的文，可以移步到<a href="http://www.a18zhizao.cn/y2009/1060_string-stringbuffer-and-stringbuilders-the-difference.html">这里</a>看详细介绍。</p>
 ]]></content:encoded>
     </item>
     
@@ -653,89 +739,142 @@ System.out.println(user2.getUserPassword());
 全能拖拉机。 首先要解决的就是校内登录的问题，那就是Get/Post方法了，还有用户状态保存，就是session的操作。Java不同于C#，那位可以集成系统
 的浏览器或者之间创建一个Browser。</p>
 <p>开始写了自己的第一个版本。</p>
-<pre><code>import java.io.BufferedReader;
+<pre tabindex="0"><code>import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.HttpURLConnection;
-</code></pre>
-<p>public class FarmerHelper {</p>
-<p>/**</p>
-<ul>
-<li>@param args</li>
-<li>@throws ProtocolException<br />
-*/<br />
-public static void main(String[] args) throws ProtocolException {</li>
-</ul>
-<p>String loginUrlStr = &ldquo;<a href="http://login.xiaonei.com/Login.do%22;">http://login.xiaonei.com/Login.do&quot;;</a></p>
-<p>String homeUrlStr = &ldquo;<a href="http://home.xiaonei.com/Home.do%22;">http://home.xiaonei.com/Home.do&quot;;</a></p>
-<p>URL loginUrl = null;</p>
-<p>URL homeUrl = null;</p>
-<p>HttpURLConnection loginConn = null;</p>
-<p>HttpURLConnection homeConn = null;</p>
-<p>try {</p>
-<p>loginUrl = new URL(loginUrlStr);</p>
-<p>homeUrl = new URL(homeUrlStr);</p>
-<p>try {</p>
-<p>loginConn = (HttpURLConnection) loginUrl.openConnection();</p>
-<p>homeConn = (HttpURLConnection) homeUrl.openConnection();</p>
-<p>} catch (IOException e) {</p>
-<p>print(&ldquo;Conn&rsquo;t open the url connection!&rdquo;);</p>
-<p>e.printStackTrace();</p>
-<p>}</p>
-<p>} catch (MalformedURLException e) {</p>
-<p>print(&ldquo;Illegal URL!&rdquo;);</p>
-<p>e.printStackTrace();</p>
-<p>return;</p>
-<p>}</p>
-<p>loginConn.setRequestMethod(&ldquo;POST&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;User-Agent&rdquo;,</p>
-<p>&ldquo;Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.0.10)&rdquo;</p>
-<ul>
-<li>&quot; Gecko/2009042316 Firefox/3.0.10&rdquo;);</li>
-</ul>
-<p>loginConn.setRequestProperty(&ldquo;Keep-Alive&rdquo;, &ldquo;300&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;Connection&rdquo;, &ldquo;keep-alive&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;email&rdquo;, &ldquo;<a href="mailto:alswlwangzi@163.com">alswlwangzi@163.com</a>&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;password&rdquo;, &ldquo;xh77Gffb_i&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;submit&rdquo;, &ldquo;登录&rdquo;);</p>
-<p>loginConn.setRequestProperty(&ldquo;Keep-Alive&rdquo;, &ldquo;300&rdquo;);</p>
-<p>try {</p>
-<p>loginConn.connect();</p>
-<p>String headerName = null;</p>
-<p>String cookie = &ldquo;&rdquo;;</p>
-<p>/*</p>
-<ul>
-<li>for (int i=0; (headerName =</li>
-<li>loginConn.getHeaderFieldKey(i))!=null; i++) { if</li>
-<li>(headerName.equals(&ldquo;Set-Cookie&rdquo;)) { cookie =</li>
-<li>loginConn.getHeaderField(i); print(cookie); } }<br />
-*/<br />
-cookie = loginConn.getHeaderField(&ldquo;Set-Cookie&rdquo;);</li>
-</ul>
-<p>print(cookie);</p>
-<p>homeConn.setRequestProperty(&ldquo;Cookie&rdquo;, cookie);</p>
-<p>homeConn.setRequestMethod(&ldquo;GET&rdquo;);</p>
-<p>homeConn.connect();</p>
-<p>BufferedReader in = new BufferedReader(new InputStreamReader(</p>
-<p>homeConn.getInputStream()));</p>
-<p>String lineStr = null;</p>
-<p>while ((lineStr = in.readLine()) != null) {</p>
-<p>// print(lineStr);</p>
-<p>print(new String(lineStr.getBytes(&ldquo;GBK&rdquo;), &ldquo;UTF-8&rdquo;));</p>
-<p>}</p>
-<p>} catch (IOException e) {</p>
-<p>print(&ldquo;conn&rsquo;t connect to the server!&rdquo;);</p>
-<p>e.printStackTrace();</p>
-<p>}</p>
-<p>}</p>
-<p>private static void print(Object o) {</p>
-<p>System.out.println(o);</p>
-<p>}</p>
-<p>}</p>
-<p>想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length
+
+public class FarmerHelper {
+
+/**
+
+* @param args  
+* @throws ProtocolException  
+*/  
+public static void main(String[] args) throws ProtocolException {
+
+String loginUrlStr = &#34;http://login.xiaonei.com/Login.do&#34;;
+
+String homeUrlStr = &#34;http://home.xiaonei.com/Home.do&#34;;
+
+URL loginUrl = null;
+
+URL homeUrl = null;
+
+HttpURLConnection loginConn = null;
+
+HttpURLConnection homeConn = null;
+
+try {
+
+loginUrl = new URL(loginUrlStr);
+
+homeUrl = new URL(homeUrlStr);
+
+try {
+
+loginConn = (HttpURLConnection) loginUrl.openConnection();
+
+homeConn = (HttpURLConnection) homeUrl.openConnection();
+
+} catch (IOException e) {
+
+print(&#34;Conn&#39;t open the url connection!&#34;);
+
+e.printStackTrace();
+
+}
+
+} catch (MalformedURLException e) {
+
+print(&#34;Illegal URL!&#34;);
+
+e.printStackTrace();
+
+return;
+
+}
+
+loginConn.setRequestMethod(&#34;POST&#34;);
+
+loginConn.setRequestProperty(&#34;User-Agent&#34;,
+
+&#34;Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.0.10)&#34;
+
++ &#34; Gecko/2009042316 Firefox/3.0.10&#34;);
+
+loginConn.setRequestProperty(&#34;Keep-Alive&#34;, &#34;300&#34;);
+
+loginConn.setRequestProperty(&#34;Connection&#34;, &#34;keep-alive&#34;);
+
+loginConn.setRequestProperty(&#34;email&#34;, &#34;alswlwangzi@163.com&#34;);
+
+loginConn.setRequestProperty(&#34;password&#34;, &#34;xh77Gffb_i&#34;);
+
+loginConn.setRequestProperty(&#34;submit&#34;, &#34;登录&#34;);
+
+loginConn.setRequestProperty(&#34;Keep-Alive&#34;, &#34;300&#34;);
+
+try {
+
+loginConn.connect();
+
+String headerName = null;
+
+String cookie = &#34;&#34;;
+
+/*
+
+* for (int i=0; (headerName =  
+* loginConn.getHeaderFieldKey(i))!=null; i++) { if  
+* (headerName.equals(&#34;Set-Cookie&#34;)) { cookie =  
+* loginConn.getHeaderField(i); print(cookie); } }  
+*/  
+cookie = loginConn.getHeaderField(&#34;Set-Cookie&#34;);
+
+print(cookie);
+
+homeConn.setRequestProperty(&#34;Cookie&#34;, cookie);
+
+homeConn.setRequestMethod(&#34;GET&#34;);
+
+homeConn.connect();
+
+BufferedReader in = new BufferedReader(new InputStreamReader(
+
+homeConn.getInputStream()));
+
+String lineStr = null;
+
+while ((lineStr = in.readLine()) != null) {
+
+// print(lineStr);
+
+print(new String(lineStr.getBytes(&#34;GBK&#34;), &#34;UTF-8&#34;));
+
+}
+
+} catch (IOException e) {
+
+print(&#34;conn&#39;t connect to the server!&#34;);
+
+e.printStackTrace();
+
+}
+
+}
+
+private static void print(Object o) {
+
+System.out.println(o);
+
+}
+
+}
+</code></pre><p>想法总是好的，现实总是残酷的，调试很久，用WireShark抓包，都是有Length
 Required错误，这个比较头疼，我感觉是我session传递的问题（其实不是，后来发现是Post的格式问题），于是网上找来一个Session操作类。</p>
 <p><a href="../../static/images/upload_dropbox/200906/cookiemanager.java">猛击这里下载cookiemanager</a> 同时你可以参考这个类作者的文章
 <a href="http://www.hccp.org/java-net-cookie-how-to.html">猛击这里打开HOW-TO: Handling cookies using the java.net.* API</a>，谢谢这位外国朋友的帮助。 可惜尽管有这个外国朋友帮助，我写了第二个版本，仍然遇到了相同问题，Length

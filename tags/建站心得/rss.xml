@@ -441,45 +441,88 @@ IXPUB技术社区</a></p>
 &ndash;exclude FILE：在压缩的过程中，不要将 FILE 打包！<br />
 范例：</p>
 <p>范例一：将整个 /etc 目录下的文件全部打包成为 /tmp/etc.tar</p>
-<p>[root@linux ~]# tar -cvf /tmp/etc.tar /etc &lt;==仅打包，不压缩！</p>
-<p>[root@linux ~]# tar -zcvf /tmp/etc.tar.gz /etc &lt;==打包后，以 gzip 压缩</p>
-<p>[root@linux ~]# tar -jcvf /tmp/etc.tar.bz2 /etc &lt;==打包后，以 bzip2 压缩</p>
-<h1 id="特别注意在参数-f-之后的文件档名是自己取的我们习惯上都用-tar-来作为辨识">特别注意，在参数 f 之后的文件档名是自己取的，我们习惯上都用 .tar 来作为辨识。</h1>
-<h1 id="如果加-z-参数则以-targz-或-tgz-来代表-gzip-压缩过的-tar-file-">如果加 z 参数，则以 .tar.gz 或 .tgz 来代表 gzip 压缩过的 tar file ～</h1>
-<h1 id="如果加-j-参数则以-tarbz2-来作为附档名啊">如果加 j 参数，则以 .tar.bz2 来作为附档名啊～</h1>
-<h1 id="上述指令在执行的时候会显示一个警告讯息">上述指令在执行的时候，会显示一个警告讯息：</h1>
-<h1 id="tar-removing-leading--from-member-names那是关於绝对路径的特殊设定">『tar: Removing leading `/&rsquo; from member names』那是关於绝对路径的特殊设定。</h1>
-<p>范例二：查阅上述 /tmp/etc.tar.gz 文件内有哪些文件？</p>
-<p>[root@linux ~]# tar -ztvf /tmp/etc.tar.gz</p>
-<h1 id="由於我们使用-gzip-压缩所以要查阅该-tar-file-内的文件时">由於我们使用 gzip 压缩，所以要查阅该 tar file 内的文件时，</h1>
-<h1 id="就得要加上-z-这个参数了这很重要的">就得要加上 z 这个参数了！这很重要的！</h1>
-<p>范例三：将 /tmp/etc.tar.gz 文件解压缩在 /usr/local/src 底下</p>
-<p>[root@linux ~]# cd /usr/local/src</p>
-<p>[root@linux src]# tar -zxvf /tmp/etc.tar.gz</p>
-<h1 id="在预设的情况下我们可以将压缩档在任何地方解开的以这个范例来说">在预设的情况下，我们可以将压缩档在任何地方解开的！以这个范例来说，</h1>
-<h1 id="我先将工作目录变换到-usrlocalsrc-底下并且解开-tmpetctargz-">我先将工作目录变换到 /usr/local/src 底下，并且解开 /tmp/etc.tar.gz ，</h1>
-<h1 id="则解开的目录会在-usrlocalsrcetc-呢另外如果您进入-usrlocalsrcetc">则解开的目录会在 /usr/local/src/etc 呢！另外，如果您进入 /usr/local/src/etc</h1>
-<h1 id="则会发现该目录下的文件属性与-etc-可能会有所不同喔">则会发现，该目录下的文件属性与 /etc/ 可能会有所不同喔！</h1>
-<p>范例四：在 /tmp 底下，我只想要将 /tmp/etc.tar.gz 内的 etc/passwd 解开而已</p>
-<p>[root@linux ~]# cd /tmp</p>
-<p>[root@linux tmp]# tar -zxvf /tmp/etc.tar.gz etc/passwd</p>
-<h1 id="我可以透过-tar--ztvf-来查阅-tarfile-内的文件名称如果单只要一个文件">我可以透过 tar -ztvf 来查阅 tarfile 内的文件名称，如果单只要一个文件，</h1>
-<h1 id="就可以透过这个方式来下达注意到-etctargz-内的根目录--是被拿掉了">就可以透过这个方式来下达！注意到！ etc.tar.gz 内的根目录 / 是被拿掉了！</h1>
-<p>范例五：将 /etc/ 内的所有文件备份下来，并且保存其权限！</p>
-<p>[root@linux ~]# tar -zxvpf /tmp/etc.tar.gz /etc</p>
-<h1 id="这个--p-的属性是很重要的尤其是当您要保留原本文件的属性时">这个 -p 的属性是很重要的，尤其是当您要保留原本文件的属性时！</h1>
-<p>范例六：在 /home 当中，比 2005/06/01 新的文件才备份</p>
-<p>[root@linux ~]# tar -N &lsquo;2005/06/01&rsquo; -zcvf home.tar.gz /home</p>
-<p>范例七：我要备份 /home, /etc ，但不要 /home/dmtsai</p>
-<p>[root@linux ~]# tar &ndash;exclude /home/dmtsai -zcvf myfile.tar.gz /home/* /etc</p>
-<p>范例八：将 /etc/ 打包后直接解开在 /tmp 底下，而不产生文件！</p>
-<p>[root@linux ~]# cd /tmp</p>
-<p>[root@linux tmp]# tar -cvf - /etc | tar -xvf -</p>
-<h1 id="这个动作有点像是-cp--r-etc-tmp-啦依旧是有其有用途的">这个动作有点像是 cp -r /etc /tmp 啦～依旧是有其有用途的！</h1>
-<h1 id="要注意的地方在於输出档变成---而输入档也变成---又有一个--存在">要注意的地方在於输出档变成 - 而输入档也变成 - ，又有一个 | 存在～</h1>
-<h1 id="这分别代表-standard-output-standard-input-与管线命令啦">这分别代表 standard output, standard input 与管线命令啦！</h1>
-<h1 id="这部分我们会在-bash-shell-时再次提到这个指令跟大家再解释啰">这部分我们会在 Bash shell 时，再次提到这个指令跟大家再解释啰！</h1>
-<pre tabindex="0"><code class="language-原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~" data-lang="原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~"></code></pre>]]></content:encoded>
+<pre tabindex="0"><code>[root@linux ~]# tar -cvf /tmp/etc.tar /etc &lt;==仅打包，不压缩！
+
+[root@linux ~]# tar -zcvf /tmp/etc.tar.gz /etc &lt;==打包后，以 gzip 压缩
+
+[root@linux ~]# tar -jcvf /tmp/etc.tar.bz2 /etc &lt;==打包后，以 bzip2 压缩
+
+# 特别注意，在参数 f 之后的文件档名是自己取的，我们习惯上都用 .tar 来作为辨识。
+
+# 如果加 z 参数，则以 .tar.gz 或 .tgz 来代表 gzip 压缩过的 tar file ～
+
+# 如果加 j 参数，则以 .tar.bz2 来作为附档名啊～
+
+# 上述指令在执行的时候，会显示一个警告讯息：
+
+# 『tar: Removing leading `/&#39; from member names』那是关於绝对路径的特殊设定。
+
+范例二：查阅上述 /tmp/etc.tar.gz 文件内有哪些文件？
+
+[root@linux ~]# tar -ztvf /tmp/etc.tar.gz
+
+# 由於我们使用 gzip 压缩，所以要查阅该 tar file 内的文件时，
+
+# 就得要加上 z 这个参数了！这很重要的！
+
+
+范例三：将 /tmp/etc.tar.gz 文件解压缩在 /usr/local/src 底下
+
+[root@linux ~]# cd /usr/local/src
+
+[root@linux src]# tar -zxvf /tmp/etc.tar.gz
+
+# 在预设的情况下，我们可以将压缩档在任何地方解开的！以这个范例来说，
+
+# 我先将工作目录变换到 /usr/local/src 底下，并且解开 /tmp/etc.tar.gz ，
+
+# 则解开的目录会在 /usr/local/src/etc 呢！另外，如果您进入 /usr/local/src/etc
+
+# 则会发现，该目录下的文件属性与 /etc/ 可能会有所不同喔！
+
+
+范例四：在 /tmp 底下，我只想要将 /tmp/etc.tar.gz 内的 etc/passwd 解开而已
+
+[root@linux ~]# cd /tmp
+
+[root@linux tmp]# tar -zxvf /tmp/etc.tar.gz etc/passwd
+
+# 我可以透过 tar -ztvf 来查阅 tarfile 内的文件名称，如果单只要一个文件，
+
+# 就可以透过这个方式来下达！注意到！ etc.tar.gz 内的根目录 / 是被拿掉了！
+
+
+范例五：将 /etc/ 内的所有文件备份下来，并且保存其权限！
+
+[root@linux ~]# tar -zxvpf /tmp/etc.tar.gz /etc
+
+# 这个 -p 的属性是很重要的，尤其是当您要保留原本文件的属性时！
+
+
+范例六：在 /home 当中，比 2005/06/01 新的文件才备份
+
+[root@linux ~]# tar -N &#39;2005/06/01&#39; -zcvf home.tar.gz /home
+
+
+范例七：我要备份 /home, /etc ，但不要 /home/dmtsai
+
+[root@linux ~]# tar --exclude /home/dmtsai -zcvf myfile.tar.gz /home/* /etc
+
+
+范例八：将 /etc/ 打包后直接解开在 /tmp 底下，而不产生文件！
+
+[root@linux ~]# cd /tmp
+
+[root@linux tmp]# tar -cvf - /etc | tar -xvf -
+
+# 这个动作有点像是 cp -r /etc /tmp 啦～依旧是有其有用途的！
+
+# 要注意的地方在於输出档变成 - 而输入档也变成 - ，又有一个 | 存在～
+
+# 这分别代表 standard output, standard input 与管线命令啦！
+
+# 这部分我们会在 Bash shell 时，再次提到这个指令跟大家再解释啰！
+</code></pre><pre tabindex="0"><code class="language-原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~" data-lang="原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~"></code></pre>]]></content:encoded>
     </item>
     
     <item>
@@ -493,9 +536,7 @@ IXPUB技术社区</a></p>
 domain.html)&quot;。我原来的DDDSpace.cn所在的重庆主机还在停止80端口状态，域名管理器我也无法登录，所以不能做301修改了。</p>
 <p>之后我索性更新到WordPress 2.9，出现了&quot;wordpress Fatal error: Allowed memory size of
 33554432 bytes
-exhausted&quot;这个错误，大意就是说内存超出指定大小。我在WordPress官方论坛找到了解决办法，原文在&rdquo;<a href="http://wordpress.org/support/topic/194370?replies=16">WordPress › Support »
-Fatal error: Allowed memory size of 33554432 bytes exhausted (tried to
-allocate</a>&quot;,解决办法是修改根目录下的
+exhausted&quot;这个错误，大意就是说内存超出指定大小。我在WordPress官方论坛找到了解决办法，原文在&rdquo;<a href="http://wordpress.org/support/topic/194370?replies=16">WordPress › Support » Fatal error: Allowed memory size of 33554432 bytes exhausted (tried to allocate</a>&quot;,解决办法是修改根目录下的
 &ldquo;wp-settings.php&rdquo;，将内存限制由32M改到64M，直接搜索32M就可以了。</p>
 <p>搜素数据库，一大堆DDDSpcae.cn，唉，还得慢慢测试慢慢改，还要重新申请各种域名上的服务。不过不管怎样，DDDSpace终于复活了。</p>
 <p>同学们，赶紧修改你们的Feed地址啊！！！！</p>
@@ -542,46 +583,48 @@ allocate</a>&quot;,解决办法是修改根目录下的
       <pubDate>Tue, 17 Nov 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/11/mailtocommenter-of-the-spam-problem/</guid>
-      <description>Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。 于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。 代码部分分别参考[修改 mail to commen</description>
+      <description>Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样 ，别人都是完好的，直到derek同学提出来。 于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查Mail To Commenter的mailtocommenter_send_email函数，终于修改如下代码。 代码部分分别参考修改 mail to comment</description>
       <content:encoded><![CDATA[<p>Mail To Commenter发出的邮件会被GMail判定为垃圾邮件，这个问题我曾经发现，不过没有重视起来。鸵鸟理论告诉我说也许只有自己的GMail这样
 ，别人都是完好的，直到<a href="http://www.derekblog.cn/">derek</a>同学提出来。</p>
 <p>于是乎我开始修改，经过十余次的发送垃圾邮件，我反复查看邮件源码，检查<code>Mail To Commenter的</code>mailtocommenter_send_email<code>函数，终于修改如下代码。</code></p>
-<p><code>代码部分分别参考</code>[修改 mail to commenter,让邮件通知更加友好 | Simple
-happiness](<a href="http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-">http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-</a>
-user-friendly-e-mail-notification.html)和[邪罗刹的菠萝阁 »
-如何修改MailToCommenter插件的发件人](<a href="http://www.evlos.org/2009/11/03/edit-the-poster-of-">http://www.evlos.org/2009/11/03/edit-the-poster-of-</a>
+<p><code>代码部分分别参考</code><a href="http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-user-friendly-e-mail-notification.html">修改 mail to commenter,让邮件通知更加友好 | Simple happiness</a>和[邪罗刹的菠萝阁 »如何修改MailToCommenter插件的发件人](<a href="http://www.evlos.org/2009/11/03/edit-the-poster-of-">http://www.evlos.org/2009/11/03/edit-the-poster-of-</a>
 mailtocomments/#comment-1278)，html部分代码是模仿<a href="http://www.evlos.org/">邪 罗刹</a>的回复修改。</p>
 <p>修改<code>wp-content/plugins/mailtocommenter</code>下面的<code>mailtocommenter_functions.php</code></p>
-<pre><code>function mailtocommenter_send_email($to,$subject,$message){
-	$hostname = get_option('home');
-	preg_match(&quot;/^(http://)?([^/]+)/i&quot;,$hostname, $matches);
-	$blogname = get_option('blogname');
-	$blognameO = $blogname;
-	$blogname .= &quot; &lt;no-reply@&quot;;
-	$blogname .= $matches[2];
-	$blogname .= &quot;&gt;&quot;;
-</code></pre>
-<p>$charset = get_option(&lsquo;blog_charset&rsquo;);</p>
-<p>$headers = &ldquo;From: $blognameO &lt;no-reply@$matches[2]&gt; n&rdquo; ;</p>
-<p>$headers .= &ldquo;MIME-Version: 1.0n&rdquo;;</p>
-<p>$headers .= &ldquo;Content-Type: text/html;charset=&quot;$charset&quot;n&rdquo;;</p>
-<p>$to = strtolower($to);</p>
-<p>return @wp_mail($to, $subject, $message, $headers);</p>
-<p>}</p>
-<p>修改Mail To Commenter的邮件代码，我的如下</p>
-<pre><code>&lt;div style=&quot;border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 0pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);&quot;&gt;
-  &lt;p&gt;Hi！&lt;strong&gt;%user%&lt;/strong&gt;，你在 &lt;strong&gt;%post_title%&lt;/strong&gt; 上的评论有了新回复&lt;/p&gt;
-&lt;/div&gt;
-&lt;div style=&quot;border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 0pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);&quot;&gt;
-  &lt;p&gt;&gt;&gt;&lt;strong&gt;你&lt;/strong&gt; 说：&lt;br/&gt;
-    %your_comment%
-  &lt;p&gt;&gt;&gt; &lt;strong&gt;%comment_author%&lt;/strong&gt; 回复说： &lt;br/&gt;
-    %reply_comment%
-  &lt;p&gt;&gt;&gt; 查看原文，请至： &lt;a href=&quot;%comment_link%&quot; target=&quot;_blank&quot;&gt;%comment_link%&lt;/a&gt;&lt;/p&gt;
-  &lt;p style=&quot;float: right;&quot;&gt; ---- From &lt;a target=&quot;_blank&quot; href=&quot;%blog_link%/&quot;&gt;&lt;strong&gt;%blog_name%&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-</code></pre>
-<p>收到邮件的效果如下</p>
+<pre tabindex="0"><code>    function mailtocommenter_send_email($to,$subject,$message){
+    	$hostname = get_option(&#39;home&#39;);
+    	preg_match(&#34;/^(http://)?([^/]+)/i&#34;,$hostname, $matches);
+    	$blogname = get_option(&#39;blogname&#39;);
+    	$blognameO = $blogname;
+    	$blogname .= &#34; &lt;no-reply@&#34;;
+    	$blogname .= $matches[2];
+    	$blogname .= &#34;&gt;&#34;;
+
+$charset = get_option(&#39;blog_charset&#39;);
+
+$headers = &#34;From: $blognameO &lt;no-reply@$matches[2]&gt; n&#34; ;
+
+$headers .= &#34;MIME-Version: 1.0n&#34;;
+
+$headers .= &#34;Content-Type: text/html;charset=&#34;$charset&#34;n&#34;;
+
+$to = strtolower($to);
+
+return @wp_mail($to, $subject, $message, $headers);
+
+}
+</code></pre><p>修改Mail To Commenter的邮件代码，我的如下</p>
+<pre tabindex="0"><code>    &lt;div style=&#34;border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 0pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);&#34;&gt;
+      &lt;p&gt;Hi！&lt;strong&gt;%user%&lt;/strong&gt;，你在 &lt;strong&gt;%post_title%&lt;/strong&gt; 上的评论有了新回复&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div style=&#34;border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 0pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);&#34;&gt;
+      &lt;p&gt;&gt;&gt;&lt;strong&gt;你&lt;/strong&gt; 说：&lt;br/&gt;
+        %your_comment%
+      &lt;p&gt;&gt;&gt; &lt;strong&gt;%comment_author%&lt;/strong&gt; 回复说： &lt;br/&gt;
+        %reply_comment%
+      &lt;p&gt;&gt;&gt; 查看原文，请至： &lt;a href=&#34;%comment_link%&#34; target=&#34;_blank&#34;&gt;%comment_link%&lt;/a&gt;&lt;/p&gt;
+      &lt;p style=&#34;float: right;&#34;&gt; ---- From &lt;a target=&#34;_blank&#34; href=&#34;%blog_link%/&#34;&gt;&lt;strong&gt;%blog_name%&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+    &lt;/div&gt;
+</code></pre><p>收到邮件的效果如下</p>
 <blockquote>
 <p>Hi！<strong>alswlx</strong>，你在 <strong>紧急声明-关于回复通知是垃圾邮件</strong> 上的评论有了新回复</p>
 </blockquote>
@@ -637,8 +680,7 @@ gle服务器误判本博客。</p>
 <p>在此声明，本博客从来不发送任何垃圾邮件！</p>
 <p>请各位朋友检查自己的垃圾箱翻翻，估计里面有alswl大量回复，悲剧啊……烦请点击&quot;这不是垃圾邮件&quot;&hellip;.谢谢了…</p>
 <p>Update 09_11_17</p>
-<p>我按照&quot;[修改 mail to commenter,让邮件通知更加友好 | Simple
-happiness](<a href="http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-">http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-</a>
+<p>我按照&quot;[修改 mail to commenter,让邮件通知更加友好 | Simple happiness](<a href="http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-">http://xfuxing.com/2009/modify-the-mail-to-commenter-so-that-more-</a>
 user-friendly-e-mail-notification.html)&ldquo;修改了Mail To Comment插件。请大家帮忙在这个页面测试回复
 ^_^</p>
 <p>Update second</p>
@@ -646,8 +688,7 @@ user-friendly-e-mail-notification.html)&ldquo;修改了Mail To Comment插件。�
 <p>Update third</p>
 <p>测试完成，问题出在发出的内容上，也许是因为我从来没有修改过Mail To Commenter的内容吧，我修改之后就可以了。下面专门写一篇文章来说明这个问题。</p>
 <p>Update fourth</p>
-<p>问题已经解决，解决方案我定时发布在[http://log4d.com/2009/11/mailtocommenter-of-the-spam-
-problem](<a href="http://log4d.com/2009/11/mailtocommenter-of-the-spam-">http://log4d.com/2009/11/mailtocommenter-of-the-spam-</a>
+<p>问题已经解决，解决方案我定时发布在[http://log4d.com/2009/11/mailtocommenter-of-the-spam-problem](<a href="http://log4d.com/2009/11/mailtocommenter-of-the-spam-">http://log4d.com/2009/11/mailtocommenter-of-the-spam-</a>
 problem)，定在12点发布，不过现在也能够点击，呵呵。</p>
 ]]></content:encoded>
     </item>
@@ -764,28 +805,23 @@ prototype版本，sofish本地化+汉化） 哦，最后，如果觉得本文不
       <pubDate>Wed, 09 Sep 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/09/about-wordpress-spaces-in-tinymce/</guid>
-      <description>在FireFox下，粘贴到WordPress编辑器中的内容会被自动去掉空格，这对于像Python这种靠缩进控制代码段的code就是毁灭性的打击。而同时作为一 个FireFox用户，我又不愿意为了这个看上去很小的问题切换到IE下。 我开始漫长的征途。 相关链接： [TinyMCE-Advanced-WP插件 | 80](http://blog.hi1980.com/2009/04/01/tinymce- advanced-wp-plugins.html) 「不聪明」的wordpress在线编辑器-Dean&amp;hellip; For Wordpress | 素食勤俭敬老孝慈 Tiny</description>
+      <description>在FireFox下，粘贴到WordPress编辑器中的内容会被自动去掉空格，这对于像Python这种靠缩进控制代码段的code就是毁灭性的打击。而同时作为一 个FireFox用户，我又不愿意为了这个看上去很小的问题切换到IE下。 我开始漫长的征途。 相关链接： [TinyMCE-Advanced-WP插件 | 80](http://blog.hi1980.com/2009/04/01/tinymce- advanced-wp-plugins.html) 「不聪明」的wordpress在线编辑器-Dean&amp;hellip; For Wordpress |素食勤俭敬老孝慈 Tiny</description>
       <content:encoded><![CDATA[<p>在FireFox下，粘贴到WordPress编辑器中的内容会被自动去掉空格，这对于像Python这种靠缩进控制代码段的code就是毁灭性的打击。而同时作为一
 个FireFox用户，我又不愿意为了这个看上去很小的问题切换到IE下。</p>
 <p>我开始漫长的征途。</p>
 <p>相关链接：</p>
 <p>[TinyMCE-Advanced-WP插件 | 80](<a href="http://blog.hi1980.com/2009/04/01/tinymce-">http://blog.hi1980.com/2009/04/01/tinymce-</a>
 advanced-wp-plugins.html)</p>
-<p><a href="http://veryi.com/w/104.html">「不聪明」的wordpress在线编辑器-Dean&hellip; For Wordpress |
-素食勤俭敬老孝慈</a></p>
-<p><a href="http://blog.tgb.net.cn/index.php?load=read&amp;id=161">TinyMce对火狐不太好 - 我的博客 - 真空实验室 VLab
-2.2</a></p>
-<p><a href="http://blog.tgb.net.cn/index.php?load=read&amp;id=615">F2blog和Wordpress的空格那点事 - 我的博客 - 真空实验室 VLab
-2.2</a></p>
+<p><a href="http://veryi.com/w/104.html">「不聪明」的wordpress在线编辑器-Dean&hellip; For Wordpress |素食勤俭敬老孝慈</a></p>
+<p><a href="http://blog.tgb.net.cn/index.php?load=read&amp;id=161">TinyMce对火狐不太好 - 我的博客 - 真空实验室 VLab2.2</a></p>
+<p><a href="http://blog.tgb.net.cn/index.php?load=read&amp;id=615">F2blog和Wordpress的空格那点事 - 我的博客 - 真空实验室 VLab2.2</a></p>
 <p>我又考虑FireFox粘贴的问题，考虑是不是这个原因，给FireFox取消了粘贴限制。</p>
-<p><a href="http://chifanhezhou.blogbus.com/logs/1406504.html">关于firefox粘贴问题的解决方法 - 愿得一心人，白首不相离 -
-博客大巴</a></p>
+<p><a href="http://chifanhezhou.blogbus.com/logs/1406504.html">关于firefox粘贴问题的解决方法 - 愿得一心人，白首不相离 -博客大巴</a></p>
 <p>还是无用。</p>
 <p>最后我求助了Google in English，又尝试了几种方法。</p>
 <p>[TinyMCE:Configuration/entity encoding - Moxiecode Documentation Wiki](http://
 wiki.moxiecode.com/index.php/TinyMCE:Configuration/entity_encoding)</p>
-<p><a href="http://drupal.org/node/72570">TinyMCE wipes out non-breaking space characters ( ) |
-drupal.org</a></p>
+<p><a href="http://drupal.org/node/72570">TinyMCE wipes out non-breaking space characters  |drupal.org</a></p>
 <p>依然失败。</p>
 <p>我下载了TinyMCE原装的版本，发现它完全能在FireFox3下完美粘贴……</p>
 <p>前前后后大概试了4小时，仍然没有什么进展，算了，我被征服了```。</p>
@@ -800,119 +836,201 @@ drupal.org</a></p>
       <pubDate>Tue, 08 Sep 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/09/inove-changes-under-the-heading-style/</guid>
-      <description>前段时间主体选择了7color，但是后来发现还是iNove对各种插件的兼容性好，又转回了iNove。 而iNove在我看来并不是完美的，存在些许问题，Heading问题就是我尤其不能忍受的问题。 看看一般的heading，下图是LightWord的 [caption id=&amp;ldquo;attachment_12635&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;250&amp;rdquo; caption=&amp;ldquo;lightWord的heading&amp;rdquo;] [/caption] 再看看iNove的 [caption id=&amp;ldquo;attachment_12636&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;200&amp;rdquo; caption=&amp;ldquo;iNove</description>
+      <description>前段时间主体选择了7color，但是后来发现还是iNove对各种插件的兼容性好，又转回了iNove。 而iNove在我看来并不是完美的，存在些许问题，Heading问题就是我尤其不能忍受的问题。 看看一般的heading，下图是LightWord的 再看看iNove的 iNove的文章内容Heading CSS和主题的Heading混合在一起，非常不雅观。我稍作修改，在iNove的style.css最后加上</description>
       <content:encoded><![CDATA[<p>前段时间主体选择了7color，但是后来发现还是iNove对各种插件的兼容性好，又转回了iNove。</p>
 <p>而iNove在我看来并不是完美的，存在些许问题，Heading问题就是我尤其不能忍受的问题。</p>
 <p>看看一般的heading，下图是LightWord的</p>
-<p>[caption id=&ldquo;attachment_12635&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;250&rdquo;
-caption=&ldquo;lightWord的heading&rdquo;]<a href="../../static/images/upload_dropbox/200909/7colorHeading.jpg">
+<p>
 
 
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200909/7colorHeading.jpg" alt="7color的heading"  />
 
-</a>[/caption]</p>
+</p>
 <p>再看看iNove的</p>
-<p>[caption id=&ldquo;attachment_12636&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;200&rdquo;
-caption=&ldquo;iNove的Heading&rdquo;]<a href="../../static/images/upload_dropbox/200909/iNoveHeading.jpg">
+<p>
 
 
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200909/iNoveHeading.jpg" alt="iNove的Heading"  />
 
-</a>[/caption]</p>
+</p>
 <p>iNove的文章内容Heading CSS和主题的Heading混合在一起，非常不雅观。我稍作修改，在iNove的style.css最后加上一些样式。</p>
-<p>`/* dddspace.cn heading fix STAET */</p>
-<p>.post .content h1 {</p>
-<p>font-family:Georgia,&ldquo;Times New Roman&rdquo;,&ldquo;Bitstream Charter&rdquo;,Times,serif;</p>
-<p>margin: 0;</p>
-<p>padding: 0;</p>
-<p>border: none;</p>
-<p>color:#555555;</p>
-<p>font-size:13px;</p>
-<p>font-size-adjust:none;</p>
-<p>font-style:normal;</p>
-<p>font-variant:normal;</p>
-<p>font-weight:normal;</p>
-<p>line-height:19px;</p>
-<p>font-size:2.15em;</p>
-<p>} .post .content h2 {</p>
-<p>font-family:Georgia,&ldquo;Times New Roman&rdquo;,&ldquo;Bitstream Charter&rdquo;,Times,serif;</p>
-<p>margin: 0;</p>
-<p>padding: 0;</p>
-<p>border: none;</p>
-<p>color:#555555;</p>
-<p>font-size:13px;</p>
-<p>font-size-adjust:none;</p>
-<p>font-style:normal;</p>
-<p>font-variant:normal;</p>
-<p>font-weight:normal;</p>
-<p>line-height:19px;</p>
-<p>font-size:1.85em;</p>
-<p>} .post .content h3 {</p>
-<p>font-family:Georgia,&ldquo;Times New Roman&rdquo;,&ldquo;Bitstream Charter&rdquo;,Times,serif;</p>
-<p>margin: 0;</p>
-<p>padding: 0;</p>
-<p>border: none;</p>
-<p>color:#555555;</p>
-<p>font-size:13px;</p>
-<p>font-size-adjust:none;</p>
-<p>font-style:normal;</p>
-<p>font-variant:normal;</p>
-<p>font-weight:normal;</p>
-<p>line-height:19px;</p>
-<p>font-size:1.6em;</p>
-<p>} .post .content h4 {</p>
-<p>font-family:Georgia,&ldquo;Times New Roman&rdquo;,&ldquo;Bitstream Charter&rdquo;,Times,serif;</p>
-<p>margin: 0;</p>
-<p>padding: 0;</p>
-<p>border: none;</p>
-<p>color:#555555;</p>
-<p>font-size:13px;</p>
-<p>font-size-adjust:none;</p>
-<p>font-style:normal;</p>
-<p>font-variant:normal;</p>
-<p>font-weight:normal;</p>
-<p>line-height:19px;</p>
-<p>font-size:1.4em;</p>
-<p>} .post .content h5 {</p>
-<p>font-family:Georgia,&ldquo;Times New Roman&rdquo;,&ldquo;Bitstream Charter&rdquo;,Times,serif;</p>
-<p>margin: 0;</p>
-<p>padding: 0;</p>
-<p>border: none;</p>
-<p>color:#555555;</p>
-<p>font-size:13px;</p>
-<p>font-size-adjust:none;</p>
-<p>font-style:normal;</p>
-<p>font-variant:normal;</p>
-<p>font-weight:normal;</p>
-<p>line-height:19px;</p>
-<p>font-size:1.2em;</p>
-<p>} .post .content h6 {</p>
-<p>font-family:Georgia,&ldquo;Times New Roman&rdquo;,&ldquo;Bitstream Charter&rdquo;,Times,serif;</p>
-<p>margin: 0;</p>
-<p>padding: 0;</p>
-<p>border: none;</p>
-<p>color:#555555;</p>
-<p>font-size:13px;</p>
-<p>font-size-adjust:none;</p>
-<p>font-style:normal;</p>
-<p>font-variant:normal;</p>
-<p>font-weight:normal;</p>
-<p>line-height:19px;</p>
-<p>font-size:1em;</p>
-<p>} /* dddspace.cn heading fix END */`</p>
-<p>好了，这下子样式就修复了，基本覆盖了边框，位置，文字大小宽度这些元素了。</p>
+<pre tabindex="0"><code>/* dddspace.cn heading fix STAET */
+
+.post .content h1 {
+
+font-family:Georgia,&#34;Times New Roman&#34;,&#34;Bitstream Charter&#34;,Times,serif;
+
+margin: 0;
+
+padding: 0;
+
+border: none;
+
+color:#555555;
+
+font-size:13px;
+
+font-size-adjust:none;
+
+font-style:normal;
+
+font-variant:normal;
+
+font-weight:normal;
+
+line-height:19px;
+
+font-size:2.15em;
+
+} .post .content h2 {
+
+font-family:Georgia,&#34;Times New Roman&#34;,&#34;Bitstream Charter&#34;,Times,serif;
+
+margin: 0;
+
+padding: 0;
+
+border: none;
+
+color:#555555;
+
+font-size:13px;
+
+font-size-adjust:none;
+
+font-style:normal;
+
+font-variant:normal;
+
+font-weight:normal;
+
+line-height:19px;
+
+font-size:1.85em;
+
+} .post .content h3 {
+
+font-family:Georgia,&#34;Times New Roman&#34;,&#34;Bitstream Charter&#34;,Times,serif;
+
+margin: 0;
+
+padding: 0;
+
+border: none;
+
+color:#555555;
+
+font-size:13px;
+
+font-size-adjust:none;
+
+font-style:normal;
+
+font-variant:normal;
+
+font-weight:normal;
+
+line-height:19px;
+
+font-size:1.6em;
+
+} .post .content h4 {
+
+font-family:Georgia,&#34;Times New Roman&#34;,&#34;Bitstream Charter&#34;,Times,serif;
+
+margin: 0;
+
+padding: 0;
+
+border: none;
+
+color:#555555;
+
+font-size:13px;
+
+font-size-adjust:none;
+
+font-style:normal;
+
+font-variant:normal;
+
+font-weight:normal;
+
+line-height:19px;
+
+font-size:1.4em;
+
+} .post .content h5 {
+
+font-family:Georgia,&#34;Times New Roman&#34;,&#34;Bitstream Charter&#34;,Times,serif;
+
+margin: 0;
+
+padding: 0;
+
+border: none;
+
+color:#555555;
+
+font-size:13px;
+
+font-size-adjust:none;
+
+font-style:normal;
+
+font-variant:normal;
+
+font-weight:normal;
+
+line-height:19px;
+
+font-size:1.2em;
+
+} .post .content h6 {
+
+font-family:Georgia,&#34;Times New Roman&#34;,&#34;Bitstream Charter&#34;,Times,serif;
+
+margin: 0;
+
+padding: 0;
+
+border: none;
+
+color:#555555;
+
+font-size:13px;
+
+font-size-adjust:none;
+
+font-style:normal;
+
+font-variant:normal;
+
+font-weight:normal;
+
+line-height:19px;
+
+font-size:1em;
+
+} /* dddspace.cn heading fix END */`
+</code></pre><p>好了，这下子样式就修复了，基本覆盖了边框，位置，文字大小宽度这些元素了。</p>
 <p>现在的样式：</p>
-<h1 id="h1heading1h1"><h1>Heading1</h1></h1>
-<h2 id="h2heading1h2"><h2>Heading1</h2></h2>
-<h3 id="h3heading1h3"><h3>Heading1</h3></h3>
-<h4 id="h4heading1h4"><h4>Heading1</h4></h4>
-<h5 id="h5heading1h5"><h5>Heading1</h5></h5>
-<h6 id="h6heading1h6"><h6>Heading1</h6></h6>
-]]></content:encoded>
+<pre tabindex="0"><code># &lt;h1&gt;Heading1&lt;/h1&gt;
+
+## &lt;h2&gt;Heading1&lt;/h2&gt;
+
+### &lt;h3&gt;Heading1&lt;/h3&gt;
+
+#### &lt;h4&gt;Heading1&lt;/h4&gt;
+
+##### &lt;h5&gt;Heading1&lt;/h5&gt;
+
+###### &lt;h6&gt;Heading1&lt;/h6&gt;
+</code></pre>]]></content:encoded>
     </item>
     
     <item>
@@ -929,45 +1047,46 @@ caption=&ldquo;iNove的Heading&rdquo;]<a href="../../static/images/upload_dropbo
 <p>在使用WordPress自己的code元素后，也就是关闭了CodeColorer插件，代码转义靠在可视化编辑器下就进行了转义。</p>
 <p>像我这个博客，前半段代码存放的是直接html代码，而后来的存放了几篇经过转义的html代码，造成了代码显示混乱。</p>
 <h2 id="症状">症状</h2>
-<p>[caption id=&ldquo;attachment_12631&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;345&rdquo; caption=&ldquo;开启CodeColorer+可视化界面编辑结果&rdquo;]<a href="../../static/images/upload_dropbox/200909/Snap2.jpg">
+<p>
 
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200909/Snap2.jpg" alt="Snap2"  />
+<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200909/Snap2.jpg" alt="开启CodeColorer&#43;可视化界面编辑结果"  />
 
-</a>[/caption]</p>
-<p>[caption id=&ldquo;attachment_12632&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;304&rdquo; caption=&ldquo;关闭CodeColorer+HTML编辑结果在首页显示&rdquo;]<a href="../../static/images/upload_dropbox/200909/Snap3.jpg">
+</p>
+<p>
 
 
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200909/Snap3.jpg" alt="关闭CodeColorer&#43;HTML编辑结果"  />
 
-</a>[/caption]</p>
-<p>[caption id=&ldquo;attachment_12633&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;312&rdquo; caption=&ldquo;关闭CodeColorer+HTML编辑结果在内容页&rdquo;]<a href="../../static/images/upload_dropbox/200909/Snap4.jpg">
+</p>
+<p>
 
 
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200909/Snap4.jpg" alt="关闭CodeColorer&#43;HTML编辑结果在内容页"  />
 
-</a>[/caption]</p>
-<p>[caption id=&ldquo;attachment_12634&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;365&rdquo; caption=&ldquo;正确显示&rdquo;]<a href="../../static/images/upload_dropbox/200909/Snap5.jpg">
+</p>
+<p>[
 
 
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/200909/Snap5.jpg" alt="正确显示"  />
 
-</a>[/caption]</p>
+</p>
 <h2 id="解决方法">解决方法</h2>
-<p>CodeColorer开着和关着都成问题，要么影响我之前的代码，要么影响我后来的代码。所以必须有第三种方法解决，我检查了CodeColorer源码
-，发现了在codecolorer-core.php一段代码。</p>
-<p>`if ($options[&rsquo;escaped&rsquo;]) {</p>
-<p>$text = html_entity_decode($text);</p>
-<p>}`</p>
-<p>大意是如果选项有escaped的话，就对text进行html转换。</p>
+<p>CodeColorer开着和关着都成问题，要么影响我之前的代码，要么影响我后来的代码。所以必须有第三种方法解决，我检查了CodeColorer源码，发现了在codecolorer-core.php一段代码。</p>
+<pre tabindex="0"><code>if ($options[&#39;escaped&#39;]) {
+
+$text = html_entity_decode($text);
+
+}
+</code></pre><p>大意是如果选项有escaped的话，就对text进行html转换。</p>
 <p>（其实我觉得把if给注释了，直接用转义，可以更好的使用，省的每段代码加入escaped=&ldquo;true&rdquo;）</p>
 <p>果然，我在官方的<a href="http://kpumuk.info/projects/wordpress-plugins/codecolorer/#faq">Frequently Asked Questions</a>中找到这么一段话：</p>
 <p>Q. I see &lt; instead of &lt; (or other HTML entities like &gt;, &amp;, &ldquo;) in my code.</p>
@@ -1006,11 +1125,10 @@ Midi、Wav、AIFF、AU、MP3等等，Netscape及新版的IE 都支持。url为�
       <pubDate>Tue, 11 Aug 2009 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2009/08/wordpress-plug-match-keywords-automatically-link-to/</guid>
-      <description>原文链接：《wordpress关键字自动链接匹配插件 | 长沙SEO特色高端咨询顾问服务》 相关链接：《wordpress插件 中文关键词自动连接 | Muboard》（这位博主曾为该插件0.3x版本做过中文优化） 中文版下载地址：[猛击这里下载](href=&amp;ldquo;http://www.changshaseo.com/blog-mechanics-keyword-link- plugin-v01.zip) wordpress关键字自动</description>
-      <content:encoded><![CDATA[<p>原文链接：《<a href="http://www.changshaseo.com/seo-tools/882.html">wordpress关键字自动链接匹配插件 | 长沙SEO特色高端咨询顾问服务</a>》<a href="http://www.changshaseo.com/seo-tools/882.html"></a></p>
+      <description>原文链接：《wordpress关键字自动链接匹配插件 | 长沙SEO特色高端咨询顾问服务》 相关链接：《wordpress插件 中文关键词自动连接 | Muboard》（这位博主曾为该插件0.3x版本做过中文优化） 中文版下载地址：猛击这里下载 wordpress关键字自动匹配链接插件 这个工具非常好使，我找了很久了，以后发文章就省事多了，不用一个一个去加链接了，呵呵，So Cool！ 下面引用原文： Wordpress Keyword Link Plugin This is a little Wordpress</description>
+      <content:encoded><![CDATA[<p>原文链接：《<a href="http://www.changshaseo.com/seo-tools/882.html">wordpress关键字自动链接匹配插件 | 长沙SEO特色高端咨询顾问服务</a>》</p>
 <p>相关链接：《<a href="http://muboard.com/591">wordpress插件 中文关键词自动连接 | Muboard</a>》（这位博主曾为该插件0.3x版本做过中文优化）</p>
-<p>中文版下载地址：[猛击这里下载](href=&ldquo;<a href="http://www.changshaseo.com/blog-mechanics-keyword-link-">http://www.changshaseo.com/blog-mechanics-keyword-link-</a>
-plugin-v01.zip)</p>
+<p>中文版下载地址：<a href="http://www.changshaseo.com/blog-mechanics-keyword-link-plugin-v01.zip">猛击这里下载</a></p>
 <p><strong>wordpress关键字自动匹配链接插件</strong> 这个工具非常好使，我找了很久了，以后发文章就省事多了，不用一个一个去加链接了，呵呵，So Cool！</p>
 <p>下面引用原文：</p>
 <p>Wordpress Keyword Link Plugin</p>

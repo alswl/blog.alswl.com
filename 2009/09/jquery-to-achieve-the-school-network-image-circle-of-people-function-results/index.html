@@ -110,8 +110,8 @@ if (!doNotTrack) {
   "keywords": [
     "dotnet", "javascript", "jquery", "人人"
   ],
-  "articleBody": "项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网\"图片圈人 “功能效果》（强烈推荐这篇 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。\n原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》 ）\n样式： #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer.gif) no-repeat -1px -1px; } #select-area-box span { position: absolute; border: 1px solid #005EAC; width: 8px; height: 8px; background-color: #FFF; font-size: 0; z-index: 18; } #select-area-box span.north-west-resize { cursor: nw-resize; left: 0; top: 0; margin-left: -1px; margin-top: -1px; } #select-area-box span.north-east-resize { cursor: ne-resize; right: 0; top: 0; margin-right: -1px; margin-top: -1px; } #select-area-box span.south-west-resize { cursor: sw-resize; left: 0; bottom: 0; margin-left: -1px; margin-bottom: -1px; } #select-area-box span.south-east-resize { cursor: se-resize; right: 0; bottom: 0; margin-right: -1px; margin-bottom: -1px; } #enclose-wrapper ul#tag-list { list-style: none; margin: 0; padding: 0; font-size: 13px; float: left; } #enclose-wrapper ul#tag-list li { list-style: none; float: left; } #enclose-wrapper ul#tag-list li a { color: #F60; } js实现代码： var photoTag = { show: function(left, top, width, height, show_resize_square) { $('#select-area-box').css({ 'left': left - 7, 'top': top - 7 }) $('#select-area-box').width(width + 4).height(height + 4).show(); $('#select-area').width(width).height(height); if (show_resize_square) $('#select-area-box span').show(); else $('#select-area-box span').hide(); }, hide: function() { $('#select-area-box').hide(); }, add: function(tag_name, tag_value, left, top, width, height) { var json = { id: Math.floor(Math.random() * 10000) }; var args = left + ',' + top + ',' + width + ',' + height; var li = ' * '; li += ''; li += '([删除](javascript:;))'; li += ''; li += ' '; $('#tag-list').append(li); }, remove: function(id, li) { li.parentNode.removeChild(li); } }; $(function() { var is_started = false; // 选区左上角,和高宽 var info = { 'left': 0, 'top': 0, 'width': 0, 'height': 0 }; var origin = { x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0), y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0) }; var dnr = new DragResize($('#select-area-box')[0], { minWidth: 20, minHeight: 20, bound: { left: 0, top: 0, right: 9999, bottom: 9999 }, callback: function(i) { // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和 info = { 'left': i.left + 7, 'top': i.top + 7, 'width': i.width - 4, 'height': i.height - 4 }; $('#select-area').width(info.width).height(info.height); // 将添加标签的表单定位在选区的右边 $('#form-add-tag').css({ 'left': i.left + i.width + 10, 'top': i.top }); } }); // 拖动选区 $('#select-area').mousedown(function(e) { dnr.drag(e); }); // 调整选区大小 $('#select-area-box span').mousedown(function(e) { dnr.resize(e, this.className.replace('-resize', '')); }); // 在图片上点击一下,开始获取选区 $('#photo-wrapper img').mousedown(function(e) { if (is_started) return; is_started = true; var left = e.pageX - origin.x - 50 - 7; var top = e.pageY - origin.y - 50 - 7; info = { 'left': left + 7, 'top': top + 7, 'width': 100, 'height': 100 }; photoTag.show(info.left, info.top, info.width, info.height, true); $('#form-add-tag').show().css({ 'left': left + 100 + 4 + 10, 'top': top }); }); // 鼠标进入图片内时,显示选区 $('#photo-wrapper img').bind('mouseenter', function(e) { if (!is_started) return; photoTag.show(info.left, info.top, info.width, info.height, true); }); // 确定添加一个标签,或取消 $('#btn-add-tag, #btn-cancel').click(function(e) { if (this.id == 'btn-cancel') { $('#form-add-tag, #select-area-box').hide(); is_started = false; return false; } if (!$('#tag-name').val()) { alert('标签名不能为空！'); return false; } // 添加标签 photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height); // 隐藏选区和表单 $('#form-add-tag, #select-area-box').hide(); is_started = false; }); photoTag.hide(); }); Html代码 相片中： aaa (删除) 输入标签： 确认\n取消\n改进 在Asp.NET下这段代码存在几个问题（毕竟这段代码应该只能算是Demo）：1.无法和服务器进行数据交互。2.无法在ASP.NET环境下获取相关id。3.只 能提交到服务器一个\"标签”，不足以完成需求。\n修改后js: var photoTag = { show: function(left, top, width, height, show_resize_square) { $('#select-area-box').css({ 'left': left - 7, 'top': top - 7 }) $('#select-area-box').width(width + 4).height(height + 4).show(); $('#select-area').width(width).height(height); if (show_resize_square) $('#select-area-box span').show(); else $('#select-area-box span').hide(); }, hide: function() { $('#select-area-box').hide(); }, add: function(tag_name, tag_value, left, top, width, height) { var json = { id: Math.floor(Math.random() * 10000) }; //$.getJSON('add_tag.php', {'name':tag_name,'left':left,'top':top,'width':width,'height':height}, function(json) { //reflesh tag list // if(json.message) alert(json.message); // if(json.error == 0) { var args = left + ',' + top + ',' + width + ',' + height; var li = ' * '; li += ''; li += '([删除](javascript:;))'; li += ''; li += ' '; $('#tag-list').append(li); // } //}); }, remove: function(id, li) { //$.getJSON('remove_tag.php', {'tag_id':id}, function(json) { //reflesh tag list // if(json.message) alert(json.message); // if(json.error == 0) li.parentNode.removeChild(li); //}); } }; $(function() { var is_started = false; // 选区左上角,和高宽 var info = { 'left': 0, 'top': 0, 'width': 0, 'height': 0 }; var origin = { x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0), y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0) }; var dnr = new DragResize($('#select-area-box')[0], { minWidth: 20, minHeight: 20, bound: { left: 0, top: 0, right: 9999, bottom: 9999 }, callback: function(i) { // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和 info = { 'left': i.left + 7, 'top': i.top + 7, 'width': i.width - 4, 'height': i.height - 4 }; $('#select-area').width(info.width).height(info.height); // 将添加标签的表单定位在选区的右边 $('#form-add-tag').css({ 'left': i.left + i.width + 10, 'top': i.top }); } }); // 拖动选区 $('#select-area').mousedown(function(e) { dnr.drag(e); }); // 调整选区大小 $('#select-area-box span').mousedown(function(e) { dnr.resize(e, this.className.replace('-resize', '')); }); // 在图片上点击一下,开始获取选区 $('#photo-wrapper img').mousedown(function(e) { if (is_started) return; is_started = true; var left = e.pageX - origin.x - 50 - 7; var top = e.pageY - origin.y - 50 - 7; info = { 'left': left + 7, 'top': top + 7, 'width': 100, 'height': 100 }; photoTag.show(info.left, info.top, info.width, info.height, true); $('#form-add-tag').show().css({ 'left': left + 100 + 4 + 10, 'top': top }); }); // 鼠标进入图片内时,显示选区 $('#photo-wrapper img').bind('mouseenter', function(e) { if (!is_started) return; photoTag.show(info.left, info.top, info.width, info.height, true); }); // 确定添加一个标签,或取消 $('#btn-add-tag, #btn-cancel').click(function(e) { if (this.id == 'btn-cancel') { $('#form-add-tag, #select-area-box').hide(); is_started = false; return false; } if (!$('#tag-name').val()) { alert('标签名不能为空！'); return false; } // 添加标签 photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height); // 隐藏选区和表单 $('#form-add-tag, #select-area-box').hide(); is_started = false; }); photoTag.hide(); }); Html代码： 名称： 数值：\n确认\n取消\n这边的主要修改在于把框子的右边的内容增加为名称和数值，方便数据的识别。\n后台ASP.NET文件读取 string[] fields = Request.Params.GetValues(\"photoField\"); 这里呢，由于上传的元素name相同，都是photoField，所以通过Params.GetValues()就可以取出string数组，这样就 能获取所有数据了。数据格式是\"ddl:小楠,x:98.88333129882812,y:146,width:100,height:100“这种形式，依靠 “,“分割。\n相关下载 DragResize.js template.js css.css\n",
-  "wordCount" : "1953",
+  "articleBody": "项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《JS实现校内网\"图片圈人 “功能效果》（强烈推荐这篇 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。\n原始Code: 运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《Javascript Resize和Drag类,基于jQuery》）\n样式： ​ #enclose-wrapper { position: relative; z-index: 0; border: 4px solid #DDD; background-color: #FFF; } #form-add-tag { margin-left: 8px; position: absolute; padding: 5px 3px; border: 1px solid #005EAC; float: left; display: inline; background-color: #FFF; } #select-area-box { position: absolute; border: 5px solid #D8DFEA; float: left; } #select-area { position: relative; padding: 0; border: 2px solid #005EAC; z-index: 15; cursor: move; background: url(spacer.gif) no-repeat -1px -1px; } #select-area-box span { position: absolute; border: 1px solid #005EAC; width: 8px; height: 8px; background-color: #FFF; font-size: 0; z-index: 18; } #select-area-box span.north-west-resize { cursor: nw-resize; left: 0; top: 0; margin-left: -1px; margin-top: -1px; } #select-area-box span.north-east-resize { cursor: ne-resize; right: 0; top: 0; margin-right: -1px; margin-top: -1px; } #select-area-box span.south-west-resize { cursor: sw-resize; left: 0; bottom: 0; margin-left: -1px; margin-bottom: -1px; } #select-area-box span.south-east-resize { cursor: se-resize; right: 0; bottom: 0; margin-right: -1px; margin-bottom: -1px; } #enclose-wrapper ul#tag-list { list-style: none; margin: 0; padding: 0; font-size: 13px; float: left; } #enclose-wrapper ul#tag-list li { list-style: none; float: left; } #enclose-wrapper ul#tag-list li a { color: #F60; }\njs实现代码： ​ var photoTag = { show: function(left, top, width, height, show_resize_square) { $(’#select-area-box’).css({ ’left’: left - 7, ’top’: top - 7 }) $(’#select-area-box’).width(width + 4).height(height + 4).show(); $(’#select-area’).width(width).height(height); if (show_resize_square) $(’#select-area-box span’).show(); else $(’#select-area-box span’).hide(); }, hide: function() { $(’#select-area-box’).hide(); }, add: function(tag_name, tag_value, left, top, width, height) { var json = { id: Math.floor(Math.random() * 10000) }; var args = left + ‘,’ + top + ‘,’ + width + ‘,’ + height; var li = '\n* '; li += ''; li += '([删除](javascript:;))'; li += ''; li += ' '; $('#tag-list').append(li); }, remove: function(id, li) { li.parentNode.removeChild(li); } }; $(function() { var is_started = false; // 选区左上角,和高宽 var info = { 'left': 0, 'top': 0, 'width': 0, 'height': 0 }; var origin = { x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0), y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0) }; var dnr = new DragResize($('#select-area-box')[0], { minWidth: 20, minHeight: 20, bound: { left: 0, top: 0, right: 9999, bottom: 9999 }, callback: function(i) { // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和 info = { 'left': i.left + 7, 'top': i.top + 7, 'width': i.width - 4, 'height': i.height - 4 }; $('#select-area').width(info.width).height(info.height); // 将添加标签的表单定位在选区的右边 $('#form-add-tag').css({ 'left': i.left + i.width + 10, 'top': i.top }); } }); // 拖动选区 $('#select-area').mousedown(function(e) { dnr.drag(e); }); // 调整选区大小 $('#select-area-box span').mousedown(function(e) { dnr.resize(e, this.className.replace('-resize', '')); }); // 在图片上点击一下,开始获取选区 $('#photo-wrapper img').mousedown(function(e) { if (is_started) return; is_started = true; var left = e.pageX - origin.x - 50 - 7; var top = e.pageY - origin.y - 50 - 7; info = { 'left': left + 7, 'top': top + 7, 'width': 100, 'height': 100 }; photoTag.show(info.left, info.top, info.width, info.height, true); $('#form-add-tag').show().css({ 'left': left + 100 + 4 + 10, 'top': top }); }); // 鼠标进入图片内时,显示选区 $('#photo-wrapper img').bind('mouseenter', function(e) { if (!is_started) return; photoTag.show(info.left, info.top, info.width, info.height, true); }); // 确定添加一个标签,或取消 $('#btn-add-tag, #btn-cancel').click(function(e) { if (this.id == 'btn-cancel') { $('#form-add-tag, #select-area-box').hide(); is_started = false; return false; } if (!$('#tag-name').val()) { alert('标签名不能为空！'); return false; } // 添加标签 photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height); // 隐藏选区和表单 $('#form-add-tag, #select-area-box').hide(); is_started = false; }); photoTag.hide(); }); Html代码 ​ 相片中： aaa (删除) 输入标签：\n确认\n取消\n改进 在Asp.NET下这段代码存在几个问题（毕竟这段代码应该只能算是Demo）：1.无法和服务器进行数据交互。2.无法在ASP.NET环境下获取相关id。3.只 能提交到服务器一个\"标签”，不足以完成需求。\n修改后js: ​ var photoTag = { show: function(left, top, width, height, show_resize_square) { $(’#select-area-box’).css({ ’left’: left - 7, ’top’: top - 7 }) $(’#select-area-box’).width(width + 4).height(height + 4).show(); $(’#select-area’).width(width).height(height); if (show_resize_square) $(’#select-area-box span’).show(); else $(’#select-area-box span’).hide(); }, hide: function() { $(’#select-area-box’).hide(); }, add: function(tag_name, tag_value, left, top, width, height) { var json = { id: Math.floor(Math.random() * 10000) }; //$.getJSON(‘add_tag.php’, {’name’:tag_name,’left’:left,’top’:top,‘width’:width,‘height’:height}, function(json) { //reflesh tag list // if(json.message) alert(json.message); // if(json.error == 0) { var args = left + ‘,’ + top + ‘,’ + width + ‘,’ + height; var li = '\n* '; li += ''; li += '([删除](javascript:;))'; li += ''; li += ' '; $('#tag-list').append(li); // } //}); }, remove: function(id, li) { //$.getJSON('remove_tag.php', {'tag_id':id}, function(json) { //reflesh tag list // if(json.message) alert(json.message); // if(json.error == 0) li.parentNode.removeChild(li); //}); } }; $(function() { var is_started = false; // 选区左上角,和高宽 var info = { 'left': 0, 'top': 0, 'width': 0, 'height': 0 }; var origin = { x: $('#enclose-wrapper').offset().left + (parseInt($('#enclose-wrapper').css('border-left-width')) || 0), y: $('#enclose-wrapper').offset().top + (parseInt($('#enclose-wrapper').css('border-top-width')) || 0) }; var dnr = new DragResize($('#select-area-box')[0], { minWidth: 20, minHeight: 20, bound: { left: 0, top: 0, right: 9999, bottom: 9999 }, callback: function(i) { // 7为左(上)边两个边框的宽度的和, 4为左右(上下)篮色边框宽度的和 info = { 'left': i.left + 7, 'top': i.top + 7, 'width': i.width - 4, 'height': i.height - 4 }; $('#select-area').width(info.width).height(info.height); // 将添加标签的表单定位在选区的右边 $('#form-add-tag').css({ 'left': i.left + i.width + 10, 'top': i.top }); } }); // 拖动选区 $('#select-area').mousedown(function(e) { dnr.drag(e); }); // 调整选区大小 $('#select-area-box span').mousedown(function(e) { dnr.resize(e, this.className.replace('-resize', '')); }); // 在图片上点击一下,开始获取选区 $('#photo-wrapper img').mousedown(function(e) { if (is_started) return; is_started = true; var left = e.pageX - origin.x - 50 - 7; var top = e.pageY - origin.y - 50 - 7; info = { 'left': left + 7, 'top': top + 7, 'width': 100, 'height': 100 }; photoTag.show(info.left, info.top, info.width, info.height, true); $('#form-add-tag').show().css({ 'left': left + 100 + 4 + 10, 'top': top }); }); // 鼠标进入图片内时,显示选区 $('#photo-wrapper img').bind('mouseenter', function(e) { if (!is_started) return; photoTag.show(info.left, info.top, info.width, info.height, true); }); // 确定添加一个标签,或取消 $('#btn-add-tag, #btn-cancel').click(function(e) { if (this.id == 'btn-cancel') { $('#form-add-tag, #select-area-box').hide(); is_started = false; return false; } if (!$('#tag-name').val()) { alert('标签名不能为空！'); return false; } // 添加标签 photoTag.add($('#tag-name').val(), $('#tag-value').val(), info.left, info.top, info.width, info.height); // 隐藏选区和表单 $('#form-add-tag, #select-area-box').hide(); is_started = false; }); photoTag.hide(); }); Html代码： ​ 名称： 数值：\n确认\n取消\n这边的主要修改在于把框子的右边的内容增加为名称和数值，方便数据的识别。\n后台ASP.NET文件读取 ​ string[] fields = Request.Params.GetValues(“photoField”);\n这里呢，由于上传的元素name相同，都是photoField，所以通过Params.GetValues()就可以取出string数组，这样就 能获取所有数据了。数据格式是\"ddl:小楠,x:98.88333129882812,y:146,width:100,height:100“这种形式，依靠 “,“分割。\n相关下载 DragResize.js template.js css.css\n",
+  "wordCount" : "1826",
   "inLanguage": "en",
   "datePublished": "2009-09-02T00:00:00+08:00",
   "dateModified": "2009-09-02T00:00:00+08:00",
@@ -252,112 +252,111 @@ if (!doNotTrack) {
   <div class="post-content"><p>项目中需要一个类似于校内圈人效果的js控件，找了一下基本没有直接能用的，只有一些未完成，我只能自己动手了。 基本框架参照这篇文章《<a href="http://www.cnblogs.com/czy1121/archive/2009/03/03/1402105.html">JS实现校内网&quot;图片圈人 &ldquo;功能效果</a>》（强烈推荐这篇
 文章，这段代码写的很帅气） 我把代码摘录如下，不过还是建议大家去看原文的一些分析。</p>
 <h2 id="原始code">原始Code:<a hidden class="anchor" aria-hidden="true" href="#原始code">#</a></h2>
-<p>运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《<a href="http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.html">Javascript Resize和Drag类,基于jQuery</a>》
-）</p>
+<p>运行环境： 1.jQuery支持 2.DragResize类（czy1121作者写的一个js类，更多信息可以参照《<a href="http://www.cnblogs.com/czy1121/archive/2009/02/26/1398971.html">Javascript Resize和Drag类,基于jQuery</a>》）</p>
 <h3 id="样式">样式：<a hidden class="anchor" aria-hidden="true" href="#样式">#</a></h3>
-<pre><code>#enclose-wrapper {
-	position: relative;
-	z-index: 0;
-	border: 4px solid #DDD;
-	background-color: #FFF;
+<p>​ <br />
+#enclose-wrapper {
+position: relative;
+z-index: 0;
+border: 4px solid #DDD;
+background-color: #FFF;
 }
 #form-add-tag {
-	margin-left: 8px;
-	position: absolute;
-	padding: 5px 3px;
-	border: 1px solid #005EAC;
-	float: left;
-	display: inline;
-	background-color: #FFF;
+margin-left: 8px;
+position: absolute;
+padding: 5px 3px;
+border: 1px solid #005EAC;
+float: left;
+display: inline;
+background-color: #FFF;
 }
 #select-area-box {
-	position: absolute;
-	border: 5px solid #D8DFEA;
-	float: left;
+position: absolute;
+border: 5px solid #D8DFEA;
+float: left;
 }
 #select-area {
-	position: relative;
-	padding: 0;
-	border: 2px solid #005EAC;
-	z-index: 15;
-	cursor: move;
-	background: url(spacer.gif) no-repeat -1px -1px;
+position: relative;
+padding: 0;
+border: 2px solid #005EAC;
+z-index: 15;
+cursor: move;
+background: url(spacer.gif) no-repeat -1px -1px;
 }
 #select-area-box span {
-	position: absolute;
-	border: 1px solid #005EAC;
-	width: 8px;
-	height: 8px;
-	background-color: #FFF;
-	font-size: 0;
-	z-index: 18;
+position: absolute;
+border: 1px solid #005EAC;
+width: 8px;
+height: 8px;
+background-color: #FFF;
+font-size: 0;
+z-index: 18;
 }
 #select-area-box span.north-west-resize {
-	cursor: nw-resize;
-	left: 0;
-	top: 0;
-	margin-left: -1px;
-	margin-top: -1px;
+cursor: nw-resize;
+left: 0;
+top: 0;
+margin-left: -1px;
+margin-top: -1px;
 }
 #select-area-box span.north-east-resize {
-	cursor: ne-resize;
-	right: 0;
-	top: 0;
-	margin-right: -1px;
-	margin-top: -1px;
+cursor: ne-resize;
+right: 0;
+top: 0;
+margin-right: -1px;
+margin-top: -1px;
 }
 #select-area-box span.south-west-resize {
-	cursor: sw-resize;
-	left: 0;
-	bottom: 0;
-	margin-left: -1px;
-	margin-bottom: -1px;
+cursor: sw-resize;
+left: 0;
+bottom: 0;
+margin-left: -1px;
+margin-bottom: -1px;
 }
 #select-area-box span.south-east-resize {
-	cursor: se-resize;
-	right: 0;
-	bottom: 0;
-	margin-right: -1px;
-	margin-bottom: -1px;
+cursor: se-resize;
+right: 0;
+bottom: 0;
+margin-right: -1px;
+margin-bottom: -1px;
 }
 #enclose-wrapper ul#tag-list {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	font-size: 13px;
-	float: left;
+list-style: none;
+margin: 0;
+padding: 0;
+font-size: 13px;
+float: left;
 }
 #enclose-wrapper ul#tag-list li {
-	list-style: none;
-	float: left;
+list-style: none;
+float: left;
 }
 #enclose-wrapper ul#tag-list li a {
-	color: #F60;
-}
-</code></pre>
+color: #F60;
+}</p>
 <h3 id="js实现代码">js实现代码：<a hidden class="anchor" aria-hidden="true" href="#js实现代码">#</a></h3>
-<pre><code>var photoTag = {
-    show: function(left, top, width, height, show_resize_square) {
-        $('#select-area-box').css({
-            'left': left - 7,
-            'top': top - 7
-        })
-        $('#select-area-box').width(width + 4).height(height + 4).show();
-        $('#select-area').width(width).height(height);
-        if (show_resize_square) $('#select-area-box span').show();
-        else $('#select-area-box span').hide();
-    },
-    hide: function() {
-        $('#select-area-box').hide();
-    },
-    add: function(tag_name, tag_value, left, top, width, height) {
-        var json = {
-            id: Math.floor(Math.random() * 10000)
-        };
-        var args = left + ',' + top + ',' + width + ',' + height;
-        var li = '
-
-  * ';         li += '';         li += '([删除](javascript:;))';         li += '';         li += '
+<p>​ <br />
+var photoTag = {
+show: function(left, top, width, height, show_resize_square) {
+$(&rsquo;#select-area-box&rsquo;).css({
+&rsquo;left&rsquo;: left - 7,
+&rsquo;top&rsquo;: top - 7
+})
+$(&rsquo;#select-area-box&rsquo;).width(width + 4).height(height + 4).show();
+$(&rsquo;#select-area&rsquo;).width(width).height(height);
+if (show_resize_square) $(&rsquo;#select-area-box span&rsquo;).show();
+else $(&rsquo;#select-area-box span&rsquo;).hide();
+},
+hide: function() {
+$(&rsquo;#select-area-box&rsquo;).hide();
+},
+add: function(tag_name, tag_value, left, top, width, height) {
+var json = {
+id: Math.floor(Math.random() * 10000)
+};
+var args = left + &lsquo;,&rsquo; + top + &lsquo;,&rsquo; + width + &lsquo;,&rsquo; + height;
+var li = '</p>
+<pre><code>  * ';         li += '';         li += '([删除](javascript:;))';         li += '';         li += '
 ';
         $('#tag-list').append(li);
     },
@@ -456,19 +455,19 @@ $(function() {
 });
 </code></pre>
 <h3 id="html代码">Html代码<a hidden class="anchor" aria-hidden="true" href="#html代码">#</a></h3>
-<pre><code>&lt;div id=&quot;enclose-wrapper&quot;&gt;
-  &lt;div id=&quot;photo-wrapper&quot; style=&quot;margin:15px auto;text-align:center;&quot;&gt; &lt;img id=&quot;photo&quot; src=&quot;heroes_s3_peter.jpg&quot; /&gt; &lt;/div&gt;
-  &lt;div&gt;
-    &lt;ul id=&quot;tag-list&quot;&gt;
-      &lt;li&gt;相片中：&lt;/li&gt;
-      &lt;li&gt; &lt;span onmouseover=&quot;photoTag.show(0,0,85,66);&quot; onmouseout=&quot;photoTag.hide();&quot;&gt;aaa&lt;/span&gt; (&lt;a href=&quot;javascript:;&quot; onclick=&quot;photoTag.remove('342',this.parentNode);&quot; onmouseover=&quot;photoTag.show(0,0,85,66);&quot; onmouseout=&quot;photoTag.hide();&quot;&gt;删除&lt;/a&gt;) &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div id=&quot;select-area-box&quot;&gt;
-    &lt;div id=&quot;select-area&quot;&gt;&lt;/div&gt;
-    &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;/div&gt;
-  &lt;div id=&quot;form-add-tag&quot; style=&quot;display:none;&quot;&gt; 输入标签：
-</code></pre>
+<p>​ <br />
+<div id="enclose-wrapper">
+<div id="photo-wrapper" style="margin:15px auto;text-align:center;"> <img id="photo" src="heroes_s3_peter.jpg" /> </div>
+<div>
+<ul id="tag-list">
+<li>相片中：</li>
+<li> <span onmouseover="photoTag.show(0,0,85,66);" onmouseout="photoTag.hide();">aaa</span> (<a href="javascript:;" onclick="photoTag.remove('342',this.parentNode);" onmouseover="photoTag.show(0,0,85,66);" onmouseout="photoTag.hide();">删除</a>) </li>
+</ul>
+</div>
+<div id="select-area-box">
+<div id="select-area"></div>
+<span></span><span></span> <span></span><span></span> </div>
+<div id="form-add-tag" style="display:none;"> 输入标签：</p>
 <input id="tag-name" name="tag-name" type="text" />
 <p><button id="btn-add-tag" type="button">确认</button></p>
 <p><button id="btn-cancel" type="button">取消</button></p>
@@ -478,32 +477,32 @@ $(function() {
 <p>在Asp.NET下这段代码存在几个问题（毕竟这段代码应该只能算是Demo）：1.无法和服务器进行数据交互。2.无法在ASP.NET环境下获取相关id。3.只
 能提交到服务器一个&quot;标签&rdquo;，不足以完成需求。</p>
 <h3 id="修改后js">修改后js:<a hidden class="anchor" aria-hidden="true" href="#修改后js">#</a></h3>
-<pre><code>var photoTag = {
-    show: function(left, top, width, height, show_resize_square) {
-        $('#select-area-box').css({
-            'left': left - 7,
-            'top': top - 7
-        })
-        $('#select-area-box').width(width + 4).height(height + 4).show();
-        $('#select-area').width(width).height(height);
-        if (show_resize_square) $('#select-area-box span').show();
-        else $('#select-area-box span').hide();
-    },
-    hide: function() {
-        $('#select-area-box').hide();
-    },
-    add: function(tag_name, tag_value, left, top, width, height) {
-        var json = {
-            id: Math.floor(Math.random() * 10000)
-        };
-        //$.getJSON('add_tag.php', {'name':tag_name,'left':left,'top':top,'width':width,'height':height}, function(json) {
-        //reflesh tag list
-        //    if(json.message) alert(json.message);
-        //    if(json.error == 0) {
-        var args = left + ',' + top + ',' + width + ',' + height;
-        var li = '
-
-  * ';         li += '';         li += '([删除](javascript:;))';         li += '';         li += '
+<p>​ <br />
+var photoTag = {
+show: function(left, top, width, height, show_resize_square) {
+$(&rsquo;#select-area-box&rsquo;).css({
+&rsquo;left&rsquo;: left - 7,
+&rsquo;top&rsquo;: top - 7
+})
+$(&rsquo;#select-area-box&rsquo;).width(width + 4).height(height + 4).show();
+$(&rsquo;#select-area&rsquo;).width(width).height(height);
+if (show_resize_square) $(&rsquo;#select-area-box span&rsquo;).show();
+else $(&rsquo;#select-area-box span&rsquo;).hide();
+},
+hide: function() {
+$(&rsquo;#select-area-box&rsquo;).hide();
+},
+add: function(tag_name, tag_value, left, top, width, height) {
+var json = {
+id: Math.floor(Math.random() * 10000)
+};
+//$.getJSON(&lsquo;add_tag.php&rsquo;, {&rsquo;name&rsquo;:tag_name,&rsquo;left&rsquo;:left,&rsquo;top&rsquo;:top,&lsquo;width&rsquo;:width,&lsquo;height&rsquo;:height}, function(json) {
+//reflesh tag list
+//    if(json.message) alert(json.message);
+//    if(json.error == 0) {
+var args = left + &lsquo;,&rsquo; + top + &lsquo;,&rsquo; + width + &lsquo;,&rsquo; + height;
+var li = '</p>
+<pre><code>  * ';         li += '';         li += '([删除](javascript:;))';         li += '';         li += '
 ';
         $('#tag-list').append(li);
         //    }
@@ -609,20 +608,20 @@ $(function() {
 });
 </code></pre>
 <h3 id="html代码-1">Html代码：<a hidden class="anchor" aria-hidden="true" href="#html代码-1">#</a></h3>
-<pre><code>&lt;div id=&quot;enclose-wrapper&quot;&gt;
-  &lt;div id=&quot;photo-wrapper&quot;&gt;
-    &lt;asp:Image ID=&quot;ImgPhoto&quot; Visible=&quot;false&quot; runat=&quot;server&quot; /&gt;
-  &lt;/div&gt;
-  &lt;div&gt;
-    &lt;ul id=&quot;tag-list&quot;&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
-  &lt;div id=&quot;select-area-box&quot;&gt;
-    &lt;div id=&quot;select-area&quot;&gt; &lt;/div&gt;
-    &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt; &lt;/div&gt;
-  &lt;div id=&quot;form-add-tag&quot; style=&quot;display: none;&quot;&gt; 名称：
-    &lt;input id=&quot;tag-name&quot; name=&quot;tag-name&quot; type=&quot;text&quot; /&gt;
-</code></pre>
+<p>​ <br />
+<div id="enclose-wrapper">
+<div id="photo-wrapper">
+&lt;asp:Image ID=&ldquo;ImgPhoto&rdquo; Visible=&ldquo;false&rdquo; runat=&ldquo;server&rdquo; /&gt;
+</div>
+<div>
+<ul id="tag-list">
+</ul>
+</div>
+<div id="select-area-box">
+<div id="select-area"> </div>
+<span></span><span></span><span></span><span></span> </div>
+<div id="form-add-tag" style="display: none;"> 名称：
+<input id="tag-name" name="tag-name" type="text" /></p>
 <p>数值：</p>
 <input id="tag-value" name="tag-value" type="text" />
 <p><button id="btn-add-tag" type="button"> 确认</button></p>
@@ -631,8 +630,8 @@ $(function() {
 </div>
 <p>这边的主要修改在于把框子的右边的内容增加为名称和数值，方便数据的识别。</p>
 <h3 id="后台aspnet文件读取">后台ASP.NET文件读取<a hidden class="anchor" aria-hidden="true" href="#后台aspnet文件读取">#</a></h3>
-<pre><code>string[] fields = Request.Params.GetValues(&quot;photoField&quot;);
-</code></pre>
+<p>​ <br />
+string[] fields = Request.Params.GetValues(&ldquo;photoField&rdquo;);</p>
 <p>这里呢，由于上传的元素<code>name</code>相同，都是<code>photoField</code>，所以通过<code>Params.GetValues()</code>就可以取出<code>string</code>数组，这样就
 能获取所有数据了。数据格式是&quot;<code>ddl:小楠,x:98.88333129882812,y:146,width:100,height:100</code>&ldquo;这种形式，依靠
 &ldquo;,&ldquo;分割。</p>

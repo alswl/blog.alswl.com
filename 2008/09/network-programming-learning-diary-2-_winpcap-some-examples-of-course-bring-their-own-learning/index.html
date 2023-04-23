@@ -7,7 +7,7 @@
 <meta name="robots" content="index, follow">
 <title>网络编程学习日记(2)_WinPcap自带教程的一些例子的学习 | Log4D</title>
 <meta name="keywords" content="c, winpcap, 网络编程">
-<meta name="description" content="1.编译时候会出现函数问题 &lsquo;pcap_findalldevs_ex&rsquo; : undeclared identifier &lsquo;PCAP_SRC_IF_STRING&rsquo; : undeclared identifier &lsquo;pcap_open&rsquo; : undeclared identifier &lsquo;PCAP_OPENFLAG_PROMISCUOUS&rsquo; : undeclared identifier &lsquo;=&rsquo; : cannot convert from &lsquo;int&rsquo; to &lsquo;struct pcap *&rsquo; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &ldquo;pcap.h&quot;后面加上 #include &ldquo;remote-ext.h&rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#">
+<meta name="description" content="1.编译时候会出现函数问题 &#39;pcap_findalldevs_ex&#39; : undeclared identifier &#39;PCAP_SRC_IF_STRING&#39; : undeclared identifier &#39;pcap_open&#39; : undeclared identifier &#39;PCAP_OPENFLAG_PROMISCUOUS&#39; : undeclared identifier &#39;=&#39; : cannot convert from &#39;int&#39; to &#39;struct pcap *&#39; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &ldquo;pcap.h&quot;后面加上 #include &ldquo;remote-ext.h&rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.1e921941d042e4ad5e05d67c1a0a128f1f4c7e7ee7732232f47971a00b164bf3.css" integrity="sha256-HpIZQdBC5K1eBdZ8GgoSjx9Mfn7ncyIy9HlxoAsWS/M=" rel="preload stylesheet" as="style">
@@ -69,7 +69,7 @@ if (!doNotTrack) {
 	ga('send', 'pageview');
 }
 </script><meta property="og:title" content="网络编程学习日记(2)_WinPcap自带教程的一些例子的学习" />
-<meta property="og:description" content="1.编译时候会出现函数问题 &lsquo;pcap_findalldevs_ex&rsquo; : undeclared identifier &lsquo;PCAP_SRC_IF_STRING&rsquo; : undeclared identifier &lsquo;pcap_open&rsquo; : undeclared identifier &lsquo;PCAP_OPENFLAG_PROMISCUOUS&rsquo; : undeclared identifier &lsquo;=&rsquo; : cannot convert from &lsquo;int&rsquo; to &lsquo;struct pcap *&rsquo; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &ldquo;pcap.h&quot;后面加上 #include &ldquo;remote-ext.h&rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#" />
+<meta property="og:description" content="1.编译时候会出现函数问题 &#39;pcap_findalldevs_ex&#39; : undeclared identifier &#39;PCAP_SRC_IF_STRING&#39; : undeclared identifier &#39;pcap_open&#39; : undeclared identifier &#39;PCAP_OPENFLAG_PROMISCUOUS&#39; : undeclared identifier &#39;=&#39; : cannot convert from &#39;int&#39; to &#39;struct pcap *&#39; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &ldquo;pcap.h&quot;后面加上 #include &ldquo;remote-ext.h&rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2008-09-14T00:00:00+08:00" />
@@ -77,7 +77,7 @@ if (!doNotTrack) {
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="网络编程学习日记(2)_WinPcap自带教程的一些例子的学习"/>
-<meta name="twitter:description" content="1.编译时候会出现函数问题 &lsquo;pcap_findalldevs_ex&rsquo; : undeclared identifier &lsquo;PCAP_SRC_IF_STRING&rsquo; : undeclared identifier &lsquo;pcap_open&rsquo; : undeclared identifier &lsquo;PCAP_OPENFLAG_PROMISCUOUS&rsquo; : undeclared identifier &lsquo;=&rsquo; : cannot convert from &lsquo;int&rsquo; to &lsquo;struct pcap *&rsquo; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &ldquo;pcap.h&quot;后面加上 #include &ldquo;remote-ext.h&rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#"/>
+<meta name="twitter:description" content="1.编译时候会出现函数问题 &#39;pcap_findalldevs_ex&#39; : undeclared identifier &#39;PCAP_SRC_IF_STRING&#39; : undeclared identifier &#39;pcap_open&#39; : undeclared identifier &#39;PCAP_OPENFLAG_PROMISCUOUS&#39; : undeclared identifier &#39;=&#39; : cannot convert from &#39;int&#39; to &#39;struct pcap *&#39; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &ldquo;pcap.h&quot;后面加上 #include &ldquo;remote-ext.h&rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#"/>
 
 
 <script type="application/ld+json">
@@ -106,11 +106,11 @@ if (!doNotTrack) {
   "@type": "BlogPosting",
   "headline": "网络编程学习日记(2)_WinPcap自带教程的一些例子的学习",
   "name": "网络编程学习日记(2)_WinPcap自带教程的一些例子的学习",
-  "description": "1.编译时候会出现函数问题 \u0026lsquo;pcap_findalldevs_ex\u0026rsquo; : undeclared identifier \u0026lsquo;PCAP_SRC_IF_STRING\u0026rsquo; : undeclared identifier \u0026lsquo;pcap_open\u0026rsquo; : undeclared identifier \u0026lsquo;PCAP_OPENFLAG_PROMISCUOUS\u0026rsquo; : undeclared identifier \u0026lsquo;=\u0026rsquo; : cannot convert from \u0026lsquo;int\u0026rsquo; to \u0026lsquo;struct pcap *\u0026rsquo; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include \u0026ldquo;pcap.h\u0026quot;后面加上 #include \u0026ldquo;remote-ext.h\u0026rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#",
+  "description": "1.编译时候会出现函数问题 \u0026#39;pcap_findalldevs_ex\u0026#39; : undeclared identifier \u0026#39;PCAP_SRC_IF_STRING\u0026#39; : undeclared identifier \u0026#39;pcap_open\u0026#39; : undeclared identifier \u0026#39;PCAP_OPENFLAG_PROMISCUOUS\u0026#39; : undeclared identifier \u0026#39;=\u0026#39; : cannot convert from \u0026#39;int\u0026#39; to \u0026#39;struct pcap *\u0026#39; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include \u0026ldquo;pcap.h\u0026quot;后面加上 #include \u0026ldquo;remote-ext.h\u0026rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#",
   "keywords": [
     "c", "winpcap", "网络编程"
   ],
-  "articleBody": "1.编译时候会出现函数问题\n‘pcap_findalldevs_ex’ : undeclared identifier\n‘PCAP_SRC_IF_STRING’ : undeclared identifier\n‘pcap_open’ : undeclared identifier\n‘PCAP_OPENFLAG_PROMISCUOUS’ : undeclared identifier\n‘=’ : cannot convert from ‘int’ to ‘struct pcap *’\n等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个\n头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在\n#include “pcap.h\"后面加上\n#include “remote-ext.h”\n就可以编译通过了。\n网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了\n= =#\n2.出现连接错误\nCpp3.obj : error LNK2001: unresolved external symbol __imp__ntohs@4\nDebug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals\n一般添加工程只需要添加wpcap.lib这个库文件，而在分析数据包这段代码里，光这个头文件\n已经不够了，需要再添加ws2_32.lib这个头文件。其实这个在WinPcap的配置VC里有说明，但\n是以前懒，都只用wpcap.lib\n3.关于程序运行时候是否需要WinPcap的支持，我无法测试出结果，因为学校上网方式的限制\n，所有系统都是有WinPcap运行库文件的，待会儿去网上找找相关资料呢\n4.暑假一直看的是英文说明文档，很吃力，最近在搜狗随便一搜，居然发现了有现成翻译好的\n中文说明文档，翻译挺不错的，可以去搜索下一下。\n终于开始开网络编程课，感叹一下WinPcap的强大，还是停留在用户层的编程，完全没能力看\n核心的源代码。。。\n",
+  "articleBody": "1.编译时候会出现函数问题\n'pcap_findalldevs_ex' : undeclared identifier 'PCAP_SRC_IF_STRING' : undeclared identifier 'pcap_open' : undeclared identifier 'PCAP_OPENFLAG_PROMISCUOUS' : undeclared identifier '=' : cannot convert from 'int' to 'struct pcap *' 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个\n头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在\n#include “pcap.h\"后面加上\n#include “remote-ext.h”\n就可以编译通过了。\n网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了\n= =#\n2.出现连接错误\nCpp3.obj : error LNK2001: unresolved external symbol [__imp__ntohs@4](mailto:__imp__ntohs@4) Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals 一般添加工程只需要添加wpcap.lib这个库文件，而在分析数据包这段代码里，光这个头文件\n已经不够了，需要再添加ws2_32.lib这个头文件。其实这个在WinPcap的配置VC里有说明，但\n是以前懒，都只用wpcap.lib\n3.关于程序运行时候是否需要WinPcap的支持，我无法测试出结果，因为学校上网方式的限制\n，所有系统都是有WinPcap运行库文件的，待会儿去网上找找相关资料呢\n4.暑假一直看的是英文说明文档，很吃力，最近在搜狗随便一搜，居然发现了有现成翻译好的\n中文说明文档，翻译挺不错的，可以去搜索下一下。\n终于开始开网络编程课，感叹一下WinPcap的强大，还是停留在用户层的编程，完全没能力看\n核心的源代码。。。\n",
   "wordCount" : "534",
   "inLanguage": "en",
   "datePublished": "2008-09-14T00:00:00+08:00",
@@ -223,12 +223,12 @@ if (!doNotTrack) {
   </header> 
 
   <div class="post-content"><p>1.编译时候会出现函数问题</p>
-<p>&lsquo;pcap_findalldevs_ex&rsquo; : undeclared identifier</p>
-<p>&lsquo;PCAP_SRC_IF_STRING&rsquo; : undeclared identifier</p>
-<p>&lsquo;pcap_open&rsquo; : undeclared identifier</p>
-<p>&lsquo;PCAP_OPENFLAG_PROMISCUOUS&rsquo; : undeclared identifier</p>
-<p>&lsquo;=&rsquo; : cannot convert from &lsquo;int&rsquo; to &lsquo;struct pcap *&rsquo;</p>
-<p>等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个</p>
+<pre tabindex="0"><code>&#39;pcap_findalldevs_ex&#39; : undeclared identifier
+&#39;PCAP_SRC_IF_STRING&#39; : undeclared identifier
+&#39;pcap_open&#39; : undeclared identifier
+&#39;PCAP_OPENFLAG_PROMISCUOUS&#39; : undeclared identifier
+&#39;=&#39; : cannot convert from &#39;int&#39; to &#39;struct pcap *&#39;
+</code></pre><p>等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个</p>
 <p>头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在</p>
 <p>#include &ldquo;pcap.h&quot;后面加上</p>
 <p>#include &ldquo;remote-ext.h&rdquo;</p>
@@ -236,10 +236,11 @@ if (!doNotTrack) {
 <p>网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了</p>
 <p>= =#</p>
 <p>2.出现连接错误</p>
-<p>Cpp3.obj : error LNK2001: unresolved external symbol
-<a href="mailto:__imp__ntohs@4">__imp__ntohs@4</a></p>
-<p>Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals</p>
-<p>一般添加工程只需要添加wpcap.lib这个库文件，而在分析数据包这段代码里，光这个头文件</p>
+<pre tabindex="0"><code>Cpp3.obj : error LNK2001: unresolved external symbol
+[__imp__ntohs@4](mailto:__imp__ntohs@4)
+
+Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals
+</code></pre><p>一般添加工程只需要添加wpcap.lib这个库文件，而在分析数据包这段代码里，光这个头文件</p>
 <p>已经不够了，需要再添加ws2_32.lib这个头文件。其实这个在WinPcap的配置VC里有说明，但</p>
 <p>是以前懒，都只用wpcap.lib</p>
 <p>3.关于程序运行时候是否需要WinPcap的支持，我无法测试出结果，因为学校上网方式的限制</p>

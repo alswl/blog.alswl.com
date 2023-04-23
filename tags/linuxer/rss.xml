@@ -1553,45 +1553,88 @@ IXPUB技术社区</a></p>
 &ndash;exclude FILE：在压缩的过程中，不要将 FILE 打包！<br />
 范例：</p>
 <p>范例一：将整个 /etc 目录下的文件全部打包成为 /tmp/etc.tar</p>
-<p>[root@linux ~]# tar -cvf /tmp/etc.tar /etc &lt;==仅打包，不压缩！</p>
-<p>[root@linux ~]# tar -zcvf /tmp/etc.tar.gz /etc &lt;==打包后，以 gzip 压缩</p>
-<p>[root@linux ~]# tar -jcvf /tmp/etc.tar.bz2 /etc &lt;==打包后，以 bzip2 压缩</p>
-<h1 id="特别注意在参数-f-之后的文件档名是自己取的我们习惯上都用-tar-来作为辨识">特别注意，在参数 f 之后的文件档名是自己取的，我们习惯上都用 .tar 来作为辨识。</h1>
-<h1 id="如果加-z-参数则以-targz-或-tgz-来代表-gzip-压缩过的-tar-file-">如果加 z 参数，则以 .tar.gz 或 .tgz 来代表 gzip 压缩过的 tar file ～</h1>
-<h1 id="如果加-j-参数则以-tarbz2-来作为附档名啊">如果加 j 参数，则以 .tar.bz2 来作为附档名啊～</h1>
-<h1 id="上述指令在执行的时候会显示一个警告讯息">上述指令在执行的时候，会显示一个警告讯息：</h1>
-<h1 id="tar-removing-leading--from-member-names那是关於绝对路径的特殊设定">『tar: Removing leading `/&rsquo; from member names』那是关於绝对路径的特殊设定。</h1>
-<p>范例二：查阅上述 /tmp/etc.tar.gz 文件内有哪些文件？</p>
-<p>[root@linux ~]# tar -ztvf /tmp/etc.tar.gz</p>
-<h1 id="由於我们使用-gzip-压缩所以要查阅该-tar-file-内的文件时">由於我们使用 gzip 压缩，所以要查阅该 tar file 内的文件时，</h1>
-<h1 id="就得要加上-z-这个参数了这很重要的">就得要加上 z 这个参数了！这很重要的！</h1>
-<p>范例三：将 /tmp/etc.tar.gz 文件解压缩在 /usr/local/src 底下</p>
-<p>[root@linux ~]# cd /usr/local/src</p>
-<p>[root@linux src]# tar -zxvf /tmp/etc.tar.gz</p>
-<h1 id="在预设的情况下我们可以将压缩档在任何地方解开的以这个范例来说">在预设的情况下，我们可以将压缩档在任何地方解开的！以这个范例来说，</h1>
-<h1 id="我先将工作目录变换到-usrlocalsrc-底下并且解开-tmpetctargz-">我先将工作目录变换到 /usr/local/src 底下，并且解开 /tmp/etc.tar.gz ，</h1>
-<h1 id="则解开的目录会在-usrlocalsrcetc-呢另外如果您进入-usrlocalsrcetc">则解开的目录会在 /usr/local/src/etc 呢！另外，如果您进入 /usr/local/src/etc</h1>
-<h1 id="则会发现该目录下的文件属性与-etc-可能会有所不同喔">则会发现，该目录下的文件属性与 /etc/ 可能会有所不同喔！</h1>
-<p>范例四：在 /tmp 底下，我只想要将 /tmp/etc.tar.gz 内的 etc/passwd 解开而已</p>
-<p>[root@linux ~]# cd /tmp</p>
-<p>[root@linux tmp]# tar -zxvf /tmp/etc.tar.gz etc/passwd</p>
-<h1 id="我可以透过-tar--ztvf-来查阅-tarfile-内的文件名称如果单只要一个文件">我可以透过 tar -ztvf 来查阅 tarfile 内的文件名称，如果单只要一个文件，</h1>
-<h1 id="就可以透过这个方式来下达注意到-etctargz-内的根目录--是被拿掉了">就可以透过这个方式来下达！注意到！ etc.tar.gz 内的根目录 / 是被拿掉了！</h1>
-<p>范例五：将 /etc/ 内的所有文件备份下来，并且保存其权限！</p>
-<p>[root@linux ~]# tar -zxvpf /tmp/etc.tar.gz /etc</p>
-<h1 id="这个--p-的属性是很重要的尤其是当您要保留原本文件的属性时">这个 -p 的属性是很重要的，尤其是当您要保留原本文件的属性时！</h1>
-<p>范例六：在 /home 当中，比 2005/06/01 新的文件才备份</p>
-<p>[root@linux ~]# tar -N &lsquo;2005/06/01&rsquo; -zcvf home.tar.gz /home</p>
-<p>范例七：我要备份 /home, /etc ，但不要 /home/dmtsai</p>
-<p>[root@linux ~]# tar &ndash;exclude /home/dmtsai -zcvf myfile.tar.gz /home/* /etc</p>
-<p>范例八：将 /etc/ 打包后直接解开在 /tmp 底下，而不产生文件！</p>
-<p>[root@linux ~]# cd /tmp</p>
-<p>[root@linux tmp]# tar -cvf - /etc | tar -xvf -</p>
-<h1 id="这个动作有点像是-cp--r-etc-tmp-啦依旧是有其有用途的">这个动作有点像是 cp -r /etc /tmp 啦～依旧是有其有用途的！</h1>
-<h1 id="要注意的地方在於输出档变成---而输入档也变成---又有一个--存在">要注意的地方在於输出档变成 - 而输入档也变成 - ，又有一个 | 存在～</h1>
-<h1 id="这分别代表-standard-output-standard-input-与管线命令啦">这分别代表 standard output, standard input 与管线命令啦！</h1>
-<h1 id="这部分我们会在-bash-shell-时再次提到这个指令跟大家再解释啰">这部分我们会在 Bash shell 时，再次提到这个指令跟大家再解释啰！</h1>
-<pre tabindex="0"><code class="language-原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~" data-lang="原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~"></code></pre>]]></content:encoded>
+<pre tabindex="0"><code>[root@linux ~]# tar -cvf /tmp/etc.tar /etc &lt;==仅打包，不压缩！
+
+[root@linux ~]# tar -zcvf /tmp/etc.tar.gz /etc &lt;==打包后，以 gzip 压缩
+
+[root@linux ~]# tar -jcvf /tmp/etc.tar.bz2 /etc &lt;==打包后，以 bzip2 压缩
+
+# 特别注意，在参数 f 之后的文件档名是自己取的，我们习惯上都用 .tar 来作为辨识。
+
+# 如果加 z 参数，则以 .tar.gz 或 .tgz 来代表 gzip 压缩过的 tar file ～
+
+# 如果加 j 参数，则以 .tar.bz2 来作为附档名啊～
+
+# 上述指令在执行的时候，会显示一个警告讯息：
+
+# 『tar: Removing leading `/&#39; from member names』那是关於绝对路径的特殊设定。
+
+范例二：查阅上述 /tmp/etc.tar.gz 文件内有哪些文件？
+
+[root@linux ~]# tar -ztvf /tmp/etc.tar.gz
+
+# 由於我们使用 gzip 压缩，所以要查阅该 tar file 内的文件时，
+
+# 就得要加上 z 这个参数了！这很重要的！
+
+
+范例三：将 /tmp/etc.tar.gz 文件解压缩在 /usr/local/src 底下
+
+[root@linux ~]# cd /usr/local/src
+
+[root@linux src]# tar -zxvf /tmp/etc.tar.gz
+
+# 在预设的情况下，我们可以将压缩档在任何地方解开的！以这个范例来说，
+
+# 我先将工作目录变换到 /usr/local/src 底下，并且解开 /tmp/etc.tar.gz ，
+
+# 则解开的目录会在 /usr/local/src/etc 呢！另外，如果您进入 /usr/local/src/etc
+
+# 则会发现，该目录下的文件属性与 /etc/ 可能会有所不同喔！
+
+
+范例四：在 /tmp 底下，我只想要将 /tmp/etc.tar.gz 内的 etc/passwd 解开而已
+
+[root@linux ~]# cd /tmp
+
+[root@linux tmp]# tar -zxvf /tmp/etc.tar.gz etc/passwd
+
+# 我可以透过 tar -ztvf 来查阅 tarfile 内的文件名称，如果单只要一个文件，
+
+# 就可以透过这个方式来下达！注意到！ etc.tar.gz 内的根目录 / 是被拿掉了！
+
+
+范例五：将 /etc/ 内的所有文件备份下来，并且保存其权限！
+
+[root@linux ~]# tar -zxvpf /tmp/etc.tar.gz /etc
+
+# 这个 -p 的属性是很重要的，尤其是当您要保留原本文件的属性时！
+
+
+范例六：在 /home 当中，比 2005/06/01 新的文件才备份
+
+[root@linux ~]# tar -N &#39;2005/06/01&#39; -zcvf home.tar.gz /home
+
+
+范例七：我要备份 /home, /etc ，但不要 /home/dmtsai
+
+[root@linux ~]# tar --exclude /home/dmtsai -zcvf myfile.tar.gz /home/* /etc
+
+
+范例八：将 /etc/ 打包后直接解开在 /tmp 底下，而不产生文件！
+
+[root@linux ~]# cd /tmp
+
+[root@linux tmp]# tar -cvf - /etc | tar -xvf -
+
+# 这个动作有点像是 cp -r /etc /tmp 啦～依旧是有其有用途的！
+
+# 要注意的地方在於输出档变成 - 而输入档也变成 - ，又有一个 | 存在～
+
+# 这分别代表 standard output, standard input 与管线命令啦！
+
+# 这部分我们会在 Bash shell 时，再次提到这个指令跟大家再解释啰！
+</code></pre><pre tabindex="0"><code class="language-原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~" data-lang="原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~"></code></pre>]]></content:encoded>
     </item>
     
     <item>
@@ -1605,150 +1648,225 @@ IXPUB技术社区</a></p>
 <p>最后经过我的测试，是成都电子科技大学的最快，2M左右，推荐使用。</p>
 <p>特别注意，这是8.04的源，虽然8.10大部分能用，但会出现某些软件包找不到，请大家使用前做好备份。</p>
 <p>速度的话，还是得自己测试，我只是推荐，下面的内容都是我复制过来自带的，不是我增加的。（PS:晚上时候我用官方的Mirror也3M/s）</p>
-<p>` #北京市清华大学更新服务器（教育网，推荐校园网和网通用户使用）：</p>
-<p>deb <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy main multiverse restricted universe</p>
-<p>deb <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-backports main multiverse restricted
-universe</p>
-<p>deb <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-proposed main multiverse restricted
-universe</p>
-<p>deb <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-security main multiverse restricted
-universe</p>
-<p>deb <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-updates main multiverse restricted
-universe</p>
-<p>deb-src <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy main multiverse restricted
-universe</p>
-<p>deb-src <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-backports main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-proposed main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-security main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://mirror9.net9.org/ubuntu/">http://mirror9.net9.org/ubuntu/</a> hardy-updates main multiverse
-restricted universe`</p>
-<p>#沈阳市东北大学更新服务器（教育网，推荐校园网和网通用户使用）：</p>
-<p>deb <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy main
-multiverse restricted universe</p>
-<p>deb <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-backports
-main multiverse restricted universe</p>
-<p>deb <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-proposed main
-multiverse restricted universe</p>
-<p>deb <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-security main
-multiverse restricted universe</p>
-<p>deb <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-updates main
-multiverse restricted universe</p>
-<p>deb-src <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy main
-multiverse restricted universe</p>
-<p>deb-src <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-backports
-main multiverse restricted universe</p>
-<p>deb-src <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-proposed
-main multiverse restricted universe</p>
-<p>deb-src <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-security
-main multiverse restricted universe</p>
-<p>deb-src <a href="ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/">ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/</a> hardy-updates
-main multiverse restricted universe</p>
-<p>#厦门大学更新服务器（教育网服务器）：</p>
-<p>deb <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy main restricted universe multiverse</p>
-<p>deb <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-backports restricted universe
-multiverse</p>
-<p>deb <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-proposed main restricted universe
-multiverse</p>
-<p>deb <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-security main restricted universe
-multiverse</p>
-<p>deb <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-updates main restricted universe
-multiverse</p>
-<p>deb-src <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy main restricted universe
-multiverse</p>
-<p>deb-src <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-backports main restricted
-universe multiverse</p>
-<p>deb-src <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-proposed main restricted universe
-multiverse</p>
-<p>deb-src <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-security main restricted universe
-multiverse</p>
-<p>deb-src <a href="ftp://ubuntu.realss.cn/ubuntu/">ftp://ubuntu.realss.cn/ubuntu/</a> hardy-updates main restricted universe
-multiverse</p>
-<p>#成都市 电子科技大学更新服务器（教育网，推荐校园网和网通用户使用）：</p>
-<p>deb <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy main multiverse restricted
-universe</p>
-<p>deb <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-backports main multiverse
-restricted universe</p>
-<p>deb <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-proposed main multiverse
-restricted universe</p>
-<p>deb <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-security main multiverse
-restricted universe</p>
-<p>deb <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-updates main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy main multiverse restricted
-universe</p>
-<p>deb-src <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-backports main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-proposed main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-security main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ubuntu.uestc.edu.cn/ubuntu/">http://ubuntu.uestc.edu.cn/ubuntu/</a> hardy-updates main multiverse
-restricted universe</p>
-<p>deb <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy main multiverse restricted
-universe</p>
-<p>deb <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-backports main multiverse
-restricted universe</p>
-<p>deb <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-proposed main multiverse
-restricted universe</p>
-<p>deb <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-security main multiverse
-restricted universe</p>
-<p>deb <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-updates main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy main multiverse restricted
-universe</p>
-<p>deb-src <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-backports main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-proposed main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-security main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ubuntu.dormforce.net/ubuntu/">http://ubuntu.dormforce.net/ubuntu/</a> hardy-updates main multiverse
-restricted universe</p>
-<p>#上海市上海交通大学更新服务器（教育网，推荐校园网和网通用户使用）：</p>
-<p>deb <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy main multiverse restricted universe</p>
-<p>deb <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-backports main multiverse restricted
-universe</p>
-<p>deb <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-proposed main multiverse restricted
-universe</p>
-<p>deb <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-security main multiverse restricted
-universe</p>
-<p>deb <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-updates main multiverse restricted
-universe</p>
-<p>deb-src <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy main multiverse restricted
-universe</p>
-<p>deb-src <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-backports main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-proposed main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-security main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://ftp.sjtu.edu.cn/ubuntu/">http://ftp.sjtu.edu.cn/ubuntu/</a> hardy-updates main multiverse
-restricted universe</p>
-<p>#中国科学技术大学更新服务器（教育网，推荐校园网和网通用户使用）：</p>
-<p>deb <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy main multiverse restricted
-universe</p>
-<p>deb <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-backports main multiverse
-restricted universe</p>
-<p>deb <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-proposed main multiverse
-restricted universe</p>
-<p>deb <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-security main multiverse
-restricted universe</p>
-<p>deb <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-updates main multiverse restricted
-universe</p>
-<p>deb-src <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy main multiverse restricted
-universe</p>
-<p>deb-src <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-backports main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-proposed main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-security main multiverse
-restricted universe</p>
-<p>deb-src <a href="http://debian.ustc.edu.cn/ubuntu/">http://debian.ustc.edu.cn/ubuntu/</a> hardy-updates main multiverse
-restricted univers</p>
-]]></content:encoded>
+<pre tabindex="0"><code>#北京市清华大学更新服务器（教育网，推荐校园网和网通用户使用）：
+
+deb http://mirror9.net9.org/ubuntu/ hardy main multiverse restricted universe
+
+deb http://mirror9.net9.org/ubuntu/ hardy-backports main multiverse restricted
+universe
+
+deb http://mirror9.net9.org/ubuntu/ hardy-proposed main multiverse restricted
+universe
+
+deb http://mirror9.net9.org/ubuntu/ hardy-security main multiverse restricted
+universe
+
+deb http://mirror9.net9.org/ubuntu/ hardy-updates main multiverse restricted
+universe
+
+deb-src http://mirror9.net9.org/ubuntu/ hardy main multiverse restricted
+universe
+
+deb-src http://mirror9.net9.org/ubuntu/ hardy-backports main multiverse
+restricted universe
+
+deb-src http://mirror9.net9.org/ubuntu/ hardy-proposed main multiverse
+restricted universe
+
+deb-src http://mirror9.net9.org/ubuntu/ hardy-security main multiverse
+restricted universe
+
+deb-src http://mirror9.net9.org/ubuntu/ hardy-updates main multiverse
+restricted universe`
+
+#沈阳市东北大学更新服务器（教育网，推荐校园网和网通用户使用）：
+
+deb ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/ hardy main
+multiverse restricted universe
+
+deb ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/ hardy-backports
+main multiverse restricted universe
+
+deb ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/ hardy-proposed main
+multiverse restricted universe
+
+deb ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/ hardy-security main
+multiverse restricted universe
+
+deb ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/ hardy-updates main
+multiverse restricted universe
+
+deb-src ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/ hardy main
+multiverse restricted universe
+
+deb-src ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/ hardy-backports
+main multiverse restricted universe
+
+deb-src ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/ hardy-proposed
+main multiverse restricted universe
+
+deb-src ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/ hardy-security
+main multiverse restricted universe
+
+deb-src ftp://ftp.neu.edu.cn/mirror/archive.ubuntu.com/ubuntu/ hardy-updates
+main multiverse restricted universe
+
+#厦门大学更新服务器（教育网服务器）：
+
+deb ftp://ubuntu.realss.cn/ubuntu/ hardy main restricted universe multiverse
+
+deb ftp://ubuntu.realss.cn/ubuntu/ hardy-backports restricted universe
+multiverse
+
+deb ftp://ubuntu.realss.cn/ubuntu/ hardy-proposed main restricted universe
+multiverse
+
+deb ftp://ubuntu.realss.cn/ubuntu/ hardy-security main restricted universe
+multiverse
+
+deb ftp://ubuntu.realss.cn/ubuntu/ hardy-updates main restricted universe
+multiverse
+
+deb-src ftp://ubuntu.realss.cn/ubuntu/ hardy main restricted universe
+multiverse
+
+deb-src ftp://ubuntu.realss.cn/ubuntu/ hardy-backports main restricted
+universe multiverse
+
+deb-src ftp://ubuntu.realss.cn/ubuntu/ hardy-proposed main restricted universe
+multiverse
+
+deb-src ftp://ubuntu.realss.cn/ubuntu/ hardy-security main restricted universe
+multiverse
+
+deb-src ftp://ubuntu.realss.cn/ubuntu/ hardy-updates main restricted universe
+multiverse
+
+#成都市 电子科技大学更新服务器（教育网，推荐校园网和网通用户使用）：
+
+deb http://ubuntu.uestc.edu.cn/ubuntu/ hardy main multiverse restricted
+universe
+
+deb http://ubuntu.uestc.edu.cn/ubuntu/ hardy-backports main multiverse
+restricted universe
+
+deb http://ubuntu.uestc.edu.cn/ubuntu/ hardy-proposed main multiverse
+restricted universe
+
+deb http://ubuntu.uestc.edu.cn/ubuntu/ hardy-security main multiverse
+restricted universe
+
+deb http://ubuntu.uestc.edu.cn/ubuntu/ hardy-updates main multiverse
+restricted universe
+
+deb-src http://ubuntu.uestc.edu.cn/ubuntu/ hardy main multiverse restricted
+universe
+
+deb-src http://ubuntu.uestc.edu.cn/ubuntu/ hardy-backports main multiverse
+restricted universe
+
+deb-src http://ubuntu.uestc.edu.cn/ubuntu/ hardy-proposed main multiverse
+restricted universe
+
+deb-src http://ubuntu.uestc.edu.cn/ubuntu/ hardy-security main multiverse
+restricted universe
+
+deb-src http://ubuntu.uestc.edu.cn/ubuntu/ hardy-updates main multiverse
+restricted universe
+
+deb http://ubuntu.dormforce.net/ubuntu/ hardy main multiverse restricted
+universe
+
+deb http://ubuntu.dormforce.net/ubuntu/ hardy-backports main multiverse
+restricted universe
+
+deb http://ubuntu.dormforce.net/ubuntu/ hardy-proposed main multiverse
+restricted universe
+
+deb http://ubuntu.dormforce.net/ubuntu/ hardy-security main multiverse
+restricted universe
+
+deb http://ubuntu.dormforce.net/ubuntu/ hardy-updates main multiverse
+restricted universe
+
+deb-src http://ubuntu.dormforce.net/ubuntu/ hardy main multiverse restricted
+universe
+
+deb-src http://ubuntu.dormforce.net/ubuntu/ hardy-backports main multiverse
+restricted universe
+
+deb-src http://ubuntu.dormforce.net/ubuntu/ hardy-proposed main multiverse
+restricted universe
+
+deb-src http://ubuntu.dormforce.net/ubuntu/ hardy-security main multiverse
+restricted universe
+
+deb-src http://ubuntu.dormforce.net/ubuntu/ hardy-updates main multiverse
+restricted universe
+
+#上海市上海交通大学更新服务器（教育网，推荐校园网和网通用户使用）：
+
+deb http://ftp.sjtu.edu.cn/ubuntu/ hardy main multiverse restricted universe
+
+deb http://ftp.sjtu.edu.cn/ubuntu/ hardy-backports main multiverse restricted
+universe
+
+deb http://ftp.sjtu.edu.cn/ubuntu/ hardy-proposed main multiverse restricted
+universe
+
+deb http://ftp.sjtu.edu.cn/ubuntu/ hardy-security main multiverse restricted
+universe
+
+deb http://ftp.sjtu.edu.cn/ubuntu/ hardy-updates main multiverse restricted
+universe
+
+deb-src http://ftp.sjtu.edu.cn/ubuntu/ hardy main multiverse restricted
+universe
+
+deb-src http://ftp.sjtu.edu.cn/ubuntu/ hardy-backports main multiverse
+restricted universe
+
+deb-src http://ftp.sjtu.edu.cn/ubuntu/ hardy-proposed main multiverse
+restricted universe
+
+deb-src http://ftp.sjtu.edu.cn/ubuntu/ hardy-security main multiverse
+restricted universe
+
+deb-src http://ftp.sjtu.edu.cn/ubuntu/ hardy-updates main multiverse
+restricted universe
+
+#中国科学技术大学更新服务器（教育网，推荐校园网和网通用户使用）：
+
+deb http://debian.ustc.edu.cn/ubuntu/ hardy main multiverse restricted
+universe
+
+deb http://debian.ustc.edu.cn/ubuntu/ hardy-backports main multiverse
+restricted universe
+
+deb http://debian.ustc.edu.cn/ubuntu/ hardy-proposed main multiverse
+restricted universe
+
+deb http://debian.ustc.edu.cn/ubuntu/ hardy-security main multiverse
+restricted universe
+
+deb http://debian.ustc.edu.cn/ubuntu/ hardy-updates main multiverse restricted
+universe
+
+deb-src http://debian.ustc.edu.cn/ubuntu/ hardy main multiverse restricted
+universe
+
+deb-src http://debian.ustc.edu.cn/ubuntu/ hardy-backports main multiverse
+restricted universe
+
+deb-src http://debian.ustc.edu.cn/ubuntu/ hardy-proposed main multiverse
+restricted universe
+
+deb-src http://debian.ustc.edu.cn/ubuntu/ hardy-security main multiverse
+restricted universe
+
+deb-src http://debian.ustc.edu.cn/ubuntu/ hardy-updates main multiverse
+restricted univers
+</code></pre>]]></content:encoded>
     </item>
     
     <item>
@@ -1763,56 +1881,99 @@ restricted univers</p>
 <p>当选择Mysql-server之后，需要一堆组建，要手动安装，基本上出现这种提示，就没戏了，硬着头皮查找软件包，最后到一个perl-
 api的软件包这里就再也进行不下去了。</p>
 <p>Google了好一会，才有一个人的答案正确，说是8.10下用8.04的源就会有这种问题，我换成原始的备份了的源</p>
-<p>下面就是原始的源，使用这个找到MySQL之后就一次成功了 ` # deb cdrom:[Ubuntu 8.10 <em>Intrepid Ibex</em> -
-Release i386 (20081029.5)]/ intrepid main restricted</p>
-<h1 id="see-httphelpubuntucomcommunityupgradenotes-for-how-to-upgrade-to">See <a href="http://help.ubuntu.com/community/UpgradeNotes">http://help.ubuntu.com/community/UpgradeNotes</a> for how to upgrade to</h1>
-<h1 id="newer-versions-of-the-distribution">newer versions of the distribution.`</h1>
-<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid main restricted</p>
-<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid main restricted</p>
-<h2 id="major-bug-fix-updates-produced-after-the-final-release-of-the">Major bug fix updates produced after the final release of the</h2>
-<h2 id="distribution">distribution.</h2>
-<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates main restricted</p>
-<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates main restricted</p>
-<h2 id="nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu">N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</h2>
-<h2 id="team-also-please-note-that-software-in-universe-will-not-receive-any">team. Also, please note that software in universe WILL NOT receive any</h2>
-<h2 id="review-or-updates-from-the-ubuntu-security-team">review or updates from the Ubuntu security team.</h2>
-<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid universe</p>
-<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid universe</p>
-<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates universe</p>
-<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates universe</p>
-<h2 id="nb-software-from-this-repository-is-entirely-unsupported-by-the-ubuntu-1">N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu</h2>
-<h2 id="team-and-may-not-be-under-a-free-licence-please-satisfy-yourself-as-to">team, and may not be under a free licence. Please satisfy yourself as to</h2>
-<h2 id="your-rights-to-use-the-software-also-please-note-that-software-in">your rights to use the software. Also, please note that software in</h2>
-<h2 id="multiverse-will-not-receive-any-review-or-updates-from-the-ubuntu">multiverse WILL NOT receive any review or updates from the Ubuntu</h2>
-<h2 id="security-team">security team.</h2>
-<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid multiverse</p>
-<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid multiverse</p>
-<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates multiverse</p>
-<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-updates multiverse</p>
-<h2 id="uncomment-the-following-two-lines-to-add-software-from-the-backports">Uncomment the following two lines to add software from the &lsquo;backports&rsquo;</h2>
-<h2 id="repository">repository.</h2>
-<h2 id="nb-software-from-this-repository-may-not-have-been-tested-as">N.B. software from this repository may not have been tested as</h2>
-<h2 id="extensively-as-that-contained-in-the-main-release-although-it-includes">extensively as that contained in the main release, although it includes</h2>
-<h2 id="newer-versions-of-some-applications-which-may-provide-useful-features">newer versions of some applications which may provide useful features.</h2>
-<h2 id="also-please-note-that-software-in-backports-will-not-receive-any-review">Also, please note that software in backports WILL NOT receive any review</h2>
-<h2 id="or-updates-from-the-ubuntu-security-team">or updates from the Ubuntu security team.</h2>
-<h1 id="deb-httpcnarchiveubuntucomubuntu-intrepid-backports-main-restricted">deb <a href="http://cn.archive.ubuntu.com/ubuntu/">http://cn.archive.ubuntu.com/ubuntu/</a> intrepid-backports main restricted</h1>
-<p>universe multiverse</p>
-<h1 id="deb-src-httpcnarchiveubuntucomubuntu-intrepid-backports-main">deb-src <a href="http://cn.archive.ubuntu.com/ubuntu/">http://cn.archive.ubuntu.com/ubuntu/</a> intrepid-backports main</h1>
-<p>restricted universe multiverse</p>
-<h2 id="uncomment-the-following-two-lines-to-add-software-from-canonicals">Uncomment the following two lines to add software from Canonical&rsquo;s</h2>
-<h2 id="partner-repository-this-software-is-not-part-of-ubuntu-but-is">&lsquo;partner&rsquo; repository. This software is not part of Ubuntu, but is</h2>
-<h2 id="offered-by-canonical-and-the-respective-vendors-as-a-service-to-ubuntu">offered by Canonical and the respective vendors as a service to Ubuntu</h2>
-<h2 id="users">users.</h2>
-<h1 id="deb-httparchivecanonicalcomubuntu-intrepid-partner">deb <a href="http://archive.canonical.com/ubuntu">http://archive.canonical.com/ubuntu</a> intrepid partner</h1>
-<h1 id="deb-src-httparchivecanonicalcomubuntu-intrepid-partner">deb-src <a href="http://archive.canonical.com/ubuntu">http://archive.canonical.com/ubuntu</a> intrepid partner</h1>
-<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security main restricted</p>
-<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security main restricted</p>
-<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security universe</p>
-<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security universe</p>
-<p>deb <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security multiverse</p>
-<p>deb-src <a href="http://mirror.rootguide.org/ubuntu/">http://mirror.rootguide.org/ubuntu/</a> intrepid-security multiverse</p>
-]]></content:encoded>
+<p>下面就是原始的源，使用这个找到MySQL之后就一次成功了 <code># deb cdrom:[Ubuntu 8.10 _Intrepid Ibex_ -Release i386 (20081029.5)]/ intrepid main restricted</code></p>
+<pre tabindex="0"><code># See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
+
+# newer versions of the distribution.`
+
+deb http://mirror.rootguide.org/ubuntu/ intrepid main restricted
+
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid main restricted
+
+## Major bug fix updates produced after the final release of the
+
+## distribution.
+
+deb http://mirror.rootguide.org/ubuntu/ intrepid-updates main restricted
+
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid-updates main restricted
+
+## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu
+
+## team. Also, please note that software in universe WILL NOT receive any
+
+## review or updates from the Ubuntu security team.
+
+deb http://mirror.rootguide.org/ubuntu/ intrepid universe
+
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid universe
+
+deb http://mirror.rootguide.org/ubuntu/ intrepid-updates universe
+
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid-updates universe
+
+## N.B. software from this repository is ENTIRELY UNSUPPORTED by the Ubuntu
+
+## team, and may not be under a free licence. Please satisfy yourself as to
+
+## your rights to use the software. Also, please note that software in
+
+## multiverse WILL NOT receive any review or updates from the Ubuntu
+
+## security team.
+
+deb http://mirror.rootguide.org/ubuntu/ intrepid multiverse
+
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid multiverse
+
+deb http://mirror.rootguide.org/ubuntu/ intrepid-updates multiverse
+
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid-updates multiverse
+
+## Uncomment the following two lines to add software from the &#39;backports&#39;
+
+## repository.
+
+## N.B. software from this repository may not have been tested as
+
+## extensively as that contained in the main release, although it includes
+
+## newer versions of some applications which may provide useful features.
+
+## Also, please note that software in backports WILL NOT receive any review
+
+## or updates from the Ubuntu security team.
+
+# deb http://cn.archive.ubuntu.com/ubuntu/ intrepid-backports main restricted
+universe multiverse
+
+# deb-src http://cn.archive.ubuntu.com/ubuntu/ intrepid-backports main
+restricted universe multiverse
+
+## Uncomment the following two lines to add software from Canonical&#39;s
+
+## &#39;partner&#39; repository. This software is not part of Ubuntu, but is
+
+## offered by Canonical and the respective vendors as a service to Ubuntu
+
+## users.
+
+# deb http://archive.canonical.com/ubuntu intrepid partner
+
+# deb-src http://archive.canonical.com/ubuntu intrepid partner
+
+deb http://mirror.rootguide.org/ubuntu/ intrepid-security main restricted
+
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid-security main restricted
+
+deb http://mirror.rootguide.org/ubuntu/ intrepid-security universe
+
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid-security universe
+
+deb http://mirror.rootguide.org/ubuntu/ intrepid-security multiverse
+
+deb-src http://mirror.rootguide.org/ubuntu/ intrepid-security multiverse
+</code></pre>]]></content:encoded>
     </item>
     
   </channel>

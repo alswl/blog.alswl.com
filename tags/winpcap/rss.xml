@@ -9,10 +9,10 @@
     <lastBuildDate>Thu, 25 Sep 2008 00:00:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/winpcap/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受</title>
-      <link>https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/</link>
+      <link>https://blog.alswl.com/2008/09/winpcap-arp/</link>
       <pubDate>Thu, 25 Sep 2008 00:00:00 +0800</pubDate>
       
-      <guid>https://blog.alswl.com/2008/09/e7-bd-91-e7-bb-9c-e7-bc-96-e7-a8-8b-e5-ad-a6-e4-b9-a0-e6-97-a5-e8-ae-b03_-e5-88-a9-e7-94-a8winpcap-e5-ae-9e-e7-8e-b0arp-e7-9a-84-e5-8f-91-e9-80-81-e5-92-8c-e6-8e-a5-e5-8f-97/</guid>
+      <guid>https://blog.alswl.com/2008/09/winpcap-arp/</guid>
       <description>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的 首先是ARP的接收，来看一下程序的流程 获取网络设备列表 pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;amp;alldevs, errbuf) 然后人机交互一下，获得需要工作的网卡 打开需要的网</description>
       <content:encoded><![CDATA[<p>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受</p>
 <p>网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节
@@ -115,14 +115,14 @@ source/647852)）其实很简单，如果有WinPcap开发文档，自己写也�
       <pubDate>Sun, 14 Sep 2008 00:00:00 +0800</pubDate>
       
       <guid>https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/</guid>
-      <description>1.编译时候会出现函数问题 &amp;lsquo;pcap_findalldevs_ex&amp;rsquo; : undeclared identifier &amp;lsquo;PCAP_SRC_IF_STRING&amp;rsquo; : undeclared identifier &amp;lsquo;pcap_open&amp;rsquo; : undeclared identifier &amp;lsquo;PCAP_OPENFLAG_PROMISCUOUS&amp;rsquo; : undeclared identifier &amp;lsquo;=&amp;rsquo; : cannot convert from &amp;lsquo;int&amp;rsquo; to &amp;lsquo;struct pcap *&amp;rsquo; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &amp;ldquo;pcap.h&amp;quot;后面加上 #include &amp;ldquo;remote-ext.h&amp;rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#</description>
+      <description>1.编译时候会出现函数问题 &amp;#39;pcap_findalldevs_ex&amp;#39; : undeclared identifier &amp;#39;PCAP_SRC_IF_STRING&amp;#39; : undeclared identifier &amp;#39;pcap_open&amp;#39; : undeclared identifier &amp;#39;PCAP_OPENFLAG_PROMISCUOUS&amp;#39; : undeclared identifier &amp;#39;=&amp;#39; : cannot convert from &amp;#39;int&amp;#39; to &amp;#39;struct pcap *&amp;#39; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &amp;ldquo;pcap.h&amp;quot;后面加上 #include &amp;ldquo;remote-ext.h&amp;rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#</description>
       <content:encoded><![CDATA[<p>1.编译时候会出现函数问题</p>
-<p>&lsquo;pcap_findalldevs_ex&rsquo; : undeclared identifier</p>
-<p>&lsquo;PCAP_SRC_IF_STRING&rsquo; : undeclared identifier</p>
-<p>&lsquo;pcap_open&rsquo; : undeclared identifier</p>
-<p>&lsquo;PCAP_OPENFLAG_PROMISCUOUS&rsquo; : undeclared identifier</p>
-<p>&lsquo;=&rsquo; : cannot convert from &lsquo;int&rsquo; to &lsquo;struct pcap *&rsquo;</p>
-<p>等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个</p>
+<pre tabindex="0"><code>&#39;pcap_findalldevs_ex&#39; : undeclared identifier
+&#39;PCAP_SRC_IF_STRING&#39; : undeclared identifier
+&#39;pcap_open&#39; : undeclared identifier
+&#39;PCAP_OPENFLAG_PROMISCUOUS&#39; : undeclared identifier
+&#39;=&#39; : cannot convert from &#39;int&#39; to &#39;struct pcap *&#39;
+</code></pre><p>等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个</p>
 <p>头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在</p>
 <p>#include &ldquo;pcap.h&quot;后面加上</p>
 <p>#include &ldquo;remote-ext.h&rdquo;</p>
@@ -130,10 +130,11 @@ source/647852)）其实很简单，如果有WinPcap开发文档，自己写也�
 <p>网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了</p>
 <p>= =#</p>
 <p>2.出现连接错误</p>
-<p>Cpp3.obj : error LNK2001: unresolved external symbol
-<a href="mailto:__imp__ntohs@4">__imp__ntohs@4</a></p>
-<p>Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals</p>
-<p>一般添加工程只需要添加wpcap.lib这个库文件，而在分析数据包这段代码里，光这个头文件</p>
+<pre tabindex="0"><code>Cpp3.obj : error LNK2001: unresolved external symbol
+[__imp__ntohs@4](mailto:__imp__ntohs@4)
+
+Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals
+</code></pre><p>一般添加工程只需要添加wpcap.lib这个库文件，而在分析数据包这段代码里，光这个头文件</p>
 <p>已经不够了，需要再添加ws2_32.lib这个头文件。其实这个在WinPcap的配置VC里有说明，但</p>
 <p>是以前懒，都只用wpcap.lib</p>
 <p>3.关于程序运行时候是否需要WinPcap的支持，我无法测试出结果，因为学校上网方式的限制</p>
@@ -164,26 +165,28 @@ rg/install/default.htm)</p>
 <p>第一个简单程序是获取网卡适配器信息，里面一个函数pcap_findalldevs_ex找不到，网上资料说是因为这个函数属于远程网卡获取，它的声明在#incl
 ude &ldquo;remote-ext.h&quot;里面，加上去就可以运行了。</p>
 <p>第二个程序错误更多，</p>
-<p>F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: &lsquo;socklen_t&rsquo; : undeclared
-identifier</p>
-<p>F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2146: syntax error : missing &lsquo;;&rsquo;
-before identifier &lsquo;sockaddrlen&rsquo;</p>
-<p>F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: &lsquo;sockaddrlen&rsquo; : undeclared
-identifier</p>
-<p>F:学习网络WiPcap8_08_202Cpp1.cpp(164) : error C2065: &lsquo;getnameinfo&rsquo; : undeclared
-identifier</p>
-<p>F:学习网络WiPcap8_08_202Cpp1.cpp(170) : error C2065: &lsquo;NI_NUMERICHOST&rsquo; : undeclared
-identifier</p>
-<p>错误根由是因为WinPcap支持ipv6,而VC的winsock2.h太老了，很多结构都没有被支持，所以产生错误。网上有人说可以用VS新版本调试，我电脑里面
+<pre tabindex="0"><code>F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: &#39;socklen_t&#39; : undeclared
+identifier
+
+F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2146: syntax error : missing &#39;;&#39;
+before identifier &#39;sockaddrlen&#39;
+
+F:学习网络WiPcap8_08_202Cpp1.cpp(155) : error C2065: &#39;sockaddrlen&#39; : undeclared
+identifier
+
+F:学习网络WiPcap8_08_202Cpp1.cpp(164) : error C2065: &#39;getnameinfo&#39; : undeclared
+identifier
+
+F:学习网络WiPcap8_08_202Cpp1.cpp(170) : error C2065: &#39;NI_NUMERICHOST&#39; : undeclared
+identifier
+</code></pre><p>错误根由是因为WinPcap支持ipv6,而VC的winsock2.h太老了，很多结构都没有被支持，所以产生错误。网上有人说可以用VS新版本调试，我电脑里面
 是VS2008，但是仍然产生错误</p>
 <p>_vsnprintf属性与生命不匹配，网上没有合适的解决方案，我感觉是WinPcap的某个头文件与stdio.h参数不匹配。</p>
 <p>既然VS也无法通过，我实在没能力去修改WinPcap的头文件，所以就用最后一个方案，使用VC6.0的最新的PlatForm
 SDK开发包，里面包含了新的头文件，就可以支持WinPcap了。</p>
 <p>有人说PSDK只有Windows2003的版本，我在微软里面找到了WinXPSP2的PSDK。</p>
 <p>网址如下</p>
-<p>[http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.ht
-m](<a href="http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall">http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall</a>.
-htm)</p>
+<p><a href="http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.htm">http://www.microsoft.com/msdownload/platformsdk/sdkupdate/XPSP2FULLInstall.htm</a></p>
 <p>里面好几个Cab，网页里面有完整的安装说明。</p>
 <p>我正在下，搞好之后如果能用再说。</p>
 <p>弄好了，下面是PlatFormSDK安装步骤</p>
