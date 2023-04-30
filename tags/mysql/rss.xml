@@ -27,6 +27,7 @@
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/refactor.png" alt="201806/refactor.png"  />
 
+
 </p>
 <p>我们用了两章文章
 <a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移</a>
@@ -60,6 +61,7 @@ Yugong 数据流是标准 ETL 流程，分别有 Extractor / Translator / Applie
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/etl.png" alt="ETL &amp;amp; Java Class"  />
 
+
 </p>
 <p>我们依次来看看这三大类具体设计。</p>
 <h3 id="extractor">Extractor</h3>
@@ -69,6 +71,7 @@ Yugong 数据流是标准 ETL 流程，分别有 Extractor / Translator / Applie
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/extractor.png" alt="Extractor Class"  />
+
 
 </p>
 <ul>
@@ -95,6 +98,7 @@ Yugong 官方提供 Extractor 抽象出 <code>AbstractRecordExtractor</code> 类
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/translator.png" alt="Translator Class"  />
 
+
 </p>
 <ul>
 <li><code>DataTranslator</code>：Translator 基类，为 Row 级别数据处理</li>
@@ -116,6 +120,7 @@ Yugong 官方提供 Extractor 抽象出 <code>AbstractRecordExtractor</code> 类
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/applier.png" alt="Applier Class"  />
+
 
 </p>
 <ul>
@@ -166,6 +171,7 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/extractor-new.png" alt="Extractor New Class"  />
 
+
 </p>
 <ul>
 <li><code>AbstractSqlServerExtractor</code>：新增抽象 SqlServer Extractor</li>
@@ -185,6 +191,7 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/translator-new.png" alt="Translator New Class"  />
+
 
 </p>
 <ul>
@@ -207,6 +214,7 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/applier-new.png" alt="Applier New Class"  />
+
 
 </p>
 <ul>
@@ -261,6 +269,7 @@ Slide 含金量高，在讲述核心中核心。</p>
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/flying-tanker.png" alt="flying-tanker"  />
 
+
 </p>
 <p><smaill>（image via <a href="https://pixabay.com/en/military-stealth-bomber-refueling-602729/">https://pixabay.com/en/military-stealth-bomber-refueling-602729/</a> ）</small></p>
 <p>在上篇文章
@@ -287,6 +296,7 @@ Slide 含金量高，在讲述核心中核心。</p>
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/yugong-oracle.png" alt="yugong-oracle.png"  />
+
 
 </p>
 <p>这其中有四个步骤：</p>
@@ -332,6 +342,7 @@ CDC 全称 Change Data Capture，设计目的就是用来解决增量数据的�
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-data-flow.png" alt="cdc-data-flow.png"  />
+
 
 </p>
 <p>当数据库表发生变化时候，Capture process 会从 transaction log 里面获取数据变化，
@@ -417,6 +428,7 @@ Change Table 长什么样，可以有个直观的认识。</p>
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-influence.png" alt="Influence of capture job parameters"  />
 
+
 </p>
 <p>上图是 CDC Job 的工作流程：</p>
 <ul>
@@ -450,6 +462,7 @@ Change Table 长什么样，可以有个直观的认识。</p>
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-metrics.png" alt="cdc-metrics.png"  />
 
+
 </p>
 <p>
 
@@ -457,6 +470,7 @@ Change Table 长什么样，可以有个直观的认识。</p>
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-system-load.png" alt="cdc-system-load.png"  />
+
 
 </p>
 <p>测试结论是，在默认的 CDC 参数下面：</p>
@@ -517,6 +531,7 @@ Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/canal.png" alt="canal.png"  />
+
 
 </p>
 <h2 id="最佳实践">最佳实践</h2>
@@ -804,6 +819,7 @@ Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-bird.png" alt="201803/migration-bird.png"  />
 
+
 </p>
 <h2 id="背景">背景</h2>
 <p>沪江成立于 2001 年，作为较早期的教育学习网站，
@@ -843,6 +859,7 @@ Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-db-offline-readonly.png" alt="201803/migration-db-offline-readonly.png"  />
 
+
 </p>
 <p>停机迁移逻辑比较简单，使用 ETL（Extract Translate Load）
 工具从 Source 写入 Target，然后进行一致性校验，最后确认应用运行 OK，
@@ -854,6 +871,7 @@ Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-db-online.png" alt="201803/migration-db-online.png"  />
+
 
 </p>
 <p>在线迁移的方案稍微复杂一些，流程上有准备全量数据，然后实时同步增量数据，
@@ -1147,6 +1165,7 @@ SQL Server 有 <code>physloc</code>。这种方案可以解决无主键进行比
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/sql-server-metrics.png" alt="201803/sql-server-metrics.png"  />
 
+
 </p>
 <p>
 
@@ -1154,6 +1173,7 @@ SQL Server 有 <code>physloc</code>。这种方案可以解决无主键进行比
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/mysql-metrics.png" alt="201803/mysql-metrics.png"  />
+
 
 </p>
 <p>为了方便 DBA 快速 Review SQL。
@@ -1185,6 +1205,7 @@ SQL Server 有 <code>physloc</code>。这种方案可以解决无主键进行比
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/sql-server.png" alt="sql-server.png"  />
+
 
 </p>
 <p>加入沪江不久，我就被扔到一个将集团 SQL Sever 的数据库迁移到 MySQL 的项目里，
@@ -1258,6 +1279,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-uncommitted.png" alt="read-uncommitted.png"  />
 
+
 </p>
 <p>如上图所示，在 Transaction 2 查询时候，Transaction 1 未提交的数据就已经对外暴露。
 如果 Transaction 1 最后 Rollback 了，那么 Transaction 读取的数据就是错误的。</p>
@@ -1271,6 +1293,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-committed-1.png" alt="read-committed-1.png"  />
+
 
 </p>
 <p>如上图所示，Transaction 1 在写操作时候，对数据 A 加了写锁，
@@ -1286,6 +1309,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-committed-2.png" alt="read-committed-2.png"  />
 
+
 </p>
 <p>上图就是没能保证「可重复度」，Transaction 2 第一次读取到了数据 A，
 然后 Transaction 1 对数据 A 更新到 A&rsquo;，那么当 Tranction 2 再次读取 A 时候，
@@ -1300,6 +1324,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/repeatable-read.png" alt="repeatable-read.png"  />
+
 
 </p>
 <p>如上所示，当 Transation 2 读取 A 时候，会同时加上一把 Read Lock，
@@ -1318,6 +1343,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/repeatable-read-2.png" alt="repeatable-read-2.png"  />
 
+
 </p>
 <p>如图所示，在上述操作中，Transaction 2 查询了一个范围 Range 之后，Transaction 1
 在这个范围内插入了一条新的数据。此时 Transaction 2 再次进行范围查询时候，
@@ -1335,6 +1361,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/serializable.png" alt="serializable.png"  />
+
 
 </p>
 <p>如图所示，在 Transaction 2 操作过程中，会对 Range 进行加锁，
@@ -1725,6 +1752,7 @@ Insert 同时 Query 不会被 Block，
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/dddspace.png" alt="dddspace"  />
 
+
 </p>
 <p>现在 log4d.com VPS 的响应情况：</p>
 <p>
@@ -1734,6 +1762,7 @@ Insert 同时 Query 不会被 Block，
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/log4d.png" alt="log4d"  />
 
+
 </p>
 <p>内存使用情况：</p>
 <p>
@@ -1742,6 +1771,7 @@ Insert 同时 Query 不会被 Block，
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201111/free.png" alt="free"  />
+
 
 </p>
 <p><code>siege -c 100 -t 100 log4d.com</code> 的测试结果：</p>

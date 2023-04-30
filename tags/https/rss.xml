@@ -21,6 +21,7 @@
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/stack-overflow.jpg" alt="Stack Overflow"  />
 
+
 </p>
 <ul>
 <li>原文作者：Nick Craver</li>
@@ -200,6 +201,7 @@
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-MainCertificate.png" alt="Main Certificate"  />
 
+
 </a></p>
 <p>为什么这么做？老实说，是我们让 <a href="https://www.digicert.com/">DigiCert</a> 替我们做的。这么做会导致每次发生变化的时候都需要手动合并证书，了　我们为什么要忍受这么麻烦的事呢？首先，我们期望能够尽可能让更多用户使用我们产品。这里面包括了那些还不支持 SNI 的用户（比如在我们项目启动的时候 Android 2.3 势头正猛）。另外，也包括 HTTP/2 与一些现实问题——我们过会儿会谈到这一块。</p>
 <p>Meta 子域（meta.*.<a href="http://stackexcange.com/">stackexcange.com</a>）</p>
@@ -298,6 +300,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-Layout.svg" alt="Logical Architecture"  />
 
+
 </a></p>
 <h3 id="cdn代理层通过-cloudflare-和-fastly-优化延迟">CDN/代理层：通过 Cloudflare 和 Fastly 优化延迟</h3>
 <p>我对 Stack Overflow <a href="https://nickcraver.com/blog/2016/02/17/stack-overflow-the-architecture-2016-edition/">架构</a><a href="https://stackexchange.com/performance">的效率</a>一直很自豪。我们很厉害吧？仅用一个数据中心和几个服务器就撑起了一个大型网站。不过这次不一样了。尽管效率这件事情很好，但是在延迟上就成了个问题。我们不需要那么多服务器，我们也不需要多地扩展（不过我们有一个灾备节点）。这一次，这就成为了问题。由于光速，我们（暂时）无法解决延迟这个基础性问题。我们听说有人已经在处理这个问题了，不过他们造的时间机器好像有点问题。</p>
@@ -319,6 +322,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-Teststackoverflow.png" alt="teststackoverflow.com"  />
 
+
 </a></p>
 <p>我们目前对 5% 的流量做性能监控。这个过程没有那么复杂，但是我们需要做的事情包括：</p>
 <ol>
@@ -336,6 +340,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-ClientTimings.png" alt="Client Timings Dashboard"  />
 
+
 </a></p>
 <p>幸好，我们有持续的流量来获取数据以供我们决策使用，目前的量级是 50 亿，并且还在增长中。这些数据概览如下：</p>
 <p><a href="../../static/images/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png">
@@ -344,6 +349,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png" alt="Client Timings Database"  />
+
 
 </a></p>
 <p>OK，我们已经把基础工作准备好了，是时候来测试 CDN/代理层供应商了。</p>
@@ -607,6 +613,7 @@ END)
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-Websockets.png" alt="HAProxy Websockets"  />
 
+
 </a></p>
 <p>不管是在终端、抽象命名空间套接字还是前端来说都有很多连接。由于启用了 <a href="https://tools.ietf.org/html/rfc5077">TLS 会话恢复</a>，HAProxy 本身的负载也很重。要让用户下一次重新连接更快，第一次协商之后用户会拿到一个令牌，下一次会把这个令牌发送过来。如果我们的内存足够并且没有超时，我们会恢复上次的会话而不是再开一个。这个操作可以节省 CPU，对用户来说有性能提升，但会用到到更多内存。这个多因 key 大小而异（2048，4096 或是更多？）我们现在用的是 4096 位的 key。在开了 600000 个 websocket 的情况下，我们只用掉了负载均衡器 64GB 内存里的 19GB。这里面 12GB 是 HAProxy 在用，大多数为 TLS 会话缓存。所以结果来说还不错，如果<em>我们不得不买内存的话</em>，这也会是整个 HTTPS 迁移中最便宜的东西。</p>
 <p><a href="../../static/images/upload_dropbox/201709/HTTPS-WebsocketMemory.png">
@@ -615,6 +622,7 @@ END)
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-WebsocketMemory.png" alt="HAProxy Websocket Memory"  />
+
 
 </a></p>
 <h3 id="未知">未知</h3>
@@ -721,6 +729,7 @@ END)
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-HelpCommit.png" alt="Me being a dumbass"  />
 
+
 </a></p>
 <p>再一次将数据填充回去就能修复了。不过怎么说，这个当时算是在公共场合闹了个笑话。抱歉。</p>
 <h3 id="开源">开源</h3>
@@ -795,6 +804,7 @@ END)
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201612/mouse.jpeg" alt="201612/mouse.jpeg"  />
 
 
+
 (图片来自 <a href="https://www.duitang.com/blog/?id=48013745">茶杯中的可爱小白鼠 壁纸 - 2560x1920－堆糖，美好生活研究所</a>)</p>
 <p>在上篇文章 <a href="https://blog.alswl.com/2016/11/https-1/">🔒 也谈 HTTPS - HTTPDNS + HTTPS</a> 中，
 我们谈了如何基于 HTTPDNS 来部署无坚不摧的 HTTPS 通信环境，
@@ -837,6 +847,7 @@ END)
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201612/https_ros_process.jpg" alt="201612/https_ros_process.jpg"  />
+
 
 </p>
 <p>这样操作之后，在办公室网络下，所有访问公司网站的 HTTP 流量都会跳转到 HTTPS。</p>
@@ -913,6 +924,7 @@ Domain Validation / Orgnization Validation / Extented Validation。
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201611/https.png" alt="201611/https.png"  />
 
+
 </p>
 <p>关于 HTTPS 如何购买证书，如何部署，网上的教程已经太多了，实践起来没有太大的难处。
 我们在部署 HTTPS 的时候，遇到了一些新问题，首当其冲的就是 HTTPS 部分网络不可访问的问题：</p>
@@ -949,6 +961,7 @@ Domain Validation / Orgnization Validation / Extented Validation。
 
 
 <img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201611/httpdnsjbyl.png" alt="201611/httpdnsjbyl.png"  />
+
 
 </p>
 <p>点击 <a href="https://dns.google.com/resolve?name=www.duitang.com">https://dns.google.com/resolve?name=www.duitang.com</a> /
