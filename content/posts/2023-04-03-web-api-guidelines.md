@@ -305,7 +305,7 @@ HTTP 状态码的用途在于表明客户端与服务器间通信的结果。2XX
 | 子资源是一次性查询还是独立查询                      |                        | 嵌套        | 独立查询     |                    |
 | 分页参数存放                                        |                        | Header      | URL Query    |                    |
 | 分页方式                                            | **分页方式解释**       | Page based  | Offset based | Continuation token |
-| 分页控制者                                          | **分页控制着解释**     | 客户端      | 服务端       |                    |
+| 分页控制者                                          | **分页控制者解释**     | 客户端      | 服务端       |                    |
 
 **分页方式解释**
 
@@ -314,7 +314,7 @@ HTTP 状态码的用途在于表明客户端与服务器间通信的结果。2XX
 [rownum 分页方案](https://stackoverflow.com/questions/241622/paging-with-oracle)，使用参数 `start-from=?` 进行描述。
 虽然 Continuation Token 的优缺点都十分突出，使用此种方式可以将顺序性用于替代随机性。
 
-**分页控制着解释**
+**分页控制者解释**
 
 在某些情况下，我们需要区分客户端分页（Client Pagination）和服务器分页（Server Pagniation）。
 客户端分页是指下一页的参数由客户端计算而来，而服务器分页则是由服务器返回 `rel` 或 JSON.API 等协议。
@@ -533,7 +533,7 @@ API 定义 [GitHub REST API documentation](https://docs.github.com/en/rest?apiVe
 | 分页控制者                                                            | 服务端                                                    | 同上                                                                                                                                              |
 | **Response**                                                          |                                                           |                                                                                                                                                   |
 | 模型呈现种类                                                          | 多种模型                                                  | 比如 Commits 里面的 明细和 Parent [Commits](https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28)                                |
-| 大模型如何包含子模型模型                                              | 核心模型 + 多次关联资源查询？| 没有明确说明，根据几个核心 API 反推                                                                                                               |
+| 大模型如何包含子模型模型                                              | 核心模型 + 多次关联资源查询？                             | 没有明确说明，根据几个核心 API 反推                                                                                                               |
 | 字段返回是按需还是归并还是统一                                        | 统一                                                      |                                                                                                                                                   |
 | 字段表现格式                                                          | Snake                                                     |                                                                                                                                                   |
 | 错误码                                                                | 无                                                        | [Resources in the REST API#client-errors](https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors) |
