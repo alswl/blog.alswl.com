@@ -2,6 +2,21 @@
 {{- /* to add comments read => https://gohugo.io/content-management/comments/ */ -}}
 {{- /* Comments area end */ -}}
 
-<div>
-  评论系统暂时关闭中，正在切换评论系统。
-</div>
+
+<div id="waline"></div>
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    // https://waline.js.org/reference/client/props.html
+    init({
+      el: '#waline',
+      serverURL: 'https://comments-waline.blog.alswl.com',
+      emoji: false,
+      search: false,
+      reaction: true, // 开启反应
+      requiredMeta: ['nick', 'mail'],
+      login: 'disable',
+      imageUploader: false,
+      texRenderer: false,
+    });
+</script>
