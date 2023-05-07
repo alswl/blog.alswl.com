@@ -10,7 +10,7 @@
 <meta name="description" content="问题背景 Vundle 是个好东西，可以用来管理 vim 配置和 vim 插件。Vundle 会将所有插件管理在 .vim/bundle/ 中，详情可看 使用 Vundle 管理 Vim 插件。 官方安装 Vundle 方法如下： $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 我的 Vundle 的版本是 59bff0c457f68c3d52bcebbf6068ea01ac8f5dac， git 版本是 git version 1.7.10.2 。 使用 BundleInstall 可以安装 .vimrc 中配置的插件， 我使用 git 控制 .vim 和 .vimrc 版本。在 BundleInstall 之后会导致 vundle 目录项目状态混乱，要么形成一个无法追踪的 submodule 比如 .vim/bundle/The-NERD-Commenter (untracked content) ，要么变成一个普通的文件">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2012/06/vundle-submodule/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.1358339a9e54a395efcc4d8a05eb0ab354bd48c92d39ff71d33f2c2a9c66ea2d.css" integrity="sha256-E1gzmp5Uo5XvzE2KBesKs1S9SMktOf9x0z8sKpxm6i0=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8a8fb2252e3b86ff50510aea076c0754a4ac19e57254bb71b15cc554106148fb.css" integrity="sha256-io&#43;yJS47hv9QUQrqB2wHVKSsGeVyVLtxsVzFVBBhSPs=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -314,9 +314,23 @@ alt="窥豹" />
   </a>
 </nav>
 
-  </footer><div>
-  评论系统暂时关闭中，正在切换评论系统。
-</div>
+  </footer><div id="waline"></div>
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    
+    init({
+      el: '#waline',
+      serverURL: 'https://comments-waline.blog.alswl.com',
+      emoji: false,
+      search: false,
+      reaction: true, 
+      requiredMeta: ['nick', 'mail'],
+      login: 'disable',
+      imageUploader: false,
+      texRenderer: false,
+    });
+</script>
 
 </article>
     </main>

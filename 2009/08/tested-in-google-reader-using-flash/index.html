@@ -10,7 +10,7 @@
 <meta name="description" content="发现我贴的Flash都不能在Google Reader中显示，而煎蛋的可以，我FireBug了一下，发现它的Flash代码和我的略有区别。 我之前的Flash代码~ &lt;object classid=&quot;clsid:d27cdb6e-ae6d-11cf-96b8-444553540000&quot; width=&quot;420&quot; height=&quot;363&quot; codebase=&quot;http://download.macromedia.com/pub/shockwav e/cabs/flash/swflash.cab#version=6,0,40,0&quot;&gt;&lt;param name=&quot;allowFullScreen&quot; value=&quot;true&quot; /&gt;&lt;param name=&quot;allowscriptaccess&quot; value=&quot;always&quot; /&gt;&lt;param name=&quot;wmode&quot; value=&quot;opaque&quot; /&gt;&lt;param name=&quot;src&quot; value=&quot;http://www.tudou.com/v/pO3E-u-qBPM&quot; /&gt;&lt;param name=&quot;allowfullscreen&quot; value=&quot;true&quot; /&gt;&lt;embed type=&quot;application/x-shockwave-flash&quot; width=&quot;420&quot; height=&quot;363&quot; src=&quot;http://www.tudou.com/v/pO3E-u-qBPM&quot; wmode=&quot;opaque&quot; allowscriptaccess=&quot;always&quot; allowfullscreen=&quot;true&quot;&gt;&lt;/embed&gt;&lt;/object&gt; 这种代码是直接从土豆的「贴到博客或BBS」功能实现的，使用了object Html元素。可能出于安全考虑，object并不在大多数的RSS订阅网站使用，也就播放不了使用object元素放">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/08/tested-in-google-reader-using-flash/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.1358339a9e54a395efcc4d8a05eb0ab354bd48c92d39ff71d33f2c2a9c66ea2d.css" integrity="sha256-E1gzmp5Uo5XvzE2KBesKs1S9SMktOf9x0z8sKpxm6i0=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8a8fb2252e3b86ff50510aea076c0754a4ac19e57254bb71b15cc554106148fb.css" integrity="sha256-io&#43;yJS47hv9QUQrqB2wHVKSsGeVyVLtxsVzFVBBhSPs=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -268,9 +268,23 @@ alt="窥豹" />
   </a>
 </nav>
 
-  </footer><div>
-  评论系统暂时关闭中，正在切换评论系统。
-</div>
+  </footer><div id="waline"></div>
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    
+    init({
+      el: '#waline',
+      serverURL: 'https://comments-waline.blog.alswl.com',
+      emoji: false,
+      search: false,
+      reaction: true, 
+      requiredMeta: ['nick', 'mail'],
+      login: 'disable',
+      imageUploader: false,
+      texRenderer: false,
+    });
+</script>
 
 </article>
     </main>

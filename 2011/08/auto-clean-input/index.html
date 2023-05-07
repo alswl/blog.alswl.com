@@ -10,7 +10,7 @@
 <meta name="description" content="早期的输入框提示是这样的（via baidu） 左边一个 label ，右边一个输入框。 比较现代的方式是（via Discuz!） 更漂亮的方式是（via 点点） 登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。 我需要达到几个要求： 提示信息是可以暂存的，即用户的输入在清空之后，还能够显示原来的提示信息 只需为 text / textarea 添加一个 class 即可实现效果 不修改 DOM 节点，避免影响上下文选择器 为了实现效果，">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2011/08/auto-clean-input/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.1358339a9e54a395efcc4d8a05eb0ab354bd48c92d39ff71d33f2c2a9c66ea2d.css" integrity="sha256-E1gzmp5Uo5XvzE2KBesKs1S9SMktOf9x0z8sKpxm6i0=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8a8fb2252e3b86ff50510aea076c0754a4ac19e57254bb71b15cc554106148fb.css" integrity="sha256-io&#43;yJS47hv9QUQrqB2wHVKSsGeVyVLtxsVzFVBBhSPs=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -320,9 +320,23 @@ alt="窥豹" />
   </a>
 </nav>
 
-  </footer><div>
-  评论系统暂时关闭中，正在切换评论系统。
-</div>
+  </footer><div id="waline"></div>
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    
+    init({
+      el: '#waline',
+      serverURL: 'https://comments-waline.blog.alswl.com',
+      emoji: false,
+      search: false,
+      reaction: true, 
+      requiredMeta: ['nick', 'mail'],
+      login: 'disable',
+      imageUploader: false,
+      texRenderer: false,
+    });
+</script>
 
 </article>
     </main>

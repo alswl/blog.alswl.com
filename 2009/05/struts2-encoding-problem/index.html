@@ -10,7 +10,7 @@
 <meta name="description" content="继续昨天的编码问题 我一直全部采用UTF-8格式，而且在jUnit测试中并没有问题，说明是在Struts进行数据收集时候出错。 Google之后，根据网上一些建议修改web.xml struts.xml 但都没有效果。 网上建议在web.xml中添加 ： &lt;filter&gt; &lt;filter-name&gt;struts-cleanup&lt;/filter-name&gt; &lt;filter-class&gt;org.apache.struts2.dispatcher.ActionContextCleanUp &lt;/filter-class&gt; &lt;/filter&gt; &lt;filter-mapping&gt; &lt;filter-name&gt;struts-cleanup&lt;/filter-name&gt; &lt;url-pattern&gt;/*&lt;/url-pattern&gt; &lt;/filter-mapping&gt; 来设定本地化和编码，然后在struts.xml中添加过滤器 &lt;constant value=&quot;UTF-8&quot; name=&quot;struts.i18n.encoding&quot;&gt;&lt;/constant&gt; &lt;constant value=&quot;UTF-8&quot; name=&quot;struts.locale&quot;&gt;&lt;/constant&gt; 根据我测试，都没有效果。 我检查完JSP页面编码和本地文件编码，也都不存在问题。 最后我在一">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/05/struts2-encoding-problem/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.1358339a9e54a395efcc4d8a05eb0ab354bd48c92d39ff71d33f2c2a9c66ea2d.css" integrity="sha256-E1gzmp5Uo5XvzE2KBesKs1S9SMktOf9x0z8sKpxm6i0=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8a8fb2252e3b86ff50510aea076c0754a4ac19e57254bb71b15cc554106148fb.css" integrity="sha256-io&#43;yJS47hv9QUQrqB2wHVKSsGeVyVLtxsVzFVBBhSPs=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -289,9 +289,23 @@ alt="窥豹" />
   </a>
 </nav>
 
-  </footer><div>
-  评论系统暂时关闭中，正在切换评论系统。
-</div>
+  </footer><div id="waline"></div>
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    
+    init({
+      el: '#waline',
+      serverURL: 'https://comments-waline.blog.alswl.com',
+      emoji: false,
+      search: false,
+      reaction: true, 
+      requiredMeta: ['nick', 'mail'],
+      login: 'disable',
+      imageUploader: false,
+      texRenderer: false,
+    });
+</script>
 
 </article>
     </main>

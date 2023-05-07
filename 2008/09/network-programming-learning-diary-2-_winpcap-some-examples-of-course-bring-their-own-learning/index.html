@@ -10,7 +10,7 @@
 <meta name="description" content="1.编译时候会出现函数问题 &#39;pcap_findalldevs_ex&#39; : undeclared identifier &#39;PCAP_SRC_IF_STRING&#39; : undeclared identifier &#39;pcap_open&#39; : undeclared identifier &#39;PCAP_OPENFLAG_PROMISCUOUS&#39; : undeclared identifier &#39;=&#39; : cannot convert from &#39;int&#39; to &#39;struct pcap *&#39; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &ldquo;pcap.h&quot;后面加上 #include &ldquo;remote-ext.h&rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.1358339a9e54a395efcc4d8a05eb0ab354bd48c92d39ff71d33f2c2a9c66ea2d.css" integrity="sha256-E1gzmp5Uo5XvzE2KBesKs1S9SMktOf9x0z8sKpxm6i0=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8a8fb2252e3b86ff50510aea076c0754a4ac19e57254bb71b15cc554106148fb.css" integrity="sha256-io&#43;yJS47hv9QUQrqB2wHVKSsGeVyVLtxsVzFVBBhSPs=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -284,9 +284,23 @@ alt="窥豹" />
   </a>
 </nav>
 
-  </footer><div>
-  评论系统暂时关闭中，正在切换评论系统。
-</div>
+  </footer><div id="waline"></div>
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    
+    init({
+      el: '#waline',
+      serverURL: 'https://comments-waline.blog.alswl.com',
+      emoji: false,
+      search: false,
+      reaction: true, 
+      requiredMeta: ['nick', 'mail'],
+      login: 'disable',
+      imageUploader: false,
+      texRenderer: false,
+    });
+</script>
 
 </article>
     </main>

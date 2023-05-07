@@ -10,7 +10,7 @@
 <meta name="description" content="(图片来自 茶杯中的可爱小白鼠 壁纸 - 2560x1920－堆糖，美好生活研究所) 在上篇文章 🔒 也谈 HTTPS - HTTPDNS &#43; HTTPS 中， 我们谈了如何基于 HTTPDNS 来部署无坚不摧的 HTTPS 通信环境， 这次我们讨论另外一个比较头疼的问题：部署。 小站点部署 HTTPS 相对成本低，改改前端代码，就可以上线了。 但作为业务有一定复杂度的大网站，就没办法这么暴力上线了。 前端在基础库中调整 Scheme 之后，仍然可能存在很多边边角角没有覆盖到。 比如 JS 里面写死了 HTTP，那在 HTTPS 下请">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2016/12/https-2/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.1358339a9e54a395efcc4d8a05eb0ab354bd48c92d39ff71d33f2c2a9c66ea2d.css" integrity="sha256-E1gzmp5Uo5XvzE2KBesKs1S9SMktOf9x0z8sKpxm6i0=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8a8fb2252e3b86ff50510aea076c0754a4ac19e57254bb71b15cc554106148fb.css" integrity="sha256-io&#43;yJS47hv9QUQrqB2wHVKSsGeVyVLtxsVzFVBBhSPs=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -363,9 +363,23 @@ alt="窥豹" />
   </a>
 </nav>
 
-  </footer><div>
-  评论系统暂时关闭中，正在切换评论系统。
-</div>
+  </footer><div id="waline"></div>
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    
+    init({
+      el: '#waline',
+      serverURL: 'https://comments-waline.blog.alswl.com',
+      emoji: false,
+      search: false,
+      reaction: true, 
+      requiredMeta: ['nick', 'mail'],
+      login: 'disable',
+      imageUploader: false,
+      texRenderer: false,
+    });
+</script>
 
 </article>
     </main>

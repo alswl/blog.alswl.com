@@ -10,7 +10,7 @@
 <meta name="description" content="前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题： 有一个小伙伴使用 git-svn 做 rename 操作时候，将一个目录 svn mv 了， 导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言， 历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。 # 找出丢失之前的版本，列出丢失目录上层的操作记录。 svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less # 将重命名之前的版本拷贝到一个临时目录 svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost # 准备现有代码到 Git git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami #">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2014/01/renamed-svn-to-git/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.1358339a9e54a395efcc4d8a05eb0ab354bd48c92d39ff71d33f2c2a9c66ea2d.css" integrity="sha256-E1gzmp5Uo5XvzE2KBesKs1S9SMktOf9x0z8sKpxm6i0=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8a8fb2252e3b86ff50510aea076c0754a4ac19e57254bb71b15cc554106148fb.css" integrity="sha256-io&#43;yJS47hv9QUQrqB2wHVKSsGeVyVLtxsVzFVBBhSPs=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
@@ -286,9 +286,23 @@ alt="窥豹" />
   </a>
 </nav>
 
-  </footer><div>
-  评论系统暂时关闭中，正在切换评论系统。
-</div>
+  </footer><div id="waline"></div>
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    
+    init({
+      el: '#waline',
+      serverURL: 'https://comments-waline.blog.alswl.com',
+      emoji: false,
+      search: false,
+      reaction: true, 
+      requiredMeta: ['nick', 'mail'],
+      login: 'disable',
+      imageUploader: false,
+      texRenderer: false,
+    });
+</script>
 
 </article>
     </main>
