@@ -23,6 +23,7 @@ menu: "main"
 
 ## 博客记录
 
+- 2023-05-07 更换评论系统，使用 [Waline](https://waline.js.org/) 替代 Disqus  [Commit](https://github.com/alswl/blog.alswl.com/commit/e34e34810298fd0d716d4c4a467fada25b3a6622)
 - 2022-10-16 更换博客系统 Hugo [PR](https://github.com/alswl/blog.alswl.com/pull/8)
 - 2021-06-11 使用 Github 提供的 Pages 服务
 - 2017-08-13 使用 Coding 提供的 Pages 服务
