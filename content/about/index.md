@@ -7,9 +7,9 @@ type: "page"
 menu: "main"
 ---
 
-我是 alswl ，alswl 这个词来源于我小时候写的一部小说的主人公。
-
 ## About Me
+
+我是 alswl ，alswl 这个词来源于我小时候写的一部小说的主人公。
 
 目前我在蚂蚁集团工作，负责容器编排、调度相关系统。
 
@@ -35,7 +35,7 @@ Code Monkey // Senior YAML Editor // 擅长江浙菜 // 公众号 窥豹
 - 2014-12-23 使用 GitCafe 提供的 Pages 服务
 - 2014-01-24 使用 [DigitalOcean](https://www.digitalocean.com/?refcode=7f0f1462316f) 托管
 - 2013-12-03 更换博客系统 Pelican，并使用 Git 管理博客 [Commit](https://github.com/alswl/blog.alswl.com/commit/71249a8ba7aa0e9298600a720de3b40fe8d8edab)
-- 2012-05-14 更换博客系统 Octopress
+- 2012-05-14 更换博客系统 Octopress，评论系统使用 Disqus
 - 2012-01-01 使用 VPS [Linode](https://www.linode.com/?r=7e51a136a0eca06c5f6474373f616bbdaa2b5b6c)
 - 2011-11-02 更换域名 log4d.com
 - 2009-12-24 更换域名 ~~[dddspace.com](http://dddspace.com)~~
