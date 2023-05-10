@@ -11,14 +11,16 @@ menu: "main"
 
 ## About Me
 
-目前我在蚂蚁金服工作，负责容器编排、调度相关系统。
-
-真•有一个标记语言人肉编辑器•集群守望•垃圾征服者•被债务湮没的人
+目前我在蚂蚁集团工作，负责容器编排、调度相关系统。
 
 
 ## Tag
 
+Code Monkey // Senior YAML Editor // 擅长江浙菜 // 公众号 窥豹
+
 ☑Coding Monkey ☑macOS/Arch Linux ☑IDEA/Vim ☑Java/Python ☑ErgoDox ☑alswl.com ☑使用正版软件 ☑明骚 ☑冬笋/小笼包/油爆小草虾
+
+真•有一个标记语言人肉编辑器•集群守望•垃圾征服者•被债务湮没的人
 
 
 ## 博客记录
@@ -45,8 +47,9 @@ menu: "main"
 
 ## 我常使用的线上服务（推介链接）
 
-- [Toodledo](http://www.toodledo.com/index.php?ref=td4d1aebdd0f59e)
-  2010 年使用至今的 GTD 软件，2015 成为付费用户。纯正 GTD 实现，Matrix 自定义搜索，Open API 全功能可用
+- <del>[Toodledo](http://www.toodledo.com/index.php?ref=td4d1aebdd0f59e)</del>
+  2010 年使用 2023 年的 GTD 软件，2015 成为付费用户。纯正 GTD 实现，Matrix 自定义搜索，Open API 全功能可用。
+  2023 年 [切换为 Obsidian Tasks](https://blog.alswl.com/2023/02/gtd/)。
 - <del>[Evernote](https://www.evernote.com/referral/Registration.action?sig=9035c924a08140f7f5de825e5d69770fdcbe64ec51230f3d7df091c72628a2d7&uid=3580216)</del>
   2010 年使用至今的笔记软件，Note 软件届的 Big Father。
   自 2020 年 11 月开始，我切换为 [Notion](https://www.notion.so)
