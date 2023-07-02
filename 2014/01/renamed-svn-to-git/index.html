@@ -57,18 +57,17 @@
 
     </style>
 </noscript>
-<script type="application/javascript">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
+<script>
 var doNotTrack = false;
 if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-7S40P40QGJ', { 'anonymize_ip': false });
 }
-</script><meta property="og:title" content="从 SVN 到 Git，找回丢失的历史" />
+</script>
+<meta property="og:title" content="从 SVN 到 Git，找回丢失的历史" />
 <meta property="og:description" content="前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题： 有一个小伙伴使用 git-svn 做 rename 操作时候，将一个目录 svn mv 了， 导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言， 历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。 # 找出丢失之前的版本，列出丢失目录上层的操作记录。 svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less # 将重命名之前的版本拷贝到一个临时目录 svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost # 准备现有代码到 Git git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami #" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2014/01/renamed-svn-to-git/" /><meta property="article:section" content="posts" />

@@ -57,18 +57,17 @@
 
     </style>
 </noscript>
-<script type="application/javascript">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
+<script>
 var doNotTrack = false;
 if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-7S40P40QGJ', { 'anonymize_ip': false });
 }
-</script><meta property="og:title" content="go-pylons.py在Python2.7下错误解决" />
+</script>
+<meta property="og:title" content="go-pylons.py在Python2.7下错误解决" />
 <meta property="og:description" content="当使用 Python2.7 &#43; go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。 [alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&quot;, line 67, in &lt;module&gt; import os File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&quot;, line 398, in &lt;module&gt; import UserDict File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&quot;, line 83, in &lt;module&gt; import _abcoll File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&quot;, line 11, in &lt;module&gt; from abc import ABCMeta, abstractmethod File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&quot;, line 8, in &lt;module&gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;) ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。 #!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 &#43;0200 &#43;&#43;&#43; b/virtualenv.py 2010-09-14 21:46:20.650769346 &#43;0200 @@ -51,6 &#43;51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config if sys.version_info[:2] &gt;= (2, 6): REQUIRED_MODULES.extend([&lsquo;warnings&rsquo;, &rsquo;linecache&rsquo;, &lsquo;_abcoll&rsquo;, &lsquo;abc&rsquo;]) if sys.version_info[:2] &gt;= (2, 7): REQUIRED_MODULES.extend([&rsquo;_weakrefset&rsquo;]) if sys.version_info[:2] &lt;= (2, 3): REQUIRED_MODULES.extend([&lsquo;sets&rsquo;, &lsquo;future&rsquo;]) if is_pypy: 懒人可以点击" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/" /><meta property="article:section" content="posts" />

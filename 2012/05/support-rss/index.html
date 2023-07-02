@@ -57,18 +57,17 @@
 
     </style>
 </noscript>
-<script type="application/javascript">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
+<script>
 var doNotTrack = false;
 if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-8822123-3', 'auto');
-	
-	ga('send', 'pageview');
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-7S40P40QGJ', { 'anonymize_ip': false });
 }
-</script><meta property="og:title" content="让 Octopress 支持 RSS2.0" />
+</script>
+<meta property="og:title" content="让 Octopress 支持 RSS2.0" />
 <meta property="og:description" content="土鳖人人网的 日志导入 功能仅支持 RSS2.0，而 Octopress 输出的订阅格式是 Atom1.0。 于是为了让人人网的同学能看见我那些技术宅，又或非技术宅的文章， 我只能昧着良心，给 Octopress 加上过时的 RSS2.0 输出。 在 source/ 下创建新文件 rss.xml ，内容如下： --- layout: nil --- &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;rss xmlns:dc=&#34;http://purl.org/dc/elements/1.1/&#34; version=&#34;2.0&#34;&gt; &lt;channel&gt; &lt;description&gt;&lt;![CDATA[{{ site.title }}]]&gt;&lt;/description&gt; &lt;title&gt;&lt;![CDATA[{{ site.title }}]]&gt;&lt;/title&gt; &lt;link&gt;{{ site.url }}/&lt;/link&gt; &lt;pubDate&gt;{{ site.time | date_to_xmlschema }}&lt;/pubDate&gt; {% for post in site.posts limit: 20 %} &lt;item&gt; &lt;description&gt; &lt;![CDATA[ {{ post.content | expand_urls: site.url | cdata_escape }} {% include post/copyright.html %} ]]&gt; &lt;/description&gt; &lt;title&gt;&lt;![CDATA[{{ post.title | cdata_escape }}]]&gt;&lt;/title&gt; &lt;link&gt;{{ site.url }}{{ post.url }}&lt;/link&gt; &lt;pubDate&gt;{{ post.date | date_to_xmlschema }}&lt;/pubDate&gt; &lt;guid isPermaLink=&#34;false&#34;&gt;{{ site.url }}{{ post.id }}&lt;/guid&gt; &lt;source url=&#34;{{ site.url }}/rss.xml&#34;&gt;&lt;![CDATA[{{ site.title }}]]&gt;&lt;/source&gt; &lt;/item&gt; {% endfor %} &lt;/channel&gt; &lt;/rss&gt; 然后，访问 http://site.url/rss.xml 即可。 我的 RSS2.0" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2012/05/support-rss/" /><meta property="article:section" content="posts" />
