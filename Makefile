@@ -19,7 +19,14 @@ build-production:
 .PHONY: sync-images
 sync-images:
 	echo "Copying files to server..."
-	$(QSHELL) qupload2 --log-level=info --thread-count=10 --rescan-local=true --check-exists --check-size --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
+	#$(QSHELL) qupload2 --log-level=info --thread-count=10 --rescan-local=true --check-exists --check-size --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
+	aws s3 sync \
+		--endpoint-url https://s3-cn-east-2.qiniucs.com \
+		--exclude ".*" \
+		--exclude "*/.*" \
+		./$(UPDATE_FOLDER) s3://blog-alswl-com-202210/
+
+
 
 
 .PHONY: cdn
