@@ -76,5 +76,5 @@ for i in $(ls); do convert $i -resize 1000x1000\> $i; donen
 **Replace URL**
 
 ```
-c content/posts/your.md | gsed 's#../../static/images#https://d05fae.dijingchao.com#g' | pandoc -f markdown_mmd -t gfm+implicit_figures --wrap=none C
+c content/posts/your.md | gsed 's#../../static/images#https://e25ba8-log4d-c.dijingchao.com#g' | pandoc -f markdown_mmd -t gfm+implicit_figures --wrap=none C
 ```
