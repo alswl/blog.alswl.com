@@ -42,3 +42,8 @@ cdn: build-production
 	# curl --silent "http://www.google.com/ping?sitemap=$(SITEMAP_URL)"
 	# curl --silent "http://www.bing.com/webmaster/ping.aspx?siteMap=$(SITEMAP_URL)"
 
+
+.PHONY: resize-images-in-git-workdir
+resize-images-in-git-workdir:
+	@echo resize images in git worktree;
+	bash ./hack/resize-images-in-git-workdir.sh
