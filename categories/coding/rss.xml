@@ -6,7 +6,384 @@
     <description>Recent content in coding on Log4D</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 03 Apr 2023 11:34:18 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/categories/coding/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 29 Jul 2023 14:54:27 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/categories/coding/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>架构设计 the Easy Way</title>
+      <link>https://blog.alswl.com/2023/07/architecture-design-the-easy-way/</link>
+      <pubDate>Sat, 29 Jul 2023 14:54:27 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2023/07/architecture-design-the-easy-way/</guid>
+      <description>image via Pixabay 概览 前几日，我在团队内部举行了一场技术分享，我介绍了关于架构设计的最佳实践。将这些实践凝练成了 20 字口诀： 架构看问题 需求看用例 设计看模型 细节看时序 我将顺口溜转到了 Twitter，不少朋友对这些顺口溜产生了浓厚兴趣，希望深入了解。因此，我将我分享中的观点扩展成了这篇文章。 架构设计和系统分析 让我们首先澄清 什么是架构设计和系统分析（简称系分）。有些朋友对前者很熟悉，对后者却不太了解。 不过没关系，以下</description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/arch-easy.png" alt="arch-easy"  />
+
+
+</p>
+<p><small>image via <a href="https://pixabay.com/photos/child-tower-building-blocks-blocks-1864718/">Pixabay</a></small></p>
+<h2 id="概览">概览</h2>
+<p>前几日，我在团队内部举行了一场技术分享，我介绍了关于架构设计的最佳实践。将这些实践凝练成了 <mark>20 字口诀</mark>：</p>
+<ol>
+<li>架构看问题</li>
+<li>需求看用例</li>
+<li>设计看模型</li>
+<li>细节看时序</li>
+</ol>
+<p>我将顺口溜转到了 <a href="https://twitter.com/alswl/status/1683778487726006272">Twitter</a>，不少朋友对这些顺口溜产生了浓厚兴趣，希望深入了解。因此，我将我分享中的观点扩展成了这篇文章。</p>
+<h2 id="架构设计和系统分析">架构设计和系统分析</h2>
+<p>让我们首先澄清 <mark>什么是架构设计和系统分析</mark>（简称系分）。有些朋友对前者很熟悉，对后者却不太了解。
+不过没关系，以下是维基百科上的介绍：</p>
+<blockquote>
+<p>架构，<strong>软件架构</strong>是有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。</p>
+<p>系统分析，旨在研究特定系统结构中各部分（各子系统）的相互作用，系统的对外接口与界面，以及该系统整体的行为、
+功能和局限，从而为系统未来的变迁与有关决策提供参考和依据。</p>
+</blockquote>
+<p>来看一下英文定义可能会更清晰：</p>
+<ul>
+<li>架构 = 软件架构（设计） = Software Architecture <a href="https://en.wikipedia.org/wiki/Software_architecture">Software architecture - Wikipedia</a></li>
+<li>系分 = 系统分析 = System Analysis
+<a href="https://en.wikipedia.org/wiki/Systems_analysis">Systems analysis - Wikipedia</a> + <a href="https://en.wikipedia.org/wiki/Systems_design">Systems design - Wikipedia</a></li>
+</ul>
+<p>我们有时候提到的设计文档，可能涵盖整个设计过程，包括架构设计、系统分析以及其他设计活动（交流、PoC）。</p>
+<p>软件架构（设计）= Software Architecture</p>
+<ul>
+<li>设计和实现软件系统的基本结构和组织形式</li>
+<li>在业务层面：明确问题，厘定概念，呈现价值</li>
+<li>在技术层面：确定基础框架，将不确定性转化为确定性</li>
+<li>工程层面：识别边界和拆分各个模块，提高应用开发效率</li>
+</ul>
+<p>系统分析 = System Analysis</p>
+<ul>
+<li>对业务需求和问题进行分析和研究的过程</li>
+<li>在业务层面：需求收集、需求分析</li>
+<li>在技术层面：建模，绘制流程图、数据流图和接口设计</li>
+<li>工程层面：在应用、系统框架内实现需求</li>
+</ul>
+<p>最后，我来解释一下我对这两者边界的理解。实际上，我认为<mark>架构设计和系统分析并没有明显的界限</mark>。
+一个系统或模块不管如何都会进行系统分析，而当出现以下几个特征时，就开始考虑架构设计问题：</p>
+<ul>
+<li>当有超过 3 个团队在协作时，因为这时涉及到利益和边界的问题。</li>
+<li>当开始主动或被动引入不确定性。</li>
+<li>当开始平衡取舍，需要先做到什么程度，再做到什么程度。</li>
+<li>当不系统过于复杂，太容易达成一致，开始有解释成本时。</li>
+<li>当能够提供别人不了解的信息。</li>
+</ul>
+<h2 id="什么是架构">什么是架构</h2>
+<p>在这里，我们讨论的是技术架构，不会涉及业务架构或产品架构等方面。技术方面的讨论重点是<mark>如何更高效地利用技术能力和方法来解决特定类型的问题</mark>。</p>
+<p>进一步地，技术架构可以分为两种：一种是<mark>从顶层向下</mark>看，包括业务、战略和框架划分；
+另一种是<mark>关注工程实现（编码）</mark>层面需要解决的架构问题。</p>
+<p>那些经验丰富的人常常有较宏观的视角，使用的常见名词有：全局、宏观、领域、战略、平衡、规划。我将这些词汇整理成了一个词云如下：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/word-cloud-arch-biz.png" alt="word-cloud-arch-biz"  />
+
+
+</p>
+<p><small>generted by <a href="https://tendcode.com/tool/word-cloud/">https://tendcode.com/tool/word-cloud/</a></small></p>
+<p>以上这些概念在架构设计和系统分析中都非常重要，因为它们帮助我们在整体上考虑问题，甚至超越技术层面，
+从业务价值、商业策略和业务战略的角度思考问题。</p>
+<p>另一种架构偏重于工程设计和实现。常见的关键词有：领域建模、UML、GoF23，SOLID，高内聚低耦合等等。对应的词云如下：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/word-cloud-arch-impl.png" alt="word-cloud-arch-impl"  />
+
+
+</p>
+<p><small>generted by <a href="https://tendcode.com/tool/word-cloud/">https://tendcode.com/tool/word-cloud/</a></small></p>
+<p>架构的话题非常广泛，本文选择从一个切入点出发：<mark>通过实践和方法论，使架构意识在日常工作中发挥作用，以满足 80%的工程设计开发场景</mark>。
+我称之为「架构设计 the easy way」。</p>
+<h2 id="极简架构设计---架构看问题">极简架构设计 - 架构看问题</h2>
+<p>理解架构的第一步，也是最重要的一步，就是关注「问题」。也就是说，<mark>你遇到了什么问题，你将如何去解决它</mark>？</p>
+<p>通常情况下，如果我们的业务和系统都稳定运行，没有遇到任何问题，我们就不太需要进行架构设计。但是，只要涉及到架构设计，
+必定是因为我们遇到了问题。这些问题可能源自新的需求，也可能是外部环境的变化，
+亦或是系统自身随着时间的发展而出现的。无论问题的来源如何，我们都遇到了问题。</p>
+<p>遇到问题之后，我们该如何解决？就像将大象装进冰箱一样，需要分成几个步骤。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/elephant.png" alt="把大象装进冰箱"  />
+
+
+</p>
+<p><small>image via unkown</small></p>
+<p>因此，解决问题也有三个步骤：第一步是将问题描述清楚，第二步是进行协商和决策达成一致，第三步则是着手解决问题。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/q-n-a.png" alt="问题-一致-行动"  />
+
+
+</p>
+<p>我还想问一个听上去很愚蠢的问题：为什么不能直接解决问题？</p>
+<p>因为问题是复杂的，有许多解决路径，不同的解决方案各有优劣和成本。在架构设计中，我们需要完成这些决策。</p>
+<p>那为什么不直接进行决策，甚至直接开始动手？</p>
+<p>首先可能涉及到职权问题，架构师未必有最终决策权，需要有决策权的人来做最后的决定。
+第二个原因是架构师未必是方方面面的专家，设计一个复杂系统时候需要协调多个部分和领域专家来一起评估决策。</p>
+<h3 id="案例">案例</h3>
+<p>我举 Prometheus 的架构设计来作为例子。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/prometheus-architecture.png" alt="Prometheus architecture"  />
+
+
+</p>
+<p><small>image via <a href="https://prometheus.io/docs/introduction/overview/">Prometheus</a></small></p>
+<p>这个架构图回答了很多问题，我举几个例子：</p>
+<ul>
+<li>问题：数据采集使用 Push 还是 Pull？使用什么存储？如何设计告警链路？</li>
+<li>决策：采用 Pull（少量情况下使用 Pushgateway）；使用自己实现的 TSDB；使用 Alertmanager 与外部系统对接</li>
+<li>ROI：采用 Pull 降低 Target 观测成本，不需要使用 Push-based 的 Registry；没有现成的外部实现（当时）；提供 Router / Sub 的告警机制以便灵活接入外部系统</li>
+</ul>
+<h3 id="小结">小结</h3>
+<p>问题驱动架构变化，架构方案应对问题，架构评审统一解决方案。</p>
+<p>关于决策拍板问题。我强烈推崇架构师根据自己具备的领域知识、对行业的判断以及对现状的了解，
+做出自己的思考和独立判断。这些思考过程应该有因果关系的支持，<mark>一个优秀的架构师必定拥有自己的观点</mark>。</p>
+<p>最后，我补充一个小问题：为什么这里没有提到架构分层、模块分层？</p>
+<p>不是因为分层和框架不重要，而是在因为大家都很专业。分层和模块化已经是基本常识和技能，因此反而往往不会成为争论和决策的焦点。
+如果分层和框架无法快速形成一致，有可能团队构成上存在问题，也可能问题过于复杂已经不是 80% case。</p>
+<p>在本阶段，产出的成果包括架构图以及对问题、价值、成本、风险和分工达成一致的认识。</p>
+<h2 id="极简架构设计---需求看用例">极简架构设计 - 需求看用例</h2>
+<p>需求是对问题的解答。我个人喜欢用<mark>思维导图或白纸来画图</mark>，将需求讲清楚。
+画什么内容呢？理清角色，并列出各种动作和行为。</p>
+<p>那有什么技巧可以将事项都整理出来呢？我经常使用<mark>主谓宾状从</mark>的方法。也就是说，明确哪些人，在什么场景（可选），以什么状态（可选）做着什么事情。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/gramma.jpg" alt="主谓宾"  />
+
+
+</p>
+<p><small>image via unkown</small></p>
+<p>通过用例将需求清晰地拆解，并在这个过程中不断与需求提供方进行交流和沟通。</p>
+<p>Demo 稿是产品经理的武器，而需求用例则是工程师的武器。</p>
+<p>有些初入职场的研发人员会不自然地变成需求的执行者。我比较果断地判断，不了解业务的工程师和外包没什么区别。而需求分析环节是最重要的，是对业务输入进行理解、梳理、重新设计的机会。通过用例的整理，我们可以将一些不切实际、不可靠的需求反馈给需求方。</p>
+<p>这是少数可以推动（反馈）需求方的阶段，一定要珍惜。</p>
+<h3 id="案例-1">案例</h3>
+<p>这里有一个产品用例的范例：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/netease-music.png" alt="网易云音乐"  />
+
+
+</p>
+<p><small> image via <a href="https://www.woshipm.com/evaluating/3493594.html">网易云音乐产品分析报告</a></small></p>
+<p>实际上，这个用例是敌对势力那边总结的 😄，但仍然能够体现用例的重要性。</p>
+<h3 id="小结-1">小结</h3>
+<p>除了使用主谓宾的方式来进行设计，还有一些其他技巧：</p>
+<ul>
+<li>使用动线（行动路线）：想象用户（或行动者）完成他们目标的行动路线</li>
+<li>可以优先考虑解决核心路径中的 20%问题</li>
+<li>通过分角色、正交拆分等方式将用例整理得更加清晰；将用例分类分到各个模块</li>
+</ul>
+<p>本阶段的产出物包括：Demo 稿、用例图。</p>
+<h2 id="极简架构设计---设计看模型">极简架构设计 - 设计看模型</h2>
+<p>在我看来，设计的核心在于模型：<mark>模型确定了数据的载体和边界</mark>。而<mark>数据确定了组成部分，边界则确定了归属和职责</mark>。
+在 UML 中，大量的 Entity 和 Object 用于确定模型的边界。
+随着业务系统复杂程度的增加，建模也会面临更加复杂的挑战。</p>
+<p>我总结了一下我建模的几个要点：</p>
+<ul>
+<li>明确术语（中英文）、含义、备注。</li>
+<li>确定核心模型（重点放在最关键的 20%）。</li>
+<li>提炼和抽象模型。</li>
+<li>明确模型之间的关联关系。</li>
+<li>结合动态和静态：少量模型具有行为，关注其提供的功能（Functions）。</li>
+<li>业务模型 &lt;-&gt; 数据模型转换。</li>
+</ul>
+<p>很多人对中英文术语表不屑一顾，但我却很在意这点。有一个效应叫做「外语陌生感」（Foreign Language Effect），
+就像博物学使用拉丁语 / 希腊语来描述物种一样。我们非英语母语的工程师，使用英文描述术语可以快速地聚焦问题。</p>
+<p>始终牢记 80/20 原则的存在，特别是在设计阶段，一定要关注核心对象，将其放大而非过度关注细节。
+一般来说，关注最核心的 20%模型就可以满足大部分场景。</p>
+<p>在模型的提炼和抽象过程中要反复斟酌，并且可以将这个过程联动到前期的用例定义和后期的时序设计，
+这需要大量领域知识的支持。我个人喜欢在这个阶段参考外部的代码和设计。</p>
+<p>模型之间的关联关系主要是 1:1 / 1:N / M:N 关系，需要使用箭头清楚地标记主从关系。主从关系意味着从属关系，
+这会影响后续一系列细节设计（如 URL、数据库、生命周期管理等）。
+我个人推荐避免使用 M:N 关系，这种形式通常表明中间会有一个凭证（Credential）或关系（Relationship / Binding）。</p>
+<p>除了关注静态的数据，还要关注模型的行为（极少量模型才有）。这个阶段可以进一步做一些识别，方便下一步的细节设计。</p>
+<p>完成业务模型设计之后，同时要考虑数据模型。对于普通业务系统，这个转换会非常直观简单。业务系统通常是无状态系统，
+完全依赖数据库进行存储。如果面临 DIA（Data Intensive Application）系统，就要考虑运行时数据的管理，
+以及一系列复杂的生命周期管理和可用性管理（我估计有这个需求的朋友，不会看到这里了）。</p>
+<h3 id="案例-2">案例</h3>
+<p>我举例一个 Kubernetes 的 RBAC（Role-Based Access Control）系统，这是常见的 AuthZ 授权鉴权系统（注意，不是 AuthN 认证系统）。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/rbac.png" alt="Kubernetes RBAC"  />
+
+
+</p>
+<p><small>image via <a href="https://dev.to/alcide/kubernetes-rbac-moving-from-it-s-complicated-to-in-a-relationship-1bbm">Kubernetes RBAC  - DEV Community</a> </small></p>
+<p>这里我抛几个问题：</p>
+<ul>
+<li>为什么需要使用 Role / ClusterRole 两种？它们的结构如何？</li>
+<li>为什么不使用 ACL？使用 ACL 和使用 RBAC 有什么差异？</li>
+<li>为什么不用 Policy？为什么不使用 Policy？</li>
+</ul>
+<p>这些答案都需要建模来回答的。</p>
+<h3 id="非业务系统的模型">非业务系统的模型</h3>
+<p>在我们的讨论中，更多关注的是业务模型，即用户能感知并产品能理解的模型，通常需要存储在数据库中。</p>
+<p>但在基础设施领域，也是有模型的，有时候称之为&quot;概念&quot;（Concept）。基础设施领域的模型通常会简单得多，
+而业务模型可能会非常复杂，因为世界本身就很复杂，而基础设施则专注于解决非常垂直领域的问题，因此相对简单。</p>
+<p>此外，基础设施领域的特殊性会导致有很多抽象的建模，例如最简单到我们常常忽略的（Manager / Service）类别。
+一些带有数据和状态的模型，比如 Executor，是常见的概念，而 Registry / Queue 也是常见的概念。</p>
+<p>这是 Kubernetes的 <a href="https://kubernetes.io/docs/concepts/">Concepts</a>，十几个子类，上百个概念更显这个系统的复杂性。</p>
+<h3 id="小结-2">小结</h3>
+<p>模型不仅仅是数据，还涉及边界，边界决定了其归属和职责。</p>
+<p>模型的设计需要动静结合来看，静态方面关注其持有的内容，动态方面则关注其提供的功能。</p>
+<p>在基础设施领域，模型的产出可能包括 UML Model 图、ER 图、数据库 DML、类文件、OpenAPI Swagger（部分）等。</p>
+<h2 id="极简架构设计---细节看时序">极简架构设计 - 细节看时序</h2>
+<blockquote>
+<p>程序设计 = 数据结构 + 算法 + 流程控制</p>
+</blockquote>
+<p>在将设计转换为模型之前，最后一个重要的步骤是控制细节。对于需求方和决策者来说，这一步可能并不重要，
+但对于实施方（开发团队）来说，这个步骤直接影响交付结果的质量和时间。</p>
+<p>我认为细节应该在时序图上进行呈现。</p>
+<p>通常我们有两种常用的图形来展示细节：<mark>流程图和时序图</mark>。两者实际上有很多相似之处，但我个人更喜欢时序图，因为它不仅包含顺序的概念，还清晰地展示了流程和系统之间的交互边界。</p>
+<p>我的技巧是，一般每个用例都会对应一个时序图。</p>
+<h3 id="案例-3">案例</h3>
+<p>这里以 AWS 一个官方博客作为范例：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/aws-seq.png" alt="Header-based API Gateway versioning with CloudFront"  />
+
+
+</p>
+<p><small>via <a href="https://aws.amazon.com/blogs/architecture/sequence-diagrams-enrich-your-understanding-of-distributed-architectures/">Sequence Diagrams enrich your understanding of distributed architectures | AWS Architecture Blog</a></small></p>
+<p>在上图中，展示了 AWS 中使用 CloudFront 的一个时序图，从时序图中可以清晰地看到多个系统之间请求的流转以及多种异常状态的处理。</p>
+<h3 id="小结-3">小结</h3>
+<p>这里我总结一下时序图的小技巧：</p>
+<ul>
+<li>用户动作是发起</li>
+<li>系统边界要清晰</li>
+<li>有去有回是同步</li>
+<li>有去无回是异步</li>
+</ul>
+<p>一般来说，时序图画好了，就可以放心地交给项目团队开始实施，不会有大的错误。如果没有时序图，依赖的就完全是彼此之间的合作经验和信任度了。</p>
+<p>产出：时序图、API 文档（Open API Swagger）、前端 service 生成（如果有）。</p>
+<h2 id="极简架构设计---小结">极简架构设计 - 小结</h2>
+<p>在这个阶段，尽管我们还没有开始编写代码，但已经清楚了需要做什么，以及实现的样子。我们也有了类结构、API 定义、前端服务生成等产出。多个团队可以同时开始协作，没有明显的瓶颈。</p>
+<ul>
+<li>✅ 问题定义</li>
+<li>✅ 解决方法</li>
+<li>✅ 类结构、API 定义</li>
+<li>✅ 服务端代码生成</li>
+<li>✅ 流程确定</li>
+<li>✅ 汇报材料 1/3</li>
+<li>✅ 技术分享材料 1/2</li>
+</ul>
+<p>如果未来需要汇报，汇报材料已经有了 1/3 的内容。如果需要撰写技术分享文档，也已经具备了 1/2 的内容。</p>
+<p>如果这个项目是一个简单的 CRUD 应用系统，那么基本不会有什么难点。</p>
+<p>如果是一个 DIA 系统（Data Intensive Application），则需要开始设计和实施数据存储部分，并考虑数据一致性和并发相关的问题。对于一个复杂的系统，还需要继续实施多个系统连接处是否存在不确定性。如果在工程上面临同步方面的挑战，例如应用框架改造、通讯系统改造等，也要提前进行风险排除。（个人认为同时进行技术升级和业务开发并不明智）。</p>
+<h2 id="番外---画图工具">番外 - 画图工具</h2>
+<p>我对于画图非常着迷，涵盖了系统架构图、流程图等绘制。或许这与我内心渴望成为一名设计师有关吧~</p>
+<p>作为一名工程师，必须积累自己的画图工具，熟练掌握其技巧，构建一套属于自己的 UI 工具包，
+从而能够将脑海中的构思快速还原到文档中。</p>
+<p>我的画图工具组合相当丰富。用于绘制架构图的工具包括：</p>
+<ul>
+<li>框图
+<ul>
+<li>OmniGraffle（复杂、美观）</li>
+<li>Excalidraw（简单、随性）</li>
+</ul>
+</li>
+<li>部署图
+<ul>
+<li>Excalidraw</li>
+</ul>
+</li>
+<li>脑图 MindMap
+<ul>
+<li>SimpleMind（收费）</li>
+<li>XMind（收费）</li>
+</ul>
+</li>
+</ul>
+<p>用来做工程设计（UML）的工具如下：</p>
+<ul>
+<li>use case 用例
+<ul>
+<li>语雀画图</li>
+<li>plantuml（语雀支持渲染）</li>
+</ul>
+</li>
+<li>sequence 时序图
+<ul>
+<li>plantuml</li>
+</ul>
+</li>
+<li>state 状态图
+<ul>
+<li>语雀</li>
+</ul>
+</li>
+<li>ER 图
+<ul>
+<li>Excalidraw</li>
+</ul>
+</li>
+<li>Gantt 甘特图
+<ul>
+<li>plantuml</li>
+</ul>
+</li>
+</ul>
+<p>这里我再软广一下我维护的 <a href="https://excalidraw.alswl.com/">Excalidraw Fork</a>，支持中文首先字体，保持风格的统一。</p>
+<h2 id="番外---the-hard-way">番外 - the hard way</h2>
+<p>回到本次分享的出发点，给大家一份简单可行的架构设计方案。
+但是对于你这样好学的人来说，肯定不会满足于如此简单的流程，
+毕竟还有那 20% 的复杂场景无法完全涵盖。
+我给你一个关键词列表和一些建议的书单，帮助你进一步加深学习：</p>
+<ul>
+<li>原则</li>
+<li>理念</li>
+<li>思想</li>
+<li>规律</li>
+<li>方法论</li>
+<li>案例</li>
+</ul>
+<p>以下是一些书单，可以帮助你深入学习：</p>
+<ul>
+<li>业务架构
+<ul>
+<li><a href="https://book.douban.com/subject/1792387/">UML 和模式应用 - Craig Larman</a></li>
+<li><a href="https://book.douban.com/subject/5344973/">领域驱动设计 - Eric Evans</a></li>
+</ul>
+</li>
+<li>技术架构
+<ul>
+<li><a href="https://book.douban.com/subject/30468597/">重构 - Martin Fowler</a></li>
+<li><a href="https://book.douban.com/subject/4199741/">代码整洁之道 - Robert C. Martin</a></li>
+</ul>
+</li>
+</ul>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>实用 Web API 规范</title>
       <link>https://blog.alswl.com/2023/04/web-api-guidelines/</link>
@@ -20,7 +397,7 @@
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/202304/pyramid.png" alt="pyramid"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202304/pyramid.png" alt="pyramid"  />
 
 
 </p>
@@ -49,7 +426,7 @@ API 可以通过标准化的方式进行数据传输和处理，从而实现各�
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/202304/why.png" alt="why"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202304/why.png" alt="why"  />
 
 
 </p>
@@ -72,7 +449,7 @@ API 可以通过标准化的方式进行数据传输和处理，从而实现各�
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/202304/principle.png" alt="principle"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202304/principle.png" alt="principle"  />
 
 
 </p>
@@ -89,7 +466,7 @@ API 可以通过标准化的方式进行数据传输和处理，从而实现各�
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/202304/rest-four-level.png" alt="rest-four-level"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202304/rest-four-level.png" alt="rest-four-level"  />
 
 
 </p>
@@ -530,7 +907,7 @@ https://test.com/apis/v3/books/hot
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/202304/models.png" alt="models"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202304/models.png" alt="models"  />
 
 
 </p>
@@ -555,7 +932,7 @@ https://test.com/apis/v3/books/hot
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/202304/models-with-children.png" alt="models-with-children"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202304/models-with-children.png" alt="models-with-children"  />
 
 
 </p>
@@ -1255,7 +1632,7 @@ API 定义 <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28">GitHu
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/202304/apple-music.png" alt="Apple Music"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202304/apple-music.png" alt="Apple Music"  />
 
 
 </p>
@@ -1309,7 +1686,7 @@ API 定义 <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28">GitHu
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/202006/wall.png" alt="wall"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202006/wall.png" alt="wall"  />
 
 
 
@@ -1510,7 +1887,7 @@ Kotlin / Scala 等语言的类型推断（Type Inference）。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/202003/computer.jpg" alt="image from pixabay"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202003/computer.jpg" alt="image from pixabay"  />
 
 
 </p>
@@ -1531,7 +1908,7 @@ Kotlin / Scala 等语言的类型推断（Type Inference）。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/202003/team.jpg" alt="image from pixabay"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202003/team.jpg" alt="image from pixabay"  />
 
 
 </p>
@@ -1561,7 +1938,7 @@ Kotlin / Scala 等语言的类型推断（Type Inference）。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/202003/book.jpg" alt="image from pixabay"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202003/book.jpg" alt="image from pixabay"  />
 
 
 </p>
@@ -1640,7 +2017,7 @@ Kotlin / Scala 等语言的类型推断（Type Inference）。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/202003/teamwork.jpg" alt="image from pixabay"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202003/teamwork.jpg" alt="image from pixabay"  />
 
 
 </p>
@@ -1685,7 +2062,7 @@ Kotlin / Scala 等语言的类型推断（Type Inference）。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/refactor.png" alt="201806/refactor.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/refactor.png" alt="201806/refactor.png"  />
 
 
 </p>
@@ -1719,7 +2096,7 @@ Yugong 数据流是标准 ETL 流程，分别有 Extractor / Translator / Applie
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/etl.png" alt="ETL &amp;amp; Java Class"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/etl.png" alt="ETL &amp;amp; Java Class"  />
 
 
 </p>
@@ -1730,7 +2107,7 @@ Yugong 数据流是标准 ETL 流程，分别有 Extractor / Translator / Applie
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/extractor.png" alt="Extractor Class"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/extractor.png" alt="Extractor Class"  />
 
 
 </p>
@@ -1756,7 +2133,7 @@ Yugong 官方提供 Extractor 抽象出 <code>AbstractRecordExtractor</code> 类
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/translator.png" alt="Translator Class"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/translator.png" alt="Translator Class"  />
 
 
 </p>
@@ -1779,7 +2156,7 @@ Yugong 官方提供 Extractor 抽象出 <code>AbstractRecordExtractor</code> 类
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/applier.png" alt="Applier Class"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/applier.png" alt="Applier Class"  />
 
 
 </p>
@@ -1829,7 +2206,7 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/extractor-new.png" alt="Extractor New Class"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/extractor-new.png" alt="Extractor New Class"  />
 
 
 </p>
@@ -1850,7 +2227,7 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/translator-new.png" alt="Translator New Class"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/translator-new.png" alt="Translator New Class"  />
 
 
 </p>
@@ -1873,7 +2250,7 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201806/applier-new.png" alt="Applier New Class"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/applier-new.png" alt="Applier New Class"  />
 
 
 </p>
@@ -1927,7 +2304,7 @@ Slide 含金量高，在讲述核心中核心。</p>
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/flying-tanker.png" alt="flying-tanker"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/flying-tanker.png" alt="flying-tanker"  />
 
 
 </p>
@@ -1955,7 +2332,7 @@ Slide 含金量高，在讲述核心中核心。</p>
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/yugong-oracle.png" alt="yugong-oracle.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/yugong-oracle.png" alt="yugong-oracle.png"  />
 
 
 </p>
@@ -2001,7 +2378,7 @@ CDC 全称 Change Data Capture，设计目的就是用来解决增量数据的�
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-data-flow.png" alt="cdc-data-flow.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/cdc-data-flow.png" alt="cdc-data-flow.png"  />
 
 
 </p>
@@ -2086,7 +2463,7 @@ Change Table 长什么样，可以有个直观的认识。</p>
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-influence.png" alt="Influence of capture job parameters"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/cdc-influence.png" alt="Influence of capture job parameters"  />
 
 
 </p>
@@ -2120,7 +2497,7 @@ Change Table 长什么样，可以有个直观的认识。</p>
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-metrics.png" alt="cdc-metrics.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/cdc-metrics.png" alt="cdc-metrics.png"  />
 
 
 </p>
@@ -2129,7 +2506,7 @@ Change Table 长什么样，可以有个直观的认识。</p>
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/cdc-system-load.png" alt="cdc-system-load.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/cdc-system-load.png" alt="cdc-system-load.png"  />
 
 
 </p>
@@ -2190,7 +2567,7 @@ Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201805/canal.png" alt="canal.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/canal.png" alt="canal.png"  />
 
 
 </p>
@@ -2477,7 +2854,7 @@ Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-bird.png" alt="201803/migration-bird.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201803/migration-bird.png" alt="201803/migration-bird.png"  />
 
 
 </p>
@@ -2517,7 +2894,7 @@ Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-db-offline-readonly.png" alt="201803/migration-db-offline-readonly.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201803/migration-db-offline-readonly.png" alt="201803/migration-db-offline-readonly.png"  />
 
 
 </p>
@@ -2530,7 +2907,7 @@ Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/migration-db-online.png" alt="201803/migration-db-online.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201803/migration-db-online.png" alt="201803/migration-db-online.png"  />
 
 
 </p>
@@ -2823,7 +3200,7 @@ SQL Server 有 <code>physloc</code>。这种方案可以解决无主键进行比
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/sql-server-metrics.png" alt="201803/sql-server-metrics.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201803/sql-server-metrics.png" alt="201803/sql-server-metrics.png"  />
 
 
 </p>
@@ -2832,7 +3209,7 @@ SQL Server 有 <code>physloc</code>。这种方案可以解决无主键进行比
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201803/mysql-metrics.png" alt="201803/mysql-metrics.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201803/mysql-metrics.png" alt="201803/mysql-metrics.png"  />
 
 
 </p>
@@ -2869,7 +3246,7 @@ SQL Server 有 <code>physloc</code>。这种方案可以解决无主键进行比
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201711/performance_900.jpg" alt="201711/performance.jpg"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201711/performance_900.jpg" alt="201711/performance.jpg"  />
 
 
 </p>
@@ -2950,7 +3327,7 @@ Fire V480 Guide(page 82)的例图：</p>
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201711/v480.png" alt="201711/v480.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201711/v480.png" alt="201711/v480.png"  />
 
 
 </p>
@@ -3050,7 +3427,7 @@ CPU 限制和存储I / O限制。 所有这些资源限制，都可以使用USE 
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201711/usemethod_flow.png" alt="201711/usemethod_flow.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201711/usemethod_flow.png" alt="201711/usemethod_flow.png"  />
 
 
 </p>
@@ -3071,7 +3448,7 @@ USE 方法提供了一个简单的流程来尝试第一步是寻找一个资源�
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201711/apollo_LM_guidance.png" alt="201711/apollo_LM_guidance.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201711/apollo_LM_guidance.png" alt="201711/apollo_LM_guidance.png"  />
 
 
 </p>
@@ -3188,7 +3565,7 @@ cloud.</li>
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/stack-overflow.jpg" alt="Stack Overflow"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/stack-overflow.jpg" alt="Stack Overflow"  />
 
 
 </p>
@@ -3368,7 +3745,7 @@ cloud.</li>
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-MainCertificate.png" alt="Main Certificate"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-MainCertificate.png" alt="Main Certificate"  />
 
 
 </a></p>
@@ -3467,7 +3844,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-Layout.svg" alt="Logical Architecture"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-Layout.svg" alt="Logical Architecture"  />
 
 
 </a></p>
@@ -3489,7 +3866,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-Teststackoverflow.png" alt="teststackoverflow.com"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-Teststackoverflow.png" alt="teststackoverflow.com"  />
 
 
 </a></p>
@@ -3507,7 +3884,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-ClientTimings.png" alt="Client Timings Dashboard"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-ClientTimings.png" alt="Client Timings Dashboard"  />
 
 
 </a></p>
@@ -3517,7 +3894,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png" alt="Client Timings Database"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png" alt="Client Timings Database"  />
 
 
 </a></p>
@@ -3780,7 +4157,7 @@ END)
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-Websockets.png" alt="HAProxy Websockets"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-Websockets.png" alt="HAProxy Websockets"  />
 
 
 </a></p>
@@ -3790,7 +4167,7 @@ END)
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-WebsocketMemory.png" alt="HAProxy Websocket Memory"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-WebsocketMemory.png" alt="HAProxy Websocket Memory"  />
 
 
 </a></p>
@@ -3896,7 +4273,7 @@ END)
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/HTTPS-HelpCommit.png" alt="Me being a dumbass"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-HelpCommit.png" alt="Me being a dumbass"  />
 
 
 </a></p>
@@ -3970,7 +4347,7 @@ END)
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/sql-server.png" alt="sql-server.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/sql-server.png" alt="sql-server.png"  />
 
 
 </p>
@@ -4043,7 +4420,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-uncommitted.png" alt="read-uncommitted.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/read-uncommitted.png" alt="read-uncommitted.png"  />
 
 
 </p>
@@ -4058,7 +4435,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-committed-1.png" alt="read-committed-1.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/read-committed-1.png" alt="read-committed-1.png"  />
 
 
 </p>
@@ -4073,7 +4450,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/read-committed-2.png" alt="read-committed-2.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/read-committed-2.png" alt="read-committed-2.png"  />
 
 
 </p>
@@ -4089,7 +4466,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/repeatable-read.png" alt="repeatable-read.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/repeatable-read.png" alt="repeatable-read.png"  />
 
 
 </p>
@@ -4107,7 +4484,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/repeatable-read-2.png" alt="repeatable-read-2.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/repeatable-read-2.png" alt="repeatable-read-2.png"  />
 
 
 </p>
@@ -4126,7 +4503,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201709/serializable.png" alt="serializable.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/serializable.png" alt="serializable.png"  />
 
 
 </p>
@@ -4317,7 +4694,7 @@ Insert 同时 Query 不会被 Block，
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201706/stock-exchange.png" alt="201706/stock-exchange.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201706/stock-exchange.png" alt="201706/stock-exchange.png"  />
 
 
 </p>
@@ -4497,7 +4874,7 @@ Brend Gregg 是 Netflix 的首席 SRE，著有 <a href="http://www.brendangregg.
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201705/wooyun.jpg" alt="201705/wooyun.jpg"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201705/wooyun.jpg" alt="201705/wooyun.jpg"  />
 
 
 </p>
@@ -4605,7 +4982,7 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……</
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201701/saber.jpeg" alt="201701/saber.jpeg"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201701/saber.jpeg" alt="201701/saber.jpeg"  />
 
 
 </p>
@@ -4661,7 +5038,7 @@ TPS 、Latency 和 Capacity。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201701/sre.jpeg" alt="201701/sre.jpeg"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201701/sre.jpeg" alt="201701/sre.jpeg"  />
 
 
 </p>
@@ -4697,7 +5074,7 @@ TPS 、Latency 和 Capacity。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201612/mouse.jpeg" alt="201612/mouse.jpeg"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201612/mouse.jpeg" alt="201612/mouse.jpeg"  />
 
 
 
@@ -4742,7 +5119,7 @@ TPS 、Latency 和 Capacity。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201612/https_ros_process.jpg" alt="201612/https_ros_process.jpg"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201612/https_ros_process.jpg" alt="201612/https_ros_process.jpg"  />
 
 
 </p>
@@ -4818,7 +5195,7 @@ Domain Validation / Orgnization Validation / Extented Validation。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201611/https.png" alt="201611/https.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201611/https.png" alt="201611/https.png"  />
 
 
 </p>
@@ -4856,7 +5233,7 @@ Domain Validation / Orgnization Validation / Extented Validation。
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201611/httpdnsjbyl.png" alt="201611/httpdnsjbyl.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201611/httpdnsjbyl.png" alt="201611/httpdnsjbyl.png"  />
 
 
 </p>
@@ -4910,7 +5287,7 @@ location / {
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201608/abao_thumbnail.png" alt="abao.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201608/abao_thumbnail.png" alt="abao.png"  />
 
 
 </p>
@@ -5178,7 +5555,7 @@ location / {
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201606/message.png" alt="看我的一堆报警消息"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201606/message.png" alt="看我的一堆报警消息"  />
 
 
 </p>
@@ -5278,7 +5655,7 @@ location / {
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201602/i_love_timeouts_digital_design_mugs.jpg" alt="i_love_timeouts_digital_design_mugs.jpg"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201602/i_love_timeouts_digital_design_mugs.jpg" alt="i_love_timeouts_digital_design_mugs.jpg"  />
 
 
 </p>
@@ -5311,7 +5688,7 @@ WARN  [2015-12-09 11:01:02,731] org.eclipse.jetty.io.SelectorManager: Could not 
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201602/image2015-12-9_1.png" alt="image2015-12-9_1.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201602/image2015-12-9_1.png" alt="image2015-12-9_1.png"  />
 
 
 </p>
@@ -5321,7 +5698,7 @@ WARN  [2015-12-09 11:01:02,731] org.eclipse.jetty.io.SelectorManager: Could not 
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201602/image2015-12-9_2.png" alt="image2015-12-9_2.png"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201602/image2015-12-9_2.png" alt="image2015-12-9_2.png"  />
 
 
 </p>
@@ -5374,7 +5751,7 @@ public static int RESPONSE_TIMEOUT = 30000;
 
 
 
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201510/logger.jpg" alt="logger"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201510/logger.jpg" alt="logger"  />
 
 
 </p>
@@ -5525,76 +5902,6 @@ Twitter 出品，<a href="https://github.com/twitter/twemproxy">链接</a>。</p
 # 4.552 g db1
 17:38:36,422 - __main__ - INFO - v, dumps keys 1392/7711834/..., time: 3076.41647506
 </code></pre><p>附上 Migration Script：<a href="https://gist.github.com/alswl/e96a5308ebac4f69f809f9ba56dfe168">https://blog.alswl.com/2015/07/redis-migration/ Redis Cluster Migration</a></p>
-]]></content:encoded>
-    </item>
-    
-    <item>
-      <title>在 Raspberry Pi 上使用 AirPlay</title>
-      <link>https://blog.alswl.com/2014/07/raspberrypi-airplay/</link>
-      <pubDate>Wed, 23 Jul 2014 23:19:50 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2014/07/raspberrypi-airplay/</guid>
-      <description>早在去年时候，我就发现有个叫做 Raspberry Pi 的玩意， 已经忘了是从那里得知这个东西。这个卡片大小的电路板是可以运行 Debian 的主机，提供了一个发挥自己想象的平台。13 年 南京极客行动 时候，Michael 好像还拿了一个板子参加比赛。 我对这个东西充满了兴趣，仅售 $39 的主机，小巧的机身， 可以充分发挥自己的想象力：离线下载，动作片播放器，家庭分享中心， 给侄子学习编程~想到这些可以发挥自己的创造力， 就迫不及待的要去采购并去尝试。 不</description>
-      <content:encoded><![CDATA[<p>早在去年时候，我就发现有个叫做 <a href="http://www.raspberrypi.org/">Raspberry Pi</a> 的玩意，
-已经忘了是从那里得知这个东西。这个卡片大小的电路板是可以运行
-Debian 的主机，提供了一个发挥自己想象的平台。13 年 <a href="http://geekon.geekstack.org/">南京极客行动</a>
-时候，Michael 好像还拿了一个板子参加比赛。</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201407/RaspberryPi.jpg" alt="RaspberryPi.jpg"  />
-
-
-</p>
-<p>我对这个东西充满了兴趣，仅售 $39 的主机，小巧的机身，
-可以充分发挥自己的想象力：离线下载，动作片播放器，家庭分享中心，
-给侄子学习编程~想到这些可以发挥自己的创造力，
-就迫不及待的要去采购并去尝试。</p>
-<p>不过我还是理智的压抑住自己的情感，手头老是有更重要的事情要去做，实在不能再给自己多找一个精力分散的方向。
-于是，我这么一压抑，就压抑了一年。</p>
-<p>后来在 InnoSpae 看到 <a href="http://segmentfault.com/">SegmentFault</a> 的姜尚用 <a href="http://www.arduino.cc/">Arduino</a>
-写了一个播放超级玛丽音乐的程序，又让我重新燃烧起使用硬件创造一些小玩意的热情。</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201407/4f42dcf03f067e12fe5c156e2af1373b.image.538x354.jpg" alt="4f42dcf03f067e12fe5c156e2af1373b.image.538x354.jpg"  />
-
-
-</p>
-<p>碰巧的是，现在有一个非常适合的场景需要这样的工具：前段时间，团队在优化发布流程，也就是将工程师写好的代码发布到正式环境的过程。其中有一个重要环节是需要需求方对提出的功能进行验证。而需求方往往验证的不及时，就需要一个方法来通知需求方。使用 QQ 群效果不好，喊又太累，就想了一个歪主意，在办公室播放音乐。</p>
-<p>简而言之，就是用 Raspberry Pi 播放音乐。几个方案确定之后，发现用 AirPlay 的方式最适合我们：每个人都有控制内容的权利；方案使用方便，一个苹果手机即可；内容来源多，豆瓣、网易、虾米都可以播放。</p>
-<p>分分钟搞定这个方案，一个需要 5 个步骤。</p>
-<ol>
-<li>从淘宝买 RaspBerry Pi、无线网卡、SD 卡。</li>
-<li>从 <a href="http://www.raspberrypi.org/downloads/">Raspberry Pi Download</a> 搞一个 Raspbian，然后 <code>dd</code> 到 SD 卡，看官方文档操作，很详细（Mac 需要考虑使用高速写入 <code>/dev/rdisk1</code>）</li>
-<li>SSH 登录到 <code>pi@192.168.1.x</code>，<code>git clone https://github.com/juhovh/shairplay.git</code> 然后阅读 <a href="https://github.com/juhovh/shairplay">Shairplay</a> 文档安装</li>
-<li>运行 Shairplay <code>shairplay -a 3DAir</code></li>
-<li>在 <strong>同一个</strong> 局域网连着的手机播放音乐，从底向上拉 iPhone 菜单，就会发现多了一个 AirPlay 标记「3DAir」，点击即可播放。</li>
-</ol>
-<p>上图：</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201407/2014-07-15%2019.43.16.jpg" alt="2014-07-15 19.43.16.jpg"  />
-
-
-</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://d05fae.dijingchao.com/upload_dropbox/201407/2014-07-16%2019.25.33.png" alt="2014-07-16 19.25.33.png"  />
-
-
-</p>
-<p>哈哈，以后办公室开 Party，周末关怀，生日会什么的，再不不用担心放音乐问题了~</p>
 ]]></content:encoded>
     </item>
     
