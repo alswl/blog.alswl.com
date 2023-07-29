@@ -4,7 +4,6 @@ slug: "architecture-design-the-easy-way"
 date: 2023-07-29T14:54:27+08:00
 categories: ["coding"]
 tags: ["Design", "Architecture"]
-draft: true
 typora-copy-images-to: ../../static/images/202307
 
 ---
