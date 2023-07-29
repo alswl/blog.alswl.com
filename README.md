@@ -29,7 +29,8 @@ hugo new posts/new.md
 Asset prefix: 
 
 - <del>https://4ocf5n.dijingchao.com/upload_dropbox/</del>
-- https://d05fae.dijingchao.com
+- <del>https://d05fae.dijingchao.com</del>
+- https://e25ba8-log4d-c.dijingchao.com
 
 
 **Wechat mp link process**:

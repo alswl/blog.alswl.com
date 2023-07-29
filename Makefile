@@ -5,7 +5,7 @@ PUBLIC_FOLDER := public/
 UPDATE_FOLDER := static/images/
 BUCKET = blog-alswl-com-202210
 # CLOUDFRONT_ID := ABCDE12345678
-CDN_HOST = https://d05fae.dijingchao.com
+CDN_HOST = https://e25ba8-log4d-c.dijingchao.com
 DOMAIN = blog.alswl.com
 SITEMAP_URL = https://blog.alswl.com/sitemap.xml
 
@@ -25,8 +25,6 @@ sync-images:
 		--exclude ".*" \
 		--exclude "*/.*" \
 		./$(UPDATE_FOLDER) s3://blog-alswl-com-202210/
-
-
 
 
 .PHONY: cdn
