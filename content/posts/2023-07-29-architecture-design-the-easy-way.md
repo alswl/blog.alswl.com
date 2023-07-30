@@ -10,7 +10,7 @@ typora-copy-images-to: ../../static/images/202307
 
 ![arch-easy](../../static/images/202307/arch-easy.png)
 
-<small>image via [Pixabay](https://pixabay.com/photos/child-tower-building-blocks-blocks-1864718/)</small>
+<small>image via [Pixabay](https://pixabay.com/photos/child-tower-building-blocks-blocks-1864718/)</small>
 
 ## 概览
 
@@ -67,7 +67,8 @@ typora-copy-images-to: ../../static/images/202307
 
 ## 什么是架构
 
-在这里，我们讨论的是技术架构，不会涉及业务架构或产品架构等方面。技术方面的讨论重点是<mark>如何更高效地利用技术能力和方法来解决特定类型的问题</mark>。
+在这里，我们讨论的是技术架构，不会涉及业务架构或产品架构等方面。
+技术方面的讨论重点是<mark>如何更高效地利用技术能力和方法来解决特定类型的问题</mark>。
 
 进一步地，技术架构可以分为两种：一种是<mark>从顶层向下</mark>看，包括业务、战略和框架划分；
 另一种是<mark>关注工程实现（编码）</mark>层面需要解决的架构问题。
@@ -123,13 +124,14 @@ typora-copy-images-to: ../../static/images/202307
 
 ![Prometheus architecture](../../static/images/202307/prometheus-architecture.png)
 
-<small>image via [Prometheus](https://prometheus.io/docs/introduction/overview/)</small>
+<small>image via [Prometheus](https://prometheus.io/docs/introduction/overview/)</small>
 
 这个架构图回答了很多问题，我举几个例子：
 
 - 问题：数据采集使用 Push 还是 Pull？使用什么存储？如何设计告警链路？
 - 决策：采用 Pull（少量情况下使用 Pushgateway）；使用自己实现的 TSDB；使用 Alertmanager 与外部系统对接
-- ROI：采用 Pull 降低 Target 观测成本，不需要使用 Push-based 的 Registry；没有现成的外部实现（当时）；提供 Router / Sub 的告警机制以便灵活接入外部系统
+- ROI：采用 Pull 降低 Target 观测成本，不需要使用 Push-based 的 Registry；
+  没有现成的外部实现（当时）；提供 Router / Sub 的告警机制以便灵活接入外部系统
 
 ### 小结
 
@@ -152,7 +154,8 @@ typora-copy-images-to: ../../static/images/202307
 需求是对问题的解答。我个人喜欢用<mark>思维导图或白纸来画图</mark>，将需求讲清楚。
 画什么内容呢？理清角色，并列出各种动作和行为。
 
-那有什么技巧可以将事项都整理出来呢？我经常使用<mark>主谓宾状从</mark>的方法。也就是说，明确哪些人，在什么场景（可选），以什么状态（可选）做着什么事情。
+那有什么技巧可以将事项都整理出来呢？我经常使用<mark>主谓宾状从</mark>的方法。
+也就是说，明确哪些人，在什么场景（可选），以什么状态（可选）做着什么事情。
 
 ![主谓宾](../../static/images/202307/gramma.jpg)
 
@@ -160,9 +163,10 @@ typora-copy-images-to: ../../static/images/202307
 
 通过用例将需求清晰地拆解，并在这个过程中不断与需求提供方进行交流和沟通。
 
-Demo 稿是产品经理的武器，而需求用例则是工程师的武器。
+<mark>Demo 稿是产品经理的武器，而需求用例则是工程师的武器。</mark>
 
-有些初入职场的研发人员会不自然地变成需求的执行者。我比较果断地判断，不了解业务的工程师和外包没什么区别。而需求分析环节是最重要的，是对业务输入进行理解、梳理、重新设计的机会。通过用例的整理，我们可以将一些不切实际、不可靠的需求反馈给需求方。
+有些初入职场的研发人员会不自然地变成需求的执行者。我比较果断地判断，不了解业务的工程师和外包没什么区别。而需求分析环节是最重要的，
+是对业务输入进行理解、梳理、重新设计的机会。通过用例的整理，我们可以将一些不切实际、不可靠的需求反馈给需求方。
 
 这是少数可以推动（反馈）需求方的阶段，一定要珍惜。
 
@@ -172,7 +176,7 @@ Demo 稿是产品经理的武器，而需求用例则是工程师的武器。
 
 ![网易云音乐](../../static/images/202307/netease-music.png)
 
-<small> image via [网易云音乐产品分析报告](https://www.woshipm.com/evaluating/3493594.html)</small>
+<small>image via [网易云音乐产品分析报告](https://www.woshipm.com/evaluating/3493594.html)</small>
 
 实际上，这个用例是敌对势力那边总结的 😄，但仍然能够体现用例的重要性。
 
@@ -228,7 +232,7 @@ Demo 稿是产品经理的武器，而需求用例则是工程师的武器。
 
 ![Kubernetes RBAC](../../static/images/202307/rbac.png)
 
-<small>image via [Kubernetes RBAC  - DEV Community](https://dev.to/alcide/kubernetes-rbac-moving-from-it-s-complicated-to-in-a-relationship-1bbm) </small>
+<small>image via [Kubernetes RBAC  - DEV Community](https://dev.to/alcide/kubernetes-rbac-moving-from-it-s-complicated-to-in-a-relationship-1bbm)</small>
 
 
 这里我抛几个问题：
@@ -268,7 +272,8 @@ Demo 稿是产品经理的武器，而需求用例则是工程师的武器。
 
 我认为细节应该在时序图上进行呈现。
 
-通常我们有两种常用的图形来展示细节：<mark>流程图和时序图</mark>。两者实际上有很多相似之处，但我个人更喜欢时序图，因为它不仅包含顺序的概念，还清晰地展示了流程和系统之间的交互边界。
+通常我们有两种常用的图形来展示细节：<mark>流程图和时序图</mark>。两者实际上有很多相似之处，
+但我个人更喜欢时序图，因为它不仅包含顺序的概念，还清晰地展示了流程和系统之间的交互边界。
 
 我的技巧是，一般每个用例都会对应一个时序图。
 
@@ -278,7 +283,7 @@ Demo 稿是产品经理的武器，而需求用例则是工程师的武器。
 
 ![Header-based API Gateway versioning with CloudFront](../../static/images/202307/aws-seq.png)
 
-<small>via [Sequence Diagrams enrich your understanding of distributed architectures | AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/sequence-diagrams-enrich-your-understanding-of-distributed-architectures/)</small>
+<small>via [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/sequence-diagrams-enrich-your-understanding-of-distributed-architectures/)</small>
 
 在上图中，展示了 AWS 中使用 CloudFront 的一个时序图，从时序图中可以清晰地看到多个系统之间请求的流转以及多种异常状态的处理。
 
@@ -299,7 +304,8 @@ Demo 稿是产品经理的武器，而需求用例则是工程师的武器。
 
 ## 极简架构设计 - 小结
 
-在这个阶段，尽管我们还没有开始编写代码，但已经清楚了需要做什么，以及实现的样子。我们也有了类结构、API 定义、前端服务生成等产出。多个团队可以同时开始协作，没有明显的瓶颈。
+在这个阶段，尽管我们还没有开始编写代码，但已经清楚了需要做什么，以及实现的样子。
+我们也有了类结构、API 定义、前端服务生成等产出。多个团队可以同时开始协作，没有明显的瓶颈。
 
 - ✅ 问题定义
 - ✅ 解决方法
@@ -313,7 +319,9 @@ Demo 稿是产品经理的武器，而需求用例则是工程师的武器。
 
 如果这个项目是一个简单的 CRUD 应用系统，那么基本不会有什么难点。
 
-如果是一个 DIA 系统（Data Intensive Application），则需要开始设计和实施数据存储部分，并考虑数据一致性和并发相关的问题。对于一个复杂的系统，还需要继续实施多个系统连接处是否存在不确定性。如果在工程上面临同步方面的挑战，例如应用框架改造、通讯系统改造等，也要提前进行风险排除。（个人认为同时进行技术升级和业务开发并不明智）。
+如果是一个 DIA 系统（Data Intensive Application），则需要开始设计和实施数据存储部分，并考虑数据一致性和并发相关的问题。对于一个复杂的系统，
+还需要继续实施多个系统连接处是否存在不确定性。如果在工程上面临同步方面的挑战，例如应用框架改造、通讯系统改造等，
+也要提前进行风险排除。（我认为同时进行技术升级和业务开发并不明智）。
 
 ## 番外 - 画图工具
 
@@ -326,7 +334,7 @@ PS：我甚至还给自己的产品设计 Logo，或许这与我内心渴望成�
 我的画图工具组合相当丰富。用于绘制架构图的工具包括：
 
 - 框图
-  - OmniGraffle（复杂、美观）
+  - OmniGraffle（收费，复杂、美观）
   - Excalidraw（简单、随性）
 - 部署图
   - Excalidraw
@@ -348,7 +356,7 @@ PS：我甚至还给自己的产品设计 Logo，或许这与我内心渴望成�
 - Gantt 甘特图
   - plantuml
 
-这里我再软广一下我维护的 [Excalidraw Fork](https://excalidraw.alswl.com/)，支持中文首先字体，保持风格的统一。
+这里我再软广一下我维护的 [Excalidraw（Fork）](https://excalidraw.alswl.com/)，支持中文手写字体，保持风格的统一。
 
 
 ## 番外 - the hard way
