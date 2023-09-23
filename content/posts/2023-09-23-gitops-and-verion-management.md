@@ -162,7 +162,7 @@ DEF_VER=v2.42.GIT
 
 Arch Linux 使用 [Pacman](https://wiki.archlinux.org/title/Pacman) 作为包安装器，并且拥有一套完整的[构建方案](https://wiki.archlinux.org/title/Arch_build_system)。
 
-在 Arch Linux 中，`PKGBUILD[PKGBUILD](https://wiki.archlinux.org/title/PKGBUILD)` 用于描述包的构建方式，它本身是 Bash 的子集，是描述包的核心文件。
+在 Arch Linux 中，`PKGBUILD` [link](https://wiki.archlinux.org/title/PKGBUILD)用于描述包的构建方式，它本身是 Bash 的子集，是描述包的核心文件。
 
 版本管理方面，Arch Linux 提供了清晰明确的方案，并且设计了完整的制品嵌套解决方案。
 在 `PKGBUILD` 中，`pkgver` 表示上游版本，并经过适当的修正，使用 `_` 替代 `-`，并调整了时间戳的格式。而 `pkgrel` 则表示发布号，而不是构建号，每次发布都会增加该号码，用于管理 Arch Linux 的发布动作。当大部分 `PKGBUILD` 发生变化时，发布号都会发生变化。
