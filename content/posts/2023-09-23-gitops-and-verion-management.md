@@ -8,6 +8,10 @@ typora-copy-images-to: ../../static/images/202309
 
 ---
 
+![car](../../static/images/202309/car.png)
+
+<small>image via [shipvehicles](https://www.shipvehicles.com/step-by-step-guide-for-state-to-state-transport/)</small>
+
 如何使用 GitOps 管理交付内容版本是一个常见的问题。一个简单的回答是使用 Git 进行版本管理，并通过 Git Tag 来跟踪仓库内容的版本。虽然这可以解决一些问题，但在云原生技术的推动下，版本的概念远非如此简单。
 
 ## 版本问题
