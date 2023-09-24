@@ -28,11 +28,14 @@
 
 </p>
 <p><small>image via <a href="https://www.shipvehicles.com/step-by-step-guide-for-state-to-state-transport/">shipvehicles</a></small></p>
-<p>如何使用 GitOps 管理交付内容版本是一个常见的问题。一个简单的回答是使用 Git 进行版本管理，并通过 Git Tag 来跟踪仓库内容的版本。虽然这可以解决一些问题，但在云原生技术的推动下，版本的概念远非如此简单。</p>
+<p>使用 GitOps 管理交付内容是一个常见的 DevOps 使用模式。
+我们会使用 Git 进行版本管理，
+并通过 Git Tag 来跟踪部署软件的版本。
+虽然这看上去可以工作，但在云原生技术的推动下，版本的概念远非如此简单。</p>
 <h2 id="版本问题">版本问题</h2>
 <p>在引入 GitOps 到 DevOps 流程后，我们可以借助 GitOps 的能力进行持续集成和持续交付。
-GitOps 解决了三个核心问题：内容、版本和协作。然而，我们经常将注意力集中在内容上，却经常忽略了版本管理问题。</p>
-<p>那么，在 GitOps 过程中，有哪些版本管理问题需要解决呢？</p>
+GitOps 解决了三个核心问题：<strong>内容</strong>、<strong>版本</strong> 和 <strong>协作</strong>。然而，我们经常将注意力集中在内容上，却经常忽略了版本管理问题。</p>
+<p>在 GitOps 过程中，有哪些版本管理问题需要解决呢？</p>
 <p>一套完整的 GitOps 解决方案包括内容描述（Manifest）、构建方案（Builder）和生效方案（Applier）。其中，内容描述衍生出多种描述语言，从最传统的 <a href="https://www.ansible.com/">Ansible</a> / <a href="https://www.chef.io/products/chef-infra">Chef</a>，到云计算和云原生流行起来的 <a href="https://www.terraform.io/">Terraform</a>、<a href="https://helm.sh/">Helm</a>、<a href="https://kustomize.io/">Kustomize</a> 等。引入了这么多内容描述方式之后，当我们想要明确一个应用的版本时，变得非常复杂。</p>
 <p>当提到版本时，我们是<mark>指应用源代码的版本？还是指镜像的版本？或者是指某个基础设施即代码（IaC）仓库的版本</mark>？进一步地，如果我们要发布一组相互关联的应用，例如前端和后端，或者由多个后端应用组成的系统，如何清晰地描述它们之间的<mark>版本依赖关系</mark>？</p>
 <p>一旦版本描述不准确，就会引入一系列问题，例如错误的上线版本、混乱的应用依赖关系、无法回滚等。</p>
@@ -51,15 +54,19 @@ GitOps 解决了三个核心问题：内容、版本和协作。然而，我们�
 直观的说，通过使用 YAML 取代过去的 Bash 命令，我们可以大大提高变更的准确性和可控性。</p>
 <p>对于 GitOps 来说，是否使用 Git 并不是最重要的，我们也可以使用 SVN 来实现 GitOps。只是 Git 具有更广泛的适用范围，并可以充分发挥 Git 仓库在团队协作和持续集成/持续部署中的能力。</p>
 <p>引入 Git 仓库后，我们还同时拥有了基于 Git Revision / Tag / Branch 的版本管理能力，这体现在业务上就是版本记录、多版本并行管理等方面。</p>
-<p>然而，简单地基于 Git Revision 进行描述还不足以满足我们的实际需求。</p>
-<h2 id="问题的源头---二进制文件和启动配置文件">问题的源头 - 二进制文件和启动配置文件</h2>
-<p>在探索版本的源头时，我们实际上指的是原始代码的版本。</p>
-<p>需要注意的是，这个版本并不是代码所在的版本管理系统（如 Git / Mercurial / SVN 等）的版本。尽管这两者经常相关，但事实上，一份代码本身只是一组代码文件，只要构建成功，就会有一个版本。如果没有定义，那么版本就是未知的，此时与仓库管理没有关联。</p>
+<p>简单地基于 Git Revision 进行描述还不足以满足我们的实际需求。</p>
+<h2 id="问题的源头---二进制文件和启动配置文件版本">问题的源头 - 二进制文件和启动配置文件版本</h2>
+<p>在探索版本的源头时，我们会发现最原始的版本是代码的版本。</p>
+<p>代码的版本是什么？是代码仓库的版本还是代码编译出来应用的版本。
+这个版本并不是代码所在的版本管理系统（如 Git / Mercurial / SVN 等）的版本。尽管这两者经常相关，但事实上，一份代码本身只是一组代码文件，只要构建成功，就会有一个版本。如果没有定义，版本就是未知的，此时与仓库管理没有关联。</p>
 <blockquote>
 <p>注意：下文我们不再区分 Git / Mercurial / SVN 多种版本管理方案，统一使用 Git 进行描述</p>
 </blockquote>
-<p>需要注意的是，中文中有两个概念（库和仓库），无论是哪种定义，都没有明确规定一个库一定是一个 Git / SVN 仓库，这意味着我们并没有假设代码库一定是被版本化管理的。当我们将代码文件打包成一个 zip 文件时（GitHub 的 zip 下载就是这种形式），即使这个 zip 文件失去了所有的 Git 历史，它仍然是一个代码库。</p>
-<p>代码的版本实质上是<mark>作者的意图表达</mark>。目前最常见的管理方案是基于<a href="https://semver.org/">语义化版本</a>。</p>
+<p>还需要注意的是，中文中有两个概念（库 Libray 和仓库 Repository）。
+无论是哪种定义，都没有表示一个库一定是一个版本化（Git / SVN）仓库，
+这意味着我们并没有假设代码库一定是被版本化管理的。当我们将代码文件打包成一个 zip 文件时（GitHub 的 zip 下载就是这种形式），即使这个 zip 文件失去了所有的 Git 历史，它仍然是一个代码库。</p>
+<p>代码的版本实质上是<mark>应用的版本</mark>，这是作者的意图表达。这个版本往往是 <code>vx.y.z</code> 这种形式，而不是 Git commit hash，
+最常见的管理方案是基于<a href="https://semver.org/">语义化版本</a>。</p>
 <p>我推荐的版本存储方式是使用一个 <code>VERSION</code> 文件将版本存储在代码目录中。例如，Git 的 <a href="https://github.com/git/git/blob/master/GIT-VERSION-GEN">Version</a> 文件可以清楚地看到当前 Git 的版本是：</p>
 <pre tabindex="0"><code>GVF=GIT-VERSION-FILE
 DEF_VER=v2.42.GIT
@@ -74,7 +81,7 @@ DEF_VER=v2.42.GIT
 <li>源代码版本，即使用 <code>VERSION</code> 文件中定义的版本。</li>
 <li>源代码仓库版本，即 Git Revision</li>
 </ul>
-<h2 id="制品的版本管理">制品的版本管理</h2>
+<h2 id="制品版本管理">制品版本管理</h2>
 <p>引入制品版本管理后，问题变得更加复杂，因为制品带来了更多的问题：</p>
 <ul>
 <li>制品是什么，由什么构成？（上文已经回答）</li>
@@ -90,7 +97,7 @@ DEF_VER=v2.42.GIT
 每个构建层解决其特定问题，并且可以在特定环境（例如容器、Kubernetes、云基础设施）中运行。</p>
 <p>每个制品都需要构建，过程中会有自己的<mark>额外描述信息（Packaging Info）</mark>，这些额外的描述信息本身也会发生变化，因此会增加一个版本。在实践中，我们希望制品的版本与其上游版本绑定。每种打包机制可能会包含自己的一些定义配置，但仍然遵循上游的版本。例如，Kubernetes 的 Workload 包含一个镜像，Workload 的描述是附加信息，而镜像仍然受到上游控制。</p>
 <p><mark>Artifact + Packaging Info = New Artifact</mark>，制品经过打包可以形成新的制品。直到最后的 Installer 放置到相应的环境中生效。</p>
-<p>如果这些制品可以通过文件（IaC）进行描述，那么就形成了各种 IaC 仓库，这些仓库成为了 GitOps 的核心对象。</p>
+<p>如果这些制品可以通过文件（IaC）进行描述，就形成了各种 IaC 仓库，这些仓库成为了 GitOps 的核心对象。</p>
 <h2 id="概念梳理">概念梳理</h2>
 <p>让我们来理清一下这些略有晦涩的概念：</p>
 <table>
@@ -172,6 +179,9 @@ DEF_VER=v2.42.GIT
 <p>对于特定的环境如 Kubernetes，我们可以使用 kubectl 命令进行安装，而 Helm 则使用<code>helm</code>命令来进行安装。</p>
 <h2 id="linux-社区实践">Linux 社区实践</h2>
 <p>当我们理解了这些概念后，我们或许会惊讶地发现，这些概念与 Linux 社区多年来的实践是如此相似。抛开云原生等新概念，Linux 社区早就拥有了完整的解决方案。</p>
+<p>每一层制品都会引入新的配置（Config）/ 扩展（Extension）/ 值（Values）/ 环境变量（Env）等等，无论如何称呼，
+我们统一称之为配置。
+这些新加入的 Packaging Info 的描述在大规模集群管理下也带来了新的问题。</p>
 <blockquote>
 <p>自豪地使用 ArchLinux。</p>
 </blockquote>
@@ -199,19 +209,16 @@ DEF_VER=v2.42.GIT
 </li>
 <li>如果一组软件形成了一套体系，如何表达这个体系？
 <ul>
-<li>可以创建一个没有上游版本的新制品，其中交付的内容可能为空，但包含相应的打包信息和依赖信息。</li>
+<li>创建一个没有上游版本的新制品，其中交付的内容可能为空，但包含相应的打包信息和依赖信息。</li>
 <li>（或者）也可以真正抽象出一个新的概念来进行管理，这取决于打包器和安装器之间的协作。</li>
 </ul>
 </li>
 </ul>
-<h2 id="最后的-gitops-题外话">最后的 GitOps 题外话</h2>
-<p>我们经常提到 GitOps，那么 GitOps 究竟解决了什么问题呢？是打包？发布？还是版本定义？</p>
-<p>我认为 GitOps 的核心在于 IaC ，它提供了一种以终态描述的视角来描述我们期望系统处于的状态，并且这种期望是可透明、可持久化和可编程的。在 IaC 出现之前，我们可以使用传统的 Deb、RPM 等方式来完成部署，只是不太关注定制化配置和配置漂移检测的问题。</p>
-<p>每一层制品都会引入新的配置（Config）/ 扩展（Extension）/ 值（Values）/ 环境变量（Env）等等，无论如何称呼，我们统一称之为配置。这种不确定性在大规模系统中是不稳定的，因此 GitOps 的版本管理显得尤为重要。而这些新加入的 Packaging Info 的描述在大规模集群管理下也带来了新的问题。Terraform 的 <a href="https://github.com/hashicorp/hcl/blob/main/hclsyntax/spec.md">HCL</a> 提供了一套描述抽象的 DSL，Google 的 <a href="https://github.com/cue-lang/cue">CUE</a> 也是尝试提供一套抽象的方案，而蚂蚁金服的 <a href="https://github.com/kcl-lang/kcl">KCL</a> 也是一种描述抽象。 <a href="https://www.pulumi.com/">Pulumi</a> 则放弃了 DSL 的抽象，转而使用通用编程语言来描述。</p>
-<p>就像当年的 RPM / DEB / PKGBUILD 一样。</p>
-<p><mark>复杂性是不会消失的，只是以另一种形式存在或被隐藏起来</mark>。好的抽象解决问题，而不好的抽象则会带来问题。当我们被新事物迷惑时，也许我们可以回头看看那些老家伙（如 Arch Linux、Debian、CentOS），他们是如何解决各种复杂问题的。</p>
-<p>换个领域来描述，程序的依赖管理（Lib Dependencies）也是一个复杂的系统。有些人抱怨 Maven 太复杂，<code>go.mod</code> 难以使用，<code>pip</code> 太简单不够用，而 <code>node_modules</code> 则是个黑洞。</p>
-<p>依然是同样的道理，复杂性无法消除，留给用户的只有掌控或随缘了。</p>
+<h2 id="总结">总结</h2>
+<p>版本管理的智慧，其实已经体现在当年的 RPM / DEB / PKGBUILD 中。
+我们通过明确版本定义权交给应用作者，提出制品嵌套的概念，允许版本的概念进行多层嵌套。</p>
+<p>我们希望，最后运行的制品版本仍然是原始应用版本（Upstream Version）的衍生。毕竟，
+让每个运行的程序都知道自己来自何处、自己是谁，在大规模集群管理下已经变得相当重要。</p>
 ]]></content>
     
   </entry>
