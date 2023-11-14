@@ -1,0 +1,21 @@
+
+
+给Vim找了一个Mako的语法高亮，发现着色居然有问题。查看更新记录后发现作者[Armin Ronacher](http://lucumr.pocoo.org/)只更新到08年9月份。之后Mako更新了一些少许细节，我修改了一下mako.vim，放在这里供下载。
+
+其实我只改了57/58行，增加一个block语法。
+
+点击这里下载：[mako.vim](../../static/images/upload_dropbox/201106/mako.vim)
+
+使用方法，放入vimfiles/syntax
+
+相关链接：
+
+原始mako.vim：[http://www.vim.org/scripts/script.php?script_id=1858](http://www.vim.org/scripts/script.php?script_id=1858)
+
+另外一个mako.vim是缩进用的，放入vimfiles/syntax：[http://www.vim.org/scripts/script.php?script_id=2663](http://www.vim.org/scripts/script.php?script_id=2663)
+
+ps：Mako是一个Python下面的Template框架。
+
+pss：貌似服务器ip被认证了，讨厌~
+
+

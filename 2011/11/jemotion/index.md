@@ -1,0 +1,25 @@
+
+
+重要通知：Log4D的域名由 [http://dddspace.com](http://dddspace.com) 迁移到
+[http://log4d.com](http://log4d.com) 。 订阅地址现在改为
+[http://log4d.com/feed](http://log4d.com/feed) 和
+[http://feeds.feedburner.com/dddspace](http://feeds.feedburner.com/dddspace)
+。（FeedBurner的地址未发生变化）
+
+* * *
+
+白天工作时候需要一个功能，我搜了一下Google，没有找到合适的，就花了半天时间写了一个jQuery插件jEmotion。
+
+jEmotion的主要功能是用来给输入框加入转义之后的表情代码，然后在页面显示时候可以重新将表情代码转回表情图片。
+
+![image](/images/upload_dropbox/201111/jemotion.png)
+
+jEmotion的代码托管在GitHub上，地址是
+[https://github.com/alswl/jEmotion](https://github.com/alswl/jEmotion) 。
+
+demo地址是 [http://lab.log4d.com/javascript/jEmotion/demo.html](http://lab.log4d.
+com/javascript/jEmotion/demo.html) 。
+
+这是我写的第一个jQuery插件，写完还蛮兴奋的，哈哈。
+
+

@@ -1,0 +1,50 @@
+
+
+
+上周，我将 Log4D 由 Wordpress 转换为 Octopress，略加打理，颇为顺手。
+自动分类 / 评论转移 / 代码高亮 / 图床 的问题一一解决之后，
+就只剩下 tag 的问题没有搞定了。
+
+我当时使用了YORKXIN的[修改版本](https://gist.github.com/1394128)来处理 Wordpress
+的数据迁移，这个脚本很好用，数据没有遗失，甚至是让我担心的 category /
+tag 都给予了保留。具体使用方法可以参见[从Wordpress迁移到Octopress](http://blog.dayanjia.com/2012/04/migration-to-octopress-from-wordpress/)。
+
+只是虽然 tag 的数据保留了，但是 **Octopress 仅支持 category 的分类，而完全忽略
+tag**。这是我不能容忍的：category 和 tag 分别代表 有序 / 无序 的知识点归纳方法。
+**一篇文章只能属于一个 category，但可以同时属于多个 tag**。
+Octopress 的设计方法显然和我长期养成的知识归纳体系冲突，我开始吭次吭次寻找插件。
+
+<!-- more -->
+
+ps：Octopress 官方也推荐了一个所谓「[octopress-tagcloud](https://github.com/tokkonopapa/octopress-tagcloud)」的插件，
+**但这仅仅是让 category 用 列表 / 标签云的形式展示出来，并没有给文章加入 tag
+概念**。更多官方插件可以查看
+[3rd party plugins](https://github.com/imathis/octopress/wiki/3rd-party-plugins)。
+
+就在我准备放弃，自己动手用蹩脚的 ruby 水平写插件时候，突然在 github 找到这种插件：
+[robbyedwards / octopress-tag-pages](https://github.com/robbyedwards/octopress-tag-pages)和 
+[robbyedwards / octopress-tag-cloud](https://github.com/robbyedwards/octopress-tag-cloud)。前者负责采集文章的 tag 信息，后者提供标签云展示功能。赞美 Github。
+
+这两个插件使用很简单，将插件文件放入对应的目录（**注意备份，存在覆盖的情况**）。
+然后再给插件「octopress-tag-cloud」添加一个专属页面存放标签云即可。
+这个标签云生成的标记是 `li...li` ，需要在 `sass/custom/_styles.scss` 添加对应的样式：
+
+``` css
+#content article .cloud li{
+	display: inline;
+	list-style: none outside none;
+	padding: 0 4px;
+}
+```
+
+第二个插件 octopress-tag-cloud 会和 Octopress 官方推荐的所谓「Octopress Tag Cloud」
+ 文件 / tag 标记 冲突，我建议修改官方的那个插件。
+
+我修改过的 octopress-tagcloud 在这里，被重命名为
+[alswl / octopress-category-list](https://github.com/alswl/octopress-category-list)。
+
+这个版本同时参考了 [pf_miles](http://pfmiles.github.com/blog/liquid-error-about-regexp-match-when-using-octopress-tagcloud/) 的 utf-8 修改，以修复问题 `Liquid error: incompatible encoding regexp match (ASCII-8BIT regexp with UTF-8 string)` 。
+
+最后 Show 一下我的[一坨标签云](http://log4d.com/tag/)，
+等有时间我再将标签和类别精简一下，以适应 Octopress。
+

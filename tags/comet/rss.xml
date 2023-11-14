@@ -514,33 +514,33 @@ c.connect(&#34;rtmp://localhost/oflaDemo&#34;);
 <p>相关讨论可以参见<a href="http://rwl6813021.javaeye.com/blog/236344">Javascript 无法访问 Flex 问题~ - rwl6813021 - JavaEye 技术网站</a>，文中详细讨论了这个问题，并给出一个解决方案。</p>
 <p>有一个折中的方案：即通过 LocationConnection（本地通讯，利用两个 swf 来进行交互）来处理，初始化一个调用的 client
 swf，负责调用被隐藏的 swf 中的方法，这样就避开了直接通过 javascript 调用被隐藏的 swf 中的方法。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">//1：client 发送端：
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">private</span> <span class="n">var</span> <span class="n">ucallswfconn</span><span class="o">:</span><span class="n">LocalConnection</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="n">function</span> <span class="nf">init</span><span class="o">():</span><span class="kt">void</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ucallswfconn</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocalConnection</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">//注册 Javascritp 方法，网页调用该 flex 的方法，通过该方法中转，调用另外一个 flex 的方法
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ExternalInterface</span><span class="o">.</span><span class="na">addCallback</span><span class="o">(</span><span class="s">&#34;selectCallControl&#34;</span><span class="o">,</span><span class="n">flexSelectCallControl</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kd">public</span> <span class="n">function</span> <span class="nf">flexSelectCallControl</span><span class="o">(</span><span class="n">method</span><span class="o">:</span><span class="n">String</span><span class="o">,</span><span class="n">param</span><span class="o">:</span><span class="n">String</span><span class="o">):</span><span class="kt">void</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">//Alert.show(method+param);
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">//调用另外一端 swf 中的方法，参数：1:receiver 端监听的服务名称 2:方法名称 3:参数
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ucallswfconn</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="s">&#34;ucallexternconn&#34;</span><span class="o">,</span><span class="s">&#34;&#34;</span><span class="o">+</span><span class="n">method</span><span class="o">,</span><span class="s">&#34;&#34;</span><span class="o">+</span><span class="n">param</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">//2：receiver 接收端：
-</span></span></span><span class="line"><span class="cl"><span class="c1">//add by polarbear, 2008.09.04, 本地通讯
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
-</span></span><span class="line"><span class="cl"><span class="k">this</span><span class="o">.</span><span class="na">ucallexternConn</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocalConnection</span><span class="o">();</span>
-</span></span><span class="line"><span class="cl"><span class="k">this</span><span class="o">.</span><span class="na">ucallexternConn</span><span class="o">.</span><span class="na">allowDomain</span><span class="o">(</span><span class="s">&#34;*&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="n">ucallexternConn</span><span class="o">.</span><span class="na">client</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
-</span></span><span class="line"><span class="cl"><span class="k">try</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">this</span><span class="o">.</span><span class="na">ucallexternConn</span><span class="o">.</span><span class="na">connect</span><span class="o">(</span><span class="s">&#34;ucallexternconn&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">error</span><span class="o">:</span><span class="n">ArgumentError</span><span class="o">)</span> <span class="o">{</span>
-</span></span><span class="line"><span class="cl">    <span class="n">trace</span><span class="o">(</span><span class="s">&#34;连接失败&#34;</span><span class="o">);</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>注意被调用的函数必须是 public 的。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="c1">//1：client 发送端：</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">private</span><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="n">ucallswfconn</span><span class="p">:</span><span class="n">LocalConnection</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="nf">init</span><span class="p">():</span><span class="kt">void</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">ucallswfconn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">LocalConnection</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">//注册 Javascritp 方法，网页调用该 flex 的方法，通过该方法中转，调用另外一个 flex 的方法</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">ExternalInterface</span><span class="p">.</span><span class="na">addCallback</span><span class="p">(</span><span class="s">&#34;selectCallControl&#34;</span><span class="p">,</span><span class="n">flexSelectCallControl</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="kd">public</span><span class="w"> </span><span class="n">function</span><span class="w"> </span><span class="nf">flexSelectCallControl</span><span class="p">(</span><span class="n">method</span><span class="p">:</span><span class="n">String</span><span class="p">,</span><span class="n">param</span><span class="p">:</span><span class="n">String</span><span class="p">):</span><span class="kt">void</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">//Alert.show(method+param);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c1">//调用另外一端 swf 中的方法，参数：1:receiver 端监听的服务名称 2:方法名称 3:参数</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">ucallswfconn</span><span class="p">.</span><span class="na">send</span><span class="p">(</span><span class="s">&#34;ucallexternconn&#34;</span><span class="p">,</span><span class="s">&#34;&#34;</span><span class="o">+</span><span class="n">method</span><span class="p">,</span><span class="s">&#34;&#34;</span><span class="o">+</span><span class="n">param</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//2：receiver 接收端：</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">//add by polarbear, 2008.09.04, 本地通讯</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">this</span><span class="p">.</span><span class="na">ucallexternConn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">LocalConnection</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">this</span><span class="p">.</span><span class="na">ucallexternConn</span><span class="p">.</span><span class="na">allowDomain</span><span class="p">(</span><span class="s">&#34;*&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">ucallexternConn</span><span class="p">.</span><span class="na">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">ucallexternConn</span><span class="p">.</span><span class="na">connect</span><span class="p">(</span><span class="s">&#34;ucallexternconn&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">:</span><span class="n">ArgumentError</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="n">trace</span><span class="p">(</span><span class="s">&#34;连接失败&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><p>注意被调用的函数必须是 public 的。</p>
 <p>我使用这个方法并没有成功，最后我采用的是将视频画面直接放在界面上（很丑，不得已为之）。上文的解决方案只是给出一个思路，感兴趣的话可以自己试试。</p>
 <h2 id="六last">六、Last</h2>
 <p>其实还有很多细节地方可以讲讲，我就不一一展开了。整理的文章就是这样，也没什么花样和娱乐，我都懒得加图片了~</p>
