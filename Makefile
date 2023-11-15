@@ -30,10 +30,10 @@ sync-images:
 .PHONY: cdn
 cdn:
 	# public/404.html is works as appendix, just like and 1=1 in sql
-	@gsed -i 's#src="/images/#src="$(CDN_HOST)/images/#g' $(shell grep -Rl 'src="/images/' public) public/404.html
-	@gsed -i 's#href="/images/#href="$(CDN_HOST)/images/#g' $(shell grep -Rl 'href="/images/' public) public/404.html
+	@sed -i 's#src="/images/#src="$(CDN_HOST)/images/#g' $(shell grep -Rl 'src="/images/' public) public/404.html
+	@sed -i 's#href="/images/#href="$(CDN_HOST)/images/#g' $(shell grep -Rl 'href="/images/' public) public/404.html
 	
-	@gsed -E -i 's#!\[([^]]+)\]\(/images/#!\[\1]\($(CDN_HOST)/images/#g' $(shell grep -RlE '!\[.+\]\$(CP)\/images\/' public) public/404.html
+	@sed -E -i 's#!\[([^]]+)\]\(/images/#!\[\1]\($(CDN_HOST)/images/#g' $(shell grep -RlE '!\[.+\]\$(CP)\/images\/' public) public/404.html
 
 	# curl --silent "http://www.google.com/ping?sitemap=$(SITEMAP_URL)"
 	# curl --silent "http://www.bing.com/webmaster/ping.aspx?siteMap=$(SITEMAP_URL)"
