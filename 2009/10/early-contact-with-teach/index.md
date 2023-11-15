@@ -1,6 +1,6 @@
 
 
-[![hire_me](/images/upload_dropbox/200910/hire_me.jpg)](../../static/images/upload_dropbox/200910/hire_me.jpg)
+[![hire_me](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/hire_me.jpg)](../../static/images/upload_dropbox/200910/hire_me.jpg)
 
 今天江苏电信到我们学校进行宣讲会，我一开始还以为电信看在cumt校庆面上过来招聘，眼巴巴跑过去才知道只是宣讲会。
 

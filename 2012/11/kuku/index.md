@@ -4,7 +4,7 @@
 一个小小的 Weekend Project，基于 [web.py][]。
 代码在 [alswl / kuku][] ，很简陋，属于差不多能用阶段。
 
-![Kuku](/images/upload_dropbox/201211/kuku.png)
+![Kuku](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201211/kuku.png)
 
 基于以下原因开发：
 

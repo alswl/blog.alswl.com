@@ -28,7 +28,7 @@
 
 MoinMoin的UML图：
 
-![MoinMoin](/images/upload_dropbox/201202/MoinMoinArchitecture.png)
+![MoinMoin](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201202/MoinMoinArchitecture.png)
 
 ## 3. MoinMoin 常用对象
 

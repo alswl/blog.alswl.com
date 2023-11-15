@@ -89,12 +89,12 @@ class 为`org.mortbay.xml.XmlConfiguration`，在 Arguments - Program arguments 
 roject_loc}/jetty.xml`，其中`${project_loc}`是动态参数，指向当前项目目录，jetty.xml 为我们随后要创建的 jett
 y 配置文件。
 
-![image](/images/upload_dropbox/201104/run_configurations.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201104/run_configurations.png)
 
 如果想将这个应用保存成文件，可以修改 Common - Sava
 as 到当前目录，就可以保存为 jetty.launch 文件了。（没错，就是 launch 文件，Eclipse 的运行配置文件）
 
-![image](/images/upload_dropbox/201104/eclipse_common.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201104/eclipse_common.png)
 
 2、准备 jetty.xml 文件
 

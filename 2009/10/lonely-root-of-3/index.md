@@ -6,7 +6,7 @@
 
 一幢并不奢华的公寓，两间普普通通的套房，住着七个不同背景，不同身份，不同理想的青年男女。
 
-![爱情公寓](/images/upload_dropbox/200910/s3940602.jpg)]
+![爱情公寓](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/s3940602.jpg)]
 
 就在这里，每天都发生着看似平常却又乐趣十足的幽默故事。
 

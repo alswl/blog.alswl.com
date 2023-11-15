@@ -13,9 +13,9 @@ Google的中文化工作做的很不错，几个主流产品都有了中文界�
 比如这次我想在iGoogle添加一个Canlendar的小工具，在中文环境下死活搜索不出来，尽管搜索选项的「通过语言缩小范围」是所有语言。而在英文界面中就能
 搜索出一大推。
 
-[![canlendar_zh_cn](/images/upload_dropbox/200911/canlendar_zh_cn.jpg)](../../static/images/upload_dropbox/200911/canlendar_zh_cn.jpg)
+[![canlendar_zh_cn](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200911/canlendar_zh_cn.jpg)](../../static/images/upload_dropbox/200911/canlendar_zh_cn.jpg)
 
-[![canlendar_en](/images/upload_dropbox/200911/canlendar_en.jpg)](../../static/images/upload_dropbox/200911/canlendar_en.jpg)
+[![canlendar_en](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200911/canlendar_en.jpg)](../../static/images/upload_dropbox/200911/canlendar_en.jpg)
 
 这时候，就给我带来很多困惑，不是明明没有考虑语言么，Google工程师怎么弄的？
 

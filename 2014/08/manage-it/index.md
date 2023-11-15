@@ -1,6 +1,6 @@
 
 
-![项目管理修炼之道](/images/upload_dropbox/201408/s6089513.jpg)
+![项目管理修炼之道](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201408/s6089513.jpg)
 
 随着团队规模的变大，成员之间合作的模式逐渐由单打独斗变成协作开发。
 这时候会遇到很多意想不到的问题，项目管理的重要性也就显现出来了。

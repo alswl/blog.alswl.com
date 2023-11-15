@@ -1,7 +1,7 @@
 
 
 
-![Arch](/images/upload_dropbox/201304/archlinux-logo-dark-1200dpi_.png)
+![Arch](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201304/archlinux-logo-dark-1200dpi_.png)
 
 Arch 是我真正使用的第一款 Linux 发行版，大约使用了三年，
 现在的这个 VPS 跑的系统也是 Arch。

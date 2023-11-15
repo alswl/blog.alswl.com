@@ -38,7 +38,7 @@ VNC 的缺点在于实时传输屏幕，图片的数据量比较大，所以会�
 
 Windows 下面的 NXClient 下载即可使用，跟着 Wizard 走一下就完全没问题了。
 
-![NXClient](/images/upload_dropbox/201108/nxclient.png)
+![NXClient](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201108/nxclient.png)
 
 Arch 下面使用 pacman 安装一下 nxclient 即可了。
 

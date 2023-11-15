@@ -12,7 +12,7 @@
 
 jEmotion的主要功能是用来给输入框加入转义之后的表情代码，然后在页面显示时候可以重新将表情代码转回表情图片。
 
-![image](/images/upload_dropbox/201111/jemotion.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201111/jemotion.png)
 
 jEmotion的代码托管在GitHub上，地址是
 [https://github.com/alswl/jEmotion](https://github.com/alswl/jEmotion) 。

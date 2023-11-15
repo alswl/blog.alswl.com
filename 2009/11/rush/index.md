@@ -8,6 +8,6 @@
 
 嗯，雏鹰需要更广袤的天空才能搏击出坚韧的翅膀！
 
-[![eagle](/images/upload_dropbox/200911/eagle.jpg)](../../static/images/2009/11/eagle.jpg)
+[![eagle](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200911/eagle.jpg)](../../static/images/2009/11/eagle.jpg)
 
 

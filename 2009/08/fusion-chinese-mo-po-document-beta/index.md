@@ -5,7 +5,7 @@ d.com/2009/07/chinese-theme-wordpress)》
 
 ### Fusion:
 
-![Fusion](/images/upload_dropbox/200908/screenshot.png)
+![Fusion](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200908/screenshot.png)
 汉化了82%，其他一些文字我不知道怎么表达，而且似乎界面上用的不多，基本上已经可以用了。
 
 ### 汉化文件：

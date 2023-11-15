@@ -1,7 +1,7 @@
 
 
 
-![park](/images/upload_dropbox/202201/park.jpg)
+![park](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/202201/park.jpg)
 <small>image from wife</small>
 
 <!-- more -->

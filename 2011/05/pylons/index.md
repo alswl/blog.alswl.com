@@ -2,7 +2,7 @@
 
 活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。
 
-![image](/images/upload_dropbox/201105/pylons.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201105/pylons.png)
 
 ## 关于Pylons
 

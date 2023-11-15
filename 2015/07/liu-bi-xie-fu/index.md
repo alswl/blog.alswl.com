@@ -6,7 +6,7 @@
 最近我有看到一本描述一个科学家的如何生活的书，叫「奇特的一生」。
 让人拍案称奇。
 
-![201507/liu_bi_xie_fu.jpg](/images/upload_dropbox/201507/liu_bi_xie_fu.jpg)
+![201507/liu_bi_xie_fu.jpg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201507/liu_bi_xie_fu.jpg)
 
 主人公是一位名叫柳比歇夫的科学家，想必他在「回首往事时候没有因为虚度年华而悔恨」，
 因为他将自己的一生都精确的奉献到分类学、地蚤研究上面。
@@ -54,5 +54,5 @@
 对快 30 的我来说，别说「立言」，就光「立命」，
 就已经让我困苦不堪，在这和平年代，没有家仇国恨美国梦，想要做点牛逼的事情，就得需要勇气和爱来驱动。
 
-![201507/da_sheng_gui_lai.jpeg](/images/upload_dropbox/201507/da_sheng_gui_lai.jpeg)
+![201507/da_sheng_gui_lai.jpeg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201507/da_sheng_gui_lai.jpeg)
 

@@ -2,7 +2,7 @@
 
 ## Fcitx
 
-![Fcitx](/images/upload_dropbox/201204/fcitx.png)
+![Fcitx](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201204/fcitx.png)
 
 Fcitx 简介：
 
@@ -47,7 +47,7 @@ m/handbook/fcitx.html)
 
 那么，在 Fcitx 中输入 `yinyue` 就会出现如下候选框
 
-![Fcitx 特殊符号](/images/upload_dropbox/201204/fcitx-1.png)
+![Fcitx 特殊符号](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201204/fcitx-1.png)
 
 `pySym.mb` 文件中，「编码」和「符号」均不允许出现空格，所以比较适合短小的符号，
 而颜文字或者长句不适合在这里出现。颜文字以及其他较长的文字如何快速输入， 就要看 Fcitx 的「快速输入」功能了。
@@ -77,7 +77,7 @@ Fcitx 的「快速输入」和「特殊符号」很类似，后者管理字符�
 
 在输入法中，键入 `；` 之后再输入 `yhuanhu` 就会出现下面候选框：
 
-![Fcitx 快速输入](/images/upload_dropbox/201204/fcitx-2.png)
+![Fcitx 快速输入](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201204/fcitx-2.png)
 
 从图中可以看出，Fcitx 还自动进行了「字符组合」补全。
 

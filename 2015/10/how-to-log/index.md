@@ -1,6 +1,6 @@
 
 
-![logger](/images/upload_dropbox/201510/logger.jpg)
+![logger](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201510/logger.jpg)
 
 需要解决的问题：
 

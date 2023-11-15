@@ -6,7 +6,7 @@
 
 最后一次疯狂～
 
-![image](/images/upload_dropbox/201006/cinderella.JPG)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201006/cinderella.JPG)
 
 The Happy Ending
 

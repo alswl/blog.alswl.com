@@ -1,6 +1,6 @@
 
 
-![arch-easy](/images/202307/arch-easy.png)
+![arch-easy](https://e25ba8-log4d-c.dijingchao.com/images/202307/arch-easy.png)
 
 <small>image via [Pixabay](https://pixabay.com/photos/child-tower-building-blocks-blocks-1864718/)</small>
 
@@ -67,7 +67,7 @@
 
 那些经验丰富的人常常有较宏观的视角，使用的常见名词有：全局、宏观、领域、战略、平衡、规划。我将这些词汇整理成了一个词云如下：
 
-![word-cloud-arch-biz](/images/202307/word-cloud-arch-biz.png)
+![word-cloud-arch-biz](https://e25ba8-log4d-c.dijingchao.com/images/202307/word-cloud-arch-biz.png)
 
 <small>generted by https://tendcode.com/tool/word-cloud/</small>
 
@@ -76,7 +76,7 @@
 
 另一种架构偏重于工程设计和实现。常见的关键词有：领域建模、UML、GoF23，SOLID，高内聚低耦合等等。对应的词云如下：
 
-![word-cloud-arch-impl](/images/202307/word-cloud-arch-impl.png)
+![word-cloud-arch-impl](https://e25ba8-log4d-c.dijingchao.com/images/202307/word-cloud-arch-impl.png)
 
 <small>generted by https://tendcode.com/tool/word-cloud/</small>
 
@@ -93,13 +93,13 @@
 
 遇到问题之后，我们该如何解决？就像将大象装进冰箱一样，需要分成几个步骤。
 
-![把大象装进冰箱](/images/202307/elephant.png)
+![把大象装进冰箱](https://e25ba8-log4d-c.dijingchao.com/images/202307/elephant.png)
 
 <small>image via unkown</small>
 
 因此，解决问题也有三个步骤：第一步是将问题描述清楚，第二步是进行协商和决策达成一致，第三步则是着手解决问题。
 
-![问题-一致-行动](/images/202307/q-n-a.png)
+![问题-一致-行动](https://e25ba8-log4d-c.dijingchao.com/images/202307/q-n-a.png)
 
 我还想问一个听上去很愚蠢的问题：为什么不能直接解决问题？
 
@@ -114,7 +114,7 @@
 
 我举 Prometheus 的架构设计来作为例子。
 
-![Prometheus architecture](/images/202307/prometheus-architecture.png)
+![Prometheus architecture](https://e25ba8-log4d-c.dijingchao.com/images/202307/prometheus-architecture.png)
 
 <small>image via [Prometheus](https://prometheus.io/docs/introduction/overview/)</small>
 
@@ -149,7 +149,7 @@
 那有什么技巧可以将事项都整理出来呢？我经常使用<mark>主谓宾状从</mark>的方法。
 也就是说，明确哪些人，在什么场景（可选），以什么状态（可选）做着什么事情。
 
-![主谓宾](/images/202307/gramma.jpg)
+![主谓宾](https://e25ba8-log4d-c.dijingchao.com/images/202307/gramma.jpg)
 
 <small>image via unkown</small>
 
@@ -166,7 +166,7 @@
 
 这里有一个产品用例的范例：
 
-![网易云音乐](/images/202307/netease-music.png)
+![网易云音乐](https://e25ba8-log4d-c.dijingchao.com/images/202307/netease-music.png)
 
 <small>image via [网易云音乐产品分析报告](https://www.woshipm.com/evaluating/3493594.html)</small>
 
@@ -222,7 +222,7 @@
 
 我举例一个 Kubernetes 的 RBAC（Role-Based Access Control）系统，这是常见的 AuthZ 授权鉴权系统（注意，不是 AuthN 认证系统）。
 
-![Kubernetes RBAC](/images/202307/rbac.png)
+![Kubernetes RBAC](https://e25ba8-log4d-c.dijingchao.com/images/202307/rbac.png)
 
 <small>image via [Kubernetes RBAC  - DEV Community](https://dev.to/alcide/kubernetes-rbac-moving-from-it-s-complicated-to-in-a-relationship-1bbm)</small>
 
@@ -273,7 +273,7 @@
 
 这里以 AWS 一个官方博客作为范例：
 
-![Header-based API Gateway versioning with CloudFront](/images/202307/aws-seq.png)
+![Header-based API Gateway versioning with CloudFront](https://e25ba8-log4d-c.dijingchao.com/images/202307/aws-seq.png)
 
 <small>via [AWS Architecture Blog](https://aws.amazon.com/blogs/architecture/sequence-diagrams-enrich-your-understanding-of-distributed-architectures/)</small>
 

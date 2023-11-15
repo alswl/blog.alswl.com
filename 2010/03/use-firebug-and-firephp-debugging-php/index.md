@@ -8,7 +8,7 @@
 
 ×××××以下译文××××××
 
-![image](/images/upload_dropbox/201612/404.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201612/404.png)
 
 如果你和我一样，你会在开发网页项目时候完全无法离开[FireBug](http://getfirebug.com/)。这个小巧的"臭虫"是一个神奇而有用的H
 TML/CSS/JavaScript/Ajax调试器。但是你也许不知道这个还可以用来调试PHP，没错，它可以，感谢一款名为FirePHP的FireFox插件
@@ -21,7 +21,7 @@ bug的控制台获得PHP脚本警告和错误，就感觉像直接调试JavaScri
 。这个插件需要你已经安装FireBug。装好FirePHP之后，重新打开Firebug面板时候，你会看到新加了一个蓝色的臭虫图标。点击这个图标会出现一个开启
 或者关闭FirePHP的菜单。
 
-![FirePHP Menu](/images/upload_dropbox/201612/404.png)
+![FirePHP Menu](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201612/404.png)
 
 
 
@@ -62,7 +62,7 @@ ce_holder;FirePHP::ERROR);
 
 这些代码将在Firebug控制台输出如下所示
 
-![FirePHP Console Output](/images/upload_dropbox/201612/404.png)
+![FirePHP Console Output](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201612/404.png)
 
 你也可以使用FirePHP来跟踪你程序的执行情况：通过使用`FirePHP::TRACE常量，你可以在` `fb被调用的地方查看``行数、类名和方法名`
 

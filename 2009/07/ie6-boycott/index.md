@@ -6,7 +6,7 @@
 
 我搜索了关于IE6市场占有率的问题，国外的IE6似乎的确淡出人们的实现，甚至在JavaEye有这么一张夸张的趋势图
 
-![image](/images/upload_dropbox/200907/3159496996_e995d120a0_o.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/3159496996_e995d120a0_o.png)
 
 这张图毕竟代表国外数据，而且我总感觉水分很多，但是总体上，还是表现出一个趋势。
 

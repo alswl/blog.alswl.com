@@ -44,7 +44,7 @@
 业余时间做了一个项目，上线后效果不甚理想，不过也是投入了很大心血，Github
 上面的 Commit 有一半都来自于它。
 
-![404](/images/2014/01/github_contributions.png)
+![404](https://e25ba8-log4d-c.dijingchao.com/images/2014/01/github_contributions.png)
 
 ## 其他 ##
 

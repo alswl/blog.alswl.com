@@ -32,14 +32,14 @@ pe，这个js比较大，网上有[jQuery版本的第三方修改版](http://www
 
 )`
 
-2.加入网站图片，你可以保存![image](/images/upload_dropbox/201612/404.png)
-和![image](/images/upload_dropbox/201612/404.png) 并上传到share-
+2.加入网站图片，你可以保存![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201612/404.png)
+和![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201612/404.png) 并上传到share-
 this.php同一文件夹下。 3.刷新页面，你会发现新的按钮出来了。
 
 ## 加入更多按钮
 
 其实加入按钮的关键在于相应url，这个url怎么获取呢。其实我们可以从对应网站[人人网分享](http://share.renren.com/)、[豆瓣网分享](http://www.douban.com/service/bookmarklet)加入自己的浏览器。然后随便通过这些按钮收藏一个网页，如百度。那么就
-会弹出一个收藏页面。 [![douban_share](/images/upload_dropbox/200911/douban_share.jpg)](../../static/images/upload_dropbox/200911/douban_share.jpg)
+会弹出一个收藏页面。 [![douban_share](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200911/douban_share.jpg)](../../static/images/upload_dropbox/200911/douban_share.jpg)
 这时候获取图中的网页地址，然后修改其中真实的url和title，替换为{url},{title}，这两个标记供share-this插件识别
 。再将相应代码加入share-this.php，就大功告成了。
 图片的获取可以使用FireFox的查看页面信息，其中媒体页面可以获得favicon.ico，转换为.gif格式上传即可。

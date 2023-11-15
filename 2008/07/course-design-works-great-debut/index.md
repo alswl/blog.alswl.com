@@ -74,28 +74,28 @@ V1.2」版本更新：加入远程数据库登录管理功能
 
 V1.1版本更新：加入服务器数据管理，修改增加删除数据保存的一些Bug
 
-![img](/images/upload_dropbox/200910/A972857781312POT.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A972857781312POT.jpg)
 
-![img](/images/upload_dropbox/200910/A983104784976POT.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A983104784976POT.jpg)
 
 
-![img](/images/upload_dropbox/200910/A979487865902POT.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A979487865902POT.jpg)
 
-![img](/images/upload_dropbox/200910/A976688814655POT.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A976688814655POT.jpg)
 
-![img](/images/upload_dropbox/200910/A039328251736CUC.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A039328251736CUC.jpg)
 
-![img](/images/upload_dropbox/200910/A037255836541CUC.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A037255836541CUC.jpg)
 
-![img](/images/upload_dropbox/200910/A016564641801CUC.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A016564641801CUC.jpg)
 
-![img](/images/upload_dropbox/200910/A014442672895CUC.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A014442672895CUC.jpg)
 
-![img](/images/upload_dropbox/200910/A009044384619CUC.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A009044384619CUC.jpg)
 
-![img](/images/upload_dropbox/200910/A004793674766CUC.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A004793674766CUC.jpg)
 
-![img](/images/upload_dropbox/200910/A002612293529CUC.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/A002612293529CUC.jpg)
 
 
 终于写完了，虽然很累，不过真的很开心。

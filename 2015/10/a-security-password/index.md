@@ -1,6 +1,6 @@
 
 
-![password.jpg](/images/upload_dropbox/201512/password.jpg)
+![password.jpg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201512/password.jpg)
 
 给团队非开发同学写的邮件，对其他人也有些意义，遂贴出来。
 

@@ -5,7 +5,7 @@ Martin Fowler 的「[重构-改善既有代码的设计](http://book.douban.com/
 就会逐渐失去对代码的控制能力。
 昆哥推荐了两本书「[UML 和模式应用](http://book.douban.com/subject/1792387/)」和「重构」这本书。
 
-![Refactory](/images/upload_dropbox/201202/s1669771_l.jpg)
+![Refactory](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201202/s1669771_l.jpg)
 
 这本书是2年前购买的，可惜以我当时的代码感知和撰写能力，看起来颇为吃力。 半途就看得云里雾里而中断了。最近我又重新拾起这本书，
 将书中所写的境况与我这两年多来遇到的问题相互印证，才感受到这本经典的力量。

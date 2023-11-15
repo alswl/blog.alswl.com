@@ -9,7 +9,7 @@
 
 上图：
 
-[![firefoxinsogou](/images/upload_dropbox/200911/firefoxinsogou.jpg)](../../static/images/upload_dropbox/200911/firefoxinsogou.jpg)
+[![firefoxinsogou](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200911/firefoxinsogou.jpg)](../../static/images/upload_dropbox/200911/firefoxinsogou.jpg)
 
 *********************************正文终于开始拉**********************************
 

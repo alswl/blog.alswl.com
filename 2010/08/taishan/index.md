@@ -16,13 +16,13 @@
 我们10.1早晨7点出发，3个小时后到达山东滕州，进入当地的一个旅游景点，貌似什么生态园，里面有温泉。服务相当不错，我们玩的很开心，中午提供自助餐，虽然没什
 么肉，但是看在它的价格上面，整体还是相当不错的。
 
-![image](/images/upload_dropbox/201008/taishan01.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan01.jpg)
 
 在温泉里留影，后面是个大的温泉游泳池，还有大大小小的各种温泉，感觉相当超值。价格是30/人
 
 接着我们到了孔子老家山东曲阜，景点是孔家和孔庙，但是门票要自己掏，我们没有进去，价格是120/人&60/人，学生可以半价。
 
-![image](/images/upload_dropbox/201008/taishan02.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan02.jpg)
 
 孔子家是门口的招牌
 
@@ -35,24 +35,24 @@
 
 自由活动时候，一起吃了晚饭，山东的饺子。在9点时候，我们开始集合，准备开始登山。
 
-![image](/images/upload_dropbox/201008/taishan03.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan03.jpg)
 
 这就是我们7人组全队了，从上往下，从左往右依次是：亚飞，爷爷，胖子，辉辉，程序，鸟人，晨晨。7人一起照片就这么一张。
 
 团队买门票的时候，我们大概等了将近一小时，团队共80人，我们各自聊天，偶然听到边上两个女生说家乡话，居然是我家乡人，一下子亲近了，一个是师大，一个是江苏大学
 ，她们还有同学是我初中同学的，然后2人加入我们，成为8号和9号一起登山。
 
-![image](/images/upload_dropbox/201008/taishan04.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan04.jpg)
 
 我手头只有9号照片，一个相当活泼的女孩子
 
 正式登山，从岱庙开始登山，依次进入红门，中天门，南天门，直到玉皇顶。
 
-![image](/images/upload_dropbox/201008/taishan05.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan05.jpg)
 
 万仙楼，11：19到达
 
-![image](/images/upload_dropbox/201008/taishan06.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan06.jpg)
 
 中天门，1：12分抵达
 
@@ -60,47 +60,47 @@
 
 登山过程中，胖子同学体力不支，在大家鼓励和晨晨同学全力支援下，才登山泰山顶峰，在此，我要重重的表扬晨晨小同学！！！
 
-![image](/images/upload_dropbox/201008/taishan07.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan07.jpg)
 
 晨晨同学几乎从山脚一直把胖子同学"拖"上了泰山顶，此时1：20
 
 3：30后，温度骤降，胖子支持不住，吐酸水了，但仍然坚持不放弃，我们放慢脚步前进。
 
-![image](/images/upload_dropbox/201008/taishan08.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan08.jpg)
 
 最辛苦的一关----十八盘，照片是下山返回照的。
 
 
 
-![image](/images/upload_dropbox/201008/taishan10.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan10.jpg)
 
 白天的南天门，晚上完全拍不到，雾水太重，闪光太过严重，无法到达远处。晚上的照片大部分都是PS调节色阶后的。
 
-![image](/images/upload_dropbox/201008/taishan09.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan09.jpg)
 
 4：09分，我们已经经过了南天门，把能穿的穿了，并买了一次性雨衣，下一站是十八盘。
 
-![image](/images/upload_dropbox/201008/taishan11.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan11.jpg)
 
 我们窝在一次取暖，并且知道了雨伞不仅能遮阳挡雨，挡风的效果也是相当不错。
 
 大概是4：30到泰山顶，由于天黑不知道路，而且晚上玉皇顶有铁门不开，我们登上了日观峰。
 
-![image](/images/upload_dropbox/201008/taishan12.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan12.jpg)
 
 晨晨同学瑟瑟发抖，此时我们在泰山日观峰，时间是5：23，我们在5度的温度下熬过了1小时，山顶人满为患，晨晨旁边就是山谷。
 
-![image](/images/upload_dropbox/201008/taishan13.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan13.jpg)
 
 5：28，天空维红，由于下雨，我们并没有见到日出，只看到云海，不免是一种遗憾。
 
-![image](/images/upload_dropbox/201008/taishan14.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan14.jpg)
 
 5：51，日观峰留念
 
-![image](/images/upload_dropbox/201008/taishan16.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan16.jpg)
 
-![image](/images/upload_dropbox/201008/taishan17.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/taishan17.jpg)
 
 下山时候，见到泰山挑山工，敬佩
 

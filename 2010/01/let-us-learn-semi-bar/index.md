@@ -12,7 +12,7 @@
 
 其实双拼只是一套拼音输入的方案，并不是特指某种输入法，事实上，很多输入法的双拼输入方案都各有特色。
 
-![image](/images/upload_dropbox/201001/google_pinyin.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201001/google_pinyin.jpg)
 
 Google输入法的双拼方案选择
 
@@ -37,9 +37,9 @@ Google输入法的双拼方案选择
 
 下面提供几张微软双拼键盘对应图
 
-![image](/images/upload_dropbox/201001/ms_shuang_pin.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201001/ms_shuang_pin.jpg)
 
-[![image](/images/upload_dropbox/201001/200852492150750ce76ddc98cb3bf902d6e44b184ffa639.jpg)](../../static/images/upload_dropbox/201001/200852492150750ce76ddc98cb3bf902d6e44b184ffa639.jpg)
+[![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201001/200852492150750ce76ddc98cb3bf902d6e44b184ffa639.jpg)](../../static/images/upload_dropbox/201001/200852492150750ce76ddc98cb3bf902d6e44b184ffa639.jpg)
 
 ### 微软双拼的声韵母分配助记词
 

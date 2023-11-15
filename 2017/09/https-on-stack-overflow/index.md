@@ -1,6 +1,6 @@
 
 
-![Stack Overflow](/images/upload_dropbox/201709/stack-overflow.jpg)
+![Stack Overflow](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201709/stack-overflow.jpg)
 
 *   原文作者：Nick Craver
 *   翻译作者：[罗晟 @luosheng](https://twitter.com/luosheng) & [@alswl](https://twitter.com/alswl)
@@ -125,7 +125,7 @@
 
 很多朋友在看见我们的主证书时候会吓得目瞪口呆，因为它包含了我们的主域名和通配符子域名。它看上去长成这样：
 
-[![Main Certificate](/images/upload_dropbox/201709/HTTPS-MainCertificate.png)](../../static/images/upload_dropbox/201709/HTTPS-MainCertificate.png)
+[![Main Certificate](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201709/HTTPS-MainCertificate.png)](../../static/images/upload_dropbox/201709/HTTPS-MainCertificate.png)
 
 为什么这么做？老实说，是我们让 [DigiCert](https://www.digicert.com/) 替我们做的。这么做会导致每次发生变化的时候都需要手动合并证书，了　我们为什么要忍受这么麻烦的事呢？首先，我们期望能够尽可能让更多用户使用我们产品。这里面包括了那些还不支持 SNI 的用户（比如在我们项目启动的时候 Android 2.3 势头正猛）。另外，也包括 HTTP/2 与一些现实问题——我们过会儿会谈到这一块。
 
@@ -224,7 +224,7 @@ HAProxy 比较简单，这是我们使用一个 SSL 证书来支持 :433 端口�
 
 这里是上面描述情况下的架构图，我们马上来说前面的那块云是怎么回事：
 
-[![Logical Architecture](/images/upload_dropbox/201709/HTTPS-Layout.svg)](../../static/images/upload_dropbox/201709/HTTPS-Layout.svg)
+[![Logical Architecture](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201709/HTTPS-Layout.svg)](../../static/images/upload_dropbox/201709/HTTPS-Layout.svg)
 
 ### CDN/代理层：通过 Cloudflare 和 Fastly 优化延迟
 
@@ -245,7 +245,7 @@ HAProxy 比较简单，这是我们使用一个 SSL 证书来支持 :433 端口�
 
 开始正式启用终端链路加速之前，我们需要有性能测试报告。我们在浏览器搭好了一整套覆盖全链路性能数据的测试。 浏览器里可以通过 JavaScript 从 [`window.performance`](https://www.w3.org/TR/navigation-timing/) 取性能耗时。打开你浏览器的审查器，你可以亲手试一下。我们希望这个过程透明，所以从第一天开始就把详细信息[放在了 teststackoverflow.com](https://teststackoverflow.com/) 上。这上面并没有敏感信息，只有一些由页面*直接*载入的 URI 和资源，以及它们的耗时。每一张记录下来的页面大概长这样：
 
-[![teststackoverflow.com](/images/upload_dropbox/201709/HTTPS-Teststackoverflow.png)](../../static/images/upload_dropbox/201709/HTTPS-Teststackoverflow.png)
+[![teststackoverflow.com](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201709/HTTPS-Teststackoverflow.png)](../../static/images/upload_dropbox/201709/HTTPS-Teststackoverflow.png)
 
 我们目前对 5% 的流量做性能监控。这个过程没有那么复杂，但是我们需要做的事情包括：
 1. 把耗时转成 JSON
@@ -256,11 +256,11 @@ HAProxy 比较简单，这是我们使用一个 SSL 证书来支持 :433 端口�
 
 最终的结果是我们有了一份来自于全球*真实*用户的很好的实时汇总。这些数据可供我们分析、监控、报警，以及用于评估变化。它大概长这样：
 
-[![Client Timings Dashboard](/images/upload_dropbox/201709/HTTPS-ClientTimings.png)](../../static/images/upload_dropbox/201709/HTTPS-ClientTimings.png)
+[![Client Timings Dashboard](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201709/HTTPS-ClientTimings.png)](../../static/images/upload_dropbox/201709/HTTPS-ClientTimings.png)
 
 幸好，我们有持续的流量来获取数据以供我们决策使用，目前的量级是 50 亿，并且还在增长中。这些数据概览如下：
 
-[![Client Timings Database](/images/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png)](../../static/images/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png)
+[![Client Timings Database](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png)](../../static/images/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png)
 
 OK，我们已经把基础工作准备好了，是时候来测试 CDN/代理层供应商了。
 
@@ -608,11 +608,11 @@ public static void PerformHttpsRedirects()
 
 最大的问题就是：「我们能处理了这个负载吗？」我们全网处理了不少并发 websocket，在我写这估的时候我们有超过 600000 个**并发**的连接。这个是我们 HAProxy 的仪表盘在 [Opserver](https://github.com/opserver/Opserver) 中的界面：
 
-[![HAProxy Websockets](/images/upload_dropbox/201709/HTTPS-Websockets.png)](../../static/images/upload_dropbox/201709/HTTPS-Websockets.png)
+[![HAProxy Websockets](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201709/HTTPS-Websockets.png)](../../static/images/upload_dropbox/201709/HTTPS-Websockets.png)
 
 不管是在终端、抽象命名空间套接字还是前端来说都有很多连接。由于启用了 [TLS 会话恢复](https://tools.ietf.org/html/rfc5077)，HAProxy 本身的负载也很重。要让用户下一次重新连接更快，第一次协商之后用户会拿到一个令牌，下一次会把这个令牌发送过来。如果我们的内存足够并且没有超时，我们会恢复上次的会话而不是再开一个。这个操作可以节省 CPU，对用户来说有性能提升，但会用到到更多内存。这个多因 key 大小而异（2048，4096 或是更多？）我们现在用的是 4096 位的 key。在开了 600000 个 websocket 的情况下，我们只用掉了负载均衡器 64GB 内存里的 19GB。这里面 12GB 是 HAProxy 在用，大多数为 TLS 会话缓存。所以结果来说还不错，如果*我们不得不买内存的话*，这也会是整个 HTTPS 迁移中最便宜的东西。
 
-[![HAProxy Websocket Memory](/images/upload_dropbox/201709/HTTPS-WebsocketMemory.png)](../../static/images/upload_dropbox/201709/HTTPS-WebsocketMemory.png)
+[![HAProxy Websocket Memory](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201709/HTTPS-WebsocketMemory.png)](../../static/images/upload_dropbox/201709/HTTPS-WebsocketMemory.png)
 
 ### 未知
 
@@ -747,7 +747,7 @@ sub vcl_fetch {
 
  
 
-[![Me being a dumbass](/images/upload_dropbox/201709/HTTPS-HelpCommit.png)](../../static/images/upload_dropbox/201709/HTTPS-HelpCommit.png)
+[![Me being a dumbass](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201709/HTTPS-HelpCommit.png)](../../static/images/upload_dropbox/201709/HTTPS-HelpCommit.png)
 
 再一次将数据填充回去就能修复了。不过怎么说，这个当时算是在公共场合闹了个笑话。抱歉。
 

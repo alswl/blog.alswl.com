@@ -12,7 +12,7 @@ exhausted"这个错误，大意就是说内存超出指定大小。我在WordPre
 
 同学们，赶紧修改你们的Feed地址啊！！！！
 
-![image](/images/upload_dropbox/200912/phoenix.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200912/phoenix.jpg)
 
 感谢小张的支持，10号主机挺棒哦。
 

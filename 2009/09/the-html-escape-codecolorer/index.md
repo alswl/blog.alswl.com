@@ -12,13 +12,13 @@
 
 ## 症状
 
-![开启CodeColorer+可视化界面编辑结果](/images/upload_dropbox/200909/Snap2.jpg)
+![开启CodeColorer+可视化界面编辑结果](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200909/Snap2.jpg)
 
-![关闭CodeColorer+HTML编辑结果](/images/upload_dropbox/200909/Snap3.jpg)
+![关闭CodeColorer+HTML编辑结果](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200909/Snap3.jpg)
 
-![关闭CodeColorer+HTML编辑结果在内容页](/images/upload_dropbox/200909/Snap4.jpg)
+![关闭CodeColorer+HTML编辑结果在内容页](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200909/Snap4.jpg)
 
-[![正确显示](/images/upload_dropbox/200909/Snap5.jpg)
+[![正确显示](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200909/Snap5.jpg)
 
 
 ## 解决方法

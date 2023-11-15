@@ -1,6 +1,6 @@
 
 
-![201712/work.jpg](/images/upload_dropbox/201712/work.jpg)
+![201712/work.jpg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201712/work.jpg)
 
 最近和一位老朋友吃饭，他说他最近比较苦恼：
 「开始有职业危机了，担心自己失去对工作的热情，似乎离油腻的中年人又进了一步」。

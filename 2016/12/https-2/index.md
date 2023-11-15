@@ -1,6 +1,6 @@
 
 
-![201612/mouse.jpeg](/images/upload_dropbox/201612/mouse.jpeg)
+![201612/mouse.jpeg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201612/mouse.jpeg)
 (图片来自 [茶杯中的可爱小白鼠 壁纸 - 2560x1920－堆糖，美好生活研究所](https://www.duitang.com/blog/?id=48013745))
 
 在上篇文章 [🔒 也谈 HTTPS - HTTPDNS + HTTPS](https://blog.alswl.com/2016/11/https-1/) 中，
@@ -49,7 +49,7 @@ PS：这里要小心的是，需要配置 proxy.duitang.com 的 `resolver` 避�
 
 流程图：
 
-![201612/https\_ros\_process.jpg](/images/upload_dropbox/201612/https_ros_process.jpg)
+![201612/https\_ros\_process.jpg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201612/https_ros_process.jpg)
 
 
 这样操作之后，在办公室网络下，所有访问公司网站的 HTTP 流量都会跳转到 HTTPS。

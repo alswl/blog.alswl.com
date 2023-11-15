@@ -1,6 +1,6 @@
 
 
-![2017 年 2 月摄于瑞虹月亮湾](/images/upload_dropbox/201801/moon.png)
+![2017 年 2 月摄于瑞虹月亮湾](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201801/moon.png)
 
 <small>（2017 年 2 月摄于瑞虹月亮湾）</small>
 

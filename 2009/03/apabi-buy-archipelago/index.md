@@ -5,7 +5,7 @@
 在chinaunix中看到一篇《OpenSSL 编程入门》，从Eric Rescola文档中翻译过来的，突发奇想，搜索Eric Rescola
 ，居然在China-pub发现了奇书《SSL and TSL》
 
-![SSL](/images/upload_dropbox/200903/zcover.jpg)
+![SSL](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200903/zcover.jpg)
 
 这本书非常不错，前面讲了SSL协议和内部结构，后面提供了详实的代码例子，而且这本书是翻译版，哈哈，天不亡我啊。
 

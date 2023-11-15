@@ -13,7 +13,7 @@
 
 让我一一给你讲解吧。
 
-![sre-and-devops.png](/images/upload_dropbox/201809/sre-and-devops.png)
+![sre-and-devops.png](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201809/sre-and-devops.png)
 <small>[image via YouTube](https://www.youtube.com/watch?v=uTEL8Ff1Zvk)</small>
 
 <!-- more -->
@@ -56,7 +56,7 @@ Google 对 SRE 解释是（via [Site Reliability Engineering - Wikipedia](https:
 80 后可能会记得 QQ 每年都会有一个大版本发布吧，QQ 2000 / 2003 / 2004 等等。
 此时 Ops 不用和 Dev 直接高频接触，甚至针对一些纯离线业务，压根没有设立 Ops 这个岗位。
 
-![qq-2004.png](/images/upload_dropbox/201809/qq-2004.png)
+![qq-2004.png](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201809/qq-2004.png)
 
 互联网浪潮之后，软件由传统意义上桌面软件演变为面向网站、手机应用。
 这时候业务核心逻辑，比如交易，社交行为都不在用户桌面完成，而是在服务器后端完成。
@@ -72,7 +72,7 @@ Flicker 提出了几个核心理念：
 *   高效沟通：IRC / IM Robot（现在那些 ChatBot 套路，10 年前就被 Flicker 玩过了）
 *   信任、透明、高效、互助的沟通文化
 
-![flicker.png](/images/upload_dropbox/201809/flicker.png)
+![flicker.png](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201809/flicker.png)
 
 原文 SlideShare 在这
 [10+ Deploys Per Day: Dev and Ops Cooperation at Flickr](https://www.slideshare.net/jallspaw/10-deploys-per-day-dev-and-ops-cooperation-at-flickr)

@@ -2,7 +2,7 @@
 
 一个同事在知乎提了一个问题 [如果把草帽海贼团比作一个创业团队,这个Team的组织架构是怎样的?有哪些优势,又有哪些不足?](https://www.zhihu.com/question/35037806)
 
-![201604/onepiece.jpg](/images/upload_dropbox/201604/onepiece.jpg)
+![201604/onepiece.jpg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201604/onepiece.jpg)
 
 这个话题很有趣，作为追了多年的 fans ，又是身处互联网创业团队的我要来强答一记。
 

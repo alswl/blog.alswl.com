@@ -1,6 +1,6 @@
 
 
-![卓有成效的程序员](/images/upload_dropbox/201111/s3668809.jpg)
+![卓有成效的程序员](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201111/s3668809.jpg)
 
 《卓有成效的程序员》，上次在京东半价买了这本书，一直没来得及看， 前几周在地铁上把这本书看完了。
 

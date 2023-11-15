@@ -19,7 +19,7 @@ Google 的两位工程师 Brian W. Fitzpatrick 和 Ben Collins-Sussman
 告诉大家想要在团队中获得成功的另一面。不要被书名误解，我觉得「开发者和团队」是更好的名字，
 虽然没那么酷。
 
-![s26354473.jpg](/images/upload_dropbox/201602/s26354473.jpg)
+![s26354473.jpg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201602/s26354473.jpg)
 
 <!-- more -->
 

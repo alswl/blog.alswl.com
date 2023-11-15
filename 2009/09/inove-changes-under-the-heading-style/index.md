@@ -6,11 +6,11 @@
 
 看看一般的heading，下图是LightWord的
 
-![7color的heading](/images/upload_dropbox/200909/7colorHeading.jpg)
+![7color的heading](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200909/7colorHeading.jpg)
 
 再看看iNove的
 
-![iNove的Heading](/images/upload_dropbox/200909/iNoveHeading.jpg)
+![iNove的Heading](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200909/iNoveHeading.jpg)
 
 iNove的文章内容Heading CSS和主题的Heading混合在一起，非常不雅观。我稍作修改，在iNove的style.css最后加上一些样式。
 
