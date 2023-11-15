@@ -1,6 +1,6 @@
 
 
-![fu-tu-kang](https://e25ba8-log4d-c.dijingchao.com/images/202210/fu-tu-kang.png)
+![fu-tu-kang](https://e25ba8-log4d-c.dijingchao.com/202210/fu-tu-kang.png)
 
 
 > 为了做好万全的准备，如何在 35 岁毕业后能够顺利入职电子厂？
@@ -15,12 +15,12 @@
 
 我使用的键盘是 ErgoDox，一个人体工程学设计的分体键盘。关于 ErgoDox 更多详情可以见我之前的 [回答](https://www.zhihu.com/question/52088337/answer/141073759)。
 
-![keyboard-view](https://e25ba8-log4d-c.dijingchao.com/images/202210/keyboard-view.png)
+![keyboard-view](https://e25ba8-log4d-c.dijingchao.com/202210/keyboard-view.png)
 
 
 （前任键帽配色 + 手托）：
 
-![keyboard-view-2](https://e25ba8-log4d-c.dijingchao.com/images/202210/keyboard-view-2.png)
+![keyboard-view-2](https://e25ba8-log4d-c.dijingchao.com/202210/keyboard-view-2.png)
 
 
 经过七八年工作，它进过水，进过咖啡，还进过豆浆，现在终于有几个键不灵活了，按起来有粘滞感，无法提供顺畅的 coding feel 了。
@@ -31,7 +31,7 @@
 
 ## 准备
 
-![prepare](https://e25ba8-log4d-c.dijingchao.com/images/202210/prepare.png)
+![prepare](https://e25ba8-log4d-c.dijingchao.com/202210/prepare.png)
 
 
 - 电烙铁
@@ -55,53 +55,53 @@
 
 <center><mark><b>检查要换哪些键轴，按一按，听一听</b></mark></center>
 
-![step-1](https://e25ba8-log4d-c.dijingchao.com/images/202210/step-1.png)
+![step-1](https://e25ba8-log4d-c.dijingchao.com/202210/step-1.png)
 
 
 <center><mark><b>卸下外壳卸下伪装</b></mark></center>
 
-![step-2](https://e25ba8-log4d-c.dijingchao.com/images/202210/step-2.png)
+![step-2](https://e25ba8-log4d-c.dijingchao.com/202210/step-2.png)
 
 
 <center><mark><b>去除对应的键帽（注意，F J 键帽不一样哦）</b></mark></center>
 
-![step-3](https://e25ba8-log4d-c.dijingchao.com/images/202210/step-3.png)
+![step-3](https://e25ba8-log4d-c.dijingchao.com/202210/step-3.png)
 
 
 
 <center><mark><b>融化焊锡，用吸锡器将融化的焊锡吸走</b></mark></center>
 
 
-![step-4](https://e25ba8-log4d-c.dijingchao.com/images/202210/step-4.png)
+![step-4](https://e25ba8-log4d-c.dijingchao.com/202210/step-4.png)
 
 
 
 <center><mark><b>用键轴小起子，将其从正面摘除，记得有个软卡子，要上下方向（即 cherry logo 方向 + 对面用力）</b></mark></center>
 
-![step-5](https://e25ba8-log4d-c.dijingchao.com/images/202210/step-5.png)
+![step-5](https://e25ba8-log4d-c.dijingchao.com/202210/step-5.png)
 
 
 <center><mark><b>看看进去的咖啡和豆浆</b></mark></center>
 
-![step-6](https://e25ba8-log4d-c.dijingchao.com/images/202210/step-6.png)
+![step-6](https://e25ba8-log4d-c.dijingchao.com/202210/step-6.png)
 
 
 
 <center><mark><b>将新的键轴焊上去，效果</b></mark></center>
 
-![step-7](https://e25ba8-log4d-c.dijingchao.com/images/202210/step-7.png)
+![step-7](https://e25ba8-log4d-c.dijingchao.com/202210/step-7.png)
 
 
 
 <center><mark><b>吸锡器吸走的碎屑吐出来的样子</b></mark></center>
 
-![step-8](https://e25ba8-log4d-c.dijingchao.com/images/202210/step-8.png)
+![step-8](https://e25ba8-log4d-c.dijingchao.com/202210/step-8.png)
 
 
 
 <center><mark><b>最后完成组装</b></mark></center>
 
-![keyboard-final](https://e25ba8-log4d-c.dijingchao.com/images/202210/keyboard-final.png)
+![keyboard-final](https://e25ba8-log4d-c.dijingchao.com/202210/keyboard-final.png)
 
 
 

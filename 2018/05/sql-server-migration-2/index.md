@@ -6,7 +6,7 @@
 *   [从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D](https://blog.alswl.com/2018/05/sql-server-migration-2/)
 *   [从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D](https://blog.alswl.com/2018/06/sql-server-migration-3/)
 
-![flying-tanker](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201805/flying-tanker.png)
+![flying-tanker](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/flying-tanker.png)
 
 <smaill>（image via https://pixabay.com/en/military-stealth-bomber-refueling-602729/ ）</small>
 
@@ -35,7 +35,7 @@
 
 下图是 yugong 针对 Oracle 到 MySQL 的增量迁移流程：
 
-![yugong-oracle.png](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201805/yugong-oracle.png)
+![yugong-oracle.png](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/yugong-oracle.png)
 
 这其中有四个步骤：
 
@@ -82,7 +82,7 @@ CDC 全称 Change Data Capture，设计目的就是用来解决增量数据的�
 
 CDC 的工作原理如下：
 
-![cdc-data-flow.png](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201805/cdc-data-flow.png)
+![cdc-data-flow.png](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/cdc-data-flow.png)
 
 当数据库表发生变化时候，Capture process 会从 transaction log 里面获取数据变化，
 然后将这些数据记录到 Change Table 里面。
@@ -189,7 +189,7 @@ __$start_lsn          __$end_lsn  __$seqval             __$operation  __$update_
 
 我们先看看 CDC 的工作流程，就可以知道有哪些核心参数可以调整：
 
-![Influence of capture job parameters](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201805/cdc-influence.png)
+![Influence of capture job parameters](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/cdc-influence.png)
 
 上图是 CDC Job 的工作流程：
 
@@ -219,9 +219,9 @@ __$start_lsn          __$end_lsn  __$seqval             __$operation  __$update_
 出于篇幅考虑，我们无法将所有测试结果贴出来，
 这里放一个在并发 30 下面插入一百万数据（随机数据）进行展示：
 
-![cdc-metrics.png](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201805/cdc-metrics.png)
+![cdc-metrics.png](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/cdc-metrics.png)
 
-![cdc-system-load.png](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201805/cdc-system-load.png)
+![cdc-system-load.png](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/cdc-system-load.png)
 
 测试结论是，在默认的 CDC 参数下面：
 
@@ -290,7 +290,7 @@ Canal Server 中的 binlog 只能做一次性消费，
 的数据放到 Queue 中，在未来任意时间可以重复消费数据。
 我们选择了 Redis 作为这个 Queue，数据流如下。
 
-![canal.png](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201805/canal.png)
+![canal.png](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/canal.png)
 
 
 ## 最佳实践

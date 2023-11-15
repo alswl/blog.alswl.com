@@ -2,7 +2,7 @@
 
 当开始创建一个新系统，或参与一个新团队或项目时，都会面临一个简单却深刻的问题：这个系统（Web Server）的 API 是否有设计规范？
 
-![pyramid](https://e25ba8-log4d-c.dijingchao.com/images/202304/pyramid.png)
+![pyramid](https://e25ba8-log4d-c.dijingchao.com/202304/pyramid.png)
 
 <small>image by stable difussion, prompt by alswl</small>
 
@@ -31,7 +31,7 @@ API 可以通过标准化的方式进行数据传输和处理，从而实现各�
 - 面向未来的扩展，需要稳定的协议：协议是抽象的、独立于实现的，不是每个人都具备
   设计面向不确定系统的能力，一些广泛使用的技术则为更广泛的场景做了规划。
 
-![why](https://e25ba8-log4d-c.dijingchao.com/images/202304/why.png)
+![why](https://e25ba8-log4d-c.dijingchao.com/202304/why.png)
 
 <small>image by alswl</small>
 
@@ -52,7 +52,7 @@ API 可以通过标准化的方式进行数据传输和处理，从而实现各�
 - 遵循现实：遵循现有工程领域的抽象和分层（例如 HTTP，REST，RBAC，OIDC 等），不要自己发明新的概念，
   要始终思考这个问题是否只有自己遇到了（答案肯定是否定的）。
 
-![principle](https://e25ba8-log4d-c.dijingchao.com/images/202304/principle.png)
+![principle](https://e25ba8-log4d-c.dijingchao.com/202304/principle.png)
 
 <small>image by alswl</small>
 
@@ -67,7 +67,7 @@ API 可以通过标准化的方式进行数据传输和处理，从而实现各�
 REST 是一种成熟度较高的协议，[Leonard Richardson](https://martinfowler.com/articles/richardsonMaturityModel.html#level0)
 将其描述为四种成熟度级别：
 
-![rest-four-level](https://e25ba8-log4d-c.dijingchao.com/images/202304/rest-four-level.png)
+![rest-four-level](https://e25ba8-log4d-c.dijingchao.com/202304/rest-four-level.png)
 
 <small>image by alswl</small>
 
@@ -335,7 +335,7 @@ HTTP 状态码的用途在于表明客户端与服务器间通信的结果。2XX
 我将模型常说的模型呈现方式分为一下几类，这并非是专业的界定，借用了 Java 语境下面的一些定义。
 这些名称在不同公司甚至不同团队会有不一样的叫法：
 
-![models](https://e25ba8-log4d-c.dijingchao.com/images/202304/models.png)
+![models](https://e25ba8-log4d-c.dijingchao.com/202304/models.png)
 
 <small>image by alswl</small>
 
@@ -355,7 +355,7 @@ HTTP 状态码的用途在于表明客户端与服务器间通信的结果。2XX
 在 API 设计中，我们经常需要处理一个模型中包含多个子模型的情况，例如 Book 包含 Comments。
 对于这种情况，通常有三种表现形式可供选择：链接（Link）、侧载（Side）和嵌入（Embed）。
 
-![models-with-children](https://e25ba8-log4d-c.dijingchao.com/images/202304/models-with-children.png)
+![models-with-children](https://e25ba8-log4d-c.dijingchao.com/202304/models-with-children.png)
 
 <small>image by alswl</small>
 
@@ -637,7 +637,7 @@ Azure 的整体设计风格要比 Github API 更复杂，同一个产品的也�
 
 ## 题外话 - Apple Music 的一个有趣设计
 
-![Apple Music](https://e25ba8-log4d-c.dijingchao.com/images/202304/apple-music.png)
+![Apple Music](https://e25ba8-log4d-c.dijingchao.com/202304/apple-music.png)
 
 <small>image from Apple Music</small>
 

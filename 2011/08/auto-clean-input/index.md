@@ -2,17 +2,17 @@
 
 早期的输入框提示是这样的（via [baidu](http://tieba.baidu.com/index.html)）
 
-![tieba](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201108/login1.png)
+![tieba](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201108/login1.png)
 
 左边一个 label ，右边一个输入框。
 
 比较现代的方式是（via [Discuz!](http://www.discuz.net/)）
 
-![discuz!](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201108/login2.png)
+![discuz!](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201108/login2.png)
 
 更漂亮的方式是（via [点点](http://www.diandian.com/login)）
 
-![diandian](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201108/login_diandian.png)
+![diandian](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201108/login_diandian.png)
 
 登录提示信息是放在输入框里面，可以减少文字干扰，我也想在自己手头的小项目中实现这种效果。
 

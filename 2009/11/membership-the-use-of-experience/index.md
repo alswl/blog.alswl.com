@@ -9,8 +9,8 @@ rights))，但是这样还是不够灵活，最好需要能够对每一个功能
 
 1.可以通过"登录"系列用户控件的任务窗口中的"管理网站"打开"ASP.Net Web 应用程序管理"。 可以控制用户、角色、权限三个主要属性，另外还能选择
 "提供程序"（这个provider分为MemberShip和RoleManager两种，如果同名的话，可以选择同一提供程序）
-![userControl](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200911/userControl.jpg)
-![userManager](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200911/userManager.jpg)
+![userControl](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200911/userControl.jpg)
+![userManager](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200911/userManager.jpg)
 2.使用Web.config进行配置
 其实上面的可视化界面在配置提供程序和访问规则（权限设定）时候，本质上修改的是根目录web.config和各个文件夹下对应的web.config
 

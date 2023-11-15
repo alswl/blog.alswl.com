@@ -1,7 +1,7 @@
 
 
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202212/w.png)
+![img](https://e25ba8-log4d-c.dijingchao.com/202212/w.png)
 <small>上海解封后，摄于北外滩酒店</small>
 
 

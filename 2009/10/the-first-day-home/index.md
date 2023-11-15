@@ -14,7 +14,7 @@
 
 Google图片都找不到合适的内容，刚才去冰箱取苹果，居然发现在冰箱有几根葫芦，就拍拍上图了
 
-![葫芦](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/20091008.jpg)
+![葫芦](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200910/20091008.jpg)
 
 5.吃完午饭，下午又跑去找蕾玩，这个没良心的，有了男朋友，已经半年没联系我玩了，我居然都不知道她搬家了，和我仅仅相隔一条街。
 

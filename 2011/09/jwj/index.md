@@ -31,6 +31,6 @@
 
 我想，我需要寻找一个倾诉的缺口。
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201109/qingsu.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201109/qingsu.jpg)
 
 

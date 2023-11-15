@@ -82,7 +82,7 @@ View和Other中把VSS相关的选项打上钩，OK。
 
 11. 这样就可以在Team中执行相应的Check-in、Check-out操作了。
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201002/vss.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201002/vss.jpg)
 
 ## 打开一个VSS数据库中已有的工程（客户端）：
 

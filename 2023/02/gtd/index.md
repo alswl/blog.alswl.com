@@ -7,7 +7,7 @@
 
 放弃一个合作了十几年的老朋友 Toodledo 让我有些伤感，但是这个过程也促使我总结了一下我在时间管理这个命题上的尝试，并分享了一些我的经验。
 
-![time](https://e25ba8-log4d-c.dijingchao.com/images/202302/clock.png)
+![time](https://e25ba8-log4d-c.dijingchao.com/202302/clock.png)
 
 <small>Image frrom Pixelbay</small>
 
@@ -25,7 +25,7 @@ GTD 是由 David Allen 所创立的一种个人时间管理方法 ，旨在帮�
     -   回顾：定期回顾任务和行动步骤，确保它们的进度和状态得到及时跟进，更好地掌控任务和生活，从而更加高效地完成任务。
 3.  执行：专注于当前任务，避免分散注意力，借助时间管理和注意力控制的技巧提高效率。
 
-![gtd](https://e25ba8-log4d-c.dijingchao.com/images/202302/gtd.png)
+![gtd](https://e25ba8-log4d-c.dijingchao.com/202302/gtd.png)
 
 注，我整理的结构和外部工具略有差异。<mark>我将分类、回顾都合并到组织步骤</mark>因为我发现组织本质是做计划，做计划纪要看收集的待办事项，也要回顾进行中项目和已完成项目，何不都在组织环节一起做好？
 
@@ -37,7 +37,7 @@ GTD 是由 David Allen 所创立的一种个人时间管理方法 ，旨在帮�
 
 我接触 GTD 就是从 [Doit.im](http://doit.im/) 开始。这是一款国产软件，也是我非常喜欢的一款应用程序。Doit.im 支持 GTD 的基本功能，提供了清晰的任务列表、分类、优先级等功能，还支持多种回顾模式和多平台同步。然而，我后来放弃了它，因为我发现了更为强大的 Toodledo。
 
-![doit.im](https://e25ba8-log4d-c.dijingchao.com/images/202302/doit-im.png)
+![doit.im](https://e25ba8-log4d-c.dijingchao.com/202302/doit-im.png)
 
 <small>Image frrom doit.im</small>
 
@@ -51,13 +51,13 @@ GTD 是由 David Allen 所创立的一种个人时间管理方法 ，旨在帮�
 
 我从[善用佳软](https://xbeta.info/gtd-toodledo.htm)了解到 [Toodledo](https://www.toodledo.com/) 这款任务管理工具（善用佳软是一个著名的软件使用分享网站，我在学生时代从这里获取了相当多的工具和思路）。
 
-![toodledo](https://e25ba8-log4d-c.dijingchao.com/images/202302/toodledo.png)
+![toodledo](https://e25ba8-log4d-c.dijingchao.com/202302/toodledo.png)
 
 <small>Image frrom toodledo.com</small>
 
 我很快在 [葡挞生活](http://www.productivelife.cn/) 找到了一份非常完整的教程介绍 Toodledo 高级使用手法，尤其从其中获得了使用 Search 模块的方法。可惜现在网站已经无法打开了。不过，我们可以从一些其他渠道的截图中，略窥当时 Toodledo 的风采：
 
-![productive-life](https://e25ba8-log4d-c.dijingchao.com/images/202302/productive-life.png)
+![productive-life](https://e25ba8-log4d-c.dijingchao.com/202302/productive-life.png)
 
 <small>Image frrom twitter.com/productivelife</small>
 
@@ -70,7 +70,7 @@ Toodledo 很快成为了我最喜欢的任务管理工具。它提供了非常�
 
 付费使用一段时间之后，我发现 <mark>OmniFocus 的搜索功能和 Toodledo 的 Search 功能实在无法相提并论</mark>它不能满足我的需求。
 
-![OmniFocus](https://e25ba8-log4d-c.dijingchao.com/images/202302/omnifocus.png)
+![OmniFocus](https://e25ba8-log4d-c.dijingchao.com/202302/omnifocus.png)
 
 <small>Image frrom www.omnigroup.com/omnifocus</small>
 
@@ -115,7 +115,7 @@ Toodledo 很快成为了我最喜欢的任务管理工具。它提供了非常�
 -   **计时器不为空**：说明已经开始执行，但可能会被其他事情打断
 -   **Waiting**：表示需要和别人合作，需要检查进度
 
-![toodledo-now](https://e25ba8-log4d-c.dijingchao.com/images/202302/now.png)
+![toodledo-now](https://e25ba8-log4d-c.dijingchao.com/202302/now.png)
 
 清单中的任务按照优先级、截止日期和执行状态的综合考虑排序。每次进入工作状态之后，只需要从这个清单中筛选出靠前的几个任务进行执行。
 
@@ -131,24 +131,24 @@ Toodledo 很快成为了我最喜欢的任务管理工具。它提供了非常�
 
 Toodledo 支持循环任务功能，用户可以将一个任务设置为循环任务，并指定它的重复周期，比如每天、每周、每月等。当任务完成后，它会自动重复出现在任务列表中，以便用户再次处理。这个功能可以帮助用户更好地管理一些常规性的任务：日常会议、每日邮件处理、每日 Review 等等。
 
-![repeat-1](https://e25ba8-log4d-c.dijingchao.com/images/202302/repeat-1.png)
+![repeat-1](https://e25ba8-log4d-c.dijingchao.com/202302/repeat-1.png)
 
-![repeat-2](https://e25ba8-log4d-c.dijingchao.com/images/202302/repeat-2.png)
+![repeat-2](https://e25ba8-log4d-c.dijingchao.com/202302/repeat-2.png)
 
 #### 丰富时间功能类型
 
 Toodledo 对日期的支持非常丰富，用户可以根据任务的具体情况选择不同的 Due 类型，比如 Due（截止时间）、Timer（计时器）、Length（时常评估） 等等。这样一来，用户可以更加精细地管理任务的时间，有效地提高工作效率。另外，基于 Timer 计时器，我可以<mark>方便地统计一天的时间耗用情况</mark>更好地把控时间成本。我还开发了一个 [Python 脚本](https://github.com/alswl/toodledo_a)用来分析每周的时间耗用。
 
-![Toodledo Due](https://e25ba8-log4d-c.dijingchao.com/images/202302/toodledo-due.png)
+![Toodledo Due](https://e25ba8-log4d-c.dijingchao.com/202302/toodledo-due.png)
 
 
-![Toodledo Timer](https://e25ba8-log4d-c.dijingchao.com/images/202302/toodledo-timer.png)
+![Toodledo Timer](https://e25ba8-log4d-c.dijingchao.com/202302/toodledo-timer.png)
 
 #### Search 功能
 
 Toodledo 的 Search 功能非常强大，<mark>支持丰富的逻辑查询（提供了条件组合的与或查询）</mark>用户可以根据任务名称、标签、日期、优先级等多个条件进行查询。这个功能可以帮助用户组织任务，提高任务管理的效率，我一度无法离开 Toodledo 也是因为，任务组织这个步骤我高度依赖这项功能。
 
-![Toodledo Search](https://e25ba8-log4d-c.dijingchao.com/images/202302/toodledo-search.png)
+![Toodledo Search](https://e25ba8-log4d-c.dijingchao.com/202302/toodledo-search.png)
 
 ### 我开发的工具和插件
 
@@ -165,11 +165,11 @@ Toodledo 提供了日历订阅能力，将待办事项显示在各类日历软�
 
 Before：
 
-![calendaer-before](https://e25ba8-log4d-c.dijingchao.com/images/202302/calendar-before.png)
+![calendaer-before](https://e25ba8-log4d-c.dijingchao.com/202302/calendar-before.png)
 
 After：
 
-![calendar-after](https://e25ba8-log4d-c.dijingchao.com/images/202302/calendar-after.png)
+![calendar-after](https://e25ba8-log4d-c.dijingchao.com/202302/calendar-after.png)
 
 #### Buff 2 让 Toodledo 具备 Gmail 快捷键
 
@@ -183,7 +183,7 @@ After：
 
 一开始 go-toodledo 只是提供最简单的 CLI 功能。后来我逐步补充了完整 SDK、CLI 全功能，甚至还提供了一个<mark>互动式的 TUI 小应用</mark>让用户可以方便在 Terminal 地使用 Toodledo。
 
-![go-toodledo](https://e25ba8-log4d-c.dijingchao.com/images/202302/go-toodledo.png)
+![go-toodledo](https://e25ba8-log4d-c.dijingchao.com/202302/go-toodledo.png)
 
 Toodledo 官方并没有提供 OpenAPI 接口，我以逆向的方式生成了一份 [go-toodledo/swagger.yaml](https://github.com/alswl/go-toodledo/blob/master/api/swagger.yaml)，如果还有其他人有对 Toodledo API 开发需求，可以基于这份 API 直接使用。
 
@@ -204,7 +204,7 @@ Toodledo 官方并没有提供 OpenAPI 接口，我以逆向的方式生成了�
 
 [Obsidian Tasks](https://github.com/obsidian-tasks-group/obsidian-tasks) 则是一款<mark>强大的 Obsidian 插件</mark>它可以让你在 Obsidian 中轻松地管理任务和待办事项。这个插件可以通过简单的语法将任务添加到你的笔记中，并根据任务的完成情况自动标记任务的状态。你可以使用 Obsidian Tasks 来跟踪个人任务、工作任务、学习任务等等。此外，它还具有一些其他功能，例如自定义任务样式、创建过滤器来查找任务，以及可以根据任务状态自动移动任务。Obsidian + Obsidian Tasks 是一个完美组合，可以帮助你更好地管理你的待办事项，提高你的生产力。
 
-![Obsidian Tasks](https://e25ba8-log4d-c.dijingchao.com/images/202302/obisidian-tasks.png)
+![Obsidian Tasks](https://e25ba8-log4d-c.dijingchao.com/202302/obisidian-tasks.png)
 
 <small>Image frrom https://github.com/obsidian-tasks-group/obsidian-tasks</small>
 

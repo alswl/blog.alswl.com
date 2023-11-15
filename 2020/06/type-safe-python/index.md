@@ -1,6 +1,6 @@
 
 
-![wall](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/202006/wall.png)
+![wall](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202006/wall.png)
 <small>image from pixabay.com</small>
 
 静态类型正在逐渐成为潮流，

@@ -1,7 +1,7 @@
 
 
 
-![201612/shanghai.jpg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201612/shanghai.jpg)
+![201612/shanghai.jpg](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201612/shanghai.jpg)
 
 点开的同学别失望，这并不是教你如何快速致富的 😂 ……
 
@@ -63,7 +63,7 @@ Indicator 的含义是建立一系列评价指标，比如价格、户型、位�
 安居客有一个大颗粒度的圈子，展示了社区集中点 [via](http://shanghai.anjuke.com/)，
 下图是我筛选条件之后形成的几个簇：
 
-![201612/map_thumb.png](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201612/map_thumb.png)
+![201612/map_thumb.png](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201612/map_thumb.png)
 
 （数据爬取分析这一块，我只服一个人，他专门写了一堆爬虫捞数据然后分析，
 如果对杭州的房地产投资感兴趣，可以私信我，我可以帮忙问问。）

@@ -6,7 +6,7 @@
 > \- 玉伯 2013 年 [阿里前端的困局与突围](https://github.com/lifesinger/blog/issues/141)
 
 
-![ceilling](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201907/ceilling.jpg)
+![ceilling](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201907/ceilling.jpg)
 
 <small>image from [Abbey Arches Architecture - Free photo on Pixabay](https://pixabay.com/photos/abbey-arches-architecture-building-1851493/)</small>
 

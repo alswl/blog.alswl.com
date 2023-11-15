@@ -6,7 +6,7 @@
 
 刚登录校内（也许称呼为人人更合适），然后就看到一条信息：
 
-![校内警告](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/xiaonei_alert.jpg)
+![校内警告](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200910/xiaonei_alert.jpg)
 
 上面居然用了「所有」「都会」这种字眼，明显就是吓唬人。其实就是怕影响这些游戏运作，很多游戏自身的防外挂功能又不完善，很容易制作外挂。
 
@@ -21,7 +21,7 @@
 
 最近我又发现，在这个校内的播放页面无法通过点击链接到原始内容页面。
 
-![优酷in校内](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/xiaonei_youku.jpg)
+![优酷in校内](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200910/xiaonei_youku.jpg)
 
 如图上红色框内的区域，应该可以链接到原始链接，而在校内这个页面点击，却没有反应。
 

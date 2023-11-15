@@ -7,25 +7,25 @@
 
 1.准备好的肉馅，做法和普通的丸子一样就可以了，料酒啊，葱花按自己口味配
 
-[![20090718(004)](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/20090718004-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718004.jpg)
+[![20090718(004)](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/20090718004-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718004.jpg)
 
 2.市场上买来的油面筋，10元/斤，戳一个洞，然后转一下手指，把里面捣空。
 
-[![20090718(001)](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/20090718001-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718001.jpg)
+[![20090718(001)](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/20090718001-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718001.jpg)
 
 3.往油面筋内部掐入肉馅，大小和一个小肉丸子一样，看个人喜欢吃多少咯。
 
-[![20090718(002)](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/20090718002-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718002.jpg)
+[![20090718(002)](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/20090718002-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718002.jpg)
 
 4.看看我的战果吧……
 
-[![20090718(003)](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/20090718003-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718003.jpg)
+[![20090718(003)](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/20090718003-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718003.jpg)
 
 急着上图了，晚上再把它们下锅红烧。
 
 5.现在好了，起锅了，各位看官，只能看咯，哈哈
 
-[![20090718(005)](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/20090718005-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718005.jpg)
+[![20090718(005)](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/20090718005-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718005.jpg)
 
 ps:昨天无法访问picasa，以为我FireFox问题…居然，唉，GWF又进化了……
 

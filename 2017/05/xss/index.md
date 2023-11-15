@@ -4,7 +4,7 @@
 这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。
 谨以此文怀念 [乌云](http://wooyun.org/)。
 
-![201705/wooyun.jpg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201705/wooyun.jpg)
+![201705/wooyun.jpg](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201705/wooyun.jpg)
 
 ----
 

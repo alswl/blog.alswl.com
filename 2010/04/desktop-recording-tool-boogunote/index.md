@@ -3,7 +3,7 @@
 之前做GTD一直基于Google Canledar，记录主要是Google NoteBook和Google Docs。尽管Google
 Docs支持Gears离线查看，但是并不支持离线创建文件（Docs的编辑能力还不如CKEditor）。
 
-[![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201004/boogu_note.jpg)](../../static/images/upload_dropbox/201004/boogu_note.jpg)
+[![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201004/boogu_note.jpg)](../../static/images/upload_dropbox/201004/boogu_note.jpg)
 
 我一直急迫的寻找一款本地保存内容的程序，终于被我发现了，BooguNote！
 
@@ -33,7 +33,7 @@ Docs支持Gears离线查看，但是并不支持离线创建文件（Docs的编�
 
 >
 
-> [![BooguNote - 新概念笔记软件](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201004/boogunote.png)](http://lightory.net/boogunote/479/)
+> [![BooguNote - 新概念笔记软件](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201004/boogunote.png)](http://lightory.net/boogunote/479/)
 
 >
 

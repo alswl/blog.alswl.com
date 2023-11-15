@@ -1,7 +1,7 @@
 
 
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/202302/1675665150507-502b11ac-0720-4799-8a23-1d7cb27ec553.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/202302/1675665150507-502b11ac-0720-4799-8a23-1d7cb27ec553.png)
 
 
 乐坛少有新歌，我经常听一些老歌，有时候顺着豆瓣音乐 Top 250 一点点听下去，感觉还是挺不错。
@@ -20,7 +20,7 @@ Jason Mraz / 2008-05-13 / Import / Audio CD / 民谣
 
 9.1 ( 115738人评价 )
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/202302/1675664205563-60b7e811-e094-4f0a-a40f-656ad2c5b991.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/202302/1675664205563-60b7e811-e094-4f0a-a40f-656ad2c5b991.png)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/we-sing-we-dance-we-steal-things/277635758?l=en)
 
@@ -462,7 +462,7 @@ James Blunt / 2004 / Explicit Lyrics / Audio CD / 流行
 
 9.0 ( 43229人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s1461123.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s1461123.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/back-to-bedlam/714602877?l=en)
 
@@ -473,7 +473,7 @@ James Blunt / 2004 / Explicit Lyrics / Audio CD / 流行
 
 8.9 ( 53849人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s2360790.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s2360790.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E8%98%87%E6%89%93%E7%B6%A0%E5%90%8C%E5%90%8D%E5%B0%88%E8%BC%AF/1443094831?l=en)
 
@@ -484,7 +484,7 @@ James Blunt / 2004 / Explicit Lyrics / Audio CD / 流行
 
 8.5 ( 46781人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s3551584.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s3551584.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E5%88%AB%E5%86%8D%E4%B8%BA%E4%BB%96%E6%B5%81%E6%B3%AA/1095630068?l=en)
 
@@ -1111,7 +1111,7 @@ Jack Johnson / 2005-03-22 / 专辑 / Audio CD / 民谣
 
 数字(Digital) / 流行 8.7 ( 46762人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s9127241.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s9127241.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E6%88%91%E7%9A%84%E6%AD%8C%E8%81%B2%E8%A3%A1-deluxe-version/1442661002?l=en)
 
@@ -1274,7 +1274,7 @@ nil
 
 8.2 ( 34393人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s1876827.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s1876827.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/my-love/544154095?l=en)
 
@@ -1285,7 +1285,7 @@ nil
 
 9.5 ( 35275人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s2951748.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s2951748.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E4%BA%B2%E4%BA%B2/1095245171?l=en)
 
@@ -1296,7 +1296,7 @@ nil
 
 8.8 ( 31725人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s4644120.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s4644120.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/stranger-under-my-skin/1443711302?l=en)
 
@@ -1452,7 +1452,7 @@ nil
 
 9.1 ( 45209人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s2652097.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s2652097.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E4%B8%8D%E8%83%BD%E8%AA%AC%E7%9A%84%E7%A7%98%E5%AF%86-original-soundtrack/1624051140?l=en)
 
@@ -1463,7 +1463,7 @@ nil
 
 8.3 ( 32166人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s1966952.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s1966952.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E7%B5%B2%E8%B7%AF/151338382?l=en)
 
@@ -1474,7 +1474,7 @@ James Blunt / 2007-09-18 / Import / Audio CD / 流行
 
 8.6 ( 26484人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s2609413.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s2609413.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/all-the-lost-souls-deluxe/714586416?l=en)
 
@@ -1485,7 +1485,7 @@ James Blunt / 2007-09-18 / Import / Audio CD / 流行
 
 8.9 ( 41045人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s4124010.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s4124010.jpg)
 
 
 
@@ -1639,7 +1639,7 @@ GALA / 2011-03-24 / 专辑 / CD / 摇滚
 
 9.3 ( 30585人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s3268875.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s3268875.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/prisoner-of-love-ep/1444873685?l=en)
 
@@ -1650,7 +1650,7 @@ The Innocence Mission / 2004 / 专辑 / CD / 民谣
 
 8.5 ( 24692人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s1506405.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s1506405.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E5%90%89%E4%BB%96%E6%89%8B/152197399?l=en)
 
@@ -1661,7 +1661,7 @@ Timbaland,OneRepublic / 2007-11-06 / Single / Audio CD / 放克/灵歌/R&B
 
 9.2 ( 32971人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s6780751.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s6780751.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/now-the-day-is-over/270127395?l=en)
 
@@ -1672,7 +1672,7 @@ Timbaland,OneRepublic / 2007-11-06 / Single / Audio CD / 放克/灵歌/R&B
 
 9.4 ( 26218人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s3850703.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s3850703.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E9%98%BF%E8%8F%B2%E6%AD%A3%E5%82%B3/1443424435?l=en)
 
@@ -1683,7 +1683,7 @@ Timbaland,OneRepublic / 2007-11-06 / Single / Audio CD / 放克/灵歌/R&B
 
 7.8 ( 41601人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s4364499.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s4364499.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E8%B7%A8%E6%99%82%E4%BB%A3/536247746?l=en)
 
@@ -1846,7 +1846,7 @@ Lily Allen / 2009-02-09 / 专辑 / Audio CD / 流行
 
 9.3 ( 24179人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s2969728.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s2969728.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/its-not-me-its-you/732024535?l=en)
 
@@ -1857,7 +1857,7 @@ Lily Allen / 2009-02-09 / 专辑 / Audio CD / 流行
 
 8.9 ( 32777人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s4008894.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s4008894.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/la-vie-en-rose-i-love-cinemas/1609484079?l=en)
 
@@ -1868,7 +1868,7 @@ Lily Allen / 2009-02-09 / 专辑 / Audio CD / 流行
 
 8.3 ( 23581人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s2616588.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s2616588.jpg)
 
 nil
 
@@ -1879,7 +1879,7 @@ nil
 
 8.7 ( 22928人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s1399764.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s1399764.jpg)
 
 nil
 
@@ -2044,7 +2044,7 @@ nil
 
 7.9 ( 22531人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s4039256.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s4039256.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E4%B8%96%E7%95%8C/1542187294?l=en)
 
@@ -2055,7 +2055,7 @@ Nirvana / 2002-10-29 / Extra tracks / Audio CD / 摇滚
 
 9.3 ( 22711人评价 )
 
-![img](https://e25ba8-log4d-c.dijingchao.com/images/202302/s3020073.jpg)
+![img](https://e25ba8-log4d-c.dijingchao.com/202302/s3020073.jpg)
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E4%B8%83%E5%A4%A9/1601755025?l=en)
 

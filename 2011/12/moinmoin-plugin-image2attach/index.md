@@ -1,7 +1,7 @@
 
 
 
-![MoinMoin](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201112/moinmoin.png)
+![MoinMoin](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201112/moinmoin.png)
 
 ## What's this ##
 

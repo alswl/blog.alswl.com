@@ -1,7 +1,7 @@
 
 
 
-![prr](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/202106/prr.png)
+![prr](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202106/prr.png)
 <small>image from pixabay.com</small>
 
 SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。
@@ -114,7 +114,7 @@ SRE 最终承诺的组件对外 SLA，并将 SLA 拆解为 SLO 跟 SWE 共背。
 想把事情给真正做好，核心是持续学习思考在对应领域的基础技能，并且持续了解客户的需求变化。
 保持一专多能，成为随时可以顶上去独当一面的 SRE，这才能避免成为一个工单人。🐶
 
-![sre-push-up](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/202106/sre-push-up.jpg)
+![sre-push-up](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202106/sre-push-up.jpg)
 <small>image from Twitter</small>
 
 扩展阅读：

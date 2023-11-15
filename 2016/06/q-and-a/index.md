@@ -7,7 +7,7 @@
 在征得对方同意之后，我将他的问题和我的回答 PO 出来。
 
 
-![201606/questions-and-answers.jpg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201606/questions-and-answers.jpg)
+![201606/questions-and-answers.jpg](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201606/questions-and-answers.jpg)
 
 
 

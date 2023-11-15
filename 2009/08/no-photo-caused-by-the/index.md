@@ -1,6 +1,6 @@
 
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201612/404.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201612/404.png)
 
 某个系统，检查用户照片，如果发现用户并没有设定照片就返回一张No Photo的图片。
 

@@ -6,9 +6,9 @@
 无产的四种力量和四大基本制度分析法，提供非常好的视角来分析各种事件。
 
 
-![四种力量](https://e25ba8-log4d-c.dijingchao.com/images/202211/four.png)
+![四种力量](https://e25ba8-log4d-c.dijingchao.com/202211/four.png)
 
-![四大基本制度分析法](https://e25ba8-log4d-c.dijingchao.com/images/202211/method.png)
+![四大基本制度分析法](https://e25ba8-log4d-c.dijingchao.com/202211/method.png)
 
 吴晓波是经济史大家，我读过他的《激荡三十年》、《腾讯传》，笔法锋利，时常有深刻洞见评价。
 这次是从经济变革的角度出发，历数从秦朝起著名的经济变革，介绍其发生的政治经济背景、手段和成果。
@@ -59,7 +59,7 @@ PS：我们现在的政府收入以税收为大头，专营占比小。由于实
 每次变革的核心内容就是通过<mark>归属、制度的调整，重新厘定财源</mark>。
 经济变革的内容都是搭配着相应的政治制度而来，影子脱离不了实体。
 
-![国家宏观调控手段](https://e25ba8-log4d-c.dijingchao.com/images/202211/goverment-macro-adjustment.png)
+![国家宏观调控手段](https://e25ba8-log4d-c.dijingchao.com/202211/goverment-macro-adjustment.png)
 
 
 ## 一句话介绍历代经济变革
@@ -90,7 +90,7 @@ PS：我们现在的政府收入以税收为大头，专营占比小。由于实
 | 政府性基金预算收入   | 98024            | 注：土地使用权、彩票公益、政府住房基金等 |
 | 国有资本经营预算收入 | 5180             |                                          |
 
-![china 2021 revenue](https://e25ba8-log4d-c.dijingchao.com/images/202211/china-2021-revenue-1.png)
+![china 2021 revenue](https://e25ba8-log4d-c.dijingchao.com/202211/china-2021-revenue-1.png)
 
 一般公共预算收入构成：
 
@@ -117,7 +117,7 @@ PS：我们现在的政府收入以税收为大头，专营占比小。由于实
 | 环境保护税                                     | 203              |
 
 
-![China 2021 revenue detail](https://e25ba8-log4d-c.dijingchao.com/images/202211/china-2021-revenue-2.png)
+![China 2021 revenue detail](https://e25ba8-log4d-c.dijingchao.com/202211/china-2021-revenue-2.png)
 
 从饼图可以看到，目前我国的政府收入大头还是税收，<mark>税收中大头是增值税和消费税</mark>。而国营收入仅占整体收入 2%，
 我对经济不够专业，所以对这个 2% 非常震惊。
@@ -128,7 +128,7 @@ PS：我们现在的政府收入以税收为大头，专营占比小。由于实
 
 读完中国历代经济变革历史，能从其中感受到强烈的治乱循环。经济只是政治的影子。
 治乱循环就是从四个阶段的循环，一次治乱往往对应一次朝代的重建。
-![治乱循环](https://e25ba8-log4d-c.dijingchao.com/images/202211/cycle.png)
+![治乱循环](https://e25ba8-log4d-c.dijingchao.com/202211/cycle.png)
 
 那么问题是：现在到底是恒纪元还是乱纪元。从军事、民生、国际影响等来看，目前是恒纪元。
 那问题就变成现在是恒纪元的上升箭头中，还是下降箭头中？

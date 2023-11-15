@@ -17,7 +17,7 @@ D，记录我的生活和工作。现在的博客更新频率太低了，我理�
 
 另外，在这次改名字时候，我也趁机放上我经过修改的网站favicon，感谢各位网友提出的宝贵意见。下面是大图。
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201002/d2.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201002/d2.png)
 
 想看到实际效果的话，Ctrl+F5强制刷新缓存即可。
 

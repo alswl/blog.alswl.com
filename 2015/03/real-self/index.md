@@ -2,7 +2,7 @@
 
 「遇到未知的自己」这本书讲的是如何来认识自己，理解自己的情绪，和自己内心沟通。
 
-![遇到未知的自己](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201503/s3403254.jpg)
+![遇到未知的自己](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201503/s3403254.jpg)
 
 [豆瓣链接](http://book.douban.com/subject/2340100/) /
 [Kindle 版本购买链接](http://www.amazon.cn/%E9%81%87%E8%A7%81%E6%9C%AA%E7%9F%A5%E7%9A%84%E8%87%AA%E5%B7%B1-%E5%BC%A0%E5%BE%B7%E8%8A%AC/dp/B009WNRMM0/ref=sr_1_1?s=digital-text&ie=UTF8&qid=1426319187&sr=1-1&keywords=%E9%81%87%E8%A7%81%E6%9C%AA%E7%9F%A5%E7%9A%84%E8%87%AA%E5%B7%B1)

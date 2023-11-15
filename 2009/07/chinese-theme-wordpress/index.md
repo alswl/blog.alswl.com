@@ -9,15 +9,15 @@
 
 1.[LightWord](http://wordpress.org/extend/themes/lightword)
 
-[![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/screenshot.png)](../../static/images/upload_dropbox/200907/screenshot.png)
+[![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/screenshot.png)](../../static/images/upload_dropbox/200907/screenshot.png)
 
 2.[dfBlog](http://wordpress.org/extend/themes/dfblog)
 
-[![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/screenshot.png)](http://wp-themes.com/wp-content/themes/dfblog/screenshot.png)
+[![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/screenshot.png)](http://wp-themes.com/wp-content/themes/dfblog/screenshot.png)
 
 3.[iNove](http://wordpress.org/extend/themes/inove)(小张的主机应该起手都是用的iNove吧……呵呵……)
 
-[![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/screenshot.png)](http://wp-themes.com/wp-content/themes/inove/screenshot.png)
+[![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/screenshot.png)](http://wp-themes.com/wp-content/themes/inove/screenshot.png)
 
 其他的主题有些虽然内置了mo/po文件，但没有中文对应的mo/po，需要自己修改，可以使用[poEdit](http://www.xdowns.com/soft/38/103/2007/Soft_36710.html)编辑，我正在尝试汉化[Fusion](http://wordpress.org/extend/themes/fusion)，很喜欢这个主题，可惜没有中文汉化。
 

@@ -16,7 +16,7 @@
 
 同学安慰我「塞翁失马焉知非福」，我说：这句话说的好，虽然我错过了这次机会，我会为下一次机会的到来做更充足的准备。
 
-![up](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200910/up.jpg)
+![up](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200910/up.jpg)
 
 Fighting
 

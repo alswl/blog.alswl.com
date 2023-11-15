@@ -3,7 +3,7 @@
 昨天我在[sunng](http://sunng.info/blog/2011/10/clojalk-scm-visualization/)
 那里看到一个非常好玩的东西[Gource](http://code.google.com/p/gource/)。
 
-![gource](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201111/gource-logo.png)
+![gource](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201111/gource-logo.png)
 
 Gource可以将代码版本控制系统里面的日志全部可视化， 所谓可视化就是可以看见每个成员在系统里面提交代码的行为。
 Gource目前支持git/hg/svn，cvs通过一个简单的脚本也可以被Gource支持。

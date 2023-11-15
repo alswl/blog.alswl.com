@@ -1,6 +1,6 @@
 
 
-![bali](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/202001/bali.jpeg)
+![bali](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202001/bali.jpeg)
 <smaill>2019 年 9 月摄于巴厘岛</small>
 
 和老友聚餐时候完了一个游戏，大家各自找了一个词形容自己的 2019。我用的词是「累」和「平凡」。

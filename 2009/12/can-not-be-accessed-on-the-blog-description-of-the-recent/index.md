@@ -45,6 +45,6 @@ ps:感慨到，搬家果然难啊~
 
 Update:测试上传图片的权限
 
-[![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200912/xiaobai_wifi.jpg)](../../static/images/upload_dropbox/200912/xiaobai_wifi.jpg)
+[![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200912/xiaobai_wifi.jpg)](../../static/images/upload_dropbox/200912/xiaobai_wifi.jpg)
 
 

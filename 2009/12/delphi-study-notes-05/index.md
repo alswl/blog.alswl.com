@@ -85,7 +85,7 @@ end.
 
 上个小图
 
-[![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200912/delphi_editor.jpg)](../../static/images/upload_dropbox/200912/delphi_editor.jpg)
+[![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200912/delphi_editor.jpg)](../../static/images/upload_dropbox/200912/delphi_editor.jpg)
 
     
     procedure TForm1.O1Click(Sender: TObject);

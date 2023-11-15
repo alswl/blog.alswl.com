@@ -119,5 +119,5 @@ Bundle 'hallettj/jslint.vim'
 ps：这篇文章使用 Markdown 写的，以前都是用 Asciidoc 写，貌似是由于 github 带动，
 Mardown 自 2010 年之后使用人群猛涨，证据在此，上图是 Markdown，下图是 Asciidoc
 
-![Markdown vs Asciidoc](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201204/markdown-asciidoc.png)
+![Markdown vs Asciidoc](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201204/markdown-asciidoc.png)
 

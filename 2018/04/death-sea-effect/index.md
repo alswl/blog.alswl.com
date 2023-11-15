@@ -1,6 +1,6 @@
 
 
-![201804/death-sea.jpg](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201804/death-sea.jpg)
+![201804/death-sea.jpg](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201804/death-sea.jpg)
 
 （图片来自 [The Dead Sea, Israel | One of the lowest, saltiest and unusu… | Flickr](https://www.flickr.com/photos/tsaiproject/8298557641)）
 

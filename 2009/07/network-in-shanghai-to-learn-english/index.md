@@ -7,7 +7,7 @@
 
 我脸皮厚着用这个04年的账号参加了新手报到领取红包活动……转了好一会，都没发现谁的注册日期比我早（还发现了自己的错别字「年级-年纪」）
 
-![沪江英语我的账号](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/hjenglish_alswl.jpg)
+![沪江英语我的账号](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/hjenglish_alswl.jpg)
 
 发现现在沪江英语做的真不错，互动性很强，人气很旺，学习资料非常多，从口语到听力，从阅读到听写，什么等级的都有。
 

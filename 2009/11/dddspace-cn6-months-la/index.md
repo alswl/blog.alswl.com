@@ -15,9 +15,9 @@ Hi的一部分内容导入了！）
 
 上几张华丽的让我蛋疼的粘代码截图
 
-[![插入代码](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200911/codein_fck_insert.jpg)](../../static/images/upload_dropbox/200911/codein_fck_insert.jpg)
+[![插入代码](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200911/codein_fck_insert.jpg)](../../static/images/upload_dropbox/200911/codein_fck_insert.jpg)
 
-[![显示为Code](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200911/code_in_fck.jpg)](../../static/images/upload_dropbox/200911/code_in_fck.jpg)
+[![显示为Code](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200911/code_in_fck.jpg)](../../static/images/upload_dropbox/200911/code_in_fck.jpg)
 
 下面的一段Python代码就是我测试缩进用的，代码大意是…呃…哦，是输出一段XNML
 

@@ -20,7 +20,7 @@ hopCS3精简版）：
 
 图片效果可以参考我之前的图片，效果略微稍挤，我以后会继续修改的。
 
-![龙珠·改](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200906/2009050421141455.jpg)
+![龙珠·改](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200906/2009050421141455.jpg)
 
 09_07_21更新： [小丑](http://loli-ta.com/)同学提了一个建议：不需要大量水印，如果原创有版权的，加上水印无所谓，非原创的就不用加水印了。
 
@@ -28,6 +28,6 @@ hopCS3精简版）：
 
 如果只增加一个角落的水印，可以使用「图案印章」工具，选择之前使用的图案，一样可以达到水印效果。
 
-![naruto_xiaoyin_cubao](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/200907/snapshot20090720180858.jpg)
+![naruto_xiaoyin_cubao](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/snapshot20090720180858.jpg)
 
 

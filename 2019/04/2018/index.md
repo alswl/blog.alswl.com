@@ -1,6 +1,6 @@
 
 
-![yuan-ming-yuan](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201904/yuan-ming-yuan.png)
+![yuan-ming-yuan](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201904/yuan-ming-yuan.png)
 
 图片摄于北京圆明园
 

@@ -1,6 +1,6 @@
 
 
-![car](https://e25ba8-log4d-c.dijingchao.com/images/202309/car.png)
+![car](https://e25ba8-log4d-c.dijingchao.com/202309/car.png)
 
 <small>image via [shipvehicles](https://www.shipvehicles.com/step-by-step-guide-for-state-to-state-transport/)</small>
 

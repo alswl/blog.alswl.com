@@ -2,7 +2,7 @@
 
 Chrome的开发者工具里面有一个小功能：查看当前元素的Event，比如onclick/onblur等事件。
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201107/chrome_event.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201107/chrome_event.png)
 
 一直想在Firefox里面也找到类似的插件，今天正好看到这么一个好东西，叫做EventBug。
 
@@ -26,7 +26,7 @@ Chrome的开发者工具里面有一个小功能：查看当前元素的Event，
 
 测试发现在Firefox5下面没有问题。
 
-[![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201107/eventbug.png)](../../static/images/2011/07/eventbug.png)
+[![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201107/eventbug.png)](../../static/images/2011/07/eventbug.png)
 
 这么一款插件在调试js或者对别人的页面做一些js hack特别有用，强烈推荐之。
 

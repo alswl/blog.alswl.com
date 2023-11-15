@@ -18,7 +18,7 @@
 云存储技术，将文件安全地存储在网络服务器上，以便您可以在各处都可以访问到。快盘由金山公司推出，并紧密地与 WPS
 办公套件集成，**非常适合商务人士、办公室一族等使用**。
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/2010-08-08_205707.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201008/2010-08-08_205707.png)
 
 此前，快盘已经推出了内测版，并进行了小范围的邀请码发放和用户测试（[同步控赠送快盘邀请码的活动](http://www.syncoo.com/kuaipan-wps-2627.htm)），用户总体口碑良好。
 
@@ -35,7 +35,7 @@ XDash 拿到的快盘公测版客户端的版本号是 1.7.0.380。客户端压�
 双击 setup 文件开始安装。如果此前系统中已经装有快盘，会提示卸载之前版本，直接点卸载即可。安装过程速度很快，一路点下一步。唯一的缺憾在于，目前快盘依然
 **无法让用户自定义安装的目录**，只能安装到默认路径（系统盘符）下。对于有系统洁癖的用户而言，这样的设计略嫌不足。
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/2010-08-10_111527.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201008/2010-08-10_111527.png)
 
 （上图：快盘安装界面，傻瓜式的操作，一路点击默认按钮就完成，速度很快。）
 
@@ -43,12 +43,12 @@ XDash 拿到的快盘公测版客户端的版本号是 1.7.0.380。客户端压�
 
 首次运行快盘，会自动弹出初始设置窗口。
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/2010-08-10_112859.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201008/2010-08-10_112859.png)
 
 在"账号绑定向导"窗口的"登录并绑定"界面，填写之前申请注册到的用户账号邮箱及密码。该账号密码将同时可用于登陆 [WPS办公空间](http://xlive.wps.cn/fileviewer/)（Web
 版文件管理和协作页面）。绑定后本机即与该账号产生关联，所有操作都将同步到该账号下。您可以在多台电脑的客户端上绑定同一个账号。但目前一台电脑无法绑定多个账号。
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/2010-08-10_113304.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201008/2010-08-10_113304.png)
 
 接下来，在"同步位置"界面选定一个本地路径作为备份文件夹（之前曾经安装过则会自动记住）。快盘内的文件将会自动备份到该文件夹下留档。
 
@@ -69,7 +69,7 @@ XDash 拿到的快盘公测版客户端的版本号是 1.7.0.380。客户端压�
 本次快盘更新，取消了虚拟成K盘的设定，取而代之的是生成一个与 Windows
 中"我的文档"、"共享文档"平行的特殊文件夹"快盘"（ShellFolder），如图：
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/2010-08-10_114422.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201008/2010-08-10_114422.png)
 
 
 
@@ -83,13 +83,13 @@ XDash 拿到的快盘公测版客户端的版本号是 1.7.0.380。客户端压�
 
 首次运行并完成初始化配置后，会弹出基本功能介绍。同时，右键点击系统托盘里的快盘图标，也能发现新增加的**"免费升级至2.6G空间"**选项：
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/2010-08-10_115004.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201008/2010-08-10_115004.png)
 
 
 
 点击此选项，即是打开新手教学任务窗口：
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/2010-08-10_115234.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201008/2010-08-10_115234.png)
 
 完成全部任务，即可升到2.6G。任务内容很简单，拿到手并不是那么困难的事情哦。
 
@@ -97,7 +97,7 @@ XDash 拿到的快盘公测版客户端的版本号是 1.7.0.380。客户端压�
 
 从托盘图标进入设置窗口，可以看到[原先"自动同步控制"下的"快盘内有更新则立即上传"、"服务器上有更新则立即下载"](http://www.syncoo.com/kuaipan-wps-2627.htm)，已经被一个**"自动同步本地及远程改变"**取代：
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/2010-08-08_201504.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201008/2010-08-08_201504.png)
 
 这也意味着，新版本已经无法对快盘内文件的同步方向（单向/双向）进行设置（我之前很欣赏这个设计，并赞同用"上传"、"下载"、"服务器"这样用户熟悉的字眼来描述
 软件功能）。不知道这是出于简化用户操作的考虑，还是为了让程序更稳定、更少出现覆盖最新文件等同步工具的致命BUG？
@@ -114,11 +114,11 @@ XDash 拿到的快盘公测版客户端的版本号是 1.7.0.380。客户端压�
 上传过程中，系统托盘会显示当前正在上传的文件和单个进度。遗憾的是，目前仍无法显示上传**已用时间、剩余时间、总进度**信息。我认为这三项信息对用户而言很有价
 值（至少很能提供安全感），希望今后版本能增加。另外托盘中的信息标题也不太容易理解，是说正在同步293个文件中的第293个吗？
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/2010-08-10_120037.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201008/2010-08-10_120037.png)
 
 上传进行过程中，快盘文件夹下的文件将会标有状态标记，绿对勾代表已经同步完成，同步转换图标表示该文件目前正在队列中等待同步。
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201008/2010-08-10_121005.png)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201008/2010-08-10_121005.png)
 
 经过测试，最终全部同步完成于14时15分，**总共耗时2小时15分钟。大致平均速度在 40~50K/s
 的水平。**之前旧版本上传同样大小和数量的文件，耗时约在3小时。由此可见，当前版本的确在传输性能上进行了优化提升，**提升了25%的同步速度**。

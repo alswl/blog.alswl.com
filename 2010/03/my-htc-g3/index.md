@@ -4,13 +4,13 @@
 
 直接上图吧～
 
-[![image](https://e25ba8-log4d-c.dijingchao.com/images/2010/03/20100311(001).jpg)](../../static/images/upload_dropbox/201003/20100311(001).jpg)
+[![image](https://e25ba8-log4d-c.dijingchao.com/2010/03/20100311(001).jpg)](../../static/images/upload_dropbox/201003/20100311(001).jpg)
 
-[![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201003/11032010236.jpg)](../../static/images/upload_dropbox/201003/11032010236.jpg)
+[![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201003/11032010236.jpg)](../../static/images/upload_dropbox/201003/11032010236.jpg)
 
 功臣6120C和当红小生
 
-[![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201003/20100311.jpg)](../../static/images/upload_dropbox/201003/20100311.jpg)
+[![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201003/20100311.jpg)](../../static/images/upload_dropbox/201003/20100311.jpg)
 
 你猜这是哪款软件～哇咔咔～
 

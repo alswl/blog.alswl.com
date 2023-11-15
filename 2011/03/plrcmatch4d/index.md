@@ -14,6 +14,6 @@ replicator-mp3)。
 
 界面比较实在，大致是这样：
 
-![image](https://e25ba8-log4d-c.dijingchao.com/images/upload_dropbox/201103/plrcmatch4d.jpg)
+![image](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201103/plrcmatch4d.jpg)
 
 
