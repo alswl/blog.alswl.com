@@ -21,6 +21,7 @@ build-production:
 
 
 # no need any more, use cdn upstrem mirror
+# cdn -> blog-assets.alswl.com -> raw.githubusercontent.com
 .PHONY: sync-images
 sync-images:
 	echo "Copying files to server..."
