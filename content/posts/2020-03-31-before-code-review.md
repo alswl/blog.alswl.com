@@ -24,7 +24,6 @@ categories: ["coding"]
 
 <!-- more -->
 
-
 ## 评估团队成熟度
 
 ![image from pixabay](../../static/images/upload_dropbox/202003/team.jpg)
@@ -52,7 +51,6 @@ categories: ["coding"]
 
 当条件不满足时也不用气馁。先成为一个布道师吧，探索一下团队中有没有相似想法的人，了解一下他们担心点和诉求点。
 相信只要条件允许，没有人会拒绝提高工程质量。
-
 
 ## 构建「好代码」共识
 
@@ -122,7 +120,6 @@ Code Review 核心产出物是代码，如何界定代码是好是坏就至关�
 
 方法论贴在墙上是无法解决开发中中遇到设计问题，在代码中真刀真枪干，Show me the fuck code。
 
-
 ## Code Review 沟通协作机制
 
 ![image from pixabay](../../static/images/upload_dropbox/202003/teamwork.jpg)
@@ -150,8 +147,5 @@ CodeReview 有这么几种形式，同步离线、异步离线、同步在线。
 如果在一个实现方案上真无法决策，如果不涉及原则，那我建议使用搁置争议，使用
 `TODO @commiter what, how, when` 方式先标记意见和处理时间，先行将工程开发往下推进。
 
-
 一切准备好了，谢天谢地，终于可以进入 Code Review 阶段了。
 我们下篇文章再来讲进入 Code Review 阶段的事情。
-
-
