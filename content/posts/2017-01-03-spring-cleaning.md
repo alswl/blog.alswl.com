@@ -20,7 +20,6 @@ categories: ["coding"]
 
 PS: 冷知识，大扫除英文是 spring cleaning，所以春节大扫除是 Spring Festival spring cleaning。
 
-
 ## 大扫除的内容
 
 大扫除其实是一个查漏补缺+囤积粮草的事情。
@@ -37,7 +36,7 @@ TCP 的七层模型，架构设计的 N 层 模型，都是对分层思想的使
 分完模块，还要告知大家如何具体查找问题。
 这里我介绍一个通用的方法：USE[^1]：
 
->   For every resource, check Utilization, Saturation, and Errors.
+> For every resource, check Utilization, Saturation, and Errors.
 
 USE 方法是从 Brend Gregg 那里学来的。
 在技术设施的领域里，Resource 即是指各种类型的资源，比如 CPU、磁盘、网络、内存，
@@ -59,15 +58,14 @@ TPS 、Latency 和 Capacity。
 负责每个子系统的同学，记得检查时候将这些收集到的数据列下来。
 在 Metric 做的还不够完善时候，这些数据也是很宝贵的。
 
-在我看来，检查 USE / TPS / Latency ，__**最大的作用是将抽象的可用性指标描述为几个易于理解的数值进行量化。
-一旦能够量化，就可以对比、观测、监控，并且 Review 起来也异常轻松**__。
-
+在我看来，检查 USE / TPS / Latency ，**最大的作用是将抽象的可用性指标描述为几个易于理解的数值进行量化。
+一旦能够量化，就可以对比、观测、监控，并且 Review 起来也异常轻松**。
 
 ## 应对方案
 
 检查出问题之后，就要考虑应对了。时间急任务多，我们的应对方案是是囤积粮草 / 写救命笔记。
 
-囤积粮草比较好理解，__**基于已有的容量预估，为容易出问题的系统提供一份冗余**__。
+囤积粮草比较好理解，\***\*基于已有的容量预估，为容易出问题的系统提供一份冗余\*\***。
 有些团队平时做基础设施就比较，做 Scale 就是小轻松。
 那平时 Scalable 做的不好的朋友，就只能将应用实例多开一些，以避免临时出现的流量波动。
 
@@ -86,15 +84,12 @@ TPS 、Latency 和 Capacity。
 
 图片来自 「Google SRE」
 
-从这个故事里面可以看到，一个紧急操作手册是多么重要。
-__**所以在大扫除期间，我们还要补一补平时的文档，将一些常见问题 / 常规操作记录下来。**__
+从这个故事里面可以看到，一个紧急操作手册是多么重要。\***\*所以在大扫除期间，我们还要补一补平时的文档，将一些常见问题 / 常规操作记录下来。\*\***
 步骤需要细致到能让让每个远程值班的同学做到 step by step 操作。
 
-----
+---
 
 啰嗦了这么多，相信大家对大扫除要做些什么已经有所印象了，祝大家过个好年，流量涨涨涨，还能平平安安的。
 
-
 [^1]: [The USE Method] [http://www.brendangregg.com/usemethod.html](http://www.brendangregg.com/usemethod.html)
 [^2]: [USE Method: Linux Performance Checklist] [http://www.brendangregg.com/USEmethod/use-linux.html](http://www.brendangregg.com/USEmethod/use-linux.html)
-

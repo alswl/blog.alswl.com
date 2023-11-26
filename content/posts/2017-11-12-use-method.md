@@ -13,7 +13,7 @@ categories: ["coding"]
 
 英文原文：[The USE Method](http://www.brendangregg.com/usemethod.html)。
 
-----
+---
 
 ![201711/performance.jpg](../../static/images/upload_dropbox/201711/performance_900.jpg)
 
@@ -59,17 +59,17 @@ USE 方法可以概括为：检查所有的资源的利用率，饱和度，和�
 
 名词定义：
 
--   资源： 服务器功能性的物理组成硬件（CPU， 硬盘,  总线）
--   利用率： 资源执行某工作的平均时间
--   饱和：衡量资源超载工作的程度，往往会被塞入队列
--   错误： 错误事件的数量
+- 资源： 服务器功能性的物理组成硬件（CPU， 硬盘, 总线）
+- 利用率： 资源执行某工作的平均时间
+- 饱和：衡量资源超载工作的程度，往往会被塞入队列
+- 错误： 错误事件的数量
 
 分析软件资源，或者是软件的强制性限制（资源控制）也是很有用的，同时要关注哪些指标是处于正常的可接受范围之内的。这些指标通常用以下术语表示：
 
--   利用率：
-    以一个时间段内的百分比来表示，例如：一个硬盘以 90% 的利用率运行
--   饱和度： 一个队列的长度，例如：CPUs 平均的运行时队列长度是4
--   错误（数）： 可度量的数量，例如：这个网络接口有 50 次（超时？）
+- 利用率：
+  以一个时间段内的百分比来表示，例如：一个硬盘以 90% 的利用率运行
+- 饱和度： 一个队列的长度，例如：CPUs 平均的运行时队列长度是4
+- 错误（数）： 可度量的数量，例如：这个网络接口有 50 次（超时？）
 
 我们应该要调查那些错误，因为它们会降低系统的性能，并且当故障模型处于可回复模式的时候，它可能不会立刻被发现。
 
@@ -92,12 +92,12 @@ CPU 饱和度依然有问题（延迟）监控工具报告了
 准备工作时， 你需要一个资源列表来按步就班的去做。
 下面是一个服务器的通用列表：
 
--   CPUs： sockets, cores, hardware threads (virtual CPUs)
--   内存： 容量
--   网络接口
--   存储设备： I/O, 容量
--   控制器： 存储, 网卡
--   通道： CPUs, memory, I/O
+- CPUs： sockets, cores, hardware threads (virtual CPUs)
+- 内存： 容量
+- 网络接口
+- 存储设备： I/O, 容量
+- 控制器： 存储, 网卡
+- 通道： CPUs, memory, I/O
 
 有些组件分两种类型的资源：存储设备是服务请求资源（I / O）
 以及容量资源（population）， 两种类型都可能成为系统瓶颈。
@@ -139,17 +139,19 @@ CPU，内存和I / O interconnects 往往被忽略。
 
 给定资源列表，识别指标类型：利用率，饱和度和错误指标。这里有几个示例。看下面的 table，思考下每个资源和指标类型，metric 列是一些通用的 Unix/Linux 的术语提示（你可以描述的更具体些）：
 
--------------------- ------------- -------------------------------------------------------------------
-resource             type          metric
-CPU                  utilization   CPU utilization (either per-CPU or a system-wide average)
-CPU                  saturation    run-queue length or scheduler latency(aka
-Memory capacity      utilization   available free memory (system-wide)
-Memory capacity      saturation    anonymous paging or thread swapping (maybe "page scanning" too)
-Network interface    utilization   RX/TX throughput / max bandwidth
-Storage device I/O   utilization   device busy percent
-Storage device I/O   saturation    wait queue length
-Storage device I/O   errors        device errors ("soft", "hard", ...)
--------------------- ------------- -------------------------------------------------------------------
+---
+
+resource type metric
+CPU utilization CPU utilization (either per-CPU or a system-wide average)
+CPU saturation run-queue length or scheduler latency(aka
+Memory capacity utilization available free memory (system-wide)
+Memory capacity saturation anonymous paging or thread swapping (maybe "page scanning" too)
+Network interface utilization RX/TX throughput / max bandwidth
+Storage device I/O utilization device busy percent
+Storage device I/O saturation wait queue length
+Storage device I/O errors device errors ("soft", "hard", ...)
+
+---
 
 这些指标是每段间隔或者计数的平均值，作为你的自定义清单，要包括使用的监控软件，以及要查看的统计信息。如果是不可用的指标，可以打个问号。最后，你会完成一个完事的、简单、易读的
 metrics 清单.
@@ -158,16 +160,18 @@ metrics 清单.
 
 再来看几个硬件指标的组合
 
---------------------- ------------- -----------------------------------------------------------------------------------
-resource              type          metric
-CPU                   errors        eg, correctable CPU cache ECC events or faulted CPUs (if the OS+HW supports that)
-Memory capacity       errors
-Network               saturation
-Storage controller    utilization
-CPU interconnect      utilization
-Memory interconnect   saturation
-I/O interconnect      utilization
---------------------- ------------- -----------------------------------------------------------------------------------
+---
+
+resource type metric
+CPU errors eg, correctable CPU cache ECC events or faulted CPUs (if the OS+HW supports that)
+Memory capacity errors
+Network saturation
+Storage controller utilization
+CPU interconnect utilization
+Memory interconnect saturation
+I/O interconnect utilization
+
+---
 
 这些依赖于操作系统的指标一般会更难测量些，
 而我通常要用自己写的软件去收集这些指标。
@@ -199,12 +203,12 @@ work? ）。
 有些软件资源可以用类似的方式去分析。
 这通常适用于软件的较小组件，而不是整个应用程序。 例如：
 
--   互斥锁(mutex locks)：利用率可以定义为锁等待耗时；饱和率定义为等待这把锁的线程个数。
--   线程池：利用率可以定义为线程工作的时长；饱和率是等待线程池分配的请求数量。
--   进程/线程
-    容量：系统是有进程或线程的上限的，它的实际使用情况被定义为利用率；等待数量定义为饱和度；错误即是（资源）分配失败的情况（比如无法 fork）。
-    （译注：fork 是一个现有进程，通过调用 fork 函数创建一个新进程的过程)
--   文件描述符容量(file descriptor capacity)：和上述类似，但是把资源替换成文件描述符。
+- 互斥锁(mutex locks)：利用率可以定义为锁等待耗时；饱和率定义为等待这把锁的线程个数。
+- 线程池：利用率可以定义为线程工作的时长；饱和率是等待线程池分配的请求数量。
+- 进程/线程
+  容量：系统是有进程或线程的上限的，它的实际使用情况被定义为利用率；等待数量定义为饱和度；错误即是（资源）分配失败的情况（比如无法 fork）。
+  （译注：fork 是一个现有进程，通过调用 fork 函数创建一个新进程的过程)
+- 文件描述符容量(file descriptor capacity)：和上述类似，但是把资源替换成文件描述符。
 
 如果这几个指标很管用就一直用，要不然软件问题会被遗留给其他方法了（例如，延迟，后文会提到其他方法：other methodologies ）。
 
@@ -217,14 +221,14 @@ USE 方法帮助你定位要使用哪些指标。
 
 下面是一些解释指标类型的通用建议：
 
--   Utilization：
-    利用率通常象征瓶颈（检查饱和度可以进一步确认）。高利用率可能开始导致若干问题：
--   对利用率进行长期观察时（几秒或几分钟），通常来说 70%
-    的利用率会掩盖掉瞬时的 100% 利用率。
--   某些系统资源，比如硬盘，就算是高优先级请求来了，也不会在操作进行中被中断。当他们的利用率到
-    70% 时候，队列系统中的等待已经非常频繁和明显。而 CPU 则不一样，它能在大部分情况下被中断。
--   Saturation：任何非 0 的饱和度都可能是问题。它们通常是队列中排队的时间或排队的长度。
--   Errors：只要有一条错误，就值得去检查，特别是当错误持续发生从而导致性能降低时候。
+- Utilization：
+  利用率通常象征瓶颈（检查饱和度可以进一步确认）。高利用率可能开始导致若干问题：
+- 对利用率进行长期观察时（几秒或几分钟），通常来说 70%
+  的利用率会掩盖掉瞬时的 100% 利用率。
+- 某些系统资源，比如硬盘，就算是高优先级请求来了，也不会在操作进行中被中断。当他们的利用率到
+  70% 时候，队列系统中的等待已经非常频繁和明显。而 CPU 则不一样，它能在大部分情况下被中断。
+- Saturation：任何非 0 的饱和度都可能是问题。它们通常是队列中排队的时间或排队的长度。
+- Errors：只要有一条错误，就值得去检查，特别是当错误持续发生从而导致性能降低时候。
 
 要说明负面情况很容易：利用率低，不饱和，没有错误。 这比听起来更有用 -
 缩小调查范围可以快速定位问题区域。
@@ -270,23 +274,23 @@ USE 方法提供了一个简单的流程来尝试第一步是寻找一个资源�
 我将从阿波罗主脑（AGC）本身开始。
 对于每个指标，我浏览了各种 LM 文档，看看哪些是合理的（有意义的）：
 
--   AGC utilization： This could be defined as the number of CPU cycles
-    doing jobs (not the "DUMMY JOB") divided by the clock rate (2.048
-    MHz). This metric appears to have been well understood at the time.
--   AGC saturation： This could be defined as the number of jobs in the
-    "core set area", which are seven sets of registers to store
-    program state. These allow a job to be suspended (by the
-    "EXECUTIVE" program - what we\'d call a "kernel" these days) if
-    an interrupt for a higher priority job arrives. Once exhausted, this
-    moves from a saturation state to an error state, and the AGC reports
-    a 1202 "EXECUTIVE OVERFLOW-NO CORE SETS" alarm.
--   AGC errors： Many alarms are defined. Apart from 1202, there is also
-    a 1203 alarm "WAITLIST OVERFLOW-TOO MANY TASKS", which is a
-    performance issue of a different type： too many timed tasks are
-    being processed before returning to normal job scheduling. As with
-    1202, it could be useful to define a saturation metric that was the
-    length of the WAITLIST, so that saturation can be measured before
-    the overflow and error occurs.
+- AGC utilization： This could be defined as the number of CPU cycles
+  doing jobs (not the "DUMMY JOB") divided by the clock rate (2.048
+  MHz). This metric appears to have been well understood at the time.
+- AGC saturation： This could be defined as the number of jobs in the
+  "core set area", which are seven sets of registers to store
+  program state. These allow a job to be suspended (by the
+  "EXECUTIVE" program - what we\'d call a "kernel" these days) if
+  an interrupt for a higher priority job arrives. Once exhausted, this
+  moves from a saturation state to an error state, and the AGC reports
+  a 1202 "EXECUTIVE OVERFLOW-NO CORE SETS" alarm.
+- AGC errors： Many alarms are defined. Apart from 1202, there is also
+  a 1203 alarm "WAITLIST OVERFLOW-TOO MANY TASKS", which is a
+  performance issue of a different type： too many timed tasks are
+  being processed before returning to normal job scheduling. As with
+  1202, it could be useful to define a saturation metric that was the
+  length of the WAITLIST, so that saturation can be measured before
+  the overflow and error occurs.
 
 其中的一些细节，可能对于太空爱好者来说是非常熟悉的：在阿波罗 11 号降落的时候发生的著名的
 1201（"NO VAC AREAS"）和 1202 警报。（"VAC"是向量加速器的缩写，
@@ -339,42 +343,41 @@ USE 方法是一个简单的，能执行完整的系统健康检查的策略，�
 
 ## Acknowledgments
 
--   感谢 Cary Millsap and Jeff Holt (2003)
-    在"优化 Oracle 性能"一文中提到的 Method R 方法 (以及其他方法),
-    使我有了灵感，我应该要把这个方法论写出来。
--   感谢 Sun Microsystems 的组织，包括 PAE 和 ISV，
-    他们将 USE 方法（那时还没命名）应用于他们的存储设备系列，绘制了标注指标和总线速度的 ASCII 功能块图表 -
-    这些都比您想象的要困难（我们应该早些时候询问硬件团队的帮助）。
--   感谢我的学生们，多年前我授予他们这个方法论，谢谢他们提供给我的使用反馈。
--   感谢 Virtual AGC 项目组（The Virtual
-    AGC project），读他们的站点 ibiblio.org 上的文档库，就象是一种娱乐.
-    尤其是 LMA790-2 "Lunar Module LM-10 Through LM-14 Vehicle
-    Familiarization Manual" ( 48 页有功能模块图表), 以及
-    "阿波罗指导和月球导航模块入门学习指南",
-    都很好的解释了执行程序和它的流程图 (These docs are 109 and 9 Mbytes in size.)
--   感谢 Deirdré Straughan 编辑和提供反馈，这提高了我的认知。
--   文章顶部的图片，是来自于波音 707 手册，1969 出版。它不是完整的，点击查看完整的版本（译注：为方便阅读，就是下面这张：）
-
+- 感谢 Cary Millsap and Jeff Holt (2003)
+  在"优化 Oracle 性能"一文中提到的 Method R 方法 (以及其他方法),
+  使我有了灵感，我应该要把这个方法论写出来。
+- 感谢 Sun Microsystems 的组织，包括 PAE 和 ISV，
+  他们将 USE 方法（那时还没命名）应用于他们的存储设备系列，绘制了标注指标和总线速度的 ASCII 功能块图表 -
+  这些都比您想象的要困难（我们应该早些时候询问硬件团队的帮助）。
+- 感谢我的学生们，多年前我授予他们这个方法论，谢谢他们提供给我的使用反馈。
+- 感谢 Virtual AGC 项目组（The Virtual
+  AGC project），读他们的站点 ibiblio.org 上的文档库，就象是一种娱乐.
+  尤其是 LMA790-2 "Lunar Module LM-10 Through LM-14 Vehicle
+  Familiarization Manual" ( 48 页有功能模块图表), 以及
+  "阿波罗指导和月球导航模块入门学习指南",
+  都很好的解释了执行程序和它的流程图 (These docs are 109 and 9 Mbytes in size.)
+- 感谢 Deirdré Straughan 编辑和提供反馈，这提高了我的认知。
+- 文章顶部的图片，是来自于波音 707 手册，1969 出版。它不是完整的，点击查看完整的版本（译注：为方便阅读，就是下面这张：）
 
 ## Updates
 
 USE Method updates：（略）
 
--   It was published in ACMQ as Thinking Methodically about
-    Performance (2012).
--   It was also published in Communications of the ACM as Thinking
-    Methodically about Performance (2013).
--   I presented it in the FISL13 talk The USE Method (2012).
--   I spoke about it at Oaktable World 2012： video, PDF.
--   I included it in the USENIX LISA \`12 talk Performance Analysis
-    Methodology.
--   It is covered in my book on Systems Performance, published by
-    Prentice Hall (2013).
+- It was published in ACMQ as Thinking Methodically about
+  Performance (2012).
+- It was also published in Communications of the ACM as Thinking
+  Methodically about Performance (2013).
+- I presented it in the FISL13 talk The USE Method (2012).
+- I spoke about it at Oaktable World 2012： video, PDF.
+- I included it in the USENIX LISA \`12 talk Performance Analysis
+  Methodology.
+- It is covered in my book on Systems Performance, published by
+  Prentice Hall (2013).
 
 More updates (Apr 2014)：
 
--   LuceraHQ are implementing USE Method metrics on SmartOS
-    for performance monitoring of their high performance financial
-    cloud.
--   LuceraHQ 正在 SmartOS 上，为他们高性能金融云的性能监测，实施 USE 方法指标
--   I spoke about the USE Method for OS X at MacIT 2014 (slides)。
+- LuceraHQ are implementing USE Method metrics on SmartOS
+  for performance monitoring of their high performance financial
+  cloud.
+- LuceraHQ 正在 SmartOS 上，为他们高性能金融云的性能监测，实施 USE 方法指标
+- I spoke about the USE Method for OS X at MacIT 2014 (slides)。
