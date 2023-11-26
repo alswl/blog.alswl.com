@@ -170,6 +170,21 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>在 Python 中使用 epoll[译文]
+    </h2>
+  </header>
+  <div class="entry-content">
+    
+    
+    
+    <p>原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient.recv(1024) print(&#39;-&#39;*40 &#43; &#39;\n&#39; &#43; request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将...</p>
+  </div>
+  <footer class="entry-footer"><span title='2013-01-12 00:01:00 +0800 +0800'>2013-01-12</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 在 Python 中使用 epoll[译文]" href="https://blog.alswl.com/2013/01/python-epoll/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>My 2012
     </h2>
   </header>
@@ -309,21 +324,6 @@ if (!doNotTrack) {
   </div>
   <footer class="entry-footer"><span title='2012-07-27 09:02:00 +0800 +0800'>2012-07-27</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to MoinMoin Wiki 转换 Text 脚本" href="https://blog.alswl.com/2012/07/moin2txt/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>学车记
-    </h2>
-  </header>
-  <div class="entry-content">
-    
-    
-    
-    <p>经过两个月的学习，今天下午终于把驾照拿到手了。期间各种苦逼各种悲催顿感消失， 终于打赢了这场难度仅次于装修的战争。 博客也因学车而荒废了1个月，今天就顺便写点针对南京的驾校考试的东西。 南京驾照考试有4部分： 理论考试，网上好好做题，2小时就可以考95分以上了，90分合格 桩考，就是考倒桩。80分合格，当场有一次补考机会。 电子路，2&#43;1（侧方位停车、坡道定点停车和起步、起伏路、直角转弯、S 弯、 百米加减档、限...</p>
-  </div>
-  <footer class="entry-footer"><span title='2012-07-26 22:21:00 +0800 +0800'>2012-07-26</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 学车记" href="https://blog.alswl.com/2012/07/learning-driving/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

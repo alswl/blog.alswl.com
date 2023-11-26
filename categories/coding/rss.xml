@@ -6,7 +6,406 @@
     <description>Recent content in coding on Log4D</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 23 Sep 2023 18:22:27 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/categories/coding/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Nov 2023 17:23:35 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/categories/coding/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何免费用云服务搭建博客评论系统</title>
+      <link>https://blog.alswl.com/2023/11/build-blog-comment-system-based-on-free-cloud-service/</link>
+      <pubDate>Sat, 25 Nov 2023 17:23:35 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2023/11/build-blog-comment-system-based-on-free-cloud-service/</guid>
+      <description>如何免费用云服务搭建博客评论系统 问题 博客自 2012 年从 WordPress 迁移到静态站点后，就选择了 Disqus 作为评论系统。 但最近 Disqus 硬广告过于频繁，迫切寻找新的评论系统。 Disqus 官方 明确说明，要去掉广告就付费。 What if I want to remove Ads? If you&amp;rsquo;d like to remove Disqus Ads from your integration, you may purchase and ads-free subscription from your Subscription and Billing page. More information on Disqus ads-free subscriptions may be found here. OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统。 最后既然是寻找新的评论系统，现在 2023 年了， 我希望这个新系统充分使用云服务的便利，要做到 免</description>
+      <content:encoded><![CDATA[<h1 id="如何免费用云服务搭建博客评论系统">如何免费用云服务搭建博客评论系统</h1>
+<h2 id="问题">问题</h2>
+<p>博客自 2012 年从 WordPress 迁移到静态站点后，就选择了 Disqus 作为评论系统。
+但最近 Disqus 硬广告过于频繁，迫切<mark>寻找新的评论系统</mark>。</p>
+<p><a href="https://help.disqus.com/en/articles/1717119-ads-faq">Disqus 官方</a> 明确说明，要去掉广告就付费。</p>
+<blockquote>
+<p>What if I want to remove Ads?
+If you&rsquo;d like to remove Disqus Ads from your integration, you may purchase and ads-free subscription from your Subscription and Billing page. More information on Disqus ads-free subscriptions may be found here.</p>
+</blockquote>
+<p>OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统。
+最后既然是寻找新的评论系统，现在 2023 年了，
+我希望这个新系统<mark>充分使用云服务的便利</mark>，要做到
+<mark>免费、可靠、易运维</mark>。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/no-disqus-twitter.png" alt="no-disqus-twitter"  />
+
+
+</p>
+<h2 id="选型原则">选型原则</h2>
+<p>在进入探索之前，我先梳理一下自己的原则和选型要求：</p>
+<ul>
+<li>数据自有是核心要求
+<ul>
+<li>确保评论数据完全归属于博主，不会因为使用第三方服务而失去对数据的控制。</li>
+</ul>
+</li>
+<li>服务部署和存储是难点
+<ul>
+<li>考虑到服务的稳定性和成本，选择一个易于部署且存储成本较低的方案。</li>
+</ul>
+</li>
+<li>访问速度是考虑项
+<ul>
+<li>评论系统的访问速度直接关系到用户体验，
+因此需要选择一个能够提供较快访问速度的系统。</li>
+</ul>
+</li>
+</ul>
+<p>从功能上面分析需要的能力：</p>
+<ul>
+<li>邮件通知</li>
+<li>Markdown</li>
+<li>内容安全：No Injection</li>
+<li>评论审核和删除</li>
+<li>授权登录（Optional）</li>
+</ul>
+<p>非功能需求：</p>
+<ul>
+<li>低成本：控制在 12 元 / 年</li>
+<li>系统稳定</li>
+</ul>
+<p>通过明晰这些原则和要求，可以更有针对性地选择合适的评论系统，确保满足核心功能和非功能需求。接下来，将根据这些原则，继续探讨如何选择和搭建评论系统。</p>
+<h2 id="初步方案探索">初步方案探索</h2>
+<p>现在我们初步试验一些方案并进行一些探索，以方便我们熟悉一下当前常见系统的<mark>特性和水准</mark>。</p>
+<h3 id="utteranceshttpsutterances"><a href="https://utteranc.es/">utterances</a></h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/utterances.png" alt="utterances"  />
+
+
+</p>
+<ul>
+<li>经常见到的一个评论系统，流行于程序员群体，基于 Github Issues 系统因此免费，需要使用 Github 账号登录</li>
+<li>7.8k star</li>
+<li>托管在 Github Issues</li>
+</ul>
+<h3 id="twikoohttpstwikoojsorgquick-starthtml"><a href="https://twikoo.js.org/quick-start.html">Twikoo</a></h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/twikoo.png" alt="twikoo"  />
+
+
+</p>
+<ul>
+<li>国产方案，基于云服务展开，需要寻找云函数部署环境（大部分收费）</li>
+<li>880 star</li>
+</ul>
+<h3 id="cusdishttpscusdiscom"><a href="https://cusdis.com/">Cusdis</a></h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/cusdis.png" alt="cusdis"  />
+
+
+</p>
+<ul>
+<li>国产方案，提供免费的 Cloud 服务（但是额度比较受限）</li>
+<li>2.4k star</li>
+<li>支持迁移</li>
+<li>手工通过评论</li>
+<li>活跃度不高</li>
+</ul>
+<p>我同时还看了一些外部的一些方案评测报告：</p>
+<ul>
+<li><a href="https://gohugo.io/content-management/comments/">Comments | Hugo</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/2196035?areaSource=&amp;traceId=">静态博客评论系统的选择 - 腾讯云开发者社区-腾讯云</a></li>
+<li><a href="https://sspai.com/post/73412">轻量级开源免费博客评论系统解决方案 （Cusdis + Railway） - 少数派</a></li>
+</ul>
+<p>根据初步方案探索，我可以明确部署形态基本如下：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/comment-system-deploy-diagram.png" alt="comment-system-deploy-diagram"  />
+
+
+</p>
+<h2 id="横向对比">横向对比</h2>
+<p>这是一个横向对比表格，列举我一些关心的特性以及候选者在这些特性方面的表现。除了上述提到几款常见软件，
+我还额外调研了<mark>海外常用的评论 SaaS 服务</mark>：</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>self-host</th>
+<th>Official SaaS</th>
+<th>SaaS Free</th>
+<th>Star</th>
+<th>Import Disqus</th>
+<th>export data</th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Utterances</td>
+<td>x</td>
+<td>v</td>
+<td>v</td>
+<td>7.8k</td>
+<td></td>
+<td>v</td>
+<td>Github account required</td>
+</tr>
+<tr>
+<td>Cusdis</td>
+<td>v</td>
+<td>v</td>
+<td>v?</td>
+<td>2.3k</td>
+<td>v</td>
+<td>v?</td>
+<td>import from Disqus failed</td>
+</tr>
+<tr>
+<td>Cactus Comments</td>
+<td>v</td>
+<td>v</td>
+<td></td>
+<td>100</td>
+<td></td>
+<td></td>
+<td>Matrix Protocol, blocked</td>
+</tr>
+<tr>
+<td>Commento</td>
+<td>x</td>
+<td>v</td>
+<td>$10/month</td>
+<td></td>
+<td>v</td>
+<td>v</td>
+<td></td>
+</tr>
+<tr>
+<td>Graph Comment</td>
+<td></td>
+<td>v</td>
+<td>Free to $7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Hyvor Talk</td>
+<td>x</td>
+<td>v</td>
+<td>$12/month</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>IntenseDebate</td>
+<td></td>
+<td>v</td>
+<td>?</td>
+<td></td>
+<td>x</td>
+<td></td>
+<td>too old</td>
+</tr>
+<tr>
+<td>Isso</td>
+<td>v</td>
+<td>x</td>
+<td></td>
+<td>4.8k</td>
+<td>v</td>
+<td></td>
+<td>sqlite storage</td>
+</tr>
+<tr>
+<td>Mutt</td>
+<td></td>
+<td>v</td>
+<td>$16/month</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Remark42</td>
+<td>v</td>
+<td>x</td>
+<td></td>
+<td>4.3k</td>
+<td>v</td>
+<td>v</td>
+<td>full featured, one file storage</td>
+</tr>
+<tr>
+<td>ReplyBox</td>
+<td></td>
+<td>v</td>
+<td>$5/month</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Staticman</td>
+<td>v</td>
+<td></td>
+<td></td>
+<td>2.3k</td>
+<td></td>
+<td>v</td>
+<td>using github as storage</td>
+</tr>
+<tr>
+<td>Talkyard</td>
+<td></td>
+<td>v</td>
+<td>€4.5/ month</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Waline</td>
+<td>v</td>
+<td></td>
+<td></td>
+<td>1.5k</td>
+<td>v</td>
+<td>v</td>
+<td>Multi Storage / Service Provider supported</td>
+</tr>
+<tr>
+<td>Twikoo</td>
+<td>v</td>
+<td>x</td>
+<td></td>
+<td>1.1k</td>
+<td>v</td>
+<td>v</td>
+<td>FaaS / MongoDB</td>
+</tr>
+</tbody>
+</table>
+<p>根据横向对比我们可以得出几个结论：</p>
+<ul>
+<li>海外传统评论系统数据透明度低，风格也是是古早型系统</li>
+<li>官方提供 SaaS 服务普遍需要收费</li>
+<li>self-host 的几个产品需要自己搭建服务，没有一键使用免费的 Cloud Provider 路径</li>
+</ul>
+<p><strong>小结</strong></p>
+<p>符合我需求的几款产品是：Utterances、Cusdis、Waline。</p>
+<h2 id="poc-和实施">PoC 和实施</h2>
+<p>我最后选择了 utterances 和 Waline 进行 PoC，
+其中我的<a href="https://en.blog.alswl.com/">英文博客</a>使用了 utterances，
+<a href="https://blog.alswl.com/">中文博客</a>使用了 Waline。</p>
+<p>为什么不选择 Cusdis 和 Twikoo？因为 Cusdis 使用 PostgreSQL，
+而 Twikoo 存储使用腾讯云函数（免费额度有限）或者 MongoDB，
+存储上 Waline 选择更多。
+另外，作为同类型方案，Waline 是三者贡献者数量最多的，Commit 数量也最多，
+社区更有保障。</p>
+<h3 id="waline-实施">Waline 实施</h3>
+<blockquote>
+<p>一个搞笑的点，如果这里使用 h3 标题叫做「Waline」，会直接在这里插入一个当前博客的评论框</p>
+</blockquote>
+<ul>
+<li>优点
+<ul>
+<li>多平台部署</li>
+<li>多数据库支持（MongoDB、sqlite、PostgreSQL、MySQL）</li>
+<li>评论功能强大</li>
+<li>导入工具</li>
+<li>活跃度尚可</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>功能太多，不够克制（好在可以自定义配置）</li>
+<li>国产产品</li>
+</ul>
+</li>
+<li>接入流程：
+<ul>
+<li>找个 Storage 供应商（我选择 <mark>LeanCloud</mark>）</li>
+<li>找个 Server 供应商部署（我选择 <mark>Vercel</mark>）</li>
+<li>找个邮件发送供应商（我选择了 <mark>Brevo</mark>（原来叫 SendinBlue））</li>
+<li>前端部署（Hugo 内集成一下）</li>
+</ul>
+</li>
+</ul>
+<p>部署图：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/waline.png" alt="waline"  />
+
+
+</p>
+<p>具体操作，跟随官方文档即可：</p>
+<ul>
+<li><a href="https://waline.js.org/guide/get-started/">快速上手 | Waline</a></li>
+<li><a href="https://waline.js.org/guide/deploy/vercel.html#%E5%A6%82%0E4%BD%95%E9%83%A8%E7%BD%B2">Vercel 部署 | Waline</a></li>
+<li>绑定 CName</li>
+<li>导入数据
+<ul>
+<li>转换 <a href="https://waline.js.org/migration/tool.html">数据迁移助手 | Waline</a></li>
+<li>导入 <a href="https://console.leancloud.app/apps/yours/storage/import-export">https://console.leancloud.app/apps/yours/storage/import-export</a></li>
+</ul>
+</li>
+<li>配置页面
+<ul>
+<li>参考配置系统禁用一些评论功能 <a href="https://waline.js.org/reference/client/props.html">https://waline.js.org/reference/client/props.html</a></li>
+<li>启用 SMTP
+<ul>
+<li>配置 <code>AUTHOR_EMAIL</code></li>
+<li>配置 <code>SENDER_NAME</code></li>
+<li>配置 <code>SENDER_EMAIL</code></li>
+</ul>
+</li>
+<li>服务端配置 <a href="https://waline.js.org/reference/server/config.html#tgtemplate">https://waline.js.org/reference/server/config.html#tgtemplate</a></li>
+</ul>
+</li>
+<li>遇到的问题
+<ul>
+<li>Disqus 导出的用户数据没有邮箱，导致 gravatar 没有照片显示，无解</li>
+<li>邮箱配置需要额外配置环境变量，否则会暴露自己的个人邮箱</li>
+</ul>
+</li>
+</ul>
+<p>实施 PR（仅包含前端，因为后端代码包含了密钥，不便于分享）：
+<a href="https://github.com/alswl/blog.alswl.com/commit/e34e34810298fd0d716d4c4a467fada25b3a6622">feat: comments on waline · alswl/blog.alswl.com@e34e348</a></p>
+<h2 id="utterances-实施">Utterances 实施</h2>
+<p>utterances 的部署则更为简单，一个 PR 就可以启用。
+<a href="https://github.com/alswl/en.blog.alswl.com/commit/29028f677e362570a8bcaf5316847ddfa3e9d685">feat: comment using utteranc · alswl/en.blog.alswl.com@29028f6 (github.com)</a></p>
+<p>也没有什么特色，主打简单省事，考虑我英文博客访问量极低，就简单方案。</p>
+<h2 id="小结">小结</h2>
+<p>最后我选择了 Waline / utterances 作为我的评论系统，两者的部署成本都是 0。</p>
+<p>妥协牺牲了一些访问速度、安全性，但进一步增强了数据可控性，完成了 self-host。
+从稳定性上面来看，尽管这个系统链路变复杂了，单机上也存在可用性风险，
+但依托 Vercel / LeanCloud / Brevo 三家 SaaS 服务商，整体风险可控。</p>
+<p>毕竟只是一个小小评论系统，0 成本 + 正常工作就行了。</p>
+<p>欢迎在下面评测测试一下哦~</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>GitOps 和版本管理</title>
       <link>https://blog.alswl.com/2023/09/gitops-and-version-management/</link>
@@ -1890,6 +2289,127 @@ API 定义 <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28">GitHu
 <li><a href="https://docs.github.com/en/rest/overview/about-githubs-apis?apiVersion=2022-11-28">GitHub&rsquo;s APIs</a></li>
 <li><a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design">Web API design best practices - Azure Architecture Center | Microsoft Learn</a></li>
 <li><a href="https://developer.aliyun.com/article/701810">API 设计最佳实践的思考 - 谷朴</a></li>
+</ul>
+]]></content:encoded>
+    </item>
+    
+    <item>
+      <title>如何做好 PRR（Production Rediness Review）？</title>
+      <link>https://blog.alswl.com/2021/06/prr/</link>
+      <pubDate>Fri, 11 Jun 2021 17:53:00 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2021/06/prr/</guid>
+      <description>image from pixabay.com SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。 需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等， 有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。 那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢， 如何将「接手」这个行为做得有掌控力、顺畅且体面？ 了解组件现状 第一步永远是了解现状，孙子</description>
+      <content:encoded><![CDATA[<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202106/prr.png" alt="prr"  />
+
+
+
+<small>image from pixabay.com</small></p>
+<p>SRE 工程师往往会负责一个具体组件，有时也称为服务或系统（下文都称之为组件）。
+需要关注的有这个组件生命周期各类事项：运行状态、日常迭代、变更计划，以及在大促等活动中的筹备、预案等等，
+有些组件是团队已经在长期持续维护着的，而有些则是要去新接入。
+那么，当 SRE 接手（on-borading）这样组件时， 需要做哪些事项呢，
+如何将「接手」这个行为做得有掌控力、顺畅且体面？</p>
+<h2 id="了解组件现状">了解组件现状</h2>
+<p><strong>第一步永远是了解现状</strong>，孙子兵法谋攻篇说，知己知彼，百战不殆。
+现状包含组件的当前运行状态、环境，
+还包含当前 SRE 团队的能力、平台是否可以顺利衔接。</p>
+<!-- more -->
+<p>了解一个组件，可以先以<strong>用户角度进行切入</strong>。
+去理解这个组件提供什么功能，服务对象是谁，服务的规模如何？
+能否将组件进行归类？是属于普通业务系统，还是基础设施？
+如果时间充裕的话，还可以跟这个组件的用户进行几次沟通，咨询，他们关于这个组件使用上的痛点。</p>
+<p><strong>近期和长期的规划</strong>也是需要重点关注的内容。
+在组件设计和规划上面有没有什么计划和目标。根据规划我们可以推断出该组件处于何种生命周期。
+生命早期的组件要多关注变更和基础能力建设；
+成熟期组件往往承担了较为重要的角色，很可能承担了相当的生产流量，这时候变更、可观测性和应急方面就要花更多精力。
+生命周期末期的组件则关注点是在维稳，优先考虑如何找到人，并且尽量低成本复用现有能力平台，甚至还要适当关注服务迁移和下线计划。</p>
+<p><strong>第二步是以技术的视角来切入</strong>，
+分别从架构、依赖、部署、可伸缩能力、容量等角度切入，具体需要回答的问题如下：</p>
+<ul>
+<li>架构和组件依赖：系统架构设计，功能特性图，模块切分图，核心场景的数据链路图，核心模型图；存储视角的模型图；
+历史上架构是否发生变化，驱动变化的原因是什么，有哪些决策变量，这些决策变量未来是否还会继续变化？</li>
+<li>部署结构：物理部署图，有没有考虑异地机房问题？上下游依赖，哪些是强依赖和弱依赖</li>
+<li>Scalable：组件是否是无状态的，是否具备水平扩容能力？如果是有状态的，状态管理基于什么存储系统？流量峰值如何应对？</li>
+<li>容量：当前吞吐水平如何；是否具备大流量下限流能力；流量峰值来时，是否有足够资源扩容；是否具备限流、降级能力？</li>
+</ul>
+<p>结合 SRE 团队服务的其他组件，还要思考一下有哪些其他组件和当前组件类型一样，有什么差异点？
+有没有特殊的部署要求？</p>
+<p><strong>对一个组件需要了解到什么程度才能接手？</strong> 这里我用几种程度来描述掌控力：</p>
+<ul>
+<li>L1 具备作为普通用户的使用能力，应急时能够定位出问题方向，找到合适的人。</li>
+<li>L2 具备资深用户能力，有一定调优能力（Tuning）能力。</li>
+<li>L3 具备处置问题（Trouble Shooting）能力。</li>
+<li>L4 具备架构设计能力和前瞻性，能够给 SWE 反哺输入</li>
+</ul>
+<p>在经过一轮 PRR 完整流程之后，SRE 应当至少需要具备 L2 级别能力。
+接管一段时间之后，随着对组件不断的了解，SRE 应当具备 L3 级别能力。</p>
+<h2 id="明确日常和应急事项">明确日常和应急事项</h2>
+<p>了解现状这个动作基本上是以静态的视角来看待组件。
+完成之后，还要换成动态视角来看：<strong>有哪些日常操作（Operational）和紧急状态（Emergency）的操作</strong>？</p>
+<p>需要关注的领域有可观测性、变更、应急预案：</p>
+<ul>
+<li>可观测性：当前监控系统是否具备 Metrics、Tracing、Logging 三类观测机制接入？是否具备中心化监控能力？
+<ul>
+<li>告警：接入哪些告警系统？是否拎出了核心 SLI（跌零因子、核心指标），是否具备基于 SLO 进行错误预算控制的能力？
+告警的具体流程如何？是否具备告警抑制降噪能力？告警是否具备定位能力？历史数据是否可追溯？</li>
+</ul>
+</li>
+<li>变更：目前基于什么工具进行变更？CI CD 流程分别是什么？发布周期是什么样子？配置变更二进制变更是否分离？是否有特性开关？
+存储层面变更是否有考虑？各类变更流程是否有完成自动化？变更过程是否可以灰度？是否具备变更回滚能力。</li>
+<li>应急预案：是否有突发流量处理预案；是否有限流、降级策略？整体不可用之后业务影响如何？流量处理上是否考虑过雪崩场景？</li>
+</ul>
+<p><strong>在应急方面，还需要去了解过去历史上出现过哪些的问题</strong>。
+翻看组件的故障复盘文档，了解历史上故障过程，故障原因，对应的 Action 是否落地？
+尤其注意的是要关注 Action 工作机制是阻断式、检查式还是发现式？
+老故障放到当下如果要避免是依赖系统、流程机制还是人工？</p>
+<p>由于 SRE 日常工作主要构成是两类：能力建设和 On-Call。
+在了解日常、应急场景事项时，还需要持续思考这些日常事项和应急动作能否基于 SRE 的工具平台、能力平台完成。
+按照能力模型等级：手工 -&gt; 工具 -&gt; 自动化 -&gt; 智能化来划分，当前日常、应急动作进入哪个环节了？
+SRE 也可以借事修物，借接收这个环节，重新审视自己的各类工具平台，是否满足这些日常、应急动作，能否更快更强更安全更准更好用？</p>
+<h2 id="明确服务范围">明确服务范围</h2>
+<p>为了保证接手过程的顺畅，以及日后合作的体面，服务范围必须要在接手环节明确清楚。</p>
+<p>什么是服务范围？就是接手之后工作内容的边界和日常合作模式。</p>
+<p>一个最常见的边界划分是。变更：SRE 团队负责 CI / CD 环境建设，而 SWE 团队使用 CI 环境完成日常的部署。
+SRE 团队则使用自行建设的 CD 系统进行变更管理。
+日常和应急：在日常 Operational 事项和应急中，SRE 会按预案进行处置并保障组件回到最理想状态。
+SRE 还需要建设可观测性、应急相关的技术基础设施，对组件全生命周期监控和应急处理。
+SRE 最终承诺的组件对外 SLA，并将 SLA 拆解为 SLO 跟 SWE 共背。
+在接受过程中很重要的一个工作就是，理清楚组件的 SLI / SLO，并且根据现状跟 SWE 团队商榷出对外承诺的 SLA。</p>
+<p>除了服务范围，SRE 和 SWE 还要建设任务协作机制和沟通机制。
+有没有统一的任务记录和流转平台？遇到稳定性相关的反馈如何，如何将需求转化为任务并追踪完成？
+故障相关的 Action 如何追踪落地？一些基础环境变化以及业务上活动变化，是否有统一场合进行同步？
+比较理想的情况是，基于任务管理系统，一个需求/缺陷从提出，到设计，到实现，到变更，SRE 都参与其中。
+考虑到成本，现实执行时候可以根据精力、理解成本、重要程度、组件生命阶段进行微调。
+有一个简单低成本执行方式，将服务领域组件进行划分后，每个领域派遣一个 SRE 进入对口的 SWE 团队进行追踪：
+参加 SWE 团队的周会和日会，并将信息带回 SRE 团队同步。</p>
+<p>谨记，<strong>划分没有统一的标准，不同团队，不同技术成熟度，不同生命周期组件都会导致不一样的边界和合作模式</strong>。</p>
+<h2 id="总结">总结</h2>
+<p>「接手」是管理的第一步。
+在了解现状、明确日常和应急事项、明确服务范围等一系列动作之后，
+相信 SRE 已经具备初步掌控力了。有了方法论，还要持续精益求精，将掌控力从 L2 进步到 L4。
+想把事情给真正做好，核心是持续学习思考在对应领域的基础技能，并且持续了解客户的需求变化。
+保持一专多能，成为随时可以顶上去独当一面的 SRE，这才能避免成为一个工单人。🐶</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202106/sre-push-up.jpg" alt="sre-push-up"  />
+
+
+
+<small>image from Twitter</small></p>
+<p>扩展阅读：</p>
+<ul>
+<li><a href="https://sre.google/sre-book/evolving-sre-engagement-model/">The Evolving SRE Engagement Model</a></li>
+<li><a href="https://sre.google/workbook/non-abstract-design/">Introducing Non-Abstract Large System Design</a></li>
+<li><a href="https://cloud.google.com/blog/products/gcp/how-sres-find-the-landmines-in-a-service-cre-life-lessons">How SREs at Google find the landmines in a service | Google Cloud Blog</a></li>
 </ul>
 ]]></content:encoded>
     </item>
@@ -5860,179 +6380,6 @@ location / {
 <p>调优和增加容量，这是两个手段，这两个手段互相作用，互相影响。使用时候需要根据成本和收益进行选择。</p>
 <p>关于容量规划的更多细节，可以看看 <a href="https://book.douban.com/subject/4200645/">Web容量规划的艺术 (豆瓣)</a>
 这里看看。只是这本书写在 2010 年，并且作者介绍的过于传统运维视角一些。</p>
-]]></content:encoded>
-    </item>
-    
-    <item>
-      <title>一例 Timeout 故障</title>
-      <link>https://blog.alswl.com/2016/02/a-timeout-fault/</link>
-      <pubDate>Tue, 02 Feb 2016 23:34:44 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2016/02/a-timeout-fault/</guid>
-      <description>早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。 检查日志，并没有 ERROR 信息，但是大量 WARN 报错。 WARN [2015-12-09 11:01:02,730] org.eclipse.jetty.util.thread.QueuedThreadPool: dw{STARTED,8&amp;lt;=50&amp;lt;=50,i=0,q=1024} rejected org.eclipse.jetty.io.AbstractConne ction$2@62c021c6 WARN [2015-12-09 11:01:02,731] org.eclipse.jetty.io.SelectorManager: Could not process key for channel java.nio.channels.SocketChannel[connected local=/10. 1.1.78:8350 remote=/10.1.1.74:63290] ! java.util.concurrent.RejectedExecutionException: org.eclipse.jetty.io.AbstractConnection$2@62c021c6 ! at org.eclipse.jetty.util.thread.QueuedThreadPool.execute(QueuedThreadPool.java:362) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.AbstractConnection$FillingState.onEnter(AbstractConnection.java:379) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.AbstractConnection.next(AbstractConnection.java:273) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:563) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:82) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectChannelEndPoint.onSelected(SelectChannelEndPoint.java:109) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.processKey(SelectorManager.java:636) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:607) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.run(SelectorManager.java:545) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.util.thread.NonBlockingThread.run(NonBlockingThread.java:52) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at java.lang.Thread.run(Thread.java:745) [na:1.8.0_51] 这是七牛 API 调用出现问题，通过应用 Metrics API 检查 Threads： http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu 正常的实例： 异常的实例</description>
-      <content:encoded><![CDATA[<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201602/i_love_timeouts_digital_design_mugs.jpg" alt="i_love_timeouts_digital_design_mugs.jpg"  />
-
-
-</p>
-<p>早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。</p>
-<!-- more -->
-<p>检查日志，并没有 ERROR 信息，但是大量 WARN 报错。</p>
-<pre tabindex="0"><code>WARN  [2015-12-09 11:01:02,730] org.eclipse.jetty.util.thread.QueuedThreadPool: dw{STARTED,8&lt;=50&lt;=50,i=0,q=1024} rejected org.eclipse.jetty.io.AbstractConne
-ction$2@62c021c6
-WARN  [2015-12-09 11:01:02,731] org.eclipse.jetty.io.SelectorManager: Could not process key for channel java.nio.channels.SocketChannel[connected local=/10.
-1.1.78:8350 remote=/10.1.1.74:63290]
-! java.util.concurrent.RejectedExecutionException: org.eclipse.jetty.io.AbstractConnection$2@62c021c6
-! at org.eclipse.jetty.util.thread.QueuedThreadPool.execute(QueuedThreadPool.java:362) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.AbstractConnection$FillingState.onEnter(AbstractConnection.java:379) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.AbstractConnection.next(AbstractConnection.java:273) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:563) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:82) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.SelectChannelEndPoint.onSelected(SelectChannelEndPoint.java:109) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.processKey(SelectorManager.java:636) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:607) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.run(SelectorManager.java:545) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.util.thread.NonBlockingThread.run(NonBlockingThread.java:52) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at java.lang.Thread.run(Thread.java:745) [na:1.8.0_51]
-</code></pre><p>这是七牛 API 调用出现问题，通过应用 Metrics API 检查 Threads：</p>
-<p><code>http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu</code></p>
-<p>正常的实例：</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201602/image2015-12-9_1.png" alt="image2015-12-9_1.png"  />
-
-
-</p>
-<p>异常的实例：</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201602/image2015-12-9_2.png" alt="image2015-12-9_2.png"  />
-
-
-</p>
-<p>确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？</p>
-<p>检查了 App 的配置文件，的确配置了 <code>maxThreads</code> 为 50:</p>
-<pre tabindex="0"><code>server:
-  gzip:
-    enabled: false
-  requestLog:
-    appenders: []
-  maxThreads: 50
-  applicationConnectors:
-    - type: http
-      port: 8350
-      acceptorThreads: 2
-      selectorThreads: 2
-  adminConnectors:
-    - type: http
-      port: 8351
-</code></pre><p>一般对应服务不稳定，有个简单策略，超时，那么七牛服务超时是多少？找了一下相关代码，下巴都没合上：</p>
-<pre tabindex="0"><code># com.qiniu.http.Client
-    this.httpClient.setConnectTimeout((long)Config.CONNECT_TIMEOUT, TimeUnit.SECONDS);
-    this.httpClient.setReadTimeout((long)Config.RESPONSE_TIMEOUT, TimeUnit.SECONDS);
-
-# com.qiniu.common.Config
-public static int CONNECT_TIMEOUT = 10000;
-public static int RESPONSE_TIMEOUT = 30000;
-</code></pre><p>超时时间 8h，吓得我赶紧关掉了显示器。
-赶紧将这个 Connection 改成了 2 分钟，Connect 改成了 5s。</p>
-<p>咨询了七牛的工程师故障当天的状况：</p>
-<blockquote>
-</blockquote>
-<p>sorry 忘了回复，问题已经定位，早上因为有个别用户list请求数量过大，导致了整个list接口出现大量满请求，影响返回是list接口的调用 和 portal上内容管理界面列取文件key的速度，目前已经恢复</p>
-<blockquote>
-<p>大量慢请求，这个已经内部有告警和恢复机制，11点25恢复的</p>
-</blockquote>
-<p>国内一线的云服务供应商也会出这样不可用故障，即便是有服务放在云上，还是要自己留一个心眼，多关注可用性啊。</p>
-]]></content:encoded>
-    </item>
-    
-    <item>
-      <title>怎么打日志</title>
-      <link>https://blog.alswl.com/2015/10/how-to-log/</link>
-      <pubDate>Sun, 18 Oct 2015 14:25:28 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2015/10/how-to-log/</guid>
-      <description>需要解决的问题： 业务日志打太乱，没有位置和格式约束 什么情况打日志，如何避免滥用，提高日志作用 打日志最佳实践 Dropwizard 列出的打日志原则： Be human readable. Be machine parsable. Be easy for sleepy ops folks to figure out why things are pear-shaped at 3:30AM using standard UNIXy tools like tail and grep. eg.: TRACE [2010-04-06 06:42:35,271] com.example.dw.Thing: Contemplating doing a thing. DEBUG [2010-04-06 06:42:35,274] com.example.dw.Thing: About to do a thing. INFO [2010-04-06 06:42:35,274] com.example.dw.Thing: Doing a thing WARN [2010-04-06 06:42:35,275] com.example.dw.Thing: Doing a thing ERROR [2010-04-06 06:42:35,275] com.example.dw.Thing: This may get ugly. ! java.lang.RuntimeException: oh noes! ! at com.example.dw.Thing.run(Thing.java:16) ! splunk 的最佳实践： 使用清晰的键值对：key1=val1, key2=val2 对开发者易读 全部添加时间戳 使用唯一标记，比如 user_id, transaction_id 使用文本 使用开发者</description>
-      <content:encoded><![CDATA[<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201510/logger.jpg" alt="logger"  />
-
-
-</p>
-<p>需要解决的问题：</p>
-<ul>
-<li>业务日志打太乱，没有位置和格式约束</li>
-<li>什么情况打日志，如何避免滥用，提高日志作用</li>
-</ul>
-<h2 id="打日志最佳实践">打日志最佳实践</h2>
-<p>Dropwizard 列出的打日志原则：</p>
-<blockquote>
-<p>Be human readable.</p>
-<p>Be machine parsable.</p>
-<p>Be easy for sleepy ops folks to figure out why things are pear-shaped at 3:30AM using standard UNIXy tools like tail and grep.</p>
-</blockquote>
-<p>eg.:</p>
-<pre tabindex="0"><code>TRACE [2010-04-06 06:42:35,271] com.example.dw.Thing: Contemplating doing a thing.
-DEBUG [2010-04-06 06:42:35,274] com.example.dw.Thing: About to do a thing.
-INFO  [2010-04-06 06:42:35,274] com.example.dw.Thing: Doing a thing
-WARN  [2010-04-06 06:42:35,275] com.example.dw.Thing: Doing a thing
-ERROR [2010-04-06 06:42:35,275] com.example.dw.Thing: This may get ugly.
-! java.lang.RuntimeException: oh noes!
-! at com.example.dw.Thing.run(Thing.java:16)
-!
-</code></pre><p>splunk 的最佳实践：</p>
-<ul>
-<li>使用清晰的键值对：<code>key1=val1, key2=val2</code></li>
-<li>对开发者易读</li>
-<li>全部添加时间戳</li>
-<li>使用唯一标记，比如 user_id, transaction_id</li>
-<li>使用文本</li>
-<li>使用开发者易用格式，比如 JSON</li>
-<li>尽可能多加一下数据</li>
-<li>标记调用来源，比如方法名，类名</li>
-<li>将多行事件拆分</li>
-</ul>
-<p>除了一些浅显易懂的原则，还是 dropwizard 的三条原则和解决方案靠谱。
-但是两篇文章都没有告诉如果在复杂系统里面记录有用的日志，打日志生命周期是怎样的。</p>
-<p>既然找不到，我就就自行想想如何打有意义的日志。</p>
-<p>日志不怕多，而是怕繁杂难搜索，产出的数据无意义难追踪问题。所以最关键是找到一个合理通用的方式组织起来即可：</p>
-<ul>
-<li>按照模块名 com.duitang.service.module.aaa 打日志，比如 <code>com.duitang.service.module.aaa.log</code></li>
-<li>一个模块一个日志，模块复杂之后，可以拆分，<code>com.duitang.service.module.aaa.core.log</code> / <code>com.duitang.service.module.aaa.query.log</code>，其实在这个时侯，这个模块本身由于复杂性也会面临拆分。</li>
-<li>不分离 error / info 日志，放到一个文件，通过 <code>grep</code> 或者日志工具分离</li>
-<li>日志文件一定要 rotate，磁盘存储固定时间 N 天，远程文件存储固定时间 M 天，TTL 删除。</li>
-</ul>
-<p>补充一个日志常见使用场景：</p>
-<ul>
-<li>外部资源调用</li>
-<li>状态变化</li>
-<li>系统入口和出口</li>
-<li>业务异常</li>
-<li>非预期执行</li>
-</ul>
-<hr />
-<p>参考文档：</p>
-<ul>
-<li><a href="https://dropwizard.github.io/dropwizard/manual/core.html#logging">Dropwizard Core | Dropwizard</a></li>
-<li><a href="http://dev.splunk.com/view/logging-best-practices/SP-CAAADP6">Logging best practices | Splunk</a></li>
-<li><a href="http://www.infoq.com/cn/articles/why-and-how-log">程序那些事：日志记录的作用和方法</a></li>
-</ul>
 ]]></content:encoded>
     </item>
     

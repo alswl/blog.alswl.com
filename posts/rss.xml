@@ -6,7 +6,406 @@
     <description>Recent content in Posts on Log4D</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 23 Sep 2023 18:22:27 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/posts/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Nov 2023 17:23:35 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/posts/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何免费用云服务搭建博客评论系统</title>
+      <link>https://blog.alswl.com/2023/11/build-blog-comment-system-based-on-free-cloud-service/</link>
+      <pubDate>Sat, 25 Nov 2023 17:23:35 +0800</pubDate>
+      
+      <guid>https://blog.alswl.com/2023/11/build-blog-comment-system-based-on-free-cloud-service/</guid>
+      <description>如何免费用云服务搭建博客评论系统 问题 博客自 2012 年从 WordPress 迁移到静态站点后，就选择了 Disqus 作为评论系统。 但最近 Disqus 硬广告过于频繁，迫切寻找新的评论系统。 Disqus 官方 明确说明，要去掉广告就付费。 What if I want to remove Ads? If you&amp;rsquo;d like to remove Disqus Ads from your integration, you may purchase and ads-free subscription from your Subscription and Billing page. More information on Disqus ads-free subscriptions may be found here. OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统。 最后既然是寻找新的评论系统，现在 2023 年了， 我希望这个新系统充分使用云服务的便利，要做到 免</description>
+      <content:encoded><![CDATA[<h1 id="如何免费用云服务搭建博客评论系统">如何免费用云服务搭建博客评论系统</h1>
+<h2 id="问题">问题</h2>
+<p>博客自 2012 年从 WordPress 迁移到静态站点后，就选择了 Disqus 作为评论系统。
+但最近 Disqus 硬广告过于频繁，迫切<mark>寻找新的评论系统</mark>。</p>
+<p><a href="https://help.disqus.com/en/articles/1717119-ads-faq">Disqus 官方</a> 明确说明，要去掉广告就付费。</p>
+<blockquote>
+<p>What if I want to remove Ads?
+If you&rsquo;d like to remove Disqus Ads from your integration, you may purchase and ads-free subscription from your Subscription and Billing page. More information on Disqus ads-free subscriptions may be found here.</p>
+</blockquote>
+<p>OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统。
+最后既然是寻找新的评论系统，现在 2023 年了，
+我希望这个新系统<mark>充分使用云服务的便利</mark>，要做到
+<mark>免费、可靠、易运维</mark>。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/no-disqus-twitter.png" alt="no-disqus-twitter"  />
+
+
+</p>
+<h2 id="选型原则">选型原则</h2>
+<p>在进入探索之前，我先梳理一下自己的原则和选型要求：</p>
+<ul>
+<li>数据自有是核心要求
+<ul>
+<li>确保评论数据完全归属于博主，不会因为使用第三方服务而失去对数据的控制。</li>
+</ul>
+</li>
+<li>服务部署和存储是难点
+<ul>
+<li>考虑到服务的稳定性和成本，选择一个易于部署且存储成本较低的方案。</li>
+</ul>
+</li>
+<li>访问速度是考虑项
+<ul>
+<li>评论系统的访问速度直接关系到用户体验，
+因此需要选择一个能够提供较快访问速度的系统。</li>
+</ul>
+</li>
+</ul>
+<p>从功能上面分析需要的能力：</p>
+<ul>
+<li>邮件通知</li>
+<li>Markdown</li>
+<li>内容安全：No Injection</li>
+<li>评论审核和删除</li>
+<li>授权登录（Optional）</li>
+</ul>
+<p>非功能需求：</p>
+<ul>
+<li>低成本：控制在 12 元 / 年</li>
+<li>系统稳定</li>
+</ul>
+<p>通过明晰这些原则和要求，可以更有针对性地选择合适的评论系统，确保满足核心功能和非功能需求。接下来，将根据这些原则，继续探讨如何选择和搭建评论系统。</p>
+<h2 id="初步方案探索">初步方案探索</h2>
+<p>现在我们初步试验一些方案并进行一些探索，以方便我们熟悉一下当前常见系统的<mark>特性和水准</mark>。</p>
+<h3 id="utteranceshttpsutterances"><a href="https://utteranc.es/">utterances</a></h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/utterances.png" alt="utterances"  />
+
+
+</p>
+<ul>
+<li>经常见到的一个评论系统，流行于程序员群体，基于 Github Issues 系统因此免费，需要使用 Github 账号登录</li>
+<li>7.8k star</li>
+<li>托管在 Github Issues</li>
+</ul>
+<h3 id="twikoohttpstwikoojsorgquick-starthtml"><a href="https://twikoo.js.org/quick-start.html">Twikoo</a></h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/twikoo.png" alt="twikoo"  />
+
+
+</p>
+<ul>
+<li>国产方案，基于云服务展开，需要寻找云函数部署环境（大部分收费）</li>
+<li>880 star</li>
+</ul>
+<h3 id="cusdishttpscusdiscom"><a href="https://cusdis.com/">Cusdis</a></h3>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/cusdis.png" alt="cusdis"  />
+
+
+</p>
+<ul>
+<li>国产方案，提供免费的 Cloud 服务（但是额度比较受限）</li>
+<li>2.4k star</li>
+<li>支持迁移</li>
+<li>手工通过评论</li>
+<li>活跃度不高</li>
+</ul>
+<p>我同时还看了一些外部的一些方案评测报告：</p>
+<ul>
+<li><a href="https://gohugo.io/content-management/comments/">Comments | Hugo</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/2196035?areaSource=&amp;traceId=">静态博客评论系统的选择 - 腾讯云开发者社区-腾讯云</a></li>
+<li><a href="https://sspai.com/post/73412">轻量级开源免费博客评论系统解决方案 （Cusdis + Railway） - 少数派</a></li>
+</ul>
+<p>根据初步方案探索，我可以明确部署形态基本如下：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/comment-system-deploy-diagram.png" alt="comment-system-deploy-diagram"  />
+
+
+</p>
+<h2 id="横向对比">横向对比</h2>
+<p>这是一个横向对比表格，列举我一些关心的特性以及候选者在这些特性方面的表现。除了上述提到几款常见软件，
+我还额外调研了<mark>海外常用的评论 SaaS 服务</mark>：</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>self-host</th>
+<th>Official SaaS</th>
+<th>SaaS Free</th>
+<th>Star</th>
+<th>Import Disqus</th>
+<th>export data</th>
+<th>Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Utterances</td>
+<td>x</td>
+<td>v</td>
+<td>v</td>
+<td>7.8k</td>
+<td></td>
+<td>v</td>
+<td>Github account required</td>
+</tr>
+<tr>
+<td>Cusdis</td>
+<td>v</td>
+<td>v</td>
+<td>v?</td>
+<td>2.3k</td>
+<td>v</td>
+<td>v?</td>
+<td>import from Disqus failed</td>
+</tr>
+<tr>
+<td>Cactus Comments</td>
+<td>v</td>
+<td>v</td>
+<td></td>
+<td>100</td>
+<td></td>
+<td></td>
+<td>Matrix Protocol, blocked</td>
+</tr>
+<tr>
+<td>Commento</td>
+<td>x</td>
+<td>v</td>
+<td>$10/month</td>
+<td></td>
+<td>v</td>
+<td>v</td>
+<td></td>
+</tr>
+<tr>
+<td>Graph Comment</td>
+<td></td>
+<td>v</td>
+<td>Free to $7</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Hyvor Talk</td>
+<td>x</td>
+<td>v</td>
+<td>$12/month</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>IntenseDebate</td>
+<td></td>
+<td>v</td>
+<td>?</td>
+<td></td>
+<td>x</td>
+<td></td>
+<td>too old</td>
+</tr>
+<tr>
+<td>Isso</td>
+<td>v</td>
+<td>x</td>
+<td></td>
+<td>4.8k</td>
+<td>v</td>
+<td></td>
+<td>sqlite storage</td>
+</tr>
+<tr>
+<td>Mutt</td>
+<td></td>
+<td>v</td>
+<td>$16/month</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Remark42</td>
+<td>v</td>
+<td>x</td>
+<td></td>
+<td>4.3k</td>
+<td>v</td>
+<td>v</td>
+<td>full featured, one file storage</td>
+</tr>
+<tr>
+<td>ReplyBox</td>
+<td></td>
+<td>v</td>
+<td>$5/month</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Staticman</td>
+<td>v</td>
+<td></td>
+<td></td>
+<td>2.3k</td>
+<td></td>
+<td>v</td>
+<td>using github as storage</td>
+</tr>
+<tr>
+<td>Talkyard</td>
+<td></td>
+<td>v</td>
+<td>€4.5/ month</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Waline</td>
+<td>v</td>
+<td></td>
+<td></td>
+<td>1.5k</td>
+<td>v</td>
+<td>v</td>
+<td>Multi Storage / Service Provider supported</td>
+</tr>
+<tr>
+<td>Twikoo</td>
+<td>v</td>
+<td>x</td>
+<td></td>
+<td>1.1k</td>
+<td>v</td>
+<td>v</td>
+<td>FaaS / MongoDB</td>
+</tr>
+</tbody>
+</table>
+<p>根据横向对比我们可以得出几个结论：</p>
+<ul>
+<li>海外传统评论系统数据透明度低，风格也是是古早型系统</li>
+<li>官方提供 SaaS 服务普遍需要收费</li>
+<li>self-host 的几个产品需要自己搭建服务，没有一键使用免费的 Cloud Provider 路径</li>
+</ul>
+<p><strong>小结</strong></p>
+<p>符合我需求的几款产品是：Utterances、Cusdis、Waline。</p>
+<h2 id="poc-和实施">PoC 和实施</h2>
+<p>我最后选择了 utterances 和 Waline 进行 PoC，
+其中我的<a href="https://en.blog.alswl.com/">英文博客</a>使用了 utterances，
+<a href="https://blog.alswl.com/">中文博客</a>使用了 Waline。</p>
+<p>为什么不选择 Cusdis 和 Twikoo？因为 Cusdis 使用 PostgreSQL，
+而 Twikoo 存储使用腾讯云函数（免费额度有限）或者 MongoDB，
+存储上 Waline 选择更多。
+另外，作为同类型方案，Waline 是三者贡献者数量最多的，Commit 数量也最多，
+社区更有保障。</p>
+<h3 id="waline-实施">Waline 实施</h3>
+<blockquote>
+<p>一个搞笑的点，如果这里使用 h3 标题叫做「Waline」，会直接在这里插入一个当前博客的评论框</p>
+</blockquote>
+<ul>
+<li>优点
+<ul>
+<li>多平台部署</li>
+<li>多数据库支持（MongoDB、sqlite、PostgreSQL、MySQL）</li>
+<li>评论功能强大</li>
+<li>导入工具</li>
+<li>活跃度尚可</li>
+</ul>
+</li>
+<li>缺点
+<ul>
+<li>功能太多，不够克制（好在可以自定义配置）</li>
+<li>国产产品</li>
+</ul>
+</li>
+<li>接入流程：
+<ul>
+<li>找个 Storage 供应商（我选择 <mark>LeanCloud</mark>）</li>
+<li>找个 Server 供应商部署（我选择 <mark>Vercel</mark>）</li>
+<li>找个邮件发送供应商（我选择了 <mark>Brevo</mark>（原来叫 SendinBlue））</li>
+<li>前端部署（Hugo 内集成一下）</li>
+</ul>
+</li>
+</ul>
+<p>部署图：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202311/waline.png" alt="waline"  />
+
+
+</p>
+<p>具体操作，跟随官方文档即可：</p>
+<ul>
+<li><a href="https://waline.js.org/guide/get-started/">快速上手 | Waline</a></li>
+<li><a href="https://waline.js.org/guide/deploy/vercel.html#%E5%A6%82%0E4%BD%95%E9%83%A8%E7%BD%B2">Vercel 部署 | Waline</a></li>
+<li>绑定 CName</li>
+<li>导入数据
+<ul>
+<li>转换 <a href="https://waline.js.org/migration/tool.html">数据迁移助手 | Waline</a></li>
+<li>导入 <a href="https://console.leancloud.app/apps/yours/storage/import-export">https://console.leancloud.app/apps/yours/storage/import-export</a></li>
+</ul>
+</li>
+<li>配置页面
+<ul>
+<li>参考配置系统禁用一些评论功能 <a href="https://waline.js.org/reference/client/props.html">https://waline.js.org/reference/client/props.html</a></li>
+<li>启用 SMTP
+<ul>
+<li>配置 <code>AUTHOR_EMAIL</code></li>
+<li>配置 <code>SENDER_NAME</code></li>
+<li>配置 <code>SENDER_EMAIL</code></li>
+</ul>
+</li>
+<li>服务端配置 <a href="https://waline.js.org/reference/server/config.html#tgtemplate">https://waline.js.org/reference/server/config.html#tgtemplate</a></li>
+</ul>
+</li>
+<li>遇到的问题
+<ul>
+<li>Disqus 导出的用户数据没有邮箱，导致 gravatar 没有照片显示，无解</li>
+<li>邮箱配置需要额外配置环境变量，否则会暴露自己的个人邮箱</li>
+</ul>
+</li>
+</ul>
+<p>实施 PR（仅包含前端，因为后端代码包含了密钥，不便于分享）：
+<a href="https://github.com/alswl/blog.alswl.com/commit/e34e34810298fd0d716d4c4a467fada25b3a6622">feat: comments on waline · alswl/blog.alswl.com@e34e348</a></p>
+<h2 id="utterances-实施">Utterances 实施</h2>
+<p>utterances 的部署则更为简单，一个 PR 就可以启用。
+<a href="https://github.com/alswl/en.blog.alswl.com/commit/29028f677e362570a8bcaf5316847ddfa3e9d685">feat: comment using utteranc · alswl/en.blog.alswl.com@29028f6 (github.com)</a></p>
+<p>也没有什么特色，主打简单省事，考虑我英文博客访问量极低，就简单方案。</p>
+<h2 id="小结">小结</h2>
+<p>最后我选择了 Waline / utterances 作为我的评论系统，两者的部署成本都是 0。</p>
+<p>妥协牺牲了一些访问速度、安全性，但进一步增强了数据可控性，完成了 self-host。
+从稳定性上面来看，尽管这个系统链路变复杂了，单机上也存在可用性风险，
+但依托 Vercel / LeanCloud / Brevo 三家 SaaS 服务商，整体风险可控。</p>
+<p>毕竟只是一个小小评论系统，0 成本 + 正常工作就行了。</p>
+<p>欢迎在下面评测测试一下哦~</p>
+]]></content:encoded>
+    </item>
+    
     <item>
       <title>GitOps 和版本管理</title>
       <link>https://blog.alswl.com/2023/09/gitops-and-version-management/</link>
@@ -12412,248 +12811,6 @@ DevOps 工程师掌握相关技能之后，也有机会可以发展为 SRE 工�
 除非你家里有老人信这个，而你恰好又是一个孝子。</p>
 <p>在一切准备就绪之后，我离出去当算命先生之差一个竹竿和墨镜了。
 作为工程师，我当然会提供一个开放应用给大家用，请大家耐心等待我的小程序上架。</p>
-]]></content:encoded>
-    </item>
-    
-    <item>
-      <title>从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量</title>
-      <link>https://blog.alswl.com/2018/06/sql-server-migration-3/</link>
-      <pubDate>Wed, 20 Jun 2018 20:18:52 +0800</pubDate>
-      
-      <guid>https://blog.alswl.com/2018/06/sql-server-migration-3/</guid>
-      <description>该系列三篇文章已经全部完成： 从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D 我们用了两章文章 从 SQL Server 到 MySQL（一）：异构数据库迁移 / 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 介绍我们遇到问题和解决方案。 不管是离线全量迁移还是在线无缝迁移， 核心 ETL 工具就是 yugong。 Yugong 是一个成熟工具， 在阿里巴巴去</description>
-      <content:encoded><![CDATA[<p>该系列三篇文章已经全部完成：</p>
-<ul>
-<li><a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D</a></li>
-<li><a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D</a></li>
-<li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
-</ul>
-<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/refactor.png" alt="201806/refactor.png"  />
-
-
-</p>
-<p>我们用了两章文章
-<a href="https://blog.alswl.com/2018/03/sql-server-migration-1/">从 SQL Server 到 MySQL（一）：异构数据库迁移</a>
-/
-<a href="https://blog.alswl.com/2018/05/sql-server-migration-2/">从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机</a>
-介绍我们遇到问题和解决方案。
-不管是离线全量迁移还是在线无缝迁移，
-核心 ETL 工具就是 yugong。</p>
-<p>Yugong 是一个成熟工具， 在阿里巴巴去 IOE 行动中起了重要作用，
-它与 Otter / Canal 都是阿里中间件团队出品。
-它们三者各有分工：
-Yugong 设计目标是异构数据库迁移；
-Canal 设计用来解决 MySQL binlog 订阅和消费问题；
-Otter 则是在 Canal 之上，以准实时标准解决数据库同步问题。
-Otter 配备了相对 yugong 更健壮管理工具、分布式协调工具，
-从而长期稳定运行。Yugong 设计目标则是一次性迁移工作，偏 Job 类型。
-当然 yugong 本身质量不错，长期运行也没问题。
-我们有个产线小伙伴使用我们魔改后 yugong，
-用来将数据从管理平台同步数据到用户前台，已经稳定跑了半年多了。</p>
-<!-- more -->
-<h2 id="yugong-系统结构">yugong 系统结构</h2>
-<p>这里我不赘述如何使用 yugong，有需求同学直接去
-<a href="https://github.com/alibaba/yugong">官方文档</a> 查看使用文档。</p>
-<p>我直接进入关键环节：解剖 yugong 核心模块。
-Yugong 数据流是标准 ETL 流程，分别有 Extractor / Translator / Applier
-这三个大类来实现 ETL 过程:</p>
-<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/etl.png" alt="ETL &amp;amp; Java Class"  />
-
-
-</p>
-<p>我们依次来看看这三大类具体设计。</p>
-<h3 id="extractor">Extractor</h3>
-<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/extractor.png" alt="Extractor Class"  />
-
-
-</p>
-<ul>
-<li><code>YuGongLifeCycle</code>：Yugong 组件生命周期声明</li>
-<li><code>AbstractYuGongLifeCycle</code>：Yugong 组件生命周期一些实现</li>
-<li><code>RecordExtractor</code>：基础 Extractor Interface</li>
-<li><code>AbstractRecordExtractor</code>：基础 Extractor 虚拟类，做了一部分实现</li>
-<li><code>AbstractOracleRecordExtractor</code>：Oracle Extractor 虚拟类，做了一部分 Oracle 相关实现</li>
-<li><code>OracleOnceFullRecordExtractor</code>：Oracle 基于特定 SQL 一次性 Extractor</li>
-<li><code>OracleFullRecordExtractor</code>：Oracle 全量 Extractor</li>
-<li><code>OracleRecRecordExtractor</code>：Oracle 记录 Extractor，用来创建物化视图</li>
-<li><code>OracleMaterializedIncRecordExtractor</code>：基于（已有）物化视图 Oracle 增量 Extrator</li>
-<li><code>OracleAllRecordExtractor</code>：Oracle 自动化 Extractor，先 Mark 再 Full，再 Inc</li>
-</ul>
-<p>Exctractor 从 Source DB 读取数据写入内存，
-Yugong 官方提供 Extractor 抽象出 <code>AbstractRecordExtractor</code> 类，
-其余类都是围绕 Oracle 实现。
-另外 Yugong 设计了 <code>YuGongLifeCycle</code> 类实现了组件生命周期管理。</p>
-<h3 id="translator">Translator</h3>
-<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/translator.png" alt="Translator Class"  />
-
-
-</p>
-<ul>
-<li><code>DataTranslator</code>：Translator 基类，为 Row 级别数据处理</li>
-<li><code>TableTranslator</code>：Translator 基类，为 Table 级别提供处理（官方代码中没有使用）</li>
-<li><code>AbstractDataTranslator</code>：Data Translator 虚拟类，做了部分实现</li>
-<li><code>EncodeDataTranslator</code>：转换编码格式 Translator</li>
-<li><code>OracleIncreamentDataTranslator</code>：为 Oracle 增量数据准备 Translator，会调整一些数据状态</li>
-<li><code>BackTableDataTranslator</code>：Demo，允许在 Translator 中做回写数据操作</li>
-<li><code>BillOutDataTranslator</code>：Demo，包含一些阿里业务逻辑 Translator</li>
-<li><code>MidBillOutDetailDataTranslator</code>：Demo，包含一些阿里业务逻辑 Translator</li>
-</ul>
-<p>Translator 读取内存中 RowData 然后变换，
-大部分 Translator 做一些无状态操作，比如编码转换。
-另外还有一小部分 Translator 做了业务逻辑操作，比如做一些数据回写。</p>
-<h3 id="applier">Applier</h3>
-<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/applier.png" alt="Applier Class"  />
-
-
-</p>
-<ul>
-<li><code>RecordApplier</code>：基础 Applier Interface</li>
-<li><code>AbstractRecordApplier</code>：基础 Applier 虚拟类，做了一部分实现</li>
-<li><code>CheckRecordRecordApplier</code>：检查数据一致性 Applier，不做数据写入</li>
-<li><code>FullRecordRecordApplier</code>：全量数据 Applier，使用 UPSERT 做数据更新</li>
-<li><code>IncreamentRecordApplier</code>：增量 Applier，使用 Oracle 物化视图为数据源</li>
-<li><code>AllRecordRecordApplier</code>：自动化 Applier，先使用全量数据 Applier，然后使用增量数据 Applier</li>
-</ul>
-<p>Applier 将经过 Translator 处理过的数据写入 Target DB。
-Yugong 提供了一致性检查、全量、增量 Applier。
-比较特殊是 <code>AllRecordRecordApplier</code> 提供了全套自动化操作。</p>
-<h3 id="others">Others</h3>
-<p>除了 ETL 三个要素，yugong 还有一些重要类：控制类和工具类。</p>
-<ul>
-<li><code>SqlTemplate</code>：提供 CRUD / UPSERT 等操作的基类 SQL 模板</li>
-<li><code>OracleSqlTemplate</code>：基于 SqlTemplate 实现的 Oracle SQL 模板</li>
-<li><code>RecordDiffer</code>：一致性检查 differ</li>
-<li><code>YugongController</code>：应用控制器，控制整个应用数据流向</li>
-<li><code>YugongInstance</code>：控制单个迁移任务实例，一张表对应一个 YugongInstance</li>
-</ul>
-<h2 id="老战士的问题">老战士的问题</h2>
-<p>说 yugong 有问题会有些标题党，毕竟它是久经考验老战士了。
-但对我们来说，开源版本 yugong 还有一些不足：</p>
-<ul>
-<li>不支持 SQL Server 读取</li>
-<li>不支持 SQL Server 写入（Rollback 需要写入 SQL Server）</li>
-<li>不支持 MySQL 读取</li>
-</ul>
-<p>除了数据库支持，Yugong 在工程上面倒是也有一些改善空间。
-我们最后花费了不少时间，做了工程上改进。</p>
-<ul>
-<li>抛弃默认打包方式（基于 maven-assembly-plugin 生成类似 LFS 结构 tar.gz 文件），
-改为使用 fat jar 模式打包，仅生成单文件可执行 jar 包</li>
-<li>抛弃 ini 配置文件，使用 YAML 配置文件格式（已有老配置仍然使用 ini 文件，YAML 主要管理表结构变更）</li>
-<li>改造 Plugin 模式，将 Java 运行时编译改为反射获取 Java 类</li>
-<li>拆分 Unit Test / Integration Test，降低重构成本</li>
-<li>重构 Oracle 继承结构，使其开放 SQL Server / MySQL 接口</li>
-<li>支持 Canal Redis 格式数据作为 MySQL 在线增量数据源</li>
-</ul>
-<h2 id="改造之后结构">改造之后结构</h2>
-<h3 id="extractor-1">Extractor</h3>
-<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/extractor-new.png" alt="Extractor New Class"  />
-
-
-</p>
-<ul>
-<li><code>AbstractSqlServerExtractor</code>：新增抽象 SqlServer Extractor</li>
-<li><code>AbstractMysqlExtractor</code>：新增抽象 MySQL Extractor</li>
-<li><code>AbstractFullRecordExtractor</code>：新增抽象 Full 模式 Extractor</li>
-<li><code>SqlServerCdcExtractor</code>：新增 SQL Server CDC 增量模式 Extractor</li>
-<li><code>MysqlCanalExtractor</code>：新增 MySQL Canal 格式增量消费 Extractor</li>
-<li><code>MysqlCanalRedisExtractor</code>：新增 MySQL Canal 格式增量消费 Extractor，使用 Redis 做回溯</li>
-<li><code>MysqlFullExtractor</code>：新增 MySQL 全量 Extractor</li>
-<li><code>SqlServerFullExtractor</code>：新增 SQL Server 全量 Extractor</li>
-</ul>
-<p>在抽象出三个抽象类之后，整体逻辑更为清晰，如果未来要增加新数据库格式支持，也更为简单。</p>
-<h3 id="translator-1">Translator</h3>
-<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/translator-new.png" alt="Translator New Class"  />
-
-
-</p>
-<ul>
-<li><code>Sha1ShardingTranslator</code>：根据 Sha1 Sharding Translator</li>
-<li><code>ModShardingTranslator</code>：根据 Value Mode Sharding Translator</li>
-<li><code>RangeShardingTranslator</code>：根据范围 Sharding Translator</li>
-<li><code>UserRouterMapShardingTranslator</code>：特定业务使用， 用户分表 Sharding Translator</li>
-<li><code>UserRouterMapMobileShardingTranslator</code>：特定业务使用， 用户分表 Sharding Translator</li>
-<li><code>ClassLearningNoteInfoShardingTranslator</code>：特定业务使用自定义 Translator</li>
-<li><code>ClassLearningIsActiveReverseShardingTranslator</code>：特定业务使用自定义 Translator</li>
-<li><code>ColumnFixDataTranslator</code>：调整表结构 Translator</li>
-<li><code>NameStyleDataTranslator</code>：调整表字段名 Translator，支持按风格对整个表自动转换</li>
-<li><code>CompositeIndexesDataTranslator</code>：解决复合主键下唯一 PK 确定问题的 Translator</li>
-</ul>
-<p>新增了一系列 Translator。</p>
-<h3 id="applier-1">Applier</h3>
-<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/applier-new.png" alt="Applier New Class"  />
-
-
-</p>
-<ul>
-<li><code>SqlServerIncreamentRecordApplier</code>：新增 SQL Server 增量消费 Applier</li>
-</ul>
-<p>Applier 结构调整挺小，主要是增加了 SQL Server 的支持。</p>
-<h2 id="二次开发心得">二次开发心得</h2>
-<p>如何快速了解一个开源项目？很多同学第一反应就是阅读源码。
-看源码固然是有效果，但是性价比太低。
-如果项目设计不合理，很快会迷失在代码细节之中。
-我的经验是先阅读官方出品的一些 Slide 分享，然后阅读官方核心文档。
-Slide 含金量高，在讲述核心中核心。</p>
-<p>如果真要去了解细节去阅读源码，那我建议要善用工具，
-比如使用 IntelliJ 的 Diagram 功能，抽象出核心类。
-还有一些插件比如 SequencePluginReload 方便地生成函数之间调用，实为查看数据流利器。
-我在这次开发过程中，也根据生成类图发现了一些问题，
-从而在进入 Coding 之前，先对框架继承结构重构。提高了整体开发效率</p>
-<p>根据代码风格判断，Yugong 并非是出自一个人之手。这多少会导致代码风格和设计上面不一致。
-我自己也常年在业务线里面摸爬滚打，能想象到在快速推进项目中需要糙快猛。
-但后人接受开发，多少会有些头疼。
-于是我在进入开发之前，引入标准化 CheckStyle，用 Google Style 全局格式化，
-使用 Sonar 扫描保证一个代码质量基线。
-同时这也是一把双刃剑，格式化项目会导致大量 diff，
-这也给我自己埋下了一个苦果，在后期给上游提交 PR 引入无尽问题。</p>
-<p>开发过程中我也犯了一些错误。最为头疼是没有在早期考虑到向开源社区贡献，
-导致未来向上游合并困难重重，现在还在头疼合并代码中。
-另外，由于整体项目时间紧，我贪图实现速度，没有做更详尽单元测试覆盖。
-这里没有遵循开源软件的最佳实践。</p>
-<p>经过我改造的 Yugong 版本开源地址是：https://github.com/alswl/yugong 。
-我也提交了 Pull Request <a href="https://github.com/alibaba/yugong/pull/66">https://github.com/alibaba/yugong/pull/66</a> ，
-正在与官方沟通如何将这部分提交并入上游。</p>
 ]]></content:encoded>
     </item>
     

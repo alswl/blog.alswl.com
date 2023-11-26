@@ -175,6 +175,21 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>go-pylons.py在Python2.7下错误解决
+    </h2>
+  </header>
+  <div class="entry-content">
+    
+    
+    
+    <p>当使用 Python2.7 &#43; go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。 [alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File &#34;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&#34;, line 67, in &lt;module&gt; import os File &#34;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&#34;, line 398, in &lt;module&gt; import UserDict File &#34;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&#34;, line 83, in &lt;module&gt; import _abcoll File &#34;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&#34;, line 11, in &lt;module&gt; from abc import ABCMeta, abstractmethod File &#34;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&#34;, line 8, in &lt;module&gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;) ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。 #!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 &#43;0200 &#43;&#43;&#43; b/virtualenv.py 2010-09-14 21:46:20.650769346 &#43;0200 @@ -51,6 &#43;51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config if sys.version_info[:2] &gt;= (2, 6): REQUIRED_MODULES.extend([‘warnings’, ’linecache’, ‘_abcoll’, ‘abc’]) if sys.version_info[:2] &gt;= (2, 7): REQUIRED_MODULES.extend([’_weakrefset’]) if sys.version_info[:2] &lt;= (2, 3): REQUIRED_MODULES.extend([‘sets’, ‘future’]) if is_pypy: 懒人可以点击...</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-08-02 00:00:00 +0800 +0800'>2011-08-02</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to go-pylons.py在Python2.7下错误解决" href="https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>新浪微博应用Key
     </h2>
   </header>
@@ -312,23 +327,6 @@ if (!doNotTrack) {
   </div>
   <footer class="entry-footer"><span title='2011-05-16 00:00:00 +0800 +0800'>2011-05-16</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Eclipse中运行Pylons" href="https://blog.alswl.com/2011/05/run-pylons-in-eclipse/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>Pylons使用小记
-    </h2>
-  </header>
-  <div class="entry-content">
-    
-    
-    <div class="thumbnail"><img src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201105/pylons.png" alt="Thumbnail" /></div>
-    
-    
-    <p>活着就是折腾，最近事情多的一塌糊涂，烦躁的很，导致log4d也荒废一个月了。今天趁着周五晚上，梳理一下最近学习的pylons知识。 关于Pylons Pylons是一个用pythons写的web框架，优点是配置灵活，默认使用[Mako](http: //www.makotemplates.org/)作为Template，SQLAlchemy作为 ORM映射。使用BSD作为授权协议。 托WSGI的福，pyth...</p>
-  </div>
-  <footer class="entry-footer"><span title='2011-05-16 00:00:00 +0800 +0800'>2011-05-16</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to Pylons使用小记" href="https://blog.alswl.com/2011/05/pylons/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

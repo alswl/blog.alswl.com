@@ -175,6 +175,21 @@ if (!doNotTrack) {
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2>从 SVN 到 Git，找回丢失的历史
+    </h2>
+  </header>
+  <div class="entry-content">
+    
+    
+    
+    <p>前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题： 有一个小伙伴使用 git-svn 做 rename 操作时候，将一个目录 svn mv 了， 导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言， 历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。 # 找出丢失之前的版本，列出丢失目录上层的操作记录。 svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less # 将重命名之前的版本拷贝到一个临时目录 svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost # 准备现有代码到 Git git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami #...</p>
+  </div>
+  <footer class="entry-footer"><span title='2014-01-21 00:20:06 +0800 +0800'>2014-01-21</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to 从 SVN 到 Git，找回丢失的历史" href="https://blog.alswl.com/2014/01/renamed-svn-to-git/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2>Goodbye 2013, Hello 2014
     </h2>
   </header>
@@ -316,21 +331,6 @@ if (!doNotTrack) {
   </div>
   <footer class="entry-footer"><span title='2013-02-25 00:51:00 +0800 +0800'>2013-02-25</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 读《打造 Facebook》" href="https://blog.alswl.com/2013/02/facebook/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2>在 Python 中使用 epoll[译文]
-    </h2>
-  </header>
-  <div class="entry-content">
-    
-    
-    
-    <p>原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient.recv(1024) print(&#39;-&#39;*40 &#43; &#39;\n&#39; &#43; request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将...</p>
-  </div>
-  <footer class="entry-footer"><span title='2013-01-12 00:01:00 +0800 +0800'>2013-01-12</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 在 Python 中使用 epoll[译文]" href="https://blog.alswl.com/2013/01/python-epoll/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
