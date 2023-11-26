@@ -6,7 +6,6 @@ categories: [""]
 tags: [""]
 draft: true
 typora-copy-images-to: ../../static/images/202311
-
 ---
 
 # 如何免费用云服务搭建博客评论系统
@@ -19,7 +18,7 @@ typora-copy-images-to: ../../static/images/202311
 [Disqus 官方](https://help.disqus.com/en/articles/1717119-ads-faq) 明确说明，要去掉广告就付费。
 
 > What if I want to remove Ads?
-> If you'd like to remove Disqus Ads from your integration, you may purchase and ads-free subscription from your Subscription and Billing page. More information on Disqus ads-free subscriptions may be found here. 
+> If you'd like to remove Disqus Ads from your integration, you may purchase and ads-free subscription from your Subscription and Billing page. More information on Disqus ads-free subscriptions may be found here.
 
 OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统。
 最后既然是寻找新的评论系统，现在 2023 年了，
@@ -40,7 +39,6 @@ OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统�
   - 评论系统的访问速度直接关系到用户体验，
     因此需要选择一个能够提供较快访问速度的系统。
 
-
 从功能上面分析需要的能力：
 
 - 邮件通知
@@ -56,9 +54,7 @@ OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统�
 
 通过明晰这些原则和要求，可以更有针对性地选择合适的评论系统，确保满足核心功能和非功能需求。接下来，将根据这些原则，继续探讨如何选择和搭建评论系统。
 
-
 ## 初步方案探索
-
 
 现在我们初步试验一些方案并进行一些探索，以方便我们熟悉一下当前常见系统的<mark>特性和水准</mark>。
 
@@ -103,7 +99,7 @@ OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统�
 我还额外调研了<mark>海外常用的评论 SaaS 服务</mark>：
 
 | Name            | self-host | Official SaaS | SaaS Free   | Star | Import Disqus | export data | Comments                                   |
-| ---             | ---       | ---           | ---         | ---  | ---           | ---         | ---                                        |
+| --------------- | --------- | ------------- | ----------- | ---- | ------------- | ----------- | ------------------------------------------ |
 | Utterances      | x         | v             | v           | 7.8k |               | v           | Github account required                    |
 | Cusdis          | v         | v             | v?          | 2.3k | v             | v?          | import from Disqus failed                  |
 | Cactus Comments | v         | v             |             | 100  |               |             | Matrix Protocol, blocked                   |
@@ -147,25 +143,23 @@ OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统�
 > 一个搞笑的点，如果这里使用 h3 标题叫做「Waline」，会直接在这里插入一个当前博客的评论框
 
 - 优点
-    - 多平台部署
-    - 多数据库支持（MongoDB、sqlite、PostgreSQL、MySQL）
-    - 评论功能强大
-    - 导入工具
-    - 活跃度尚可
+  - 多平台部署
+  - 多数据库支持（MongoDB、sqlite、PostgreSQL、MySQL）
+  - 评论功能强大
+  - 导入工具
+  - 活跃度尚可
 - 缺点
-    - 功能太多，不够克制（好在可以自定义配置）
-    - 国产产品
+  - 功能太多，不够克制（好在可以自定义配置）
+  - 国产产品
 - 接入流程：
-    - 找个 Storage 供应商（我选择 <mark>LeanCloud</mark>）
-    - 找个 Server 供应商部署（我选择 <mark>Vercel</mark>）
-    - 找个邮件发送供应商（我选择了 <mark>Brevo</mark>（原来叫 SendinBlue））
-    - 前端部署（Hugo 内集成一下）
-
+  - 找个 Storage 供应商（我选择 <mark>LeanCloud</mark>）
+  - 找个 Server 供应商部署（我选择 <mark>Vercel</mark>）
+  - 找个邮件发送供应商（我选择了 <mark>Brevo</mark>（原来叫 SendinBlue））
+  - 前端部署（Hugo 内集成一下）
 
 部署图：
 
 ![waline](../../static/images/202311/waline.png)
-
 
 具体操作，跟随官方文档即可：
 
@@ -173,18 +167,18 @@ OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统�
 - [Vercel 部署 | Waline](https://waline.js.org/guide/deploy/vercel.html#%E5%A6%82%0E4%BD%95%E9%83%A8%E7%BD%B2)
 - 绑定 CName
 - 导入数据
-    - 转换 [数据迁移助手 | Waline](https://waline.js.org/migration/tool.html)
-    - 导入 https://console.leancloud.app/apps/yours/storage/import-export
+  - 转换 [数据迁移助手 | Waline](https://waline.js.org/migration/tool.html)
+  - 导入 https://console.leancloud.app/apps/yours/storage/import-export
 - 配置页面
-    - 参考配置系统禁用一些评论功能 https://waline.js.org/reference/client/props.html
-    - 启用 SMTP
-        - 配置 `AUTHOR_EMAIL`
-        - 配置 `SENDER_NAME`
-        - 配置 `SENDER_EMAIL`
-    - 服务端配置 https://waline.js.org/reference/server/config.html#tgtemplate
+  - 参考配置系统禁用一些评论功能 https://waline.js.org/reference/client/props.html
+  - 启用 SMTP
+    - 配置 `AUTHOR_EMAIL`
+    - 配置 `SENDER_NAME`
+    - 配置 `SENDER_EMAIL`
+  - 服务端配置 https://waline.js.org/reference/server/config.html#tgtemplate
 - 遇到的问题
-    - Disqus 导出的用户数据没有邮箱，导致 gravatar 没有照片显示，无解
-    - 邮箱配置需要额外配置环境变量，否则会暴露自己的个人邮箱
+  - Disqus 导出的用户数据没有邮箱，导致 gravatar 没有照片显示，无解
+  - 邮箱配置需要额外配置环境变量，否则会暴露自己的个人邮箱
 
 实施 PR（仅包含前端，因为后端代码包含了密钥，不便于分享）：
 [feat: comments on waline · alswl/blog.alswl.com@e34e348](https://github.com/alswl/blog.alswl.com/commit/e34e34810298fd0d716d4c4a467fada25b3a6622)
