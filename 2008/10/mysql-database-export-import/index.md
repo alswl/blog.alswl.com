@@ -14,6 +14,3 @@ source xxx.sql;
 
 ```
 
-
-
-

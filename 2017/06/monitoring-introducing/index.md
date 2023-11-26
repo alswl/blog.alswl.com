@@ -8,15 +8,14 @@
 
 <!-- more -->
 
-
 ## 目的 🎯
 
 我们先来聊聊，什么是「监控」，以及我们期望通过「监控」完成哪些目的？
 
 传统意义上的监控，是指：
 
->   通过一些手段和工具，关注运行中的**硬件、软件、用户体验**的关键数据，将其暴露出来。
->   当关键数据出现异常时候发出警告，进行人工或者自动的响应。
+> 通过一些手段和工具，关注运行中的**硬件、软件、用户体验**的关键数据，将其暴露出来。
+> 当关键数据出现异常时候发出警告，进行人工或者自动的响应。
 
 我们平时看到的最常见的监控系统，比如 Zabbix，提供了丰富的模板，
 可以监控服务器的 Load / CPU Usage / Alive 这些常规指标。
@@ -25,8 +24,8 @@
 
 我将上面的使用目的归纳为：
 
-*   故障发生时提供数据报警
-*   提供历史数据以供分析
+- 故障发生时提供数据报警
+- 提供历史数据以供分析
 
 故事到这里似乎可以结束了，可监控真的是这么简单的么？
 当然没，随着时代的进步，用户对服务提出了更为严苛的要求，
@@ -51,7 +50,6 @@
 1.  监控哪些对象？
 2.  如何识别故障？
 
-
 ## 对象 🐘🐘
 
 我们说的监控对象，一般指的都是某个资源，
@@ -61,21 +59,21 @@
 
 让我们来先看一下常见的资源：
 
-*   硬件
-    *   服务器
-    *   网络设备
-*   软件
-    *   Application
-    *   Infrastructure
+- 硬件
+  - 服务器
+  - 网络设备
+- 软件
+  - Application
+  - Infrastructure
 
 这个分类是粗粒度的描述，为了落地地描述监控对象对象的健康状况，
 我们还要进一步细化。以「服务器」为例，我们可以将其监控的内容细化为以下监控项：
 
-*   CPU
-*   Memory
-*   Network interface
-*   Storage devices
-*   Controllers
+- CPU
+- Memory
+- Network interface
+- Storage devices
+- Controllers
 
 如何评估这些监控项的健康状况？我们使用
 [SLI（Service Level Indicator）](https://en.wikipedia.org/wiki/Service_level_indicator)。
@@ -83,14 +81,14 @@
 这里我将资源归为两类，面向用户提供服务的资源和面向存储的资源，
 以下是针对这两类资源的常见 SLI：
 
-*   User-facing Service
-    *   Availability
-    *   Latency
-    *   Throughput
-*   Storage System
-    *   Latency
-    *   Throughput
-    *   durability
+- User-facing Service
+  - Availability
+  - Latency
+  - Throughput
+- Storage System
+  - Latency
+  - Throughput
+  - durability
 
 基于 SLI 建立的数字关键指标，称之为
 [Service Level Objective](https://en.wikipedia.org/wiki/Service_level_objective)。
@@ -99,7 +97,6 @@ SLO 往往是一组数字范围，比如 CPU 负载的 SLO 可以设置为 0.0-6
 
 看到这里，我们已经聊了要监控哪些指标，那么接下来我们聊聊如何用量化的思想，
 帮助指标更易于识别、分析和决策。
-
 
 ## 量化的思想 🔢
 
@@ -119,13 +116,12 @@ SLO 往往是一组数字范围，比如 CPU 负载的 SLO 可以设置为 0.0-6
 在科学的发展历史上，我们可以发现在亚里士多德的著作里没有任何数据公式。
 他对现象只有描述，只是定性分析，通过描述性状来阐述定理。
 这个定性的研究方式到了伽利略那里才出现了突破。
-这里我们可以引入第二个关键词是  Quantifier，量化。
+这里我们可以引入第二个关键词是 Quantifier，量化。
 伽利略率先使用定量分析的方法，并将其运用到动力学和天文学，从而开创了近代科学。
 
 如果我们以定量的方式来描述网站挂没挂，就会变成：网站的响应耗时在 30s，基本无法使用。
 描述线程池出问题，就会变成：active 线程数量是 200，已经到达 maxCount 数量，无法进行分配。
 你看，通过这样的描述，我们一下子就能发现问题出在哪里。
-
 
 ## USE 💡
 
@@ -136,9 +132,9 @@ Brend Gregg 是 Netflix 的首席 SRE，著有 [Systems Performance Book](http:/
 
 USE 分别是三个单词的首字母缩写：
 
-*   Utilization：使用率，CPU running percent，硬盘的 IO 
-*   Saturation：饱和度，一般偏存储型资源，内存使用，硬盘使用
-*   Error：错误数
+- Utilization：使用率，CPU running percent，硬盘的 IO
+- Saturation：饱和度，一般偏存储型资源，内存使用，硬盘使用
+- Error：错误数
 
 我们可以为每个资源找到各自的 USE 度量指标，具体的 Check List 清单可以参考
 [USE Method: Rosetta Stone of Performance Checklists](http://www.brendangregg.com/USEmethod/use-rosetta.html)。
@@ -146,21 +142,20 @@ USE 分别是三个单词的首字母缩写：
 这里举个例子，前段时间在设计 MySQL HA 方案时候，同时关注了 MySQL 的监控方案，
 那么针对 MySQL，我们要做哪些监控呢？下面是使用 USE 方法设计出来的 SLI：
 
-*   Business
-    *   Questions：语句计总，Throughput
-    *   Slow_queries：慢查询计总，Error
-    *   Com_select：查询语句计总，Throughput
-    *   Com_insert：插入语句计总，Throughput
-    *   Com_update：更新语句计总，Throughput
-*   Threads & Connections
-    *   Threads_connected：当前连接数，Utilization
-    *   Threads_running：当前使用中连接数，Utilization
-    *   Aborted_connects：尝试连接失败数，Error
-    *   Connection_errors_max_connections：由于连接数超标从而失败的连接数，Error
-*   Buffer
-    *   Innodb_buffer_pool_pages_total：内存使用页数，Utilization
-    *   Innodb_buffer_pool_read_requests：读请求数计总，Utilization
-
+- Business
+  - Questions：语句计总，Throughput
+  - Slow_queries：慢查询计总，Error
+  - Com_select：查询语句计总，Throughput
+  - Com_insert：插入语句计总，Throughput
+  - Com_update：更新语句计总，Throughput
+- Threads & Connections
+  - Threads_connected：当前连接数，Utilization
+  - Threads_running：当前使用中连接数，Utilization
+  - Aborted_connects：尝试连接失败数，Error
+  - Connection_errors_max_connections：由于连接数超标从而失败的连接数，Error
+- Buffer
+  - Innodb_buffer_pool_pages_total：内存使用页数，Utilization
+  - Innodb_buffer_pool_read_requests：读请求数计总，Utilization
 
 ## 完 🏁
 

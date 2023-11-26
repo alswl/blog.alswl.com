@@ -11,22 +11,20 @@
 基于这样的判断，我们团队花了一些时间，将基于 API 的自动化测试系统搭建起来。
 现在将这个系统的选型和运行状况拎出来，和大家分享。
 
-
 ## 确认测试范围、目标和意义
 
 - 范围
-    - 后台输出的 API 级别 URL
-    - 使用场景
-        - 打包时候的冒烟
-        - Dev / QA 手工添加添加新特性用例
+  - 后台输出的 API 级别 URL
+  - 使用场景
+    - 打包时候的冒烟
+    - Dev / QA 手工添加添加新特性用例
 - 目标
-    - 覆盖大部分的 URL，当期设计为 top 10 URL，仅包含 GET 接口
-    - 选型时，需要考虑非幂等（POST / DELETE / PUT）等接口
+  - 覆盖大部分的 URL，当期设计为 top 10 URL，仅包含 GET 接口
+  - 选型时，需要考虑非幂等（POST / DELETE / PUT）等接口
 - 意义
-    - 提高开发效率，一种自动化的 IT 测试方案
-    - 提高测试效率，减少人工集成测试成本
-    - 提高工程质量，通过覆盖率提升，保证工程质量逐步提升，放心开发新功能
-
+  - 提高开发效率，一种自动化的 IT 测试方案
+  - 提高测试效率，减少人工集成测试成本
+  - 提高工程质量，通过覆盖率提升，保证工程质量逐步提升，放心开发新功能
 
 ## 特性需求
 
@@ -34,80 +32,80 @@
 如果自己的需求和市面上的现成产品差异过大，也可以考虑自己定制。
 
 - Required
-    - 开源
-    - 免费
-    - 使用 DSL 或者简单代码描述测试用例
-    - 支持细粒度的单 API 测试和构建带过程的测试用例
-    - HTTP API
+  - 开源
+  - 免费
+  - 使用 DSL 或者简单代码描述测试用例
+  - 支持细粒度的单 API 测试和构建带过程的测试用例
+  - HTTP API
 - Optional
-    - CI 集成
-    - UI
+  - CI 集成
+  - UI
 
 ## 挑选出来的选型和评价
 
 - [API Monitoring and Testing · Runscope](https://www.runscope.com/)
-    - 收费
-    - 非开源
-    - 有监控特性
+  - 收费
+  - 非开源
+  - 有监控特性
 - [Bamboo - Continuous integration, deployment & release management | Atlassian](https://www.atlassian.com/software/bamboo)
-    - 收费
-    - CI
+  - 收费
+  - CI
 - [Continuous Integration Product and Features - CircleCI](https://circleci.com/features/)
-    - CI
-    - 收费
+  - CI
+  - 收费
 - Sauce Labs
-    - 客户端测试，收费
+  - 客户端测试，收费
 - Apiary
-    - API 设计工具 + API Test
+  - API 设计工具 + API Test
 - [http://frisbyjs.com/](http://frisbyjs.com/)
-    - code
-    - npm
-    - open source
-    - NO UI
+  - code
+  - npm
+  - open source
+  - NO UI
 - [https://github.com/vowsjs/api-easy](https://github.com/vowsjs/api-easy)
-    - 同上
-    - 真是热爱造轮子的 JS 生态圈
+  - 同上
+  - 真是热爱造轮子的 JS 生态圈
 - [https://github.com/visionmedia/supertest](https://github.com/visionmedia/supertest)
-    - 同上
-    - 从 Star 看，这个质量最高
+  - 同上
+  - 从 Star 看，这个质量最高
 - [http://dareid.github.io/chakram/](http://dareid.github.io/chakram/)
-    - code
-    - npm
-    - open source
-    - NO UI
+  - code
+  - npm
+  - open source
+  - NO UI
 - [https://vrest.io/](https://vrest.io/)
-    - 收费
-    - 不开源
-    - 无插件
+  - 收费
+  - 不开源
+  - 无插件
 - [http://swagger.io/open-source-integrations/](http://swagger.io/open-source-integrations/)
-    - for API
-    - 生态环境强大
-    - [https://github.com/cachecontrol/hippie-swagger](https://github.com/cachecontrol/hippie-swagger)
-    - 用户端似乎在尝试用 swagger
+  - for API
+  - 生态环境强大
+  - [https://github.com/cachecontrol/hippie-swagger](https://github.com/cachecontrol/hippie-swagger)
+  - 用户端似乎在尝试用 swagger
 - [http://robotframework.org/](http://robotframework.org/)
-    - 一个通用自动化测试工具
-    - DSL
-    - 扩展性较强
-    - 活跃度在降低 [https://github.com/robotframework/robotframework/graphs/contributors](https://github.com/robotframework/robotframework/graphs/contributors)
+  - 一个通用自动化测试工具
+  - DSL
+  - 扩展性较强
+  - 活跃度在降低 [https://github.com/robotframework/robotframework/graphs/contributors](https://github.com/robotframework/robotframework/graphs/contributors)
 - [https://cucumber.io/](https://cucumber.io/)
-    - [https://cucumber.io/docs/reference](https://cucumber.io/docs/reference)
-    - 和 Robotframework 相似，通用自动化测试工具
-    - DSL
-    - 活跃度降低 [https://github.com/cucumber/cucumber-jvm/graphs/contributors](https://github.com/cucumber/cucumber-jvm/graphs/contributors)
+  - [https://cucumber.io/docs/reference](https://cucumber.io/docs/reference)
+  - 和 Robotframework 相似，通用自动化测试工具
+  - DSL
+  - 活跃度降低 [https://github.com/cucumber/cucumber-jvm/graphs/contributors](https://github.com/cucumber/cucumber-jvm/graphs/contributors)
 - [https://www.solanolabs.com/](https://www.solanolabs.com/)
-    - Airbnb 在用
-    - 收费
-    - 云端的通用测试环境
+  - Airbnb 在用
+  - 收费
+  - 云端的通用测试环境
 - [https://github.com/christophd/citrus](https://github.com/christophd/citrus)
-    - [http://www.citrusframework.org/](http://www.citrusframework.org/)
-    - 依赖 mvn / ant，离代码太近
-    - 项目不够活跃
+  - [http://www.citrusframework.org/](http://www.citrusframework.org/)
+  - 依赖 mvn / ant，离代码太近
+  - 项目不够活跃
 - 代码内测试
-    - src/it/com/duitang/xxx
-    - eg. tritornis
-    - Spring
-        - [http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html)
-        - [http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html](http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html)
+  - src/it/com/duitang/xxx
+  - eg. tritornis
+  - Spring
+    - [http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html)
+    - [http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html](http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html)
 
 这部分工作，是和团队的其他成员一起去看的，大家各自分头寻找一些产品，然后进行评测，给出结论。
 
@@ -117,7 +115,6 @@
 - robotframework
 - swagger
 - 讨论时候的新发现 [https://github.com/svanoort/pyresttest](https://github.com/svanoort/pyresttest)
-
 
 ## 搭建 demo，进行试用
 
@@ -144,7 +141,6 @@ robotframework：
 - 较为复杂
 - 有 YAML 了，不用试了
 
-
 ## 使用感觉
 
 经过一个季度的试用，我们基于 pyresttest 的项目 abao 运行较稳定。
@@ -152,13 +148,12 @@ robotframework：
 
 由于是基于 Python 的源代码，我们还给 pyresttest 开发了几款插件：
 
-*   cookie_extractor：用来解析特定的 cookie
-*   file_choice_generator：从文件随机选择预设数据
-*   file_seq_generator：从文件顺序选择预设数据
+- cookie_extractor：用来解析特定的 cookie
+- file_choice_generator：从文件随机选择预设数据
+- file_seq_generator：从文件顺序选择预设数据
 
 在和 CI 的配合方面，我们在 Jinkins 搭建了 abao / abao-master 项目，
 前者响应每次 Push 请求，都会自动构建一遍，后者每天凌晨会将 master 运行一遍。
-
 
 感谢项目贡献者：
 
@@ -176,7 +171,7 @@ project  : abao
      2  雪糕        1.8%
 ```
 
-----
+---
 
 参考文档
 
@@ -187,6 +182,6 @@ project  : abao
 - [http://www.infoq.com/cn/articles/http-api-automated-test-from-manual-to-platform](http://www.infoq.com/cn/articles/http-api-automated-test-from-manual-to-platform)
 - [http://nerds.airbnb.com/testing-at-airbnb/](http://nerds.airbnb.com/testing-at-airbnb/)
 - Google keywords
-    - integration api test framework
-    - github intergration test
+  - integration api test framework
+  - github intergration test
 

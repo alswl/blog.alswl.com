@@ -12,8 +12,8 @@
 
 官方的升级路线很扯，3.0.1 的升级路线是：
 
-*   3.0.1 -> 3.5.17
-*   5.0.3 -> 5.4.4
+- 3.0.1 -> 3.5.17
+- 5.0.3 -> 5.4.4
 
 中间两次大版本升级，第一次原因不明，第二次是更新了 markup 渲染引擎，
 改为 HTML 格式类型的渲染模式。
@@ -23,19 +23,18 @@
 
 苦逼旅程就开始了。
 
-
 ## From embedded to MySQL
 
 更新内置库到外部库的操作流程：
 
-*   导出当前的数据备份，包括附件，我导出后 1G+
-*   使用当前同版本（3.0.1）安装一个全新的 wiki，注意下载 JDBC-connector
-*   安装之后，配置好 MySQL，开始导入之前准备好的备份
-*   悲剧上演
+- 导出当前的数据备份，包括附件，我导出后 1G+
+- 使用当前同版本（3.0.1）安装一个全新的 wiki，注意下载 JDBC-connector
+- 安装之后，配置好 MySQL，开始导入之前准备好的备份
+- 悲剧上演
 
 遇到了错误：
 
->   Import failed. Hibernate operation: could not insert: [com.atlassian.confluence.core.BodyContent#12028015]; SQL []; Duplicate entry '12028015' for key 'PRIMARY'; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '12028015' for key 'PRIMARY'
+> Import failed. Hibernate operation: could not insert: [com.atlassian.confluence.core.BodyContent#12028015]; SQL []; Duplicate entry '12028015' for key 'PRIMARY'; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry '12028015' for key 'PRIMARY'
 
 官方文档 [https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html](https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html)
 让修改重复键数据，好吧，我改，搜索一把重复主键，将备份里面的 `entities.xml` 弄出来。
@@ -58,7 +57,6 @@ ALTER TABLE BODYCONTENT DROP PRIMARY KEY;
 
 结论是，这数据错误了太多，已经无法手工修复。
 
-
 ## 横插一刀的 Emoji 😊😢💗
 
 导入时候报了这么一个错误：
@@ -76,15 +74,13 @@ ALTER TABLE BODYCONTENT DROP PRIMARY KEY;
 
 弄个 Emoji 这么绕，这导致我直接弃用了 MySQL。
 
-
 如果是正常迁移，不遇到重复键，Emoji 的问题，可以参考官方的文档，完成平滑迁移：
 
-*   https://confluence.atlassian.com/doc/migrating-to-another-database-148867.html
-*   https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html
-*   https://confluence.atlassian.com/doc/upgrading-confluence-4578.html
-*   https://confluence.atlassian.com/doc/upgrading-confluence-manually-255363437.html
-*   https://confluence.atlassian.com/conf56/confluence-user-s-guide/creating-content/using-the-editor/using-symbols-emoticons-and-special-characters
-
+- https://confluence.atlassian.com/doc/migrating-to-another-database-148867.html
+- https://confluence.atlassian.com/doc/database-setup-for-mysql-128747.html
+- https://confluence.atlassian.com/doc/upgrading-confluence-4578.html
+- https://confluence.atlassian.com/doc/upgrading-confluence-manually-255363437.html
+- https://confluence.atlassian.com/conf56/confluence-user-s-guide/creating-content/using-the-editor/using-symbols-emoticons-and-special-characters
 
 ## 妈蛋，自己干
 
@@ -95,12 +91,12 @@ ALTER TABLE BODYCONTENT DROP PRIMARY KEY;
 
 升级流程：
 
-*   准备最新 Confluence 新站点
-*   关停站点
-*   导出数据，包括 Page、评论、附件
-*   导入 Page，评论，附件
-*   启动旧站点，开启只读模式
-*   启用新站点
+- 准备最新 Confluence 新站点
+- 关停站点
+- 导出数据，包括 Page、评论、附件
+- 导入 Page，评论，附件
+- 启动旧站点，开启只读模式
+- 启用新站点
 
 官方有一个 [Universal Wiki Converter](https://migrations.atlassian.net/wiki)，
 我在 Bitbucket 上面找到了源码，但是已经不可工作了。

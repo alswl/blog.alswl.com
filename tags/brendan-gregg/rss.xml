@@ -55,7 +55,7 @@
 <p>我们期望大家能尽早使用 USE 方法去做性能检查，或者是用它确定系统的瓶颈。</p>
 <p>名词定义：</p>
 <ul>
-<li>资源： 服务器功能性的物理组成硬件（CPU， 硬盘,  总线）</li>
+<li>资源： 服务器功能性的物理组成硬件（CPU， 硬盘, 总线）</li>
 <li>利用率： 资源执行某工作的平均时间</li>
 <li>饱和：衡量资源超载工作的程度，往往会被塞入队列</li>
 <li>错误： 错误事件的数量</li>
@@ -121,29 +121,29 @@ Fire V480 Guide(page 82)的例图：</p>
 <h2 id="metrics">Metrics</h2>
 <p>给定资源列表，识别指标类型：利用率，饱和度和错误指标。这里有几个示例。看下面的 table，思考下每个资源和指标类型，metric 列是一些通用的 Unix/Linux 的术语提示（你可以描述的更具体些）：</p>
 <hr />
-<p>resource             type          metric
-CPU                  utilization   CPU utilization (either per-CPU or a system-wide average)
-CPU                  saturation    run-queue length or scheduler latency(aka
-Memory capacity      utilization   available free memory (system-wide)
-Memory capacity      saturation    anonymous paging or thread swapping (maybe &ldquo;page scanning&rdquo; too)
-Network interface    utilization   RX/TX throughput / max bandwidth
-Storage device I/O   utilization   device busy percent
-Storage device I/O   saturation    wait queue length
-Storage device I/O   errors        device errors (&ldquo;soft&rdquo;, &ldquo;hard&rdquo;, &hellip;)</p>
+<p>resource type metric
+CPU utilization CPU utilization (either per-CPU or a system-wide average)
+CPU saturation run-queue length or scheduler latency(aka
+Memory capacity utilization available free memory (system-wide)
+Memory capacity saturation anonymous paging or thread swapping (maybe &ldquo;page scanning&rdquo; too)
+Network interface utilization RX/TX throughput / max bandwidth
+Storage device I/O utilization device busy percent
+Storage device I/O saturation wait queue length
+Storage device I/O errors device errors (&ldquo;soft&rdquo;, &ldquo;hard&rdquo;, &hellip;)</p>
 <hr />
 <p>这些指标是每段间隔或者计数的平均值，作为你的自定义清单，要包括使用的监控软件，以及要查看的统计信息。如果是不可用的指标，可以打个问号。最后，你会完成一个完事的、简单、易读的
 metrics 清单.</p>
 <h2 id="harder-metrics">Harder Metrics</h2>
 <p>再来看几个硬件指标的组合</p>
 <hr />
-<p>resource              type          metric
-CPU                   errors        eg, correctable CPU cache ECC events or faulted CPUs (if the OS+HW supports that)
-Memory capacity       errors
-Network               saturation
-Storage controller    utilization
-CPU interconnect      utilization
-Memory interconnect   saturation
-I/O interconnect      utilization</p>
+<p>resource type metric
+CPU errors eg, correctable CPU cache ECC events or faulted CPUs (if the OS+HW supports that)
+Memory capacity errors
+Network saturation
+Storage controller utilization
+CPU interconnect utilization
+Memory interconnect saturation
+I/O interconnect utilization</p>
 <hr />
 <p>这些依赖于操作系统的指标一般会更难测量些，
 而我通常要用自己写的软件去收集这些指标。</p>

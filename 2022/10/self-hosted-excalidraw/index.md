@@ -8,14 +8,13 @@
 >
 > 注：这是魔改私有化 excalidraw 开源版本，感谢社区
 
-
 ## #1 Excalidraw
 
 > 介绍一下 Excalidraw，产品特性
 
 什么是 Excalidraw，<mark>这（可能）是最强的在线协同画图工具</mark> ，你可以访问 [Excalidraw](https://excalidraw.com/) 试试看。
 
-![anatomy\_of\_an\_azure\_function.png](https://e25ba8-log4d-c.dijingchao.com/202210/anatomy_of_an_azure_function.png)
+![anatomy_of_an_azure_function.png](https://e25ba8-log4d-c.dijingchao.com/202210/anatomy_of_an_azure_function.png)
 
 如果你觉得打开来都是空白，那么也可以访问这个公共面板 [Excalidraw](https://excalidraw.com/#room=e630a562422e6e9d94db,IXndkz3JfOSGrlswJRC83Q) 参与一起创作。
 
@@ -23,9 +22,9 @@
 
 Excalidraw 非常好用，我总结几个点：
 
--   手写风格（Hand Writing）避免了强迫症，什么一像素差异，都没了躺平到底
--   无延迟在线协作，非常适合后疫情时代的沟通协作
--   产品素质过硬，快捷键、对象连接粘滞、选定文件直接存储到本地等细节都有，挑不出毛病
+- 手写风格（Hand Writing）避免了强迫症，什么一像素差异，都没了躺平到底
+- 无延迟在线协作，非常适合后疫情时代的沟通协作
+- 产品素质过硬，快捷键、对象连接粘滞、选定文件直接存储到本地等细节都有，挑不出毛病
 
 ![excalidraw-homepage.png](https://e25ba8-log4d-c.dijingchao.com/202210/excalidraw-homepage.png)
 
@@ -70,13 +69,13 @@ Firebase 是 Google 的 Serverless 服务，以前是独立公司（还挺火）
 
 Excalidraw 还要靠 Excalidraw+ 卖钱（Plus 服务），怎么可能让你这么轻松就私有化，官方原来有个 excalidraw-json 的仓库，现在也被移除了。但是我们不怕，我们有来自社区的力量：
 
--   [Self hosting Excalidraw - Umbrella issue · Issue #1772 · excalidraw/excalidraw](https://github.com/excalidraw/excalidraw/issues/1772)
--   [Collaboration mode - Self-hosting vs Collab on top of · Discussion #3879 · excalidraw/excalidraw (github.com)](https://github.com/excalidraw/excalidraw/discussions/3879)
+- [Self hosting Excalidraw - Umbrella issue · Issue #1772 · excalidraw/excalidraw](https://github.com/excalidraw/excalidraw/issues/1772)
+- [Collaboration mode - Self-hosting vs Collab on top of · Discussion #3879 · excalidraw/excalidraw (github.com)](https://github.com/excalidraw/excalidraw/discussions/3879)
 
 他们给了条路（虽然后来被证实还是有歪路的）：
 
--   [Kilian Decaderincourt / Excalidraw Fork · GitLab](https://gitlab.com/kiliandeca/excalidraw-fork) 魔改版本 excalidraw
--   [Kilian Decaderincourt / excalidraw-storage-backend · GitLab](https://gitlab.com/kiliandeca/excalidraw-storage-backend)
+- [Kilian Decaderincourt / Excalidraw Fork · GitLab](https://gitlab.com/kiliandeca/excalidraw-fork) 魔改版本 excalidraw
+- [Kilian Decaderincourt / excalidraw-storage-backend · GitLab](https://gitlab.com/kiliandeca/excalidraw-storage-backend)
 
 于是我开始检视他们方案，打开代码一看，思路正确（替换 firebase 的几个接口），使用自己的 KV 存储（Redis / MySQL / Mongo）替换。
 
@@ -94,13 +93,12 @@ Excalidraw 还要靠 Excalidraw+ 卖钱（Plus 服务），怎么可能让你这
 
 ## #4 你让开，我来写
 
-
--   [alswl/excalidraw-storage-backend: Excalidraw Backend](https://github.com/alswl/excalidraw-storage-backend)
-    -   使用二阶段构建 Dockerfile https://github.com/alswl/excalidraw-storage-backend/commit/d841d734ab02659df370a6bdef3f1d8947696580](https://github.com/alswl/excalidraw-storage-backend/commit/d841d734ab02659df370a6bdef3f1d8947696580)
-    -   中国特供 [feat: china mirror · alswl/excalidraw-storage-backend@30a6da9](https://github.com/alswl/excalidraw-storage-backend/commit/30a6da9c87b367bb1fbde449f754923638545fa8)
--   [alswl/excalidraw: Virtual whiteboard for sketching hand-drawn like diagrams](https://github.com/alswl/excalidraw)
-    -   调整代码，使用 http stroage 替代 firebase
-    -   [Feat/self host backend by alswl · Pull Request #2 · alswl/excalidraw](https://github.com/alswl/excalidraw/pull/2)
+- [alswl/excalidraw-storage-backend: Excalidraw Backend](https://github.com/alswl/excalidraw-storage-backend)
+  - 使用二阶段构建 Dockerfile https://github.com/alswl/excalidraw-storage-backend/commit/d841d734ab02659df370a6bdef3f1d8947696580](https://github.com/alswl/excalidraw-storage-backend/commit/d841d734ab02659df370a6bdef3f1d8947696580)
+  - 中国特供 [feat: china mirror · alswl/excalidraw-storage-backend@30a6da9](https://github.com/alswl/excalidraw-storage-backend/commit/30a6da9c87b367bb1fbde449f754923638545fa8)
+- [alswl/excalidraw: Virtual whiteboard for sketching hand-drawn like diagrams](https://github.com/alswl/excalidraw)
+  - 调整代码，使用 http stroage 替代 firebase
+  - [Feat/self host backend by alswl · Pull Request #2 · alswl/excalidraw](https://github.com/alswl/excalidraw/pull/2)
 
 <center><mark><b> 改造代码设计图 </b></mark></center>
 
@@ -114,14 +112,13 @@ Excalidraw 是 SaaS 服务的免费版，<mark><b> Excalidraw+ 是付费版 </b>
 
 总结：
 
--   更可靠的存储，集成到云存储（比如 Dropbox / iCloud）
--   用户身份识别，连接到通用的身份系统
--   更个性化的权限控制（密码访问、定向分享）、租户控制、项目组控制
--   域内共享的 Library
--   跟其他系统集成（语雀、钉钉文档、飞书等等）
+- 更可靠的存储，集成到云存储（比如 Dropbox / iCloud）
+- 用户身份识别，连接到通用的身份系统
+- 更个性化的权限控制（密码访问、定向分享）、租户控制、项目组控制
+- 域内共享的 Library
+- 跟其他系统集成（语雀、钉钉文档、飞书等等）
 
 或者还是直接购买 Excalidraw 企业版本服务吧，少折腾多享受。
-
 
 ## #6 中文手写体优化
 
@@ -129,23 +126,23 @@ Excalidraw 是 SaaS 服务的免费版，<mark><b> Excalidraw+ 是付费版 </b>
 
 macOS 支持的中文手写体：
 
--   [https://support.apple.com/zh-cn/HT212587](https://support.apple.com/zh-cn/HT212587)
--   [macOS Monterey 附带的字体 - 官方 Apple 支持 (中国)](https://support.apple.com/zh-cn/HT212587)
+- [https://support.apple.com/zh-cn/HT212587](https://support.apple.com/zh-cn/HT212587)
+- [macOS Monterey 附带的字体 - 官方 Apple 支持 (中国)](https://support.apple.com/zh-cn/HT212587)
 
 cursive 家族：
 
--   PanziPen
--   LingWai
--   Hannotate
+- PanziPen
+- LingWai
+- Hannotate
 
 ![hanzipen-sc.png](https://e25ba8-log4d-c.dijingchao.com/202210/hanzipen-sc.png)
 
 windows 中文支持手写体比较差劲，必须安装 Office 才有更多选择：\
 华文行楷；方正舒体；（Office）
 
--   [https://www.zhihu.com/question/22703287](https://www.zhihu.com/question/22703287)
--   [Windows 系统内置的中文字体为什么只有那几种？不多内置几种字体呢？ - 知乎 (zhihu.com)](https://www.zhihu.com/question/22703287)
--   [https://zh.m.wikipedia.org/zh-hans/Microsoft_Windows字型列表](https://zh.m.wikipedia.org/zh-hans/Microsoft_Windows%E5%AD%97%E5%9E%8B%E5%88%97%E8%A1%A8)
+- [https://www.zhihu.com/question/22703287](https://www.zhihu.com/question/22703287)
+- [Windows 系统内置的中文字体为什么只有那几种？不多内置几种字体呢？ - 知乎 (zhihu.com)](https://www.zhihu.com/question/22703287)
+- [https://zh.m.wikipedia.org/zh-hans/Microsoft_Windows字型列表](https://zh.m.wikipedia.org/zh-hans/Microsoft_Windows%E5%AD%97%E5%9E%8B%E5%88%97%E8%A1%A8)
 
 不行的话，只有系统自带的楷体 KaiTi 可以工作。
 
@@ -158,7 +155,7 @@ windows 中文支持手写体比较差劲，必须安装 Office 才有更多选�
 可以访问 [excalidraw.alswl.com](https://excalidraw.alswl.com/) 查看效果，这是一个静态站点，
 支持中文字体，但是无法在线协作。
 
-----
+---
 
 ## Update 2022-12
 

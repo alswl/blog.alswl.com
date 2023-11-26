@@ -1492,30 +1492,40 @@ Studio下面的&quot;Visual Studio 2005 命令提示&quot;试试</p>
 <p>玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的</p>
 <p>首先是ARP的接收，来看一下程序的流程</p>
 <p>获取网络设备列表</p>
-<p>pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)</p>
-<p>然后人机交互一下，获得需要工作的网卡</p>
+<pre tabindex="0"><code>pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)
+</code></pre><p>然后人机交互一下，获得需要工作的网卡</p>
 <p>打开需要的网卡</p>
-<p>(adhandle= pcap_open(d-&gt;name, // 设备名</p>
-<p>65536, // 要捕捉的数据包的部分</p>
-<p>// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容</p>
-<p>PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式</p>
-<p>1000, // 读取超时时间</p>
-<p>NULL, // 远程机器验证</p>
-<p>errbuf // 错误缓冲池</p>
-<p>)</p>
-<p>检查数据链路层，我们只考虑以太网</p>
-<p>pcap_datalink(adhandle) != DLT_EN10MB</p>
-<p>编译过滤器</p>
-<p>pcap_compile(adhandle, &amp;fcode, packet_filter, 1, netmask)</p>
-<p>设置过滤器</p>
-<p>pcap_setfilter(adhandle, &amp;fcode)</p>
-<p>开始捕捉数据包</p>
-<p>pcap_loop(adhandle, 0, packet_handler, NULL)</p>
-<p>packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数</p>
-<p>/* 回调函数，当收到每一个数据包时会被libpcap所调用 */</p>
-<p>void packet_handler(u_char *param, const struct pcap_pkthdr *header, const
-u_char *pkt_data)</p>
-<p>这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束</p>
+<pre tabindex="0"><code>(adhandle= pcap_open(d-&gt;name, // 设备名
+
+65536, // 要捕捉的数据包的部分
+
+// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
+
+PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式
+
+1000, // 读取超时时间
+
+NULL, // 远程机器验证
+
+errbuf // 错误缓冲池
+
+)
+</code></pre><p>检查数据链路层，我们只考虑以太网</p>
+<pre tabindex="0"><code>pcap_datalink(adhandle) != DLT_EN10MB
+</code></pre><p>编译过滤器</p>
+<pre tabindex="0"><code>pcap_compile(adhandle, &amp;fcode, packet_filter, 1, netmask)
+</code></pre><p>设置过滤器</p>
+<pre tabindex="0"><code>pcap_setfilter(adhandle, &amp;fcode)
+</code></pre><p>开始捕捉数据包</p>
+<pre tabindex="0"><code>pcap_loop(adhandle, 0, packet_handler, NULL)
+
+packet_hanler回调函数，就是每次接收到过滤之后的数据包使用的函数
+
+/* 回调函数，当收到每一个数据包时会被libpcap所调用 */
+
+void packet_handler(u_char *param, const struct pcap_pkthdr *header, const
+u_char *pkt_data)
+</code></pre><p>这就是整个流程了，程序只监控，所以是没有结束的，除非用户结束</p>
 <p>我不喜欢在这里贴出很多代码，只是简单说一下写时候的注意点</p>
 <p>源代码我发到了CSDN，后面会给出网址，如果不能下，可以在Baidu联系我，小弟能帮上忙就一定帮的</p>
 <p>整个程序的注意点</p>
@@ -1653,7 +1663,7 @@ F:学习网络WiPcap8_08_202Cpp1.cpp(170) : error C2065: &#39;NI_NUMERICHOST&#39
 identifier
 </code></pre><p>错误根由是因为WinPcap支持ipv6,而VC的winsock2.h太老了，很多结构都没有被支持，所以产生错误。网上有人说可以用VS新版本调试，我电脑里面
 是VS2008，但是仍然产生错误</p>
-<p>_vsnprintf属性与生命不匹配，网上没有合适的解决方案，我感觉是WinPcap的某个头文件与stdio.h参数不匹配。</p>
+<p><code>_vsnprintf</code> 属性与生命不匹配，网上没有合适的解决方案，我感觉是WinPcap的某个头文件与stdio.h参数不匹配。</p>
 <p>既然VS也无法通过，我实在没能力去修改WinPcap的头文件，所以就用最后一个方案，使用VC6.0的最新的PlatForm
 SDK开发包，里面包含了新的头文件，就可以支持WinPcap了。</p>
 <p>有人说PSDK只有Windows2003的版本，我在微软里面找到了WinXPSP2的PSDK。</p>

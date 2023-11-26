@@ -391,10 +391,10 @@ Change Table 长什么样，可以有个直观的认识。</p>
 </span></span></span></code></pre></div><p>可以看到 Change Table 已经如实的记录了我们操作内容，注意 <code>__$operation</code>
 代表了数据库操作：</p>
 <ul>
-<li>1  =&gt; 删除</li>
-<li>2  =&gt; 插入</li>
-<li>3  =&gt; 更新前数据</li>
-<li>4  =&gt; 更新后数据</li>
+<li>1 =&gt; 删除</li>
+<li>2 =&gt; 插入</li>
+<li>3 =&gt; 更新前数据</li>
+<li>4 =&gt; 更新后数据</li>
 </ul>
 <p>根据查出来的数据，我们可以重现这段时间数据库的操作：</p>
 <ul>
@@ -547,232 +547,232 @@ Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
 <td>白天</td>
 <td>存量数据阶段</td>
 <td>创建 MySQL 数据库，准备相关账号资源</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>开启 CDC</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>从 Slave SQLServer dump 一份 snapshot 到 Backup SQL Server</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>Backup SQL Server 消费数据， ETL 到 MySQL</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
+<td></td>
 <td>增量数据阶段</td>
 <td>确认 ETL 数据已经消费完成，检查数据总条数</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>从 Slave SQLServer 开始消费 CDC 数据，持续写入 MySQL</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>使用 yugong 检查一天内数据的一致性</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>检查不一致的数据，10 分钟之后人工进行检查，确认是 CDC 延迟带来的问题</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>检查数据总量条目</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>使用 yugong 对抽样表进行全量检查</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td>凌晨</td>
 <td>应用发布阶段</td>
 <td>停止 SQL Server 的应用</td>
-<td> </td>
+<td></td>
 <td>技术经理</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>检查没有连接进入 SQL Server</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>使用 yugong 检查一天内数据的一致性</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>检查数据总量条目</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>启用基于 MySQL 的应用</td>
-<td> </td>
+<td></td>
 <td>运维</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
+<td></td>
 <td>测试阶段</td>
 <td>测试应用是否正常，回归所有功能</td>
-<td> </td>
+<td></td>
 <td>QA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>（临时新增）测试 ReadOnly DB 的应用访问情况</td>
-<td> </td>
+<td></td>
 <td>QA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
+<td></td>
 <td>完成阶段</td>
 <td>接入流量</td>
-<td> </td>
+<td></td>
 <td>运维</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
+<td></td>
 <td>（可选）回滚阶段</td>
 <td>发现问题，直接将应用切回 SQL Server</td>
-<td> </td>
+<td></td>
 <td>运维</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>事后进行数据审计，进行新增数据补偿</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
 <td>（可选）回滚过程中，使用 Canal 读取 binlog，并使用 Canal Client 重放到 SQL Server</td>
-<td> </td>
+<td></td>
 <td>DBA</td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 </tr>
 </tbody>
 </table>

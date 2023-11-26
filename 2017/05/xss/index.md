@@ -1,13 +1,11 @@
 
 
-
 这是一年前写的项目笔记，一直在我的待办事项里等待做总结，今天偶然翻到，就整理成文章发出来。
 谨以此文怀念 [乌云](http://wooyun.org/)。
 
 ![201705/wooyun.jpg](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201705/wooyun.jpg)
 
-----
-
+---
 
 ## 事情缘由
 
@@ -20,8 +18,8 @@
 [跨网站脚本 -维基百科，自由的百科全书](https://zh.wikipedia.org/zh-cn/%E8%B7%A8%E7%B6%B2%E7%AB%99%E6%8C%87%E4%BB%A4%E7%A2%BC)
 中介绍到：
 
->   跨网站脚本（Cross-site  scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。
->   它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。
+> 跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。
+> 它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。
 
 XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS，
 针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存，
@@ -30,8 +28,7 @@ XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要�
 这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。
 时间紧迫，问题必须被解决。
 
-
-##  XSS 实现手段
+## XSS 实现手段
 
 在解决问题之前，需要对这个问题有必要的基础认识。
 我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。
@@ -60,7 +57,6 @@ XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存�
 通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。
 PS：一个有效粗暴的方式，是将对公、对内系统的域名分离，对内部系统进行物理级别隔离。
 
-
 ## 我厂历史上的处理方案
 
 XSS 问题又来已久，咱厂子开了这么久，历史上如何防御的呢？
@@ -80,7 +76,6 @@ APP，需要进行额外的数据处理过程， 否则 HTMLEncode 的内容，�
 排查之后发现，原来最近有若干个服务迁移到了一个新系统，
 而新系统在安全上面没有全局处理，所以爆出了漏洞。
 
-
 ## 本次处理方案
 
 知道了原因，那么可以快速解决问题了。在这次处理过程中，我们讨论了在当前移动平台增长迅速，Web 平台增长缓慢的大势下，能否直接存储用户原始数据？
@@ -95,25 +90,24 @@ Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……
 
 处理方案：
 
--   开启全局 HTML 输出 Encode，有一个 [Default HTML-escape using Freemarker](http://watchitlater.com/blog/2011/10/default-html-escape-using-freemarker/) 方案，可以默认开启 Html Encode，在这个处理方案中，需要注意有些地方真的需要输出原始 html，需要 `noescape` 特殊处理
--   检查所有前端操作，禁止字符串拼接，使用框架支持的模板进行渲染，拖小菊的福，新系统在这块工作完成度一直比较好
--   将 [OWASP](https://www.owasp.org/index.php/Main_Page) 方案强制开启
-
+- 开启全局 HTML 输出 Encode，有一个 [Default HTML-escape using Freemarker](http://watchitlater.com/blog/2011/10/default-html-escape-using-freemarker/) 方案，可以默认开启 Html Encode，在这个处理方案中，需要注意有些地方真的需要输出原始 html，需要 `noescape` 特殊处理
+- 检查所有前端操作，禁止字符串拼接，使用框架支持的模板进行渲染，拖小菊的福，新系统在这块工作完成度一直比较好
+- 将 [OWASP](https://www.owasp.org/index.php/Main_Page) 方案强制开启
 
 ## 其他 Tips
 
-OWASP 有一个很长的 [列表](https://www.owasp.org/index.php/SS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet)，教导如何避免 XSS，里面提到了：
+OWASP 有一个很长的 [列表](<https://www.owasp.org/index.php/SS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet>)，教导如何避免 XSS，里面提到了：
 
--   为何以及如何进行「积极防御」，对立面是仅仅输出时候转义内容本身
--   几条对抗 XSS 的规则
-    -   尽量不在特定地方输出不可信变量：script / comment / attribute / tag / style， 因为逃脱 HTMl 规则的字符串太多了。
-    - 将不可信变量输出到 div / body / attribute / javascript tag / style 之前，对 `& < > " ' /` 进行转义
-    -   将不可信变量输出 URL 参数之前，进行 URLEncode
-    -   使用合适的 HTML 过滤库进行过滤
-    -   预防 DOM-based XSS，见 [DOM based XSS Prevention Cheat Sheet](https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet)
-    -   开启 HTTPOnly cookie，让浏览器接触不到 cookie
+- 为何以及如何进行「积极防御」，对立面是仅仅输出时候转义内容本身
+- 几条对抗 XSS 的规则
+  - 尽量不在特定地方输出不可信变量：script / comment / attribute / tag / style， 因为逃脱 HTMl 规则的字符串太多了。
+  - 将不可信变量输出到 div / body / attribute / javascript tag / style 之前，对 `& < > " ' /` 进行转义
+  - 将不可信变量输出 URL 参数之前，进行 URLEncode
+  - 使用合适的 HTML 过滤库进行过滤
+  - 预防 DOM-based XSS，见 [DOM based XSS Prevention Cheat Sheet](https://www.owasp.org/index.php/DOM_based_XSS_Prevention_Cheat_Sheet)
+  - 开启 HTTPOnly cookie，让浏览器接触不到 cookie
 
-----
+---
 
 最后送上一个 XSS 攻击工具 <http://webxss.net/>，知己知彼，百战不殆。
 

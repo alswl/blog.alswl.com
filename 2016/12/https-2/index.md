@@ -21,16 +21,16 @@
 让他们当小白鼠，提前发现问题并解决。
 于是，我把目光转向了身边的一大大群小白鼠，整个办公室的同事~😄
 
-没错，__**我要强制所有同事使用 HTTPS 的公司网站**__，从而靠他们帮我发现问题。
+没错，\***\*我要强制所有同事使用 HTTPS 的公司网站\*\***，从而靠他们帮我发现问题。
 
 靠发邮件、QQ 广播呼吁大家使用 HTTPS 站点的方法，估计是不行的。
 没有利益驱动，推动力是不足的，我必须想点强制的手段让他们使用 HTTPS。
 
 有三种方法来达到这个效果：
 
-1.   业务系统内入口判断用户身份，是雇员的话，切换到 HTTPS
-2.   Nginx 入口系统判断 IP 来源，办公室 IP 则切换到 HTTPS
-3.   改造办公室网络，访问站点时候，自动切换到 HTTPS
+1.  业务系统内入口判断用户身份，是雇员的话，切换到 HTTPS
+2.  Nginx 入口系统判断 IP 来源，办公室 IP 则切换到 HTTPS
+3.  改造办公室网络，访问站点时候，自动切换到 HTTPS
 
 为了避免对线上业务系统、基础设施造成影响，我采用了第三条方案。
 
@@ -38,22 +38,20 @@
 
 实现的原理如下：
 
-*   A：办公室网络的 🐁 们请求站点 http://www.duitang.com
-*   B：操作 RouterOS 的防火墙，将 dst 为 www.duitang.com IP 的 TCP 请求都 dst-nat 到新的一台 Nginx 服务器 proxy.duitang.com
-*   C：这台 proxy.duitang.com 做过特别定制，将所有针对 \*.duitang.com 请做一次 302 请求，将 http://www.duitang.com 请求都转发到 https://www.duitang.com
-*   D：Client 收到 302 请求，重新请求 https://www.duitang.com
-*   E：同 B
-*   F：proxy.duitang.com 将请求转发到真正的 www.duitang.com 服务器
+- A：办公室网络的 🐁 们请求站点 http://www.duitang.com
+- B：操作 RouterOS 的防火墙，将 dst 为 www.duitang.com IP 的 TCP 请求都 dst-nat 到新的一台 Nginx 服务器 proxy.duitang.com
+- C：这台 proxy.duitang.com 做过特别定制，将所有针对 \*.duitang.com 请做一次 302 请求，将 http://www.duitang.com 请求都转发到 https://www.duitang.com
+- D：Client 收到 302 请求，重新请求 https://www.duitang.com
+- E：同 B
+- F：proxy.duitang.com 将请求转发到真正的 www.duitang.com 服务器
 
 PS：这里要小心的是，需要配置 proxy.duitang.com 的 `resolver` 避免 Nginx 内部请求。
 
 流程图：
 
-![201612/https\_ros\_process.jpg](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201612/https_ros_process.jpg)
-
+![201612/https_ros_process.jpg](https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201612/https_ros_process.jpg)
 
 这样操作之后，在办公室网络下，所有访问公司网站的 HTTP 流量都会跳转到 HTTPS。
-
 
 PS：我原始方案想使用 ROS 的 L7 防火墙 直接抓 HTTP 包，match HTTP 头数据，
 再修改返回的 TCP 包。
@@ -63,7 +61,7 @@ PS：我原始方案想使用 ROS 的 L7 防火墙 直接抓 HTTP 包，match HT
 如果不是使用 ROS 的朋友也不用担心，原理和流程已经讲清楚了，
 无非是使用 Cisco / Huawei 网络设备的防火墙命令实现需要的功能。
 
-----
+---
 
 上篇文章发完之后，好几个朋友问我 IP 证书供应商的事情。我就简单说一下我了解的情况。
 
@@ -76,32 +74,31 @@ Domain Validation / Orgnization Validation / Extented Validation。
 想基于 IP 直接搞所有权审核，要看对应供应商的证书是否支持。
 去年年底我做了一个调查，支持 IP 证书的厂家如下：
 
-* Rapid SSL 不支持 ip
-* wosign OV 级别支持
-    * OV 需要验证 需要验证申请单位的营业执照、等其他证明文件
-    * 浏览器支持情况
-        * Firefox 32 [https://mozillacaprogram.secure.force.com/CA/IncludedCACertificateReport](https://mozillacaprogram.secure.force.com/CA/IncludedCACertificateReport)
-        * 交叉认证了 Startcom 的证书，可以支持老版本
-* GlobalSign OV 支持
-    * $349 * 6 * 8 = 16752
-    * [https://support.globalsign.com/customer/portal/articles/1216536-securing-a-public-ip-address---ssl-certificates](https://support.globalsign.com/customer/portal/articles/1216536-securing-a-public-ip-address---ssl-certificates)
-    * 需要认证 RIPE ip， [https://apps.db.ripe.net/search/query.html?searchtext=221.228.82.178#resultsAnchor](https://apps.db.ripe.net/search/query.html?searchtext=221.228.82.178#resultsAnchor)
-* Geotrust 明确表示不支持 https://www.geocerts.com/faq#Q47
+- Rapid SSL 不支持 ip
+- wosign OV 级别支持
+  - OV 需要验证 需要验证申请单位的营业执照、等其他证明文件
+  - 浏览器支持情况
+    - Firefox 32 [https://mozillacaprogram.secure.force.com/CA/IncludedCACertificateReport](https://mozillacaprogram.secure.force.com/CA/IncludedCACertificateReport)
+    - 交叉认证了 Startcom 的证书，可以支持老版本
+- GlobalSign OV 支持
+  - $349 _ 6 _ 8 = 16752
+  - [https://support.globalsign.com/customer/portal/articles/1216536-securing-a-public-ip-address---ssl-certificates](https://support.globalsign.com/customer/portal/articles/1216536-securing-a-public-ip-address---ssl-certificates)
+  - 需要认证 RIPE ip， [https://apps.db.ripe.net/search/query.html?searchtext=221.228.82.178#resultsAnchor](https://apps.db.ripe.net/search/query.html?searchtext=221.228.82.178#resultsAnchor)
+- Geotrust 明确表示不支持 https://www.geocerts.com/faq#Q47
 
 现在 Wosign 爆了丑闻，于是支持 IP SSL 又少了一家。
 只剩下 GlobalSign 了，但是 GlobalSign OV 又贵审核又麻烦，
 不知道看到此文的大神们有没有更好的推荐。
 
-
-----
+---
 
 参考链接：
 
-*   [domain name - SSL certificate for a public IP address? - Server Fault](http://serverfault.com/questions/193775/ssl-certificate-for-a-public-ip-address)
-*   [ROS Filter](http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/Filter)
-*   [ROS NAT](http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/NAT)
-*   [ROS Firewall L7](http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/L7)
-*   [How to block and redirect website - MikroTik RouterOS](http://forum.mikrotik.com/viewtopic.php?f=13&t=62152)
-*   [Mikrotik IP REDIRECT using firewall - MikroTik RouterOS](http://forum.mikrotik.com/viewtopic.php?t=39837)
-*   [Redirect all traffic from a spesific ip number to a web page - MikroTik RouterOS](http://forum.mikrotik.com/viewtopic.php?t=88049)
+- [domain name - SSL certificate for a public IP address? - Server Fault](http://serverfault.com/questions/193775/ssl-certificate-for-a-public-ip-address)
+- [ROS Filter](http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/Filter)
+- [ROS NAT](http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/NAT)
+- [ROS Firewall L7](http://wiki.mikrotik.com/wiki/Manual:IP/Firewall/L7)
+- [How to block and redirect website - MikroTik RouterOS](http://forum.mikrotik.com/viewtopic.php?f=13&t=62152)
+- [Mikrotik IP REDIRECT using firewall - MikroTik RouterOS](http://forum.mikrotik.com/viewtopic.php?t=39837)
+- [Redirect all traffic from a spesific ip number to a web page - MikroTik RouterOS](http://forum.mikrotik.com/viewtopic.php?t=88049)
 

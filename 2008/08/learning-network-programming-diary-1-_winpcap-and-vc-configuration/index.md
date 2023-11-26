@@ -38,12 +38,10 @@ F:学习网络WiPcap8_08_202Cpp1.cpp(170) : error C2065: 'NI_NUMERICHOST' : unde
 identifier
 ```
 
-
-
 错误根由是因为WinPcap支持ipv6,而VC的winsock2.h太老了，很多结构都没有被支持，所以产生错误。网上有人说可以用VS新版本调试，我电脑里面
 是VS2008，但是仍然产生错误
 
-_vsnprintf属性与生命不匹配，网上没有合适的解决方案，我感觉是WinPcap的某个头文件与stdio.h参数不匹配。
+`_vsnprintf` 属性与生命不匹配，网上没有合适的解决方案，我感觉是WinPcap的某个头文件与stdio.h参数不匹配。
 
 既然VS也无法通过，我实在没能力去修改WinPcap的头文件，所以就用最后一个方案，使用VC6.0的最新的PlatForm
 SDK开发包，里面包含了新的头文件，就可以支持WinPcap了。
@@ -71,5 +69,4 @@ CMD运行PSDK-FULL.bat，参数为一个目录，里面会被解压缩安装包�
 特别注意，要把这些目录的顺序调高，我直接放到了最高层去了。
 
 呵呵，编译一下，通过了，好Happy啊。
-
 
