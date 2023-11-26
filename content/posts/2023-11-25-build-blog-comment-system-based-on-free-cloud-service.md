@@ -2,9 +2,8 @@
 title: "如何免费用云服务搭建博客评论系统"
 slug: "build-blog-comment-system-based-on-free-cloud-service"
 date: 2023-11-25T17:23:35+08:00
-categories: [""]
-tags: [""]
-draft: true
+categories: ["coding"]
+tags: ["blog", "hugo", "waline", "utterances", "cusdis"]
 typora-copy-images-to: ../../static/images/202311
 ---
 
