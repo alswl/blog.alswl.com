@@ -4,7 +4,7 @@ author: "alswl"
 slug: "learner-drivers-have-recorded-1-week"
 date: "2009-10-26T00:00:00+08:00"
 tags: ["cinderella"]
-categories: ["nobodycansee"]
+categories: []
 draft: true
 ---
 
@@ -19,4 +19,3 @@ draft: true
 我修炼了一年，却抵不过你这么一周，我很难过
 
 一遍遍问自己为什么啊，为什么啊````
-
