@@ -5,7 +5,6 @@ date: 2023-07-29T14:54:27+08:00
 categories: ["coding"]
 tags: ["Design", "Architecture"]
 typora-copy-images-to: ../../static/images/202307
-
 ---
 
 ![arch-easy](../../static/images/202307/arch-easy.png)
@@ -31,7 +30,7 @@ typora-copy-images-to: ../../static/images/202307
 > 架构，**软件架构**是有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。
 >
 > 系统分析，旨在研究特定系统结构中各部分（各子系统）的相互作用，系统的对外接口与界面，以及该系统整体的行为、
-功能和局限，从而为系统未来的变迁与有关决策提供参考和依据。
+> 功能和局限，从而为系统未来的变迁与有关决策提供参考和依据。
 
 来看一下英文定义可能会更清晰：
 
@@ -54,7 +53,6 @@ typora-copy-images-to: ../../static/images/202307
 - 在业务层面：需求收集、需求分析
 - 在技术层面：建模，绘制流程图、数据流图和接口设计
 - 工程层面：在应用、系统框架内实现需求
-
 
 最后，我来解释一下我对这两者边界的理解。实际上，我认为<mark>架构设计和系统分析并没有明显的界限</mark>。
 一个系统或模块不管如何都会进行系统分析，而当出现以下几个特征时，就开始考虑架构设计问题：
@@ -135,7 +133,6 @@ typora-copy-images-to: ../../static/images/202307
 
 ### 小结
 
-
 问题驱动架构变化，架构方案应对问题，架构评审统一解决方案。
 
 关于决策拍板问题。我强烈推崇架构师根据自己具备的领域知识、对行业的判断以及对现状的了解，
@@ -147,7 +144,6 @@ typora-copy-images-to: ../../static/images/202307
 如果分层和框架无法快速形成一致，有可能团队构成上存在问题，也可能问题过于复杂已经不是 80% case。
 
 在本阶段，产出的成果包括架构图以及对问题、价值、成本、风险和分工达成一致的认识。
-
 
 ## 极简架构设计 - 需求看用例
 
@@ -190,7 +186,6 @@ typora-copy-images-to: ../../static/images/202307
 
 本阶段的产出物包括：Demo 稿、用例图。
 
-
 ## 极简架构设计 - 设计看模型
 
 在我看来，设计的核心在于模型：<mark>模型确定了数据的载体和边界</mark>。而<mark>数据确定了组成部分，边界则确定了归属和职责</mark>。
@@ -225,15 +220,13 @@ typora-copy-images-to: ../../static/images/202307
 完全依赖数据库进行存储。如果面临 DIA（Data Intensive Application）系统，就要考虑运行时数据的管理，
 以及一系列复杂的生命周期管理和可用性管理（我估计有这个需求的朋友，不会看到这里了）。
 
-
 ### 案例
 
 我举例一个 Kubernetes 的 RBAC（Role-Based Access Control）系统，这是常见的 AuthZ 授权鉴权系统（注意，不是 AuthN 认证系统）。
 
 ![Kubernetes RBAC](../../static/images/202307/rbac.png)
 
-<small>image via [Kubernetes RBAC  - DEV Community](https://dev.to/alcide/kubernetes-rbac-moving-from-it-s-complicated-to-in-a-relationship-1bbm)</small>
-
+<small>image via [Kubernetes RBAC - DEV Community](https://dev.to/alcide/kubernetes-rbac-moving-from-it-s-complicated-to-in-a-relationship-1bbm)</small>
 
 这里我抛几个问题：
 
@@ -298,9 +291,7 @@ typora-copy-images-to: ../../static/images/202307
 
 一般来说，时序图画好了，就可以放心地交给项目团队开始实施，不会有大的错误。如果没有时序图，依赖的就完全是彼此之间的合作经验和信任度了。
 
-
 产出：时序图、API 文档（Open API Swagger）、前端 service 生成（如果有）。
-
 
 ## 极简架构设计 - 小结
 
@@ -357,7 +348,6 @@ PS：我甚至还给自己的产品设计 Logo，或许这与我内心渴望成�
   - plantuml
 
 这里我再软广一下我维护的 [Excalidraw（Fork）](https://excalidraw.alswl.com/)，支持中文手写字体，保持风格的统一。
-
 
 ## 番外 - the Hard Way
 

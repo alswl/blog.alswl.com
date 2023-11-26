@@ -5,7 +5,6 @@ date: 2023-04-03T11:34:18+08:00
 categories: ["coding"]
 tags: ["rest", "api", "http", "Guidelines"]
 typora-copy-images-to: ../../static/images/202304
-
 ---
 
 当开始创建一个新系统，或参与一个新团队或项目时，都会面临一个简单却深刻的问题：这个系统（Web Server）的 API 是否有设计规范？
@@ -21,7 +20,6 @@ Foursqure API（已经无法访问，暴露年龄） 文档。
 这时候我需要做一些补充工作。最终，我会撰写一个简要的 `DEVELOPMENT.md` 文档，以描述设计方案。
 
 但我对该文档一直有更多的想法，它还不够完善。因此，我想整理出一份<mark>简单（Simple）而实用（Pragmatic）</mark>的 Web API 最佳实践，也就是本文。
-
 
 ## 为什么我们需要 API 统一规范
 
@@ -50,7 +48,6 @@ API 可以通过标准化的方式进行数据传输和处理，从而实现各�
 可能并不需要过多关注规范。 此外，在一些特殊的业务场景下，
 协议底层可能会发生变化，这时候既有的规范可能不再适用。但即使如此，我仍然建议重新起草新的规范，而不是放弃规范不顾。
 
-
 ## 规范的原则
 
 在制定 API 规范时，我们应该遵循一些基本原则，以应对技术上的分歧，我总结了三个获得广泛认可的原则：
@@ -63,7 +60,6 @@ API 可以通过标准化的方式进行数据传输和处理，从而实现各�
 ![principle](../../static/images/202304/principle.png)
 
 <small>image by alswl</small>
-
 
 ## REST 到底行不行？
 
@@ -86,11 +82,11 @@ REST 是一种成熟度较高的协议，[Leonard Richardson](https://martinfowl
 
 REST 的核心优势在于：
 
--   它充分利用了 HTTP 协议的设计（HTTP Protocol）
--   它具有出色的资源定位能力（Identification of resources）
--   它设计了完备的资源操作方式（Manipulation of resources）
--   它具备自解释性（Self-descriptive messages）
--   它支持多种形态的呈现方式（hypermedia as the engine of application state）
+- 它充分利用了 HTTP 协议的设计（HTTP Protocol）
+- 它具有出色的资源定位能力（Identification of resources）
+- 它设计了完备的资源操作方式（Manipulation of resources）
+- 它具备自解释性（Self-descriptive messages）
+- 它支持多种形态的呈现方式（hypermedia as the engine of application state）
 
 然而，<mark>REST 并非一种具体的协议或规范，而是一种风格理念</mark>。尽管 REST 定义了一些规则和原则，如资源的标识、统一接口、无状态通信等，
 但它并没有规定一种具体的实现方式。因此，在实际开发中，不同的团队可能会有不同的理解和实践，
@@ -98,20 +94,18 @@ REST 的核心优势在于：
 
 此外，REST 也有一些局限性和缺陷：
 
--   并非所有请求都可以用资源描述，比如登录（`/login`）操作，转换成 `session` 就非常绕口；
-    同样的问题在转账这种业务也会出现。HTTP 有限的动词无法支撑所有业务场景。
--   REST 并未提供针对必然面临的问题，如分页、返回体具体结构、错误处理和鉴权等，明确的解决方案。
--   对于复杂的查询（如搜索 Search），RESTful API 的查询参数可能会变得非常复杂，难以维护。
+- 并非所有请求都可以用资源描述，比如登录（`/login`）操作，转换成 `session` 就非常绕口；
+  同样的问题在转账这种业务也会出现。HTTP 有限的动词无法支撑所有业务场景。
+- REST 并未提供针对必然面临的问题，如分页、返回体具体结构、错误处理和鉴权等，明确的解决方案。
+- 对于复杂的查询（如搜索 Search），RESTful API 的查询参数可能会变得非常复杂，难以维护。
 
 因此，虽然 REST 风格是一个不错的指导思想，但在具体实现时需要结合具体业务需求和技术特点，有所取舍，才能实现良好的 API 设计。
 最后，我们是否需要 Web API 设计规范，遵循 REST 风格呢？我认为 REST 能够解决 90% 的问题，但还有 10% 需要明确规定细节。
-
 
 ## Web API 规范的选择题
 
 因为我们的协议基于 HTTP 和 REST 设计，我们将以 HTTP 请求的四个核心部分为基础展
 开讨论，这些部分分别是：URL、Header、Request 和 Response。
-
 
 ### URL 最佳实践
 
@@ -121,9 +115,9 @@ REST 的核心优势在于：
 
 为了达到良好的 URL 设计，我总结了以下几个规则：
 
--   定位资源（这就回答分页是否应该在 Header）
--   自解释（可读性强，URL 自身即包含核心信息）
--   安全（不能包含用户认证信息，OAuth 为了解这个花了很多精力，防伪造）
+- 定位资源（这就回答分页是否应该在 Header）
+- 自解释（可读性强，URL 自身即包含核心信息）
+- 安全（不能包含用户认证信息，OAuth 为了解这个花了很多精力，防伪造）
 
 通常情况下，URL 的模型如下所示：
 
@@ -141,7 +135,7 @@ Verb 是动词，也可以省略；Query 是请求参数；Fragment 是 HTTP 原
 注：**请注意，方案 A / B / C 之间没有关联，每行上下也没有关联**
 
 | 问题                                                                  | 解释（见下方单列分析）            | 方案 A       | 方案 B         | 方案 C                                       |
-| ---                                                                   | ---                               | ---          | ---            | ---                                          |
+| --------------------------------------------------------------------- | --------------------------------- | ------------ | -------------- | -------------------------------------------- |
 | API Path 里面 Prefix                                                  |                                   | `/apis`      | `/api`         | 二级域名                                     |
 | Path 里面是否包含 API 版本                                            | **版本在 URL 的优势**             | ✅           | 🚫             |                                              |
 | Path 是否包含 Group                                                   |                                   | ✅           | 🚫             |                                              |
@@ -184,7 +178,6 @@ Verb 是动词，也可以省略；Query 是请求参数；Fragment 是 HTTP 原
 如果系统中只有一个名为 `/api/do` 的 API 并将所有业务都绑定在其中，虽然技术上可行，
 但这种设计不符合业务需求，每一层的抽象都是为了标准化解决特定问题的解法，TCP L7 设计就是这种理念的体现。
 
-
 **Readable Stable Identity 解释**
 
 在标记一个资源时，我们通常有几种选择：
@@ -202,7 +195,6 @@ Verb 是动词，也可以省略；Query 是请求参数；Fragment 是 HTTP 原
 
 from [What’s a slug. and why would I use one? | by Dave Sag](https://itnext.io/whats-a-slug-f7e74b6c23e0)
 
-
 PS：文章最末我还会介绍一套 Apple Music 方案，这个方案兼顾了 ID / Readable / Stable 的特性。
 
 **一级和多级的解释**
@@ -215,7 +207,6 @@ URL 的层级设计可以根据建模来进行，也可以采用直接单层结�
 多级结构更直观，但也需要解决可能存在的多种组织方式的问题，例如图书馆中书籍按照作者或类别进行组织？
 这种情况下，可以考虑在多级结构中明确模型的归属关系，
 例如 `/api/author/foo/books`（基于作者）或 `/api/category/computer/books`（基于类别）。
-
 
 **Alias URL 解释**
 
@@ -246,20 +237,17 @@ https://test.com/apis/v3/books/hot
 我们常常会忽略 Header 的重要性。实际上，HTTP 动词的选择、HTTP 状态码以及各种身
 份验证逻辑（例如 Cookie / Basic Auth / Berear Token）都依赖于 Header 的设计。
 
-
-
 **设计风格选择**
 
-| 问题                                   | 解释（见下方单列分析） | 方案 A                 | 方案 B                         | 方案 C   |
-| ---                                    | ---                    | ---                    | ---                            | ---      |
-| 是否所有 Verb 都使用 POST              | **关于全盘 POST**      | ✅                     | 🚫                             |          |
-| 修改（Modify）动作是 POST 还是 PATCH？ |                        | POST                   | PATCH                          |          |
-| HTTP Status 返回值                     | **2XX 家族**           | 充分利用 HTTP Status   | 只用核心状态（200 404 302 等） | 只用 200 |
-| 是否使用考虑限流系统                   |                        | ✅ 429                 | 🚫                             |          |
-| 是否使用缓存系统                       |                        | ✅  ETag / Last Modify | 🚫                             |          |
-| 是否校验 UserAgent                     |                        | ✅                     | 🚫                             |          |
-| 是否校验  Referrral                    |                        | ✅                     | 🚫                             |          |
-
+| 问题                                   | 解释（见下方单列分析） | 方案 A                | 方案 B                         | 方案 C   |
+| -------------------------------------- | ---------------------- | --------------------- | ------------------------------ | -------- |
+| 是否所有 Verb 都使用 POST              | **关于全盘 POST**      | ✅                    | 🚫                             |          |
+| 修改（Modify）动作是 POST 还是 PATCH？ |                        | POST                  | PATCH                          |          |
+| HTTP Status 返回值                     | **2XX 家族**           | 充分利用 HTTP Status  | 只用核心状态（200 404 302 等） | 只用 200 |
+| 是否使用考虑限流系统                   |                        | ✅ 429                | 🚫                             |          |
+| 是否使用缓存系统                       |                        | ✅ ETag / Last Modify | 🚫                             |          |
+| 是否校验 UserAgent                     |                        | ✅                    | 🚫                             |          |
+| 是否校验 Referrral                     |                        | ✅                    | 🚫                             |          |
 
 **关于全盘 POST**
 
@@ -293,14 +281,12 @@ HTTP 状态码的用途在于表明客户端与服务器间通信的结果。2XX
 那么确实可以通盘使用 200 状态码进行返回。但基于行为传递含义，
 或是基于文档（甚至口头协议）传递含义，哪种更优秀呢？是更为复杂还是更为简洁？
 
-
 ### Request 最佳实践
-
 
 **设计风格选择**
 
 | 问题                                                | 解释（见下方单列分析） | 方案 A      | 方案 B       | 方案 C             |
-| ---                                                 | ---                    | ---         | ---          | ---                |
+| --------------------------------------------------- | ---------------------- | ----------- | ------------ | ------------------ |
 | 复杂的参数是放到 Form Fields 还是单独一个 JSON Body |                        | Form Fields | Body         |                    |
 | 子资源是一次性查询还是独立查询                      |                        | 嵌套        | 独立查询     |                    |
 | 分页参数存放                                        |                        | Header      | URL Query    |                    |
@@ -320,13 +306,12 @@ HTTP 状态码的用途在于表明客户端与服务器间通信的结果。2XX
 客户端分页是指下一页的参数由客户端计算而来，而服务器分页则是由服务器返回 `rel` 或 JSON.API 等协议。
 使用服务器分页可以避免一些问题，例如批量屏蔽了一些内容，如果使用客户端分页，可能会导致缺页或者白屏。
 
-
 ### Response 最佳实践
 
 **设计风格选择**
 
 | 问题                           | 解释（见下方单列分析）     | 方案 A               | 方案 B                      | 方案 C     |
-| ---                            | ---                        | ---                  | ---                         | ---        |
+| ------------------------------ | -------------------------- | -------------------- | --------------------------- | ---------- |
 | 模型呈现种类                   | **模型的几种形式**         | 单一模型             | 多种模型                    |            |
 | 大模型如何包含子模型模型       | **模型的连接、侧载和嵌入** | 嵌入                 | 核心模型 + 多次关联资源查询 | 链接       |
 | 字段返回是按需还是归并还是统一 |                            | 统一                 | 使用 `fields` 字段按需      |            |
@@ -376,9 +361,7 @@ HTTP 状态码的用途在于表明客户端与服务器间通信的结果。2XX
     "name": "朝花夕拾",
     "relationships": {
       "comments": "http://www.domain.com/book/42/comments",
-      "author": [
-        "http://www.domain.com/author/鲁迅"
-      ]
+      "author": ["http://www.domain.com/author/鲁迅"]
     }
   }
 }
@@ -393,9 +376,7 @@ HTTP 状态码的用途在于表明客户端与服务器间通信的结果。2XX
     "name": "朝花夕拾",
     "relationships": {
       "comments": "http://www.domain.com/book/42/comments",
-      "authors": [
-        "http://www.domain.com/author/鲁迅"
-      ]
+      "authors": ["http://www.domain.com/author/鲁迅"]
     }
   },
   "includes": {
@@ -456,7 +437,6 @@ Web API 中较少遇到非 HTTP 协议，新建一套协议的成本太高了。
 有些团队或个人计划使用自己创建的协议，但我的观点是应尽量避免自建协议，因为真正需要创建协议的情况非常罕见。
 如果确实存在强烈的需要，那么我会问两个问题：是否通读过 HTTP RFC 文档和 HTTP/2 RFC 文档？
 
-
 **我不是远程服务（RPC / HTTP 等），而是 SDK 怎么办？**
 
 本文主要讨论的是 Web API（HTTP）的设计规范，并且其中一些规则可以借鉴到 RPC 系统中。
@@ -477,12 +457,10 @@ Web API 中较少遇到非 HTTP 协议，新建一套协议的成本太高了。
 在 Web API 设计中，常见的认证方式包括：HTTP Basic Auth、OAuth2 和账号密码登录等。
 常用的状态管理方式则有 Bearer Token 和 Cookie。此外，在防篡改等方面，还会采用基于 HMac 算法的防重放和篡改方案。
 
-
 **忽略掉的话题**
 
 在本次讨论中，我未涉及以下话题：异步协议（Web Socket / Long Pulling / 轮训）、CORS、以及安全问题。
 虽然这些话题重要，但是在本文中不予展开。
-
 
 **什么时候打破规则**
 
@@ -490,7 +468,6 @@ Web API 中较少遇到非 HTTP 协议，新建一套协议的成本太高了。
 如果开发者觉得规则不符合实际需求，有两种处理方式：修改规则或打破规则。
 然而，我更倾向于讨论和更新规则，明确规范不足之处，确定是否存在特殊情况。
 如果确实需要创建特例，一定要在文档中详细描述，告知接任者和消费者这是一个特例，说明特例产生的原因以及特例是如何应对的。
-
 
 ## 一张风格 Checklist
 
@@ -503,7 +480,7 @@ API 定义 [GitHub REST API documentation](https://docs.github.com/en/rest?apiVe
 ，该列表几乎包含了 Github 的全部 API。
 
 | 问题                                                                  | 选择                                                      | 备注                                                                                                                                              |
-| ---                                                                   | ---                                                       | ---                                                                                                                                               |
+| --------------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **URL**                                                               |                                                           |                                                                                                                                                   |
 | API Path 里面 Prefix                                                  | 二级域名                                                  | https://api.github.com                                                                                                                            |
 | Path 里面是否包含 API 版本                                            | 🚫                                                        | Header `X-GitHub-Api-Version` [API Versions](https://docs.github.com/en/rest/overview/api-versions?apiVersion=2022-11-28)                         |
@@ -522,7 +499,7 @@ API 定义 [GitHub REST API documentation](https://docs.github.com/en/rest?apiVe
 | 修改（Modify）动作是 POST 还是 PATCH？                                | PATCH                                                     |                                                                                                                                                   |
 | HTTP Status 返回值                                                    | 充分利用 HTTP Status                                      | 常用，包括限流洗损                                                                                                                                |
 | 是否使用考虑限流系统                                                  | ✅ 429                                                    |                                                                                                                                                   |
-| 是否使用缓存系统                                                      | ✅  ETag / Last Modify                                    | [Resources in the REST API#client-errors](https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors) |
+| 是否使用缓存系统                                                      | ✅ ETag / Last Modify                                     | [Resources in the REST API#client-errors](https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors) |
 | 是否校验 UserAgent                                                    | ✅                                                        |                                                                                                                                                   |
 | 是否校验 Referrral                                                    | 🚫                                                        |                                                                                                                                                   |
 | **Request**                                                           |                                                           |                                                                                                                                                   |
@@ -553,9 +530,8 @@ Azure 的 API 设计遵循 [api-guidelines/Guidelines.md at master · microsoft/
 [Azure Storage REST API Reference ](https://learn.microsoft.com/en-us/rest/api/storageservices/)。
 如果具体实现和 Guidelines.md 冲突，我会采用 Guidelines.md 结论。
 
-
 | 问题                                                                  | 选择                     | 备注                                                                                                                                                                                                                                       |
-| ---                                                                   | ---                      | ---                                                                                                                                                                                                                                        |
+| --------------------------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **URL**                                                               |                          |                                                                                                                                                                                                                                            |
 | API Path 里面 Prefix                                                  | 二级域名                 |                                                                                                                                                                                                                                            |
 | Path 里面是否包含 API 版本                                            | 🚫                       | `x-ms-version`                                                                                                                                                                                                                             |
@@ -593,7 +569,6 @@ Azure 的 API 设计遵循 [api-guidelines/Guidelines.md at master · microsoft/
 | 时区                                                                  | ?                        |                                                                                                                                                                                                                                            |
 | HATEOAS                                                               | ?                        | [api-design#use-hateoas-to-enable-navigation-to-related-resources](https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design#use-hateoas-to-enable-navigation-to-related-resources)                                   |
 
-
 Azure 的整体设计风格要比 Github API 更复杂，同一个产品的也有多个版本的差异，看
 上去统一性要更差一些。这种复杂场景想用单一的规范约束所有团队的确也是更困难的。
 我们可以看到 Azaure 团队在 Guidelines 上面努力，他们最近正在推出 vNext 规范。
@@ -603,9 +578,8 @@ Azure 的整体设计风格要比 Github API 更复杂，同一个产品的也�
 我个人风格基本继承自 Github API 风格，做了一些微调，更适合中小型产品开发。
 我的改动原因都在备注中解释，改动出发点是：简化 / 减少歧义 / 考虑实际成本。如果备注里面标记了「注」，则是遵循 Github 方案并添加一些观点。
 
-
 | 问题                                                                  | 选择                                         | 备注                                                           |
-| ------------------------------------------------------------          | -------------------------------------------- | ------------------------------------------------------------   |
+| --------------------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------------- |
 | **URL**                                                               |                                              |                                                                |
 | API Path 里面 Prefix                                                  | `/apis`                                      | 我们往往只有一个系统，一个域名要承载 API 和 Web Page           |
 | Path 里面是否包含 API 版本                                            | ✅                                           |                                                                |
@@ -673,10 +647,10 @@ Azure 的整体设计风格要比 Github API 更复杂，同一个产品的也�
 因此，虽然 GraphQL 可以在一些特定的场景下提供更好的效果，但它并不适合所有的 API 设计需求。
 实际上，一些公司甚至选择放弃支持 GraphQL，例如 Github 的 [一些项目](https://github.blog/changelog/2022-08-18-deprecation-notice-graphql-for-packages/)。
 
-
 ## 最后
 
 > Complexity is incremental （复杂度是递增的）
+>
 > - John Ousterhout ([via](https://web.stanford.edu/~ouster/cgi-bin/cs190-winter18/lecture.php?topic=complexity)）
 
 <mark>风格没有最好，只有最适合，但是拥有风格是很重要的。</mark>
@@ -685,7 +659,6 @@ Azure 的整体设计风格要比 Github API 更复杂，同一个产品的也�
 不过，一旦规则建立起来，就能够有效降低系统的复杂度，避免随着时间和业务的推进而不断增加的复杂性， 并减少研发方面的沟通成本。
 
 这是一项长期的投资，但能够获得持久的回报。希望有长远眼光的人能够注意到这篇文章。
-
 
 主要参考文档：
 

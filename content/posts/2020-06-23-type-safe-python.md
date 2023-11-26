@@ -26,7 +26,6 @@ categories: ["coding"]
 
 <!-- more -->
 
-
 ## 类型系统
 
 谈类型系统之前，要厘定两个概念，动态语言和动态类型。
@@ -40,7 +39,6 @@ categories: ["coding"]
 动态语言和动态类型这两个概念切入点不一样，
 Python 是一门动态语言，也是动态类型语言，还是强类型的动态类型。
 这篇文章主要讨论 Python 语言的类型系统，不会涉及动态语言特性。
-
 
 ## 类型安全之路
 
@@ -60,12 +58,10 @@ Python 在 2014 年即提出了 PEP 484，随后提出一个精粹版 PEP 483（
 经过 PEP 484，PEP 526，PEP 544，PEP 586，PEP 589，PEP 591 的多次版本迭代，Python 的类型系统已经很丰富。
 甚至包含了比如 Structural Subtyping 以及 Literal Typing 这边相对罕见的特性。
 
-
 ### PEP 483 - 核心概念
 
 [PEP 483](https://www.python.org/dev/peps/pep-0483/) 在 2014 年 12 月发布，
 是 Guido 起笔的核心概念版，简明扼要的写清楚 Python 的类型系统建设方向、边界、要和不要。
-
 
 PEP 483 没有谈具体工程实现，提纲挈领地讲了一下 Python 类型系统如何对外呈现。
 厘定 Type / Class 差别，前者是语法分析概念，后者是运行时概念。
@@ -93,7 +89,6 @@ def longest(first: S, second: S) -> S:
 - 使用注释标记类型
 - 转型 Cast
 
-
 PEP 483 的实现，主要依赖了 [PEP 3107 -- Function Annotations](https://www.python.org/dev/peps/pep-3107/)
 这个提案。PEP 3107 介绍 function 注解使用。比如， `func(a: a1, b: b1) -> r1`
 这段代码，
@@ -111,10 +106,9 @@ add.__annotations__
 
 PS：现在 Python 有了 Decorator 装饰器 / Annotation 注解，其中 Annotation 的设计还和 Java 的 Annotation 同名，一锅粥。
 
-
 ### PEP 484 - Type Hints 核心
 
-[PEP 484 -- Type Hints](https://www.python.org/dev/peps/pep-0484/) 
+[PEP 484 -- Type Hints](https://www.python.org/dev/peps/pep-0484/)
 在 PEP 483 基础上完整讲述 Python 类型系统如何设计，如何使用，细节如何（typing 模块）
 
 这篇提案开宗明义地点出：
@@ -134,7 +128,6 @@ PS：现在 Python 有了 Decorator 装饰器 / Annotation 注解，其中 Annot
 - 介绍了 Python 向后（Python 2）兼容方法，有这么几种策略：
   使用 decorator（`@typehints(foo=str, returns=str)`）、comments、Stub files、Docstring
 
-
 ### PEP 526 - 变量也安排上了
 
 [PEP 526 -- Syntax for Variable Annotations](https://www.python.org/dev/peps/pep-0526/)
@@ -145,7 +138,6 @@ PS：现在 Python 有了 Decorator 装饰器 / Annotation 注解，其中 Annot
 这个其实也比较好理解：定义一个变量类型时候，这个变量还没有初始化。
 
 我写一段 Demo 展示一下：
-
 
 ```python
 from typing import List
@@ -186,11 +178,10 @@ users: List[int]
 PS：本提案中有不少被否决的提案，挺有趣的，社区提出了很多奇淫巧计。
 可以看出社区决策的慎重，存量系统升级的难度。
 
-
 ### PEP 544 - Nominal Subtyping vs Structural Subtyping
 
 PEP 484 里面类型系统讨论的是 Nominal Subtyping，
-这个 [PEP 544 -- Protocols: Structural subtyping (static duck typing)](https://www.python.org/dev/peps/pep-0544/) 
+这个 [PEP 544 -- Protocols: Structural subtyping (static duck typing)](https://www.python.org/dev/peps/pep-0544/)
 则是提出了Structural Subtyping。
 如果非要翻译，我觉得可以称为具名子类型 / 同构子类型。
 注意，也有人将 Structural Subtyping 称之为 Duck Typing，其实这两者不相同，具体可以见
@@ -217,7 +208,6 @@ result: int = collect(Bucket())  # Passes type check
 代码中定义了 Bucket 这种类型，并且提供了两个类成员。这两个类成员刚好是 Interator 的定义。
 那么在实际使用中，就可以使用 Bucket 替换 Iterable。
 
-
 ### PEP 586 / PEP 589 / PEP 591 持续增强
 
 [PEP 586 -- Literal Types](https://www.python.org/dev/peps/pep-0586/)
@@ -228,7 +218,6 @@ result: int = collect(Bucket())  # Passes type check
 这个特性使用挺学院派，很容易在 DSL 里面写的天花乱坠。
 Scala 官方有说过可能在未来移除 Symbol 特性，建议直接使用常量替代。
 
-
 [PEP 589 -- TypedDict: Type Hints for Dictionaries with a Fixed Set of Keys](https://www.python.org/dev/peps/pep-0589/)
 给 Dict 增加 key 的 Type，继承 `TypedDict`。
 
@@ -237,13 +226,12 @@ Scala 官方有说过可能在未来移除 Symbol 特性，建议直接使用常
 
 至此，Python 3.8 已经具备我们日常需要的类型系统特性（非运行时 😂）。
 
-
 ## 总结
 
 遗憾的是，`typing` 模块在文档鲜明的标注：
 
->  The Python runtime does not enforce function and variable type annotations. They can be used by third party tools
->  such as type checkers, IDEs, linters, etc.
+> The Python runtime does not enforce function and variable type annotations. They can be used by third party tools
+> such as type checkers, IDEs, linters, etc.
 
 即：Python 运行时（Intercepter / Code Evaluator）并不支持函数和变量的类型装饰符。
 这些装饰符只能由第三方工具检查，比如类型检查器、IDE、静态、Linter。
@@ -259,7 +247,6 @@ Python 缺少金主爸爸，干爹 Red Hat 投入资源也有限。连社区从 
 动态语言在往静态语言靠拢，而静态语言也在不断吸收动态语言的特性。比如 Java 14 里面的 REPL（Read-Eval-Print-Loop），
 Kotlin / Scala 等语言的类型推断（Type Inference）。
 也许这种演进方式更能够让用户接受吧。
-
 
 ## 参考
 

@@ -17,8 +17,6 @@ categories: ["coding"]
 '=' : cannot convert from 'int' to 'struct pcap *'
 ```
 
-
-
 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个
 
 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在
@@ -59,4 +57,3 @@ Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals
 终于开始开网络编程课，感叹一下WinPcap的强大，还是停留在用户层的编程，完全没能力看
 
 核心的源代码。。。
-

@@ -15,4 +15,3 @@ draft: true
 我想你保证，以后一定一颗红星向太阳，好好的对你。
 
 ![j_0037](../../static/images/upload_dropbox/200808/j_0037.gif)
-

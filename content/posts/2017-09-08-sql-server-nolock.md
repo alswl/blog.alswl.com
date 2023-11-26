@@ -17,14 +17,13 @@ categories: ["coding"]
 
 <!-- more -->
 
-
 我找了一个范例如下：
 
 ```sql
-SELECT [id] 
-FROM   [dbo].[foos] WITH(nolock) 
-WHERE  aField = 42 
-       AND bField = 1 
+SELECT [id]
+FROM   [dbo].[foos] WITH(nolock)
+WHERE  aField = 42
+       AND bField = 1
 ```
 
 作为横向支持工程师，开发工程师会问我：「数据库即将从 SQL Server
@@ -35,12 +34,11 @@ MySQL 里面对应的写法是什么？」。
 
 这个问题将被拆解成三个小问题进行回答：
 
-*   `nolock` 是什么？
-*   为什么会需要在每个 Query 语句使用 `nolock`？
-*   MySQL 的对应写法是什么？
+- `nolock` 是什么？
+- 为什么会需要在每个 Query 语句使用 `nolock`？
+- MySQL 的对应写法是什么？
 
 让我们一个一个来看。
-
 
 ## 第一个问题：nolock 是什么？
 
@@ -51,7 +49,7 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 
 让我们仔细看看 MSDN 文档上的解释：
 
->   `nolock` 的作用等同于 `READUNCOMMITTED`
+> `nolock` 的作用等同于 `READUNCOMMITTED`
 
 `READUNCOMMITTED` 这是一种 RDBMS 隔离级别。
 使用 `nolock` 这个关键词，可以将当前查询语句隔离级别调整为 `READ UNCOMMITTED`。
@@ -61,24 +59,22 @@ Hints 的设计目的是为了能够让 SQL 语句在运行时，动态修改查
 如果阅读这句话完全没有理解困难，那恭喜你，你可以直接跳到下一节了。
 其他朋友就跟随我继续探索一下 RDMBS 的世界，复习一下隔离级别相关的知识。
 
-
 ### 隔离级别
 
 SQL 92 定义了四个隔离级别
-（[Isolation (database systems) - Wikipedia](https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels)），
+（[Isolation (database systems) - Wikipedia](<https://en.wikipedia.org/wiki/Isolation_(database_systems)#Isolation_levels>)），
 其隔离程度由高到低是：
 
-*   可序列化（Serializable）
-*   可重复读（Repeatable reads）
-*   提交读（Read committed）
-*   未提交读（Read uncommitted）
+- 可序列化（Serializable）
+- 可重复读（Repeatable reads）
+- 提交读（Read committed）
+- 未提交读（Read uncommitted）
 
 单单将这几个技术名词简单地罗列出来并没有什么意义，还有这几个问题需要搞清楚：
 
-*   隔离级别解决什么问题？
-*   为什么存在多种隔离级别？
-*   我们所谓的隔离级别从高到低，是什么含义，如何逐层降低的？
-
+- 隔离级别解决什么问题？
+- 为什么存在多种隔离级别？
+- 我们所谓的隔离级别从高到低，是什么含义，如何逐层降低的？
 
 首先是「隔离级别解决什么问题？」，
 用通俗的语言描述就是：加一个针对数据资源的锁，从而保证数据操作过程中的一致性。
@@ -86,13 +82,10 @@ SQL 92 定义了四个隔离级别
 这是最简单的实现方式，过于粗暴的隔离性将大幅降低性能，
 多种隔离级别就是是为了取得两者的平衡。
 
-
 接下来我们来回答第二个问题「为什么存在多种粒度的隔离级别？」
 这其实是一个需求和性能逐步平衡的过程，
 
-
 我们逐层递进，将隔离级别由低到高逐层面临进行分析。
-
 
 ### Read Uncommitted
 
@@ -105,7 +98,6 @@ Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
 如果 Transaction 1 最后 Rollback 了，那么 Transaction 读取的数据就是错误的。
 
 「读到了其他事务修改了但是未提交的数据」即是**脏读**。
-
 
 ### Read Committed
 
@@ -128,7 +120,6 @@ Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
 然后 Transaction 1 对数据 A 更新到 A'，那么当 Tranction 2 再次读取 A 时候，
 它本来期望读到 A，但是却读到了 A'，这和它的预期不相符了。
 解决这个问题，就需要提升隔离级别到「Repeatable Read」。
-
 
 ### Repeatable Read
 
@@ -159,7 +150,6 @@ Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
 当两个完全相同的查询语句执行得到不同的结果集，
 这常常在范围查询中出现。
 
-
 ### Serializable
 
 从字面意思看，该隔离级别需要将被操作的数据加锁加一把锁。
@@ -170,7 +160,6 @@ Read Uncommitted 这个隔离级别是最低粒度的隔离级别，
 
 如图所示，在 Transaction 2 操作过程中，会对 Range 进行加锁，
 此时其他事务无法操作其中的数据，只能等待或者放弃。
-
 
 ### DB 的默认隔离级别
 
@@ -183,7 +172,6 @@ MySQL InnoDB 的默认隔离级别可以在 [MySQL :: MySQL 5.7 Reference Manual
 
 隔离级别并没有最好之说，越高隔离级别会导致性能降低。
 隔离级别的设定需要考虑业务场景。
-
 
 ## 第二个问题：为什么要使用 nolock？
 
@@ -261,7 +249,6 @@ SELECT * FROM foos WHERE id = 4;
 
 不出所料，此时查询果然会被 Block 住。
 
-
 ### MVCC
 
 并发控制的手段有这些：封锁、时间戳、乐观并发控制、悲观并发控制。
@@ -285,7 +272,6 @@ ALTER DATABASE HJ_Test3D SET ALLOW_SNAPSHOT_ISOLATION ON;
 接着重复上面里面的 Insert 试验，依然被 Block 住。
 看来 MVCC 并不能解决 Insert 锁的问题。
 
-
 ### SQL Server 2005 之后还需要使用 nolock 么？
 
 从官方文档和上文测试可以看到，在 Insert 时候，由于排它锁的存在，
@@ -294,8 +280,8 @@ ALTER DATABASE HJ_Test3D SET ALLOW_SNAPSHOT_ISOLATION ON;
 
 除此之外，有这么几类场景可以使用 `nolock`：
 
-*   在 SSIS 查询器中进行数据分析，不需要精准数据
-*   历史数据进行查询，没有数据更新操作，也不会产生脏数据
+- 在 SSIS 查询器中进行数据分析，不需要精准数据
+- 历史数据进行查询，没有数据更新操作，也不会产生脏数据
 
 我们需要思考一下，性能和数据一致性上的权衡上，
 我们是否愿意放弃数据一致性而为了提高一丝丝性能？
@@ -303,17 +289,16 @@ ALTER DATABASE HJ_Test3D SET ALLOW_SNAPSHOT_ISOLATION ON;
 
 <del>微软官方在 2008 的特性列表里面，明确地指出 `nolock` 特性未来会在某个版本被废除：</del>
 
->   <del>Specifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.</del>
+> <del>Specifying NOLOCK or READUNCOMMITTED in the FROM clause of an UPDATE or DELETE statement.</del>
 
 <del>而改为推荐：</del>
 
->   <del>Remove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.</del>
+> <del>Remove the NOLOCK or READUNCOMMITTED table hints from the FROM clause.</del>
 
 事实上，我听过不少团队会禁止在生产环境使用不带 WHERE 条件的 SQL。
 那在这种模式下，产生相关的问题的几率也就更小了。
 如果有很高的并发需求，那需要考虑一下是否需要其他优化策略：比如使用主从分离、
 Snapshot 导出、流式分析等技术。
-
 
 ## 第三个问题：MySQL 的对应写法是什么？
 
@@ -324,14 +309,14 @@ Snapshot 导出、流式分析等技术。
 
 `innodb_autoinc_lock_mode` 支持几种模式：
 
-*   innodb_autoinc_lock_mode = 0 (“traditional” lock mode)
-    *   涉及auto-increment列的插入语句加的表级AUTO-INC锁，只有插入执行结束后才会释放锁
-*   innodb_autoinc_lock_mode = 1 (“consecutive” lock mode)
-    *   可以事先确定插入行数的语句，分配连续的确定的 auto-increment 值
-    *   对于插入行数不确定的插入语句，仍加表锁
-    *   这种模式下，事务回滚，auto-increment 值不会回滚，换句话说，自增列内容会不连续
-*   innodb_autoinc_lock_mode = 2 (“interleaved” lock mode)
-    *   同一时刻多条 SQL 语句产生交错的 auto-increment 值
+- innodb_autoinc_lock_mode = 0 (“traditional” lock mode)
+  - 涉及auto-increment列的插入语句加的表级AUTO-INC锁，只有插入执行结束后才会释放锁
+- innodb_autoinc_lock_mode = 1 (“consecutive” lock mode)
+  - 可以事先确定插入行数的语句，分配连续的确定的 auto-increment 值
+  - 对于插入行数不确定的插入语句，仍加表锁
+  - 这种模式下，事务回滚，auto-increment 值不会回滚，换句话说，自增列内容会不连续
+- innodb_autoinc_lock_mode = 2 (“interleaved” lock mode)
+  - 同一时刻多条 SQL 语句产生交错的 auto-increment 值
 
 这里也做了相应的测试。首先检查数据库隔离级别和 `innodb_autoinc_lock_mode` 模式：
 
@@ -377,15 +362,13 @@ Insert 同时 Query 不会被 Block，
 结论是，由于 `innodb_autoinc_lock_mode` 的存在，MySQL 中可以不需要使用 `nolock`
 关键词进行查询。
 
-
 ## 回顾一下
 
 本文着重去回答这么几个问题：
 
-*   为什么要用 `noloc`？
-*   为什么要改变隔离级别？
-*   为什么 MySQL 不需要做类似的事情？
-
+- 为什么要用 `noloc`？
+- 为什么要改变隔离级别？
+- 为什么 MySQL 不需要做类似的事情？
 
 虽然只凑足了三个 「为什么」 的排比，
 但是聪明的读者仍然会发现，我是使用了著名的
@@ -399,8 +382,8 @@ Insert 同时 Query 不会被 Block，
 
 ## 相关资料
 
-*   [事务隔离 - 维基百科，自由的百科全书](https://zh.wikipedia.org/zh-cn/%E4%BA%8B%E5%8B%99%E9%9A%94%E9%9B%A2)
-*   [Table Hints (Transact-SQL) | Microsoft Docs](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table)
-*   [Snapshot Isolation in SQL Server | Microsoft Docs](https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server)
-*   [sys.databases (Transact-SQL) | Microsoft Docs](https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-databases-transact-sql)
-*   [MySQL :: MySQL 5.7 Reference Manual :: 15.3 InnoDB Multi-Versioning](https://dev.mysql.com/doc/refman/5.7/en/innodb-multi-versioning.html)
+- [事务隔离 - 维基百科，自由的百科全书](https://zh.wikipedia.org/zh-cn/%E4%BA%8B%E5%8B%99%E9%9A%94%E9%9B%A2)
+- [Table Hints (Transact-SQL) | Microsoft Docs](https://docs.microsoft.com/en-us/sql/t-sql/queries/hints-transact-sql-table)
+- [Snapshot Isolation in SQL Server | Microsoft Docs](https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/snapshot-isolation-in-sql-server)
+- [sys.databases (Transact-SQL) | Microsoft Docs](https://docs.microsoft.com/en-us/sql/relational-databases/system-catalog-views/sys-databases-transact-sql)
+- [MySQL :: MySQL 5.7 Reference Manual :: 15.3 InnoDB Multi-Versioning](https://dev.mysql.com/doc/refman/5.7/en/innodb-multi-versioning.html)

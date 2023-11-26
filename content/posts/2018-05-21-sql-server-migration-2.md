@@ -9,9 +9,9 @@ categories: ["coding"]
 
 该系列三篇文章已经全部完成：
 
-*   [从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D](https://blog.alswl.com/2018/03/sql-server-migration-1/)
-*   [从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D](https://blog.alswl.com/2018/05/sql-server-migration-2/)
-*   [从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D](https://blog.alswl.com/2018/06/sql-server-migration-3/)
+- [从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D](https://blog.alswl.com/2018/03/sql-server-migration-1/)
+- [从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D](https://blog.alswl.com/2018/05/sql-server-migration-2/)
+- [从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D](https://blog.alswl.com/2018/06/sql-server-migration-3/)
 
 ![flying-tanker](../../static/images/upload_dropbox/201805/flying-tanker.png)
 
@@ -30,7 +30,6 @@ categories: ["coding"]
 作为有追求的技术人，我们一定要想办法解决上面的问题。
 
 <!-- more -->
-
 
 ## 在线迁移的原理和流程
 
@@ -60,9 +59,9 @@ Oracle 物化视图（Materialized View）是 Oracle 提供的一个机制。
 物化视图有多种配置方式，这里比较关心刷新方式和刷新时间。
 刷新方式有三种：
 
-*   Complete Refresh：删除所有数据记录重新生成物化视图
-*   Fast Refresh：增量刷新
-*   Force Refresh：根据条件判断使用 Complete Refresh 和 Fast Refres
+- Complete Refresh：删除所有数据记录重新生成物化视图
+- Fast Refresh：增量刷新
+- Force Refresh：根据条件判断使用 Complete Refresh 和 Fast Refres
 
 刷新机制有两种模式： Refresh-on-commit 和 Refresh-On-Demand。
 
@@ -70,14 +69,12 @@ Oracle 基于物化视图，就可以完成增量数据的获取，从而满足�
 将这个技术问题泛化一下，想做到在线增量迁移需要有哪些特性？
 我们得到如下结论（针对源数据库）：
 
-*   增量变化：支持增量获得增量数据库变化
-*   延迟：获取变化数据这个动作耗时需要尽可能低
-*   幂等一致性：变化数据的消费应当做到幂等，即不管目标数据库已有数据什么状态，都可以无差别消费
+- 增量变化：支持增量获得增量数据库变化
+- 延迟：获取变化数据这个动作耗时需要尽可能低
+- 幂等一致性：变化数据的消费应当做到幂等，即不管目标数据库已有数据什么状态，都可以无差别消费
 
 回到我们面临的问题上来，SQL Server 是否有这个机制满足这三个特性呢？
 答案是肯定的，SQL Server 官方提供了 CDC 功能。
-
-
 
 ## CDC 的工作原理
 
@@ -94,7 +91,6 @@ CDC 的工作原理如下：
 当数据库表发生变化时候，Capture process 会从 transaction log 里面获取数据变化，
 然后将这些数据记录到 Change Table 里面。
 有了这些数据，用户可以通过特定的 CDC 查询函数将这些变化数据查出来。
-
 
 ## CDC 的数据结构和基本使用
 
@@ -175,18 +171,17 @@ __$start_lsn          __$end_lsn  __$seqval             __$operation  __$update_
 可以看到 Change Table 已经如实的记录了我们操作内容，注意 `__$operation`
 代表了数据库操作：
 
-*   1  => 删除
-*   2  => 插入
-*   3  => 更新前数据
-*   4  => 更新后数据
+- 1 => 删除
+- 2 => 插入
+- 3 => 更新前数据
+- 4 => 更新后数据
 
 根据查出来的数据，我们可以重现这段时间数据库的操作：
 
-*   新增了 `id` 为 1 / 2 的两条数据
-*   更新了 `id` 为 2 的数据
-*   插入了 `id` 为 3 的数据
-*   删除了 `id` 为 3 的数据
-
+- 新增了 `id` 为 1 / 2 的两条数据
+- 更新了 `id` 为 2 的数据
+- 插入了 `id` 为 3 的数据
+- 删除了 `id` 为 3 的数据
 
 ## CDC 调优
 
@@ -200,28 +195,27 @@ __$start_lsn          __$end_lsn  __$seqval             __$operation  __$update_
 
 上图是 CDC Job 的工作流程：
 
-*   蓝色区域是一次 Log 扫描执行的最大扫描次数：maxscans number（`maxscans`）
-*   蓝色区域同时被最大扫描 transcation 数量控制：`maxtrans`
-*   浅蓝色区域是扫描间隔时间，单位是秒：`pollinginterval`
+- 蓝色区域是一次 Log 扫描执行的最大扫描次数：maxscans number（`maxscans`）
+- 蓝色区域同时被最大扫描 transcation 数量控制：`maxtrans`
+- 浅蓝色区域是扫描间隔时间，单位是秒：`pollinginterval`
 
 这三个参数平衡着 CDC 的服务器资源消耗、吞吐量和延迟，
 根据具体场景，比如大字段，宽表，BLOB 表，可以调整从而达到满足业务需要。
 他们的默认值如下：
 
-*   `maxscan` 默认值 10
-*   `maxtrans` 默认值 500
-*   `pollinginterval` 默认值 5 秒
-
+- `maxscan` 默认值 10
+- `maxtrans` 默认值 500
+- `pollinginterval` 默认值 5 秒
 
 ## CDC 压测
 
 掌握了能够调整的核心参数，我们即将对 CDC 进行了多种形式的测试。
 在压测之前，我们还需要确定关键的健康指标，这些指标有：
 
-*   内存：buffer-cache-hit / page-life-expectancy / page-split 等
-*   吞吐：batch-requets / sql-compilations / sql-re-compilations / transactions count
-*   资源消耗：user-connections / processes-blocked / lock-waits / checkpoint-pages
-*   操作系统层面：CPU 利用率、磁盘 IO
+- 内存：buffer-cache-hit / page-life-expectancy / page-split 等
+- 吞吐：batch-requets / sql-compilations / sql-re-compilations / transactions count
+- 资源消耗：user-connections / processes-blocked / lock-waits / checkpoint-pages
+- 操作系统层面：CPU 利用率、磁盘 IO
 
 出于篇幅考虑，我们无法将所有测试结果贴出来，
 这里放一个在并发 30 下面插入一百万数据（随机数据）进行展示：
@@ -241,16 +235,15 @@ CDC 开启后，在大流量请求下面对 QPS / Page IO 无明显波动，
 
 如果对性能不达标，官方有一些简单的优化指南：
 
-*   调整 maxscan maxtrans pollinginterval
-*   减少在插入后立刻插入
-*   避免大批量写操作
-*   限制需要记录的字段
-*   尽可能关闭 net changes
-*   没任务压力时跑 cleanup
-*   监控 log file 大小和 IO 压力，确保不会写爆磁盘
-*   要设置 filegroup_name
-*   开启 sp_cdc_enable_table 之前设置 filegroup
-
+- 调整 maxscan maxtrans pollinginterval
+- 减少在插入后立刻插入
+- 避免大批量写操作
+- 限制需要记录的字段
+- 尽可能关闭 net changes
+- 没任务压力时跑 cleanup
+- 监控 log file 大小和 IO 压力，确保不会写爆磁盘
+- 要设置 filegroup_name
+- 开启 sp_cdc_enable_table 之前设置 filegroup
 
 ## yugong 的在线迁移机制
 
@@ -264,7 +257,6 @@ SQL Tempalte 等接口，
 
 这里我们不展开，我还会花专门的一篇文章讲如何在 yugong 上面进行开发。
 可以提前剧透一下，我们已经将支持 SQL Server 的 yugong 版本开源了。
-
 
 ## 如何回滚
 
@@ -288,8 +280,8 @@ Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
 
 我们基于 Canal 设计了一个简单的数据流，在 yugong 中增加了这么几个功能：
 
-*   SQL Server 的写入功能
-*   消费 Canal 数据源的功能
+- SQL Server 的写入功能
+- 消费 Canal 数据源的功能
 
 Canal Server 中的 binlog 只能做一次性消费，
 内部实现是一个 Queue，
@@ -298,7 +290,6 @@ Canal Server 中的 binlog 只能做一次性消费，
 我们选择了 Redis 作为这个 Queue，数据流如下。
 
 ![canal.png](../../static/images/upload_dropbox/201805/canal.png)
-
 
 ## 最佳实践
 
@@ -310,34 +301,33 @@ Canal Server 中的 binlog 只能做一次性消费，
 考虑到多个事业部都需要经历这个一个过程，我们项目组将每一个步骤都固化下来，
 形成了一个最佳实践。我们的迁移步骤如下，供大家参考：
 
-
-| 大阶段   | 阶段               | 事项                                                                                | 是否完成   | 负责人     | 耗时   | 开始时间   | 完成时间   | 备注   |
-| -------- | ------------------ | ----------------------------------------------------------------------------------- | ---------- | ---------- | ------ | ---------- | ---------- | ------ |
-| 白天     | 存量数据阶段       | 创建 MySQL 数据库，准备相关账号资源                                                 |            | DBA        |        |            |            |        |
-|          |                    | 开启 CDC                                                                            |            | DBA        |        |            |            |        |
-|          |                    | 从 Slave SQLServer dump 一份 snapshot 到 Backup SQL Server                          |            | DBA        |        |            |            |        |
-|          |                    | Backup SQL Server 消费数据， ETL 到 MySQL                                           |            | DBA        |        |            |            |        |
-|          | 增量数据阶段       | 确认 ETL 数据已经消费完成，检查数据总条数                                           |            | DBA        |        |            |            |        |
-|          |                    | 从 Slave SQLServer 开始消费 CDC 数据，持续写入 MySQL                                |            | DBA        |        |            |            |        |
-|          |                    | 使用 yugong 检查一天内数据的一致性                                                  |            | DBA        |        |            |            |        |
-|          |                    | 检查不一致的数据，10 分钟之后人工进行检查，确认是 CDC 延迟带来的问题                |            | DBA        |        |            |            |        |
-|          |                    | 检查数据总量条目                                                                    |            | DBA        |        |            |            |        |
-|          |                    | 使用 yugong 对抽样表进行全量检查                                                    |            | DBA        |        |            |            |        |
-| 凌晨     | 应用发布阶段       | 停止 SQL Server 的应用                                                              |            | 技术经理   |        |            |            |        |
-|          |                    | 检查没有连接进入 SQL Server                                                         |            | DBA        |        |            |            |        |
-|          |                    | 使用 yugong 检查一天内数据的一致性                                                  |            | DBA        |        |            |            |        |
-|          |                    | 检查数据总量条目                                                                    |            | DBA        |        |            |            |        |
-|          |                    | 启用基于 MySQL 的应用                                                               |            | 运维       |        |            |            |        |
-|          | 测试阶段           | 测试应用是否正常，回归所有功能                                                      |            | QA         |        |            |            |        |
-|          |                    | （临时新增）测试 ReadOnly DB 的应用访问情况                                         |            | QA         |        |            |            |        |
-|          | 完成阶段           | 接入流量                                                                            |            | 运维       |        |            |            |        |
-|          | （可选）回滚阶段   | 发现问题，直接将应用切回 SQL Server                                                 |            | 运维       |        |            |            |        |
-|          |                    | 事后进行数据审计，进行新增数据补偿                                                  |            | DBA        |        |            |            |        |
-|          |                    | （可选）回滚过程中，使用 Canal 读取 binlog，并使用 Canal Client 重放到 SQL Server   |            | DBA        |        |            |            |        |
+| 大阶段 | 阶段             | 事项                                                                              | 是否完成 | 负责人   | 耗时 | 开始时间 | 完成时间 | 备注 |
+| ------ | ---------------- | --------------------------------------------------------------------------------- | -------- | -------- | ---- | -------- | -------- | ---- |
+| 白天   | 存量数据阶段     | 创建 MySQL 数据库，准备相关账号资源                                               |          | DBA      |      |          |          |      |
+|        |                  | 开启 CDC                                                                          |          | DBA      |      |          |          |      |
+|        |                  | 从 Slave SQLServer dump 一份 snapshot 到 Backup SQL Server                        |          | DBA      |      |          |          |      |
+|        |                  | Backup SQL Server 消费数据， ETL 到 MySQL                                         |          | DBA      |      |          |          |      |
+|        | 增量数据阶段     | 确认 ETL 数据已经消费完成，检查数据总条数                                         |          | DBA      |      |          |          |      |
+|        |                  | 从 Slave SQLServer 开始消费 CDC 数据，持续写入 MySQL                              |          | DBA      |      |          |          |      |
+|        |                  | 使用 yugong 检查一天内数据的一致性                                                |          | DBA      |      |          |          |      |
+|        |                  | 检查不一致的数据，10 分钟之后人工进行检查，确认是 CDC 延迟带来的问题              |          | DBA      |      |          |          |      |
+|        |                  | 检查数据总量条目                                                                  |          | DBA      |      |          |          |      |
+|        |                  | 使用 yugong 对抽样表进行全量检查                                                  |          | DBA      |      |          |          |      |
+| 凌晨   | 应用发布阶段     | 停止 SQL Server 的应用                                                            |          | 技术经理 |      |          |          |      |
+|        |                  | 检查没有连接进入 SQL Server                                                       |          | DBA      |      |          |          |      |
+|        |                  | 使用 yugong 检查一天内数据的一致性                                                |          | DBA      |      |          |          |      |
+|        |                  | 检查数据总量条目                                                                  |          | DBA      |      |          |          |      |
+|        |                  | 启用基于 MySQL 的应用                                                             |          | 运维     |      |          |          |      |
+|        | 测试阶段         | 测试应用是否正常，回归所有功能                                                    |          | QA       |      |          |          |      |
+|        |                  | （临时新增）测试 ReadOnly DB 的应用访问情况                                       |          | QA       |      |          |          |      |
+|        | 完成阶段         | 接入流量                                                                          |          | 运维     |      |          |          |      |
+|        | （可选）回滚阶段 | 发现问题，直接将应用切回 SQL Server                                               |          | 运维     |      |          |          |      |
+|        |                  | 事后进行数据审计，进行新增数据补偿                                                |          | DBA      |      |          |          |      |
+|        |                  | （可选）回滚过程中，使用 Canal 读取 binlog，并使用 Canal Client 重放到 SQL Server |          | DBA      |      |          |          |      |
 
 ## Reference
 
-*   [Materialized View Concepts and Architecture](https://docs.oracle.com/cd/B10500_01/server.920/a96567/repmview.htm)
-*   [Tuning the Performance of Change Data Capture in SQL Server 2008 | Microsoft Docs]( https://docs.microsoft.com/en-us/previous-versions/sql/sql-server-2008/dd266396(v=sql.100) )
-*   [alibaba/yugong: 阿里巴巴去Oracle数据迁移同步工具(全量+增量,目标支持MySQL/DRDS)](https://github.com/alibaba/yugong)
-*   [alibaba/canal: 阿里巴巴mysql数据库binlog的增量订阅&消费组件 。阿里云DRDS( https://www.aliyun.com/product/drds )、阿里巴巴TDDL 二级索引、小表复制powerd by canal.](https://github.com/alibaba/canal)
+- [Materialized View Concepts and Architecture](https://docs.oracle.com/cd/B10500_01/server.920/a96567/repmview.htm)
+- [Tuning the Performance of Change Data Capture in SQL Server 2008 | Microsoft Docs](<https://docs.microsoft.com/en-us/previous-versions/sql/sql-server-2008/dd266396(v=sql.100)>)
+- [alibaba/yugong: 阿里巴巴去Oracle数据迁移同步工具(全量+增量,目标支持MySQL/DRDS)](https://github.com/alibaba/yugong)
+- [alibaba/canal: 阿里巴巴mysql数据库binlog的增量订阅&消费组件 。阿里云DRDS( https://www.aliyun.com/product/drds )、阿里巴巴TDDL 二级索引、小表复制powerd by canal.](https://github.com/alibaba/canal)

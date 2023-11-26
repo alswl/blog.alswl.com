@@ -20,6 +20,3 @@ create xxx;
 source xxx.sql;
 
 ```
-
-
-
