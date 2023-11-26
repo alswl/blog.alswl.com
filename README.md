@@ -20,6 +20,9 @@ make sync-images
 hugo serve -D
 hugo
 hugo new posts/new.md
+
+# prettier
+npx prettier content/posts/*.md --write
 ```
 
 
