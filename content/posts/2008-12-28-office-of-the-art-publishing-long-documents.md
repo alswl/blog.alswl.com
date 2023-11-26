@@ -19,8 +19,8 @@ DDU》PDF格式的书籍，讲的很好，一上来就要从大纲视图来安�
 
 功夫不负有心人，终于找到一篇来自微软客户帮助和支持中心的官方长文档排版说明，网址是
 
-*   [Word 2003 长篇文档排版技巧（一）](https://support.microsoft.com/zh-cn/help/890700)
-*   [Word 2003 长篇文档排版技巧（二）](https://support.microsoft.com/zh-cn/help/890701)
+- [Word 2003 长篇文档排版技巧（一）](https://support.microsoft.com/zh-cn/help/890700)
+- [Word 2003 长篇文档排版技巧（二）](https://support.microsoft.com/zh-cn/help/890701)
 
 如果闲微软网速不行，可以到
 [Word2003长篇文档排版技巧 - 绿色软件联盟](http://www.xdowns.com/soft/188/215/2006/Soft_27802.html)
