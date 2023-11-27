@@ -1,7 +1,5 @@
 
 
-# 如何免费用云服务搭建博客评论系统
-
 ## 问题
 
 博客自 2012 年从 WordPress 迁移到静态站点后，就选择了 Disqus 作为评论系统。
@@ -175,7 +173,7 @@ OK，那再见吧 Disqus，我会找到可靠、免费、易用的评论系统�
 实施 PR（仅包含前端，因为后端代码包含了密钥，不便于分享）：
 [feat: comments on waline · alswl/blog.alswl.com@e34e348](https://github.com/alswl/blog.alswl.com/commit/e34e34810298fd0d716d4c4a467fada25b3a6622)
 
-## Utterances 实施
+### Utterances 实施
 
 utterances 的部署则更为简单，一个 PR 就可以启用。
 [feat: comment using utteranc · alswl/en.blog.alswl.com@29028f6 (github.com)](https://github.com/alswl/en.blog.alswl.com/commit/29028f677e362570a8bcaf5316847ddfa3e9d685)
