@@ -22,4 +22,3 @@ categories: ["life"]
 不过相比较baidu的editor问题，已经不算什么了
 
 考虑到WordPress的强大功能，还有数据库的容易迁移，以后应该会在这儿很长一段时间了。
-

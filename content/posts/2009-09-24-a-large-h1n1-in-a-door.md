@@ -25,4 +25,3 @@ categories: ["viewpoint"]
 [![20090924(001)](../../static/images/upload_dropbox/200909/20090924001.jpg)](../../static/images/upload_dropbox/200909/20090924001.jpg) 横幅是：台湾小吃：XX肉扣夹膜
 
 [![20090924(003)](../../static/images/upload_dropbox/200909/20090924003.jpg)](../../static/images/upload_dropbox/200909/20090924003.jpg) 门口的告示，门卫在预防同学翻墙。
-

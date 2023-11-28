@@ -29,4 +29,3 @@ tp://localhost:8080/PostBar/Category.action?categoryId=4&categoryName=%E9%9F%B
 
 当初之所以考虑多次传递时怕读取数据库会导致性能大幅度下降，今天又学习了一下Hibernate的缓存机制，感觉是我多虑了，二级缓存应该能大大缓解多次读取的问题
 。
-

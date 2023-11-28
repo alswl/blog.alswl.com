@@ -14,4 +14,3 @@ categories: ["viewpoint"]
 [中国互联网网站集体维护名单](http://spreadsheets.google.com/pub?key=rcz-FpRKSsvyQUnLL1UMjcg&single=true&gid=0&output=html)
 
 是Google的doc链接。
-

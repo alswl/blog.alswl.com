@@ -20,4 +20,3 @@ Ni Shuang](http://nishuang.de/),
 ![image](../../static/images/upload_dropbox/200908/screenshot.png)
 
 调一下footer后，加入cnzz的分析，唔，可以enjoy it啦~
-

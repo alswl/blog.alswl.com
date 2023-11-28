@@ -36,4 +36,3 @@ Roll的对应关系表。来标明这个User具有哪个Roll。
 
 基于角色的用户权限设计问题<[猛击这里打开](http://blog.csdn.net/seapen/archive/2006/03/15/624734.a
 spx)>
-

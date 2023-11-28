@@ -61,4 +61,3 @@ log4j.appender.A1.layout.ConversionPattern=%d{yy-MM-dd hh:mm} %p [%c] - %m%n
 输出的样式如下
 
 09-05-07 10:23 INFO message
-

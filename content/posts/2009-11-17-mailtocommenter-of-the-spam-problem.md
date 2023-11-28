@@ -18,7 +18,6 @@ mailtocomments/#comment-1278)，html部分代码是模仿[邪 罗刹](http://www
 
 修改`wp-content/plugins/mailtocommenter`下面的`mailtocommenter_functions.php`
 
-
 ```
     function mailtocommenter_send_email($to,$subject,$message){
     	$hostname = get_option('home');
@@ -46,7 +45,6 @@ return @wp_mail($to, $subject, $message, $headers);
 
 修改Mail To Commenter的邮件代码，我的如下
 
-
 ```
     <div style="border: 1px solid rgb(183, 183, 183); margin: 1em 40px; padding: 0pt 15px; background-color: #CCFFFF; color: rgb(17, 17, 17);">
       <p>Hi！<strong>%user%</strong>，你在 <strong>%post_title%</strong> 上的评论有了新回复</p>
@@ -67,13 +65,13 @@ return @wp_mail($to, $subject, $message, $headers);
 
 >
 
-> >>**你** 说：
+> > > **你** 说：
 
 测试GMail是否通过
 
 >
 
-> >> **alswl** 回复说：
+> > > **alswl** 回复说：
 
 @alswlx
 
@@ -81,11 +79,10 @@ return @wp_mail($to, $subject, $message, $headers);
 
 >
 
-> >> 查看原文，请至： [http://log4d.com/2009/11/emergency-declaration-on-the-reply-
-notification-is-spam#comment-6766](http://log4d.com/2009/11/emergency-
-declaration-on-the-reply-notification-is-spam#comment-6766)
+> > > 查看原文，请至： [http://log4d.com/2009/11/emergency-declaration-on-the-reply-
+> > > notification-is-spam#comment-6766](http://log4d.com/2009/11/emergency-
+> > > declaration-on-the-reply-notification-is-spam#comment-6766)
 
 >
 
 > ---- From [**DDD的一亩三分地**](http://log4d.com/)
-

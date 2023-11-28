@@ -19,4 +19,3 @@ categories: ["life"]
 60%过吧，听天由命。
 
 （网址居然是.action，哈哈，Struts2写的啊）
-

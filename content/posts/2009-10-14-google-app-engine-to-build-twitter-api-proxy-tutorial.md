@@ -56,4 +56,3 @@ DataMozillaFirefoxProfiles 随机信息
 nsTwitterFox.js文件，找不到的话直接在Documents and
 Settings中搜索nsTwitterFox.js文件，编辑该文件的38行，将其修改为 var TWITTER_API_URL =
 http://yourid.appspot.com/api/ 即可。
-

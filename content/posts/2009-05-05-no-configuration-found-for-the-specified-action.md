@@ -21,4 +21,3 @@ html](http://hi.baidu.com/mum0532/blog/item/128f9a64fa8594f5f6365457.html)
 
 关于Struts2 的 namespace 详细解释
 [www.javaeye.com/topic/125743](http://www.javaeye.com/topic/125743)
-

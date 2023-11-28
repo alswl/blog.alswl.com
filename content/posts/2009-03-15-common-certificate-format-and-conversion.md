@@ -59,7 +59,7 @@ keys/client1.pfx
 
 四 PEM格式的ca.key转换为Microsoft可以识别的pvk格式。
 
- pvk -in ca.key -out ca.pvk -nocrypt
+pvk -in ca.key -out ca.pvk -nocrypt
 -topvk
 
 五 PKCS#12 到 PEM 的转换
@@ -83,4 +83,3 @@ openssl x509 -in Cert.pem -inform PEM -out cert.der -outform DER
 八 PEM 到 PKCS#12 的转换，
 
 openssl pkcs12 -export -in Cert.pem -out Cert.p12 -inkey key.pem
-

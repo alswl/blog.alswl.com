@@ -25,16 +25,16 @@ pe，这个js比较大，网上有[jQuery版本的第三方修改版](http://www
 
 `, 'renren' => array(
 
-    'name' => '人人网'
+    'name' => '人人网'
 
-    , 'url' =>
+    , 'url' =>
 'http://share.renren.com/share/buttonshare.do?link={url}&title={title}'
 
 ) , 'douban' => array(
 
-    'name' => '豆瓣网'
+    'name' => '豆瓣网'
 
-    , 'url' =>
+    , 'url' =>
 'http://www.douban.com/recommend/?url={url}&title={title}&sel=&v=1'
 
 )`
@@ -56,4 +56,3 @@ this.php同一文件夹下。 3.刷新页面，你会发现新的按钮出来了
 懒人来下载这个吧，都是经过修改的，不过第一个jQuery没汉化...我懒了...如果英语不好就下载第二个吧 [share-this_jquery](../../static/images/upload_dropbox/200911/share-this_jquery.zip)（Share this
 jQuery版本，Jason Ti本地化+未汉化+已经汉化） [share-this_prototype](../../static/images/upload_dropbox/200911/share-this_prototype.zip)（Share this
 prototype版本，sofish本地化+汉化） 哦，最后，如果觉得本文不错，你也可以分享哦，谢谢咯。
-

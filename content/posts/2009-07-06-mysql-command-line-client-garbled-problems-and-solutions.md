@@ -30,4 +30,3 @@ jdbc:mysql://localhost:3306 /ms_db?
 useUnicode=true&characterEncoding=UTF-8(不要出现任何空格，否则出错)
 
 我使用的是第3种方法，由于我的数据库是Hibernate生成的，所以编码集改为utf8依然乱码，使用gbk就可以了。
-

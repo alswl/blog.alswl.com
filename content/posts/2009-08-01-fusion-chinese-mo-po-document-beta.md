@@ -29,4 +29,3 @@ d.com/2009/07/chinese-theme-wordpress)》
 po2mo，还有我使用的Poedit，保存po文件时候自动会编译为mo文件。
 
 传送门：[PoEdit下载](http://www.xdowns.com/soft/38/103/2007/Soft_36710.html)
-

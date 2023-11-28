@@ -167,7 +167,6 @@ headerrow.insertCell(2).appendChild(document.createTextNode("年龄"));
 
 var students = XMLHttpReq.responseXML.getElementsByTagName("student");
 
-  
 for (var i =0; i < students.length; i++) {
 
 var stud = students[i];
@@ -189,4 +188,3 @@ row.insertCell(2).appendChild(document.createTextNode(sage));
 }
 
 }
-

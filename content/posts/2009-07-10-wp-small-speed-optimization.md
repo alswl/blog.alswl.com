@@ -29,4 +29,3 @@ Posts, WP-PageNavi, WP-PostViews, WP-T-Wap, wp slug translate
 最后我开启了DB Cache，这下捅了马蜂窝，DB Cache与WP2.8不兼容，界面完全空白，后台也空白，我只能还原数据库和文件，才返回原样。
 
 这样下来，似乎只是删除了一个图片和一个wiggett，禁用了几个插件，速度就明显加快了（也许心理作用吧）。。。
-

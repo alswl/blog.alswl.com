@@ -43,4 +43,3 @@ plugin
 
 之前说是<s:form>的问题，而用<form>可以解决，结果我发现<form>也不行，直接返回当前页面，这就比较郁闷了，最后，我把<form>去除，只留下
 <input type="submit">就可以了，不好意思，让Strut2蒙冤了。
-

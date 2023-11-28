@@ -18,112 +18,112 @@ categories: ["coding"]
 
 
 ​    
-    #enclose-wrapper {
-    	position: relative;
-    	z-index: 0;
-    	border: 4px solid #DDD;
-    	background-color: #FFF;
-    }
-    #form-add-tag {
-    	margin-left: 8px;
-    	position: absolute;
-    	padding: 5px 3px;
-    	border: 1px solid #005EAC;
-    	float: left;
-    	display: inline;
-    	background-color: #FFF;
-    }
-    #select-area-box {
-    	position: absolute;
-    	border: 5px solid #D8DFEA;
-    	float: left;
-    }
-    #select-area {
-    	position: relative;
-    	padding: 0;
-    	border: 2px solid #005EAC;
-    	z-index: 15;
-    	cursor: move;
-    	background: url(spacer.gif) no-repeat -1px -1px;
-    }
-    #select-area-box span {
-    	position: absolute;
-    	border: 1px solid #005EAC;
-    	width: 8px;
-    	height: 8px;
-    	background-color: #FFF;
-    	font-size: 0;
-    	z-index: 18;
-    }
-    #select-area-box span.north-west-resize {
-    	cursor: nw-resize;
-    	left: 0;
-    	top: 0;
-    	margin-left: -1px;
-    	margin-top: -1px;
-    }
-    #select-area-box span.north-east-resize {
-    	cursor: ne-resize;
-    	right: 0;
-    	top: 0;
-    	margin-right: -1px;
-    	margin-top: -1px;
-    }
-    #select-area-box span.south-west-resize {
-    	cursor: sw-resize;
-    	left: 0;
-    	bottom: 0;
-    	margin-left: -1px;
-    	margin-bottom: -1px;
-    }
-    #select-area-box span.south-east-resize {
-    	cursor: se-resize;
-    	right: 0;
-    	bottom: 0;
-    	margin-right: -1px;
-    	margin-bottom: -1px;
-    }
-    #enclose-wrapper ul#tag-list {
-    	list-style: none;
-    	margin: 0;
-    	padding: 0;
-    	font-size: 13px;
-    	float: left;
-    }
-    #enclose-wrapper ul#tag-list li {
-    	list-style: none;
-    	float: left;
-    }
-    #enclose-wrapper ul#tag-list li a {
-    	color: #F60;
-    }
+#enclose-wrapper {
+position: relative;
+z-index: 0;
+border: 4px solid #DDD;
+background-color: #FFF;
+}
+#form-add-tag {
+margin-left: 8px;
+position: absolute;
+padding: 5px 3px;
+border: 1px solid #005EAC;
+float: left;
+display: inline;
+background-color: #FFF;
+}
+#select-area-box {
+position: absolute;
+border: 5px solid #D8DFEA;
+float: left;
+}
+#select-area {
+position: relative;
+padding: 0;
+border: 2px solid #005EAC;
+z-index: 15;
+cursor: move;
+background: url(spacer.gif) no-repeat -1px -1px;
+}
+#select-area-box span {
+position: absolute;
+border: 1px solid #005EAC;
+width: 8px;
+height: 8px;
+background-color: #FFF;
+font-size: 0;
+z-index: 18;
+}
+#select-area-box span.north-west-resize {
+cursor: nw-resize;
+left: 0;
+top: 0;
+margin-left: -1px;
+margin-top: -1px;
+}
+#select-area-box span.north-east-resize {
+cursor: ne-resize;
+right: 0;
+top: 0;
+margin-right: -1px;
+margin-top: -1px;
+}
+#select-area-box span.south-west-resize {
+cursor: sw-resize;
+left: 0;
+bottom: 0;
+margin-left: -1px;
+margin-bottom: -1px;
+}
+#select-area-box span.south-east-resize {
+cursor: se-resize;
+right: 0;
+bottom: 0;
+margin-right: -1px;
+margin-bottom: -1px;
+}
+#enclose-wrapper ul#tag-list {
+list-style: none;
+margin: 0;
+padding: 0;
+font-size: 13px;
+float: left;
+}
+#enclose-wrapper ul#tag-list li {
+list-style: none;
+float: left;
+}
+#enclose-wrapper ul#tag-list li a {
+color: #F60;
+}
 
 
 ### js实现代码：
 
 
 ​    
-    var photoTag = {
-        show: function(left, top, width, height, show_resize_square) {
-            $('#select-area-box').css({
-                'left': left - 7,
-                'top': top - 7
-            })
-            $('#select-area-box').width(width + 4).height(height + 4).show();
-            $('#select-area').width(width).height(height);
-            if (show_resize_square) $('#select-area-box span').show();
-            else $('#select-area-box span').hide();
-        },
-        hide: function() {
-            $('#select-area-box').hide();
-        },
-        add: function(tag_name, tag_value, left, top, width, height) {
-            var json = {
-                id: Math.floor(Math.random() * 10000)
-            };
-            var args = left + ',' + top + ',' + width + ',' + height;
-            var li = '
-    
+var photoTag = {
+show: function(left, top, width, height, show_resize_square) {
+$('#select-area-box').css({
+'left': left - 7,
+'top': top - 7
+})
+$('#select-area-box').width(width + 4).height(height + 4).show();
+$('#select-area').width(width).height(height);
+if (show_resize_square) $('#select-area-box span').show();
+else $('#select-area-box span').hide();
+},
+hide: function() {
+$('#select-area-box').hide();
+},
+add: function(tag_name, tag_value, left, top, width, height) {
+var json = {
+id: Math.floor(Math.random() * 10000)
+};
+var args = left + ',' + top + ',' + width + ',' + height;
+var li = '
+
       * ';         li += '';         li += '([删除](javascript:;))';         li += '';         li += '
     ';
             $('#tag-list').append(li);
@@ -226,18 +226,18 @@ categories: ["coding"]
 
 
 ​    
-    <div id="enclose-wrapper">
-      <div id="photo-wrapper" style="margin:15px auto;text-align:center;"> <img id="photo" src="heroes_s3_peter.jpg" /> </div>
-      <div>
-        <ul id="tag-list">
-          <li>相片中：</li>
-          <li> <span onmouseover="photoTag.show(0,0,85,66);" onmouseout="photoTag.hide();">aaa</span> (<a href="javascript:;" onclick="photoTag.remove('342',this.parentNode);" onmouseover="photoTag.show(0,0,85,66);" onmouseout="photoTag.hide();">删除</a>) </li>
-        </ul>
-      </div>
-      <div id="select-area-box">
-        <div id="select-area"></div>
-        <span></span><span></span> <span></span><span></span> </div>
-      <div id="form-add-tag" style="display:none;"> 输入标签：
+<div id="enclose-wrapper">
+<div id="photo-wrapper" style="margin:15px auto;text-align:center;"> <img id="photo" src="heroes_s3_peter.jpg" /> </div>
+<div>
+<ul id="tag-list">
+<li>相片中：</li>
+<li> <span onmouseover="photoTag.show(0,0,85,66);" onmouseout="photoTag.hide();">aaa</span> (<a href="javascript:;" onclick="photoTag.remove('342',this.parentNode);" onmouseover="photoTag.show(0,0,85,66);" onmouseout="photoTag.hide();">删除</a>) </li>
+</ul>
+</div>
+<div id="select-area-box">
+<div id="select-area"></div>
+<span></span><span></span> <span></span><span></span> </div>
+<div id="form-add-tag" style="display:none;"> 输入标签：
 
 <input id="tag-name" name="tag-name" type="text" />
 
@@ -258,31 +258,31 @@ categories: ["coding"]
 
 
 ​    
-    var photoTag = {
-        show: function(left, top, width, height, show_resize_square) {
-            $('#select-area-box').css({
-                'left': left - 7,
-                'top': top - 7
-            })
-            $('#select-area-box').width(width + 4).height(height + 4).show();
-            $('#select-area').width(width).height(height);
-            if (show_resize_square) $('#select-area-box span').show();
-            else $('#select-area-box span').hide();
-        },
-        hide: function() {
-            $('#select-area-box').hide();
-        },
-        add: function(tag_name, tag_value, left, top, width, height) {
-            var json = {
-                id: Math.floor(Math.random() * 10000)
-            };
-            //$.getJSON('add_tag.php', {'name':tag_name,'left':left,'top':top,'width':width,'height':height}, function(json) {
-            //reflesh tag list
-            //    if(json.message) alert(json.message);
-            //    if(json.error == 0) {
-            var args = left + ',' + top + ',' + width + ',' + height;
-            var li = '
-    
+var photoTag = {
+show: function(left, top, width, height, show_resize_square) {
+$('#select-area-box').css({
+'left': left - 7,
+'top': top - 7
+})
+$('#select-area-box').width(width + 4).height(height + 4).show();
+$('#select-area').width(width).height(height);
+if (show_resize_square) $('#select-area-box span').show();
+else $('#select-area-box span').hide();
+},
+hide: function() {
+$('#select-area-box').hide();
+},
+add: function(tag_name, tag_value, left, top, width, height) {
+var json = {
+id: Math.floor(Math.random() * 10000)
+};
+//$.getJSON('add_tag.php', {'name':tag_name,'left':left,'top':top,'width':width,'height':height}, function(json) {
+//reflesh tag list
+//    if(json.message) alert(json.message);
+//    if(json.error == 0) {
+var args = left + ',' + top + ',' + width + ',' + height;
+var li = '
+
       * ';         li += '';         li += '([删除](javascript:;))';         li += '';         li += '
     ';
             $('#tag-list').append(li);
@@ -392,19 +392,19 @@ categories: ["coding"]
 
 
 ​    
-    <div id="enclose-wrapper">
-      <div id="photo-wrapper">
-        <asp:Image ID="ImgPhoto" Visible="false" runat="server" />
-      </div>
-      <div>
-        <ul id="tag-list">
-        </ul>
-      </div>
-      <div id="select-area-box">
-        <div id="select-area"> </div>
-        <span></span><span></span><span></span><span></span> </div>
-      <div id="form-add-tag" style="display: none;"> 名称：
-        <input id="tag-name" name="tag-name" type="text" />
+<div id="enclose-wrapper">
+<div id="photo-wrapper">
+<asp:Image ID="ImgPhoto" Visible="false" runat="server" />
+</div>
+<div>
+<ul id="tag-list">
+</ul>
+</div>
+<div id="select-area-box">
+<div id="select-area"> </div>
+<span></span><span></span><span></span><span></span> </div>
+<div id="form-add-tag" style="display: none;"> 名称：
+<input id="tag-name" name="tag-name" type="text" />
 
 
 数值：
@@ -425,7 +425,7 @@ categories: ["coding"]
 
 
 ​    
-    string[] fields = Request.Params.GetValues("photoField");
+string[] fields = Request.Params.GetValues("photoField");
 
 这里呢，由于上传的元素`name`相同，都是`photoField`，所以通过`Params.GetValues()`就可以取出`string`数组，这样就
 能获取所有数据了。数据格式是"`ddl:小楠,x:98.88333129882812,y:146,width:100,height:100`"这种形式，依靠

@@ -43,74 +43,72 @@ os.path.basename(path):返回文件名
 
 os.path.dirname(path):返回文件路径
 
-    
     >>> import os
     >>> os.getcwd()
     'C:\Python25'
 
->>> os.chdir(r'C:temp')
+> > > os.chdir(r'C:temp')
 
->>> os.getcwd()
+> > > os.getcwd()
 
 'C:\temp'
 
->>> os.listdir('.')
+> > > os.listdir('.')
 
 ['temp.txt', 'test.py', 'testdir', 'tt']
 
->>> os.listdir(os.curdir)
+> > > os.listdir(os.curdir)
 
 ['temp.txt', 'test.py', 'testdir', 'tt']
 
->>> os.path.getsize('test.py')
+> > > os.path.getsize('test.py')
 
 38L
 
->>> os.path.isdir('tt')
+> > > os.path.isdir('tt')
 
 True
 
->>> os.path.getsize('tt')
+> > > os.path.getsize('tt')
 
 0L
 
->>> os.path.abspath('tt')
+> > > os.path.abspath('tt')
 
 'c:\temp\tt'
 
->>> os.path.abspath('test.py')
+> > > os.path.abspath('test.py')
 
 'c:\temp\test.py'
 
->>> os.path.abspath('.')
+> > > os.path.abspath('.')
 
 'c:\temp'
 
->>> os.path.split(r'.tt')
+> > > os.path.split(r'.tt')
 
 ('.', 'tt')
 
->>> os.path.split(r'c:temptest.py')
+> > > os.path.split(r'c:temptest.py')
 
 ('c:\temp', 'test.py')
 
->>> os.path.split(r'c:temptest.dpy')
+> > > os.path.split(r'c:temptest.dpy')
 
 ('c:\temp', 'test.dpy'
 
->>> os.path.splitext(r'c:temptest.py')
+> > > os.path.splitext(r'c:temptest.py')
 
 ('c:\temp\test', '.py')
 
->>> os.path.splitext(r'c:temptst.py')
+> > > os.path.splitext(r'c:temptst.py')
 
 ('c:\temp\tst', '.py')
 
->>> os.path.basename(r'c:temptst.py')
+> > > os.path.basename(r'c:temptst.py')
 
 'tst.py'
 
->>> os.path.dirname(r'c:temptst.py')
+> > > os.path.dirname(r'c:temptst.py')
 
 'c:\temp'
-

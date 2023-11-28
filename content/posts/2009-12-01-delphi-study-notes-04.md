@@ -23,7 +23,6 @@ categories: ["coding"]
 
 ## 1.类的使用
 
-    
     unit USharp;
 
 {接口定义}
@@ -88,7 +87,6 @@ end.
 
 ## 2.类的继承和多态
 
-    
     unit UCircle;
     {Circle类模块}
     interface
@@ -97,7 +95,6 @@ uses
 
 USharp;
 
-  
 type
 
 TCircle = class(TSharp)
@@ -150,7 +147,6 @@ end;
 
 end.
 
-    
     unit USquare;
 
 interface
@@ -231,7 +227,6 @@ end;
 
 end.
 
-    
     program P2;
     {使用类继承和多.pas文件}
 
@@ -318,4 +313,3 @@ Readln;
 end.
 
 本来准备入手**VCL**，结果事情太多，下午党员会议，晚上我又提前1个月过生日请朋友吃饭唱歌，耽误了```
-

@@ -28,7 +28,6 @@ s.aspx?ReleaseId=27326)，其功能非常完整，几乎涵盖了表现层方面
 
 Html代码：
 
-    
     <div>
     <asp:TextBox ID="TbBirthday" runat="server"></asp:TextBox>
     <cc1:CalendarExtender ID="TbBirthday_CldEx" runat="server" Enabled="True" TargetControlID="TbBirthday" FirstDayOfWeek="Monday" Format="yyyy-MM-dd" PopupPosition="BottomRight">
@@ -36,7 +35,6 @@ Html代码：
 
 CSS代码：
 
-    
     /*bugs for CalendarExtends*/
     .content .table .calendar td {/*.calender td 前的类是我网页中的上层元素*/
     margin: 0px;
@@ -52,7 +50,5 @@ Manager的EnableScriptGlobalization改为true即可。
 
 Asp.NET代码：
 
-    
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnableScriptGlobalization="True">
     </asp:ScriptManager>
-

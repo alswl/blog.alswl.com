@@ -26,5 +26,5 @@ log4j.appender.A1.layout=org.apache.log4j.PatternLayout
 
 log4j.appender.logfile.layout.ConversionPattern=%d %p [%c] - %m%n
 ```
-我老是只能答应ERROR级别，最后发现自己这个工程里面两个设置文件，只有在src文件夹下的才起作用，删除多余的，重新修改src下的就可以起作用了
 
+我老是只能答应ERROR级别，最后发现自己这个工程里面两个设置文件，只有在src文件夹下的才起作用，删除多余的，重新修改src下的就可以起作用了

@@ -23,8 +23,7 @@ ry、SVN、UP开发模式、UML。
 
 相关链接：
 
-[项目在Google Code托管 ](http://code.google.com/p/postbar/ )（你可以check
+[项目在Google Code托管 ](http://code.google.com/p/postbar/)（你可以check
 out，不知道游客有没有权限，需要可以Mail我）
 
-[相关开发博客链接 ](http://log4d.com/tag/postbar )
-
+[相关开发博客链接 ](http://log4d.com/tag/postbar)

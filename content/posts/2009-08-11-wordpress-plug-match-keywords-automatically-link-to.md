@@ -35,63 +35,62 @@ href=」link」>Stonehenge</a>.」
 
 You can decided for each link if you would like to:
 
-  * Add a 「No Follow」
-  * Match only on the first mention
-  * Open a new window on clicking the link
-  * Match any case (ignore case) in the keyword
-It is possible to CSS style links:
+- Add a 「No Follow」
+- Match only on the first mention
+- Open a new window on clicking the link
+- Match any case (ignore case) in the keyword
+  It is possible to CSS style links:
 
-  * If the link is an affiliate you would like to disclose
-  * Any other link tagged by the plugin
-To help maintain longer keyword lists it is also possible to import and export
-lists of keywords to a comma seperated values (CSV) file, handy if you would
-like to edit the list of keywords in a spreadsheet.  ** **
+- If the link is an affiliate you would like to disclose
+- Any other link tagged by the plugin
+  To help maintain longer keyword lists it is also possible to import and export
+  lists of keywords to a comma seperated values (CSV) file, handy if you would
+  like to edit the list of keywords in a spreadsheet.  \*\* \*\*
 
-    
-    **Features **
+      **Features **
 
-  * Optional: Only link the first instance of a keyword [default is all]
-  * Optional: Open a new window for a link
-  * Optional: Mark a link as 「nofollow」
-  * Optional: Ignore case when matching [Rome,ROME,ROMe]
-**Screenshot**
+- Optional: Only link the first instance of a keyword [default is all]
+- Optional: Open a new window for a link
+- Optional: Mark a link as 「nofollow」
+- Optional: Ignore case when matching [Rome,ROME,ROMe]
+  **Screenshot**
 
 ![image](../../static/images/upload_dropbox/201612/404.png)
 
 **Installation **
 
-  1. Just [download the ZIP file](http://downloads.wordpress.org/plugin/blog-mechanics-keyword-link-plugin-v01.zip), and unpack it in the /wp-content/plugins directory.
-  2. 中文版，点击这里下载  [DOWN](http://www.changshaseo.com/blog-mechanics-keyword-link-plugin-v01.zip) ，中文wrodpress 一定要,而且只能用这个，**改造兼容中文字符.**
-  3. Activate the plugin
-  4. Enter your keyword-link pairs in the option panel for the plug-in.
-v0.6
+1. Just [download the ZIP file](http://downloads.wordpress.org/plugin/blog-mechanics-keyword-link-plugin-v01.zip), and unpack it in the /wp-content/plugins directory.
+2. 中文版，点击这里下载  [DOWN](http://www.changshaseo.com/blog-mechanics-keyword-link-plugin-v01.zip) ，中文wrodpress 一定要,而且只能用这个，**改造兼容中文字符.**
+3. Activate the plugin
+4. Enter your keyword-link pairs in the option panel for the plug-in.
+   v0.6
 
-  * It is now possible to use apostrophes in keywords (the boy’s hat)
-  * You can import and export the keyword list to and from a comma seperated filed
-v0.5
+- It is now possible to use apostrophes in keywords (the boy’s hat)
+- You can import and export the keyword list to and from a comma seperated filed
+  v0.5
 
-  * Fixed a 「space」 issue
-  * Added basic help to the configuration page
-  * Added support for affiliate links
-v0.4.5
+- Fixed a 「space」 issue
+- Added basic help to the configuration page
+- Added support for affiliate links
+  v0.4.5
 
-  * Added: A little bit of javascript to allow for editing of existing keywords as some of you  now have over 150 entries it will also jump to the editor at the bottom of the screen.
-v0.4.2
+- Added: A little bit of javascript to allow for editing of existing keywords as some of you  now have over 150 entries it will also jump to the editor at the bottom of the screen.
+  v0.4.2
 
-  * Fixed: Compatibly problem with Ozh Click counter plugin
-v0.4
+- Fixed: Compatibly problem with Ozh Click counter plugin
+  v0.4
 
-  * Fixed the linking of matching url’s problem
-  * It is now possible to open a new window for a link (target=_blank)
-  * It is now possible to ignore case when matching a keyword
-v0.3.1
+- Fixed the linking of matching url’s problem
+- It is now possible to open a new window for a link (target=\_blank)
+- It is now possible to ignore case when matching a keyword
+  v0.3.1
 
 It is now possible to specify per link if you would like to :
 
-  * Link only the first mention of the keyword in the article (or all, which is the default)
-  * Tag a link as 「nofollow」 , useful for external links.
-The replacement routine is also smarter about linking keywords. For example:
-「magic」 will match 「magic」 , but no longer to 「magically」.
+- Link only the first mention of the keyword in the article (or all, which is the default)
+- Tag a link as 「nofollow」 , useful for external links.
+  The replacement routine is also smarter about linking keywords. For example:
+  「magic」 will match 「magic」 , but no longer to 「magically」.
 
 **version 0.2**
 
@@ -99,4 +98,3 @@ If you would like to modify the style of the link. For example to make the
 link bold add the following to your style.css file:
 
 .bm_keywordlink { font-weight: bold; }
-

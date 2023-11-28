@@ -13,7 +13,6 @@ categories: ["coding"]
 以前就想写一个东西完成这个麻烦的工程，现在贴吧1.0完成了，可以休息几天，晚上花了一点时间用Java写了一个这样的小东西。
 如果大家碰到和我一样的麻烦，可以试试。呃，时间仓促，没有图形界面，而且必须是Java程序员才能用，因为我这儿只提供了源码....
 
-
 ```
 package ddd;
 
@@ -29,11 +28,11 @@ public class App {
 
 /**
 
-* @author alswl  
-* @site dddspace.cn  
-* @param args  
-* @throws IOException  
-*/  
+* @author alswl
+* @site dddspace.cn
+* @param args
+* @throws IOException
+*/
 public static void main(String[] args) throws IOException {
 
 String pathMp3;
@@ -140,4 +139,3 @@ e.printStackTrace();
 ```
 
 09_05_26新增 jar格式的可执行文件链接，[猛击这里打开](http://log4d.com/2009/05/26/the-executable-file-mp3lrc)
-

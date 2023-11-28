@@ -166,7 +166,7 @@ if(bio == NULL)
 
 {
 
- /* Handle the
+/* Handle the
 failure */
 
 }
@@ -175,7 +175,7 @@ if(BIO_do_connect(bio) <= 0)
 
 {
 
- /* Handle failed
+/* Handle failed
 connection */
 
 }
@@ -204,7 +204,7 @@ if(x == 0)
 
 {
 
- /* Handle closed
+/* Handle closed
 connection */
 
 }
@@ -213,17 +213,17 @@ else if(x < 0)
 
 {
 
- if(! BIO_should_retry(bio))
+if(! BIO_should_retry(bio))
 
- {
+{
 
 &n
 bsp_place_holder; /* Handle failed read
 here */
 
- }
+}
 
- /* Do something to
+/* Do something to
 handle the retry */
 
 }
@@ -239,18 +239,18 @@ if(BIO_write(bio, buf, len) <= 0)
 
 {
 
- if(!
+if(!
 BIO_should_retry(bio))
 
- {
+{
 
 &n
 bsp_place_holder; /* Handle failed write
 here */
 
- }
+}
 
- /* Do something to
+/* Do something to
 handle the retry */
 
 }
@@ -331,7 +331,7 @@ if(! SSL_CTX_load_verify_locations(ctx, "/path/to/TrustStore.pem", NULL))
 
 {
 
- /* Handle failed
+/* Handle failed
 load here */
 
 }
@@ -353,7 +353,7 @@ if(! SSL_CTX_load_verify_locations(ctx, NULL, "/path/to/certfolder"))
 
 {
 
- /* Handle error here
+/* Handle error here
 */
 
 }
@@ -395,7 +395,7 @@ if(BIO_do_connect(bio) <= 0)
 
 {
 
- /* Handle failed
+/* Handle failed
 connection */
 
 }
@@ -418,7 +418,7 @@ if(SSL_get_verify_result(ssl) != X509_V_OK)
 
 {
 
- /* Handle the failed
+/* Handle the failed
 verification */
 
 }
@@ -581,7 +581,7 @@ State Times 的职业作者。他拥有 Southwestern Community College （位于
 Iowa）计算机编程专业的理学副学士（Associate of Science）学位，在这所大学里，他是一名半工半读的 PC 技术员。他的研究领域包括
 Java、C++、COBOL、 Visual Basic 和网络。
 
-  
+
 
 原出处:
 

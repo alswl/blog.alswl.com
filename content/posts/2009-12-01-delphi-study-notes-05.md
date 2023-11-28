@@ -27,7 +27,7 @@ ps:我之前使用的Delphi7版本是绿色精简完美版，在**插入`AboutBo
 这道题目是在一个PPT上看到的,题目如下："**如果一个数刚好出现在其平方的右边，如5的平方为25，6的平方为36，这样的数我们称为同构数，请编程找出1～9
 999的全部同构数**"。题目对我的难点在于类型的转换和`Math`函数的熟悉。
 
-    
+
     program P1;
     {如果一个数刚好出现在其平方的右边，如5的平方
     为25，6的平方为36，这样的数我们称为同构数，
@@ -65,7 +65,7 @@ b := Power(10, t);
 
 c := Trunc(a) mod Trunc(b);
 
-  
+
 if i = c then
 
 Write(i, ' ');
@@ -94,7 +94,7 @@ end.
 
 [![image](../../static/images/upload_dropbox/200912/delphi_editor.jpg)](../../static/images/upload_dropbox/200912/delphi_editor.jpg)
 
-    
+
     procedure TForm1.O1Click(Sender: TObject);
     begin
       if odOpenFile.Execute() then

@@ -20,8 +20,6 @@ Powered by Discuz!](http://www.itokit.com/bbs/viewthread.php?tid=45)》
 
 下面是我的robots.txt内容：
 
-    
-    
     User-agent: *
     Disallow: /wp-
     Disallow: /feed/
@@ -42,4 +40,3 @@ Powered by Discuz!](http://www.itokit.com/bbs/viewthread.php?tid=45)》
 下面的代码即可。
 
 `Disallow: /page/`
-

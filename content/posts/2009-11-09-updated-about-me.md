@@ -89,5 +89,4 @@ E-mail ![emailgmail](../../static/images/upload_dropbox/200905/emailgmail.gif)
 
 曾用E-mail ![email163](../../static/images/upload_dropbox/200905/email163.gif)
 
-MSN（几乎不用，只是展示一下我有MSN……^_^） ![msn](../../static/images/upload_dropbox/200905/msn.png)
-
+MSN（几乎不用，只是展示一下我有MSN……^\_^） ![msn](../../static/images/upload_dropbox/200905/msn.png)

@@ -20,4 +20,3 @@ categories: ["life"]
 这是第一次参加宣讲会，也正式标志着我的漫长求职之路开始了，路漫漫其修远兮，吾将上下而求索```
 
 附上中国电信江苏分公司招聘网址：[http://zhaopin.telecomjs.com/](http://zhaopin.telecomjs.com/)
-

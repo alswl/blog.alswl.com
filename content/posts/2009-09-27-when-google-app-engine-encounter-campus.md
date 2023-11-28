@@ -45,4 +45,3 @@ Google App Engine SDK for Java：[appengine-java- sdk-1.2.5.zip](http://googleap
 Google App Engine Documentation：[google-appengine-docs-20090921.zip](http://googleappengine.googlecode.com/files/google-appengine-docs-20090921.zip)
 
 最后一个小图标：![Powered by Google App Engine](http://code.google.com/appengine/images/appengine-silver-120x30.gif)，呵呵，Google的图标都那么帅
-

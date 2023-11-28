@@ -33,7 +33,7 @@ tifier」（是否缺少 using 指令或程序集引用？）」
 
 1.修改Model中uniqueidentifier类型，因为C#中根本不存在这种类型，将相应的变量类型定义为Guid。
 
-    
+
     private Guid _userid;
 
 public Guid userId
@@ -44,13 +44,13 @@ get{return _userid;}
 
 } 2.修改相应的Guid<->string之间的转换，这个根据错误列表一一修改即可。
 
-    
+
     this.lbluserId.Text=model.userId.ToString();//Guid拥有.ToString()方法
     model.userId = new Guid(userId)//new Guid(string)
 
 3.修改DAL中数据读取/写入部分，其实这一部分还是Guid<->string转换
 
-    
+
     //model.userId=ds.Tables[0].Rows[0]["userId"].ToString();
     //原始的加上了注释
     model.userId=new Guid(ds.Tables[0].Rows[0]["userId"].ToString());

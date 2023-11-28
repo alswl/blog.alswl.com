@@ -19,7 +19,6 @@ object，然后调用read()，write()等方法对文件进行读写操作。
 
 使用open打开文件后一定要记得调用文件对象的close()方法。比如可以用try/finally语句来确保最后能关闭文件。
 
-
     file_object = open('thefile.txt')
     try:
         all_the_text = file_object.read( )
@@ -32,18 +31,15 @@ object，然后调用read()，write()等方法对文件进行读写操作。
 
 ### 读文本文件
 
-
     input = open('data', 'r')
     #第二个参数默认为r
     input = open('data')
 
 ### 读二进制文件
 
-
     input = open('data', 'rb')
 
 ### 读取所有内容
-
 
     file_object = open('thefile.txt')
     try:
@@ -52,7 +48,6 @@ object，然后调用read()，write()等方法对文件进行读写操作。
         file_object.close( )
 
 ### 读固定字节
-
 
     file_object = open('abinfile', 'rb')
     try:
@@ -66,11 +61,9 @@ object，然后调用read()，write()等方法对文件进行读写操作。
 
 ### 读每行
 
-
     list_of_all_the_lines = file_object.readlines( )
 
 如果文件是文本文件，还可以直接遍历文件对象获取每行：
-
 
     for line in file_object:
         process line
@@ -79,21 +72,17 @@ object，然后调用read()，write()等方法对文件进行读写操作。
 
 ### 写文本文件
 
-
     output = open('data', 'w')
 
 ### 写二进制文件
-
 
     output = open('data', 'wb')
 
 ### 追加写文件
 
-
     output = open('data', 'w+')
 
 ### 写数据
-
 
     file_object = open('thefile.txt', 'w')
     file_object.write(all_the_text)
@@ -101,8 +90,6 @@ object，然后调用read()，write()等方法对文件进行读写操作。
 
 ### 写入多行
 
-
     file_object.writelines(list_of_text_strings)
 
 注意，调用writelines写入多行在性能上会比使用write一次性写入要高。
-

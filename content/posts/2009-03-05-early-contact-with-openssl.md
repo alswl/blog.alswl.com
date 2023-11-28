@@ -36,14 +36,13 @@ Boss昨个儿说，这两天把SSL上面的相关东西给他去看一下
 
 关于OpenSSL编译，源码文件夹下的INSTALL.W32就说的很清楚
 
-[本文介绍在VC 6.0中_编译_和使用_OpenSSL_的过程- 微光的闪现-博客园](http://www.cnblogs.com/gleam/archive/2008/05/07/1187154.html)
+[本文介绍在VC 6.0中*编译*和使用*OpenSSL*的过程- 微光的闪现-博客园](http://www.cnblogs.com/gleam/archive/2008/05/07/1187154.html)
 
-[_openssl编译_步骤- 太郎之石的专栏-CSDNBlog](http://blog.csdn.net/gofishing/archive/2006/04/10/658203.aspx)
+[*openssl编译*步骤- 太郎之石的专栏-CSDNBlog](http://blog.csdn.net/gofishing/archive/2006/04/10/658203.aspx)
 
-[在Windows下使用汇编方式_编译OpenSSL_方法- rabbit729的专栏-CSDNBlog](http://blog.csdn.net/rabbit729/archive/2008/06/03/2506514.aspx)
+[在Windows下使用汇编方式*编译OpenSSL*方法- rabbit729的专栏-CSDNBlog](http://blog.csdn.net/rabbit729/archive/2008/06/03/2506514.aspx)
 
-[在Windows下_编译OpenSSL_（VS2005） - shootingstars -博客园](http://shootingstars.cnblogs.com/archive/2006/02/17/332276.html)
+[在Windows下*编译OpenSSL*（VS2005） - shootingstars -博客园](http://shootingstars.cnblogs.com/archive/2006/02/17/332276.html)
 
 之前我按照官方做法编译失败了，后来安装了VS2005之后就成功了，可能是环境配置的问题，如果VC6.0的朋友遇到和我一样的原因，可以换Visual
 Studio下面的"Visual Studio 2005 命令提示"试试
-

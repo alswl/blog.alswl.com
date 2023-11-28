@@ -24,6 +24,4 @@ operty value="#request.loginNames" />使可以正常使用！
 According to TLD or attribute directive in tag file, attribute value does not
 accept any expressions
 
-2.很多时候，我们使用struts2的一些标签，属性是需要接受集合的，如果集合是保存在request,session，或者是值栈(非根对象的栈顶)，可以使用
-#变量名的方式，如果获取的值是在Action中通过特定的方法来获取，就需要使用如 value="userList"这样的方式，只是去掉了前面的#。
-
+2.很多时候，我们使用struts2的一些标签，属性是需要接受集合的，如果集合是保存在request,session，或者是值栈(非根对象的栈顶)，可以使用 #变量名的方式，如果获取的值是在Action中通过特定的方法来获取，就需要使用如 value="userList"这样的方式，只是去掉了前面的#。

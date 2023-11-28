@@ -13,8 +13,6 @@ categories: ["coding"]
 
 返回数据库的图片代码比较格式化。
 
-    
-    
     int Id = Int32.Parse(Request.Params.Get("Id"));
     string type = Request.Params.Get("type");
     BLL.Student bll = new JznuManager.BLL.Student();
@@ -37,8 +35,6 @@ type，用Response.OutputStream输出
 
 3.上面这个方法调试了很久，老是参数错误，最后我突然想起来一个方法。
 
-    
-    
 ```
 Response.Redirect("./Images/nophot.gif");
 ```
@@ -46,4 +42,3 @@ Response.Redirect("./Images/nophot.gif");
 这几句话就能解决上述所有问题。
 
 呃，有时候花费了好久，饶了很多弯的问题，其实好好想想反而会很简单。
-

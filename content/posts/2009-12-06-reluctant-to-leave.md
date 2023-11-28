@@ -53,4 +53,3 @@ categories: ["life"]
 [![image](../../static/images/upload_dropbox/200912/hairpin.jpg)](../../static/images/upload_dropbox/200912/hairpin.jpg)
 
 十一点一刻了，宿舍要熄灯了，我准备把电脑收拾到箱子里，踏上征程了。
-

@@ -22,7 +22,7 @@ such file or directory 然后找到这篇文章，只要用生成相应的目录
 
 命令操作：
 
-　　1、生成普通私钥：
+1、生成普通私钥：
 
 [weigw@TEST src]$ openssl genrsa -out privatekey.key 1024
 
@@ -32,7 +32,7 @@ is 65537 (0x10001)
 
 2、生成带加密口令的密钥：
 
-  
+
 
 [weigw@TEST src]$ openssl genrsa -des3 -out privatekey.key 1024
 
@@ -44,9 +44,9 @@ privatekey.key: Verifying - Enter pass phrase for privatekey.key:
 
 在生成带加密口令的密钥时需要自己去输入密码。对于为密钥加密现在提供了一下几种算法：
 
--des encrypt the generated key with DES in cbc mode 
+-des encrypt the generated key with DES in cbc mode
 
--des3 encrypt the generated key with DES in ede cbc mode (168 bit key) 
+-des3 encrypt the generated key with DES in ede cbc mode (168 bit key)
 
 -aes128, -aes192, -aes256 encrypt PEM output with cbc aes
 
@@ -61,7 +61,7 @@ privatekey.key Enter pass phrase for privatekey.key: writing RSA key
 
 通过生成的私钥去生成证书：
 
-  
+
 
 [weigw@TEST src]$ openssl req -new -x509 -key privatekey.key -out cacert.crt
 -days 1095
@@ -94,7 +94,7 @@ Email Address []:weigongwan@sina.com
 
 通过私钥生成公钥：
 
-  
+
 
 [weigw@TEST src]$ openssl rsa -in privatekey.key -pubout -out pubkey.key
 writing RSA key
@@ -102,21 +102,21 @@ writing RSA key
 
 格式转换：（证书、私钥、公钥）（PEM <----->DER）
 
-  
+
 
 [weigw@TEST src]$ openssl x509 -in cacert.crt -inform PEM -out cacert.der
 -outform DER
 
 [weigw@TEST src]$
 
-  
+
 
 [weigw@TEST src]$ openssl rsa -in privatekey.key -inform PEM -out
 privatekey.der -outform DER
 
 writing RSA key
 
-  
+
 
 [weigw@TEST src]$ openssl rsa -pubin -in pubkey.key -inform PEM -pubout -out
 pubkey.der -outform DER
@@ -126,7 +126,7 @@ writing RSA key
 
 从DER格式转换成PEM格式一样，就是把inform的格式改成DERoutform的格式改成PEM即可。
 
-  
+
 
 下面是一个服务器和客户端认证的证书、私钥生成方法：（server.crt、client.crt、ca.crt）
 
@@ -136,7 +136,7 @@ writing RSA key
 
     [weigw@TEST bin]$ openssl genrsa -out server.key 1024    Generating RSA private key, 1024 bit long modulus .++++++ .. .........++++++ e is 65537 (0x10001)    [weigw@TEST bin]$ openssl genrsa -out client.key 1024    Generating RSA private key, 1024 bit long modulus ...++++++ ...... ..........++++++ e is 65537 (0x10001)    [weigw@TEST bin]$ openssl genrsa -out ca.key 1024  Generating RSA private key, 1024 bit long modulus ....... ..++++++ .........++++++ e is 65537 (0x10001)    [weigw@TEST bin]$
 
-　　第三步： 申请证书（为请求文件签名）
+第三步： 申请证书（为请求文件签名）
 
 [weigw@TEST bin]$ openssl ca -in server.csr -out server.crt -cert ca.crt
 -keyfile ca.key
@@ -147,7 +147,7 @@ writing RSA key
 
 如果在这步出现错误信息：
 
-  
+
 
 [weigw@TEST bin]$ openssl ca -in client.csr -out client.crt -cert ca.crt
 -keyfile ca.key
@@ -175,7 +175,7 @@ Using configuration from /usr/share/ssl/openssl.cnf I am unable to access the
 
 合并证书文件（crt）和私钥文件（key）：
 
-  
+
 
 [weigw@TEST bin]$ cat client.crt client.key > client.pem [weigw@TEST bin]$ cat
 server.crt server.key > server.pem
@@ -183,7 +183,7 @@ server.crt server.key > server.pem
 
 合并成pfx证书：
 
-  
+
 
 [weigw@TEST bin]$ openssl pkcs12 -export -clcerts -in client.crt -inkey
 client.key -out client.p12
@@ -202,7 +202,7 @@ Verifying - Enter Export Password:
 
 文本化证书：
 
-  
+
 
 [weigw@TEST bin]$ openssl pkcs12 -in client.p12 -out client.txt Enter Import
 Password:
@@ -222,7 +222,7 @@ Enter PEM pass phrase: Verifying - Enter PEM pass phrase:
 
 屏幕模式显式：（证书、私钥、公钥）
 
-  
+
 
 [weigw@TEST bin]$ openssl x509 -in client.crt -noout -text -modulus
 
@@ -233,7 +233,7 @@ Enter PEM pass phrase: Verifying - Enter PEM pass phrase:
 
 得到DH：
 
-  
+
 
 [weigw@TEST bin]$ openssl dhparam -out dh1024.pem 1024
 

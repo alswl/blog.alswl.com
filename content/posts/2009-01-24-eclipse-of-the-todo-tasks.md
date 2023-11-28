@@ -18,4 +18,3 @@ categories: ["efficiency"]
 昨天晚上诈金花输了200，交了学费，今天看不进书，就看看Java代码，看到这个Eclipse的功能，感兴趣，花了好一会看资料，很少，然后参考了[http://www.mooreds.com/wordpress/archives/000446](http://www.mooreds.com/wordpress/archives/000446)
 
 随着现在看的书有点开发层次，英文越来越重要了，今天索性把Eclipse的汉化取消，在快捷方式后面加入"-nl en"，使用英文版本
-

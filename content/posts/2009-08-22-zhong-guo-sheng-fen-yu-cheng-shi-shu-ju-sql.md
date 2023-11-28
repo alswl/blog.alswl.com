@@ -11,7 +11,6 @@ categories: ["coding"]
 
 在Google找到这个，实在是爱不释手，就转过来了，很多项目都需要用到这些数据。
 
-
 ```
 if exists (select * from sysobjects where id = OBJECT_ID('[province]') and OBJECTPROPERTY(id, 'IsUserTable') = 1)
 DROP TABLE [province]

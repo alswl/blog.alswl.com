@@ -15,7 +15,6 @@ SAX等。我看了之后，感觉都比较麻烦，我个人比较喜欢使用jd
 一个在线代理服务器古狗在线代理（[猛击这里打开](http://www.ggproxy.com/)），通过它就可以下载类库了。
 使用类库非常简单，我这里提供个小例子。XiaoneiUser类
 
-    
 ```
 package cn.dddspace.xiaonei.bean;
 
@@ -27,13 +26,13 @@ public class XiaoneiUser {
 
     /**
 
-    * 用户Email  
+    * 用户Email
     */
     private String userEmail;
 
     /**
 
-    * 用户Password  
+    * 用户Password
     */
     private String userPassword;
 
@@ -63,9 +62,9 @@ public class XiaoneiUser {
 
     /**
 
-    * 将类转换为XML  
-    *   
-    * @return  
+    * 将类转换为XML
+    *
+    * @return
     */
     public Element getXML() {
 
@@ -89,9 +88,9 @@ public class XiaoneiUser {
 
     /**
 
-    * 复制构造函数  
-    *   
-    * @param xiaoneiUser  
+    * 复制构造函数
+    *
+    * @param xiaoneiUser
     */
     public XiaoneiUser(Element xiaoneiUser) {
 
@@ -105,10 +104,10 @@ public class XiaoneiUser {
 
     /**
 
-    * 构造函数  
-    *   
-    * @param userEmail  
-    * @param userPassword  
+    * 构造函数
+    *
+    * @param userEmail
+    * @param userPassword
     */
     public XiaoneiUser(String userEmail, String userPassword) {
 
@@ -120,11 +119,11 @@ public class XiaoneiUser {
 
     /**
 
-    * Format输出函数  
-    *   
-    * @param os  
-    * @param doc  
-    * @throws Exception  
+    * Format输出函数
+    *
+    * @param os
+    * @param doc
+    * @throws Exception
     */
     public void format(OutputStream os, Document doc) throws Exception {
 
@@ -145,7 +144,6 @@ public class XiaoneiUser {
 
 Test类入口函数
 
-    
 ```
 /**
  * @title Test.java
@@ -171,16 +169,16 @@ public class Test {
 
 /**
 
-* @param args  
-* @throws Exception   
-* @throws FileNotFoundException   
-*/  
+* @param args
+* @throws Exception
+* @throws FileNotFoundException
+*/
 public static void main(String[] args) throws FileNotFoundException, Exception
 {
 
 XiaoneiUser user = new XiaoneiUser("a@a.com", "123");
 
-  
+
 //序列化user为xml文档
 
 Document doc = new Document(user.getXML());
@@ -195,7 +193,7 @@ user.format(new BufferedOutputStream(new FileOutputStream(
 
 "user.xml")), doc);
 
-  
+
 //反序列化XML文件为XiaoneiUser对象
 
 Document doc2 = new Builder().build("user.xml");
@@ -216,4 +214,3 @@ System.out.println(user2.getUserPassword());
 ```
 
 代码非常简单，如果要进行简单的对象序列化，我觉得这个400kb的类库非常实用
-

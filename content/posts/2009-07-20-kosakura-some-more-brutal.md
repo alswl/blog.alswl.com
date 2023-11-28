@@ -17,4 +17,3 @@ draft: true
 [![naruto_xiaoyin_cubao](../../static/images/upload_dropbox/200907/snapshot20090720180858.jpg)](../../static/images/upload_dropbox/200907/snapshot20090720180858.jpg)
 
 好，我承认，我邪恶了……
-

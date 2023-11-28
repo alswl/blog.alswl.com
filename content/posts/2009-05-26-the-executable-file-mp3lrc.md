@@ -16,4 +16,3 @@ categories: ["coding"]
 [猛击这里下载Mp3Lrc.rar](../../static/images/upload_dropbox/200905/mp3lrc.rar)
 
 这个程序是自己用的，可能存在Bug，由于会操作文件，请在使用前备份重要资料（虽然根本没有删除命令，只有复制命令）
-

@@ -18,14 +18,15 @@ categories: ["efficiency"]
 
 [![firefoxinsogou](../../static/images/upload_dropbox/200911/firefoxinsogou.jpg)](../../static/images/upload_dropbox/200911/firefoxinsogou.jpg)
 
-*********************************正文终于开始拉**********************************
+正文终于开始拉
+
+---
 
 就只想用用Sogou的代理，本人还是更喜欢 firefox的，所以分析了Sogou程序的进程之后上个 国外网站就找到解决方法了。
 
 其实Sogou代理的原理原理设这样的，首先如果你设置了 「启用教育网代理」，那么你的sogou会新建一个子进程，专门做代理使用的，用Process
 Explorer 可以看到 这个子进程的命令行：
 
-    
     "C:Program FilesSogouExplorerSogouExplorer.exe"  -proxy
        "C:Program FilesSogouExplorerat1.dll"
        "CNC" "C760E475E7821B9EDA873346AC0C76D3
@@ -38,7 +39,6 @@ Explorer 可以看到 这个子进程的命令行：
 
 代理地址是 127.0.0.1:8081 类型 http将下面文本保存为 REG 文件，双击导入即可开机自动启动Sogou代理
 
-    
     Windows Registry Editor Version 5.00
     [HKEY_LOCAL_MACHINESOFTWAREMicrosoftWindowsCurrentVersionRun]
     "Sogou Proxy"="C:Program FilesSogouExplorerSogouExplorer.exe" -proxy
@@ -47,4 +47,3 @@ Explorer 可以看到 这个子进程的命令行：
 注意替换后面的识别码
 
 这种方法同样可以使用于其他浏览器，只要在相应的浏览器中设置代理即可。Good Luck!!
-

@@ -31,4 +31,3 @@ launch`，里面默认是`Use defaults`，现在我们把Debug/Profile/Run手工
 [![flex_launch_path](../../static/images/upload_dropbox/200911/flex_launch_path.jpg)](../../static/images/upload_dropbox/200911/flex_launch_path.jpg)
 
 这样修改之后，无论是运行还是调试，都能在一个Flash Player中进行，比在Firefox中方便的多了。
-

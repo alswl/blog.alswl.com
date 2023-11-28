@@ -34,7 +34,7 @@ advanced-wp-plugins.html)
 [TinyMCE:Configuration/entity encoding - Moxiecode Documentation Wiki](http://
 wiki.moxiecode.com/index.php/TinyMCE:Configuration/entity_encoding)
 
-[TinyMCE wipes out non-breaking space characters  |drupal.org](http://drupal.org/node/72570)
+[TinyMCE wipes out non-breaking space characters |drupal.org](http://drupal.org/node/72570)
 
 依然失败。
 
@@ -45,4 +45,3 @@ wiki.moxiecode.com/index.php/TinyMCE:Configuration/entity_encoding)
 还是感谢以上这些链接文章的作者贡献。
 
 无奈之下，我拿起Vim，它提供一个输出为Html的功能，用那个直接拷贝吧...
-

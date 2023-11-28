@@ -16,7 +16,9 @@ categories: ["efficiency"]
 
 转载自：三亩地<[猛击这里打开](http://www.alexadaman.cn/program/eclipse-dai-ma-tong-ji-cha-jian.html/comment-page-1#comment-292569)>，谢谢作者
 
-***********************以下为原文*************************
+以下为原文
+
+---
 
 Metrics插件可以从多个角度对Eclipse中的代码进行统计：
 
@@ -27,4 +29,3 @@ Metrics插件可以从多个角度对Eclipse中的代码进行统计：
 **添加方法**：Run Eclipse, go to Help menu -> Software Updates -> Find and Install ... On the opening dialog choose Search for new features to install. Add a new Remote site with the following url **http://metrics.sourceforge.net/update** and follow the instructions for installation.
 
 **使用方法**：To start using the Metrics View, use Windows -> Show View -> Other and navigate to the Metrics View, as shown in the next image.
-

@@ -26,7 +26,6 @@ l)下载(via 绿软)，这个是**绿色中文Final**版本，比较好使唤。
 
 具体操作如下：
 
-
     login as: username
     username@log4d.com's password:
     Last login: ****************************************
@@ -42,8 +41,9 @@ l)下载(via 绿软)，这个是**绿色中文Final**版本，比较好使唤。
     username@log4d.com [~/public_html]# cd wp-content
     username@log4d.com [~/public_html/wp-content]# tar zcvf theme.tar.gz themes
 
+华丽的分割线下面是供参考的**tar**命令详解
 
-*************华丽的分割线下面是供参考的**tar**命令详解*************
+---
 
 原文链接：[Linux压缩打包命令使用方法 - Linux与开源世界 -
 IXPUB技术社区](http://www.ixpub.net/619016.html)
@@ -160,5 +160,7 @@ tar命令
 
 # 这部分我们会在 Bash shell 时，再次提到这个指令跟大家再解释啰！
 ```
-~~~~~~~~~~原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~
 
+```原文还有更多可参考内容，如有需要，请点击原文~~~~~~~~~
+
+```

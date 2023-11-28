@@ -43,4 +43,3 @@ Struts2， Tomcat， Ubuntu， WinPcap， WordPress， WPF
 对我而言，我既然网站结构大变动，就想全面整改。好在我的日访问量并不是很大。补救措施是在404页面加上相关解释，就能稍微起到一点引导性作用。
 
 [我的404未找到页面](http://log4d.com/404.html)
-

@@ -31,4 +31,3 @@ categories: ["coding"]
 另外，[WordPress中文论坛](http://wordpress.org.cn/)也有好多国人自己制作的优秀主题，那里的大部分都是中文的。
 
 换主题之前记得一定要备份文件哦。
-

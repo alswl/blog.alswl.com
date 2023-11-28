@@ -14,4 +14,3 @@ categories: ["efficiency"]
 在网上找了很久都没有合适的方案，都是给出在General下面的Content Types修改编码，而且下面人留言还说有效，我自己试了去发现根本没有作用。。。
 
 自己琢磨了很久，终于在Web - JSP Files 里面找到了正确的设置，把其中的**Encoding**由ISO改为UTF-8就一切完美解决。
-

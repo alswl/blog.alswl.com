@@ -11,15 +11,11 @@ categories: ["coding"]
 
 本来应该很简单的事情，却没有我预想中的情形出现，检查后发现失效了，代码如下：
 
-    
-    
     <li>${session.userName}欢迎你</li>
     <li><a href="Logout.action">注销</a></li>
-    
 
 Struts2的官方文档中标签库介绍写的很清楚，官方示例文档如下
 
-    
     <s:if test="%{false}">
     <div>Will Not Be Executed</div>
     </s:if>
@@ -37,11 +33,7 @@ OGNL有三种取值方式，%,$和#，我之前已经转载过一篇小介绍，
 网友阿木的博客讨论了相关问题：[struts2的if标签](http://blog.sina.com.cn/s/blog_5cecbc550100ck4f.
 html)，我没有像他那样详细测试，尝试几次后，代码修改为：
 
-    
-    
     <li>${session.userName}欢迎你</li>
     <li><a href="Logout.action">注销</a></li>
-    
 
 使用#选择符，而不是其他的，这样就可以正确运行了。
-

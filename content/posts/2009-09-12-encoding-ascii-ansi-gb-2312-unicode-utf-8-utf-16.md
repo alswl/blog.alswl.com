@@ -99,4 +99,3 @@ FF FE 00 00     UTF-32
 
 「像记事本、EditPlus这些软件，如果另存为unicode类型，会在文件最开头添加BOM码，如果一个文件没有BOM码，那么就很难识别，需要人工识别了。另
 外，一般说Unicode编码，其实和Unicode-le(小头端)一个概念，Unicode Big endian会单独作为一种编码类型放置的。」-alswl
-

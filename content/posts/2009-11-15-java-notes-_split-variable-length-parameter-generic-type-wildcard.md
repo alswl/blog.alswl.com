@@ -102,10 +102,10 @@ package dddspace.job.exercise1115;
 
 /**
 
-* 使用不定长度参数  
-* 参考《Java学习笔记》P153相关内容  
-*   
-*/  
+* 使用不定长度参数
+* 参考《Java学习笔记》P153相关内容
+*
+*/
 public class VarArgs {
 
 public static void main(String[] args) {
@@ -162,10 +162,10 @@ import java.util.List;
 
 /**
 
-* 泛型类型通配符  
-* 参考《Java学习笔记》P249相关内容  
-*  
-*/  
+* 泛型类型通配符
+* 参考《Java学习笔记》P249相关内容
+*
+*/
 public class WildcardTest<T> {
 
 public static void main(String[] args) {
@@ -179,7 +179,7 @@ wildcardTestW = new WildcardTest<ArrayList>();
 
 wildcardTestW = new WildcardTest<LinkedList>();
 
-*/  
+*/
 
 //关键词 "<? extends Class>"匹配正确
 
@@ -200,4 +200,3 @@ wildcardTest = new WildcardTest<LinkedList>();
 StringBuilder是JDK5.0加入的。（今天5.0开心了，都是推它的）
 
 A.shun有一篇关于String/StringBuilder/StringBuffer的文，可以移步到[这里](http://www.a18zhizao.cn/y2009/1060_string-stringbuffer-and-stringbuilders-the-difference.html)看详细介绍。
-

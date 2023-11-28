@@ -18,4 +18,3 @@ categories: ["thinking"]
 [驾驶员试题网](http://www.jsyst.cn/)
 
 以上信息均来自网上，希望对大家有用，祝大家考试通过。
-

@@ -95,8 +95,6 @@ CURSOR: move;
 
 </HEAD>
 
-  
-  
 <BODY oncontextmenu="window.event.returnValue=false">
 
 <input type="text" id="evt" name="eventValue" size="40" />
@@ -169,9 +167,6 @@ rgb(170,85,0)>"openClose(this)">-</a> x</td></tr>
 
 </div>
 
-  
-  
-  
 </BODY>
 
 <SCRIPT LANGUAGE="JavaScript">
@@ -622,4 +617,3 @@ initHeight += item.offsetHeight + 10;
 
 用http://www.fayaa.com/网站提供的在线编辑器做的，找了类似的工具很久，甚至去了FCKEditer网站，不过效果都不怎么理想，这个网站提供
 的非常不错，强烈推荐收藏
-

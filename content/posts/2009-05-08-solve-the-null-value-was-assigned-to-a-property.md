@@ -24,4 +24,3 @@ org.hibernate.PropertyAccessException: Exception occurred inside setter of ...
 
 晚上写完分类，感慨到：框架先行，功能其后，界面殿后。由于我home.jsp和category.jsp没有安排好，导致了很多问题。尽管有Eclipse的ren
 ame功能，把class改为category依然很麻烦
-

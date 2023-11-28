@@ -16,8 +16,6 @@ categories: ["coding"]
 
 1.修改Apache-conf-server.xml这个文件，修改其中一段<Host>...</Host>如下所示
 
-    
-    
     <host appbase="webapps" name="localhost"
         unpackWARs="true" autoDeploy="true"
         xmlValidation="false" xmlNamespaceAware="false">
@@ -30,8 +28,6 @@ categories: ["coding"]
 
 2.打开目录listtings功能，这样能帮助调试，正式发布可以关闭。 在Apache-conf-web.xml中找到
 
-    
-    
     <init-param>
     	<param-name>listings</param-name>
     	<param-value>false</param-value>
@@ -54,15 +50,10 @@ inRAR解压缩WAR文件，然后复制到之前设置的目录中。
 数据库也是乱码，说明乱码产生原因在服务器端获取数据时候，我Google一下，发现Connector可以设置编码集，具体设置是Tomcat/conf/serv
 er.xml
 
-    
-    
     <Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000"/>
 
 将其修改为
 
-    
-    
     <Connector port="8080" protocol="HTTP/1.1"  connectionTimeout="20000" redirectPort="8443" URIEncoding="utf-8" />
 
 重新测试表单数据发送，一切没有问题了。 细节决定一切啊.
-

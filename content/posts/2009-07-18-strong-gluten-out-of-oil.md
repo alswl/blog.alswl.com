@@ -35,4 +35,3 @@ categories: ["life"]
 [![20090718(005)](../../static/images/upload_dropbox/200907/20090718005-300x225.jpg)](../../static/images/upload_dropbox/200907/20090718005.jpg)
 
 ps:昨天无法访问picasa，以为我FireFox问题…居然，唉，GWF又进化了……
-

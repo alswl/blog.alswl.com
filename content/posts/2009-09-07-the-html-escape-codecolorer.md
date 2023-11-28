@@ -27,7 +27,6 @@ categories: ["coding"]
 
 [![正确显示](../../static/images/upload_dropbox/200909/Snap5.jpg)
 
-
 ## 解决方法
 
 CodeColorer开着和关着都成问题，要么影响我之前的代码，要么影响我后来的代码。所以必须有第三种方法解决，我检查了CodeColorer源码，发现了在codecolorer-core.php一段代码。
@@ -54,4 +53,3 @@ inserting code into the post.
 就是说在<code>标签中加入escaped="true"就可以防止Html被转义。
 
 我坚持使用code标签，以防在没有CodeColorer的环境下[cc]解析出现错误。
-

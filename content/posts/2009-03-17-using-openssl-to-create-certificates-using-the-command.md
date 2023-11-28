@@ -14,16 +14,16 @@ categories: ["coding"]
 
 1.生成CA中心的私钥
 
->openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
+> openssl req -newkey rsa:1024 -sha1 -keyout rootkey.pem -out rootreq.pem
 
 2.生成CA中心的自签证书
 
->openssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey
-rootkey.pem -out rootcert.pem
+> openssl x509 -req -in rootreq.pem -sha1 -extensions v3_ca -days 365 -signkey
+> rootkey.pem -out rootcert.pem
 
 3.生成A分支机构的私钥和认证请求
 
->openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem
+> openssl req -newkey rsa:1024 -sha1 -keyout Akey.pem -out Areq.pem
 
 PS:如果出现 Unable to load config info from c:/openssl/ssl/openssl.cnf
 的错误提示，说明系统环境没有配置好，找不到Openssl.cnf配置文件
@@ -35,14 +35,13 @@ Areq.pem -config D:StudyOpenSSLopenssl-0.9.8jappsopenssl.cnf
 
 4.由CA中心为A分支机构签发证书
 
->openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.pem
--CAkey rootkey.pem -CAcreateserial -out Acert.pem
+> openssl x509 -req -in Areq.pem -sha1 -extensions usr_cert -CA rootcert.pem
+> -CAkey rootkey.pem -CAcreateserial -out Acert.pem
 
 5.用x509命令查看生成的证书
 
->openssl x509 -subject -issuer -noout -in rootcert.pem
+> openssl x509 -subject -issuer -noout -in rootcert.pem
 
 这样之后，Acert.pem就是所要使用的证书文件，Akey.pem是私钥文件，rootcert.pem是信任CA
 
 供朋友们参考
-
