@@ -2,9 +2,9 @@
 
 ![flower](https://e25ba8-log4d-c.dijingchao.com/202401/flower.png)
 
-## 生活 - 陪伴和成长
-
 > 时间已做了选择，太多感受，绝非三言两语能形容
+
+## 生活 - 陪伴和成长
 
 ![boy](https://e25ba8-log4d-c.dijingchao.com/202401/boy.png)
 
