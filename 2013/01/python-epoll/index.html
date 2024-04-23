@@ -10,9 +10,7 @@
 <meta name="description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient.recv(1024) print(&#39;-&#39;*40 &#43; &#39;\n&#39; &#43; request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2013/01/python-epoll/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.281970ae41d3046d9825431d1dbb82b373e9cea96e151d3f7d350f717d451f62.css" integrity="sha256-KBlwrkHTBG2YJUMdHbuCs3PpzqluFR0/fTUPcX1FH2I=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
+<link crossorigin="anonymous" href="/assets/css/stylesheet.8345da5acde9fa20337f7ceaa0b1e4ce12b7ec40a0e5b32ff3dde5d1511d858f.css" integrity="sha256-g0XaWs3p&#43;iAzf3zqoLHkzhK37ECg5bMv893l0VEdhY8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -21,6 +19,7 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <link rel="alternate" type="text/markdown" href="https://blog.alswl.com/2013/01/python-epoll/index.md">
+<link rel="alternate" hreflang="en" href="https://blog.alswl.com/2013/01/python-epoll/">
 <noscript>
     <style>
         #theme-toggle,
@@ -38,7 +37,7 @@
                 --secondary: rgb(155, 156, 157);
                 --tertiary: rgb(65, 66, 68);
                 --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
+                --code-block-bg: rgb(46, 46, 51);
                 --code-bg: rgb(55, 56, 62);
                 --border: rgb(51, 51, 51);
             }
@@ -58,16 +57,25 @@
 
     </style>
 </noscript>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
-<script>
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-7S40P40QGJ', { 'anonymize_ip': false });
-}
-</script>
+  
+    
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-7S40P40QGJ');
+        }
+      </script>
+    
+  
+
 <meta property="og:title" content="在 Python 中使用 epoll[译文]" />
 <meta property="og:description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient.recv(1024) print(&#39;-&#39;*40 &#43; &#39;\n&#39; &#43; request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将" />
 <meta property="og:type" content="article" />
@@ -84,16 +92,16 @@ if (!doNotTrack) {
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "itemListElement": [, 
+  "itemListElement": [
     {
       "@type": "ListItem",
-      "position":  2 ,
+      "position":  1 ,
       "name": "Posts",
       "item": "https://blog.alswl.com/posts/"
     }, 
     {
       "@type": "ListItem",
-      "position":  3 ,
+      "position":  2 ,
       "name": "在 Python 中使用 epoll[译文]",
       "item": "https://blog.alswl.com/2013/01/python-epoll/"
     }
@@ -150,7 +158,7 @@ if (!doNotTrack) {
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://blog.alswl.com" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -213,8 +221,8 @@ if (!doNotTrack) {
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
-    <h1 class="post-title">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
       在 Python 中使用 epoll[译文]
     </h1>
     <div class="post-meta"><span title='2013-01-12 00:01:00 +0800 +0800'>2013-01-12</span>&nbsp;·&nbsp;alswl
@@ -383,7 +391,7 @@ alt="窥豹" />
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="https://blog.alswl.com/tags/python/">python</a></li>
+      <li><a href="https://blog.alswl.com/tags/python/">Python</a></li>
       <li><a href="https://blog.alswl.com/tags/%E8%AF%91%E6%96%87/">译文</a></li>
     </ul>
 <nav class="paginav">
@@ -422,7 +430,8 @@ alt="窥豹" />
     </main>
     
 <footer class="footer">
-    <span>&copy; 2024 <a href="https://blog.alswl.com">Log4D</a></span>
+        <span>&copy; 2024 <a href="https://blog.alswl.com/">Log4D</a></span> · 
+
     <span>
         Powered by
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &

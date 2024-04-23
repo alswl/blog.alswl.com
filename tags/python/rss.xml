@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>python on Log4D</title>
+    <title>Python on Log4D</title>
     <link>https://blog.alswl.com/tags/python/</link>
-    <description>Recent content in python on Log4D</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Python on Log4D</description>
+    <generator>Hugo -- 0.125.3</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 23 Jun 2020 17:54:00 +0800</lastBuildDate><atom:link href="https://blog.alswl.com/tags/python/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 Jun 2020 17:54:00 +0800</lastBuildDate>
+    <atom:link href="https://blog.alswl.com/tags/python/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Python 的类型系统</title>
       <link>https://blog.alswl.com/2020/06/type-safe-python/</link>
       <pubDate>Tue, 23 Jun 2020 17:54:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2020/06/type-safe-python/</guid>
       <description>image from pixabay.com 静态类型正在逐渐成为潮流， 2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。 过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。 我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难： 在重构阶段代码回归成本异常之高，很多历史代码不敢动。 后来技术栈转到</description>
       <content:encoded><![CDATA[<p>
@@ -207,12 +207,10 @@ Kotlin / Scala 等语言的类型推断（Type Inference）。
 </ul>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>在 Python 中使用 GDB 来调试[译文]</title>
       <link>https://blog.alswl.com/2013/11/python-gdb/</link>
       <pubDate>Fri, 01 Nov 2013 01:11:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2013/11/python-gdb/</guid>
       <description>大约一年前，我接触了 Java 中的 Btrace 能够不停机查看线上 JVM 运行情况的特性让我艳羡不已。 另外还有强悍的 jStack 和 jConsole 来进行运行期侦测，JVM 的工业级强度果然不是盖的。 当时公司技术方面也遇到了一些瓶颈，一部分原因是 CPython 本身的 IO 模型问题， 另一方面也和早期代码写的极不工整脱不了关系。万般无奈之下，我们用 Jython 推翻重做了主要业务，效果立竿见影，但同时也把真实问题给规避掉了。 在这之后我们在 JVM 的领导下，走上了康庄大道。但我心中始终还有</description>
       <content:encoded><![CDATA[<p>大约一年前，我接触了 Java 中的 <a href="http://kenai.com/projects/btrace">Btrace</a>
@@ -374,12 +372,10 @@ Thread 34 (Thread 0xa13feb40 (LWP 17910)):
 <p><a href="http://web.archive.org/web/20070915134837/http://www.mashebali.com/?Python_GDB_macros:The_Macros">http://web.archive.org/web/20070915134837/http://www.mashebali.com/?Python_GDB_macros:The_Macros</a></p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>在 Python 中使用 epoll[译文]</title>
       <link>https://blog.alswl.com/2013/01/python-epoll/</link>
       <pubDate>Sat, 12 Jan 2013 00:01:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2013/01/python-epoll/</guid>
       <description>原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b&amp;#39;\n\n&amp;#39; EOL2 = b&amp;#39;\n\r\n&amp;#39; response = b&amp;#39;HTTP/1.0 200 OK\r\ndate: &amp;#34;2013-01-12T00:01:00+08:00&amp;#34; response += b&amp;#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&amp;#39; response += b&amp;#39;Hello, world!&amp;#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&amp;#39;0.0.0.0&amp;#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&amp;#39;&amp;#39; while EOL1 not in request and EOL2 not in request: request += connectiontoclient.recv(1024) print(&amp;#39;-&amp;#39;*40 + &amp;#39;\n&amp;#39; + request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将</description>
       <content:encoded><![CDATA[<p>原文地址： <a href="http://scotdoyle.com/python-epoll-howto.html">http://scotdoyle.com/python-epoll-howto.html</a> ，
@@ -506,12 +502,10 @@ Thread 34 (Thread 0xa13feb40 (LWP 17910)):
 <p>范例中的源码在 <a href="http://scotdoyle.com/python-epoll-examples.tar.gz">source code</a> 下载。</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>如何让 Instagram 在一百多万用户爆炸后稳定运行</title>
       <link>https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/</link>
       <pubDate>Mon, 19 Nov 2012 00:06:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2012/11/keeping-instagram-up-with-over-a-million-new-users-in-twelve-hours/</guid>
       <description>原文链接：Keeping Instagram up with over a million new users in twelve hours 这周二我们发布了 Instagram for Android，反响空前强烈。 最近这几周我们一直（在基础设施方面）做负载计划，为所有可能发生的事故做准备。 尽管如此，在发布那天，最大的挑战仍然是如何快速定位问题，找到瓶颈并尽快修复他们。 在这里我们将分享一些帮助我们解决问题的工具和技术。 ##statsd## statsd 在 Instagram 很受欢迎。这是 Etsy 写的一个网络监控器， 能够统计并图形化数据。它有两种核心的统计方式：计数器和</description>
       <content:encoded><![CDATA[<p>原文链接：<a href="http://instagram-engineering.tumblr.com/post/20541814340/keeping-instagram-up-with-over-a-million-new-users-in">Keeping Instagram up with over a million new users in twelve hours</a></p>
@@ -579,12 +573,10 @@ pgfouine 来分析，这里可以看到 <a href="https://gist.github.com/2307647
 <p><em>Mike Krieger, co-founder</em></p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>KuKu-一个 Weekend Project</title>
       <link>https://blog.alswl.com/2012/11/kuku/</link>
       <pubDate>Sun, 18 Nov 2012 22:31:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2012/11/kuku/</guid>
       <description>一个小小的 Weekend Project，基于 web.py。 代码在 alswl / kuku ，很简陋，属于差不多能用阶段。 基于以下原因开发： 想把服务器去 PHP 化，以前的 upload.log4d.com 是基于 PHP 的， 详情请见 使用独立图床子域名。 刚买的 Linode VPS，终于从 128MB 内存解放出来了，赶紧放个 Python 程序跑跑。 想些 Python 了，手痒，想看看写这么简单的功能需要多长时间， 弥补上次没能参加黑客马拉松的遗憾。 KuKu 的发音是我家乡话的「看看」。 KuKu 中比较有趣的地方是，用了 Foundation 这个流式 Web 前端框架， 用了</description>
       <content:encoded><![CDATA[<p>一个小小的 Weekend Project，基于 <a href="http://webpy.org/">web.py</a>。
@@ -613,12 +605,10 @@ pgfouine 来分析，这里可以看到 <a href="https://gist.github.com/2307647
 <p>这篇文章我看着都觉得水。</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>PyCon 2012 见闻</title>
       <link>https://blog.alswl.com/2012/10/pycon-2012/</link>
       <pubDate>Sun, 21 Oct 2012 21:15:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2012/10/pycon-2012/</guid>
       <description>PyCon 是 Python 领域最著名的技术会议，从 2011 年开始，中国区开始举办自己的 PyCon 大会。这次 PyCon 2012 分成两个场地同时进行，北京和上海， 并且在网上提供同步转播，各地也有组织线下收看的。 去年时候我很遗憾的不能跑到上海来参加，现在我人就在上海， 怎能错过 Pythoner 的饕餮大餐呢？早就眼巴巴的买票准备参加了。 上海这边的主题如下： 《Python 产品构建与发布指南》- 沈崴 《实战游戏客户端》 - 林伟 《让程序运行更快》- 李小红 《演进或革命 - 选型和架构</description>
       <content:encoded><![CDATA[<p>PyCon 是 Python 领域最著名的技术会议，从 2011 年开始，中国区开始举办自己的
@@ -730,12 +720,10 @@ PyCon 大会。这次 PyCon 2012 分成两个场地同时进行，北京和上�
 一会准备把去年的 <a href="2011">PyCon 2011</a> 也学习一下。</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>Working with Python subprocess[译文]</title>
       <link>https://blog.alswl.com/2012/10/working-with-python-subprocess/</link>
       <pubDate>Tue, 16 Oct 2012 00:42:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2012/10/working-with-python-subprocess/</guid>
       <description>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。 这篇文章是在写 Btrace 脚本时候查资料看到的， 看着不错就顺手翻译，没想到差点烂在草稿箱出不来啊出不来。 熬了一个月才磨出来，媳妇都快成婆了有木有。 原文链接：Working with Python subprocess - Shells, Processes, Streams, Pipes, Redirects and More 注意 关于「执行命令时候发生了什么」这个问题，可以在 http://en.wikipedia.org/wiki/Redirection_(computing) 找到更多最新信息。这篇文章遵循 GFDL 协议。 在我的上一篇日志中，我写到如何 build a command line interface with sub-commands in Python。 这次</description>
       <content:encoded><![CDATA[<p>8月底到魔都开始新工作，头一个月当然各种忙，都没时间来更新博客。</p>
@@ -1292,12 +1280,10 @@ Unix 程序通常使用 2 作为命令语法错误，1 作为其他错误。</p>
 </ul>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>MoinMoin Wiki 转换 Text 脚本</title>
       <link>https://blog.alswl.com/2012/07/moin2txt/</link>
       <pubDate>Fri, 27 Jul 2012 09:02:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2012/07/moin2txt/</guid>
       <description>我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考 [使用MoinMoin作为个人KMS][moin-kms]。另外，我将 MoinMoin 的 data 目录链接到 Dropbox 同步目录下面，从而可以备份并查看我的知识库。 我想同步阅读 KMS 数据 想在移动设备阅读 KMS 数据时，我遇到一个麻烦，MoinMoin 使用文件来保存 wiki 数据， 比如「28个Unix.Linux的命令行神器」这篇 wiki 目录在 data/28(e4b8aa)Unix(2e)Linux(e79a84e591bde4bba4e8a18ce7a59ee599a8) 中， 结构如下： |---revisions | |---00000002 | |---00000001 |---edit-log |---current |---attachments | |---http___coolshell.cn_wp-content_uploads_2012_07_xargs_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_sl.jpg | |---http___coolshell.cn_wp-content_uploads_2012_07_mtr_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_lftp_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_htop_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_calcurse_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_multitail_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_ack_screenshot.png | |---http___coolshell.cn_wp-content_uploads_2012_07_tpp_screenshot.png</description>
       <content:encoded><![CDATA[<p>我使用 MoinMoin 作为我的 KMS，具体使用方式可以参考
@@ -1441,12 +1427,10 @@ optional arguments:
 <p>我将这个命令加入了 cron，每天执行一次，保证 Dropbox 中是最新的 wiki。</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>GAE 编程指南读书笔记</title>
       <link>https://blog.alswl.com/2012/03/gae/</link>
       <pubDate>Sat, 24 Mar 2012 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2012/03/gae/</guid>
       <description>GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也假模假样的看文档， 就是没有什么产出。 去年写了一个小应用 dbevent2gc ， 期间发现 GAE 和普通程序开发的诸多不同，又遭遇 GAE 配额大幅缩水， 写出来的应用运转的不太稳定。在南京图书馆的架上看见这本《GAE 编程指南读书笔记》， 立即借回家仔细阅读。 GAE 的简介 运行时环境 Python / Java 数据存储 Datastore（实体 / 查询 / 索引 / 事务</description>
       <content:encoded><![CDATA[<p>GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也假模假样的看文档，
@@ -1621,12 +1605,10 @@ optional arguments:
 </ul>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>在Python中调试代码</title>
       <link>https://blog.alswl.com/2012/03/python-debug/</link>
       <pubDate>Tue, 20 Mar 2012 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2012/03/python-debug/</guid>
       <description>撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons 开发的调试技巧。 吐槽：团队开发时候，每个成员需要学习、总结和分享各自的开发技巧， 这样才能自我提升并提高开发效率。这属于团队文化建设，开发是一种艺术创造过程， 绝对不是简单的复制和粘帖。 在 Python 中调试 pdb 在代码中加入下列语句即可启用交互式调试。 import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c /</description>
       <content:encoded><![CDATA[<p>撰写程序时候，需要在调试上面花费不少时间，好的调试工具可以让这个过程如虎添翼， 靠打 log 调试会是一种很痛苦的过程，我总结一下 Pylons
@@ -1698,12 +1680,10 @@ pdb.set_trace()
 </ul>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>给MoinMoin写插件</title>
       <link>https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/</link>
       <pubDate>Fri, 10 Feb 2012 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2012/02/the-write-the-plugins-for-moinmoin/</guid>
       <description>1. 使用 MoinMoin 前些日子，我写了一篇使用MoinMoin作为个人KMS 大赞MoinMoin的各种好处。MoinMoin的其中一个好处是基于GPL的开源， 我们可以方便的给MoinMoin撰写自己的插件（当然也可以去官方的wiki上获取大量现成插件）。 MoinMoin开发者wiki地址 MoinMoin开发API文档（这个官方wiki居然很少提及） MoinMoin的多国语翻译组wiki地址 我在使用MoinMoi</description>
       <content:encoded><![CDATA[<h2 id="1-使用-moinmoin">1. 使用 MoinMoin</h2>
@@ -1852,12 +1832,10 @@ pdb.set_trace()
 Moin作为一款久经考研的Wiki系统，开放的代码也有很多地方可以学习。</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>baidu ting下载音乐脚本</title>
       <link>https://blog.alswl.com/2012/01/tingdownload/</link>
       <pubDate>Tue, 03 Jan 2012 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2012/01/tingdownload/</guid>
       <description>度娘终于干了一件好事，Baidu Ting上线了， 正版音乐免费下载，类似于谷歌音乐。 关于音乐版权和免费的问题， 有很多问题需要取讨论， 比如说这种商业模式是否对传统唱片业产生冲击又或是有积极影响？ 作为普通消费者，暂时不用考虑这些问题，先享受这些服务好了。 Baidu Ting的音乐质量是128KBps，音质算好，里面的idv3信息也勉强可以，有: 歌名 歌手 部分专辑名（偶尔也出现&amp;quot;201-8月新歌快递&amp;quo</description>
       <content:encoded><![CDATA[<p>度娘终于干了一件好事，<a href="http://ting.baidu.com">Baidu Ting</a>上线了，
@@ -1961,12 +1939,10 @@ python tingdownload.py 老男孩 Raise\n Me\n Up # 多文件名，如果有空�
 <p>Enjoy it.</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>MoinMoin plugin: image2attach</title>
       <link>https://blog.alswl.com/2011/12/moinmoin-plugin-image2attach/</link>
       <pubDate>Sun, 18 Dec 2011 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2011/12/moinmoin-plugin-image2attach/</guid>
       <description> What&amp;rsquo;s this Image2Attach is a extension for MoinMoin. It can create a page action to save images from web to page&amp;rsquo;s attachments.
 Requirment MoinMoin 1.9 (I only test in this version.) Install copy action/Image2Attach.py to data/plugin/action/ restart python server Usage Go into a page, click more action - Image2Attach . It will take a while to fetch the images, after that it will save the image to attachments and replace the image&amp;rsquo;s link with attachment&amp;rsquo;s link. Finnally it will commit a change with message internet image save to attachment to wiki.
@@ -2028,12 +2004,10 @@ Finnally it will commit a change with message
 </ul>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>dbevent2gc v0.1发布</title>
       <link>https://blog.alswl.com/2011/11/dbevent2gc-v0-1-released/</link>
       <pubDate>Fri, 25 Nov 2011 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2011/11/dbevent2gc-v0-1-released/</guid>
       <description>重要通知：Log4D的域名由 http://dddspace.com 迁移到 http://log4d.com 。 订阅地址现在改为 http://log4d.com/feed 和 http://feeds.feedburner.com/dddspace 。（FeedBurner的地址未发生变化） http://feed.dddspace.com 弃用 请订阅我博客的朋友更新一下订阅地址。 关于dbevent2gc A application to sync douban.com events to Google Calendar. dbevent2gc是一个GAE应用，它将豆瓣同城的活动同步到Google Calendar的日历， 允许用户订阅活动而知道最近几周周边将发生活动。 dbevent2gc是基于Python/web.py/mako/iC</description>
       <content:encoded><![CDATA[<p>重要通知：Log4D的域名由 <a href="http://dddspace.com">http://dddspace.com</a> 迁移到
@@ -2077,12 +2051,10 @@ Calender里面。</p>
 2011-11-26，我已经添加了活动类型选择功能）。</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>使用nose做测试</title>
       <link>https://blog.alswl.com/2011/09/nose/</link>
       <pubDate>Thu, 22 Sep 2011 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2011/09/nose/</guid>
       <description>不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用 nose 做单元测试，颇有心得， 在这里分享一下。 1. Pylons中依赖包 先简单介绍一下Pylons, Pylons与其说是一个框架，不如说是一堆框架的组合， Pylons在其中做到一个胶水的作用。Pylons依赖的包如下。 breaker，缓存和Session FormEncode，用户输入检查 Mako，模板渲染 nose，自动化测试 Paste，服</description>
       <content:encoded><![CDATA[<p>不做单元测试的程序员不是好程序员。最近我在Pylons下面做开发， 使用
@@ -2401,12 +2373,10 @@ self.headers.add(&#39;Cookie&#39;, cookie)
 </code></pre><p>这样虽然不能从根本上解决问题，但是至少规避了问题。</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>TypeError: sequence item 22: expected string or Unicode, long found</title>
       <link>https://blog.alswl.com/2011/08/mako-typeerror/</link>
       <pubDate>Thu, 25 Aug 2011 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2011/08/mako-typeerror/</guid>
       <description>Mako 下面开发时候，遇到这个问题 TypeError: sequence item : expected string or Unicode, long found Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息） File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&amp;rsquo;, line 239 in staticpage return render(&amp;rsquo;/pages/%s.html&amp;rsquo; % name) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 274 in render_mako cache_type=cache_type, cache_expire=cache_expire) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 249 in cached_template return render_func() File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&amp;rsquo;, line 271 in render_template return literal(template.render_unicode(**globs)) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/template.py&amp;rsquo;, line 138 in render_unicode return runtime.render(self, self.callable, args, data, as_unicode=True) File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&amp;rsquo;, line 348 in _render return context._pop_buffer().getvalue() File &amp;lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/util.py&amp;rsquo;, line 74 in getvalue return self.delim.join(self.data) TypeError: sequence item 68: expected string or Unicode, NoneType found Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylon</description>
       <content:encoded><![CDATA[<p>Mako 下面开发时候，遇到这个问题</p>
@@ -2495,12 +2465,10 @@ packages/Mako-0.2.4-py2.5.egg/mako/util.py&rsquo;, line 74 in getvalue</p>
 <p>Google 上这个错误信息资料太少，我就记下来，如果哪位同学出现同样错误找到我这里，就方便解决了。</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>go-pylons.py在Python2.7下错误解决</title>
       <link>https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/</link>
       <pubDate>Tue, 02 Aug 2011 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/</guid>
       <description>当使用 Python2.7 + go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。 [alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&amp;quot;, line 67, in &amp;lt;module&amp;gt; import os File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&amp;quot;, line 398, in &amp;lt;module&amp;gt; import UserDict File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&amp;quot;, line 83, in &amp;lt;module&amp;gt; import _abcoll File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&amp;quot;, line 11, in &amp;lt;module&amp;gt; from abc import ABCMeta, abstractmethod File &amp;quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&amp;quot;, line 8, in &amp;lt;module&amp;gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;) ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。 #!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 +0200 +++ b/virtualenv.py 2010-09-14 21:46:20.650769346 +0200 @@ -51,6 +51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config if sys.version_info[:2] &amp;gt;= (2, 6): REQUIRED_MODULES.extend([&amp;lsquo;warnings&amp;rsquo;, &amp;rsquo;linecache&amp;rsquo;, &amp;lsquo;_abcoll&amp;rsquo;, &amp;lsquo;abc&amp;rsquo;]) if sys.version_info[:2] &amp;gt;= (2, 7): REQUIRED_MODULES.extend([&amp;rsquo;_weakrefset&amp;rsquo;]) if sys.version_info[:2] &amp;lt;= (2, 3): REQUIRED_MODULES.extend([&amp;lsquo;sets&amp;rsquo;, &amp;lsquo;future&amp;rsquo;]) if is_pypy: 懒人可以点击</description>
       <content:encoded><![CDATA[<p>当使用 Python2.7 +<a href="http://pylonshq.com/download/1.0/go-pylons.py"> go-pylons.py</a>
@@ -2546,12 +2514,10 @@ ERROR: virtualenv is not compatible with this system or executable
 <p>懒人可以点击<a href="../../static/images/2011/08/go-pylons.py">go-pylons.py</a>下载。</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>urllib2.urlopen的中文URL问题</title>
       <link>https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/</link>
       <pubDate>Tue, 14 Jun 2011 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/</guid>
       <description>在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。 Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完Python字符串的encode与decode 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。 Traceback (most recent call last): File &amp;quot;&amp;lt;stdin&amp;gt;&amp;quot;, line 1, in</description>
       <content:encoded><![CDATA[<p>在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的，
@@ -2647,12 +2613,10 @@ UnicodeEncodeError: 'ascii' codec can't encode characters in position 7-8: ordin
 <p>so，请尽量英文url，非要用中文，请记得转码。</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>一个mako.vim</title>
       <link>https://blog.alswl.com/2011/06/mako-vim/</link>
       <pubDate>Thu, 09 Jun 2011 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2011/06/mako-vim/</guid>
       <description>给Vim找了一个Mako的语法高亮，发现着色居然有问题。查看更新记录后发现作者Armin Ronacher只更新到08年9月份。之后Mako更新了一些少许细节，我修改了一下mako.vim，放在这里供下载。 其实我只改了57/58行，增加一个block语法。 点击这里下载：mako.vim 使用方法，放入vimfiles/syntax 相关链接： 原始mako.vim：http://www.vim.org/s</description>
       <content:encoded><![CDATA[<p>给Vim找了一个Mako的语法高亮，发现着色居然有问题。查看更新记录后发现作者<a href="http://lucumr.pocoo.org/">Armin Ronacher</a>只更新到08年9月份。之后Mako更新了一些少许细节，我修改了一下mako.vim，放在这里供下载。</p>
@@ -2666,12 +2630,10 @@ UnicodeEncodeError: 'ascii' codec can't encode characters in position 7-8: ordin
 <p>pss：貌似服务器ip被认证了，讨厌~</p>
 ]]></content:encoded>
     </item>
-    
     <item>
       <title>Eclipse中运行Pylons</title>
       <link>https://blog.alswl.com/2011/05/run-pylons-in-eclipse/</link>
       <pubDate>Mon, 16 May 2011 00:00:00 +0800</pubDate>
-      
       <guid>https://blog.alswl.com/2011/05/run-pylons-in-eclipse/</guid>
       <description>官方中pylons都是通过在shell中运行paster serve &amp;ndash;reload development.ini来运行应用实例。而整天在任务栏跑着一个黑乎乎的shell很碍眼，通过一下步骤可以在Eclipse中运行pylons。 配置Run Configuration - Python Run如下。 Main页签中Main Module指向paster-script.py，可以使用绝对路径。 配置Arguments页签的参数，添加serve &amp;ndash;reload development.i</description>
       <content:encoded><![CDATA[<p>官方中pylons都是通过在shell中运行paster serve &ndash;reload
@@ -2707,6 +2669,5 @@ eclipse](<a href="http://stackoverflow.com/questions/147650/debug-pylons-applica
 through-eclipse)</p>
 ]]></content:encoded>
     </item>
-    
   </channel>
 </rss>
