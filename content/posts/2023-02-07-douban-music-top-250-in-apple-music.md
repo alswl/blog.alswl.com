@@ -2209,7 +2209,7 @@ nil
 
 nil
 
-## [\[i\]Karen Love](https://music.douban.com/subject/1403573/)
+## [[i]Karen Love](https://music.douban.com/subject/1403573/)
 
 莫文蔚 / 2002-04-29 / 专辑 / CD / 流行
 
