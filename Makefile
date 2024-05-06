@@ -38,7 +38,7 @@ cdn:
 	@$(SED) -i 's#src="/images/#src="$(CDN_HOST)/#g' $(shell grep -Rl 'src="/images/' public) public/404.html
 	@$(SED) -i 's#href="/images/#href="$(CDN_HOST)/#g' $(shell grep -Rl 'href="/images/' public) public/404.html
 	
-	@$(SED) -E -i 's#!\[([^]]+)\]\(/images/#!\[\1]\($(CDN_HOST)/#g' $(shell grep -RlE '!\[.+\]\$(CP)\/images\/' public) public/404.html
+	@$(SED) -E -i 's#!\[([^]]*)\]\(/images/#!\[\1]\($(CDN_HOST)/#g' $(shell grep -RlE '!\[.*\]\$(CP)\/images\/' public) public/404.html
 
 	# curl --silent "http://www.google.com/ping?sitemap=$(SITEMAP_URL)"
 	# curl --silent "http://www.bing.com/webmaster/ping.aspx?siteMap=$(SITEMAP_URL)"
