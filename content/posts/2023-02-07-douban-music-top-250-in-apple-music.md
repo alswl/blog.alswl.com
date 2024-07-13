@@ -1007,9 +1007,9 @@ Jack Johnson / 2005-03-22 / 专辑 / Audio CD / 民谣
 
 ## [我的歌声里](https://music.douban.com/subject/5395505/)
 
-曲婉婷 / 2010-02-24 / 单曲 /
+曲婉婷 / 2010-02-24 / 单曲 / 数字(Digital) / 流行
 
-数字(Digital) / 流行 8.7 ( 46762人评价 )
+8.7 ( 46762人评价 )
 
 ![img](../../static/images/202302/s9127241.jpg)
 
@@ -1706,8 +1706,6 @@ nil
 8.7 ( 22928人评价 )
 
 ![img](../../static/images/202302/s1399764.jpg)
-
-nil
 
 [▶️ Apple Music](https://music.apple.com/cn/album/%E8%BF%98%E6%9C%89%E5%88%AB%E7%9A%84%E5%8A%9E%E6%B3%95%E5%90%97/1080303347?l=en)
 
