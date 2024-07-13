@@ -10,6 +10,10 @@
 
 PS：iPhone 上点击链接（Notes / Safari 等）会直接在 Apple Music 打开。
 
+Update 2024-07：我提供了一个在线小网页可以随机选择一个专辑给你，并且一键播放 Apple Music。
+[Random Apple Music](https://random-apple-music.alswl.com/)
+源码 [alswl/random-apple-music](https://github.com/alswl/random-apple-music)。
+
 ## [We Sing. We Dance. We Steal Things.](https://music.douban.com/subject/2995812/)
 
 Jason Mraz / 2008-05-13 / Import / Audio CD / 民谣
