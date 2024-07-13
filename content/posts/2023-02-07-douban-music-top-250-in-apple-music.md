@@ -1771,7 +1771,9 @@ nil
 
 ## [天空の城ラピュタ サウンドトラック 飛行石の謎 \| 天空之城 原声碟](https://music.douban.com/subject/1395762/)
 
-久石譲(Joe Hisaishi),杉並児童合唱団,井上杏美 / 1993-12-21 / Soundtrack / Audio CD / 原声 9.6 ( 26336人评价 )
+久石譲(Joe Hisaishi),杉並児童合唱団,井上杏美 / 1993-12-21 / Soundtrack / Audio CD / 原声
+
+9.6 ( 26336人评价 )
 
 ![image](../../static/images/202302/1675664345430-87cc570a-1e0d-455a-929a-15697ddc7e83.jpeg)
 
