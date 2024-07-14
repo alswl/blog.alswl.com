@@ -107,7 +107,7 @@ Lenka / 2008-09-23 / 专辑 / Audio CD / 流行
 
 ![image](../../static/images/202302/1675664206079-9c7f33a4-a97f-4a59-bba9-d444bdfb228a.png)
 
-nil
+[▶️ Apple Music](https://music.apple.com/cn/album/%E6%97%85%E8%A1%8C%E7%9A%84%E6%84%8F%E7%BE%A9-single/1229089359?l=en-GB)
 
 ## [太阳 \| Immortal](https://music.douban.com/subject/3390002/)
 
@@ -777,7 +777,7 @@ Avril Lavigne / 2004-05-12 / Import / Audio CD / 摇滚
 
 ![image](../../static/images/202302/1675664290835-f419f319-ae49-4a8b-9be1-60e9eaa54cc9.jpeg)
 
-nil
+[▶️ Apple Music](https://music.apple.com/cn/album/%E5%AD%AB%E7%87%95%E5%A7%BFstefanie%E5%90%8C%E5%90%8D%E5%B0%88%E8%BC%AF/255921035?l=en-GB)
 
 ## [The Fame](https://music.douban.com/subject/3179585/)
 
@@ -1275,7 +1275,7 @@ GALA / 2004 / 专辑 / CD / 摇滚
 
 ![image](../../static/images/202302/1675664324647-256da2b4-a0a2-4e9b-8906-5b79fe6f16d7.jpeg)
 
-nil
+[▶️ Apple Music](https://music.apple.com/cn/album/young-for-you/1678931109?l=en-GB)
 
 ## [自选集 \| Start Yan-zi](https://music.douban.com/subject/1405050/)
 
@@ -1653,7 +1653,7 @@ Rosie Thomas / 2007-03-13 / 专辑 / Audio CD / 民谣
 
 ![image](../../static/images/202302/1675664336055-0bd782df-150a-43b4-8e2f-d140925aa54f.jpeg)
 
-nil
+[▶️ Apple Music](https://music.apple.com/cn/album/these-friends-of-mine-expanded-edition/1598408766?l=en-GB)
 
 ## [陪我歌唱 \| 苏打绿台北小巨蛋演唱会Live Cd:陪我歌唱](https://music.douban.com/subject/3226297/)
 
@@ -1701,7 +1701,7 @@ Lily Allen / 2009-02-09 / 专辑 / Audio CD / 流行
 
 ![img](../../static/images/202302/s2616588.jpg)
 
-nil
+[▶️ Apple Music](https://music.apple.com/cn/album/%E6%B6%88%E5%A4%B1%E7%9A%84%E5%85%89%E5%B9%B4/1728807828?l=en-GB)
 
 ## [还有别的办法吗](https://music.douban.com/subject/1439133/)
 
@@ -1771,7 +1771,7 @@ Maximilian Hecker / 2005 / Import / Audio CD / 摇滚
 
 ![image](../../static/images/202302/1675664345417-c3025373-8d3d-4215-a586-fcf1b60325cc.jpeg)
 
-nil
+[▶️ Apple Music](https://music.apple.com/cn/album/lady-sleep/1475889291?l=en-GB)
 
 ## [天空の城ラピュタ サウンドトラック 飛行石の謎 \| 天空之城 原声碟](https://music.douban.com/subject/1395762/)
 
@@ -2341,7 +2341,7 @@ nil
 
 ![image](../../static/images/202302/1675664373200-1d78e649-6036-48df-a88b-17e7c6c4b0f0.jpeg)
 
-nil
+[▶️ Apple Music](https://music.apple.com/cn/album/%E7%9C%8B%E6%88%9172%E8%AE%8A/320494434?l=en-GB)
 
 ## [第二人生 明日版 \| SECOND ROUND - NOW HERE](https://music.douban.com/subject/7065469/)
 
