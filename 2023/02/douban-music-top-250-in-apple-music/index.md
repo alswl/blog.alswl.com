@@ -1122,7 +1122,7 @@ Adele / 2008-01-28 / Import / Audio CD / 放克/灵歌/R&B
 
 ![image](https://e25ba8-log4d-c.dijingchao.com/202302/1675664316431-bb3b26ab-f448-41d0-8f31-19e33bad07aa.jpeg)
 
-nil
+[▶️ Apple Music](https://music.apple.com/cn/album/%E5%90%8C%E5%90%8D%E5%B0%88%E8%BC%AF-remastered/990152978?l=en-GB)
 
 ## [Time Flies \| 时日如飞](https://music.douban.com/subject/4706451/)
 
@@ -1151,6 +1151,8 @@ nil
 8.4 ( 35566人评价 )
 
 ![image](https://e25ba8-log4d-c.dijingchao.com/202302/1675664316688-45dd22f9-7aa9-4932-bae4-7ca9499f6df6.jpeg)
+
+[▶️ Apple Music](https://music.apple.com/cn/album/my-love/544154095?l=en-GB)
 
 ## [亲亲 \| 親親](https://music.douban.com/subject/1891318/)
 
@@ -1480,6 +1482,8 @@ GALA / 2011-03-24 / 专辑 / CD / 摇滚
 
 ![image](https://e25ba8-log4d-c.dijingchao.com/202302/1675664327353-3c79181a-d0b1-4bc8-aedd-e1bd171d0def.jpeg)
 
+[▶️ Apple Music](https://music.apple.com/cn/album/prisoner-of-love-ep/1444873685?l=en-GB)
+
 ## [Groupies 吉他手 \| Groupies](https://music.douban.com/subject/1394549/)
 
 陈绮贞 / 2002-08-02 / 专辑 / CD / 流行
@@ -1657,6 +1661,8 @@ Rosie Thomas / 2007-03-13 / 专辑 / Audio CD / 民谣
 9.2 ( 23965人评价 )
 
 ![image](https://e25ba8-log4d-c.dijingchao.com/202302/1675664336156-05a4dbb0-4260-4b16-ad8e-08cd47b6a236.jpeg)
+
+[▶️ Apple Music](https://music.apple.com/cn/album/%E9%99%AA%E6%88%91%E6%AD%8C%E5%94%B1-live/1461050682?l=en-GB)
 
 ## [It＇s Not Me It＇s You \| 非我即你](https://music.douban.com/subject/3770091/)
 
@@ -1845,6 +1851,8 @@ Maximilian Hecker / 2005 / Import / Audio CD / 摇滚
 9.0 ( 26819人评价 )
 
 ![image](https://e25ba8-log4d-c.dijingchao.com/202302/1675664346464-f2acbe40-fd0a-478d-9860-6b8740b499ed.jpeg)
+
+[▶️ Apple Music](https://music.apple.com/cn/album/%E4%B8%96%E7%95%8C/1542187294?l=en-GB)
 
 ## [七天 \| 盧廣仲 Crowd Lu 2009 New Album 2009 全新創作專輯](https://music.douban.com/subject/4032611/)
 
