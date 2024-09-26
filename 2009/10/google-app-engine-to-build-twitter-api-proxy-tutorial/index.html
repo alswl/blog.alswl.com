@@ -7,7 +7,12 @@
 <meta name="robots" content="index, follow">
 <title>Google App Engine搭建Twitter API Proxy教程 | Log4D</title>
 <meta name="keywords" content="关注互联网, gae, twitter">
-<meta name="description" content="来源：Google App Engine搭建Twitter API Proxy教程 alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。 本文将介绍如何通过Google">
+<meta name="description" content="来源：Google App Engine搭建Twitter API Proxy教程
+alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j
+asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之
+极，搭建了自己的Twitter birdnest服务器，并转载之。
+本文将介绍如何通过Google App Engine搭建基于Python
+2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/10/google-app-engine-to-build-twitter-api-proxy-tutorial/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +62,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +75,13 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
-
-<meta property="og:title" content="Google App Engine搭建Twitter API Proxy教程" />
-<meta property="og:description" content="来源：Google App Engine搭建Twitter API Proxy教程 alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。 本文将介绍如何通过Google" />
+      </script><meta property="og:title" content="Google App Engine搭建Twitter API Proxy教程" />
+<meta property="og:description" content="来源：Google App Engine搭建Twitter API Proxy教程
+alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j
+asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之
+极，搭建了自己的Twitter birdnest服务器，并转载之。
+本文将介绍如何通过Google App Engine搭建基于Python
+2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2009/10/google-app-engine-to-build-twitter-api-proxy-tutorial/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2009-10-14T00:00:00+08:00" />
@@ -85,7 +89,12 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Google App Engine搭建Twitter API Proxy教程"/>
-<meta name="twitter:description" content="来源：Google App Engine搭建Twitter API Proxy教程 alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。 本文将介绍如何通过Google"/>
+<meta name="twitter:description" content="来源：Google App Engine搭建Twitter API Proxy教程
+alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j
+asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之
+极，搭建了自己的Twitter birdnest服务器，并转载之。
+本文将介绍如何通过Google App Engine搭建基于Python
+2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +123,7 @@
   "@type": "BlogPosting",
   "headline": "Google App Engine搭建Twitter API Proxy教程",
   "name": "Google App Engine搭建Twitter API Proxy教程",
-  "description": "来源：Google App Engine搭建Twitter API Proxy教程 alswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。 本文将介绍如何通过Google",
+  "description": "来源：Google App Engine搭建Twitter API Proxy教程\nalswl:今天我本来想使用GAppProxy搭建自己的[服务器](http://j asontiproxy.appspot.com/fetch)，不过失败了，似乎客户端有些问题，也可能是我配置的问题。之后就正好看到月光大大的这篇文章，欣喜之 极，搭建了自己的Twitter birdnest服务器，并转载之。\n本文将介绍如何通过Google App Engine搭建基于Python 2.5的BirdNest环境，建好的BirdNest可以在TwitterFox或twhirl中使用。\n",
   "keywords": [
     "关注互联网", "gae", "twitter"
   ],
@@ -327,7 +336,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

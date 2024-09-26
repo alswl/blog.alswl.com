@@ -4,7 +4,7 @@
     <title>Architecture on Log4D</title>
     <link>https://blog.alswl.com/tags/architecture/</link>
     <description>Recent content in Architecture on Log4D</description>
-    <generator>Hugo -- 0.129.0</generator>
+    <generator>Hugo -- 0.134.3</generator>
     <language>zh</language>
     <lastBuildDate>Sat, 23 Sep 2023 18:22:27 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/architecture/rss.xml" rel="self" type="application/rss+xml" />
@@ -13,7 +13,25 @@
       <link>https://blog.alswl.com/2023/09/gitops-and-version-management/</link>
       <pubDate>Sat, 23 Sep 2023 18:22:27 +0800</pubDate>
       <guid>https://blog.alswl.com/2023/09/gitops-and-version-management/</guid>
-      <description>image via shipvehicles 使用 GitOps 管理交付内容是一个常见的 DevOps 使用模式。 我们会使用 Git 进行版本管理， 并通过 Git Tag 来跟踪部署软件的版本。 虽然这看上去可以工作，但在云原生技术的推动下，版本的概念远非如此简单。 版本问题 在引入 GitOps 到 DevOps 流程后，我们可以借助 GitOps 的能力进行持续集成和持续交付。 GitOps 解决了三个核心问题：内容、版本 和 协作。然而，我们经常将注意力集中在内容上，却经常忽略了版本管理问题。 在 GitOps 过程中，有哪些版本管理问题需要解决呢？ 一套完整</description>
+      <description>&lt;p&gt;
+
+
+
+
+&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/202309/car.png&#34; alt=&#34;car&#34;  /&gt;
+
+
+&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;image via &lt;a href=&#34;https://www.shipvehicles.com/step-by-step-guide-for-state-to-state-transport/&#34;&gt;shipvehicles&lt;/a&gt;&lt;/small&gt;&lt;/p&gt;
+&lt;p&gt;使用 GitOps 管理交付内容是一个常见的 DevOps 使用模式。
+我们会使用 Git 进行版本管理，
+并通过 Git Tag 来跟踪部署软件的版本。
+虽然这看上去可以工作，但在云原生技术的推动下，版本的概念远非如此简单。&lt;/p&gt;
+&lt;h2 id=&#34;版本问题&#34;&gt;版本问题&lt;/h2&gt;
+&lt;p&gt;在引入 GitOps 到 DevOps 流程后，我们可以借助 GitOps 的能力进行持续集成和持续交付。
+GitOps 解决了三个核心问题：&lt;strong&gt;内容&lt;/strong&gt;、&lt;strong&gt;版本&lt;/strong&gt; 和 &lt;strong&gt;协作&lt;/strong&gt;。然而，我们经常将注意力集中在内容上，却经常忽略了版本管理问题。&lt;/p&gt;
+&lt;p&gt;在 GitOps 过程中，有哪些版本管理问题需要解决呢？&lt;/p&gt;
+&lt;p&gt;一套完整的 GitOps 解决方案包括内容描述（Manifest）、构建方案（Builder）和生效方案（Applier）。其中，内容描述衍生出多种描述语言，从最传统的 &lt;a href=&#34;https://www.ansible.com/&#34;&gt;Ansible&lt;/a&gt; / &lt;a href=&#34;https://www.chef.io/products/chef-infra&#34;&gt;Chef&lt;/a&gt;，到云计算和云原生流行起来的 &lt;a href=&#34;https://www.terraform.io/&#34;&gt;Terraform&lt;/a&gt;、&lt;a href=&#34;https://helm.sh/&#34;&gt;Helm&lt;/a&gt;、&lt;a href=&#34;https://kustomize.io/&#34;&gt;Kustomize&lt;/a&gt; 等。引入了这么多内容描述方式之后，当我们想要明确一个应用的版本时，变得非常复杂。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>
 
 
@@ -97,65 +115,65 @@ DEF_VER=v2.42.GIT
 <h2 id="概念梳理">概念梳理</h2>
 <p>让我们来理清一下这些略有晦涩的概念：</p>
 <table>
-<thead>
-<tr>
-<th>中文</th>
-<th>英文</th>
-<th>解释</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>源代码</td>
-<td>Source Code</td>
-<td>程序、应用的源文件集合</td>
-</tr>
-<tr>
-<td>代码仓库</td>
-<td>Source Code Repo</td>
-<td>源代码放到版本管理系统中的管理单元</td>
-</tr>
-<tr>
-<td>版本</td>
-<td>Version</td>
-<td>源代码对应的应用版本，人为定义，语义化，有些场景会说 Upstream Version</td>
-</tr>
-<tr>
-<td>可执行文件</td>
-<td>Executable File</td>
-<td>源代码构建出来的结果，一般是 ELF 可执行文件，也可以是 Lib 文件</td>
-</tr>
-<tr>
-<td>启动配置文件</td>
-<td>Configuration File</td>
-<td>配套 ELF / Lib 的启动配置文件，区别于广泛意义上的配置文件（比如 Kubernetes YAML）</td>
-</tr>
-<tr>
-<td>制品</td>
-<td>Artifact</td>
-<td>包含可执行文件和启动配置文件的集合，可以运行在运行时下面，一般是文件形态。制品可以嵌套制品。</td>
-</tr>
-<tr>
-<td>安装器</td>
-<td>Installer</td>
-<td>将制品安装到运行时的工具</td>
-</tr>
-<tr>
-<td>运行时</td>
-<td>Runtime</td>
-<td>制品的运行环境，比如特定操作系统，Kubernetes，Docker Engine。</td>
-</tr>
-<tr>
-<td>打包器</td>
-<td>Packer</td>
-<td>将制品打包成特定格式（新的制品）的工具</td>
-</tr>
-<tr>
-<td>打包附属信息</td>
-<td>Packaging Info</td>
-<td>制品打包时候需要的额外信息，比如容器的操作系统，进程的运行容量，默认环境变量等</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">中文</th>
+          <th style="text-align: left">英文</th>
+          <th style="text-align: left">解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">源代码</td>
+          <td style="text-align: left">Source Code</td>
+          <td style="text-align: left">程序、应用的源文件集合</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">代码仓库</td>
+          <td style="text-align: left">Source Code Repo</td>
+          <td style="text-align: left">源代码放到版本管理系统中的管理单元</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">版本</td>
+          <td style="text-align: left">Version</td>
+          <td style="text-align: left">源代码对应的应用版本，人为定义，语义化，有些场景会说 Upstream Version</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">可执行文件</td>
+          <td style="text-align: left">Executable File</td>
+          <td style="text-align: left">源代码构建出来的结果，一般是 ELF 可执行文件，也可以是 Lib 文件</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">启动配置文件</td>
+          <td style="text-align: left">Configuration File</td>
+          <td style="text-align: left">配套 ELF / Lib 的启动配置文件，区别于广泛意义上的配置文件（比如 Kubernetes YAML）</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">制品</td>
+          <td style="text-align: left">Artifact</td>
+          <td style="text-align: left">包含可执行文件和启动配置文件的集合，可以运行在运行时下面，一般是文件形态。制品可以嵌套制品。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">安装器</td>
+          <td style="text-align: left">Installer</td>
+          <td style="text-align: left">将制品安装到运行时的工具</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">运行时</td>
+          <td style="text-align: left">Runtime</td>
+          <td style="text-align: left">制品的运行环境，比如特定操作系统，Kubernetes，Docker Engine。</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">打包器</td>
+          <td style="text-align: left">Packer</td>
+          <td style="text-align: left">将制品打包成特定格式（新的制品）的工具</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">打包附属信息</td>
+          <td style="text-align: left">Packaging Info</td>
+          <td style="text-align: left">制品打包时候需要的额外信息，比如容器的操作系统，进程的运行容量，默认环境变量等</td>
+      </tr>
+  </tbody>
 </table>
 <p>这些概念共同构成了制品版本管理的核心要素，帮助我们管理和跟踪制品的不同版本，以及它们之间的关联和依赖关系。</p>
 <h3 id="打包器-packer">打包器 Packer</h3>
@@ -222,7 +240,32 @@ DEF_VER=v2.42.GIT
       <link>https://blog.alswl.com/2023/07/architecture-design-the-easy-way/</link>
       <pubDate>Sat, 29 Jul 2023 14:54:27 +0800</pubDate>
       <guid>https://blog.alswl.com/2023/07/architecture-design-the-easy-way/</guid>
-      <description>image via Pixabay 概览 前几日，我在团队内部举行了一场技术分享，我介绍了关于架构设计的最佳实践。将这些实践凝练成了 20 字口诀： 架构看问题 需求看用例 设计看模型 细节看时序 我将顺口溜转到了 Twitter，不少朋友对这些顺口溜产生了浓厚兴趣，希望深入了解。因此，我将我分享中的观点扩展成了这篇文章。 架构设计和系统分析 让我们首先澄清 什么是架构设计和系统分析（简称系分）。有些朋友对前者很熟悉，对后者却不太了解。 不过没关系，以下</description>
+      <description>&lt;p&gt;
+
+
+
+
+&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/202307/arch-easy.png&#34; alt=&#34;arch-easy&#34;  /&gt;
+
+
+&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;image via &lt;a href=&#34;https://pixabay.com/photos/child-tower-building-blocks-blocks-1864718/&#34;&gt;Pixabay&lt;/a&gt;&lt;/small&gt;&lt;/p&gt;
+&lt;h2 id=&#34;概览&#34;&gt;概览&lt;/h2&gt;
+&lt;p&gt;前几日，我在团队内部举行了一场技术分享，我介绍了关于架构设计的最佳实践。将这些实践凝练成了 &lt;mark&gt;20 字口诀&lt;/mark&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;架构看问题&lt;/li&gt;
+&lt;li&gt;需求看用例&lt;/li&gt;
+&lt;li&gt;设计看模型&lt;/li&gt;
+&lt;li&gt;细节看时序&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;我将顺口溜转到了 &lt;a href=&#34;https://twitter.com/alswl/status/1683778487726006272&#34;&gt;Twitter&lt;/a&gt;，不少朋友对这些顺口溜产生了浓厚兴趣，希望深入了解。因此，我将我分享中的观点扩展成了这篇文章。&lt;/p&gt;
+&lt;h2 id=&#34;架构设计和系统分析&#34;&gt;架构设计和系统分析&lt;/h2&gt;
+&lt;p&gt;让我们首先澄清 &lt;mark&gt;什么是架构设计和系统分析&lt;/mark&gt;（简称系分）。有些朋友对前者很熟悉，对后者却不太了解。
+不过没关系，以下是维基百科上的介绍：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;架构，&lt;strong&gt;软件架构&lt;/strong&gt;是有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。&lt;/p&gt;
+&lt;p&gt;系统分析，旨在研究特定系统结构中各部分（各子系统）的相互作用，系统的对外接口与界面，以及该系统整体的行为、
+功能和局限，从而为系统未来的变迁与有关决策提供参考和依据。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>
 
 

@@ -57,8 +57,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,11 +70,7 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
-
-<meta property="og:title" content="Git" />
+      </script><meta property="og:title" content="Git" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://blog.alswl.com/tags/git/" /><meta property="og:site_name" content="Log4D" />
@@ -177,7 +171,9 @@
     
     
     
-    <p>前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题： 有一个小伙伴使用 git-svn 做 rename 操作时候，将一个目录 svn mv 了， 导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言， 历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。 # 找出丢失之前的版本，列出丢失目录上层的操作记录。 svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less # 将重命名之前的版本拷贝到一个临时目录 svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost # 准备现有代码到 Git git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami #...</p>
+    <p>前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题： 有一个小伙伴使用 git-svn 做 rename 操作时候，将一个目录 svn mv 了， 导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言， 历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。
+# 找出丢失之前的版本，列出丢失目录上层的操作记录。 svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less # 将重命名之前的版本拷贝到一个临时目录 svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost # 准备现有代码到 Git git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami # 修改 .git/config 来加入丢失的历史数据 Remote [svn-remote &#34;svn-lost&#34;] url = svn://log4d.com fetch = trunk/apps/ios/nami_lost:refs/remotes/trunk-lost # 并抓取 Remote 内容 git svn fetch # Rebase 新代码到恢复过来的历史记录上 git checkout master git rebase --committer-date-is-author-date trunk-lost 其中注意的是手动添加一个 svn-remote 地址为历史数据副本地址。 还有就是 rebase 时候参数 --committer-date-is-author-date 可以保证 rebase 不会造成提交时间被修改，方便回溯。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2014-01-21 00:20:06 +0800 +0800'>2014-01-21</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 从 SVN 到 Git，找回丢失的历史" href="https://blog.alswl.com/2014/01/renamed-svn-to-git/"></a>
@@ -192,7 +188,12 @@
     
     
     
-    <p>问题背景 Vundle 是个好东西，可以用来管理 vim 配置和 vim 插件。Vundle 会将所有插件管理在 .vim/bundle/ 中，详情可看 使用 Vundle 管理 Vim 插件。 官方安装 Vundle 方法如下： $ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 我的 Vundle 的版本是 59bff0c457f68c3d52bcebbf6068ea01ac8f5dac， git 版本是 git version 1.7.10.2 。 使用 BundleInstall 可以安装 .vimrc 中配置的插件， 我使用 git 控制 .vim 和 .vimrc 版本。在 BundleInstall 之后会导致 vundle 目录项目状态混乱，要么形成一个无法追踪的 submodule 比如 .vim/bundle/The-NERD-Commenter (untracked content) ，要么变成一个普通的文件...</p>
+    <p>问题背景 Vundle 是个好东西，可以用来管理 vim 配置和 vim 插件。Vundle 会将所有插件管理在 .vim/bundle/ 中，详情可看 使用 Vundle 管理 Vim 插件。
+官方安装 Vundle 方法如下：
+$ git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle 我的 Vundle 的版本是 59bff0c457f68c3d52bcebbf6068ea01ac8f5dac， git 版本是 git version 1.7.10.2 。 使用 BundleInstall 可以安装 .vimrc 中配置的插件，
+我使用 git 控制 .vim 和 .vimrc 版本。在 BundleInstall 之后会导致 vundle 目录项目状态混乱，要么形成一个无法追踪的 submodule 比如 .vim/bundle/The-NERD-Commenter (untracked content) ，要么变成一个普通的文件夹 .vim/bundle/vim-markdown。
+使用 Submodule 管理 插件 为了解决这个问题，我们需要先了解一点 Git 中 Submodule 的知识，详情可以查看 Git Book 中文版 - 子模块。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2012-06-11 22:07:00 +0800 +0800'>2012-06-11</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Vundle 和 Submodule" href="https://blog.alswl.com/2012/06/vundle-submodule/"></a>
@@ -209,7 +210,10 @@
     <div class="thumbnail"><img src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201111/gource-logo.png" alt="Thumbnail" /></div>
     
     
-    <p>昨天我在sunng 那里看到一个非常好玩的东西Gource。 Gource可以将代码版本控制系统里面的日志全部可视化， 所谓可视化就是可以看见每个成员在系统里面提交代码的行为。 Gource目前支持git/hg/svn，cvs通过一个简单的脚本也可以被Gource支持。 官方视频在这里[Gource - Software Version Control Visualization Tool](http://www.youtu be.com/watch?v=E5xPMW5fg48&amp;feature=player_emb...</p>
+    <p>昨天我在sunng 那里看到一个非常好玩的东西Gource。
+Gource可以将代码版本控制系统里面的日志全部可视化， 所谓可视化就是可以看见每个成员在系统里面提交代码的行为。 Gource目前支持git/hg/svn，cvs通过一个简单的脚本也可以被Gource支持。
+官方视频在这里[Gource - Software Version Control Visualization Tool](http://www.youtu be.com/watch?v=E5xPMW5fg48&amp;feature=player_embedded)，里面有Moodle/Git/Drupal/Postg reSQL/Ruby on Rails/Linux/VLC Player这几个非常漂亮的开源软件视频。Ruby on Rails那一段特别帅有没有。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2011-11-26 00:00:00 +0800 +0800'>2011-11-26</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Gource-可视化你的代码历史" href="https://blog.alswl.com/2011/11/gource/"></a>

@@ -7,7 +7,13 @@
 <meta name="robots" content="index, follow">
 <title>PylexChat可行性分析 | Log4D</title>
 <meta name="keywords" content="flash, air, flex, gae, pylexchat">
-<meta name="description" content="PylexChat介绍 PylexChat取名自Python&#43;Flex&#43;Chat部 分缩写，这就意味着这个系统是基于Python&#43;Flex的聊天系统。之所以做这个系统，源自我大学的最后一次课程设计，我不想浪费这最后一次可以供我发 挥自己想象力的机会。年后估计要参加工作了，毕业设计也不敢做这么有想法的课程设计。那就最后一次潇洒一下，做一个我完全没有接触过的东西。 我几乎不会Python，是最近一个月迷上这门">
+<meta name="description" content="PylexChat介绍
+PylexChat取名自Python&#43;Flex&#43;Chat部
+分缩写，这就意味着这个系统是基于Python&#43;Flex的聊天系统。之所以做这个系统，源自我大学的最后一次课程设计，我不想浪费这最后一次可以供我发
+挥自己想象力的机会。年后估计要参加工作了，毕业设计也不敢做这么有想法的课程设计。那就最后一次潇洒一下，做一个我完全没有接触过的东西。
+我几乎不会Python，是最近一个月迷上这门强悍而简单的语言，我完全不会Flex，是最近1周时间才开始接触Flex。这意味着这次课程设计的
+风险挺大。我花了几天的时间做了详细的可行性分析，分析了系统框架和GAE能够提供的服务和限制以及Flex/AIR能做的内容，否决了几个方案，最后总
+结了一篇简单可行性分析（本文是一周时间慢慢形成的，并没有遵循正规的开发文档风格）。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/11/pylexchat-feasibility-analysis/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +63,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +76,14 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
-
-<meta property="og:title" content="PylexChat可行性分析" />
-<meta property="og:description" content="PylexChat介绍 PylexChat取名自Python&#43;Flex&#43;Chat部 分缩写，这就意味着这个系统是基于Python&#43;Flex的聊天系统。之所以做这个系统，源自我大学的最后一次课程设计，我不想浪费这最后一次可以供我发 挥自己想象力的机会。年后估计要参加工作了，毕业设计也不敢做这么有想法的课程设计。那就最后一次潇洒一下，做一个我完全没有接触过的东西。 我几乎不会Python，是最近一个月迷上这门" />
+      </script><meta property="og:title" content="PylexChat可行性分析" />
+<meta property="og:description" content="PylexChat介绍
+PylexChat取名自Python&#43;Flex&#43;Chat部
+分缩写，这就意味着这个系统是基于Python&#43;Flex的聊天系统。之所以做这个系统，源自我大学的最后一次课程设计，我不想浪费这最后一次可以供我发
+挥自己想象力的机会。年后估计要参加工作了，毕业设计也不敢做这么有想法的课程设计。那就最后一次潇洒一下，做一个我完全没有接触过的东西。
+我几乎不会Python，是最近一个月迷上这门强悍而简单的语言，我完全不会Flex，是最近1周时间才开始接触Flex。这意味着这次课程设计的
+风险挺大。我花了几天的时间做了详细的可行性分析，分析了系统框架和GAE能够提供的服务和限制以及Flex/AIR能做的内容，否决了几个方案，最后总
+结了一篇简单可行性分析（本文是一周时间慢慢形成的，并没有遵循正规的开发文档风格）。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2009/11/pylexchat-feasibility-analysis/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2009-11-23T00:00:00+08:00" />
@@ -85,7 +91,13 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="PylexChat可行性分析"/>
-<meta name="twitter:description" content="PylexChat介绍 PylexChat取名自Python&#43;Flex&#43;Chat部 分缩写，这就意味着这个系统是基于Python&#43;Flex的聊天系统。之所以做这个系统，源自我大学的最后一次课程设计，我不想浪费这最后一次可以供我发 挥自己想象力的机会。年后估计要参加工作了，毕业设计也不敢做这么有想法的课程设计。那就最后一次潇洒一下，做一个我完全没有接触过的东西。 我几乎不会Python，是最近一个月迷上这门"/>
+<meta name="twitter:description" content="PylexChat介绍
+PylexChat取名自Python&#43;Flex&#43;Chat部
+分缩写，这就意味着这个系统是基于Python&#43;Flex的聊天系统。之所以做这个系统，源自我大学的最后一次课程设计，我不想浪费这最后一次可以供我发
+挥自己想象力的机会。年后估计要参加工作了，毕业设计也不敢做这么有想法的课程设计。那就最后一次潇洒一下，做一个我完全没有接触过的东西。
+我几乎不会Python，是最近一个月迷上这门强悍而简单的语言，我完全不会Flex，是最近1周时间才开始接触Flex。这意味着这次课程设计的
+风险挺大。我花了几天的时间做了详细的可行性分析，分析了系统框架和GAE能够提供的服务和限制以及Flex/AIR能做的内容，否决了几个方案，最后总
+结了一篇简单可行性分析（本文是一周时间慢慢形成的，并没有遵循正规的开发文档风格）。"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +126,7 @@
   "@type": "BlogPosting",
   "headline": "PylexChat可行性分析",
   "name": "PylexChat可行性分析",
-  "description": "PylexChat介绍 PylexChat取名自Python+Flex+Chat部 分缩写，这就意味着这个系统是基于Python+Flex的聊天系统。之所以做这个系统，源自我大学的最后一次课程设计，我不想浪费这最后一次可以供我发 挥自己想象力的机会。年后估计要参加工作了，毕业设计也不敢做这么有想法的课程设计。那就最后一次潇洒一下，做一个我完全没有接触过的东西。 我几乎不会Python，是最近一个月迷上这门",
+  "description": "PylexChat介绍 PylexChat取名自Python+Flex+Chat部 分缩写，这就意味着这个系统是基于Python+Flex的聊天系统。之所以做这个系统，源自我大学的最后一次课程设计，我不想浪费这最后一次可以供我发 挥自己想象力的机会。年后估计要参加工作了，毕业设计也不敢做这么有想法的课程设计。那就最后一次潇洒一下，做一个我完全没有接触过的东西。\n我几乎不会Python，是最近一个月迷上这门强悍而简单的语言，我完全不会Flex，是最近1周时间才开始接触Flex。这意味着这次课程设计的 风险挺大。我花了几天的时间做了详细的可行性分析，分析了系统框架和GAE能够提供的服务和限制以及Flex/AIR能做的内容，否决了几个方案，最后总 结了一篇简单可行性分析（本文是一周时间慢慢形成的，并没有遵循正规的开发文档风格）。\n",
   "keywords": [
     "flash", "air", "flex", "gae", "pylexchat"
   ],
@@ -569,7 +581,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

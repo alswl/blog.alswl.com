@@ -7,7 +7,11 @@
 <meta name="robots" content="index, follow">
 <title>再谈s:if的使用 | Log4D</title>
 <meta name="keywords" content="java, struts">
-<meta name="description" content="上次遇到过&lt;s:if&gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。 &lt;s:if test=&quot;&quot;&gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。 尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？ 其实使用&lt;s:if test=&lsquo;str==&ldquo;中文&rdqu">
+<meta name="description" content="上次遇到过&lt;s:if&gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。
+&lt;s:if test=&quot;&quot;&gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。
+尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？
+其实使用&lt;s:if test=&lsquo;str==&ldquo;中文&rdquo;&rsquo;&gt;，就可以了，请注意，是单引号-双引号-中文-双引号-
+单引号的顺序，这样才能够正确的解析中文字符串是否相等。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/06/return-s-if-the-use-of/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +61,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +74,12 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
-
-<meta property="og:title" content="再谈s:if的使用" />
-<meta property="og:description" content="上次遇到过&lt;s:if&gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。 &lt;s:if test=&quot;&quot;&gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。 尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？ 其实使用&lt;s:if test=&lsquo;str==&ldquo;中文&rdqu" />
+      </script><meta property="og:title" content="再谈s:if的使用" />
+<meta property="og:description" content="上次遇到过&lt;s:if&gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。
+&lt;s:if test=&quot;&quot;&gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。
+尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？
+其实使用&lt;s:if test=&lsquo;str==&ldquo;中文&rdquo;&rsquo;&gt;，就可以了，请注意，是单引号-双引号-中文-双引号-
+单引号的顺序，这样才能够正确的解析中文字符串是否相等。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2009/06/return-s-if-the-use-of/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2009-06-28T00:00:00+08:00" />
@@ -85,7 +87,11 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="再谈s:if的使用"/>
-<meta name="twitter:description" content="上次遇到过&lt;s:if&gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。 &lt;s:if test=&quot;&quot;&gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。 尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？ 其实使用&lt;s:if test=&lsquo;str==&ldquo;中文&rdqu"/>
+<meta name="twitter:description" content="上次遇到过&lt;s:if&gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。
+&lt;s:if test=&quot;&quot;&gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。
+尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？
+其实使用&lt;s:if test=&lsquo;str==&ldquo;中文&rdquo;&rsquo;&gt;，就可以了，请注意，是单引号-双引号-中文-双引号-
+单引号的顺序，这样才能够正确的解析中文字符串是否相等。"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +120,7 @@
   "@type": "BlogPosting",
   "headline": "再谈s:if的使用",
   "name": "再谈s:if的使用",
-  "description": "上次遇到过\u0026lt;s:if\u0026gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。 \u0026lt;s:if test=\u0026quot;\u0026quot;\u0026gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。 尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？ 其实使用\u0026lt;s:if test=\u0026lsquo;str==\u0026ldquo;中文\u0026rdqu",
+  "description": "上次遇到过\u0026lt;s:if\u0026gt;的问题，费了好久才弄好，这次又遇到，有了一点新的体验。\n\u0026lt;s:if test=\u0026quot;\u0026quot;\u0026gt;中的判断，如果是数字判断一般都没有问题，问题会在字符串时候凸显出来。\n尤其是中文字符串，几乎没有能够通过的，上一次是曲线救国，用了true和false着两个英文，如果非得用中文怎么办？\n其实使用\u0026lt;s:if test=\u0026lsquo;str==\u0026ldquo;中文\u0026rdquo;\u0026rsquo;\u0026gt;，就可以了，请注意，是单引号-双引号-中文-双引号- 单引号的顺序，这样才能够正确的解析中文字符串是否相等。\n",
   "keywords": [
     "java", "struts"
   ],
@@ -278,7 +284,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

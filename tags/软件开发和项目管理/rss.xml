@@ -4,7 +4,7 @@
     <title>软件开发和项目管理 on Log4D</title>
     <link>https://blog.alswl.com/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E5%92%8C%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/</link>
     <description>Recent content in 软件开发和项目管理 on Log4D</description>
-    <generator>Hugo -- 0.129.0</generator>
+    <generator>Hugo -- 0.134.3</generator>
     <language>zh</language>
     <lastBuildDate>Tue, 21 Jan 2014 00:20:06 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E5%92%8C%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/rss.xml" rel="self" type="application/rss+xml" />
@@ -13,7 +13,34 @@
       <link>https://blog.alswl.com/2014/01/renamed-svn-to-git/</link>
       <pubDate>Tue, 21 Jan 2014 00:20:06 +0800</pubDate>
       <guid>https://blog.alswl.com/2014/01/renamed-svn-to-git/</guid>
-      <description>前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题： 有一个小伙伴使用 git-svn 做 rename 操作时候，将一个目录 svn mv 了， 导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言， 历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。 # 找出丢失之前的版本，列出丢失目录上层的操作记录。 svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less # 将重命名之前的版本拷贝到一个临时目录 svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost # 准备现有代码到 Git git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami #</description>
+      <description>&lt;p&gt;前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题：
+有一个小伙伴使用 git-svn 做 &lt;code&gt;rename&lt;/code&gt; 操作时候，将一个目录 &lt;code&gt;svn mv&lt;/code&gt; 了，
+导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言，
+历史提交是非常宝贵的财产，我们想了一些办法，把这些数据提取出来。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# 找出丢失之前的版本，列出丢失目录上层的操作记录。
+svn log -l 2000 svn://log4d.com/trunk/apps/ios/ | less
+
+# 将重命名之前的版本拷贝到一个临时目录
+svn copy svn://log4d.com/trunk/apps/ios/nami@43252 svn://log4d.com/trunk/apps/ios/nami_lost
+
+# 准备现有代码到 Git
+git svn clone svn://log4d.com/ -T trunk/apps/ios/nami -t tags -b branches -r 13532 nami
+
+# 修改 .git/config 来加入丢失的历史数据 Remote
+[svn-remote &amp;#34;svn-lost&amp;#34;]
+	url = svn://log4d.com
+	fetch = trunk/apps/ios/nami_lost:refs/remotes/trunk-lost
+
+# 并抓取 Remote 内容
+git svn fetch
+
+# Rebase 新代码到恢复过来的历史记录上
+git checkout master
+git rebase --committer-date-is-author-date trunk-lost
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;其中注意的是手动添加一个 &lt;code&gt;svn-remote&lt;/code&gt; 地址为历史数据副本地址。
+还有就是 &lt;code&gt;rebase&lt;/code&gt; 时候参数 &lt;code&gt;--committer-date-is-author-date&lt;/code&gt;
+可以保证 &lt;code&gt;rebase&lt;/code&gt; 不会造成提交时间被修改，方便回溯。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>前段时间在将公司的 SVN 项目迁移到 Git 上面去，遇到一个很少见的问题：
 有一个小伙伴使用 git-svn 做 <code>rename</code> 操作时候，将一个目录 <code>svn mv</code> 了，
 导致新目录只存了最近几个月提交历史，丢失了历史信息。对团队开发而言，
@@ -50,7 +77,16 @@ git rebase --committer-date-is-author-date trunk-lost
       <link>https://blog.alswl.com/2013/04/peopleware/</link>
       <pubDate>Wed, 10 Apr 2013 23:35:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2013/04/peopleware/</guid>
-      <description>事情起源于动态语言和静态语言之争，最后争论焦点转移到：「相信人本身的能力重要， 还是通过语言/工具来约束人重要」。 我认为项目开发中最重要的是个人能力和团队协作能力，工具只是加分项。 如果代码质量差、监控难、性能难以优化，解决根本问题的关键还是在人身上。 并不是静态编译和工具检查就能搞定了。 我愤愤的在 QQ 对话框中写道： 我工作第一年痛苦于开发流程，阅读了《人月神话》，就开始坚信软件工程的哲学 后来痛苦与代码质量</description>
+      <description>&lt;p&gt;事情起源于动态语言和静态语言之争，最后争论焦点转移到：「相信人本身的能力重要，
+还是通过语言/工具来约束人重要」。
+我认为项目开发中最重要的是个人能力和团队协作能力，工具只是加分项。
+如果代码质量差、监控难、性能难以优化，解决根本问题的关键还是在人身上。
+并不是静态编译和工具检查就能搞定了。&lt;/p&gt;
+&lt;p&gt;我愤愤的在 QQ 对话框中写道：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我工作第一年痛苦于开发流程，阅读了《人月神话》，就开始坚信软件工程的哲学
+后来痛苦与代码质量，阅读了《重构》，开始坚信代码质量决定产品质量
+现在痛苦于人和语言的冲突，动态和静态的冲突，我想读《人件》了&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>事情起源于动态语言和静态语言之争，最后争论焦点转移到：「相信人本身的能力重要，
 还是通过语言/工具来约束人重要」。
 我认为项目开发中最重要的是个人能力和团队协作能力，工具只是加分项。
@@ -205,7 +241,13 @@ git rebase --committer-date-is-author-date trunk-lost
       <link>https://blog.alswl.com/2010/01/software-development-in-the-role-playing/</link>
       <pubDate>Sat, 09 Jan 2010 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2010/01/software-development-in-the-role-playing/</guid>
-      <description>说到软件开发的过程、环节等等，我印象里只剩下一大堆术语和一些流程的大概，但是因为缺乏正规开发的经验，所以并没有对软件开发中每个人的角色有深入理解，今天在周末 检查Delicious Temp标签时候，看到 圆木菠萝头 的这片文章，收获颇丰，现在转载与大家分享。 原文链接：[ 软件开发中的角色扮演 - 软件开发 - 圆木菠萝罐](http://blog.boluotou.com/Developer/2009/06/S oftware_Role)</description>
+      <description>&lt;p&gt;说到软件开发的过程、环节等等，我印象里只剩下一大堆术语和一些流程的大概，但是因为缺乏正规开发的经验，所以并没有对软件开发中每个人的角色有深入理解，今天在周末
+检查Delicious Temp标签时候，看到 &lt;a href=&#34;http://blog.boluotou.com/&#34;&gt;圆木菠萝头&lt;/a&gt;
+的这片文章，收获颇丰，现在转载与大家分享。&lt;/p&gt;
+&lt;p&gt;原文链接：[ 软件开发中的角色扮演 - 软件开发 - 圆木菠萝罐](&lt;a href=&#34;http://blog.boluotou.com/Developer/2009/06/S&#34;&gt;http://blog.boluotou.com/Developer/2009/06/S&lt;/a&gt;
+oftware_Role) （我稍微调了一下格式，没有修改文章内容 ^_^）&lt;/p&gt;
+&lt;p&gt;××××××XXX分哥线XXX×××××××&lt;/p&gt;
+&lt;p&gt;商业软件开发并不是只有一个编程的人，而是可以分为不同的角色。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>说到软件开发的过程、环节等等，我印象里只剩下一大堆术语和一些流程的大概，但是因为缺乏正规开发的经验，所以并没有对软件开发中每个人的角色有深入理解，今天在周末
 检查Delicious Temp标签时候，看到 <a href="http://blog.boluotou.com/">圆木菠萝头</a>
 的这片文章，收获颇丰，现在转载与大家分享。</p>
@@ -310,7 +352,14 @@ DEV总是不买某个QA的账等等，所有的这一切，从技术到人本身
       <link>https://blog.alswl.com/2009/06/design-of-user-rights/</link>
       <pubDate>Thu, 25 Jun 2009 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2009/06/design-of-user-rights/</guid>
-      <description>问题 用户权限设计这一块，一直是一个我觉得比较难解决的问题。 以前我用了「伪继承」，虽然管理员继承了普通用户，但是数据库却是分开设计的。又或者压根没有继承关系，是两个不同的实体。 解决方案 这次在贴吧系统，有三个用户角色：普通用户、吧主、管理员，想设计的符合OO，但又要利于数据库的实现。就有几个问题需要解决：1.需要继承么；2.数据库怎么设计； 3.Hibernate怎么映射。最后参考几篇文章，设计成如下。</description>
+      <description>&lt;h3 id=&#34;问题&#34;&gt;问题&lt;/h3&gt;
+&lt;p&gt;用户权限设计这一块，一直是一个我觉得比较难解决的问题。&lt;/p&gt;
+&lt;p&gt;以前我用了「伪继承」，虽然管理员继承了普通用户，但是数据库却是分开设计的。又或者压根没有继承关系，是两个不同的实体。&lt;/p&gt;
+&lt;h3 id=&#34;解决方案&#34;&gt;解决方案&lt;/h3&gt;
+&lt;p&gt;这次在贴吧系统，有三个用户角色：普通用户、吧主、管理员，想设计的符合OO，但又要利于数据库的实现。就有几个问题需要解决：1.需要继承么；2.数据库怎么设计；
+3.Hibernate怎么映射。最后参考几篇文章，设计成如下。&lt;/p&gt;
+&lt;p&gt;使用User类，Roll类，User具有一般用户属性，Roll负责角色，他们是1对1关系，最好在数据库有一张User-
+Roll的对应关系表。来标明这个User具有哪个Roll。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h3 id="问题">问题</h3>
 <p>用户权限设计这一块，一直是一个我觉得比较难解决的问题。</p>
 <p>以前我用了「伪继承」，虽然管理员继承了普通用户，但是数据库却是分开设计的。又或者压根没有继承关系，是两个不同的实体。</p>
@@ -343,7 +392,14 @@ spx)&gt;</p>
       <link>https://blog.alswl.com/2009/06/gold-user-interface-design-principles/</link>
       <pubDate>Tue, 02 Jun 2009 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2009/06/gold-user-interface-design-principles/</guid>
-      <description>在《用户界面设计要素》一书（1997）中，T.Mandel提出了3条「黄金」知道规则： 让用户驾驭软件，而不是软件驾驭用户。那种在给用户的操作加上许多约束和限制的界面虽然设计容易，却往往难学难用。 尽可能减少用户的记忆。为此可建立易记的快捷键（例如Ctrl+p启动「打印」）；采用演进形式显示「提示」信息，以免要用户一次记忆大量信息。 保持界面的一致性。例如在同类产品中使用相同的设计规则；尽可能不改变用户</description>
+      <description>&lt;p&gt;在《用户界面设计要素》一书（1997）中，T.Mandel提出了3条「黄金」知道规则：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;让用户驾驭软件，而不是软件驾驭用户。那种在给用户的操作加上许多约束和限制的界面虽然设计容易，却往往难学难用。&lt;/li&gt;
+&lt;li&gt;尽可能减少用户的记忆。为此可建立易记的快捷键（例如Ctrl+p启动「打印」）；采用演进形式显示「提示」信息，以免要用户一次记忆大量信息。&lt;/li&gt;
+&lt;li&gt;保持界面的一致性。例如在同类产品中使用相同的设计规则；尽可能不改变用户已熟悉的操作功能键（例如用Ctrl+S保存文件）；设定界面的缺省状态。
+最近停下了贴吧的下一步开发，恶补软件工程，为下一步开发做理论基础。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;一边啃Rober C.大人写的《敏捷软件开发》。白天都浪迹在考研自习室（很是安静啊），更新变慢，勿怪。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>在《用户界面设计要素》一书（1997）中，T.Mandel提出了3条「黄金」知道规则：</p>
 <ol>
 <li>让用户驾驭软件，而不是软件驾驭用户。那种在给用户的操作加上许多约束和限制的界面虽然设计容易，却往往难学难用。</li>
@@ -359,7 +415,10 @@ spx)&gt;</p>
       <link>https://blog.alswl.com/2009/05/natural-theory-of-software/</link>
       <pubDate>Sun, 31 May 2009 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2009/05/natural-theory-of-software/</guid>
-      <description>所谓软件自然理论，就是说：一个优秀的软件，他的功能模块设计，应该与用户在完全没有接触过这个系统时候所想要的功能设计一致，用户觉得他想要的功能在什么地方，应该 怎样实现，那么这个功能就是应该在那里，就是应该这样实现。 这么说感觉上会很绕口，那么举个例子。Office就是一个比较优秀的软件，如果一个用户完全没有接触过Office（当然，必须具备基本的电脑使用水平），如果该用 户想对字体进行设置，那么他就觉得</description>
+      <description>&lt;p&gt;所谓软件自然理论，就是说：一个优秀的软件，他的功能模块设计，应该与用户在完全没有接触过这个系统时候所想要的功能设计一致，用户觉得他想要的功能在什么地方，应该
+怎样实现，那么这个功能就是应该在那里，就是应该这样实现。&lt;/p&gt;
+&lt;p&gt;这么说感觉上会很绕口，那么举个例子。Office就是一个比较优秀的软件，如果一个用户完全没有接触过Office（当然，必须具备基本的电脑使用水平），如果该用
+户想对字体进行设置，那么他就觉得字体设置属于格式，就应该在格式菜单里面，用户去点击这个菜单，就找到了自己需要的功能。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>所谓软件自然理论，就是说：一个优秀的软件，他的功能模块设计，应该与用户在完全没有接触过这个系统时候所想要的功能设计一致，用户觉得他想要的功能在什么地方，应该
 怎样实现，那么这个功能就是应该在那里，就是应该这样实现。</p>
 <p>这么说感觉上会很绕口，那么举个例子。Office就是一个比较优秀的软件，如果一个用户完全没有接触过Office（当然，必须具备基本的电脑使用水平），如果该用
@@ -375,7 +434,12 @@ spx)&gt;</p>
       <link>https://blog.alswl.com/2009/01/i-look-at-design-patterns/</link>
       <pubDate>Sun, 18 Jan 2009 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2009/01/i-look-at-design-patterns/</guid>
-      <description>花了6天时间把创建型5种模式看完了，很有感触，但是感触不意味着我理解，我甚至私下里觉得OOD的设计模式不适合我现在做的那些程序，那些都是一次成型，根本谈不上 需求的改变。没有改变，就不需要OO思想。因为我这样的想法，我看起来很累。 我知道这些思想对我以后的发展很有帮助，会从思想上把我解救出来，我被这些新的设计想法激动着（虽然出来很多年，可是对于我来说完全是新的，呵呵```）。 嗯，坚持下去 这几天我也在想</description>
+      <description>&lt;p&gt;花了6天时间把创建型5种模式看完了，很有感触，但是感触不意味着我理解，我甚至私下里觉得OOD的设计模式不适合我现在做的那些程序，那些都是一次成型，根本谈不上
+需求的改变。没有改变，就不需要OO思想。因为我这样的想法，我看起来很累。
+我知道这些思想对我以后的发展很有帮助，会从思想上把我解救出来，我被这些新的设计想法激动着（虽然出来很多年，可是对于我来说完全是新的，呵呵```）。&lt;/p&gt;
+&lt;p&gt;嗯，坚持下去&lt;/p&gt;
+&lt;p&gt;这几天我也在想以后走IT哪一条路。想了好久，现在的想法是：计算机本质上是一种工具，软件的存在是为了计算机更好的服务。既然是一个工具，就要有工具的觉悟，就必须
+不断适应生产力的发展，需要完善自身功能，也就是需求的变化。正是因为需求的变化，使得敏捷软件开发成为现在的主流。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>花了6天时间把创建型5种模式看完了，很有感触，但是感触不意味着我理解，我甚至私下里觉得OOD的设计模式不适合我现在做的那些程序，那些都是一次成型，根本谈不上
 需求的改变。没有改变，就不需要OO思想。因为我这样的想法，我看起来很累。
 我知道这些思想对我以后的发展很有帮助，会从思想上把我解救出来，我被这些新的设计想法激动着（虽然出来很多年，可是对于我来说完全是新的，呵呵```）。</p>

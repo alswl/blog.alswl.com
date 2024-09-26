@@ -4,7 +4,7 @@
     <title>重构 on Log4D</title>
     <link>https://blog.alswl.com/tags/%E9%87%8D%E6%9E%84/</link>
     <description>Recent content in 重构 on Log4D</description>
-    <generator>Hugo -- 0.129.0</generator>
+    <generator>Hugo -- 0.134.3</generator>
     <language>zh</language>
     <lastBuildDate>Tue, 17 Nov 2009 00:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/%E9%87%8D%E6%9E%84/rss.xml" rel="self" type="application/rss+xml" />
@@ -13,7 +13,73 @@
       <link>https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/</link>
       <pubDate>Tue, 17 Nov 2009 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/</guid>
-      <description>关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&amp;quot;观察&amp;ldquo;并且修改自己的行为。 Java中的反射示例如下： package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void main(String[] args) throws SecurityException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // 不使用反射 Foo foo = new Foo(); foo.fun(&amp;#34;no reflection&amp;#34;); // 使用反射 String className = &amp;#34;dddspace.job.exercise1116.Foo&amp;#34;; String funName = &amp;#34;fun&amp;#34;; // 获取类</description>
+      <description>&lt;h2 id=&#34;关于反射&#34;&gt;关于反射&lt;/h2&gt;
+&lt;p&gt;反射的定义（via &lt;a href=&#34;http://zh.wikipedia.org/zh-cn/%E5%8F%8D%E5%B0%84_%28%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%29&#34;&gt;Wiki&lt;/a&gt;）：在计算机科学中，反射是&lt;strong&gt;指一种特定类型的计算机程序能够在运行时以一种依
+赖于它的代码的抽象特性和它的运行时行为的方式被更改&lt;/strong&gt;的特性。用比喻来说，那种程式能够&amp;quot;&lt;strong&gt;观察&lt;/strong&gt;&amp;ldquo;并且修改自己的行为。&lt;/p&gt;
+&lt;p&gt;Java中的反射示例如下：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;    package dddspace.job.exercise1116;
+
+public class Foo {
+
+public void fun(String str) {
+
+System.out.println(str);
+
+}
+
+}
+
+
+    package dddspace.job.exercise1116;
+
+import java.lang.reflect.InvocationTargetException;
+
+import java.lang.reflect.Method;
+
+public class ReflectionDemo {
+
+public static void main(String[] args) throws SecurityException,
+
+NoSuchMethodException, ClassNotFoundException, InstantiationException,
+
+IllegalAccessException, IllegalArgumentException,
+
+InvocationTargetException {
+
+// 不使用反射
+
+Foo foo = new Foo();
+
+foo.fun(&amp;#34;no reflection&amp;#34;);
+
+
+// 使用反射
+
+String className = &amp;#34;dddspace.job.exercise1116.Foo&amp;#34;;
+
+String funName = &amp;#34;fun&amp;#34;;
+
+// 获取类名
+
+Class cls = Class.forName(className);
+
+// 创建Object实例
+
+Object foo2 = cls.newInstance();
+
+// 创建Method hello
+
+Method method = cls.getMethod(&amp;#34;fun&amp;#34;, String.class);
+
+// 使用反射来调用Method的invode方法，参数是目标对象+参数
+
+method.invoke(foo, &amp;#34;use reflection&amp;#34;);
+
+}
+
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;原始basedao设计&#34;&gt;原始BaseDao设计&lt;/h2&gt;
+&lt;p&gt;我先阐述一下BaseDao的设计想法：BaseDao是一个&lt;strong&gt;抽象类&lt;/strong&gt;，提供一系列Dao方法&amp;rdquo;&lt;strong&gt;get()/getAll()/add()/update()/delete()/getCount()&lt;/strong&gt;&amp;quot;，通过&lt;strong&gt;泛型匹配&lt;/strong&gt;的获取类，我取出一个方法来做示例。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h2 id="关于反射">关于反射</h2>
 <p>反射的定义（via <a href="http://zh.wikipedia.org/zh-cn/%E5%8F%8D%E5%B0%84_%28%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%29">Wiki</a>）：在计算机科学中，反射是<strong>指一种特定类型的计算机程序能够在运行时以一种依
 赖于它的代码的抽象特性和它的运行时行为的方式被更改</strong>的特性。用比喻来说，那种程式能够&quot;<strong>观察</strong>&ldquo;并且修改自己的行为。</p>

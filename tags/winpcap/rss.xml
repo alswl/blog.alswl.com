@@ -4,7 +4,7 @@
     <title>Winpcap on Log4D</title>
     <link>https://blog.alswl.com/tags/winpcap/</link>
     <description>Recent content in Winpcap on Log4D</description>
-    <generator>Hugo -- 0.129.0</generator>
+    <generator>Hugo -- 0.134.3</generator>
     <language>zh</language>
     <lastBuildDate>Thu, 25 Sep 2008 00:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/winpcap/rss.xml" rel="self" type="application/rss+xml" />
@@ -13,7 +13,31 @@
       <link>https://blog.alswl.com/2008/09/winpcap-arp/</link>
       <pubDate>Thu, 25 Sep 2008 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2008/09/winpcap-arp/</guid>
-      <description>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的 首先是ARP的接收，来看一下程序的流程 获取网络设备列表 pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;amp;alldevs, errbuf) 然后人机交互一下，获得需要工作的网卡 打开需要的网</description>
+      <description>&lt;p&gt;网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受&lt;/p&gt;
+&lt;p&gt;网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节
+的含义&lt;/p&gt;
+&lt;p&gt;玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的&lt;/p&gt;
+&lt;p&gt;首先是ARP的接收，来看一下程序的流程&lt;/p&gt;
+&lt;p&gt;获取网络设备列表&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;amp;alldevs, errbuf)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后人机交互一下，获得需要工作的网卡&lt;/p&gt;
+&lt;p&gt;打开需要的网卡&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;(adhandle= pcap_open(d-&amp;gt;name, // 设备名
+
+65536, // 要捕捉的数据包的部分
+
+// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
+
+PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式
+
+1000, // 读取超时时间
+
+NULL, // 远程机器验证
+
+errbuf // 错误缓冲池
+
+)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;检查数据链路层，我们只考虑以太网&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受</p>
 <p>网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节
 的含义</p>
@@ -101,7 +125,12 @@ source/647852)）其实很简单，如果有WinPcap开发文档，自己写也�
       <link>https://blog.alswl.com/2008/09/arp/</link>
       <pubDate>Tue, 23 Sep 2008 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2008/09/arp/</guid>
-      <description>挺累的，连续两天忙到3点睡觉，早上9点起来继续做 开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。 这是网络编程，也就是我的专业方向课的第一份作业，我特别看中这次，当初分方向时候，鑫爷和大妈都去了软件，我留在网络了。似乎都觉得网络好学，简单，不要写程序 那么我就写 第一次将c++与系统底层结合起来，去操作网络上的数据包，感觉真是，太perfect了，不再是呆板的代码</description>
+      <description>&lt;p&gt;挺累的，连续两天忙到3点睡觉，早上9点起来继续做&lt;/p&gt;
+&lt;p&gt;开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。&lt;/p&gt;
+&lt;p&gt;这是网络编程，也就是我的专业方向课的第一份作业，我特别看中这次，当初分方向时候，鑫爷和大妈都去了软件，我留在网络了。似乎都觉得网络好学，简单，不要写程序&lt;/p&gt;
+&lt;p&gt;那么我就写&lt;/p&gt;
+&lt;p&gt;第一次将c++与系统底层结合起来，去操作网络上的数据包，感觉真是，太perfect了，不再是呆板的代码，而是真实的数据，真实的操作，甚至我感觉通过键盘，我能
+控制一切的感觉&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>挺累的，连续两天忙到3点睡觉，早上9点起来继续做</p>
 <p>开始挺没状态，但后来写着写着状态来了，一个一个新的想法也加入了。代码就变得丰富多彩起来。</p>
 <p>这是网络编程，也就是我的专业方向课的第一份作业，我特别看中这次，当初分方向时候，鑫爷和大妈都去了软件，我留在网络了。似乎都觉得网络好学，简单，不要写程序</p>
@@ -121,7 +150,20 @@ source/647852)）其实很简单，如果有WinPcap开发文档，自己写也�
       <link>https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/</link>
       <pubDate>Sun, 14 Sep 2008 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2008/09/network-programming-learning-diary-2-_winpcap-some-examples-of-course-bring-their-own-learning/</guid>
-      <description>1.编译时候会出现函数问题 &amp;#39;pcap_findalldevs_ex&amp;#39; : undeclared identifier &amp;#39;PCAP_SRC_IF_STRING&amp;#39; : undeclared identifier &amp;#39;pcap_open&amp;#39; : undeclared identifier &amp;#39;PCAP_OPENFLAG_PROMISCUOUS&amp;#39; : undeclared identifier &amp;#39;=&amp;#39; : cannot convert from &amp;#39;int&amp;#39; to &amp;#39;struct pcap *&amp;#39; 等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个 头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在 #include &amp;ldquo;pcap.h&amp;quot;后面加上 #include &amp;ldquo;remote-ext.h&amp;rdquo; 就可以编译通过了。 网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了 = =#</description>
+      <description>&lt;p&gt;1.编译时候会出现函数问题&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&amp;#39;pcap_findalldevs_ex&amp;#39; : undeclared identifier
+&amp;#39;PCAP_SRC_IF_STRING&amp;#39; : undeclared identifier
+&amp;#39;pcap_open&amp;#39; : undeclared identifier
+&amp;#39;PCAP_OPENFLAG_PROMISCUOUS&amp;#39; : undeclared identifier
+&amp;#39;=&amp;#39; : cannot convert from &amp;#39;int&amp;#39; to &amp;#39;struct pcap *&amp;#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;等一系列函数找不到的问题，导致这些问题的关键在于他们的函数声明并不包含在pcap.h这个&lt;/p&gt;
+&lt;p&gt;头文件里面，而是包含在remote-ext.h这个函数里面，所以只需要在&lt;/p&gt;
+&lt;p&gt;#include &amp;ldquo;pcap.h&amp;quot;后面加上&lt;/p&gt;
+&lt;p&gt;#include &amp;ldquo;remote-ext.h&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;就可以编译通过了。&lt;/p&gt;
+&lt;p&gt;网上有网友戏称说是WinPcap开发小组故意做的恶作剧或者是撰写doc说明时候忘记加入了&lt;/p&gt;
+&lt;p&gt;= =#&lt;/p&gt;
+&lt;p&gt;2.出现连接错误&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>1.编译时候会出现函数问题</p>
 <pre tabindex="0"><code>&#39;pcap_findalldevs_ex&#39; : undeclared identifier
 &#39;PCAP_SRC_IF_STRING&#39; : undeclared identifier
@@ -156,7 +198,12 @@ Debug/Cpp3.exe : fatal error LNK1120: 1 unresolved externals
       <link>https://blog.alswl.com/2008/08/learning-network-programming-diary-1-_winpcap-and-vc-configuration/</link>
       <pubDate>Thu, 21 Aug 2008 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2008/08/learning-network-programming-diary-1-_winpcap-and-vc-configuration/</guid>
-      <description>下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这 种书，叹一个。 直接导致了我很多东西都得一点一点去网上查找。 很多函数都是用的WinPcap的，所以我又抓紧时间看WinPcap的入门知识。 WinPcap开发包下载：[http://www.winpcap.org/install/default.h</description>
+      <description>&lt;p&gt;下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这
+种书，叹一个。&lt;/p&gt;
+&lt;p&gt;直接导致了我很多东西都得一点一点去网上查找。&lt;/p&gt;
+&lt;p&gt;很多函数都是用的WinPcap的，所以我又抓紧时间看WinPcap的入门知识。&lt;/p&gt;
+&lt;p&gt;WinPcap开发包下载：[http://www.winpcap.org/install/default.htm](&lt;a href=&#34;http://www.winpcap.o&#34;&gt;http://www.winpcap.o&lt;/a&gt;
+rg/install/default.htm)&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>下学期有网络变成，用的是《计算机网络高级软件编程技术》，研究生教材，感觉书写的很泛泛，毕竟是给研究生用的书籍，很多基础的细节都没有写清楚，搞不懂学校怎么弄这
 种书，叹一个。</p>
 <p>直接导致了我很多东西都得一点一点去网上查找。</p>

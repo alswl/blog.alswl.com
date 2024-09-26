@@ -7,7 +7,79 @@
 <meta name="robots" content="index, follow">
 <title>Maven 下 Jetty 启动 | Log4D</title>
 <meta name="keywords" content="java, eclipse, jetty">
-<meta name="description" content="部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。 准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout src/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project&rsquo;s license NOTICE.txt Notices and attributions required by libraries that the project depends on README.txt Project&rsquo;s readme 使用的 pom.xml 主要添加了 build- plugins 的 Jetty 插">
+<meta name="description" content="部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External
+Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。
+准备 Maven 配置文件
+我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout
+
+src/main/java
+
+Application/Library sources
+
+
+src/main/resources
+
+Application/Library resources
+
+
+src/main/filters
+
+Resource filter files
+
+
+src/main/assembly
+
+Assembly descriptors
+
+
+src/main/config
+
+Configuration files
+
+
+src/main/webapp
+
+Web application sources
+
+
+src/test/java
+
+Test sources
+
+
+src/test/resources
+
+Test resources
+
+
+src/test/filters
+
+Test resource filter files
+
+
+src/site
+
+Site
+
+
+LICENSE.txt
+
+Project&rsquo;s license
+
+
+NOTICE.txt
+
+Notices and attributions required by libraries that the project depends on
+
+
+README.txt
+
+Project&rsquo;s readme
+
+
+
+使用的 pom.xml 主要添加了 build-
+plugins 的 Jetty 插件，另外修改了 outputDirectory，从而实现自动编译到targert/projectName/WEB- INF/classes目录，实现 Eclipse Hot Code。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2011/04/run-jetty-in-maven/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +129,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +142,80 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
+      </script><meta property="og:title" content="Maven 下 Jetty 启动" />
+<meta property="og:description" content="部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External
+Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。
+准备 Maven 配置文件
+我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout
 
-<meta property="og:title" content="Maven 下 Jetty 启动" />
-<meta property="og:description" content="部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。 准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout src/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project&rsquo;s license NOTICE.txt Notices and attributions required by libraries that the project depends on README.txt Project&rsquo;s readme 使用的 pom.xml 主要添加了 build- plugins 的 Jetty 插" />
+src/main/java
+
+Application/Library sources
+
+
+src/main/resources
+
+Application/Library resources
+
+
+src/main/filters
+
+Resource filter files
+
+
+src/main/assembly
+
+Assembly descriptors
+
+
+src/main/config
+
+Configuration files
+
+
+src/main/webapp
+
+Web application sources
+
+
+src/test/java
+
+Test sources
+
+
+src/test/resources
+
+Test resources
+
+
+src/test/filters
+
+Test resource filter files
+
+
+src/site
+
+Site
+
+
+LICENSE.txt
+
+Project&rsquo;s license
+
+
+NOTICE.txt
+
+Notices and attributions required by libraries that the project depends on
+
+
+README.txt
+
+Project&rsquo;s readme
+
+
+
+使用的 pom.xml 主要添加了 build-
+plugins 的 Jetty 插件，另外修改了 outputDirectory，从而实现自动编译到targert/projectName/WEB- INF/classes目录，实现 Eclipse Hot Code。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2011/04/run-jetty-in-maven/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2011-04-04T00:00:00+08:00" />
@@ -85,7 +223,79 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Maven 下 Jetty 启动"/>
-<meta name="twitter:description" content="部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。 准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout src/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project&rsquo;s license NOTICE.txt Notices and attributions required by libraries that the project depends on README.txt Project&rsquo;s readme 使用的 pom.xml 主要添加了 build- plugins 的 Jetty 插"/>
+<meta name="twitter:description" content="部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External
+Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。
+准备 Maven 配置文件
+我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout
+
+src/main/java
+
+Application/Library sources
+
+
+src/main/resources
+
+Application/Library resources
+
+
+src/main/filters
+
+Resource filter files
+
+
+src/main/assembly
+
+Assembly descriptors
+
+
+src/main/config
+
+Configuration files
+
+
+src/main/webapp
+
+Web application sources
+
+
+src/test/java
+
+Test sources
+
+
+src/test/resources
+
+Test resources
+
+
+src/test/filters
+
+Test resource filter files
+
+
+src/site
+
+Site
+
+
+LICENSE.txt
+
+Project&rsquo;s license
+
+
+NOTICE.txt
+
+Notices and attributions required by libraries that the project depends on
+
+
+README.txt
+
+Project&rsquo;s readme
+
+
+
+使用的 pom.xml 主要添加了 build-
+plugins 的 Jetty 插件，另外修改了 outputDirectory，从而实现自动编译到targert/projectName/WEB- INF/classes目录，实现 Eclipse Hot Code。"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +324,7 @@
   "@type": "BlogPosting",
   "headline": "Maven 下 Jetty 启动",
   "name": "Maven 下 Jetty 启动",
-  "description": "部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。 准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout src/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project\u0026rsquo;s license NOTICE.txt Notices and attributions required by libraries that the project depends on README.txt Project\u0026rsquo;s readme 使用的 pom.xml 主要添加了 build- plugins 的 Jetty 插",
+  "description": "部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。\n准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout\nsrc/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project\u0026rsquo;s license NOTICE.txt Notices and attributions required by libraries that the project depends on README.txt Project\u0026rsquo;s readme 使用的 pom.xml 主要添加了 build- plugins 的 Jetty 插件，另外修改了 outputDirectory，从而实现自动编译到targert/projectName/WEB- INF/classes目录，实现 Eclipse Hot Code。\n",
   "keywords": [
     "java", "eclipse", "jetty"
   ],
@@ -437,7 +647,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

@@ -4,7 +4,7 @@
     <title>正则表达式 on Log4D</title>
     <link>https://blog.alswl.com/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</link>
     <description>Recent content in 正则表达式 on Log4D</description>
-    <generator>Hugo -- 0.129.0</generator>
+    <generator>Hugo -- 0.134.3</generator>
     <language>zh</language>
     <lastBuildDate>Wed, 19 Jan 2011 00:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/rss.xml" rel="self" type="application/rss+xml" />
@@ -13,7 +13,17 @@
       <link>https://blog.alswl.com/2011/01/regex-group-catch/</link>
       <pubDate>Wed, 19 Jan 2011 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2011/01/regex-group-catch/</guid>
-      <description>问题情境 需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value)函数修改为GetCommentForComment( Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value, &amp;ldquo;ReportConnection0107&amp;rdquo;)。 思路 使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。 Vim实现 %s/GetComment(((sw+!w+.w+s,){2}s*&amp;ldquo;w+&amp;ldquo;s*,sw+!w+.w+s))/GetCommentForReport(1 , &amp;ldquo;ReportConnection0107&amp;rdquo;)/gc 解释：%为全局替换，s为替换。后面则是表达式，和正则表达式</description>
+      <description>&lt;h2 id=&#34;问题情境&#34;&gt;问题情境&lt;/h2&gt;
+&lt;p&gt;需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value
+,&amp;ldquo;total&amp;rdquo;, Parameters!Language.Value)函数修改为GetCommentForComment(
+Parameters!F0001.Value , Parameters!F0002.Value ,&amp;ldquo;total&amp;rdquo;,
+Parameters!Language.Value, &amp;ldquo;ReportConnection0107&amp;rdquo;)。&lt;/p&gt;
+&lt;h2 id=&#34;思路&#34;&gt;思路&lt;/h2&gt;
+&lt;p&gt;使用正则表达式里面的分组进行抓获，再用1将中间固定的参数取出，组成新的字符串。&lt;/p&gt;
+&lt;h3 id=&#34;vim实现&#34;&gt;Vim实现&lt;/h3&gt;
+&lt;p&gt;%s/GetComment(((s&lt;em&gt;w+!w+.w+s&lt;/em&gt;,){2}s*&amp;ldquo;w+&amp;ldquo;s*,s&lt;em&gt;w+!w+.w+s&lt;/em&gt;))/GetCommentForReport(1
+, &amp;ldquo;ReportConnection0107&amp;rdquo;)/gc&lt;/p&gt;
+&lt;p&gt;解释：%为全局替换，s为替换。后面则是表达式，和正则表达式差不多，注意是*不需要转义，+ 和 .需要转义，最后的g代表当前行替换，c代表每次替换需要确认。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h2 id="问题情境">问题情境</h2>
 <p>需要将RDL报表里的GetComment( Parameters!F0001.Value , Parameters!F0002.Value
 ,&ldquo;total&rdquo;, Parameters!Language.Value)函数修改为GetCommentForComment(
@@ -49,7 +59,24 @@ Parameters!Language.Value, &ldquo;ReportConnection0107&rdquo;)。</p>
       <link>https://blog.alswl.com/2010/01/regular-expressions-in-the-zero-width-assertion/</link>
       <pubDate>Tue, 26 Jan 2010 00:00:00 +0800</pubDate>
       <guid>https://blog.alswl.com/2010/01/regular-expressions-in-the-zero-width-assertion/</guid>
-      <description>这文是上个月开始写的，本来想深入的分析一下零宽断言，可惜工作一直忙，现在又要去转战DWR&amp;hellip;OMG~~ 起因 将要上线的系统中有一个字符规则：&amp;ldquo;13位的字符串，其中有8位连续数字&amp;rdquo;，需要用这则表达式对这个字符串进行判断。而我之前对正则的认识仅仅停留在匹配固定的字符上 ，对这个问题一筹莫展。 这时候热心的小邪出现了，我在他的博客 邪罗刹的菠萝阁 留下这个[问题](http:/</description>
+      <description>&lt;p&gt;这文是上个月开始写的，本来想深入的分析一下零宽断言，可惜工作一直忙，现在又要去转战&lt;strong&gt;DWR&lt;/strong&gt;&amp;hellip;OMG~~&lt;/p&gt;
+&lt;h2 id=&#34;起因&#34;&gt;起因&lt;/h2&gt;
+&lt;p&gt;将要上线的系统中有一个字符规则：&amp;ldquo;13位的字符串，其中有8位连续数字&amp;rdquo;，需要用这则表达式对这个字符串进行判断。而我之前对正则的认识仅仅停留在匹配固定的字符上
+，对这个问题一筹莫展。&lt;/p&gt;
+&lt;p&gt;这时候热心的小邪出现了，我在他的博客 &lt;a href=&#34;http://www.evlos.org&#34;&gt;邪罗刹的菠萝阁&lt;/a&gt;
+留下这个[问题](&lt;a href=&#34;http://www.evlos.org/2010/01/05/use-regex-to-clear-the-mix-of-tag-&#34;&gt;http://www.evlos.org/2010/01/05/use-regex-to-clear-the-mix-of-tag-&lt;/a&gt;
+img/#comment-5968)&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/upload_dropbox/201001/alswl_ask.jpg&#34; alt=&#34;image&#34;  /&gt;
+
+
+&lt;/p&gt;
+&lt;p&gt;小邪很热心的撰写了一篇文章给出回答：&lt;a href=&#34;http://www.evlos.org/2010/01/07/a-cuptool-and-a-washtool&#34;&gt; 一个杯具和一个洗具与最近学习手记 :
+邪罗刹的菠萝阁&lt;/a&gt;。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>这文是上个月开始写的，本来想深入的分析一下零宽断言，可惜工作一直忙，现在又要去转战<strong>DWR</strong>&hellip;OMG~~</p>
 <h2 id="起因">起因</h2>
 <p>将要上线的系统中有一个字符规则：&ldquo;13位的字符串，其中有8位连续数字&rdquo;，需要用这则表达式对这个字符串进行判断。而我之前对正则的认识仅仅停留在匹配固定的字符上

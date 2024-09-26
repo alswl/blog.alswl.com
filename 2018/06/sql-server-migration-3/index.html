@@ -7,7 +7,39 @@
 <meta name="robots" content="index, follow">
 <title>从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 | Log4D</title>
 <meta name="keywords" content="sqlserver, mysql, db-migration">
-<meta name="description" content="该系列三篇文章已经全部完成： 从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D 我们用了两章文章 从 SQL Server 到 MySQL（一）：异构数据库迁移 / 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 介绍我们遇到问题和解决方案。 不管是离线全量迁移还是在线无缝迁移， 核心 ETL 工具就是 yugong。 Yugong 是一个成熟工具， 在阿里巴巴去">
+<meta name="description" content="该系列三篇文章已经全部完成：
+
+从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D
+从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D
+从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D
+
+
+
+
+
+
+
+
+
+
+我们用了两章文章
+从 SQL Server 到 MySQL（一）：异构数据库迁移
+/
+从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机
+介绍我们遇到问题和解决方案。
+不管是离线全量迁移还是在线无缝迁移，
+核心 ETL 工具就是 yugong。
+Yugong 是一个成熟工具， 在阿里巴巴去 IOE 行动中起了重要作用，
+它与 Otter / Canal 都是阿里中间件团队出品。
+它们三者各有分工：
+Yugong 设计目标是异构数据库迁移；
+Canal 设计用来解决 MySQL binlog 订阅和消费问题；
+Otter 则是在 Canal 之上，以准实时标准解决数据库同步问题。
+Otter 配备了相对 yugong 更健壮管理工具、分布式协调工具，
+从而长期稳定运行。Yugong 设计目标则是一次性迁移工作，偏 Job 类型。
+当然 yugong 本身质量不错，长期运行也没问题。
+我们有个产线小伙伴使用我们魔改后 yugong，
+用来将数据从管理平台同步数据到用户前台，已经稳定跑了半年多了。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2018/06/sql-server-migration-3/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +89,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +102,40 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
+      </script><meta property="og:title" content="从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量" />
+<meta property="og:description" content="该系列三篇文章已经全部完成：
 
-<meta property="og:title" content="从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量" />
-<meta property="og:description" content="该系列三篇文章已经全部完成： 从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D 我们用了两章文章 从 SQL Server 到 MySQL（一）：异构数据库迁移 / 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 介绍我们遇到问题和解决方案。 不管是离线全量迁移还是在线无缝迁移， 核心 ETL 工具就是 yugong。 Yugong 是一个成熟工具， 在阿里巴巴去" />
+从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D
+从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D
+从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D
+
+
+
+
+
+
+
+
+
+
+我们用了两章文章
+从 SQL Server 到 MySQL（一）：异构数据库迁移
+/
+从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机
+介绍我们遇到问题和解决方案。
+不管是离线全量迁移还是在线无缝迁移，
+核心 ETL 工具就是 yugong。
+Yugong 是一个成熟工具， 在阿里巴巴去 IOE 行动中起了重要作用，
+它与 Otter / Canal 都是阿里中间件团队出品。
+它们三者各有分工：
+Yugong 设计目标是异构数据库迁移；
+Canal 设计用来解决 MySQL binlog 订阅和消费问题；
+Otter 则是在 Canal 之上，以准实时标准解决数据库同步问题。
+Otter 配备了相对 yugong 更健壮管理工具、分布式协调工具，
+从而长期稳定运行。Yugong 设计目标则是一次性迁移工作，偏 Job 类型。
+当然 yugong 本身质量不错，长期运行也没问题。
+我们有个产线小伙伴使用我们魔改后 yugong，
+用来将数据从管理平台同步数据到用户前台，已经稳定跑了半年多了。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2018/06/sql-server-migration-3/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2018-06-20T20:18:52+08:00" />
@@ -85,7 +143,39 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量"/>
-<meta name="twitter:description" content="该系列三篇文章已经全部完成： 从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D 我们用了两章文章 从 SQL Server 到 MySQL（一）：异构数据库迁移 / 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 介绍我们遇到问题和解决方案。 不管是离线全量迁移还是在线无缝迁移， 核心 ETL 工具就是 yugong。 Yugong 是一个成熟工具， 在阿里巴巴去"/>
+<meta name="twitter:description" content="该系列三篇文章已经全部完成：
+
+从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D
+从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D
+从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D
+
+
+
+
+
+
+
+
+
+
+我们用了两章文章
+从 SQL Server 到 MySQL（一）：异构数据库迁移
+/
+从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机
+介绍我们遇到问题和解决方案。
+不管是离线全量迁移还是在线无缝迁移，
+核心 ETL 工具就是 yugong。
+Yugong 是一个成熟工具， 在阿里巴巴去 IOE 行动中起了重要作用，
+它与 Otter / Canal 都是阿里中间件团队出品。
+它们三者各有分工：
+Yugong 设计目标是异构数据库迁移；
+Canal 设计用来解决 MySQL binlog 订阅和消费问题；
+Otter 则是在 Canal 之上，以准实时标准解决数据库同步问题。
+Otter 配备了相对 yugong 更健壮管理工具、分布式协调工具，
+从而长期稳定运行。Yugong 设计目标则是一次性迁移工作，偏 Job 类型。
+当然 yugong 本身质量不错，长期运行也没问题。
+我们有个产线小伙伴使用我们魔改后 yugong，
+用来将数据从管理平台同步数据到用户前台，已经稳定跑了半年多了。"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +204,7 @@
   "@type": "BlogPosting",
   "headline": "从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量",
   "name": "从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量",
-  "description": "该系列三篇文章已经全部完成： 从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D 我们用了两章文章 从 SQL Server 到 MySQL（一）：异构数据库迁移 / 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 介绍我们遇到问题和解决方案。 不管是离线全量迁移还是在线无缝迁移， 核心 ETL 工具就是 yugong。 Yugong 是一个成熟工具， 在阿里巴巴去",
+  "description": "该系列三篇文章已经全部完成：\n从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D 我们用了两章文章 从 SQL Server 到 MySQL（一）：异构数据库迁移 / 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 介绍我们遇到问题和解决方案。 不管是离线全量迁移还是在线无缝迁移， 核心 ETL 工具就是 yugong。\nYugong 是一个成熟工具， 在阿里巴巴去 IOE 行动中起了重要作用， 它与 Otter / Canal 都是阿里中间件团队出品。 它们三者各有分工： Yugong 设计目标是异构数据库迁移； Canal 设计用来解决 MySQL binlog 订阅和消费问题； Otter 则是在 Canal 之上，以准实时标准解决数据库同步问题。 Otter 配备了相对 yugong 更健壮管理工具、分布式协调工具， 从而长期稳定运行。Yugong 设计目标则是一次性迁移工作，偏 Job 类型。 当然 yugong 本身质量不错，长期运行也没问题。 我们有个产线小伙伴使用我们魔改后 yugong， 用来将数据从管理平台同步数据到用户前台，已经稳定跑了半年多了。\n",
   "keywords": [
     "sqlserver", "mysql", "db-migration"
   ],
@@ -304,7 +394,7 @@ Yugong 数据流是标准 ETL 流程，分别有 Extractor / Translator / Applie
 
 
 
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/etl.png" alt="ETL &amp;amp; Java Class"  />
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/etl.png" alt="ETL &amp; Java Class"  />
 
 
 </p>
@@ -534,7 +624,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

@@ -7,7 +7,89 @@
 <meta name="robots" content="index, follow">
 <title>TypeError: sequence item 22: expected string or Unicode, long found | Log4D</title>
 <meta name="keywords" content="python, mako">
-<meta name="description" content="Mako 下面开发时候，遇到这个问题 TypeError: sequence item : expected string or Unicode, long found Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息） File &lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&rsquo;, line 239 in staticpage return render(&rsquo;/pages/%s.html&rsquo; % name) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 274 in render_mako cache_type=cache_type, cache_expire=cache_expire) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 249 in cached_template return render_func() File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 271 in render_template return literal(template.render_unicode(**globs)) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/template.py&rsquo;, line 138 in render_unicode return runtime.render(self, self.callable, args, data, as_unicode=True) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&rsquo;, line 348 in _render return context._pop_buffer().getvalue() File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/util.py&rsquo;, line 74 in getvalue return self.delim.join(self.data) TypeError: sequence item 68: expected string or Unicode, NoneType found Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylon">
+<meta name="description" content="Mako 下面开发时候，遇到这个问题
+
+TypeError: sequence item : expected string or Unicode, long found
+
+Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息）
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&rsquo;,
+line 239 in staticpage
+
+
+
+
+return render(&rsquo;/pages/%s.html&rsquo; % name)
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 274 in render_mako
+
+
+
+
+cache_type=cache_type, cache_expire=cache_expire)
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 249 in
+cached_template
+
+
+
+
+return render_func()
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 271 in
+render_template
+
+
+
+
+return literal(template.render_unicode(**globs))
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/template.py&rsquo;, line 138 in render_unicode
+return runtime.render(self, self.callable, args, data, as_unicode=True) File
+&lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&rsquo;, line 348 in _render
+
+
+
+
+return context._pop_buffer().getvalue()
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/util.py&rsquo;, line 74 in getvalue
+
+
+
+
+return self.delim.join(self.data)
+
+
+
+
+TypeError: sequence item 68: expected string or Unicode, NoneType found
+
+Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylons-
+discuss@googlegroups.com/msg11021.html)（需翻墙）
+讨论了半天也没什么结果，一直围绕在 default_filter 上面，我改了半天，也没效果。
+测试服务器和正式环境都没有问题，最后试了清空data/session, data/templates 目录，终于没错误了。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2011/08/mako-typeerror/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +139,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +152,90 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
+      </script><meta property="og:title" content="TypeError: sequence item 22: expected string or Unicode, long found" />
+<meta property="og:description" content="Mako 下面开发时候，遇到这个问题
 
-<meta property="og:title" content="TypeError: sequence item 22: expected string or Unicode, long found" />
-<meta property="og:description" content="Mako 下面开发时候，遇到这个问题 TypeError: sequence item : expected string or Unicode, long found Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息） File &lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&rsquo;, line 239 in staticpage return render(&rsquo;/pages/%s.html&rsquo; % name) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 274 in render_mako cache_type=cache_type, cache_expire=cache_expire) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 249 in cached_template return render_func() File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 271 in render_template return literal(template.render_unicode(**globs)) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/template.py&rsquo;, line 138 in render_unicode return runtime.render(self, self.callable, args, data, as_unicode=True) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&rsquo;, line 348 in _render return context._pop_buffer().getvalue() File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/util.py&rsquo;, line 74 in getvalue return self.delim.join(self.data) TypeError: sequence item 68: expected string or Unicode, NoneType found Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylon" />
+TypeError: sequence item : expected string or Unicode, long found
+
+Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息）
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&rsquo;,
+line 239 in staticpage
+
+
+
+
+return render(&rsquo;/pages/%s.html&rsquo; % name)
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 274 in render_mako
+
+
+
+
+cache_type=cache_type, cache_expire=cache_expire)
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 249 in
+cached_template
+
+
+
+
+return render_func()
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 271 in
+render_template
+
+
+
+
+return literal(template.render_unicode(**globs))
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/template.py&rsquo;, line 138 in render_unicode
+return runtime.render(self, self.callable, args, data, as_unicode=True) File
+&lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&rsquo;, line 348 in _render
+
+
+
+
+return context._pop_buffer().getvalue()
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/util.py&rsquo;, line 74 in getvalue
+
+
+
+
+return self.delim.join(self.data)
+
+
+
+
+TypeError: sequence item 68: expected string or Unicode, NoneType found
+
+Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylons-
+discuss@googlegroups.com/msg11021.html)（需翻墙）
+讨论了半天也没什么结果，一直围绕在 default_filter 上面，我改了半天，也没效果。
+测试服务器和正式环境都没有问题，最后试了清空data/session, data/templates 目录，终于没错误了。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2011/08/mako-typeerror/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2011-08-25T00:00:00+08:00" />
@@ -85,7 +243,89 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="TypeError: sequence item 22: expected string or Unicode, long found"/>
-<meta name="twitter:description" content="Mako 下面开发时候，遇到这个问题 TypeError: sequence item : expected string or Unicode, long found Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息） File &lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&rsquo;, line 239 in staticpage return render(&rsquo;/pages/%s.html&rsquo; % name) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 274 in render_mako cache_type=cache_type, cache_expire=cache_expire) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 249 in cached_template return render_func() File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 271 in render_template return literal(template.render_unicode(**globs)) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/template.py&rsquo;, line 138 in render_unicode return runtime.render(self, self.callable, args, data, as_unicode=True) File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&rsquo;, line 348 in _render return context._pop_buffer().getvalue() File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/util.py&rsquo;, line 74 in getvalue return self.delim.join(self.data) TypeError: sequence item 68: expected string or Unicode, NoneType found Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylon"/>
+<meta name="twitter:description" content="Mako 下面开发时候，遇到这个问题
+
+TypeError: sequence item : expected string or Unicode, long found
+
+Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息）
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py&rsquo;,
+line 239 in staticpage
+
+
+
+
+return render(&rsquo;/pages/%s.html&rsquo; % name)
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 274 in render_mako
+
+
+
+
+cache_type=cache_type, cache_expire=cache_expire)
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 249 in
+cached_template
+
+
+
+
+return render_func()
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py&rsquo;, line 271 in
+render_template
+
+
+
+
+return literal(template.render_unicode(**globs))
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/template.py&rsquo;, line 138 in render_unicode
+return runtime.render(self, self.callable, args, data, as_unicode=True) File
+&lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/runtime.py&rsquo;, line 348 in _render
+
+
+
+
+return context._pop_buffer().getvalue()
+
+
+
+
+File &lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site-
+packages/Mako-0.2.4-py2.5.egg/mako/util.py&rsquo;, line 74 in getvalue
+
+
+
+
+return self.delim.join(self.data)
+
+
+
+
+TypeError: sequence item 68: expected string or Unicode, NoneType found
+
+Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylons-
+discuss@googlegroups.com/msg11021.html)（需翻墙）
+讨论了半天也没什么结果，一直围绕在 default_filter 上面，我改了半天，也没效果。
+测试服务器和正式环境都没有问题，最后试了清空data/session, data/templates 目录，终于没错误了。"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +354,7 @@
   "@type": "BlogPosting",
   "headline": "TypeError: sequence item 22: expected string or Unicode, long found",
   "name": "TypeError: sequence item 22: expected string or Unicode, long found",
-  "description": "Mako 下面开发时候，遇到这个问题 TypeError: sequence item : expected string or Unicode, long found Trace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息） File \u0026lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py\u0026rsquo;, line 239 in staticpage return render(\u0026rsquo;/pages/%s.html\u0026rsquo; % name) File \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py\u0026rsquo;, line 274 in render_mako cache_type=cache_type, cache_expire=cache_expire) File \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py\u0026rsquo;, line 249 in cached_template return render_func() File \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py\u0026rsquo;, line 271 in render_template return literal(template.render_unicode(**globs)) File \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/template.py\u0026rsquo;, line 138 in render_unicode return runtime.render(self, self.callable, args, data, as_unicode=True) File \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/runtime.py\u0026rsquo;, line 348 in _render return context._pop_buffer().getvalue() File \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/util.py\u0026rsquo;, line 74 in getvalue return self.delim.join(self.data) TypeError: sequence item 68: expected string or Unicode, NoneType found Mako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylon",
+  "description": "Mako 下面开发时候，遇到这个问题\nTypeError: sequence item : expected string or Unicode, long found\nTrace 的情况大概这样（我的错误信息无法再现，这是某位外国友人的错误信息）\nFile \u0026lsquo;/Users/amaslov/Projects/dou-pylons/doupy/doupy/controllers/ root.py\u0026rsquo;, line 239 in staticpage\nreturn render(\u0026rsquo;/pages/%s.html\u0026rsquo; % name)\nFile \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py\u0026rsquo;, line 274 in render_mako\ncache_type=cache_type, cache_expire=cache_expire)\nFile \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py\u0026rsquo;, line 249 in cached_template\nreturn render_func()\nFile \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Pylons-0.9.7-py2.5.egg/pylons/templating.py\u0026rsquo;, line 271 in render_template\nreturn literal(template.render_unicode(**globs))\nFile \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/template.py\u0026rsquo;, line 138 in render_unicode return runtime.render(self, self.callable, args, data, as_unicode=True) File \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/runtime.py\u0026rsquo;, line 348 in _render\nreturn context._pop_buffer().getvalue()\nFile \u0026lsquo;/Users/amaslov/Projects/dou-pylons/py/lib/python2.5/site- packages/Mako-0.2.4-py2.5.egg/mako/util.py\u0026rsquo;, line 74 in getvalue\nreturn self.delim.join(self.data)\nTypeError: sequence item 68: expected string or Unicode, NoneType found\nMako 的邮件列表曾在2009年遇到这个错误，讨论信息在[这里](http://www.mail-archive.com/pylons- discuss@googlegroups.com/msg11021.html)（需翻墙）\n讨论了半天也没什么结果，一直围绕在 default_filter 上面，我改了半天，也没效果。\n测试服务器和正式环境都没有问题，最后试了清空data/session, data/templates 目录，终于没错误了。\n",
   "keywords": [
     "python", "mako"
   ],
@@ -356,7 +596,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

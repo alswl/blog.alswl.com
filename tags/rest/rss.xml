@@ -4,7 +4,7 @@
     <title>Rest on Log4D</title>
     <link>https://blog.alswl.com/tags/rest/</link>
     <description>Recent content in Rest on Log4D</description>
-    <generator>Hugo -- 0.129.0</generator>
+    <generator>Hugo -- 0.134.3</generator>
     <language>zh</language>
     <lastBuildDate>Mon, 03 Apr 2023 11:34:18 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/rest/rss.xml" rel="self" type="application/rss+xml" />
@@ -13,7 +13,22 @@
       <link>https://blog.alswl.com/2023/04/web-api-guidelines/</link>
       <pubDate>Mon, 03 Apr 2023 11:34:18 +0800</pubDate>
       <guid>https://blog.alswl.com/2023/04/web-api-guidelines/</guid>
-      <description>当开始创建一个新系统，或参与一个新团队或项目时，都会面临一个简单却深刻的问题：这个系统（Web Server）的 API 是否有设计规范？ image by stable difussion, prompt by alswl 这个问题困扰了我很长时间，始于我求学时期，每一次都需要与团队成员进行交流和讨论。 从最初的自由风格到后来的 REST，我经常向项目组引用 Github v3 和 Foursqure API（已经无法访问，暴露年龄） 文档。 然而，在实践过程中，仍然会有一些与实际工作或公司通用规范不匹配的情况， 这时候我需</description>
+      <description>&lt;p&gt;当开始创建一个新系统，或参与一个新团队或项目时，都会面临一个简单却深刻的问题：这个系统（Web Server）的 API 是否有设计规范？&lt;/p&gt;
+&lt;p&gt;
+
+
+
+
+&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/202304/pyramid.png&#34; alt=&#34;pyramid&#34;  /&gt;
+
+
+&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;image by stable difussion, prompt by alswl&lt;/small&gt;&lt;/p&gt;
+&lt;p&gt;这个问题困扰了我很长时间，始于我求学时期，每一次都需要与团队成员进行交流和讨论。
+从最初的自由风格到后来的 REST，我经常向项目组引用 &lt;a href=&#34;https://docs.github.com/en/rest?apiVersion=2022-11-28&#34;&gt;Github v3&lt;/a&gt; 和
+Foursqure API（已经无法访问，暴露年龄） 文档。
+然而，在实践过程中，仍然会有一些与实际工作或公司通用规范不匹配的情况，
+这时候我需要做一些补充工作。最终，我会撰写一个简要的 &lt;code&gt;DEVELOPMENT.md&lt;/code&gt; 文档，以描述设计方案。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>当开始创建一个新系统，或参与一个新团队或项目时，都会面临一个简单却深刻的问题：这个系统（Web Server）的 API 是否有设计规范？</p>
 <p>
 
@@ -143,101 +158,101 @@ Verb 是动词，也可以省略；Query 是请求参数；Fragment 是 HTTP 原
 <p><strong>设计风格选择</strong></p>
 <p>注：<strong>请注意，方案 A / B / C 之间没有关联，每行上下也没有关联</strong></p>
 <table>
-<thead>
-<tr>
-<th>问题</th>
-<th>解释（见下方单列分析）</th>
-<th>方案 A</th>
-<th>方案 B</th>
-<th>方案 C</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>API Path 里面 Prefix</td>
-<td></td>
-<td><code>/apis</code></td>
-<td><code>/api</code></td>
-<td>二级域名</td>
-</tr>
-<tr>
-<td>Path 里面是否包含 API 版本</td>
-<td><strong>版本在 URL 的优势</strong></td>
-<td>✅</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>Path 是否包含 Group</td>
-<td></td>
-<td>✅</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>Path 是否包含动作</td>
-<td><strong>HTTP Verb 不够用的情况</strong></td>
-<td>✅</td>
-<td>🚫 （纯 REST）</td>
-<td>看情况（如果 HTTP Verb CRUD 无法满足就包含）</td>
-</tr>
-<tr>
-<td>模型 ID 形式</td>
-<td><strong>Readable Stable Identity 解释</strong></td>
-<td>自增 ID</td>
-<td>GUID</td>
-<td><mark>Readable Stable ID</mark></td>
-</tr>
-<tr>
-<td>URL 中模型单数还是复数</td>
-<td></td>
-<td>单数</td>
-<td>复数</td>
-<td>列表复数，单向单数</td>
-</tr>
-<tr>
-<td>资源是一级（平铺）还是多级（嵌套）</td>
-<td><strong>一级和多级的解释</strong></td>
-<td>一级（平铺）</td>
-<td>多级（嵌套）</td>
-<td></td>
-</tr>
-<tr>
-<td>搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
-<td></td>
-<td>独立</td>
-<td>合并</td>
-<td></td>
-</tr>
-<tr>
-<td>是否有 Alias URL</td>
-<td><strong>Alias URL 解释</strong></td>
-<td>✅</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>URL 中模型是否允许缩写（或精简）</td>
-<td><strong>模型缩写解释</strong></td>
-<td>✅</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>URL 中模型多个词语拼接的连字符</td>
-<td></td>
-<td><code>-</code></td>
-<td><code>_</code></td>
-<td>Camel</td>
-</tr>
-<tr>
-<td>是否要区分 Web API 以及 Open API（面向非浏览器）</td>
-<td></td>
-<td>✅</td>
-<td>🚫</td>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">问题</th>
+          <th style="text-align: left">解释（见下方单列分析）</th>
+          <th style="text-align: left">方案 A</th>
+          <th style="text-align: left">方案 B</th>
+          <th style="text-align: left">方案 C</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">API Path 里面 Prefix</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"><code>/apis</code></td>
+          <td style="text-align: left"><code>/api</code></td>
+          <td style="text-align: left">二级域名</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 里面是否包含 API 版本</td>
+          <td style="text-align: left"><strong>版本在 URL 的优势</strong></td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 是否包含 Group</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 是否包含动作</td>
+          <td style="text-align: left"><strong>HTTP Verb 不够用的情况</strong></td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">🚫 （纯 REST）</td>
+          <td style="text-align: left">看情况（如果 HTTP Verb CRUD 无法满足就包含）</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">模型 ID 形式</td>
+          <td style="text-align: left"><strong>Readable Stable Identity 解释</strong></td>
+          <td style="text-align: left">自增 ID</td>
+          <td style="text-align: left">GUID</td>
+          <td style="text-align: left"><mark>Readable Stable ID</mark></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型单数还是复数</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">单数</td>
+          <td style="text-align: left">复数</td>
+          <td style="text-align: left">列表复数，单向单数</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">资源是一级（平铺）还是多级（嵌套）</td>
+          <td style="text-align: left"><strong>一级和多级的解释</strong></td>
+          <td style="text-align: left">一级（平铺）</td>
+          <td style="text-align: left">多级（嵌套）</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">独立</td>
+          <td style="text-align: left">合并</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否有 Alias URL</td>
+          <td style="text-align: left"><strong>Alias URL 解释</strong></td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型是否允许缩写（或精简）</td>
+          <td style="text-align: left"><strong>模型缩写解释</strong></td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型多个词语拼接的连字符</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"><code>-</code></td>
+          <td style="text-align: left"><code>_</code></td>
+          <td style="text-align: left">Camel</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否要区分 Web API 以及 Open API（面向非浏览器）</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>版本在 URL 的优势</strong></p>
 <p>我们在设计 URL 时遵循一致性的原则，无论是哪种身份或状态，都会使用相同的 URL 来访问同一个资源。
@@ -305,66 +320,66 @@ https://test.com/apis/v3/books/hot
 份验证逻辑（例如 Cookie / Basic Auth / Berear Token）都依赖于 Header 的设计。</p>
 <p><strong>设计风格选择</strong></p>
 <table>
-<thead>
-<tr>
-<th>问题</th>
-<th>解释（见下方单列分析）</th>
-<th>方案 A</th>
-<th>方案 B</th>
-<th>方案 C</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>是否所有 Verb 都使用 POST</td>
-<td><strong>关于全盘 POST</strong></td>
-<td>✅</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>修改（Modify）动作是 POST 还是 PATCH？</td>
-<td></td>
-<td>POST</td>
-<td>PATCH</td>
-<td></td>
-</tr>
-<tr>
-<td>HTTP Status 返回值</td>
-<td><strong>2XX 家族</strong></td>
-<td>充分利用 HTTP Status</td>
-<td>只用核心状态（200 404 302 等）</td>
-<td>只用 200</td>
-</tr>
-<tr>
-<td>是否使用考虑限流系统</td>
-<td></td>
-<td>✅ 429</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>是否使用缓存系统</td>
-<td></td>
-<td>✅ ETag / Last Modify</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>是否校验 UserAgent</td>
-<td></td>
-<td>✅</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>是否校验 Referrral</td>
-<td></td>
-<td>✅</td>
-<td>🚫</td>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">问题</th>
+          <th style="text-align: left">解释（见下方单列分析）</th>
+          <th style="text-align: left">方案 A</th>
+          <th style="text-align: left">方案 B</th>
+          <th style="text-align: left">方案 C</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">是否所有 Verb 都使用 POST</td>
+          <td style="text-align: left"><strong>关于全盘 POST</strong></td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">修改（Modify）动作是 POST 还是 PATCH？</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">POST</td>
+          <td style="text-align: left">PATCH</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HTTP Status 返回值</td>
+          <td style="text-align: left"><strong>2XX 家族</strong></td>
+          <td style="text-align: left">充分利用 HTTP Status</td>
+          <td style="text-align: left">只用核心状态（200 404 302 等）</td>
+          <td style="text-align: left">只用 200</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否使用考虑限流系统</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">✅ 429</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否使用缓存系统</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">✅ ETag / Last Modify</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否校验 UserAgent</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否校验 Referrral</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>关于全盘 POST</strong></p>
 <p>有些新手（或者自认为有经验的人）可能得出一个错误的结论，即除了 GET 请求以外，
@@ -394,52 +409,52 @@ https://test.com/apis/v3/books/hot
 <h3 id="request-最佳实践">Request 最佳实践</h3>
 <p><strong>设计风格选择</strong></p>
 <table>
-<thead>
-<tr>
-<th>问题</th>
-<th>解释（见下方单列分析）</th>
-<th>方案 A</th>
-<th>方案 B</th>
-<th>方案 C</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
-<td></td>
-<td>Form Fields</td>
-<td>Body</td>
-<td></td>
-</tr>
-<tr>
-<td>子资源是一次性查询还是独立查询</td>
-<td></td>
-<td>嵌套</td>
-<td>独立查询</td>
-<td></td>
-</tr>
-<tr>
-<td>分页参数存放</td>
-<td></td>
-<td>Header</td>
-<td>URL Query</td>
-<td></td>
-</tr>
-<tr>
-<td>分页方式</td>
-<td><strong>分页方式解释</strong></td>
-<td>Page based</td>
-<td>Offset based</td>
-<td>Continuation token</td>
-</tr>
-<tr>
-<td>分页控制者</td>
-<td><strong>分页控制者解释</strong></td>
-<td>客户端</td>
-<td>服务端</td>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">问题</th>
+          <th style="text-align: left">解释（见下方单列分析）</th>
+          <th style="text-align: left">方案 A</th>
+          <th style="text-align: left">方案 B</th>
+          <th style="text-align: left">方案 C</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">Form Fields</td>
+          <td style="text-align: left">Body</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">子资源是一次性查询还是独立查询</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">嵌套</td>
+          <td style="text-align: left">独立查询</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页参数存放</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">Header</td>
+          <td style="text-align: left">URL Query</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页方式</td>
+          <td style="text-align: left"><strong>分页方式解释</strong></td>
+          <td style="text-align: left">Page based</td>
+          <td style="text-align: left">Offset based</td>
+          <td style="text-align: left">Continuation token</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页控制者</td>
+          <td style="text-align: left"><strong>分页控制者解释</strong></td>
+          <td style="text-align: left">客户端</td>
+          <td style="text-align: left">服务端</td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>分页方式解释</strong></p>
 <p>我们最为常见的两种分页方式是 Page-based 和 Offset-based，可以通过公式进行映射。
@@ -453,73 +468,73 @@ https://test.com/apis/v3/books/hot
 <h3 id="response-最佳实践">Response 最佳实践</h3>
 <p><strong>设计风格选择</strong></p>
 <table>
-<thead>
-<tr>
-<th>问题</th>
-<th>解释（见下方单列分析）</th>
-<th>方案 A</th>
-<th>方案 B</th>
-<th>方案 C</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>模型呈现种类</td>
-<td><strong>模型的几种形式</strong></td>
-<td>单一模型</td>
-<td>多种模型</td>
-<td></td>
-</tr>
-<tr>
-<td>大模型如何包含子模型模型</td>
-<td><strong>模型的连接、侧载和嵌入</strong></td>
-<td>嵌入</td>
-<td>核心模型 + 多次关联资源查询</td>
-<td>链接</td>
-</tr>
-<tr>
-<td>字段返回是按需还是归并还是统一</td>
-<td></td>
-<td>统一</td>
-<td>使用 <code>fields</code> 字段按需</td>
-<td></td>
-</tr>
-<tr>
-<td>字段表现格式</td>
-<td></td>
-<td>Snake</td>
-<td>Camel</td>
-<td></td>
-</tr>
-<tr>
-<td>错误码</td>
-<td></td>
-<td>无自定，使用 Message</td>
-<td>自定义</td>
-<td></td>
-</tr>
-<tr>
-<td>错误格式</td>
-<td></td>
-<td>全局统一</td>
-<td>按需</td>
-<td></td>
-</tr>
-<tr>
-<td>时区</td>
-<td></td>
-<td>UTC</td>
-<td>Local</td>
-<td>Local + TZ</td>
-</tr>
-<tr>
-<td>HATEOAS</td>
-<td></td>
-<td>✅</td>
-<td>🚫</td>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">问题</th>
+          <th style="text-align: left">解释（见下方单列分析）</th>
+          <th style="text-align: left">方案 A</th>
+          <th style="text-align: left">方案 B</th>
+          <th style="text-align: left">方案 C</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">模型呈现种类</td>
+          <td style="text-align: left"><strong>模型的几种形式</strong></td>
+          <td style="text-align: left">单一模型</td>
+          <td style="text-align: left">多种模型</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">大模型如何包含子模型模型</td>
+          <td style="text-align: left"><strong>模型的连接、侧载和嵌入</strong></td>
+          <td style="text-align: left">嵌入</td>
+          <td style="text-align: left">核心模型 + 多次关联资源查询</td>
+          <td style="text-align: left">链接</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">字段返回是按需还是归并还是统一</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">统一</td>
+          <td style="text-align: left">使用 <code>fields</code> 字段按需</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">字段表现格式</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">Snake</td>
+          <td style="text-align: left">Camel</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">错误码</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">无自定，使用 Message</td>
+          <td style="text-align: left">自定义</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">错误格式</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">全局统一</td>
+          <td style="text-align: left">按需</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">时区</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">UTC</td>
+          <td style="text-align: left">Local</td>
+          <td style="text-align: left">Local + TZ</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HATEOAS</td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
 </table>
 <p><strong>模型的几种形式</strong></p>
 <p>在 API 设计中，对于模型的表现形式有多种定义。虽然这并不是 API 规范必须讨论的话题，但它对于 API 设计来说是非常重要的。</p>
@@ -658,195 +673,195 @@ API 定义 <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28">GitHu
 面向应用程序提供的 API 列表 <a href="https://docs.github.com/en/rest/overview/endpoints-available-for-github-apps?apiVersion=2022-11-28">Endpoints available for GitHub Apps</a>
 ，该列表几乎包含了 Github 的全部 API。</p>
 <table>
-<thead>
-<tr>
-<th>问题</th>
-<th>选择</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>URL</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>API Path 里面 Prefix</td>
-<td>二级域名</td>
-<td><a href="https://api.github.com">https://api.github.com</a></td>
-</tr>
-<tr>
-<td>Path 里面是否包含 API 版本</td>
-<td>🚫</td>
-<td>Header <code>X-GitHub-Api-Version</code> <a href="https://docs.github.com/en/rest/overview/api-versions?apiVersion=2022-11-28">API Versions</a></td>
-</tr>
-<tr>
-<td>Path 是否包含 Group</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>Path 是否包含动作</td>
-<td>看情况（如果 HTTP Verb CRUD 无法满足就包含）</td>
-<td>比如 <code>PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge</code> <code>POST /repos/{owner}/{repo}/releases/generate-notes</code></td>
-</tr>
-<tr>
-<td>模型 ID 形式</td>
-<td>Readable Stable Identity</td>
-<td></td>
-</tr>
-<tr>
-<td>URL 中模型单数还是复数</td>
-<td>复数</td>
-<td></td>
-</tr>
-<tr>
-<td>资源是一级（平铺）还是多级（嵌套）</td>
-<td>多级</td>
-<td></td>
-</tr>
-<tr>
-<td>搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
-<td>独立</td>
-<td></td>
-</tr>
-<tr>
-<td>是否有 Alias URL</td>
-<td>?</td>
-<td></td>
-</tr>
-<tr>
-<td>URL 中模型是否允许缩写（或精简）</td>
-<td>🚫</td>
-<td>没有看到明显信息，基于多级模型也不需要，但是存在 <code>GET /orgs/{org}/actions/required_workflows</code></td>
-</tr>
-<tr>
-<td>URL 中模型多个词语拼接的连字符</td>
-<td><code>-</code> 和 <code>_</code></td>
-<td><code>GET /repos/{owner}/{repo}/git/matching-refs/{ref}</code> vs <code>GET /orgs/{org}/actions/required_workflows</code></td>
-</tr>
-<tr>
-<td>是否要区分 Web API 以及 Open API（面向非浏览器）</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>Header</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>是否所有 Verb 都使用 POST</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>修改（Modify）动作是 POST 还是 PATCH？</td>
-<td>PATCH</td>
-<td></td>
-</tr>
-<tr>
-<td>HTTP Status 返回值</td>
-<td>充分利用 HTTP Status</td>
-<td>常用，包括限流洗损</td>
-</tr>
-<tr>
-<td>是否使用考虑限流系统</td>
-<td>✅ 429</td>
-<td></td>
-</tr>
-<tr>
-<td>是否使用缓存系统</td>
-<td>✅ ETag / Last Modify</td>
-<td><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors">Resources in the REST API#client-errors</a></td>
-</tr>
-<tr>
-<td>是否校验 UserAgent</td>
-<td>✅</td>
-<td></td>
-</tr>
-<tr>
-<td>是否校验 Referrral</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>Request</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
-<td>Body</td>
-<td>参考 <a href="https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#create-a-pull-request">Pulls#create-a-pull-request</a></td>
-</tr>
-<tr>
-<td>子资源是一次性查询还是独立查询</td>
-<td>嵌套</td>
-<td>从 Pulls 进行判断</td>
-</tr>
-<tr>
-<td>分页参数存放</td>
-<td>URL Query</td>
-<td></td>
-</tr>
-<tr>
-<td>分页方式</td>
-<td>Page</td>
-<td><a href="https://docs.github.com/en/rest/guides/using-pagination-in-the-rest-api?apiVersion=2022-11-28">Using pagination in the REST API</a></td>
-</tr>
-<tr>
-<td>分页控制者</td>
-<td>服务端</td>
-<td>同上</td>
-</tr>
-<tr>
-<td><strong>Response</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>模型呈现种类</td>
-<td>多种模型</td>
-<td>比如 Commits 里面的 明细和 Parent <a href="https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28">Commits</a></td>
-</tr>
-<tr>
-<td>大模型如何包含子模型模型</td>
-<td>核心模型 + 多次关联资源查询？</td>
-<td>没有明确说明，根据几个核心 API 反推</td>
-</tr>
-<tr>
-<td>字段返回是按需还是归并还是统一</td>
-<td>统一</td>
-<td></td>
-</tr>
-<tr>
-<td>字段表现格式</td>
-<td>Snake</td>
-<td></td>
-</tr>
-<tr>
-<td>错误码</td>
-<td>无</td>
-<td><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors">Resources in the REST API#client-errors</a></td>
-</tr>
-<tr>
-<td>错误格式</td>
-<td>全局统一</td>
-<td><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors">Resources in the REST API#client-errors</a></td>
-</tr>
-<tr>
-<td>时区</td>
-<td>复合方案（ISO 8601 &gt; Time-Zone Header &gt; User Last &gt; UTC）</td>
-<td><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#timezones">Resources in the REST API#Timezones</a></td>
-</tr>
-<tr>
-<td>HATEOAS</td>
-<td>🚫</td>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">问题</th>
+          <th style="text-align: left">选择</th>
+          <th style="text-align: left">备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>URL</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">API Path 里面 Prefix</td>
+          <td style="text-align: left">二级域名</td>
+          <td style="text-align: left"><a href="https://api.github.com">https://api.github.com</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 里面是否包含 API 版本</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left">Header <code>X-GitHub-Api-Version</code> <a href="https://docs.github.com/en/rest/overview/api-versions?apiVersion=2022-11-28">API Versions</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 是否包含 Group</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 是否包含动作</td>
+          <td style="text-align: left">看情况（如果 HTTP Verb CRUD 无法满足就包含）</td>
+          <td style="text-align: left">比如 <code>PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge</code> <code>POST /repos/{owner}/{repo}/releases/generate-notes</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">模型 ID 形式</td>
+          <td style="text-align: left">Readable Stable Identity</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型单数还是复数</td>
+          <td style="text-align: left">复数</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">资源是一级（平铺）还是多级（嵌套）</td>
+          <td style="text-align: left">多级</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
+          <td style="text-align: left">独立</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否有 Alias URL</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型是否允许缩写（或精简）</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left">没有看到明显信息，基于多级模型也不需要，但是存在 <code>GET /orgs/{org}/actions/required_workflows</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型多个词语拼接的连字符</td>
+          <td style="text-align: left"><code>-</code> 和 <code>_</code></td>
+          <td style="text-align: left"><code>GET /repos/{owner}/{repo}/git/matching-refs/{ref}</code> vs <code>GET /orgs/{org}/actions/required_workflows</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否要区分 Web API 以及 Open API（面向非浏览器）</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Header</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否所有 Verb 都使用 POST</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">修改（Modify）动作是 POST 还是 PATCH？</td>
+          <td style="text-align: left">PATCH</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HTTP Status 返回值</td>
+          <td style="text-align: left">充分利用 HTTP Status</td>
+          <td style="text-align: left">常用，包括限流洗损</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否使用考虑限流系统</td>
+          <td style="text-align: left">✅ 429</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否使用缓存系统</td>
+          <td style="text-align: left">✅ ETag / Last Modify</td>
+          <td style="text-align: left"><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors">Resources in the REST API#client-errors</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否校验 UserAgent</td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否校验 Referrral</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Request</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
+          <td style="text-align: left">Body</td>
+          <td style="text-align: left">参考 <a href="https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#create-a-pull-request">Pulls#create-a-pull-request</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">子资源是一次性查询还是独立查询</td>
+          <td style="text-align: left">嵌套</td>
+          <td style="text-align: left">从 Pulls 进行判断</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页参数存放</td>
+          <td style="text-align: left">URL Query</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页方式</td>
+          <td style="text-align: left">Page</td>
+          <td style="text-align: left"><a href="https://docs.github.com/en/rest/guides/using-pagination-in-the-rest-api?apiVersion=2022-11-28">Using pagination in the REST API</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页控制者</td>
+          <td style="text-align: left">服务端</td>
+          <td style="text-align: left">同上</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Response</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">模型呈现种类</td>
+          <td style="text-align: left">多种模型</td>
+          <td style="text-align: left">比如 Commits 里面的 明细和 Parent <a href="https://docs.github.com/en/rest/commits/commits?apiVersion=2022-11-28">Commits</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">大模型如何包含子模型模型</td>
+          <td style="text-align: left">核心模型 + 多次关联资源查询？</td>
+          <td style="text-align: left">没有明确说明，根据几个核心 API 反推</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">字段返回是按需还是归并还是统一</td>
+          <td style="text-align: left">统一</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">字段表现格式</td>
+          <td style="text-align: left">Snake</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">错误码</td>
+          <td style="text-align: left">无</td>
+          <td style="text-align: left"><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors">Resources in the REST API#client-errors</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">错误格式</td>
+          <td style="text-align: left">全局统一</td>
+          <td style="text-align: left"><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#client-errors">Resources in the REST API#client-errors</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">时区</td>
+          <td style="text-align: left">复合方案（ISO 8601 &gt; Time-Zone Header &gt; User Last &gt; UTC）</td>
+          <td style="text-align: left"><a href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#timezones">Resources in the REST API#Timezones</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HATEOAS</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
 </table>
 <h3 id="azure-风格">Azure 风格</h3>
 <p>Azure 的 API 设计遵循 <a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md">api-guidelines/Guidelines.md at master · microsoft/api-guidelines</a>，
@@ -858,195 +873,195 @@ API 定义 <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28">GitHu
 <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/">Azure Storage REST API Reference </a>。
 如果具体实现和 Guidelines.md 冲突，我会采用 Guidelines.md 结论。</p>
 <table>
-<thead>
-<tr>
-<th>问题</th>
-<th>选择</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>URL</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>API Path 里面 Prefix</td>
-<td>二级域名</td>
-<td></td>
-</tr>
-<tr>
-<td>Path 里面是否包含 API 版本</td>
-<td>🚫</td>
-<td><code>x-ms-version</code></td>
-</tr>
-<tr>
-<td>Path 是否包含 Group</td>
-<td>✅</td>
-<td></td>
-</tr>
-<tr>
-<td>Path 是否包含动作</td>
-<td>🚫？</td>
-<td>没有明确说明，但是有倾向使用 <code>comp</code> 参数来进行动作，保持 URL 的 RESTful 参考 <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/lease-container?tabs=azure-ad">Lease Container (REST API) - Azure Storage</a></td>
-</tr>
-<tr>
-<td>模型 ID 形式</td>
-<td>Readable Stable Identity</td>
-<td><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#73-canonical-identifier">Guidelines.md#73-canonical-identifier</a></td>
-</tr>
-<tr>
-<td>URL 中模型单数还是复数</td>
-<td>复数</td>
-<td><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#93-collection-url-patterns">Guidelines.md#93-collection-url-patterns</a></td>
-</tr>
-<tr>
-<td>资源是一级（平铺）还是多级（嵌套）</td>
-<td>多级 / 一级</td>
-<td><a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design#define-api-operations-in-terms-of-http-methods">api-design#define-api-operations-in-terms-of-http-methods</a>，注 MS 有 <code>comp=?</code> 这种参数，用来处理特别的命令</td>
-</tr>
-<tr>
-<td>搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
-<td>?</td>
-<td>倾向于基于列表，因为大量使用 <code>comp=</code> 这个 URL Param 来进行子命令，比如 <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/incremental-copy-blob">Incremental Copy Blob (REST API) - Azure Storage</a></td>
-</tr>
-<tr>
-<td>是否有 Alias URL</td>
-<td>?</td>
-<td></td>
-</tr>
-<tr>
-<td>URL 中模型是否允许缩写（或精简）</td>
-<td>?</td>
-<td></td>
-</tr>
-<tr>
-<td>URL 中模型多个词语拼接的连字符</td>
-<td>Camel</td>
-<td><a href="https://learn.microsoft.com/en-us/rest/api/storagemover/job-runs/list?tabs=HTTP">Job Runs - List - REST API (Azure Storage Mover)</a></td>
-</tr>
-<tr>
-<td>是否要区分 Web API 以及 Open API（面向非浏览器）</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>Header</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>是否所有 Verb 都使用 POST</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>修改（Modify）动作是 POST 还是 PATCH？</td>
-<td>PATCH</td>
-<td><a href="https://learn.microsoft.com/en-us/rest/api/storagemover/agents/update?tabs=HTTP">Agents - Update - REST API (Azure Storage Mover)</a></td>
-</tr>
-<tr>
-<td>HTTP Status 返回值</td>
-<td>充分利用 HTTP Status</td>
-<td><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#711-http-status-codes">Guidelines.md#711-http-status-codes</a></td>
-</tr>
-<tr>
-<td>是否使用考虑限流系统</td>
-<td>?</td>
-<td></td>
-</tr>
-<tr>
-<td>是否使用缓存系统</td>
-<td>✅</td>
-<td><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#75-standard-request-headers">Guidelines.md#75-standard-request-headers</a></td>
-</tr>
-<tr>
-<td>是否校验 UserAgent</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>是否校验 Referrral</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>Request</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
-<td>Body</td>
-<td>参考 <a href="https://learn.microsoft.com/en-us/rest/api/storagemover/agents/create-or-update?tabs=HTTP">Agents - Create Or Update - REST API (Azure Storage Mover)</a></td>
-</tr>
-<tr>
-<td>子资源是一次性查询还是独立查询</td>
-<td>?</td>
-<td></td>
-</tr>
-<tr>
-<td>分页参数存放</td>
-<td>?</td>
-<td>没有结论</td>
-</tr>
-<tr>
-<td>分页方式</td>
-<td>Page based</td>
-<td></td>
-</tr>
-<tr>
-<td>分页控制者</td>
-<td>服务端</td>
-<td><a href="https://learn.microsoft.com/en-us/rest/api/storagemover/agents/list?tabs=HTTP">Agents - List - REST API (Azure Storage Mover)</a></td>
-</tr>
-<tr>
-<td><strong>Response</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>模型呈现种类</td>
-<td>单一模型</td>
-<td>推测</td>
-</tr>
-<tr>
-<td>大模型如何包含子模型模型</td>
-<td>?</td>
-<td>场景过于复杂，没有单一结论</td>
-</tr>
-<tr>
-<td>字段返回是按需还是归并还是统一</td>
-<td>?</td>
-<td></td>
-</tr>
-<tr>
-<td>字段表现格式</td>
-<td>Camel</td>
-<td></td>
-</tr>
-<tr>
-<td>错误码</td>
-<td>使用自定错误码清单</td>
-<td>至少在各自产品内</td>
-</tr>
-<tr>
-<td>错误格式</td>
-<td>自定义</td>
-<td></td>
-</tr>
-<tr>
-<td>时区</td>
-<td>?</td>
-<td></td>
-</tr>
-<tr>
-<td>HATEOAS</td>
-<td>?</td>
-<td><a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design#use-hateoas-to-enable-navigation-to-related-resources">api-design#use-hateoas-to-enable-navigation-to-related-resources</a></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">问题</th>
+          <th style="text-align: left">选择</th>
+          <th style="text-align: left">备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>URL</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">API Path 里面 Prefix</td>
+          <td style="text-align: left">二级域名</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 里面是否包含 API 版本</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"><code>x-ms-version</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 是否包含 Group</td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 是否包含动作</td>
+          <td style="text-align: left">🚫？</td>
+          <td style="text-align: left">没有明确说明，但是有倾向使用 <code>comp</code> 参数来进行动作，保持 URL 的 RESTful 参考 <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/lease-container?tabs=azure-ad">Lease Container (REST API) - Azure Storage</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">模型 ID 形式</td>
+          <td style="text-align: left">Readable Stable Identity</td>
+          <td style="text-align: left"><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#73-canonical-identifier">Guidelines.md#73-canonical-identifier</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型单数还是复数</td>
+          <td style="text-align: left">复数</td>
+          <td style="text-align: left"><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#93-collection-url-patterns">Guidelines.md#93-collection-url-patterns</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">资源是一级（平铺）还是多级（嵌套）</td>
+          <td style="text-align: left">多级 / 一级</td>
+          <td style="text-align: left"><a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design#define-api-operations-in-terms-of-http-methods">api-design#define-api-operations-in-terms-of-http-methods</a>，注 MS 有 <code>comp=?</code> 这种参数，用来处理特别的命令</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left">倾向于基于列表，因为大量使用 <code>comp=</code> 这个 URL Param 来进行子命令，比如 <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/incremental-copy-blob">Incremental Copy Blob (REST API) - Azure Storage</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否有 Alias URL</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型是否允许缩写（或精简）</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型多个词语拼接的连字符</td>
+          <td style="text-align: left">Camel</td>
+          <td style="text-align: left"><a href="https://learn.microsoft.com/en-us/rest/api/storagemover/job-runs/list?tabs=HTTP">Job Runs - List - REST API (Azure Storage Mover)</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否要区分 Web API 以及 Open API（面向非浏览器）</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Header</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否所有 Verb 都使用 POST</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">修改（Modify）动作是 POST 还是 PATCH？</td>
+          <td style="text-align: left">PATCH</td>
+          <td style="text-align: left"><a href="https://learn.microsoft.com/en-us/rest/api/storagemover/agents/update?tabs=HTTP">Agents - Update - REST API (Azure Storage Mover)</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HTTP Status 返回值</td>
+          <td style="text-align: left">充分利用 HTTP Status</td>
+          <td style="text-align: left"><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#711-http-status-codes">Guidelines.md#711-http-status-codes</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否使用考虑限流系统</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否使用缓存系统</td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left"><a href="https://github.com/Microsoft/api-guidelines/blob/master/Guidelines.md#75-standard-request-headers">Guidelines.md#75-standard-request-headers</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否校验 UserAgent</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否校验 Referrral</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Request</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
+          <td style="text-align: left">Body</td>
+          <td style="text-align: left">参考 <a href="https://learn.microsoft.com/en-us/rest/api/storagemover/agents/create-or-update?tabs=HTTP">Agents - Create Or Update - REST API (Azure Storage Mover)</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">子资源是一次性查询还是独立查询</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页参数存放</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left">没有结论</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页方式</td>
+          <td style="text-align: left">Page based</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页控制者</td>
+          <td style="text-align: left">服务端</td>
+          <td style="text-align: left"><a href="https://learn.microsoft.com/en-us/rest/api/storagemover/agents/list?tabs=HTTP">Agents - List - REST API (Azure Storage Mover)</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Response</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">模型呈现种类</td>
+          <td style="text-align: left">单一模型</td>
+          <td style="text-align: left">推测</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">大模型如何包含子模型模型</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left">场景过于复杂，没有单一结论</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">字段返回是按需还是归并还是统一</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">字段表现格式</td>
+          <td style="text-align: left">Camel</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">错误码</td>
+          <td style="text-align: left">使用自定错误码清单</td>
+          <td style="text-align: left">至少在各自产品内</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">错误格式</td>
+          <td style="text-align: left">自定义</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">时区</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HATEOAS</td>
+          <td style="text-align: left">?</td>
+          <td style="text-align: left"><a href="https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design#use-hateoas-to-enable-navigation-to-related-resources">api-design#use-hateoas-to-enable-navigation-to-related-resources</a></td>
+      </tr>
+  </tbody>
 </table>
 <p>Azure 的整体设计风格要比 Github API 更复杂，同一个产品的也有多个版本的差异，看
 上去统一性要更差一些。这种复杂场景想用单一的规范约束所有团队的确也是更困难的。
@@ -1055,195 +1070,195 @@ API 定义 <a href="https://docs.github.com/en/rest?apiVersion=2022-11-28">GitHu
 <p>我个人风格基本继承自 Github API 风格，做了一些微调，更适合中小型产品开发。
 我的改动原因都在备注中解释，改动出发点是：简化 / 减少歧义 / 考虑实际成本。如果备注里面标记了「注」，则是遵循 Github 方案并添加一些观点。</p>
 <table>
-<thead>
-<tr>
-<th>问题</th>
-<th>选择</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>URL</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>API Path 里面 Prefix</td>
-<td><code>/apis</code></td>
-<td>我们往往只有一个系统，一个域名要承载 API 和 Web Page</td>
-</tr>
-<tr>
-<td>Path 里面是否包含 API 版本</td>
-<td>✅</td>
-<td></td>
-</tr>
-<tr>
-<td>Path 是否包含 Group</td>
-<td>✅</td>
-<td>做一层业务模块拆分，隔离一定合作边界</td>
-</tr>
-<tr>
-<td>Path 是否包含动作</td>
-<td>看情况（如果 HTTP Verb CRUD 无法满足就包含）</td>
-<td></td>
-</tr>
-<tr>
-<td>模型 ID 形式</td>
-<td>Readable Stable Identity</td>
-<td></td>
-</tr>
-<tr>
-<td>URL 中模型单数还是复数</td>
-<td>复数</td>
-<td></td>
-</tr>
-<tr>
-<td>资源是一级（平铺）还是多级（嵌套）</td>
-<td>多级 + 一级</td>
-<td>注：80% 情况都是遵循模型的归属，少量情况（常见在搜索）使用一级</td>
-</tr>
-<tr>
-<td>搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
-<td>统一 &gt; 独立</td>
-<td>低成本实现一些（早期 Github Issue 也是没有 <code>/search</code> 接口</td>
-</tr>
-<tr>
-<td>是否有 Alias URL</td>
-<td>🚫</td>
-<td>简单点</td>
-</tr>
-<tr>
-<td>URL 中模型是否允许缩写（或精简）</td>
-<td>✅</td>
-<td>一旦做了精简，需要在术语表标记出来</td>
-</tr>
-<tr>
-<td>URL 中模型多个词语拼接的连字符</td>
-<td><code>-</code></td>
-<td></td>
-</tr>
-<tr>
-<td>是否要区分 Web API 以及 Open API（面向非浏览器）</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>Header</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>是否所有 Verb 都使用 POST</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td>修改（Modify）动作是 POST 还是 PATCH？</td>
-<td>PATCH</td>
-<td></td>
-</tr>
-<tr>
-<td>HTTP Status 返回值</td>
-<td>充分利用 HTTP Status</td>
-<td></td>
-</tr>
-<tr>
-<td>是否使用考虑限流系统</td>
-<td>✅ 429</td>
-<td></td>
-</tr>
-<tr>
-<td>是否使用缓存系统</td>
-<td>🚫</td>
-<td>简单一些，使用动态数据，去除缓存能力</td>
-</tr>
-<tr>
-<td>是否校验 UserAgent</td>
-<td>✅</td>
-<td></td>
-</tr>
-<tr>
-<td>是否校验 Referrral</td>
-<td>🚫</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>Request</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
-<td>Body</td>
-<td></td>
-</tr>
-<tr>
-<td>子资源是一次性查询还是独立查询</td>
-<td>嵌套</td>
-<td></td>
-</tr>
-<tr>
-<td>分页参数存放</td>
-<td>URL Query</td>
-<td></td>
-</tr>
-<tr>
-<td>分页方式</td>
-<td>Page</td>
-<td></td>
-</tr>
-<tr>
-<td>分页控制者</td>
-<td>客户端</td>
-<td>降低服务端成本，容忍极端情况空白</td>
-</tr>
-<tr>
-<td><strong>Response</strong></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>模型呈现种类</td>
-<td>多种模型</td>
-<td>使用的 BO / VO / Tiny / Rich</td>
-</tr>
-<tr>
-<td>大模型如何包含子模型模型</td>
-<td>核心模型 + 多次关联资源查询</td>
-<td></td>
-</tr>
-<tr>
-<td>字段返回是按需还是归并还是统一</td>
-<td>统一</td>
-<td>Tiny Model（可选） / Model（默认） / Rich Model（可选）</td>
-</tr>
-<tr>
-<td>字段表现格式</td>
-<td>Snake</td>
-<td></td>
-</tr>
-<tr>
-<td>错误码</td>
-<td>无</td>
-<td>注：很多场景只要 message</td>
-</tr>
-<tr>
-<td>错误格式</td>
-<td>全局统一</td>
-<td></td>
-</tr>
-<tr>
-<td>时区</td>
-<td>ISO 8601</td>
-<td>只使用一种格式，不再支持多种方案</td>
-</tr>
-<tr>
-<td>HATEOAS</td>
-<td>🚫</td>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">问题</th>
+          <th style="text-align: left">选择</th>
+          <th style="text-align: left">备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>URL</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">API Path 里面 Prefix</td>
+          <td style="text-align: left"><code>/apis</code></td>
+          <td style="text-align: left">我们往往只有一个系统，一个域名要承载 API 和 Web Page</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 里面是否包含 API 版本</td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 是否包含 Group</td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">做一层业务模块拆分，隔离一定合作边界</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Path 是否包含动作</td>
+          <td style="text-align: left">看情况（如果 HTTP Verb CRUD 无法满足就包含）</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">模型 ID 形式</td>
+          <td style="text-align: left">Readable Stable Identity</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型单数还是复数</td>
+          <td style="text-align: left">复数</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">资源是一级（平铺）还是多级（嵌套）</td>
+          <td style="text-align: left">多级 + 一级</td>
+          <td style="text-align: left">注：80% 情况都是遵循模型的归属，少量情况（常见在搜索）使用一级</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">搜索如何实现，独立接口（<code>/models/search</code>）还是基于列表<code>/models/</code> 接口</td>
+          <td style="text-align: left">统一 &gt; 独立</td>
+          <td style="text-align: left">低成本实现一些（早期 Github Issue 也是没有 <code>/search</code> 接口</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否有 Alias URL</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left">简单点</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型是否允许缩写（或精简）</td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left">一旦做了精简，需要在术语表标记出来</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">URL 中模型多个词语拼接的连字符</td>
+          <td style="text-align: left"><code>-</code></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否要区分 Web API 以及 Open API（面向非浏览器）</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Header</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否所有 Verb 都使用 POST</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">修改（Modify）动作是 POST 还是 PATCH？</td>
+          <td style="text-align: left">PATCH</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HTTP Status 返回值</td>
+          <td style="text-align: left">充分利用 HTTP Status</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否使用考虑限流系统</td>
+          <td style="text-align: left">✅ 429</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否使用缓存系统</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left">简单一些，使用动态数据，去除缓存能力</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否校验 UserAgent</td>
+          <td style="text-align: left">✅</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">是否校验 Referrral</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Request</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">复杂的参数是放到 Form Fields 还是单独一个 JSON Body</td>
+          <td style="text-align: left">Body</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">子资源是一次性查询还是独立查询</td>
+          <td style="text-align: left">嵌套</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页参数存放</td>
+          <td style="text-align: left">URL Query</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页方式</td>
+          <td style="text-align: left">Page</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">分页控制者</td>
+          <td style="text-align: left">客户端</td>
+          <td style="text-align: left">降低服务端成本，容忍极端情况空白</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Response</strong></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">模型呈现种类</td>
+          <td style="text-align: left">多种模型</td>
+          <td style="text-align: left">使用的 BO / VO / Tiny / Rich</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">大模型如何包含子模型模型</td>
+          <td style="text-align: left">核心模型 + 多次关联资源查询</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">字段返回是按需还是归并还是统一</td>
+          <td style="text-align: left">统一</td>
+          <td style="text-align: left">Tiny Model（可选） / Model（默认） / Rich Model（可选）</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">字段表现格式</td>
+          <td style="text-align: left">Snake</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">错误码</td>
+          <td style="text-align: left">无</td>
+          <td style="text-align: left">注：很多场景只要 message</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">错误格式</td>
+          <td style="text-align: left">全局统一</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">时区</td>
+          <td style="text-align: left">ISO 8601</td>
+          <td style="text-align: left">只使用一种格式，不再支持多种方案</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">HATEOAS</td>
+          <td style="text-align: left">🚫</td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
 </table>
 <h2 id="题外话---apple-music-的一个有趣设计">题外话 - Apple Music 的一个有趣设计</h2>
 <p>

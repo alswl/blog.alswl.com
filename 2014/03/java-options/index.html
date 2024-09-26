@@ -7,7 +7,79 @@
 <meta name="robots" content="index, follow">
 <title>Java 运行参数调整 | Log4D</title>
 <meta name="keywords" content="java, jvm">
-<meta name="description" content="JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下： 运行 java -h 可以看到 Java 运行可调整的参数。 运行 java -X 可以查看 Java 支持的额外参数。 注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update 也会有差异，运行 java -XX:&#43;PrintFlagsFinal 查看默认的参数配置。 参考： Java HotSpot VM Options The most complete list of -XX options for Java JVM Tuning JVM Garbage Collection for Production Deployments JVM -XX: 参数介绍 以下是一些经验调整： -d64 # 运行在 64 位数据模式下 -server # 选择 server VM -Xms1024m # 初始堆大小，直接固定到 Xmx -Xmx1024m # 最大堆大小，根据服务器">
+<meta name="description" content="JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下：
+运行 java -h 可以看到 Java 运行可调整的参数。
+运行 java -X 可以查看 Java 支持的额外参数。
+注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update
+也会有差异，运行 java -XX:&#43;PrintFlagsFinal 查看默认的参数配置。
+参考：
+Java HotSpot VM Options
+The most complete list of -XX options for Java JVM 
+ Tuning JVM Garbage Collection for Production Deployments 
+JVM -XX: 参数介绍
+
+以下是一些经验调整：
+-d64
+# 运行在 64 位数据模式下
+
+-server
+# 选择 server VM
+
+-Xms1024m
+# 初始堆大小，直接固定到 Xmx
+
+-Xmx1024m
+# 最大堆大小，根据服务器性能和请求量调整，太大了会导致 GC 时间太长
+
+-XX:&#43;DoEscapeAnalysis:
+# 支持逃逸分析（将局部对象实例存储在栈上）
+# http://www.iteye.com/topic/473355
+
+-XX:&#43;UseTLAB
+# Use thread-local object allocation
+# 使用本地线程实例存储，可以减少堆共享锁的竞争
+
+-XX:-RelaxAccessControlCheck
+# Relax the access control checks in the verifier
+# JDK7 默认不开启
+
+-XX:&#43;AggressiveOpts
+# Enable aggressive optimizations - see arguments.cpp
+# 启用最新 JVM 调优成果
+
+-XX:&#43;UseBiasedLocking
+# Enable biased locking in JVM
+# 偏向锁（建议去了解一下轻量级锁和偏向锁）
+# 优化单线程程序下面锁资源速度，不适合多线程（所以到底 &#43;/- 我存疑）
+# http://www.iteye.com/topic/518066
+
+-XX:&#43;UseFastAccessorMethods
+# Use fast method entry code for accessor methods
+# 优化 get/set 方法
+
+-XX:ThreadStackSize
+# Thread Stack Size (in Kbytes)
+# 经验值 4096
+
+-XX:&#43;UseLargePages
+# Use large page memory
+# 大内存分页
+
+-XX:&#43;UseStringCache
+# Enables caching of commonly allocated strings.
+# 启用缓存常用的字符串
+
+-XX:&#43;UseCompressedStrings: Use a byte[] for Strings which can be represented as pure ASCII. (Introduced in Java 6 Update 21 Performance Release)
+# 降低内存消耗，浪费一点 CPU
+# http://stackoverflow.com/questions/8833385/is-support-for-compressed-strings-being-dropped
+
+-XX:&#43;OptimizeStringConcat: Optimize String concatenation operations where possible. (Introduced in Java 6 Update 20)
+# 优化字符串连接，对模板渲染操作应该会很有意义
+
+-XX:MaxPermSize
+# Maximum size of permanent generation (in bytes)
+# 经验值 128m
+">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2014/03/java-options/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +129,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +142,80 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
+      </script><meta property="og:title" content="Java 运行参数调整" />
+<meta property="og:description" content="JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下：
+运行 java -h 可以看到 Java 运行可调整的参数。
+运行 java -X 可以查看 Java 支持的额外参数。
+注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update
+也会有差异，运行 java -XX:&#43;PrintFlagsFinal 查看默认的参数配置。
+参考：
+Java HotSpot VM Options
+The most complete list of -XX options for Java JVM 
+ Tuning JVM Garbage Collection for Production Deployments 
+JVM -XX: 参数介绍
 
-<meta property="og:title" content="Java 运行参数调整" />
-<meta property="og:description" content="JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下： 运行 java -h 可以看到 Java 运行可调整的参数。 运行 java -X 可以查看 Java 支持的额外参数。 注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update 也会有差异，运行 java -XX:&#43;PrintFlagsFinal 查看默认的参数配置。 参考： Java HotSpot VM Options The most complete list of -XX options for Java JVM Tuning JVM Garbage Collection for Production Deployments JVM -XX: 参数介绍 以下是一些经验调整： -d64 # 运行在 64 位数据模式下 -server # 选择 server VM -Xms1024m # 初始堆大小，直接固定到 Xmx -Xmx1024m # 最大堆大小，根据服务器" />
+以下是一些经验调整：
+-d64
+# 运行在 64 位数据模式下
+
+-server
+# 选择 server VM
+
+-Xms1024m
+# 初始堆大小，直接固定到 Xmx
+
+-Xmx1024m
+# 最大堆大小，根据服务器性能和请求量调整，太大了会导致 GC 时间太长
+
+-XX:&#43;DoEscapeAnalysis:
+# 支持逃逸分析（将局部对象实例存储在栈上）
+# http://www.iteye.com/topic/473355
+
+-XX:&#43;UseTLAB
+# Use thread-local object allocation
+# 使用本地线程实例存储，可以减少堆共享锁的竞争
+
+-XX:-RelaxAccessControlCheck
+# Relax the access control checks in the verifier
+# JDK7 默认不开启
+
+-XX:&#43;AggressiveOpts
+# Enable aggressive optimizations - see arguments.cpp
+# 启用最新 JVM 调优成果
+
+-XX:&#43;UseBiasedLocking
+# Enable biased locking in JVM
+# 偏向锁（建议去了解一下轻量级锁和偏向锁）
+# 优化单线程程序下面锁资源速度，不适合多线程（所以到底 &#43;/- 我存疑）
+# http://www.iteye.com/topic/518066
+
+-XX:&#43;UseFastAccessorMethods
+# Use fast method entry code for accessor methods
+# 优化 get/set 方法
+
+-XX:ThreadStackSize
+# Thread Stack Size (in Kbytes)
+# 经验值 4096
+
+-XX:&#43;UseLargePages
+# Use large page memory
+# 大内存分页
+
+-XX:&#43;UseStringCache
+# Enables caching of commonly allocated strings.
+# 启用缓存常用的字符串
+
+-XX:&#43;UseCompressedStrings: Use a byte[] for Strings which can be represented as pure ASCII. (Introduced in Java 6 Update 21 Performance Release)
+# 降低内存消耗，浪费一点 CPU
+# http://stackoverflow.com/questions/8833385/is-support-for-compressed-strings-being-dropped
+
+-XX:&#43;OptimizeStringConcat: Optimize String concatenation operations where possible. (Introduced in Java 6 Update 20)
+# 优化字符串连接，对模板渲染操作应该会很有意义
+
+-XX:MaxPermSize
+# Maximum size of permanent generation (in bytes)
+# 经验值 128m
+" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2014/03/java-options/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2014-03-22T18:31:55+08:00" />
@@ -85,7 +223,79 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Java 运行参数调整"/>
-<meta name="twitter:description" content="JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下： 运行 java -h 可以看到 Java 运行可调整的参数。 运行 java -X 可以查看 Java 支持的额外参数。 注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update 也会有差异，运行 java -XX:&#43;PrintFlagsFinal 查看默认的参数配置。 参考： Java HotSpot VM Options The most complete list of -XX options for Java JVM Tuning JVM Garbage Collection for Production Deployments JVM -XX: 参数介绍 以下是一些经验调整： -d64 # 运行在 64 位数据模式下 -server # 选择 server VM -Xms1024m # 初始堆大小，直接固定到 Xmx -Xmx1024m # 最大堆大小，根据服务器"/>
+<meta name="twitter:description" content="JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下：
+运行 java -h 可以看到 Java 运行可调整的参数。
+运行 java -X 可以查看 Java 支持的额外参数。
+注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update
+也会有差异，运行 java -XX:&#43;PrintFlagsFinal 查看默认的参数配置。
+参考：
+Java HotSpot VM Options
+The most complete list of -XX options for Java JVM 
+ Tuning JVM Garbage Collection for Production Deployments 
+JVM -XX: 参数介绍
+
+以下是一些经验调整：
+-d64
+# 运行在 64 位数据模式下
+
+-server
+# 选择 server VM
+
+-Xms1024m
+# 初始堆大小，直接固定到 Xmx
+
+-Xmx1024m
+# 最大堆大小，根据服务器性能和请求量调整，太大了会导致 GC 时间太长
+
+-XX:&#43;DoEscapeAnalysis:
+# 支持逃逸分析（将局部对象实例存储在栈上）
+# http://www.iteye.com/topic/473355
+
+-XX:&#43;UseTLAB
+# Use thread-local object allocation
+# 使用本地线程实例存储，可以减少堆共享锁的竞争
+
+-XX:-RelaxAccessControlCheck
+# Relax the access control checks in the verifier
+# JDK7 默认不开启
+
+-XX:&#43;AggressiveOpts
+# Enable aggressive optimizations - see arguments.cpp
+# 启用最新 JVM 调优成果
+
+-XX:&#43;UseBiasedLocking
+# Enable biased locking in JVM
+# 偏向锁（建议去了解一下轻量级锁和偏向锁）
+# 优化单线程程序下面锁资源速度，不适合多线程（所以到底 &#43;/- 我存疑）
+# http://www.iteye.com/topic/518066
+
+-XX:&#43;UseFastAccessorMethods
+# Use fast method entry code for accessor methods
+# 优化 get/set 方法
+
+-XX:ThreadStackSize
+# Thread Stack Size (in Kbytes)
+# 经验值 4096
+
+-XX:&#43;UseLargePages
+# Use large page memory
+# 大内存分页
+
+-XX:&#43;UseStringCache
+# Enables caching of commonly allocated strings.
+# 启用缓存常用的字符串
+
+-XX:&#43;UseCompressedStrings: Use a byte[] for Strings which can be represented as pure ASCII. (Introduced in Java 6 Update 21 Performance Release)
+# 降低内存消耗，浪费一点 CPU
+# http://stackoverflow.com/questions/8833385/is-support-for-compressed-strings-being-dropped
+
+-XX:&#43;OptimizeStringConcat: Optimize String concatenation operations where possible. (Introduced in Java 6 Update 20)
+# 优化字符串连接，对模板渲染操作应该会很有意义
+
+-XX:MaxPermSize
+# Maximum size of permanent generation (in bytes)
+# 经验值 128m
+"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +324,7 @@
   "@type": "BlogPosting",
   "headline": "Java 运行参数调整",
   "name": "Java 运行参数调整",
-  "description": "JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下： 运行 java -h 可以看到 Java 运行可调整的参数。 运行 java -X 可以查看 Java 支持的额外参数。 注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update 也会有差异，运行 java -XX:+PrintFlagsFinal 查看默认的参数配置。 参考： Java HotSpot VM Options The most complete list of -XX options for Java JVM Tuning JVM Garbage Collection for Production Deployments JVM -XX: 参数介绍 以下是一些经验调整： -d64 # 运行在 64 位数据模式下 -server # 选择 server VM -Xms1024m # 初始堆大小，直接固定到 Xmx -Xmx1024m # 最大堆大小，根据服务器",
+  "description": "JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下：\n运行 java -h 可以看到 Java 运行可调整的参数。 运行 java -X 可以查看 Java 支持的额外参数。 注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update 也会有差异，运行 java -XX:+PrintFlagsFinal 查看默认的参数配置。\n参考： Java HotSpot VM Options The most complete list of -XX options for Java JVM Tuning JVM Garbage Collection for Production Deployments JVM -XX: 参数介绍\n以下是一些经验调整：\n-d64 # 运行在 64 位数据模式下 -server # 选择 server VM -Xms1024m # 初始堆大小，直接固定到 Xmx -Xmx1024m # 最大堆大小，根据服务器性能和请求量调整，太大了会导致 GC 时间太长 -XX:+DoEscapeAnalysis: # 支持逃逸分析（将局部对象实例存储在栈上） # http://www.iteye.com/topic/473355 -XX:+UseTLAB # Use thread-local object allocation # 使用本地线程实例存储，可以减少堆共享锁的竞争 -XX:-RelaxAccessControlCheck # Relax the access control checks in the verifier # JDK7 默认不开启 -XX:+AggressiveOpts # Enable aggressive optimizations - see arguments.cpp # 启用最新 JVM 调优成果 -XX:+UseBiasedLocking # Enable biased locking in JVM # 偏向锁（建议去了解一下轻量级锁和偏向锁） # 优化单线程程序下面锁资源速度，不适合多线程（所以到底 +/- 我存疑） # http://www.iteye.com/topic/518066 -XX:+UseFastAccessorMethods # Use fast method entry code for accessor methods # 优化 get/set 方法 -XX:ThreadStackSize # Thread Stack Size (in Kbytes) # 经验值 4096 -XX:+UseLargePages # Use large page memory # 大内存分页 -XX:+UseStringCache # Enables caching of commonly allocated strings. # 启用缓存常用的字符串 -XX:+UseCompressedStrings: Use a byte[] for Strings which can be represented as pure ASCII. (Introduced in Java 6 Update 21 Performance Release) # 降低内存消耗，浪费一点 CPU # http://stackoverflow.com/questions/8833385/is-support-for-compressed-strings-being-dropped -XX:+OptimizeStringConcat: Optimize String concatenation operations where possible. (Introduced in Java 6 Update 20) # 优化字符串连接，对模板渲染操作应该会很有意义 -XX:MaxPermSize # Maximum size of permanent generation (in bytes) # 经验值 128m ",
   "keywords": [
     "java", "jvm"
   ],
@@ -344,7 +554,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

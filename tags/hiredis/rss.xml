@@ -4,7 +4,7 @@
     <title>Hiredis on Log4D</title>
     <link>https://blog.alswl.com/tags/hiredis/</link>
     <description>Recent content in Hiredis on Log4D</description>
-    <generator>Hugo -- 0.129.0</generator>
+    <generator>Hugo -- 0.134.3</generator>
     <language>zh</language>
     <lastBuildDate>Sun, 30 Mar 2014 15:41:43 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/hiredis/rss.xml" rel="self" type="application/rss+xml" />
@@ -13,7 +13,24 @@
       <link>https://blog.alswl.com/2014/03/hiredis/</link>
       <pubDate>Sun, 30 Mar 2014 15:41:43 +0800</pubDate>
       <guid>https://blog.alswl.com/2014/03/hiredis/</guid>
-      <description>前段时间学习 Redis 时候，听到 hiredis 的大名，正好也在做异步的学习，就找来代码学习一下。 我几乎不太会 C，仅限于最简单的语法，完全没有在生产环境中写过， 所以先看个 Client 简单代码，下次看 Memcached 代码应该会更顺畅一些。 Hiredis 是用 C 写的 Redis 客户端，对 Redis 协议进行了简单的封装， 同时提供了同步和异步的两种 API。Hiredis 的代码位于 https://github.com/redis/hiredis。 一分钟使用入门 同步 API 的调用方法： redisContext *context =</description>
+      <description>&lt;p&gt;前段时间学习 Redis 时候，听到 hiredis 的大名，正好也在做异步的学习，就找来代码学习一下。
+我几乎不太会 C，仅限于最简单的语法，完全没有在生产环境中写过，
+所以先看个 Client 简单代码，下次看 Memcached 代码应该会更顺畅一些。&lt;/p&gt;
+&lt;p&gt;Hiredis 是用 C 写的 Redis 客户端，对 Redis 协议进行了简单的封装，
+同时提供了同步和异步的两种 API。Hiredis 的代码位于
+&lt;a href=&#34;https://github.com/redis/hiredis&#34;&gt;https://github.com/redis/hiredis&lt;/a&gt;。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;h2 id=&#34;一分钟使用入门&#34;&gt;一分钟使用入门&lt;/h2&gt;
+&lt;p&gt;同步 API 的调用方法：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;redisContext *context = redisConnect(&amp;#34;127.0.0.1&amp;#34;, 6379);
+reply = redisCommand(context, &amp;#34;SET foo %s&amp;#34;, value);	
+printf(&amp;#34;PING: %s\n&amp;#34;, reply-&amp;gt;str);
+freeReplyObject(reply)
+redisFree(context);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Redis ae 异步 API 的调用方法，使用 Redis 自己的 ae 事件库，
+至于为什么 Redis 没有使用 libevent 或者 libev，可以参考
+&lt;a href=&#34;http://groups.google.com/group/redis-db/browse_thread/thread/b52814e9ef15b8d0/&#34;&gt;Reason&lt;/a&gt;，
+&lt;a href=&#34;http://blog.csdn.net/archimedes_zht/article/details/6909074&#34;&gt;中文翻译&lt;/a&gt;：&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>前段时间学习 Redis 时候，听到 hiredis 的大名，正好也在做异步的学习，就找来代码学习一下。
 我几乎不太会 C，仅限于最简单的语法，完全没有在生产环境中写过，
 所以先看个 Client 简单代码，下次看 Memcached 代码应该会更顺畅一些。</p>

@@ -7,7 +7,31 @@
 <meta name="robots" content="index, follow">
 <title>网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受 | Log4D</title>
 <meta name="keywords" content="c, winpcap, 网络编程">
-<meta name="description" content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的 首先是ARP的接收，来看一下程序的流程 获取网络设备列表 pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf) 然后人机交互一下，获得需要工作的网卡 打开需要的网">
+<meta name="description" content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
+网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节
+的含义
+玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的
+首先是ARP的接收，来看一下程序的流程
+获取网络设备列表
+pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)
+然后人机交互一下，获得需要工作的网卡
+打开需要的网卡
+(adhandle= pcap_open(d-&gt;name, // 设备名
+
+65536, // 要捕捉的数据包的部分
+
+// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
+
+PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式
+
+1000, // 读取超时时间
+
+NULL, // 远程机器验证
+
+errbuf // 错误缓冲池
+
+)
+检查数据链路层，我们只考虑以太网">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2008/09/winpcap-arp/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +81,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +94,32 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
+      </script><meta property="og:title" content="网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受" />
+<meta property="og:description" content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
+网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节
+的含义
+玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的
+首先是ARP的接收，来看一下程序的流程
+获取网络设备列表
+pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)
+然后人机交互一下，获得需要工作的网卡
+打开需要的网卡
+(adhandle= pcap_open(d-&gt;name, // 设备名
 
-<meta property="og:title" content="网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受" />
-<meta property="og:description" content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的 首先是ARP的接收，来看一下程序的流程 获取网络设备列表 pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf) 然后人机交互一下，获得需要工作的网卡 打开需要的网" />
+65536, // 要捕捉的数据包的部分
+
+// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
+
+PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式
+
+1000, // 读取超时时间
+
+NULL, // 远程机器验证
+
+errbuf // 错误缓冲池
+
+)
+检查数据链路层，我们只考虑以太网" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2008/09/winpcap-arp/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2008-09-25T00:00:00+08:00" />
@@ -85,7 +127,31 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受"/>
-<meta name="twitter:description" content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的 首先是ARP的接收，来看一下程序的流程 获取网络设备列表 pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf) 然后人机交互一下，获得需要工作的网卡 打开需要的网"/>
+<meta name="twitter:description" content="网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受
+网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节
+的含义
+玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的
+首先是ARP的接收，来看一下程序的流程
+获取网络设备列表
+pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, &amp;alldevs, errbuf)
+然后人机交互一下，获得需要工作的网卡
+打开需要的网卡
+(adhandle= pcap_open(d-&gt;name, // 设备名
+
+65536, // 要捕捉的数据包的部分
+
+// 65535保证能捕获到不同数据链路层上的每个数据包的全部内容
+
+PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式
+
+1000, // 读取超时时间
+
+NULL, // 远程机器验证
+
+errbuf // 错误缓冲池
+
+)
+检查数据链路层，我们只考虑以太网"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +180,7 @@
   "@type": "BlogPosting",
   "headline": "网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受",
   "name": "网络编程学习日记(3)_利用WinPcap实现ARP的发送和接受",
-  "description": "网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受 网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义 玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的 首先是ARP的接收，来看一下程序的流程 获取网络设备列表 pcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, \u0026amp;alldevs, errbuf) 然后人机交互一下，获得需要工作的网卡 打开需要的网",
+  "description": "网络编程学习日记(2)_利用WinPcap实现ARP的发送和接受\n网络编程学完以太网帧的结构，就开始正式进入IP层的学习了，在学习编程之前，对网络协议的有一定的了解，而且还要知道每个数据包，或者是报文，或者是帧他们每个字节 的含义\n玩ARP么，肯定得知道他的原理，我就不做什么说明了，书上一大堆的\n首先是ARP的接收，来看一下程序的流程\n获取网络设备列表\npcap_findalldevs_ex(PCAP_SRC_IF_STRING, NULL, \u0026amp;alldevs, errbuf) 然后人机交互一下，获得需要工作的网卡\n打开需要的网卡\n(adhandle= pcap_open(d-\u0026gt;name, // 设备名 65536, // 要捕捉的数据包的部分 // 65535保证能捕获到不同数据链路层上的每个数据包的全部内容 PCAP_OPENFLAG_PROMISCUOUS, // 混杂模式 1000, // 读取超时时间 NULL, // 远程机器验证 errbuf // 错误缓冲池 ) 检查数据链路层，我们只考虑以太网\n",
   "keywords": [
     "c", "winpcap", "网络编程"
   ],
@@ -353,7 +419,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

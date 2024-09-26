@@ -57,8 +57,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,11 +70,7 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
-
-<meta property="og:title" content="Java" />
+      </script><meta property="og:title" content="Java" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://blog.alswl.com/tags/java/" /><meta property="og:site_name" content="Log4D" />
@@ -177,7 +171,11 @@
     
     
     
-    <p>JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下： 运行 java -h 可以看到 Java 运行可调整的参数。 运行 java -X 可以查看 Java 支持的额外参数。 注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update 也会有差异，运行 java -XX:&#43;PrintFlagsFinal 查看默认的参数配置。 参考： Java HotSpot VM Options The most complete list of -XX options for Java JVM Tuning JVM Garbage Collection for Production Deployments JVM -XX: 参数介绍 以下是一些经验调整： -d64 # 运行在 64 位数据模式下 -server # 选择 server VM -Xms1024m # 初始堆大小，直接固定到 Xmx -Xmx1024m # 最大堆大小，根据服务器...</p>
+    <p>JVM 在线上运行的时候，可以调整一些运行参数，查看参数帮助如下：
+运行 java -h 可以看到 Java 运行可调整的参数。 运行 java -X 可以查看 Java 支持的额外参数。 注意一些参数的默认开启在 JDK6 和 JDK7 之间会有差异，甚至在 JDK7 的不同 update 也会有差异，运行 java -XX:&#43;PrintFlagsFinal 查看默认的参数配置。
+参考： Java HotSpot VM Options The most complete list of -XX options for Java JVM Tuning JVM Garbage Collection for Production Deployments JVM -XX: 参数介绍
+以下是一些经验调整：
+-d64 # 运行在 64 位数据模式下 -server # 选择 server VM -Xms1024m # 初始堆大小，直接固定到 Xmx -Xmx1024m # 最大堆大小，根据服务器性能和请求量调整，太大了会导致 GC 时间太长 -XX:&#43;DoEscapeAnalysis: # 支持逃逸分析（将局部对象实例存储在栈上） # http://www.iteye.com/topic/473355 -XX:&#43;UseTLAB # Use thread-local object allocation # 使用本地线程实例存储，可以减少堆共享锁的竞争 -XX:-RelaxAccessControlCheck # Relax the access control checks in the verifier # JDK7 默认不开启 -XX:&#43;AggressiveOpts # Enable aggressive optimizations - see arguments.cpp # 启用最新 JVM 调优成果 -XX:&#43;UseBiasedLocking # Enable biased locking in JVM # 偏向锁（建议去了解一下轻量级锁和偏向锁） # 优化单线程程序下面锁资源速度，不适合多线程（所以到底 &#43;/- 我存疑） # http://www.iteye.com/topic/518066 -XX:&#43;UseFastAccessorMethods # Use fast method entry code for accessor methods # 优化 get/set 方法 -XX:ThreadStackSize # Thread Stack Size (in Kbytes) # 经验值 4096 -XX:&#43;UseLargePages # Use large page memory # 大内存分页 -XX:&#43;UseStringCache # Enables caching of commonly allocated strings. # 启用缓存常用的字符串 -XX:&#43;UseCompressedStrings: Use a byte[] for Strings which can be represented as pure ASCII. (Introduced in Java 6 Update 21 Performance Release) # 降低内存消耗，浪费一点 CPU # http://stackoverflow.com/questions/8833385/is-support-for-compressed-strings-being-dropped -XX:&#43;OptimizeStringConcat: Optimize String concatenation operations where possible. (Introduced in Java 6 Update 20) # 优化字符串连接，对模板渲染操作应该会很有意义 -XX:MaxPermSize # Maximum size of permanent generation (in bytes) # 经验值 128m </p>
   </div>
   <footer class="entry-footer"><span title='2014-03-22 18:31:55 +0800 +0800'>2014-03-22</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Java 运行参数调整" href="https://blog.alswl.com/2014/03/java-options/"></a>
@@ -194,7 +192,10 @@
     <div class="thumbnail"><img src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201104/run_configurations.png" alt="Thumbnail" /></div>
     
     
-    <p>部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。 准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout src/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project’s license NOTICE.txt Notices and attributions required by libraries that the project depends on README.txt Project’s readme 使用的 pom.xml 主要添加了 build- plugins 的 Jetty 插...</p>
+    <p>部门最近开发的产品使用的开发服务器是 Jetty（挂载在 GWT 中），启动方法是通过 Eclipse 的 External Tool 执行。我对此表示很好奇，特意在自己电脑下面组建了一个 Jetty 开发环境，发现 Maven 和 Jetty 合作起来非常愉快，现在小记之。
+准备 Maven 配置文件 我使用 Maven 推荐的标准 webapp 结构，结构如下，官方文档可以参考 Maven - Introduction to the Standard Directory Layout
+src/main/java Application/Library sources src/main/resources Application/Library resources src/main/filters Resource filter files src/main/assembly Assembly descriptors src/main/config Configuration files src/main/webapp Web application sources src/test/java Test sources src/test/resources Test resources src/test/filters Test resource filter files src/site Site LICENSE.txt Project’s license NOTICE.txt Notices and attributions required by libraries that the project depends on README.txt Project’s readme 使用的 pom.xml 主要添加了 build- plugins 的 Jetty 插件，另外修改了 outputDirectory，从而实现自动编译到targert/projectName/WEB- INF/classes目录，实现 Eclipse Hot Code。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2011-04-04 00:00:00 +0800 +0800'>2011-04-04</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Maven 下 Jetty 启动" href="https://blog.alswl.com/2011/04/run-jetty-in-maven/"></a>
@@ -209,7 +210,10 @@
     
     
     
-    <p>一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。 3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这...</p>
+    <p>一提到Eclipse中使用Maven，都会想到m2eclipse这个插件。其实在Ecli pse下使用Maven不用插件也能完成，我们只需要使用bin/mvn下面的mvn即可。
+3分钟Maven Maven官方提供了[Getting Started in 5 Minutes](http://maven.apache.org/guides /getting-started/maven-in-five-minutes.html)和[Getting Started in 30 Minutes](http://maven.apache.org/guides/getting- started/index.html)两种教程，我这里再简化一下，记录一下常用命令。
+#建立一个空项目，包含一个HelloWorld，可以通过 #-DarchetypeGroupId=&lt;archetype-groupId&gt; -DarchetypeArtifactId=&lt;archetype-artifactId&gt; #命令创建更多类型项目 mvn archetype:create -DgroupId=com.dddspace.java -DartifactId=helloworld #编译打包到jar或者war，根据pom中定义
+...</p>
   </div>
   <footer class="entry-footer"><span title='2011-03-18 00:00:00 +0800 +0800'>2011-03-18</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 在Eclipse中使用Maven" href="https://blog.alswl.com/2011/03/maven-eclipse/"></a>
@@ -224,7 +228,11 @@
     
     
     
-    <p>根据这篇日志的题目，必然是一篇水文，我思量再三，还是把它放出来，这些技术的接触把我带入了另一个广阔的天堂。这是我学Java以来的第二个里程碑。 使用Java1年半，1年前开始JSP编程，一直是我和周围的朋友自己摸索，学校没有开Java课，也没有参加什么培训课程，面对庞大的Java开源分支，我一直摸索 ，不能登堂入室。 万分感谢倪经理这1个月来的教导，他给了我一个不一样的Java。 iBatis 如果说Hibernat...</p>
+    <p>根据这篇日志的题目，必然是一篇水文，我思量再三，还是把它放出来，这些技术的接触把我带入了另一个广阔的天堂。这是我学Java以来的第二个里程碑。
+使用Java1年半，1年前开始JSP编程，一直是我和周围的朋友自己摸索，学校没有开Java课，也没有参加什么培训课程，面对庞大的Java开源分支，我一直摸索 ，不能登堂入室。
+万分感谢倪经理这1个月来的教导，他给了我一个不一样的Java。
+iBatis 如果说Hibernate是一款自动化的导弹，那么iBatis则是一款轻型的半自动步枪，简介、高效、方便配置。加上iBator这个神器，iBatis可以使开发 效率几倍提升。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2010-04-18 00:00:00 +0800 +0800'>2010-04-18</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 最近在学的技术" href="https://blog.alswl.com/2010/04/recent-study-technologys/"></a>
@@ -239,7 +247,10 @@
     
     
     
-    <p>注册WebLogic成 windows服务 1、执行Domain目录下的 installService.cmd [USER_NAME] [PASSWORD]命令，就会在windows服务中生成一个beasvc domainname_adminservername的服务启动类型为&#34;自动&#34;，手动将它设置为启动就可以每次开机自动启动了。 2、在创建新的域的时候有这个选项的，服务名字为beasvc domainname-servername。 删除WebL...</p>
+    <p>注册WebLogic成 windows服务 1、执行Domain目录下的 installService.cmd [USER_NAME] [PASSWORD]命令，就会在windows服务中生成一个beasvc domainname_adminservername的服务启动类型为&#34;自动&#34;，手动将它设置为启动就可以每次开机自动启动了。
+2、在创建新的域的时候有这个选项的，服务名字为beasvc domainname-servername。
+删除WebLogic服务 1.执行Domain目录下的 stopWebLogic.cmd命令就可以删除服务
+...</p>
   </div>
   <footer class="entry-footer"><span title='2010-03-06 00:00:00 +0800 +0800'>2010-03-06</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 管理WebLogic服务" href="https://blog.alswl.com/2010/03/manage-weblogic-service/"></a>
@@ -254,7 +265,17 @@
     
     
     
-    <p>服务器的WebLogic版本是8.1，使用自带的JDK1.4 MyEclipse版本是6.6，项目文件的Compiler compliance level设置为1.4 MyEclipse自带Tomcat使用MyEclipse6.6自带的JDK5 开发时候系统运行无误。 部署到应用服务器之后，使用WebLogic自带的JDK1.4，登录之后的一些页面一旦访问，会导致服务器报错停止。我检查了一下错误信息。 “ListenThread.Default” listening on port 7001, ip address .&gt; DWR Version 2.0.5 starting. Servlet...</p>
+    <p>服务器的WebLogic版本是8.1，使用自带的JDK1.4
+MyEclipse版本是6.6，项目文件的Compiler compliance level设置为1.4
+MyEclipse自带Tomcat使用MyEclipse6.6自带的JDK5
+开发时候系统运行无误。
+部署到应用服务器之后，使用WebLogic自带的JDK1.4，登录之后的一些页面一旦访问，会导致服务器报错停止。我检查了一下错误信息。
+“ListenThread.Default” listening on port 7001, ip address .&gt;
+DWR Version 2.0.5 starting.
+Servlet Engine: WebLogic XMLX Module 8.1 SP1 Fri Jun 20 23:06:40 PDT 2003 27
+1009 with Java Version: 1.4.1_03 Java Vendor: Sun Microsystems Inc. Line=19 The content of element type “dwr” must match “(init?,allow?,signatures
+?)”.
+...</p>
   </div>
   <footer class="entry-footer"><span title='2010-03-01 00:00:00 +0800 +0800'>2010-03-01</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to DWR2.0在JDK1.4下的配置" href="https://blog.alswl.com/2010/03/dwr2-0-jdk1-4-configuration/"></a>
@@ -269,7 +290,10 @@
     
     
     
-    <p>关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&#34;观察“并且修改自己的行为。 Java中的反射示例如下： package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void main(String[] args) throws SecurityException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // 不使用反射 Foo foo = new Foo(); foo.fun(&#34;no reflection&#34;); // 使用反射 String className = &#34;dddspace.job.exercise1116.Foo&#34;; String funName = &#34;fun&#34;; // 获取类...</p>
+    <p>关于反射 反射的定义（via Wiki）：在计算机科学中，反射是指一种特定类型的计算机程序能够在运行时以一种依 赖于它的代码的抽象特性和它的运行时行为的方式被更改的特性。用比喻来说，那种程式能够&#34;观察“并且修改自己的行为。
+Java中的反射示例如下：
+package dddspace.job.exercise1116; public class Foo { public void fun(String str) { System.out.println(str); } } package dddspace.job.exercise1116; import java.lang.reflect.InvocationTargetException; import java.lang.reflect.Method; public class ReflectionDemo { public static void main(String[] args) throws SecurityException, NoSuchMethodException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException { // 不使用反射 Foo foo = new Foo(); foo.fun(&#34;no reflection&#34;); // 使用反射 String className = &#34;dddspace.job.exercise1116.Foo&#34;; String funName = &#34;fun&#34;; // 获取类名 Class cls = Class.forName(className); // 创建Object实例 Object foo2 = cls.newInstance(); // 创建Method hello Method method = cls.getMethod(&#34;fun&#34;, String.class); // 使用反射来调用Method的invode方法，参数是目标对象&#43;参数 method.invoke(foo, &#34;use reflection&#34;); } } 原始BaseDao设计 我先阐述一下BaseDao的设计想法：BaseDao是一个抽象类，提供一系列Dao方法”get()/getAll()/add()/update()/delete()/getCount()&#34;，通过泛型匹配的获取类，我取出一个方法来做示例。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2009-11-17 00:00:00 +0800 +0800'>2009-11-17</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Java笔记 使用反射来改进BaseDao" href="https://blog.alswl.com/2009/11/note-the-use-of-java-reflection-to-improve-the-basedao/"></a>
@@ -286,7 +310,10 @@
     <div class="thumbnail"><img src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200911/s2518833.jpg" alt="Thumbnail" /></div>
     
     
-    <p>《Java JDK6学习笔记》(via 豆瓣，via ChinaPub)是我最近在看的一本书。虽然名为Java学习笔记，其实** 深入浅出的讲解了Java这门语言。书中的语言颇有白文风格**，适合没有语言基础的同学学习，也适合对一些概念不清楚的开发人员。 我很快的翻阅了半本书，作者的范例代码简单精要(“Java笔记split/不定长度参数/泛型类型通配符”中示例代码就是改编自本书)。...</p>
+    <p> 《Java JDK6学习笔记》(via 豆瓣，via ChinaPub)是我最近在看的一本书。虽然名为Java学习笔记，其实** 深入浅出的讲解了Java这门语言。书中的语言颇有白文风格**，适合没有语言基础的同学学习，也适合对一些概念不清楚的开发人员。
+我很快的翻阅了半本书，作者的范例代码简单精要(“Java笔记split/不定长度参数/泛型类型通配符”中示例代码就是改编自本书)。我现在正在阅读线程、反射和Annotation这三块内容，看得我酣畅淋漓啊。
+我算是概念模糊的开发者，现在准备笔试/面试所以恶补一下平时接触比较少的概念。我虽然也有《Think in Java》这本至尊级的书，但是显然这本书研究过深，不适合快速复习。《Java JDK6学习笔记》就成了我首选了。（感谢CUMT图书馆！）
+...</p>
   </div>
   <footer class="entry-footer"><span title='2009-11-16 00:00:00 +0800 +0800'>2009-11-16</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Java入门好书《Java JDK6学习笔记》" href="https://blog.alswl.com/2009/11/getting-started-with-java-books-java-jdk6-study-notes/"></a>
@@ -301,7 +328,10 @@
     
     
     
-    <p>今天看了一下午《Java学习笔记》，作者林信良，花名良葛格。从书中所获颇 多，正所谓温故而知新，我就把今天的&#34;新&#34;总结一下，加深记忆。良葛格也提倡&#34;在网上写文章是我记录所学的一种方式&#34;。 split的正则式和其中的正则式 C语言其中有函数strtok，就是按某些char对字符串进行切割。下面给出一个C下面的范例 char str[] = &#34;now # is the time for all # good men to come to the # aid of their country&#34;; char delims[] = &#34;#&#34;; char...</p>
+    <p>今天看了一下午《Java学习笔记》，作者林信良，花名良葛格。从书中所获颇 多，正所谓温故而知新，我就把今天的&#34;新&#34;总结一下，加深记忆。良葛格也提倡&#34;在网上写文章是我记录所学的一种方式&#34;。
+split的正则式和其中的正则式 C语言其中有函数strtok，就是按某些char对字符串进行切割。下面给出一个C下面的范例
+char str[] = &#34;now # is the time for all # good men to come to the # aid of their country&#34;; char delims[] = &#34;#&#34;; char *result = NULL; result = strtok( str, delims ); while( result != NULL ) { printf( &#34;result is &#34;%s&#34;n&#34;, result ); result = strtok( NULL, delims ); } 在Java中也有类似的StringTokenizer，但是在JDK5中，已经被标记为Legacy Class(遗产类)，推荐使用String.split(String regex)，可以接受正则表达式。范例如下。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2009-11-15 00:00:00 +0800 +0800'>2009-11-15</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Java笔记 split/不定长度参数/泛型类型通配符" href="https://blog.alswl.com/2009/11/java-notes-_split-variable-length-parameter-generic-type-wildcard/"></a>
@@ -318,7 +348,10 @@
     <div class="thumbnail"><img src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200907/DAO_UML-254x300.jpg" alt="Thumbnail" /></div>
     
     
-    <p>DAO的全称是Data Access Object数据访问接口。数据访问：顾名思义就是与数据库打交道。夹在业务逻辑与数据库资源中间。 我大二时候写的一个小型管理系统，那时候老师开始强调分层和MVC的思想，当时我将DAO层分了开来，把所有与数据库的交互操作封装成对应的DAO类，这样最大的好处 是实现了封装和隔离，方便系统的迁移和重构。 分层、封装、接口化是一种基本的解决思路，无论是TCP/IP协议族，还是软件工程，都是...</p>
+    <p>DAO的全称是Data Access Object数据访问接口。数据访问：顾名思义就是与数据库打交道。夹在业务逻辑与数据库资源中间。
+我大二时候写的一个小型管理系统，那时候老师开始强调分层和MVC的思想，当时我将DAO层分了开来，把所有与数据库的交互操作封装成对应的DAO类，这样最大的好处 是实现了封装和隔离，方便系统的迁移和重构。
+分层、封装、接口化是一种基本的解决思路，无论是TCP/IP协议族，还是软件工程，都是很值得使用的方案。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2009-07-10 00:00:00 +0800 +0800'>2009-07-10</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to DAO的设计-使用泛型来避免重复DAO" href="https://blog.alswl.com/2009/07/dao-design-the-use-of-generics-to-avoid-duplication-of-dao/"></a>

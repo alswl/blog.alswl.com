@@ -7,7 +7,47 @@
 <meta name="robots" content="index, follow">
 <title>go-pylons.py在Python2.7下错误解决 | Log4D</title>
 <meta name="keywords" content="python, pylons">
-<meta name="description" content="当使用 Python2.7 &#43; go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。 [alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&quot;, line 67, in &lt;module&gt; import os File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&quot;, line 398, in &lt;module&gt; import UserDict File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&quot;, line 83, in &lt;module&gt; import _abcoll File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&quot;, line 11, in &lt;module&gt; from abc import ABCMeta, abstractmethod File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&quot;, line 8, in &lt;module&gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;) ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。 #!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 &#43;0200 &#43;&#43;&#43; b/virtualenv.py 2010-09-14 21:46:20.650769346 &#43;0200 @@ -51,6 &#43;51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config if sys.version_info[:2] &gt;= (2, 6): REQUIRED_MODULES.extend([&lsquo;warnings&rsquo;, &rsquo;linecache&rsquo;, &lsquo;_abcoll&rsquo;, &lsquo;abc&rsquo;]) if sys.version_info[:2] &gt;= (2, 7): REQUIRED_MODULES.extend([&rsquo;_weakrefset&rsquo;]) if sys.version_info[:2] &lt;= (2, 3): REQUIRED_MODULES.extend([&lsquo;sets&rsquo;, &lsquo;future&rsquo;]) if is_pypy: 懒人可以点击">
+<meta name="description" content="当使用 Python2.7 &#43; go-pylons.py
+创建 Pylons 运行环境的话，会报一下错误。
+[alswl@arch-vm xingtong]$ python go-pylons.py myb_env
+New python executable in myb_env/bin/python
+Traceback (most recent call last):
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&quot;, line 67, in &lt;module&gt;
+    import os
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&quot;, line 398, in &lt;module&gt;
+    import UserDict
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&quot;, line 83, in &lt;module&gt;
+    import _abcoll
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&quot;, line 11, in &lt;module&gt;
+    from abc import ABCMeta, abstractmethod
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&quot;, line 8, in &lt;module&gt;
+    from _weakrefset import WeakSet
+ImportError: No module named _weakrefset
+ERROR: The executable myb_env/bin/python is not functioning
+ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;)
+ERROR: virtualenv is not compatible with this system or executable
+
+STFW 之后，找到了引发错误的根源virtualenv，这个 bug
+在这里已经修复了。
+#!diff
+--- a/virtualenv.py        2010-09-14 21:48:58.078562930 &#43;0200
+&#43;&#43;&#43; b/virtualenv.py        2010-09-14 21:46:20.650769346 &#43;0200
+@@ -51,6 &#43;51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config
+
+if sys.version_info[:2] &gt;= (2, 6):
+REQUIRED_MODULES.extend([&lsquo;warnings&rsquo;, &rsquo;linecache&rsquo;, &lsquo;_abcoll&rsquo;, &lsquo;abc&rsquo;])
+
+
+if sys.version_info[:2] &gt;= (2, 7):
+
+
+REQUIRED_MODULES.extend([&rsquo;_weakrefset&rsquo;])
+
+
+if sys.version_info[:2] &lt;= (2, 3):
+REQUIRED_MODULES.extend([&lsquo;sets&rsquo;, &lsquo;future&rsquo;])
+if is_pypy:
+懒人可以点击go-pylons.py下载。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +97,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +110,48 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
+      </script><meta property="og:title" content="go-pylons.py在Python2.7下错误解决" />
+<meta property="og:description" content="当使用 Python2.7 &#43; go-pylons.py
+创建 Pylons 运行环境的话，会报一下错误。
+[alswl@arch-vm xingtong]$ python go-pylons.py myb_env
+New python executable in myb_env/bin/python
+Traceback (most recent call last):
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&quot;, line 67, in &lt;module&gt;
+    import os
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&quot;, line 398, in &lt;module&gt;
+    import UserDict
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&quot;, line 83, in &lt;module&gt;
+    import _abcoll
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&quot;, line 11, in &lt;module&gt;
+    from abc import ABCMeta, abstractmethod
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&quot;, line 8, in &lt;module&gt;
+    from _weakrefset import WeakSet
+ImportError: No module named _weakrefset
+ERROR: The executable myb_env/bin/python is not functioning
+ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;)
+ERROR: virtualenv is not compatible with this system or executable
 
-<meta property="og:title" content="go-pylons.py在Python2.7下错误解决" />
-<meta property="og:description" content="当使用 Python2.7 &#43; go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。 [alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&quot;, line 67, in &lt;module&gt; import os File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&quot;, line 398, in &lt;module&gt; import UserDict File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&quot;, line 83, in &lt;module&gt; import _abcoll File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&quot;, line 11, in &lt;module&gt; from abc import ABCMeta, abstractmethod File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&quot;, line 8, in &lt;module&gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;) ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。 #!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 &#43;0200 &#43;&#43;&#43; b/virtualenv.py 2010-09-14 21:46:20.650769346 &#43;0200 @@ -51,6 &#43;51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config if sys.version_info[:2] &gt;= (2, 6): REQUIRED_MODULES.extend([&lsquo;warnings&rsquo;, &rsquo;linecache&rsquo;, &lsquo;_abcoll&rsquo;, &lsquo;abc&rsquo;]) if sys.version_info[:2] &gt;= (2, 7): REQUIRED_MODULES.extend([&rsquo;_weakrefset&rsquo;]) if sys.version_info[:2] &lt;= (2, 3): REQUIRED_MODULES.extend([&lsquo;sets&rsquo;, &lsquo;future&rsquo;]) if is_pypy: 懒人可以点击" />
+STFW 之后，找到了引发错误的根源virtualenv，这个 bug
+在这里已经修复了。
+#!diff
+--- a/virtualenv.py        2010-09-14 21:48:58.078562930 &#43;0200
+&#43;&#43;&#43; b/virtualenv.py        2010-09-14 21:46:20.650769346 &#43;0200
+@@ -51,6 &#43;51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config
+
+if sys.version_info[:2] &gt;= (2, 6):
+REQUIRED_MODULES.extend([&lsquo;warnings&rsquo;, &rsquo;linecache&rsquo;, &lsquo;_abcoll&rsquo;, &lsquo;abc&rsquo;])
+
+
+if sys.version_info[:2] &gt;= (2, 7):
+
+
+REQUIRED_MODULES.extend([&rsquo;_weakrefset&rsquo;])
+
+
+if sys.version_info[:2] &lt;= (2, 3):
+REQUIRED_MODULES.extend([&lsquo;sets&rsquo;, &lsquo;future&rsquo;])
+if is_pypy:
+懒人可以点击go-pylons.py下载。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2011-08-02T00:00:00+08:00" />
@@ -85,7 +159,47 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="go-pylons.py在Python2.7下错误解决"/>
-<meta name="twitter:description" content="当使用 Python2.7 &#43; go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。 [alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&quot;, line 67, in &lt;module&gt; import os File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&quot;, line 398, in &lt;module&gt; import UserDict File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&quot;, line 83, in &lt;module&gt; import _abcoll File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&quot;, line 11, in &lt;module&gt; from abc import ABCMeta, abstractmethod File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&quot;, line 8, in &lt;module&gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;) ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。 #!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 &#43;0200 &#43;&#43;&#43; b/virtualenv.py 2010-09-14 21:46:20.650769346 &#43;0200 @@ -51,6 &#43;51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config if sys.version_info[:2] &gt;= (2, 6): REQUIRED_MODULES.extend([&lsquo;warnings&rsquo;, &rsquo;linecache&rsquo;, &lsquo;_abcoll&rsquo;, &lsquo;abc&rsquo;]) if sys.version_info[:2] &gt;= (2, 7): REQUIRED_MODULES.extend([&rsquo;_weakrefset&rsquo;]) if sys.version_info[:2] &lt;= (2, 3): REQUIRED_MODULES.extend([&lsquo;sets&rsquo;, &lsquo;future&rsquo;]) if is_pypy: 懒人可以点击"/>
+<meta name="twitter:description" content="当使用 Python2.7 &#43; go-pylons.py
+创建 Pylons 运行环境的话，会报一下错误。
+[alswl@arch-vm xingtong]$ python go-pylons.py myb_env
+New python executable in myb_env/bin/python
+Traceback (most recent call last):
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&quot;, line 67, in &lt;module&gt;
+    import os
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&quot;, line 398, in &lt;module&gt;
+    import UserDict
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&quot;, line 83, in &lt;module&gt;
+    import _abcoll
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&quot;, line 11, in &lt;module&gt;
+    from abc import ABCMeta, abstractmethod
+  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&quot;, line 8, in &lt;module&gt;
+    from _weakrefset import WeakSet
+ImportError: No module named _weakrefset
+ERROR: The executable myb_env/bin/python is not functioning
+ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;)
+ERROR: virtualenv is not compatible with this system or executable
+
+STFW 之后，找到了引发错误的根源virtualenv，这个 bug
+在这里已经修复了。
+#!diff
+--- a/virtualenv.py        2010-09-14 21:48:58.078562930 &#43;0200
+&#43;&#43;&#43; b/virtualenv.py        2010-09-14 21:46:20.650769346 &#43;0200
+@@ -51,6 &#43;51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config
+
+if sys.version_info[:2] &gt;= (2, 6):
+REQUIRED_MODULES.extend([&lsquo;warnings&rsquo;, &rsquo;linecache&rsquo;, &lsquo;_abcoll&rsquo;, &lsquo;abc&rsquo;])
+
+
+if sys.version_info[:2] &gt;= (2, 7):
+
+
+REQUIRED_MODULES.extend([&rsquo;_weakrefset&rsquo;])
+
+
+if sys.version_info[:2] &lt;= (2, 3):
+REQUIRED_MODULES.extend([&lsquo;sets&rsquo;, &lsquo;future&rsquo;])
+if is_pypy:
+懒人可以点击go-pylons.py下载。"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +228,7 @@
   "@type": "BlogPosting",
   "headline": "go-pylons.py在Python2.7下错误解决",
   "name": "go-pylons.py在Python2.7下错误解决",
-  "description": "当使用 Python2.7 + go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。 [alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File \u0026quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py\u0026quot;, line 67, in \u0026lt;module\u0026gt; import os File \u0026quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py\u0026quot;, line 398, in \u0026lt;module\u0026gt; import UserDict File \u0026quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py\u0026quot;, line 83, in \u0026lt;module\u0026gt; import _abcoll File \u0026quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py\u0026quot;, line 11, in \u0026lt;module\u0026gt; from abc import ABCMeta, abstractmethod File \u0026quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py\u0026quot;, line 8, in \u0026lt;module\u0026gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is '/home/alswl/work/xingtong' (should be '/home/alswl/work/xingtong/myb_env') ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。 #!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 +0200 +++ b/virtualenv.py 2010-09-14 21:46:20.650769346 +0200 @@ -51,6 +51,8 @@ REQUIRED_FILES = ['lib-dynload', 'config if sys.version_info[:2] \u0026gt;= (2, 6): REQUIRED_MODULES.extend([\u0026lsquo;warnings\u0026rsquo;, \u0026rsquo;linecache\u0026rsquo;, \u0026lsquo;_abcoll\u0026rsquo;, \u0026lsquo;abc\u0026rsquo;]) if sys.version_info[:2] \u0026gt;= (2, 7): REQUIRED_MODULES.extend([\u0026rsquo;_weakrefset\u0026rsquo;]) if sys.version_info[:2] \u0026lt;= (2, 3): REQUIRED_MODULES.extend([\u0026lsquo;sets\u0026rsquo;, \u0026lsquo;future\u0026rsquo;]) if is_pypy: 懒人可以点击",
+  "description": "当使用 Python2.7 + go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。\n[alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File \u0026quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py\u0026quot;, line 67, in \u0026lt;module\u0026gt; import os File \u0026quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py\u0026quot;, line 398, in \u0026lt;module\u0026gt; import UserDict File \u0026quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py\u0026quot;, line 83, in \u0026lt;module\u0026gt; import _abcoll File \u0026quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py\u0026quot;, line 11, in \u0026lt;module\u0026gt; from abc import ABCMeta, abstractmethod File \u0026quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py\u0026quot;, line 8, in \u0026lt;module\u0026gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is '/home/alswl/work/xingtong' (should be '/home/alswl/work/xingtong/myb_env') ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。\n#!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 +0200 +++ b/virtualenv.py 2010-09-14 21:46:20.650769346 +0200 @@ -51,6 +51,8 @@ REQUIRED_FILES = ['lib-dynload', 'config if sys.version_info[:2] \u0026gt;= (2, 6):\nREQUIRED_MODULES.extend([\u0026lsquo;warnings\u0026rsquo;, \u0026rsquo;linecache\u0026rsquo;, \u0026lsquo;_abcoll\u0026rsquo;, \u0026lsquo;abc\u0026rsquo;])\nif sys.version_info[:2] \u0026gt;= (2, 7):\nREQUIRED_MODULES.extend([\u0026rsquo;_weakrefset\u0026rsquo;])\nif sys.version_info[:2] \u0026lt;= (2, 3):\nREQUIRED_MODULES.extend([\u0026lsquo;sets\u0026rsquo;, \u0026lsquo;future\u0026rsquo;])\nif is_pypy:\n懒人可以点击go-pylons.py下载。\n",
   "keywords": [
     "python", "pylons"
   ],
@@ -313,7 +427,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

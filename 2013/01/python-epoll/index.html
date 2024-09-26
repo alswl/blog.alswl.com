@@ -7,7 +7,45 @@
 <meta name="robots" content="index, follow">
 <title>在 Python 中使用 epoll[译文] | Log4D</title>
 <meta name="keywords" content="python, 译文">
-<meta name="description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient.recv(1024) print(&#39;-&#39;*40 &#43; &#39;\n&#39; &#43; request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将">
+<meta name="description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ，
+我这里取精简内容翻译过来。
+============ 正文开始 ============
+介绍
+Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API
+的 epoll 范例。
+
+阻塞的 Socket 通信范例
+import socket
+
+EOL1 = b&#39;\n\n&#39;
+EOL2 = b&#39;\n\r\n&#39;
+response  = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34;
+response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39;
+response &#43;= b&#39;Hello, world!&#39;
+
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+serversocket.bind((&#39;0.0.0.0&#39;, 8080))
+serversocket.listen(1)
+
+try:
+   while True:
+      connectiontoclient, address = serversocket.accept()
+      request = b&#39;&#39;
+      while EOL1 not in request and EOL2 not in request:
+          request &#43;= connectiontoclient.recv(1024)
+      print(&#39;-&#39;*40 &#43; &#39;\n&#39; &#43; request.decode()[:-2])
+      connectiontoclient.send(response)
+      connectiontoclient.close()
+finally:
+   serversocket.close()
+这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞，
+导致其他连接无法完成。
+通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听，
+将建立成功的连接交给其他线程操作，然后继续在主线程上面监听。
+这样一来，就不会受单次请求阻塞的限制。
+C10K 问题描述了其他处理高并发方法，比如异步 Socket，
+通过监听事件来触发预设的响应。异步 Socket 可以是单线程，也可以是多线程。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2013/01/python-epoll/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +95,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +108,46 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
+      </script><meta property="og:title" content="在 Python 中使用 epoll[译文]" />
+<meta property="og:description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ，
+我这里取精简内容翻译过来。
+============ 正文开始 ============
+介绍
+Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API
+的 epoll 范例。
 
-<meta property="og:title" content="在 Python 中使用 epoll[译文]" />
-<meta property="og:description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient.recv(1024) print(&#39;-&#39;*40 &#43; &#39;\n&#39; &#43; request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将" />
+阻塞的 Socket 通信范例
+import socket
+
+EOL1 = b&#39;\n\n&#39;
+EOL2 = b&#39;\n\r\n&#39;
+response  = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34;
+response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39;
+response &#43;= b&#39;Hello, world!&#39;
+
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+serversocket.bind((&#39;0.0.0.0&#39;, 8080))
+serversocket.listen(1)
+
+try:
+   while True:
+      connectiontoclient, address = serversocket.accept()
+      request = b&#39;&#39;
+      while EOL1 not in request and EOL2 not in request:
+          request &#43;= connectiontoclient.recv(1024)
+      print(&#39;-&#39;*40 &#43; &#39;\n&#39; &#43; request.decode()[:-2])
+      connectiontoclient.send(response)
+      connectiontoclient.close()
+finally:
+   serversocket.close()
+这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞，
+导致其他连接无法完成。
+通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听，
+将建立成功的连接交给其他线程操作，然后继续在主线程上面监听。
+这样一来，就不会受单次请求阻塞的限制。
+C10K 问题描述了其他处理高并发方法，比如异步 Socket，
+通过监听事件来触发预设的响应。异步 Socket 可以是单线程，也可以是多线程。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2013/01/python-epoll/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2013-01-12T00:01:00+08:00" />
@@ -85,7 +155,45 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在 Python 中使用 epoll[译文]"/>
-<meta name="twitter:description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b&#39;\n\n&#39; EOL2 = b&#39;\n\r\n&#39; response = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34; response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39; response &#43;= b&#39;Hello, world!&#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((&#39;0.0.0.0&#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b&#39;&#39; while EOL1 not in request and EOL2 not in request: request &#43;= connectiontoclient.recv(1024) print(&#39;-&#39;*40 &#43; &#39;\n&#39; &#43; request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将"/>
+<meta name="twitter:description" content="原文地址： http://scotdoyle.com/python-epoll-howto.html ，
+我这里取精简内容翻译过来。
+============ 正文开始 ============
+介绍
+Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API
+的 epoll 范例。
+
+阻塞的 Socket 通信范例
+import socket
+
+EOL1 = b&#39;\n\n&#39;
+EOL2 = b&#39;\n\r\n&#39;
+response  = b&#39;HTTP/1.0 200 OK\r\ndate: &#34;2013-01-12T00:01:00&#43;08:00&#34;
+response &#43;= b&#39;Content-Type: text/plain\r\nContent-Length: 13\r\n\r\n&#39;
+response &#43;= b&#39;Hello, world!&#39;
+
+serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+serversocket.bind((&#39;0.0.0.0&#39;, 8080))
+serversocket.listen(1)
+
+try:
+   while True:
+      connectiontoclient, address = serversocket.accept()
+      request = b&#39;&#39;
+      while EOL1 not in request and EOL2 not in request:
+          request &#43;= connectiontoclient.recv(1024)
+      print(&#39;-&#39;*40 &#43; &#39;\n&#39; &#43; request.decode()[:-2])
+      connectiontoclient.send(response)
+      connectiontoclient.close()
+finally:
+   serversocket.close()
+这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞，
+导致其他连接无法完成。
+通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听，
+将建立成功的连接交给其他线程操作，然后继续在主线程上面监听。
+这样一来，就不会受单次请求阻塞的限制。
+C10K 问题描述了其他处理高并发方法，比如异步 Socket，
+通过监听事件来触发预设的响应。异步 Socket 可以是单线程，也可以是多线程。"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +222,7 @@
   "@type": "BlogPosting",
   "headline": "在 Python 中使用 epoll[译文]",
   "name": "在 Python 中使用 epoll[译文]",
-  "description": "原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。 ============ 正文开始 ============ 介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。 阻塞的 Socket 通信范例 import socket EOL1 = b\u0026#39;\\n\\n\u0026#39; EOL2 = b\u0026#39;\\n\\r\\n\u0026#39; response = b\u0026#39;HTTP/1.0 200 OK\\r\\ndate: \u0026#34;2013-01-12T00:01:00+08:00\u0026#34; response += b\u0026#39;Content-Type: text/plain\\r\\nContent-Length: 13\\r\\n\\r\\n\u0026#39; response += b\u0026#39;Hello, world!\u0026#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((\u0026#39;0.0.0.0\u0026#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b\u0026#39;\u0026#39; while EOL1 not in request and EOL2 not in request: request += connectiontoclient.recv(1024) print(\u0026#39;-\u0026#39;*40 + \u0026#39;\\n\u0026#39; + request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。 通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将",
+  "description": "原文地址： http://scotdoyle.com/python-epoll-howto.html ， 我这里取精简内容翻译过来。\n============ 正文开始 ============\n介绍 Python 从 2.6 开始支持 epoll。现在我们用 Python3 来写基于这些 API 的 epoll 范例。\n阻塞的 Socket 通信范例 import socket EOL1 = b\u0026#39;\\n\\n\u0026#39; EOL2 = b\u0026#39;\\n\\r\\n\u0026#39; response = b\u0026#39;HTTP/1.0 200 OK\\r\\ndate: \u0026#34;2013-01-12T00:01:00+08:00\u0026#34; response += b\u0026#39;Content-Type: text/plain\\r\\nContent-Length: 13\\r\\n\\r\\n\u0026#39; response += b\u0026#39;Hello, world!\u0026#39; serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) serversocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) serversocket.bind((\u0026#39;0.0.0.0\u0026#39;, 8080)) serversocket.listen(1) try: while True: connectiontoclient, address = serversocket.accept() request = b\u0026#39;\u0026#39; while EOL1 not in request and EOL2 not in request: request += connectiontoclient.recv(1024) print(\u0026#39;-\u0026#39;*40 + \u0026#39;\\n\u0026#39; + request.decode()[:-2]) connectiontoclient.send(response) connectiontoclient.close() finally: serversocket.close() 这个范例中的代码在 accept() 、 recv() 和 send() 时候会发生阻塞， 导致其他连接无法完成。\n通常情况下，在我们使用阻塞模型时候，会专门建立一个主线程来进行监听， 将建立成功的连接交给其他线程操作，然后继续在主线程上面监听。 这样一来，就不会受单次请求阻塞的限制。\nC10K 问题描述了其他处理高并发方法，比如异步 Socket， 通过监听事件来触发预设的响应。异步 Socket 可以是单线程，也可以是多线程。\n",
   "keywords": [
     "python", "译文"
   ],
@@ -415,7 +523,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

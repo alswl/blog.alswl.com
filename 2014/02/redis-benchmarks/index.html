@@ -7,7 +7,38 @@
 <meta name="robots" content="index, follow">
 <title>Redis 到底有多快[译文] | Log4D</title>
 <meta name="keywords" content="性能, redis, benchmark, 译文">
-<meta name="description" content="原文地址 http://redis.io/topics/benchmarks。 拖了一个半月的稿子~ Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。 （类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。 以下参数被支持： Usage: redis-benchmark [-h &lt;host&gt;] [-p &lt;port&gt;] [-c &lt;clients&gt;] [-n &lt;requests]&gt; [-k &lt;boolean&gt;] -h &lt;hostname&gt; Server hostname (default 127.0.0.1) -p &lt;port&gt; Server port (default 6379) -s &lt;socket&gt; Server socket (overrides host and port) -c &lt;clients&gt; Number of parallel connections (default 50) -n &lt;requests&gt; Total number of requests (default 10000) -d &lt;size&gt; Data size of SET/GET value in bytes (default 2) -k &lt;boolean&gt; 1=keep alive 0=reconnect (default 1) -r &lt;keyspacelen&gt; Use random keys for SET/GET/INCR, random values for SADD Using this option the benchmark will get/set keys in the form mykey_rand:000000012456 instead of">
+<meta name="description" content="原文地址 http://redis.io/topics/benchmarks。
+拖了一个半月的稿子~
+
+Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。
+（类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。
+
+以下参数被支持：
+
+    Usage: redis-benchmark [-h &lt;host&gt;] [-p &lt;port&gt;] [-c &lt;clients&gt;] [-n &lt;requests]&gt; [-k &lt;boolean&gt;]
+
+     -h &lt;hostname&gt;      Server hostname (default 127.0.0.1)
+     -p &lt;port&gt;          Server port (default 6379)
+     -s &lt;socket&gt;        Server socket (overrides host and port)
+     -c &lt;clients&gt;       Number of parallel connections (default 50)
+     -n &lt;requests&gt;      Total number of requests (default 10000)
+     -d &lt;size&gt;          Data size of SET/GET value in bytes (default 2)
+     -k &lt;boolean&gt;       1=keep alive 0=reconnect (default 1)
+     -r &lt;keyspacelen&gt;   Use random keys for SET/GET/INCR, random values for SADD
+      Using this option the benchmark will get/set keys
+      in the form mykey_rand:000000012456 instead of constant
+      keys, the &lt;keyspacelen&gt; argument determines the max
+      number of values for the random number. For instance
+      if set to 10 only rand:000000000000 - rand:000000000009
+      range will be allowed.
+     -P &lt;numreq&gt;        Pipeline &lt;numreq&gt; requests. Default 1 (no pipeline).
+     -q                 Quiet. Just show query/sec values
+     --csv              Output in CSV format
+     -l                 Loop. Run the tests forever
+     -t &lt;tests&gt;         Only run the comma separated list of tests. The test
+                        names are the same as the ones produced as output.
+     -I                 Idle mode. Just open N idle connections and wait.
+你需要在基准测试之前启动一个 Redis 实例。一般这样启动测试：">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2014/02/redis-benchmarks/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +88,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +101,39 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
+      </script><meta property="og:title" content="Redis 到底有多快[译文]" />
+<meta property="og:description" content="原文地址 http://redis.io/topics/benchmarks。
+拖了一个半月的稿子~
 
-<meta property="og:title" content="Redis 到底有多快[译文]" />
-<meta property="og:description" content="原文地址 http://redis.io/topics/benchmarks。 拖了一个半月的稿子~ Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。 （类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。 以下参数被支持： Usage: redis-benchmark [-h &lt;host&gt;] [-p &lt;port&gt;] [-c &lt;clients&gt;] [-n &lt;requests]&gt; [-k &lt;boolean&gt;] -h &lt;hostname&gt; Server hostname (default 127.0.0.1) -p &lt;port&gt; Server port (default 6379) -s &lt;socket&gt; Server socket (overrides host and port) -c &lt;clients&gt; Number of parallel connections (default 50) -n &lt;requests&gt; Total number of requests (default 10000) -d &lt;size&gt; Data size of SET/GET value in bytes (default 2) -k &lt;boolean&gt; 1=keep alive 0=reconnect (default 1) -r &lt;keyspacelen&gt; Use random keys for SET/GET/INCR, random values for SADD Using this option the benchmark will get/set keys in the form mykey_rand:000000012456 instead of" />
+Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。
+（类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。
+
+以下参数被支持：
+
+    Usage: redis-benchmark [-h &lt;host&gt;] [-p &lt;port&gt;] [-c &lt;clients&gt;] [-n &lt;requests]&gt; [-k &lt;boolean&gt;]
+
+     -h &lt;hostname&gt;      Server hostname (default 127.0.0.1)
+     -p &lt;port&gt;          Server port (default 6379)
+     -s &lt;socket&gt;        Server socket (overrides host and port)
+     -c &lt;clients&gt;       Number of parallel connections (default 50)
+     -n &lt;requests&gt;      Total number of requests (default 10000)
+     -d &lt;size&gt;          Data size of SET/GET value in bytes (default 2)
+     -k &lt;boolean&gt;       1=keep alive 0=reconnect (default 1)
+     -r &lt;keyspacelen&gt;   Use random keys for SET/GET/INCR, random values for SADD
+      Using this option the benchmark will get/set keys
+      in the form mykey_rand:000000012456 instead of constant
+      keys, the &lt;keyspacelen&gt; argument determines the max
+      number of values for the random number. For instance
+      if set to 10 only rand:000000000000 - rand:000000000009
+      range will be allowed.
+     -P &lt;numreq&gt;        Pipeline &lt;numreq&gt; requests. Default 1 (no pipeline).
+     -q                 Quiet. Just show query/sec values
+     --csv              Output in CSV format
+     -l                 Loop. Run the tests forever
+     -t &lt;tests&gt;         Only run the comma separated list of tests. The test
+                        names are the same as the ones produced as output.
+     -I                 Idle mode. Just open N idle connections and wait.
+你需要在基准测试之前启动一个 Redis 实例。一般这样启动测试：" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2014/02/redis-benchmarks/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2014-02-23T22:38:00+08:00" />
@@ -85,7 +141,38 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Redis 到底有多快[译文]"/>
-<meta name="twitter:description" content="原文地址 http://redis.io/topics/benchmarks。 拖了一个半月的稿子~ Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。 （类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。 以下参数被支持： Usage: redis-benchmark [-h &lt;host&gt;] [-p &lt;port&gt;] [-c &lt;clients&gt;] [-n &lt;requests]&gt; [-k &lt;boolean&gt;] -h &lt;hostname&gt; Server hostname (default 127.0.0.1) -p &lt;port&gt; Server port (default 6379) -s &lt;socket&gt; Server socket (overrides host and port) -c &lt;clients&gt; Number of parallel connections (default 50) -n &lt;requests&gt; Total number of requests (default 10000) -d &lt;size&gt; Data size of SET/GET value in bytes (default 2) -k &lt;boolean&gt; 1=keep alive 0=reconnect (default 1) -r &lt;keyspacelen&gt; Use random keys for SET/GET/INCR, random values for SADD Using this option the benchmark will get/set keys in the form mykey_rand:000000012456 instead of"/>
+<meta name="twitter:description" content="原文地址 http://redis.io/topics/benchmarks。
+拖了一个半月的稿子~
+
+Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。
+（类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。
+
+以下参数被支持：
+
+    Usage: redis-benchmark [-h &lt;host&gt;] [-p &lt;port&gt;] [-c &lt;clients&gt;] [-n &lt;requests]&gt; [-k &lt;boolean&gt;]
+
+     -h &lt;hostname&gt;      Server hostname (default 127.0.0.1)
+     -p &lt;port&gt;          Server port (default 6379)
+     -s &lt;socket&gt;        Server socket (overrides host and port)
+     -c &lt;clients&gt;       Number of parallel connections (default 50)
+     -n &lt;requests&gt;      Total number of requests (default 10000)
+     -d &lt;size&gt;          Data size of SET/GET value in bytes (default 2)
+     -k &lt;boolean&gt;       1=keep alive 0=reconnect (default 1)
+     -r &lt;keyspacelen&gt;   Use random keys for SET/GET/INCR, random values for SADD
+      Using this option the benchmark will get/set keys
+      in the form mykey_rand:000000012456 instead of constant
+      keys, the &lt;keyspacelen&gt; argument determines the max
+      number of values for the random number. For instance
+      if set to 10 only rand:000000000000 - rand:000000000009
+      range will be allowed.
+     -P &lt;numreq&gt;        Pipeline &lt;numreq&gt; requests. Default 1 (no pipeline).
+     -q                 Quiet. Just show query/sec values
+     --csv              Output in CSV format
+     -l                 Loop. Run the tests forever
+     -t &lt;tests&gt;         Only run the comma separated list of tests. The test
+                        names are the same as the ones produced as output.
+     -I                 Idle mode. Just open N idle connections and wait.
+你需要在基准测试之前启动一个 Redis 实例。一般这样启动测试："/>
 
 
 <script type="application/ld+json">
@@ -114,7 +201,7 @@
   "@type": "BlogPosting",
   "headline": "Redis 到底有多快[译文]",
   "name": "Redis 到底有多快[译文]",
-  "description": "原文地址 http://redis.io/topics/benchmarks。 拖了一个半月的稿子~ Redis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。 （类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。 以下参数被支持： Usage: redis-benchmark [-h \u0026lt;host\u0026gt;] [-p \u0026lt;port\u0026gt;] [-c \u0026lt;clients\u0026gt;] [-n \u0026lt;requests]\u0026gt; [-k \u0026lt;boolean\u0026gt;] -h \u0026lt;hostname\u0026gt; Server hostname (default 127.0.0.1) -p \u0026lt;port\u0026gt; Server port (default 6379) -s \u0026lt;socket\u0026gt; Server socket (overrides host and port) -c \u0026lt;clients\u0026gt; Number of parallel connections (default 50) -n \u0026lt;requests\u0026gt; Total number of requests (default 10000) -d \u0026lt;size\u0026gt; Data size of SET/GET value in bytes (default 2) -k \u0026lt;boolean\u0026gt; 1=keep alive 0=reconnect (default 1) -r \u0026lt;keyspacelen\u0026gt; Use random keys for SET/GET/INCR, random values for SADD Using this option the benchmark will get/set keys in the form mykey_rand:000000012456 instead of",
+  "description": "原文地址 http://redis.io/topics/benchmarks。\n拖了一个半月的稿子~\nRedis 自带了一个叫 redis-benchmark 的工具来模拟 N 个客户端同时发出 M 个请求。 （类似于 Apache ab 程序）。你可以使用 redis-benchmark -h 来查看基准参数。\n以下参数被支持： Usage: redis-benchmark [-h \u0026lt;host\u0026gt;] [-p \u0026lt;port\u0026gt;] [-c \u0026lt;clients\u0026gt;] [-n \u0026lt;requests]\u0026gt; [-k \u0026lt;boolean\u0026gt;] -h \u0026lt;hostname\u0026gt; Server hostname (default 127.0.0.1) -p \u0026lt;port\u0026gt; Server port (default 6379) -s \u0026lt;socket\u0026gt; Server socket (overrides host and port) -c \u0026lt;clients\u0026gt; Number of parallel connections (default 50) -n \u0026lt;requests\u0026gt; Total number of requests (default 10000) -d \u0026lt;size\u0026gt; Data size of SET/GET value in bytes (default 2) -k \u0026lt;boolean\u0026gt; 1=keep alive 0=reconnect (default 1) -r \u0026lt;keyspacelen\u0026gt; Use random keys for SET/GET/INCR, random values for SADD Using this option the benchmark will get/set keys in the form mykey_rand:000000012456 instead of constant keys, the \u0026lt;keyspacelen\u0026gt; argument determines the max number of values for the random number. For instance if set to 10 only rand:000000000000 - rand:000000000009 range will be allowed. -P \u0026lt;numreq\u0026gt; Pipeline \u0026lt;numreq\u0026gt; requests. Default 1 (no pipeline). -q Quiet. Just show query/sec values --csv Output in CSV format -l Loop. Run the tests forever -t \u0026lt;tests\u0026gt; Only run the comma separated list of tests. The test names are the same as the ones produced as output. -I Idle mode. Just open N idle connections and wait. 你需要在基准测试之前启动一个 Redis 实例。一般这样启动测试：\n",
   "keywords": [
     "性能", "redis", "benchmark", "译文"
   ],
@@ -700,7 +787,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 

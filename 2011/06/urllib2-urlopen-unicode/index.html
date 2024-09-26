@@ -7,7 +7,39 @@
 <meta name="robots" content="index, follow">
 <title>urllib2.urlopen的中文URL问题 | Log4D</title>
 <meta name="keywords" content="python">
-<meta name="description" content="在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。 Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完Python字符串的encode与decode 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。 Traceback (most recent call last): File &quot;&lt;stdin&gt;&quot;, line 1, in">
+<meta name="description" content="在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的，
+特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。
+Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道，
+研读完Python字符串的encode与decode
+之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 126, in urlopen
+    return _opener.open(url, data, timeout)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 391, in open
+    response = self._open(req, data)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 409, in _open
+    &#39;_open&#39;, req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 369, in _call_chain
+    result = func(*args)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1170, in http_open
+    return self.do_open(httplib.HTTPConnection, req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1142, in do_open
+    h.request(req.get_method(), req.get_selector(), req.data, headers)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 914, in request
+    self._send_request(method, url, body, headers)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 951, in _send_request
+    self.endheaders()
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 908, in endheaders
+    self._send_output()
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 780, in _send_output
+    self.send(msg)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 759, in send
+    self.sock.sendall(str)
+  File &quot;&lt;string&gt;&quot;, line 1, in sendall
+UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 7-8: ordinal not in range(128)
+
+这次错误引发是在 urlopen() 引起的，很有特色，开始使用 url.encode(&#39;utf-8&#39;) 就可以解决了。 今天我做了一些测试。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.fd393d9f5641ed4046d063ea612203db6fe6a48fb1ef59a1359076d0c2ed9022.css" integrity="sha256-/Tk9n1ZB7UBG0GPqYSID22/mpI&#43;x71mhNZB20MLtkCI=" rel="preload stylesheet" as="style">
@@ -57,8 +89,6 @@
 
     </style>
 </noscript>
-  
-    
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
@@ -72,12 +102,40 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script>
-    
-  
+      </script><meta property="og:title" content="urllib2.urlopen的中文URL问题" />
+<meta property="og:description" content="在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的，
+特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。
+Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道，
+研读完Python字符串的encode与decode
+之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 126, in urlopen
+    return _opener.open(url, data, timeout)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 391, in open
+    response = self._open(req, data)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 409, in _open
+    &#39;_open&#39;, req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 369, in _call_chain
+    result = func(*args)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1170, in http_open
+    return self.do_open(httplib.HTTPConnection, req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1142, in do_open
+    h.request(req.get_method(), req.get_selector(), req.data, headers)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 914, in request
+    self._send_request(method, url, body, headers)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 951, in _send_request
+    self.endheaders()
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 908, in endheaders
+    self._send_output()
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 780, in _send_output
+    self.send(msg)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 759, in send
+    self.sock.sendall(str)
+  File &quot;&lt;string&gt;&quot;, line 1, in sendall
+UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 7-8: ordinal not in range(128)
 
-<meta property="og:title" content="urllib2.urlopen的中文URL问题" />
-<meta property="og:description" content="在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。 Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完Python字符串的encode与decode 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。 Traceback (most recent call last): File &quot;&lt;stdin&gt;&quot;, line 1, in" />
+这次错误引发是在 urlopen() 引起的，很有特色，开始使用 url.encode(&#39;utf-8&#39;) 就可以解决了。 今天我做了一些测试。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.alswl.com/2011/06/urllib2-urlopen-unicode/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2011-06-14T00:00:00+08:00" />
@@ -85,7 +143,39 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="urllib2.urlopen的中文URL问题"/>
-<meta name="twitter:description" content="在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。 Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完Python字符串的encode与decode 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。 Traceback (most recent call last): File &quot;&lt;stdin&gt;&quot;, line 1, in"/>
+<meta name="twitter:description" content="在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的，
+特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。
+Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道，
+研读完Python字符串的encode与decode
+之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 126, in urlopen
+    return _opener.open(url, data, timeout)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 391, in open
+    response = self._open(req, data)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 409, in _open
+    &#39;_open&#39;, req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 369, in _call_chain
+    result = func(*args)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1170, in http_open
+    return self.do_open(httplib.HTTPConnection, req)
+  File &quot;/usr/lib/python2.6/urllib2.py&quot;, line 1142, in do_open
+    h.request(req.get_method(), req.get_selector(), req.data, headers)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 914, in request
+    self._send_request(method, url, body, headers)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 951, in _send_request
+    self.endheaders()
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 908, in endheaders
+    self._send_output()
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 780, in _send_output
+    self.send(msg)
+  File &quot;/usr/lib/python2.6/httplib.py&quot;, line 759, in send
+    self.sock.sendall(str)
+  File &quot;&lt;string&gt;&quot;, line 1, in sendall
+UnicodeEncodeError: &#39;ascii&#39; codec can&#39;t encode characters in position 7-8: ordinal not in range(128)
+
+这次错误引发是在 urlopen() 引起的，很有特色，开始使用 url.encode(&#39;utf-8&#39;) 就可以解决了。 今天我做了一些测试。"/>
 
 
 <script type="application/ld+json">
@@ -114,7 +204,7 @@
   "@type": "BlogPosting",
   "headline": "urllib2.urlopen的中文URL问题",
   "name": "urllib2.urlopen的中文URL问题",
-  "description": "在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。 Python中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完Python字符串的encode与decode 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。 Traceback (most recent call last): File \u0026quot;\u0026lt;stdin\u0026gt;\u0026quot;, line 1, in",
+  "description": "在url中使用中文其实是一个坏习惯，会带来一系列的转码问题， 我更喜欢英文译名或者id来标识某个uri。但是现实往往是残酷的， 特别是在我们调用别人服务时候，有时候被逼无奈使用中文URL。\nPython中unicode转码一向是让人头疼的问题。数次碰壁之后，我也摸出了一些门道， 研读完Python字符串的encode与decode 之后，就自认为找到了万金油，谁知道这次又碰上这个老冤家。\nTraceback (most recent call last): File \u0026quot;\u0026lt;stdin\u0026gt;\u0026quot;, line 1, in \u0026lt;module\u0026gt; File \u0026quot;/usr/lib/python2.6/urllib2.py\u0026quot;, line 126, in urlopen return _opener.open(url, data, timeout) File \u0026quot;/usr/lib/python2.6/urllib2.py\u0026quot;, line 391, in open response = self._open(req, data) File \u0026quot;/usr/lib/python2.6/urllib2.py\u0026quot;, line 409, in _open '_open', req) File \u0026quot;/usr/lib/python2.6/urllib2.py\u0026quot;, line 369, in _call_chain result = func(*args) File \u0026quot;/usr/lib/python2.6/urllib2.py\u0026quot;, line 1170, in http_open return self.do_open(httplib.HTTPConnection, req) File \u0026quot;/usr/lib/python2.6/urllib2.py\u0026quot;, line 1142, in do_open h.request(req.get_method(), req.get_selector(), req.data, headers) File \u0026quot;/usr/lib/python2.6/httplib.py\u0026quot;, line 914, in request self._send_request(method, url, body, headers) File \u0026quot;/usr/lib/python2.6/httplib.py\u0026quot;, line 951, in _send_request self.endheaders() File \u0026quot;/usr/lib/python2.6/httplib.py\u0026quot;, line 908, in endheaders self._send_output() File \u0026quot;/usr/lib/python2.6/httplib.py\u0026quot;, line 780, in _send_output self.send(msg) File \u0026quot;/usr/lib/python2.6/httplib.py\u0026quot;, line 759, in send self.sock.sendall(str) File \u0026quot;\u0026lt;string\u0026gt;\u0026quot;, line 1, in sendall UnicodeEncodeError: 'ascii' codec can't encode characters in position 7-8: ordinal not in range(128) 这次错误引发是在 urlopen() 引起的，很有特色，开始使用 url.encode('utf-8') 就可以解决了。 今天我做了一些测试。\n",
   "keywords": [
     "python"
   ],
@@ -376,7 +466,7 @@ alt="窥豹" />
     
     init({
       el: '#waline',
-      serverURL: 'https://comments-waline.blog.alswl.com',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
       emoji: false,
       search: false,
       reaction: true, 
