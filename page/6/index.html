@@ -174,6 +174,23 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Redis 集群扩容
+    </h2>
+  </header>
+  <div class="entry-content">
+    
+    
+    
+    <p>几乎每一个网站都需要用户登录状态系统，其中核心是存储 Session 的用户登录状态存储系统。 主流的实现之一是使用 Redis 存储用户登录信息，Redis 特点是功能简单、无依赖、 存储结构丰富、有持久化功能。 我大堆糖的 Session 存储系统也正是基于 Redis。
+可是 Redis 也存在一些问题，比如 Redis 自身没有 Sharding 功能，Replication 也是在逐步完善完善过程中 （2.4 支持 Replication，2.8 加入 Replication partial resynchronization 功能）。 纵观当下流行的 DB 系统，哪个不是自带这两个特性，这两个分布式特性应该成为新出产的 DB 系统的标配。 而且作者还经常发布延期，放烟雾弹，不知道 Redis 自带 Sharding 特性要等到何年马月。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2015-07-26 15:33:49 +0800 +0800'>2015-07-26</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Redis 集群扩容" href="https://blog.alswl.com/2015/07/redis-migration/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">带理想的执行者 - 柳比歇夫的一生
     </h2>
   </header>
@@ -349,25 +366,6 @@ C. 整体性学习的策略 1. 关键元素 建立结构（某个领域内，紧
   </div>
   <footer class="entry-footer"><span title='2014-04-13 11:42:47 +0800 +0800'>2014-04-13</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 读《如何高效学习》" href="https://blog.alswl.com/2014/04/lean-more-study-less/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">hiredis 源码学习
-    </h2>
-  </header>
-  <div class="entry-content">
-    
-    
-    
-    <p>前段时间学习 Redis 时候，听到 hiredis 的大名，正好也在做异步的学习，就找来代码学习一下。 我几乎不太会 C，仅限于最简单的语法，完全没有在生产环境中写过， 所以先看个 Client 简单代码，下次看 Memcached 代码应该会更顺畅一些。
-Hiredis 是用 C 写的 Redis 客户端，对 Redis 协议进行了简单的封装， 同时提供了同步和异步的两种 API。Hiredis 的代码位于 https://github.com/redis/hiredis。
-一分钟使用入门 同步 API 的调用方法：
-redisContext *context = redisConnect(&#34;127.0.0.1&#34;, 6379); reply = redisCommand(context, &#34;SET foo %s&#34;, value);	printf(&#34;PING: %s\n&#34;, reply-&gt;str); freeReplyObject(reply) redisFree(context); Redis ae 异步 API 的调用方法，使用 Redis 自己的 ae 事件库， 至于为什么 Redis 没有使用 libevent 或者 libev，可以参考 Reason， 中文翻译：
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2014-03-30 15:41:43 +0800 +0800'>2014-03-30</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to hiredis 源码学习" href="https://blog.alswl.com/2014/03/hiredis/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
