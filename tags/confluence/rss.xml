@@ -4,7 +4,7 @@
     <title>Confluence on Log4D</title>
     <link>https://blog.alswl.com/tags/confluence/</link>
     <description>Recent content in Confluence on Log4D</description>
-    <generator>Hugo -- 0.134.2</generator>
+    <generator>Hugo -- 0.148.2</generator>
     <language>zh</language>
     <lastBuildDate>Tue, 12 Jan 2016 22:53:55 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/confluence/rss.xml" rel="self" type="application/rss+xml" />
@@ -72,8 +72,7 @@
 </ul>
 <p>遇到了错误：</p>
 <blockquote>
-<p>Import failed. Hibernate operation: could not insert: [com.atlassian.confluence.core.BodyContent#12028015]; SQL []; Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;</p>
-</blockquote>
+<p>Import failed. Hibernate operation: could not insert: [com.atlassian.confluence.core.BodyContent#12028015]; SQL []; Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;</p></blockquote>
 <p>官方文档 <a href="https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html">https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html</a>
 让修改重复键数据，好吧，我改，搜索一把重复主键，将备份里面的 <code>entities.xml</code> 弄出来。</p>
 <pre tabindex="0"><code># 格式化
@@ -88,8 +87,7 @@ awk &#39;{s=s $0}END{gsub(/&gt;&lt;/,&#34;&gt;\n&lt;&#34;,s);s=gensub(/&gt;([^ \
 <h2 id="横插一刀的-emoji-">横插一刀的 Emoji 😊😢💗</h2>
 <p>导入时候报了这么一个错误：</p>
 <blockquote>
-<p>Caused by: java.sql.SQLException: Incorrect string value: &lsquo;\xF0\x9F\x8C\x8D\xE5\x9B&hellip;&rsquo; for column &lsquo;BODY&rsquo; at row 1 org.xml.sax.SAXException: Error while parsing 2015-10-19 23:14:13,108 ERROR [Importing data task] [confluence.importexport.impl.ReverseDatabinder] fromXML Error processing backup: &ndash; referer: http://10.1.2.155:8087/setup/setup-restore-start.action | url: /setup/setup-restore-local.action | userName: anonymous | action: setup-restore-local org.xml.sax.SAXException: Error while parsing net.sf.hibernate.exception.GenericJDBCException: could not insert: [com.atlassian.confluence.core.BodyContent#12028161]</p>
-</blockquote>
+<p>Caused by: java.sql.SQLException: Incorrect string value: &lsquo;\xF0\x9F\x8C\x8D\xE5\x9B&hellip;&rsquo; for column &lsquo;BODY&rsquo; at row 1 org.xml.sax.SAXException: Error while parsing 2015-10-19 23:14:13,108 ERROR [Importing data task] [confluence.importexport.impl.ReverseDatabinder] fromXML Error processing backup: &ndash; referer: http://10.1.2.155:8087/setup/setup-restore-start.action | url: /setup/setup-restore-local.action | userName: anonymous | action: setup-restore-local org.xml.sax.SAXException: Error while parsing net.sf.hibernate.exception.GenericJDBCException: could not insert: [com.atlassian.confluence.core.BodyContent#12028161]</p></blockquote>
 <p>这是 Emoji 编码的问题，理论上 MySQL 换到 5.6+，更新 encoding 就可以了。</p>
 <p>但是……Confluence 的建表 SQL 爆出了 255 varchar 超过 1000 限制的错误
 ，我尝试使用 <a href="https://github.com/rails/rails/issues/9855">innodb_large_prefix</a>

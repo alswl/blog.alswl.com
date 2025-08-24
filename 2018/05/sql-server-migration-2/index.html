@@ -33,7 +33,7 @@
 而一旦用户中心停止服务，几乎所有依赖于这个中央服务的系统都会停摆。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2018/05/sql-server-migration-2/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.f8f44536418a0ad3f6f2fc78d1a1d4499095e0d50d4350def61f0174693cb8b8.css" integrity="sha256-&#43;PRFNkGKCtP28vx40aHUSZCV4NUNQ1De9h8BdGk8uLg=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.32a704646448b3fce593e6753b136a11323537e9a22450128e8d45b57c1848db.css" integrity="sha256-MqcEZGRIs/zlk&#43;Z1OxNqETI1N&#43;miJFASjo1FtXwYSNs=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -93,38 +93,22 @@
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script><meta property="og:title" content="从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机" />
-<meta property="og:description" content="该系列三篇文章已经全部完成：
-
-从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D
-从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D
-从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D
-
-
-
-
-
-
-
-
-
-
-（image via https://pixabay.com/en/military-stealth-bomber-refueling-602729/ ）
-在上篇文章
-从 SQL Server 到 MySQL （一）：异构数据库迁移 - Log4D
-中，我们给大家介绍了从 SQL Server 到 MySQL 异构数据库迁移的基本问题和全量解决方案。
-全量方案可以满足一部分场景的需求，但是这个方案仍然是有缺陷的：
-迁移过程中需要停机，停机的时长和数据量相关。
-对于核心业务来说，停机就意味着损失。
-比如用户中心的服务，以它的数据量来使用全量方案，会导致迁移过程中停机若干个小时。
-而一旦用户中心停止服务，几乎所有依赖于这个中央服务的系统都会停摆。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2018/05/sql-server-migration-2/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2018-05-21T11:24:36+08:00" />
-<meta property="article:modified_time" content="2018-05-21T11:24:36+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机"/>
+      </script><meta property="og:url" content="https://blog.alswl.com/2018/05/sql-server-migration-2/">
+  <meta property="og:site_name" content="Log4D">
+  <meta property="og:title" content="从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机">
+  <meta property="og:description" content="该系列三篇文章已经全部完成：
+从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D 从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机 - Log4D 从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D （image via https://pixabay.com/en/military-stealth-bomber-refueling-602729/ ）
+在上篇文章 从 SQL Server 到 MySQL （一）：异构数据库迁移 - Log4D 中，我们给大家介绍了从 SQL Server 到 MySQL 异构数据库迁移的基本问题和全量解决方案。 全量方案可以满足一部分场景的需求，但是这个方案仍然是有缺陷的： 迁移过程中需要停机，停机的时长和数据量相关。 对于核心业务来说，停机就意味着损失。 比如用户中心的服务，以它的数据量来使用全量方案，会导致迁移过程中停机若干个小时。 而一旦用户中心停止服务，几乎所有依赖于这个中央服务的系统都会停摆。">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2018-05-21T11:24:36+08:00">
+    <meta property="article:modified_time" content="2018-05-21T11:24:36+08:00">
+    <meta property="article:tag" content="Sqlserver">
+    <meta property="article:tag" content="Mysql">
+    <meta property="article:tag" content="Db-Migration">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从 SQL Server 到 MySQL（二）：在线迁移，空中换发动机">
 <meta name="twitter:description" content="该系列三篇文章已经全部完成：
 
 从 SQL Server 到 MySQL（一）：异构数据库迁移 - Log4D
@@ -148,7 +132,7 @@
 迁移过程中需要停机，停机的时长和数据量相关。
 对于核心业务来说，停机就意味着损失。
 比如用户中心的服务，以它的数据量来使用全量方案，会导致迁移过程中停机若干个小时。
-而一旦用户中心停止服务，几乎所有依赖于这个中央服务的系统都会停摆。"/>
+而一旦用户中心停止服务，几乎所有依赖于这个中央服务的系统都会停摆。">
 
 
 <script type="application/ld+json">
@@ -223,7 +207,7 @@
         <div class="logo">
             <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
             <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -602,248 +586,248 @@ Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">大阶段</th>
-          <th style="text-align: left">阶段</th>
-          <th style="text-align: left">事项</th>
-          <th style="text-align: left">是否完成</th>
-          <th style="text-align: left">负责人</th>
-          <th style="text-align: left">耗时</th>
-          <th style="text-align: left">开始时间</th>
-          <th style="text-align: left">完成时间</th>
-          <th style="text-align: left">备注</th>
+          <th>大阶段</th>
+          <th>阶段</th>
+          <th>事项</th>
+          <th>是否完成</th>
+          <th>负责人</th>
+          <th>耗时</th>
+          <th>开始时间</th>
+          <th>完成时间</th>
+          <th>备注</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">白天</td>
-          <td style="text-align: left">存量数据阶段</td>
-          <td style="text-align: left">创建 MySQL 数据库，准备相关账号资源</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td>白天</td>
+          <td>存量数据阶段</td>
+          <td>创建 MySQL 数据库，准备相关账号资源</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">开启 CDC</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>开启 CDC</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">从 Slave SQLServer dump 一份 snapshot 到 Backup SQL Server</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>从 Slave SQLServer dump 一份 snapshot 到 Backup SQL Server</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">Backup SQL Server 消费数据， ETL 到 MySQL</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>Backup SQL Server 消费数据， ETL 到 MySQL</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">增量数据阶段</td>
-          <td style="text-align: left">确认 ETL 数据已经消费完成，检查数据总条数</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td>增量数据阶段</td>
+          <td>确认 ETL 数据已经消费完成，检查数据总条数</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">从 Slave SQLServer 开始消费 CDC 数据，持续写入 MySQL</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>从 Slave SQLServer 开始消费 CDC 数据，持续写入 MySQL</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">使用 yugong 检查一天内数据的一致性</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>使用 yugong 检查一天内数据的一致性</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">检查不一致的数据，10 分钟之后人工进行检查，确认是 CDC 延迟带来的问题</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>检查不一致的数据，10 分钟之后人工进行检查，确认是 CDC 延迟带来的问题</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">检查数据总量条目</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>检查数据总量条目</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">使用 yugong 对抽样表进行全量检查</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>使用 yugong 对抽样表进行全量检查</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left">凌晨</td>
-          <td style="text-align: left">应用发布阶段</td>
-          <td style="text-align: left">停止 SQL Server 的应用</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">技术经理</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td>凌晨</td>
+          <td>应用发布阶段</td>
+          <td>停止 SQL Server 的应用</td>
+          <td></td>
+          <td>技术经理</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">检查没有连接进入 SQL Server</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>检查没有连接进入 SQL Server</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">使用 yugong 检查一天内数据的一致性</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>使用 yugong 检查一天内数据的一致性</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">检查数据总量条目</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>检查数据总量条目</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">启用基于 MySQL 的应用</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">运维</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>启用基于 MySQL 的应用</td>
+          <td></td>
+          <td>运维</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">测试阶段</td>
-          <td style="text-align: left">测试应用是否正常，回归所有功能</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">QA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td>测试阶段</td>
+          <td>测试应用是否正常，回归所有功能</td>
+          <td></td>
+          <td>QA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">（临时新增）测试 ReadOnly DB 的应用访问情况</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">QA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>（临时新增）测试 ReadOnly DB 的应用访问情况</td>
+          <td></td>
+          <td>QA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">完成阶段</td>
-          <td style="text-align: left">接入流量</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">运维</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td>完成阶段</td>
+          <td>接入流量</td>
+          <td></td>
+          <td>运维</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">（可选）回滚阶段</td>
-          <td style="text-align: left">发现问题，直接将应用切回 SQL Server</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">运维</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td>（可选）回滚阶段</td>
+          <td>发现问题，直接将应用切回 SQL Server</td>
+          <td></td>
+          <td>运维</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">事后进行数据审计，进行新增数据补偿</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>事后进行数据审计，进行新增数据补偿</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
       <tr>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">（可选）回滚过程中，使用 Canal 读取 binlog，并使用 Canal Client 重放到 SQL Server</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left">DBA</td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
-          <td style="text-align: left"></td>
+          <td></td>
+          <td></td>
+          <td>（可选）回滚过程中，使用 Canal 读取 binlog，并使用 Canal Client 重放到 SQL Server</td>
+          <td></td>
+          <td>DBA</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
       </tr>
   </tbody>
 </table>

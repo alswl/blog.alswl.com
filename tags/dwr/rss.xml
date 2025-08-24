@@ -4,7 +4,7 @@
     <title>Dwr on Log4D</title>
     <link>https://blog.alswl.com/tags/dwr/</link>
     <description>Recent content in Dwr on Log4D</description>
-    <generator>Hugo -- 0.134.2</generator>
+    <generator>Hugo -- 0.148.2</generator>
     <language>zh</language>
     <lastBuildDate>Mon, 01 Mar 2010 00:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/dwr/rss.xml" rel="self" type="application/rss+xml" />
@@ -19,8 +19,7 @@
 &lt;p&gt;开发时候系统运行无误。&lt;/p&gt;
 &lt;p&gt;部署到应用服务器之后，使用WebLogic自带的JDK1.4，登录之后的一些页面一旦访问，会导致服务器报错停止。我检查了一下错误信息。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&amp;ldquo;ListenThread.Default&amp;rdquo; listening on port 7001, ip address &lt;em&gt;.&lt;/em&gt;&amp;gt;&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;p&gt;&amp;ldquo;ListenThread.Default&amp;rdquo; listening on port 7001, ip address &lt;em&gt;.&lt;/em&gt;&amp;gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;DWR Version 2.0.5 starting.&lt;/p&gt;
@@ -50,8 +49,7 @@
 <p>开发时候系统运行无误。</p>
 <p>部署到应用服务器之后，使用WebLogic自带的JDK1.4，登录之后的一些页面一旦访问，会导致服务器报错停止。我检查了一下错误信息。</p>
 <blockquote>
-<p>&ldquo;ListenThread.Default&rdquo; listening on port 7001, ip address <em>.</em>&gt;</p>
-</blockquote>
+<p>&ldquo;ListenThread.Default&rdquo; listening on port 7001, ip address <em>.</em>&gt;</p></blockquote>
 <ul>
 <li>
 <p>DWR Version 2.0.5 starting.</p>
@@ -119,20 +117,17 @@ ons的方法，经过我测试，的确有效，方法如下。（友情提醒�
 <p>在DWR2.0中提供了一些JDK5中才能使用的annotations的功能。然而，这个
 功能在JDK1.4的环境中进行启动或者部署会发生错误。抱歉的是这个错误信息我没有及时记录，日后补上。这个错误在网上可以轻易地搜索到解决方案，即在
 dwr.jar中删除掉org.directwebremoting.annotations.AnnotationsConfigurator这个类再
-重新部署就可以了。</p>
-</blockquote>
+重新部署就可以了。</p></blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>同样的问题出现在hibernate3中，hibernate3对annotations的 支持在JDK1.4中也可能出现异常
-，解决的办法就是在部署文件中删除掉hibernate-annotations.jar就可以了。</p>
-</blockquote>
+，解决的办法就是在部署文件中删除掉hibernate-annotations.jar就可以了。</p></blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>另外值得说明的是，以上2个问题并不是每次都会出现的。它们就如同幽灵一样有时出现有时不出
-现，因此我们并不需要总是删除这个类和jar包，只是在发生错误时才删除。</p>
-</blockquote>
+现，因此我们并不需要总是删除这个类和jar包，只是在发生错误时才删除。</p></blockquote>
 <p>按照上述所说操作，在加载DWR时候，服务器会提示**AnnotationsConfigurator is
 missing. Are you running from within an IDE?**但是已经可以正常运行了。</p>
 <p>为什么第一个无效，因为这个错误引起的原因是JDK5中才能使用的annotations的功能，就算在web.xml配置了java.lang.Object的cl

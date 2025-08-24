@@ -50,7 +50,7 @@ if is_pypy:
 懒人可以点击go-pylons.py下载。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.f8f44536418a0ad3f6f2fc78d1a1d4499095e0d50d4350def61f0174693cb8b8.css" integrity="sha256-&#43;PRFNkGKCtP28vx40aHUSZCV4NUNQ1De9h8BdGk8uLg=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.32a704646448b3fce593e6753b136a11323537e9a22450128e8d45b57c1848db.css" integrity="sha256-MqcEZGRIs/zlk&#43;Z1OxNqETI1N&#43;miJFASjo1FtXwYSNs=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -110,55 +110,28 @@ if is_pypy:
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script><meta property="og:title" content="go-pylons.py在Python2.7下错误解决" />
-<meta property="og:description" content="当使用 Python2.7 &#43; go-pylons.py
-创建 Pylons 运行环境的话，会报一下错误。
-[alswl@arch-vm xingtong]$ python go-pylons.py myb_env
-New python executable in myb_env/bin/python
-Traceback (most recent call last):
-  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&quot;, line 67, in &lt;module&gt;
-    import os
-  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&quot;, line 398, in &lt;module&gt;
-    import UserDict
-  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&quot;, line 83, in &lt;module&gt;
-    import _abcoll
-  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&quot;, line 11, in &lt;module&gt;
-    from abc import ABCMeta, abstractmethod
-  File &quot;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&quot;, line 8, in &lt;module&gt;
-    from _weakrefset import WeakSet
-ImportError: No module named _weakrefset
-ERROR: The executable myb_env/bin/python is not functioning
-ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;)
-ERROR: virtualenv is not compatible with this system or executable
-
-STFW 之后，找到了引发错误的根源virtualenv，这个 bug
-在这里已经修复了。
-#!diff
---- a/virtualenv.py        2010-09-14 21:48:58.078562930 &#43;0200
-&#43;&#43;&#43; b/virtualenv.py        2010-09-14 21:46:20.650769346 &#43;0200
-@@ -51,6 &#43;51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config
-
-if sys.version_info[:2] &gt;= (2, 6):
-REQUIRED_MODULES.extend([&lsquo;warnings&rsquo;, &rsquo;linecache&rsquo;, &lsquo;_abcoll&rsquo;, &lsquo;abc&rsquo;])
-
-
+      </script><meta property="og:url" content="https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/">
+  <meta property="og:site_name" content="Log4D">
+  <meta property="og:title" content="go-pylons.py在Python2.7下错误解决">
+  <meta property="og:description" content="当使用 Python2.7 &#43; go-pylons.py 创建 Pylons 运行环境的话，会报一下错误。
+[alswl@arch-vm xingtong]$ python go-pylons.py myb_env New python executable in myb_env/bin/python Traceback (most recent call last): File &#34;/home/alswl/work/xingtong/myb_env/lib/python2.7/site.py&#34;, line 67, in &lt;module&gt; import os File &#34;/home/alswl/work/xingtong/myb_env/lib/python2.7/os.py&#34;, line 398, in &lt;module&gt; import UserDict File &#34;/home/alswl/work/xingtong/myb_env/lib/python2.7/UserDict.py&#34;, line 83, in &lt;module&gt; import _abcoll File &#34;/home/alswl/work/xingtong/myb_env/lib/python2.7/_abcoll.py&#34;, line 11, in &lt;module&gt; from abc import ABCMeta, abstractmethod File &#34;/home/alswl/work/xingtong/myb_env/lib/python2.7/abc.py&#34;, line 8, in &lt;module&gt; from _weakrefset import WeakSet ImportError: No module named _weakrefset ERROR: The executable myb_env/bin/python is not functioning ERROR: It thinks sys.prefix is &#39;/home/alswl/work/xingtong&#39; (should be &#39;/home/alswl/work/xingtong/myb_env&#39;) ERROR: virtualenv is not compatible with this system or executable STFW 之后，找到了引发错误的根源virtualenv，这个 bug 在这里已经修复了。
+#!diff --- a/virtualenv.py 2010-09-14 21:48:58.078562930 &#43;0200 &#43;&#43;&#43; b/virtualenv.py 2010-09-14 21:46:20.650769346 &#43;0200 @@ -51,6 &#43;51,8 @@ REQUIRED_FILES = [&#39;lib-dynload&#39;, &#39;config if sys.version_info[:2] &gt;= (2, 6):
+REQUIRED_MODULES.extend([‘warnings’, ’linecache’, ‘_abcoll’, ‘abc’])
 if sys.version_info[:2] &gt;= (2, 7):
-
-
-REQUIRED_MODULES.extend([&rsquo;_weakrefset&rsquo;])
-
-
+REQUIRED_MODULES.extend([’_weakrefset’])
 if sys.version_info[:2] &lt;= (2, 3):
-REQUIRED_MODULES.extend([&lsquo;sets&rsquo;, &lsquo;future&rsquo;])
+REQUIRED_MODULES.extend([‘sets’, ‘future’])
 if is_pypy:
-懒人可以点击go-pylons.py下载。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2011/08/go-pylons-py-in-python2-7/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2011-08-02T00:00:00+08:00" />
-<meta property="article:modified_time" content="2011-08-02T00:00:00+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="go-pylons.py在Python2.7下错误解决"/>
+懒人可以点击go-pylons.py下载。">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2011-08-02T00:00:00+08:00">
+    <meta property="article:modified_time" content="2011-08-02T00:00:00+08:00">
+    <meta property="article:tag" content="Python">
+    <meta property="article:tag" content="Pylons">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="go-pylons.py在Python2.7下错误解决">
 <meta name="twitter:description" content="当使用 Python2.7 &#43; go-pylons.py
 创建 Pylons 运行环境的话，会报一下错误。
 [alswl@arch-vm xingtong]$ python go-pylons.py myb_env
@@ -199,7 +172,7 @@ REQUIRED_MODULES.extend([&rsquo;_weakrefset&rsquo;])
 if sys.version_info[:2] &lt;= (2, 3):
 REQUIRED_MODULES.extend([&lsquo;sets&rsquo;, &lsquo;future&rsquo;])
 if is_pypy:
-懒人可以点击go-pylons.py下载。"/>
+懒人可以点击go-pylons.py下载。">
 
 
 <script type="application/ld+json">
@@ -274,7 +247,7 @@ if is_pypy:
         <div class="logo">
             <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
             <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">

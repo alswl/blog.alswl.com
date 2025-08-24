@@ -4,7 +4,7 @@
     <title>Https on Log4D</title>
     <link>https://blog.alswl.com/tags/https/</link>
     <description>Recent content in Https on Log4D</description>
-    <generator>Hugo -- 0.134.2</generator>
+    <generator>Hugo -- 0.148.2</generator>
     <language>zh</language>
     <lastBuildDate>Wed, 27 Sep 2017 12:07:44 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/https/rss.xml" rel="self" type="application/rss+xml" />
@@ -225,8 +225,7 @@
 <p>Stack Exchage 的一个设计理念是，针对每个 Q&amp;A 站点，我们都有一个地方供讨论。我们称之为 <a href="https://stackoverflow.blog/2010/04/29/do-trilogy-sites-need-a-third-place/">“second place”</a>。比如 <code>meta.gaming.stackexchange.com</code> 用来讨论 <code>gaming.stackexchange.com</code>。这个有什么特别之处呢？好吧，并没有，除了域名：这是一个 4 级域名。</p>
 <p>我之前已经说过<a href="https://nickcraver.com/blog/2013/04/23/stackoverflow-com-the-road-to-ssl/">这个问题</a>，但后来怎么样了呢？具体来说，现在面临的问题是 <code>*.stackexchange.com</code> 包含 <code>gaming.stackexchange.com</code>（及几百个其它站点），但它<strong>并不包含</strong> <code>meta.gaming.stackexchange.com</code>。<a href="https://tools.ietf.org/html/rfc6125#section-6.4.3">RFC 6125 （第 6.4.3 节）</a> 写道：</p>
 <blockquote>
-<p>客户端 <strong>不应该</strong> 尝试匹配一个通配符在中间的域名（比如，不要匹配 <code>bar.*.example.net</code>）</p>
-</blockquote>
+<p>客户端 <strong>不应该</strong> 尝试匹配一个通配符在中间的域名（比如，不要匹配 <code>bar.*.example.net</code>）</p></blockquote>
 <p>这意味着我们无法使用 <code>meta.*.stackexchange.com</code>，那怎么办呢？</p>
 <ul>
 <li>方案一：部署 <a href="https://www.digicert.com/subject-alternative-name.htm">SAN 证书（多域名证书）</a>
@@ -990,8 +989,7 @@ Domain Validation / Orgnization Validation / Extented Validation。
 <blockquote>
 <p>尽管使用了 HTTPS 技术，部分邪恶的运营商，仍然使用 DNS 污染技术，让域名指向的他们自己服务器
 而这些服务器并没有部署 SSL 服务（就算部署了，也会触发 SSL 证书 Common name 不一致报警），
-导致 443 端口直接被拒绝。</p>
-</blockquote>
+导致 443 端口直接被拒绝。</p></blockquote>
 <!-- more -->
 <p>这个问题不解决，强行上 HTTPS 的话，会导致一部分用户出现无法访问网站
 一旦用户不爽了，轻则对产品不信任，重则直接导致用户流失。</p>

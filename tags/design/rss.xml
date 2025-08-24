@@ -4,7 +4,7 @@
     <title>Design on Log4D</title>
     <link>https://blog.alswl.com/tags/design/</link>
     <description>Recent content in Design on Log4D</description>
-    <generator>Hugo -- 0.134.2</generator>
+    <generator>Hugo -- 0.148.2</generator>
     <language>zh</language>
     <lastBuildDate>Sat, 23 Sep 2023 18:22:27 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/design/rss.xml" rel="self" type="application/rss+xml" />
@@ -74,8 +74,7 @@ GitOps 解决了三个核心问题：<strong>内容</strong>、<strong>版本</s
 <p>代码的版本是什么？是代码仓库的版本还是代码编译出来应用的版本。
 这个版本并不是代码所在的版本管理系统（如 Git / Mercurial / SVN 等）的版本。尽管这两者经常相关，但事实上，一份代码本身只是一组代码文件，只要构建成功，就会有一个版本。如果没有定义，版本就是未知的，此时与仓库管理没有关联。</p>
 <blockquote>
-<p>注意：下文我们不再区分 Git / Mercurial / SVN 多种版本管理方案，统一使用 Git 进行描述</p>
-</blockquote>
+<p>注意：下文我们不再区分 Git / Mercurial / SVN 多种版本管理方案，统一使用 Git 进行描述</p></blockquote>
 <p>还需要注意的是，中文中有两个概念（库 Libray 和仓库 Repository）。
 无论是哪种定义，都没有表示一个库一定是一个版本化（Git / SVN）仓库，
 这意味着我们并没有假设代码库一定是被版本化管理的。当我们将代码文件打包成一个 zip 文件时（GitHub 的 zip 下载就是这种形式），即使这个 zip 文件失去了所有的 Git 历史，它仍然是一个代码库。</p>
@@ -117,61 +116,61 @@ DEF_VER=v2.42.GIT
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">中文</th>
-          <th style="text-align: left">英文</th>
-          <th style="text-align: left">解释</th>
+          <th>中文</th>
+          <th>英文</th>
+          <th>解释</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">源代码</td>
-          <td style="text-align: left">Source Code</td>
-          <td style="text-align: left">程序、应用的源文件集合</td>
+          <td>源代码</td>
+          <td>Source Code</td>
+          <td>程序、应用的源文件集合</td>
       </tr>
       <tr>
-          <td style="text-align: left">代码仓库</td>
-          <td style="text-align: left">Source Code Repo</td>
-          <td style="text-align: left">源代码放到版本管理系统中的管理单元</td>
+          <td>代码仓库</td>
+          <td>Source Code Repo</td>
+          <td>源代码放到版本管理系统中的管理单元</td>
       </tr>
       <tr>
-          <td style="text-align: left">版本</td>
-          <td style="text-align: left">Version</td>
-          <td style="text-align: left">源代码对应的应用版本，人为定义，语义化，有些场景会说 Upstream Version</td>
+          <td>版本</td>
+          <td>Version</td>
+          <td>源代码对应的应用版本，人为定义，语义化，有些场景会说 Upstream Version</td>
       </tr>
       <tr>
-          <td style="text-align: left">可执行文件</td>
-          <td style="text-align: left">Executable File</td>
-          <td style="text-align: left">源代码构建出来的结果，一般是 ELF 可执行文件，也可以是 Lib 文件</td>
+          <td>可执行文件</td>
+          <td>Executable File</td>
+          <td>源代码构建出来的结果，一般是 ELF 可执行文件，也可以是 Lib 文件</td>
       </tr>
       <tr>
-          <td style="text-align: left">启动配置文件</td>
-          <td style="text-align: left">Configuration File</td>
-          <td style="text-align: left">配套 ELF / Lib 的启动配置文件，区别于广泛意义上的配置文件（比如 Kubernetes YAML）</td>
+          <td>启动配置文件</td>
+          <td>Configuration File</td>
+          <td>配套 ELF / Lib 的启动配置文件，区别于广泛意义上的配置文件（比如 Kubernetes YAML）</td>
       </tr>
       <tr>
-          <td style="text-align: left">制品</td>
-          <td style="text-align: left">Artifact</td>
-          <td style="text-align: left">包含可执行文件和启动配置文件的集合，可以运行在运行时下面，一般是文件形态。制品可以嵌套制品。</td>
+          <td>制品</td>
+          <td>Artifact</td>
+          <td>包含可执行文件和启动配置文件的集合，可以运行在运行时下面，一般是文件形态。制品可以嵌套制品。</td>
       </tr>
       <tr>
-          <td style="text-align: left">安装器</td>
-          <td style="text-align: left">Installer</td>
-          <td style="text-align: left">将制品安装到运行时的工具</td>
+          <td>安装器</td>
+          <td>Installer</td>
+          <td>将制品安装到运行时的工具</td>
       </tr>
       <tr>
-          <td style="text-align: left">运行时</td>
-          <td style="text-align: left">Runtime</td>
-          <td style="text-align: left">制品的运行环境，比如特定操作系统，Kubernetes，Docker Engine。</td>
+          <td>运行时</td>
+          <td>Runtime</td>
+          <td>制品的运行环境，比如特定操作系统，Kubernetes，Docker Engine。</td>
       </tr>
       <tr>
-          <td style="text-align: left">打包器</td>
-          <td style="text-align: left">Packer</td>
-          <td style="text-align: left">将制品打包成特定格式（新的制品）的工具</td>
+          <td>打包器</td>
+          <td>Packer</td>
+          <td>将制品打包成特定格式（新的制品）的工具</td>
       </tr>
       <tr>
-          <td style="text-align: left">打包附属信息</td>
-          <td style="text-align: left">Packaging Info</td>
-          <td style="text-align: left">制品打包时候需要的额外信息，比如容器的操作系统，进程的运行容量，默认环境变量等</td>
+          <td>打包附属信息</td>
+          <td>Packaging Info</td>
+          <td>制品打包时候需要的额外信息，比如容器的操作系统，进程的运行容量，默认环境变量等</td>
       </tr>
   </tbody>
 </table>
@@ -197,8 +196,7 @@ DEF_VER=v2.42.GIT
 我们统一称之为配置。
 这些新加入的 Packaging Info 的描述在大规模集群管理下也带来了新的问题。</p>
 <blockquote>
-<p>自豪地使用 ArchLinux。</p>
-</blockquote>
+<p>自豪地使用 ArchLinux。</p></blockquote>
 <h3 id="arch-linux-社区的实践">Arch Linux 社区的实践</h3>
 <p>Arch Linux 使用 <a href="https://wiki.archlinux.org/title/Pacman">Pacman</a> 作为包安装器，并且拥有一套完整的<a href="https://wiki.archlinux.org/title/Arch_build_system">构建方案</a>。</p>
 <p>在 Arch Linux 中，<code>PKGBUILD</code> <a href="https://wiki.archlinux.org/title/PKGBUILD">link</a>用于描述包的构建方式，它本身是 Bash 的子集，是描述包的核心文件。</p>
@@ -291,8 +289,7 @@ DEF_VER=v2.42.GIT
 <blockquote>
 <p>架构，<strong>软件架构</strong>是有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。</p>
 <p>系统分析，旨在研究特定系统结构中各部分（各子系统）的相互作用，系统的对外接口与界面，以及该系统整体的行为、
-功能和局限，从而为系统未来的变迁与有关决策提供参考和依据。</p>
-</blockquote>
+功能和局限，从而为系统未来的变迁与有关决策提供参考和依据。</p></blockquote>
 <p>来看一下英文定义可能会更清晰：</p>
 <ul>
 <li>架构 = 软件架构（设计） = Software Architecture <a href="https://en.wikipedia.org/wiki/Software_architecture">Software architecture - Wikipedia</a></li>
@@ -511,8 +508,7 @@ DEF_VER=v2.42.GIT
 <p>在基础设施领域，模型的产出可能包括 UML Model 图、ER 图、数据库 DML、类文件、OpenAPI Swagger（部分）等。</p>
 <h2 id="极简架构设计---细节看时序">极简架构设计 - 细节看时序</h2>
 <blockquote>
-<p>程序设计 = 数据结构 + 算法 + 流程控制</p>
-</blockquote>
+<p>程序设计 = 数据结构 + 算法 + 流程控制</p></blockquote>
 <p>在将设计转换为模型之前，最后一个重要的步骤是控制细节。对于需求方和决策者来说，这一步可能并不重要，
 但对于实施方（开发团队）来说，这个步骤直接影响交付结果的质量和时间。</p>
 <p>我认为细节应该在时序图上进行呈现。</p>

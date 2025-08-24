@@ -62,7 +62,7 @@ http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu
 确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2016/02/a-timeout-fault/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.f8f44536418a0ad3f6f2fc78d1a1d4499095e0d50d4350def61f0174693cb8b8.css" integrity="sha256-&#43;PRFNkGKCtP28vx40aHUSZCV4NUNQ1De9h8BdGk8uLg=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.32a704646448b3fce593e6753b136a11323537e9a22450128e8d45b57c1848db.css" integrity="sha256-MqcEZGRIs/zlk&#43;Z1OxNqETI1N&#43;miJFASjo1FtXwYSNs=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -122,67 +122,25 @@ http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu
           gtag('js', new Date());
           gtag('config', 'G-7S40P40QGJ');
         }
-      </script><meta property="og:title" content="一例 Timeout 故障" />
-<meta property="og:description" content="
-
-
-
-
-
-
-
-
-早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。
-
+      </script><meta property="og:url" content="https://blog.alswl.com/2016/02/a-timeout-fault/">
+  <meta property="og:site_name" content="Log4D">
+  <meta property="og:title" content="一例 Timeout 故障">
+  <meta property="og:description" content=" 早晨刚到公司， HAProxy 报警，Trtornis（第三方云存储网关，用来统一管理阿里云和七牛云的对象存储） 全飘红。
 检查日志，并没有 ERROR 信息，但是大量 WARN 报错。
-WARN  [2015-12-09 11:01:02,730] org.eclipse.jetty.util.thread.QueuedThreadPool: dw{STARTED,8&lt;=50&lt;=50,i=0,q=1024} rejected org.eclipse.jetty.io.AbstractConne
-ction$2@62c021c6
-WARN  [2015-12-09 11:01:02,731] org.eclipse.jetty.io.SelectorManager: Could not process key for channel java.nio.channels.SocketChannel[connected local=/10.
-1.1.78:8350 remote=/10.1.1.74:63290]
-! java.util.concurrent.RejectedExecutionException: org.eclipse.jetty.io.AbstractConnection$2@62c021c6
-! at org.eclipse.jetty.util.thread.QueuedThreadPool.execute(QueuedThreadPool.java:362) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.AbstractConnection$FillingState.onEnter(AbstractConnection.java:379) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.AbstractConnection.next(AbstractConnection.java:273) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:563) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:82) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.SelectChannelEndPoint.onSelected(SelectChannelEndPoint.java:109) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.processKey(SelectorManager.java:636) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:607) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.run(SelectorManager.java:545) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.util.thread.NonBlockingThread.run(NonBlockingThread.java:52) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555) [tritonis-shaded.jar:0.0.1-SNAPSHOT]
-! at java.lang.Thread.run(Thread.java:745) [na:1.8.0_51]
-这是七牛 API 调用出现问题，通过应用 Metrics API 检查 Threads：
+WARN [2015-12-09 11:01:02,730] org.eclipse.jetty.util.thread.QueuedThreadPool: dw{STARTED,8&lt;=50&lt;=50,i=0,q=1024} rejected org.eclipse.jetty.io.AbstractConne ction$2@62c021c6 WARN [2015-12-09 11:01:02,731] org.eclipse.jetty.io.SelectorManager: Could not process key for channel java.nio.channels.SocketChannel[connected local=/10. 1.1.78:8350 remote=/10.1.1.74:63290] ! java.util.concurrent.RejectedExecutionException: org.eclipse.jetty.io.AbstractConnection$2@62c021c6 ! at org.eclipse.jetty.util.thread.QueuedThreadPool.execute(QueuedThreadPool.java:362) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.AbstractConnection$FillingState.onEnter(AbstractConnection.java:379) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.AbstractConnection.next(AbstractConnection.java:273) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:563) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:82) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectChannelEndPoint.onSelected(SelectChannelEndPoint.java:109) ~[tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.processKey(SelectorManager.java:636) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.select(SelectorManager.java:607) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.io.SelectorManager$ManagedSelector.run(SelectorManager.java:545) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.util.thread.NonBlockingThread.run(NonBlockingThread.java:52) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:635) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:555) [tritonis-shaded.jar:0.0.1-SNAPSHOT] ! at java.lang.Thread.run(Thread.java:745) [na:1.8.0_51] 这是七牛 API 调用出现问题，通过应用 Metrics API 检查 Threads：
 http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu
 正常的实例：
-
-
-
-
-
-
-
-
-
 异常的实例：
-
-
-
-
-
-
-
-
-
-确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.alswl.com/2016/02/a-timeout-fault/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2016-02-02T23:34:44+08:00" />
-<meta property="article:modified_time" content="2016-02-02T23:34:44+08:00" /><meta property="og:site_name" content="Log4D" />
-
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="一例 Timeout 故障"/>
+确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2016-02-02T23:34:44+08:00">
+    <meta property="article:modified_time" content="2016-02-02T23:34:44+08:00">
+    <meta property="article:tag" content="Qiniu">
+    <meta property="article:tag" content="Tcp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一例 Timeout 故障">
 <meta name="twitter:description" content="
 
 
@@ -235,7 +193,7 @@ http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu
 
 
 
-确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？"/>
+确认是七牛服务慢导致现成爆掉，但是 46 这个值来自于哪里？">
 
 
 <script type="application/ld+json">
@@ -310,7 +268,7 @@ http http://A-DOMAIN:8351/threads | sort | uniq -c | sort -gr G qiniu
         <div class="logo">
             <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
             <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -460,11 +418,9 @@ public static int RESPONSE_TIMEOUT = 30000;
 赶紧将这个 Connection 改成了 2 分钟，Connect 改成了 5s。</p>
 <p>咨询了七牛的工程师故障当天的状况：</p>
 <blockquote>
-<p>sorry 忘了回复，问题已经定位，早上因为有个别用户list请求数量过大，导致了整个list接口出现大量满请求，影响返回是list接口的调用 和 portal上内容管理界面列取文件key的速度，目前已经恢复</p>
-</blockquote>
+<p>sorry 忘了回复，问题已经定位，早上因为有个别用户list请求数量过大，导致了整个list接口出现大量满请求，影响返回是list接口的调用 和 portal上内容管理界面列取文件key的速度，目前已经恢复</p></blockquote>
 <blockquote>
-<p>大量慢请求，这个已经内部有告警和恢复机制，11点25恢复的</p>
-</blockquote>
+<p>大量慢请求，这个已经内部有告警和恢复机制，11点25恢复的</p></blockquote>
 <p>国内一线的云服务供应商也会出这样不可用故障，即便是有服务放在云上，还是要自己留一个心眼，多关注可用性啊。</p>
 
 <hr />
