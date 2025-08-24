@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>实用软件项目管理最佳实践 | Log4D</title>
+<meta name="keywords" content="management, project-management">
+<meta name="description" content="概述
+本文阐述一套适用于工程应用开发项目的迭代管理实践，重点解决如何高效低成本推进项目的问题。该方案适用于小型团队协作，核心特征在于固定产研节奏、标准化交付物以及高频异步协作机制。
+本文仅针对技术方案与实施路径明确的项目场景，不涉及工程决策或目标管理范畴。本文也更注重实操，注重立即可以上手实施，不会花太多篇幅去解释这套方案背后的思考和原因。
+关于实用（Pragmatic） 的定位：该理念贯穿于我的多项实践方案，包括
+架构设计 the Easy Way
+实用 Web API 规范
+如何做好 PRR（Production Rediness Review）？
+等等。实用意味着注重可操作性和实际效果，要领是简单易实施落地，任何人都可以上手执行操作。我对实用的追求来自于《The Pragmatic Programmer》这本书。">
+<meta name="author" content="alswl">
+<link rel="canonical" href="https://blog.alswl.com/2025/08/project-management/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.32a704646448b3fce593e6753b136a11323537e9a22450128e8d45b57c1848db.css" integrity="sha256-MqcEZGRIs/zlk&#43;Z1OxNqETI1N&#43;miJFASjo1FtXwYSNs=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.alswl.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.alswl.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.alswl.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="text/markdown" href="https://blog.alswl.com/2025/08/project-management/index.md">
+<link rel="alternate" hreflang="en" href="https://blog.alswl.com/2025/08/project-management/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-7S40P40QGJ');
+        }
+      </script><meta property="og:url" content="https://blog.alswl.com/2025/08/project-management/">
+  <meta property="og:site_name" content="Log4D">
+  <meta property="og:title" content="实用软件项目管理最佳实践">
+  <meta property="og:description" content="概述 本文阐述一套适用于工程应用开发项目的迭代管理实践，重点解决如何高效低成本推进项目的问题。该方案适用于小型团队协作，核心特征在于固定产研节奏、标准化交付物以及高频异步协作机制。
+本文仅针对技术方案与实施路径明确的项目场景，不涉及工程决策或目标管理范畴。本文也更注重实操，注重立即可以上手实施，不会花太多篇幅去解释这套方案背后的思考和原因。
+关于实用（Pragmatic） 的定位：该理念贯穿于我的多项实践方案，包括 架构设计 the Easy Way 实用 Web API 规范 如何做好 PRR（Production Rediness Review）？ 等等。实用意味着注重可操作性和实际效果，要领是简单易实施落地，任何人都可以上手执行操作。我对实用的追求来自于《The Pragmatic Programmer》这本书。">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-08-24T10:04:24+08:00">
+    <meta property="article:modified_time" content="2025-08-24T10:04:24+08:00">
+    <meta property="article:tag" content="Management">
+    <meta property="article:tag" content="Project-Management">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实用软件项目管理最佳实践">
+<meta name="twitter:description" content="概述
+本文阐述一套适用于工程应用开发项目的迭代管理实践，重点解决如何高效低成本推进项目的问题。该方案适用于小型团队协作，核心特征在于固定产研节奏、标准化交付物以及高频异步协作机制。
+本文仅针对技术方案与实施路径明确的项目场景，不涉及工程决策或目标管理范畴。本文也更注重实操，注重立即可以上手实施，不会花太多篇幅去解释这套方案背后的思考和原因。
+关于实用（Pragmatic） 的定位：该理念贯穿于我的多项实践方案，包括
+架构设计 the Easy Way
+实用 Web API 规范
+如何做好 PRR（Production Rediness Review）？
+等等。实用意味着注重可操作性和实际效果，要领是简单易实施落地，任何人都可以上手执行操作。我对实用的追求来自于《The Pragmatic Programmer》这本书。">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://blog.alswl.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "实用软件项目管理最佳实践",
+      "item": "https://blog.alswl.com/2025/08/project-management/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "实用软件项目管理最佳实践",
+  "name": "实用软件项目管理最佳实践",
+  "description": "概述 本文阐述一套适用于工程应用开发项目的迭代管理实践，重点解决如何高效低成本推进项目的问题。该方案适用于小型团队协作，核心特征在于固定产研节奏、标准化交付物以及高频异步协作机制。\n本文仅针对技术方案与实施路径明确的项目场景，不涉及工程决策或目标管理范畴。本文也更注重实操，注重立即可以上手实施，不会花太多篇幅去解释这套方案背后的思考和原因。\n关于实用（Pragmatic） 的定位：该理念贯穿于我的多项实践方案，包括 架构设计 the Easy Way 实用 Web API 规范 如何做好 PRR（Production Rediness Review）？ 等等。实用意味着注重可操作性和实际效果，要领是简单易实施落地，任何人都可以上手执行操作。我对实用的追求来自于《The Pragmatic Programmer》这本书。\n",
+  "keywords": [
+    "management", "project-management"
+  ],
+  "articleBody": "概述 本文阐述一套适用于工程应用开发项目的迭代管理实践，重点解决如何高效低成本推进项目的问题。该方案适用于小型团队协作，核心特征在于固定产研节奏、标准化交付物以及高频异步协作机制。\n本文仅针对技术方案与实施路径明确的项目场景，不涉及工程决策或目标管理范畴。本文也更注重实操，注重立即可以上手实施，不会花太多篇幅去解释这套方案背后的思考和原因。\n关于实用（Pragmatic） 的定位：该理念贯穿于我的多项实践方案，包括 架构设计 the Easy Way 实用 Web API 规范 如何做好 PRR（Production Rediness Review）？ 等等。实用意味着注重可操作性和实际效果，要领是简单易实施落地，任何人都可以上手执行操作。我对实用的追求来自于《The Pragmatic Programmer》这本书。\n注：本文不特定区分项目（Project）和产品迭代（Product Sprint）区别，可以将这里项目管理等同于研发过程管理。\n免责申明：没有银弹，本文方法论不一定适合所有场景，并且方案也在持续迭代。如果你的项目有 PM，请优先咨询 Ta。\nMural of La Bre Tar Pits（C.R. 奈特雷阿的焦油坑壁画)，图片被人月神话所引用。\n在软件项目管理中我们遇到什么问题 软件项目管理常面临各类挑战。就个人经验而言，最直接的困境在于项目无法按期交付。其原因可归纳如下：\n我的协作方依赖方有问题，他没时间没空或者方案无法满足我 需求频繁变更，没想清楚做着做着要改方案，或者实施过程中插入新的需求 产出的东西质量不达标，测试阶段一堆问题，迟迟无法交付 产出的东西不是想要的，和需求方一对发现偏差太大 依赖资源未能及时到位 项目计划过于乐观，过度承诺，交付时间比预计的要长，工作量比预期大，难以完成 工程难度大，实施过程遇到技术风险，成本高或者难以完成， 多项目进行，人力资源挤占 多项目并行导致工程上无法满足 项目成员的档期不一致，无法有效协作 问题不可怕，定义清楚问题就成功了一半，回到问题本身，让我们来看如何解决。\n问题根因分析 现实中遇到的问题可能更多，我分分类说到底是这么几个原因：\n需求问题：描述模糊、频繁变更及沟通未对齐 协作问题：衔接断层、预期差异及信息同步失效 时间问题：周期限制及过程中突发需求插入 工程问题：技术实现难度超预期或成本制约 我的项目管理最佳实践 基于上述问题分析，我将这些问题的解法归到几个方向：节奏、交接物、协作。\n注意，本文不聚焦解决工程难度问题，也不解决架构师要解决的问题，最多能从项目管理的思路来降低技术风险。\n另：对架构问题如何处理问题请移步 架构设计 the Easy Way ；遇到了具体工程难题的同学请咨询团队技术专家。\n节奏 - 固定产研节奏比 ddl 更重要 什么是项目的节奏，什么是好项目节奏？\n项目节奏的本质在于建立可预期的周期化交付机制。相较于单纯设定最终截止期限（Deadline），采用 Scrum 敏捷框架中的冲刺（Sprint）模式更为有效。每个冲刺构成包含需求分析、设计、开发、测试及上线的完整闭环。良好的迭代节奏具备三重价值：1. 建立明确的时间预期，实现周期化交付；2. 强制需求拆解，推动产品从最小可行版本（MVP）向完善形态演进，避免关门憋大招，最后拉了一泡稀的；2. 规避长期封闭开发导致的交付风险，最怕大搞 58 天，最后 2 天都交不了货\n双周迭代 一个好的迭代周期多长比较合适呢？在小型团队协作里面，最长不要超过 1 个月，尽量保持在 2 周，最好能做到 1 周。以一次迭代的周期来看，我自己体感是 1/2 时间用来设计， 1/2 用来建设（开发测试和上线）。不要低估设计花费时间，投入少了后面想追也追不会来。\n迭代管理需设置专职迭代经理，该角色承担三项核心职责：规划迭代排期、协调各类会议安排、核验交付材料规范性（依据标准化模板执行，不负责方案质量，材料质量由架构师+下游签收）。此岗位实质承担部分项目管理职能，若短期内无合适人选，应由项目负责人兼任。迭代经理通常从项目成员中产生，建议实施轮值机制。轮岗制度具有双重价值：使成员亲身体验管理挑战，促进跨角色理解；同时通过岗位实践识别流程瓶颈，推动协作机制优化。执行时需确保轮值期间管理职能的完整履行。\n高频迭代带来的不少附加优势：直接化解了需求插入问题（任何需求最长等待周期 ≤1 周），紧急需求则通过紧急修复流程（hotfix）处理；大型需求必须进行拆分验证，无法拆解者需通过概念验证（PoC）先行评估技术风险。\n迭代中评估需求耗时 这是一个一直被提及的问题，我有两个方案来解决，第一个是提供一个需求时间评估公式：工作量 = （最乐观 + 最悲观） / 2。\n第二个是避免搞大需求，所有需求需要评估一下规模，我提供这几种级别标准，extra-large（月级别）/ large（周级别） / medium（天级别） / small（小时级别），我不接受 xl / l 需求，必须拆成 m / s。\n需求时间评估是一个普遍存在的挑战，我提出两种解决方案。\n第一种方案采用工作量估算公式：工作量 = （最乐观 + 最悲观） / 2。这个公式相当实用，比单一指标更多考虑到不确定性。（其实我还有一套更复杂的通过技术采纳性角度的评估方式，但是不如上一个公式简单易操作）\n第二种方案聚焦需求规模控制，要求所有需求划分规模级别，包括 extra-large（月级别）、large（周级别）、medium（天级别）和 small（小时级别）。迭代中要尽量避免 extra-large 与 large 规模需求，将其拆解为 medium 或 small 规模后再行处理。\n迭代范例 我们的一个实际案例分享，这是 我负责 产品的 7 月 两个迭代，分成 07a 和 07b 两个迭代。\n交接物 - 标准化每个环节输入和交付物 软件的不可见性和抽象性是导致软件复杂性的根本原因。\n清楚明确的交接物可以有效降低不可见性和抽象性，这是用来抵抗交付复杂性的核心武器。掌握这个核心武器的最重要口诀是：写下来。\n把你的长远需求规划写下来，不管是年度计划，还是月度计划。把你的需求明细写下来；把你的系统设计写下来；把你的发布功能写下来；\n整个过程中，我推荐使用到这些面向项目管理的交接物，大部分交接物我们都耳熟能详，但请特别注意我这里的最佳实践：需求清单和 Release Note。\n阶段 输入 / 输出 备注 产品规划 产品项目 OKR 产品思路 需求清单 需求清单是一个非常特别的形式，是我个人发明的，正面对抗一句话需求。 产品需求 需求文档 我们产品经常不配置 PD，所以需要自己写需求文档。我们有两种文档格式：文字型 / 配图型 系统设计 系统设计 文字内容设计结构必须是明确的，大家应该使用相同的模式来进行文字创作。比如系统设计文档可以使用语雀自带的模板。 开发 自测报告 截图证明你可以。 测试 测试报告 发布 发布计划 上线 Release Note Release Note 做轻薄一些，尽量链接到产品功能使用文档。 日常使用 产品说明文档 多截图，常更新，跟随产品上线发布。 下面我会展示一些我实践的需求范例（可能来自不同的产品和迭代）。\n需求清单范例 这是我使用的需求清单范例：\n功能描述 Owner 优先级 前端页面数 质量介入 用户 A 可以使用 功能 B 完成授权 狗哥 高 2 页 是 用户 B 可以使用 功能 C 查看报表 谢宝 高 2 页 否 用户 C 可以使用 功能 C 发布视频 落九 高 很少 是 需求文档范例 需求文档模板：\n需求标题：简洁明了地描述需求 用户角色：谁会使用这个功能 用户目标：用户想要达成什么 前置条件：使用该功能需要满足的条件 主要流程：详细描述用户如何使用该功能 替代流程：描述可能的例外情况 验收标准：如何判断需求已经被正确实现\n一个需求文档范例（文字型）：\n视频发布流程 MVP\n用户角色：内容运营者 需求标题：用户上传视频并完成自动化发布流程 用户目标：\n运营者通过标准化流程完成视频从上传到发布的完整生命周期管理。 关键步骤自动化处理（如转码、审核），减少人工操作，关键节点保留人工确认机制。 支持异常处理（如审核失败、转码错误），允许人工介入重试或跳过。 主要流程\n创建视频发布任务 用户上传原始视频文件（支持主流格式：MP4/MOV/AVI） 填写基础元数据（标题、分类、标签、封面图） 自动化预处理 转码引擎：自动生成多分辨率版本（1080P/720P/480P） 内容审核： AI自动审核（敏感画面、违禁内容） 若AI审核通过 → 进入发布队列 若AI审核失败 → 暂停流程并通知人工复审 人工确认节点（流程暂停点） 人工复审：运营者在后台查看AI标注的违规片段，选择： 通过（继续流程） 驳回（需编辑视频后重新上传） 强制跳过（需填写跳过原因） 发布执行 自动推送至指定发布渠道（Web/APP/第三方平台） 生成可跟踪的发布ID（用于效果分析） 异常处理机制 转码失败：自动重试（≤3次）→ 仍失败则通知人工 发布中断：支持手动重试/跳过/终止任务 替代流程\n转码模块不可用：允许上传预转码视频文件（需符合分辨率规范） AI审核服务宕机：切换为全人工审核模式（需在SOP中注明应急预案） 验收标准\n全流程验证： 运营者从上传到发布成功耗时 ≤15分钟（不含人工审核等待）。 模拟审核失败场景，人工强制跳过步骤后流程可继续。 异常处理验证： 转码失败时，系统自动告警并允许手动替换文件。 发布中断后重试，视频状态可恢复至中断前节点。 文档交付： 提供《视频发布SOP手册》，含人工操作指引及故障处理方案（A负责维护）。 产品 Release Note 范例 Discord 的 Change Log（Release Note）发布大纲，没有前端产品用那么多 emoji。 妙言 tw93/MiaoYan 的某个 Release 更新日志：\n产品使用手册范例 我建议可以使用基于 Git 仓库管理的 markdown 方案，比如 MkDocs 这类方案：\n我推荐的范例是 NebulaGraph Operator 的文档范例，注意这仅仅是 NebulaGraph 的其中一个子产品，但是规模更小更适合起步。\n关于交付物，特别是文档类型的交付物，虽然我列了这么多类型，但是我认为一定不要写多写复杂，提纲挈领，量少为宽。\n高频异步沟通 - 同步和异步 风险和透明 不要陷入巴别塔。\n在分布式协作场景下，需建立「异步为主、同步为辅」的沟通范式，重点解决信息孤岛、风险滞后及依赖阻塞三大痛点。有效的协作机制应包含三个核心要素：全局可视化任务管理、结构化风险预警及精准化依赖协调。\n我讨厌开会，甚至从某种意义上我痛恨开会。我之前写过关于会议的暴论：\n这个月代码写得太少了，会议时间占据了 1/3，这很可怕。\n会议很低效，很低效，很低效。有些会缺少材料准备，问题不聚焦，主持人不控场，一拉一大把人，不少人又不好意思走就硬挂着。\n如果我有权利，我甚至想禁止公司开会，全都回归到基于文档的异步交互模式。\n还是多建设，少空谈，有明确主张，材料提前分发，开会不当聋哑人，非干系勇敢离开会议。让大家回到方案设计和代码上吧。\n有效沟通需规避信息失真，核心在于建立风险透明机制与依赖协同体系。具体实施包含三个维度：全局可视化看板：实时呈现任务进度与风险状态；精准进度追踪：量化每个节点的完成度；异步协作平台：通过在线任务管理工具（如 Jira）实现全周期信息同步。\n开两种会 - 方案评审和日会 我们不需要开会了么？还要，但是只要两种：方案评审会与日会。\n评审会的要点在于：\n明确评审会的对象是谁，谁负责为方案点头，没有人负责点头的会不用开，既没有对抗又没有讨论，是纯走过长 不要做无准备的讨论，在方案宣讲之前，尽量先和受众对象达成一致，让评审会变成一个宣讲会 评审会要有结论，通过还是不通过要有人确认。通知之后的执行项全部落入在线协作平台，特别是需求类，一定要记录，这是未来日会跟踪的依据 日常进度沟通模式，我推荐每日站会沟通，最少也得双日沟通（每周二、四）。每天都进行站会同步，每次 15m 搞定。一般一个项目成员在 7 人左右（披萨原理），每人一两分钟。\n站会的主持人很重要，要引导参与人同步进度，同步风险，寻求帮助，帮助需要有明确的接收方。\n基于看板的在线沟通 核心准则：以文档异步协同为基础，将同步会议压缩至必要场景，最大化建设性工作时间。\n下面是会议看板范例，根据迭代过滤，根据 Assginee 分组（其实也很普通，没什么特别的）： 每天迭代经理在日会上面就是拿着这个看板，先明确我们几号提测几号上线，再挨个成员自述进展如何，最后挨个问有没有上线风险。\n最后 没有万灵的项目管理机制，根据自己面临的问题进行实际调整。本文的命题对我（一个开发工程师）来说也是极具挑战。我在过去有多次因为项目无法交付问题失眠无法入睡。现在来看，其实大可不必，平常心来应对问题，对预期内问题建立预案，对计划外变更保持弹性。当团队已完成可行性范围内的最大努力，即应视作有效交付。项目管理的终极目标，是在资源约束下实现可持续的技术价值输出。\n扩展阅读 人月神话 (豆瓣) 软件工程项目管理的圣经，20 年后读起来仍然觉得字字珠玑。上海 S 空间同学可以找我借阅\n项目管理修炼之道 (豆瓣) 这是我的项目管理入门指导书，更通用更适合 PM。我写过一个读书笔记 《项目管理修炼之道》笔记 | Log4D。\n代码之殇 (豆瓣) 作者是微软高级架构师/管理者，而本书实际上是一个随笔式的文章集合。尽管如此，书中的许多观点犀利且具有独特的见解，展现了从一线到高层的全方位视野。其中关于工程过程管理（比如死亡行军）事项，确实值得深思。\n",
+  "wordCount" : "5137",
+  "inLanguage": "en",
+  "datePublished": "2025-08-24T10:04:24+08:00",
+  "dateModified": "2025-08-24T10:04:24+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "alswl"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.alswl.com/2025/08/project-management/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Log4D",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.alswl.com/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.alswl.com/" accesskey="h" title="Log4D (Alt + H)">Log4D</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://en.blog.alswl.com/" title="English Blog">
+                    <span>English Blog</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/archives/" title="存档">
+                    <span>存档</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.alswl.com/about/" title="关于我">
+                    <span>关于我</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      实用软件项目管理最佳实践
+    </h1>
+    <div class="post-meta"><span title='2025-08-24 10:04:24 +0800 +0800'>2025-08-24</span>&nbsp;·&nbsp;alswl
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#在软件项目管理中我们遇到什么问题">在软件项目管理中我们遇到什么问题</a></li>
+    <li><a href="#问题根因分析">问题根因分析</a></li>
+    <li><a href="#我的项目管理最佳实践">我的项目管理最佳实践</a></li>
+    <li><a href="#节奏---固定产研节奏比-ddl-更重要">节奏 - 固定产研节奏比 ddl 更重要</a>
+      <ul>
+        <li><a href="#双周迭代">双周迭代</a></li>
+        <li><a href="#迭代中评估需求耗时">迭代中评估需求耗时</a></li>
+        <li><a href="#迭代范例">迭代范例</a></li>
+      </ul>
+    </li>
+    <li><a href="#交接物---标准化每个环节输入和交付物">交接物 - 标准化每个环节输入和交付物</a>
+      <ul>
+        <li><a href="#需求清单范例">需求清单范例</a></li>
+        <li><a href="#需求文档范例">需求文档范例</a></li>
+        <li><a href="#产品-release-note-范例">产品 Release Note 范例</a></li>
+        <li><a href="#产品使用手册范例">产品使用手册范例</a></li>
+      </ul>
+    </li>
+    <li><a href="#高频异步沟通---同步和异步-风险和透明">高频异步沟通 - 同步和异步 风险和透明</a>
+      <ul>
+        <li><a href="#开两种会---方案评审和日会">开两种会 - 方案评审和日会</a></li>
+        <li><a href="#基于看板的在线沟通">基于看板的在线沟通</a></li>
+      </ul>
+    </li>
+    <li><a href="#最后">最后</a></li>
+    <li><a href="#扩展阅读">扩展阅读</a></li>
+  </ul>
+</nav>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="概述">概述<a hidden class="anchor" aria-hidden="true" href="#概述">#</a></h2>
+<p>本文阐述一套适用于工程应用开发项目的迭代管理实践，重点解决如何高效低成本推进项目的问题。该方案适用于小型团队协作，核心特征在于<strong>固定产研节奏、标准化交付物以及高频异步协作机制</strong>。</p>
+<p>本文仅针对技术方案与实施路径明确的项目场景，不涉及工程决策或目标管理范畴。本文也更注重实操，注重立即可以上手实施，不会花太多篇幅去解释这套方案背后的思考和原因。</p>
+<p>关于<strong>实用（Pragmatic）</strong> 的定位：该理念贯穿于我的多项实践方案，包括
+<a href="https://blog.alswl.com/2023/07/architecture-design-the-easy-way/">架构设计 the Easy Way</a>
+<a href="https://blog.alswl.com/2023/04/web-api-guidelines/">实用 Web API 规范</a>
+<a href="https://blog.alswl.com/2021/06/prr/">如何做好 PRR（Production Rediness Review）？</a>
+等等。实用意味着注重可操作性和实际效果，要领是简单易实施落地，任何人都可以上手执行操作。我对实用的追求来自于《The Pragmatic Programmer》这本书。</p>
+<p>注：本文不特定区分项目（Project）和产品迭代（Product Sprint）区别，可以将这里项目管理等同于研发过程管理。</p>
+<p>免责申明：没有银弹，本文方法论不一定适合所有场景，并且方案也在持续迭代。如果你的项目有 PM，请优先咨询 Ta。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202508/image-20250824100608820.png" alt="image-20250824100608820"  />
+
+
+
+Mural of La Bre Tar Pits（C.R. 奈特雷阿的焦油坑壁画)，图片被人月神话所引用。</p>
+<h2 id="在软件项目管理中我们遇到什么问题">在软件项目管理中我们遇到什么问题<a hidden class="anchor" aria-hidden="true" href="#在软件项目管理中我们遇到什么问题">#</a></h2>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202508/image-20250824100620884.png" alt="image-20250824100620884"  />
+
+
+</p>
+<p>软件项目管理常面临各类挑战。就个人经验而言，最直接的困境在于项目无法按期交付。其原因可归纳如下：</p>
+<ul>
+<li>我的协作方依赖方有问题，他没时间没空或者方案无法满足我</li>
+<li>需求频繁变更，没想清楚做着做着要改方案，或者实施过程中插入新的需求</li>
+<li>产出的东西质量不达标，测试阶段一堆问题，迟迟无法交付</li>
+<li>产出的东西不是想要的，和需求方一对发现偏差太大</li>
+<li>依赖资源未能及时到位</li>
+<li>项目计划过于乐观，过度承诺，交付时间比预计的要长，工作量比预期大，难以完成</li>
+<li>工程难度大，实施过程遇到技术风险，成本高或者难以完成，</li>
+<li>多项目进行，人力资源挤占</li>
+<li>多项目并行导致工程上无法满足</li>
+<li>项目成员的档期不一致，无法有效协作</li>
+</ul>
+<p>问题不可怕，定义清楚问题就成功了一半，回到问题本身，让我们来看如何解决。</p>
+<h2 id="问题根因分析">问题根因分析<a hidden class="anchor" aria-hidden="true" href="#问题根因分析">#</a></h2>
+<p>现实中遇到的问题可能更多，我分分类说到底是这么几个原因：</p>
+<ul>
+<li><strong>需求问题</strong>：描述模糊、频繁变更及沟通未对齐</li>
+<li><strong>协作问题</strong>：衔接断层、预期差异及信息同步失效</li>
+<li><strong>时间问题</strong>：周期限制及过程中突发需求插入</li>
+<li><strong>工程问题</strong>：技术实现难度超预期或成本制约</li>
+</ul>
+<h2 id="我的项目管理最佳实践">我的项目管理最佳实践<a hidden class="anchor" aria-hidden="true" href="#我的项目管理最佳实践">#</a></h2>
+<p>基于上述问题分析，我将这些问题的解法归到几个方向：<strong>节奏、交接物、协作</strong>。</p>
+<p>注意，本文不聚焦解决工程难度问题，也不解决架构师要解决的问题，最多能从项目管理的思路来降低技术风险。</p>
+<p>另：对架构问题如何处理问题请移步
+<a href="https://blog.alswl.com/2023/07/architecture-design-the-easy-way/">架构设计 the Easy Way</a>
+；遇到了具体工程难题的同学请咨询团队技术专家。</p>
+<h2 id="节奏---固定产研节奏比-ddl-更重要">节奏 - 固定产研节奏比 ddl 更重要<a hidden class="anchor" aria-hidden="true" href="#节奏---固定产研节奏比-ddl-更重要">#</a></h2>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202508/image-20250824100635582.png" alt="image-20250824100635582"  />
+
+
+</p>
+<p>什么是项目的节奏，什么是好项目节奏？</p>
+<p>项目节奏的本质在于建立<strong>可预期的周期化交付机制</strong>。相较于单纯设定最终截止期限（Deadline），采用 Scrum 敏捷框架中的冲刺（Sprint）模式更为有效。每个冲刺构成包含需求分析、设计、开发、测试及上线的完整闭环。良好的迭代节奏具备三重价值：1. 建立明确的时间预期，实现周期化交付；2. 强制需求拆解，推动产品从最小可行版本（MVP）向完善形态演进，避免关门憋大招，最后拉了一泡稀的；2. 规避长期封闭开发导致的交付风险，最怕大搞 58 天，最后 2 天都交不了货</p>
+<h3 id="双周迭代">双周迭代<a hidden class="anchor" aria-hidden="true" href="#双周迭代">#</a></h3>
+<p>一个好的迭代周期多长比较合适呢？在小型团队协作里面，最长不要超过 1 个月，<strong>尽量保持在 2 周</strong>，最好能做到 1 周。以一次迭代的周期来看，我自己体感是 1/2 时间用来设计， 1/2 用来建设（开发测试和上线）。不要低估设计花费时间，投入少了后面想追也追不会来。</p>
+<p>迭代管理需设置专职<strong>迭代经理</strong>，该角色承担三项核心职责：规划迭代排期、协调各类会议安排、核验交付材料规范性（依据标准化模板执行，不负责方案质量，材料质量由架构师+下游签收）。此岗位实质承担部分项目管理职能，若短期内无合适人选，应由项目负责人兼任。迭代经理通常从项目成员中产生，建议实施轮值机制。轮岗制度具有双重价值：使成员亲身体验管理挑战，促进跨角色理解；同时通过岗位实践识别流程瓶颈，推动协作机制优化。执行时需确保轮值期间管理职能的完整履行。</p>
+<p>高频迭代带来的不少附加优势：直接化解了需求插入问题（任何需求最长等待周期 ≤1 周），紧急需求则通过紧急修复流程（hotfix）处理；大型需求必须进行拆分验证，无法拆解者需通过概念验证（PoC）先行评估技术风险。</p>
+<h3 id="迭代中评估需求耗时">迭代中评估需求耗时<a hidden class="anchor" aria-hidden="true" href="#迭代中评估需求耗时">#</a></h3>
+<p>这是一个一直被提及的问题，我有两个方案来解决，第一个是提供一个需求时间评估公式：工作量 = （最乐观 + 最悲观） / 2。</p>
+<p>第二个是避免搞大需求，所有需求需要评估一下规模，我提供这几种级别标准，extra-large（月级别）/ large（周级别） / medium（天级别） / small（小时级别），我不接受 xl / l 需求，必须拆成 m / s。</p>
+<p>需求时间评估是一个普遍存在的挑战，我提出两种解决方案。</p>
+<p>第一种方案采用工作量估算公式：工作量 = （最乐观 + 最悲观） / 2。这个公式相当实用，比单一指标更多考虑到不确定性。（其实我还有一套更复杂的通过技术采纳性角度的评估方式，但是不如上一个公式简单易操作）</p>
+<p>第二种方案聚焦需求规模控制，要求所有需求划分规模级别，包括 extra-large（月级别）、large（周级别）、medium（天级别）和 small（小时级别）。迭代中要尽量避免 extra-large 与 large 规模需求，将其拆解为 medium 或 small 规模后再行处理。</p>
+<h3 id="迭代范例">迭代范例<a hidden class="anchor" aria-hidden="true" href="#迭代范例">#</a></h3>
+<p>我们的一个实际<strong>案例分享</strong>，这是 我负责 产品的 7 月 两个迭代，分成 07a 和 07b 两个迭代。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202508/image-20250824100659418.png" alt="image-20250824100659418"  />
+
+
+</p>
+<h2 id="交接物---标准化每个环节输入和交付物">交接物 - 标准化每个环节输入和交付物<a hidden class="anchor" aria-hidden="true" href="#交接物---标准化每个环节输入和交付物">#</a></h2>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202508/image-20250824100711540.png" alt="image-20250824100711540"  />
+
+
+</p>
+<p>软件的<strong>不可见性和抽象性</strong>是导致软件复杂性的根本原因。</p>
+<p>清楚明确的交接物可以有效降低不可见性和抽象性，这是用来抵抗交付复杂性的核心武器。掌握这个核心武器的最重要口诀是：<strong>写下来</strong>。</p>
+<p>把你的长远需求规划写下来，不管是年度计划，还是月度计划。把你的需求明细写下来；把你的系统设计写下来；把你的发布功能写下来；</p>
+<p>整个过程中，我推荐使用到这些面向项目管理的<strong>交接物</strong>，大部分交接物我们都耳熟能详，但请特别注意我这里的最佳实践：<strong>需求清单</strong>和 <strong>Release Note</strong>。</p>
+<table>
+  <thead>
+      <tr>
+          <th>阶段</th>
+          <th>输入 / 输出</th>
+          <th>备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>产品规划</td>
+          <td>产品项目 OKR</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>产品思路</td>
+          <td>需求清单</td>
+          <td>需求清单是一个非常特别的形式，是我个人发明的，正面对抗一句话需求。</td>
+      </tr>
+      <tr>
+          <td>产品需求</td>
+          <td>需求文档</td>
+          <td>我们产品经常不配置 PD，所以需要自己写需求文档。我们有两种文档格式：文字型 / 配图型</td>
+      </tr>
+      <tr>
+          <td>系统设计</td>
+          <td>系统设计</td>
+          <td>文字内容设计结构必须是明确的，大家应该使用相同的模式来进行文字创作。比如系统设计文档可以使用语雀自带的模板。</td>
+      </tr>
+      <tr>
+          <td>开发</td>
+          <td>自测报告</td>
+          <td>截图证明你可以。</td>
+      </tr>
+      <tr>
+          <td>测试</td>
+          <td>测试报告</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>发布</td>
+          <td>发布计划</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>上线</td>
+          <td>Release Note</td>
+          <td>Release Note 做轻薄一些，尽量链接到产品功能使用文档。</td>
+      </tr>
+      <tr>
+          <td>日常使用</td>
+          <td>产品说明文档</td>
+          <td>多截图，常更新，跟随产品上线发布。</td>
+      </tr>
+  </tbody>
+</table>
+<p>下面我会展示一些我实践的需求范例（可能来自不同的产品和迭代）。</p>
+<h3 id="需求清单范例">需求清单范例<a hidden class="anchor" aria-hidden="true" href="#需求清单范例">#</a></h3>
+<p>这是我使用的需求清单范例：</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>功能描述</strong></td>
+          <td><strong>Owner</strong></td>
+          <td><strong>优先级</strong></td>
+          <td><strong>前端页面数</strong></td>
+          <td><strong>质量介入</strong></td>
+      </tr>
+      <tr>
+          <td>用户 A 可以使用 功能 B 完成授权</td>
+          <td>狗哥</td>
+          <td>高</td>
+          <td>2 页</td>
+          <td>是</td>
+      </tr>
+      <tr>
+          <td>用户 B 可以使用 功能 C 查看报表</td>
+          <td>谢宝</td>
+          <td>高</td>
+          <td>2 页</td>
+          <td>否</td>
+      </tr>
+      <tr>
+          <td>用户 C 可以使用 功能 C 发布视频</td>
+          <td>落九</td>
+          <td>高</td>
+          <td>很少</td>
+          <td>是</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="需求文档范例">需求文档范例<a hidden class="anchor" aria-hidden="true" href="#需求文档范例">#</a></h3>
+<p><strong>需求文档模板</strong>：</p>
+<blockquote>
+<p>需求标题：简洁明了地描述需求
+用户角色：谁会使用这个功能
+用户目标：用户想要达成什么
+前置条件：使用该功能需要满足的条件
+主要流程：详细描述用户如何使用该功能
+替代流程：描述可能的例外情况
+验收标准：如何判断需求已经被正确实现</p></blockquote>
+<p>一个<strong>需求文档范例（文字型）</strong>：</p>
+<blockquote>
+<p><strong>视频发布流程 MVP</strong></p>
+<p><strong>用户角色</strong>：内容运营者
+<strong>需求标题</strong>：用户上传视频并完成自动化发布流程
+<strong>用户目标</strong>：</p>
+<ul>
+<li>运营者通过标准化流程完成视频从上传到发布的完整生命周期管理。</li>
+<li>关键步骤自动化处理（如转码、审核），减少人工操作，关键节点保留人工确认机制。</li>
+<li>支持异常处理（如审核失败、转码错误），允许人工介入重试或跳过。</li>
+</ul>
+<p><strong>主要流程</strong></p>
+<ol>
+<li><strong>创建视频发布任务</strong>
+<ul>
+<li>用户上传原始视频文件（支持主流格式：MP4/MOV/AVI）</li>
+<li>填写基础元数据（标题、分类、标签、封面图）</li>
+</ul>
+</li>
+<li><strong>自动化预处理</strong>
+<ul>
+<li><strong>转码引擎</strong>：自动生成多分辨率版本（1080P/720P/480P）</li>
+<li><strong>内容审核</strong>：
+<ul>
+<li>AI自动审核（敏感画面、违禁内容）</li>
+<li>若AI审核通过 → 进入发布队列</li>
+<li>若AI审核失败 → 暂停流程并通知人工复审</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>人工确认节点</strong>（流程暂停点）
+<ul>
+<li><strong>人工复审</strong>：运营者在后台查看AI标注的违规片段，选择：
+<ul>
+<li>通过（继续流程）</li>
+<li>驳回（需编辑视频后重新上传）</li>
+<li>强制跳过（需填写跳过原因）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>发布执行</strong>
+<ul>
+<li>自动推送至指定发布渠道（Web/APP/第三方平台）</li>
+<li>生成可跟踪的发布ID（用于效果分析）</li>
+</ul>
+</li>
+<li><strong>异常处理机制</strong>
+<ul>
+<li><strong>转码失败</strong>：自动重试（≤3次）→ 仍失败则通知人工</li>
+<li><strong>发布中断</strong>：支持手动重试/跳过/终止任务</li>
+</ul>
+</li>
+</ol>
+<p><strong>替代流程</strong></p>
+<ul>
+<li><strong>转码模块不可用</strong>：允许上传预转码视频文件（需符合分辨率规范）</li>
+<li><strong>AI审核服务宕机</strong>：切换为全人工审核模式（需在SOP中注明应急预案）</li>
+</ul>
+<p><strong>验收标准</strong></p>
+<ol>
+<li><strong>全流程验证</strong>：
+<ul>
+<li>运营者从上传到发布成功耗时 ≤15分钟（不含人工审核等待）。</li>
+<li>模拟审核失败场景，人工强制跳过步骤后流程可继续。</li>
+</ul>
+</li>
+<li><strong>异常处理验证</strong>：
+<ul>
+<li>转码失败时，系统自动告警并允许手动替换文件。</li>
+<li>发布中断后重试，视频状态可恢复至中断前节点。</li>
+</ul>
+</li>
+<li><strong>文档交付</strong>：
+<ul>
+<li>提供《视频发布SOP手册》，含人工操作指引及故障处理方案（A负责维护）。</li>
+</ul>
+</li>
+</ol></blockquote>
+<h3 id="产品-release-note-范例">产品 Release Note 范例<a hidden class="anchor" aria-hidden="true" href="#产品-release-note-范例">#</a></h3>
+<p>Discord 的 Change Log（Release Note）发布大纲，没有前端产品用那么多 emoji。
+
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202508/image-20250824100749328.png" alt="image-20250824100749328"  />
+
+
+</p>
+<p>妙言 <a href="https://github.com/tw93/MiaoYan">tw93/MiaoYan</a> 的某个 Release 更新日志：</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202508/image-20250824100805177.png" alt="image-20250824100805177"  />
+
+
+</p>
+<h3 id="产品使用手册范例">产品使用手册范例<a hidden class="anchor" aria-hidden="true" href="#产品使用手册范例">#</a></h3>
+<p>我建议可以使用基于 Git 仓库管理的 markdown 方案，比如 <a href="https://www.mkdocs.org/">MkDocs</a> 这类方案：</p>
+<p>我推荐的范例是 NebulaGraph Operator 的文档范例，注意这仅仅是 NebulaGraph 的其中一个子产品，但是规模更小更适合起步。</p>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202508/image-20250824100817905.png" alt="image-20250824100817905"  />
+
+
+</p>
+<p>关于交付物，特别是文档类型的交付物，虽然我列了这么多类型，但是我认为一定不要写多写复杂，<strong>提纲挈领，量少为宽</strong>。</p>
+<h2 id="高频异步沟通---同步和异步-风险和透明">高频异步沟通 - 同步和异步 风险和透明<a hidden class="anchor" aria-hidden="true" href="#高频异步沟通---同步和异步-风险和透明">#</a></h2>
+<p>
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202508/image-20250824100844728.png" alt="image-20250824100844728"  />
+
+
+</p>
+<p>不要陷入巴别塔。</p>
+<p>在分布式协作场景下，需建立「<strong>异步为主、同步为辅</strong>」的沟通范式，重点解决信息孤岛、风险滞后及依赖阻塞三大痛点。有效的协作机制应包含三个核心要素：<strong>全局可视化任务管理、结构化风险预警及精准化依赖协调</strong>。</p>
+<p>我讨厌开会，甚至从某种意义上我痛恨开会。我之前写过关于会议的暴论：</p>
+<p>这个月代码写得太少了，会议时间占据了 1/3，这很可怕。</p>
+<p>会议很低效，很低效，很低效。有些会缺少材料准备，问题不聚焦，主持人不控场，一拉一大把人，不少人又不好意思走就硬挂着。</p>
+<p>如果我有权利，我甚至想禁止公司开会，全都回归到基于文档的异步交互模式。</p>
+<p>还是多建设，少空谈，有明确主张，材料提前分发，开会不当聋哑人，非干系勇敢离开会议。让大家回到方案设计和代码上吧。</p>
+<p>有效沟通需规避信息失真，核心在于建立风险透明机制与依赖协同体系。具体实施包含三个维度：全局可视化看板：实时呈现任务进度与风险状态；精准进度追踪：量化每个节点的完成度；异步协作平台：通过在线任务管理工具（如 Jira）实现全周期信息同步。</p>
+<h3 id="开两种会---方案评审和日会">开两种会 - 方案评审和日会<a hidden class="anchor" aria-hidden="true" href="#开两种会---方案评审和日会">#</a></h3>
+<p>我们不需要开会了么？还要，但是只要两种：<strong>方案评审会与日会</strong>。</p>
+<p>评审会的要点在于：</p>
+<ol>
+<li>明确评审会的对象是谁，<strong>谁负责为方案点头</strong>，没有人负责点头的会不用开，既没有对抗又没有讨论，是纯走过长</li>
+<li>不要做无准备的讨论，在方案宣讲之前，尽量先和受众对象达成一致，让评审会变成一个<strong>宣讲会</strong></li>
+<li>评审会要有结论，通过还是不通过要有人确认。通知之后的执行项全部落入在线协作平台，特别是需求类，一定要记录，这是未来日会跟踪的依据</li>
+</ol>
+<p>日常进度沟通模式，我推荐<strong>每日站会沟通</strong>，最少也得双日沟通（每周二、四）。每天都进行站会同步，每次 15m 搞定。一般一个项目成员在 7 人左右（披萨原理），每人一两分钟。</p>
+<p><strong>站会的主持人很重要</strong>，要引导参与人同步进度，同步风险，寻求帮助，帮助需要有明确的接收方。</p>
+<h3 id="基于看板的在线沟通">基于看板的在线沟通<a hidden class="anchor" aria-hidden="true" href="#基于看板的在线沟通">#</a></h3>
+<p>核心准则：<strong>以文档异步协同为基础</strong>，将同步会议压缩至必要场景，最大化建设性工作时间。</p>
+<p>下面是会议看板范例，根据迭代过滤，根据 Assginee 分组（其实也很普通，没什么特别的）：
+
+
+
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202508/image-20250824100907586.png" alt="image-20250824100907586"  />
+
+
+</p>
+<p>每天迭代经理在日会上面就是拿着这个看板，先明确我们几号提测几号上线，再挨个成员自述进展如何，最后挨个问有没有上线风险。</p>
+<h2 id="最后">最后<a hidden class="anchor" aria-hidden="true" href="#最后">#</a></h2>
+<p>没有万灵的项目管理机制，根据自己面临的问题进行实际调整。本文的命题对我（一个开发工程师）来说也是极具挑战。我在过去有多次因为项目无法交付问题失眠无法入睡。现在来看，其实大可不必，平常心来应对问题，<strong>对预期内问题建立预案，对计划外变更保持弹性</strong>。当团队已完成可行性范围内的最大努力，即应视作有效交付。项目管理的终极目标，是在资源约束下实现可持续的技术价值输出。</p>
+<h2 id="扩展阅读">扩展阅读<a hidden class="anchor" aria-hidden="true" href="#扩展阅读">#</a></h2>
+<p><a href="https://book.douban.com/subject/1102259/">人月神话 (豆瓣)</a>
+软件工程项目管理的圣经，20 年后读起来仍然觉得字字珠玑。上海 S 空间同学可以找我借阅</p>
+<p><a href="https://book.douban.com/subject/4058336/">项目管理修炼之道 (豆瓣)</a>
+这是我的项目管理入门指导书，更通用更适合 PM。我写过一个读书笔记 <a href="https://blog.alswl.com/2014/08/manage-it/">《项目管理修炼之道》笔记 | Log4D</a>。</p>
+<p><a href="https://book.douban.com/subject/24284853/">代码之殇 (豆瓣)</a>
+作者是微软高级架构师/管理者，而本书实际上是一个随笔式的文章集合。尽管如此，书中的许多观点犀利且具有独特的见解，展现了从一线到高层的全方位视野。其中关于工程过程管理（比如死亡行军）事项，确实值得深思。</p>
+
+<hr />
+<p>原文链接: <a href="https://blog.alswl.com/2025/08/project-management/">实用软件项目管理最佳实践 | Log4D</a></p>
+<p>3a1ff193cee606bd1e2ea554a16353ee</p>
+<p>欢迎关注我的微信公众号：<a
+href="http://mp.weixin.qq.com/mp/getmasssendmsg?__biz=MzIyNTIwMTU3MQ==#wechat_webview_type=1&amp;wechat_redirect">窥豹</a></p>
+<figure>
+<img
+src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201605/qrcode_for_gh_17e2f9c2caa4_258.jpg"
+alt="窥豹" />
+<figcaption aria-hidden="true">窥豹</figcaption>
+</figure>
+
+    
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://blog.alswl.com/tags/management/">Management</a></li>
+      <li><a href="https://blog.alswl.com/tags/project-management/">Project-Management</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://blog.alswl.com/2025/06/li-feifei/">
+    <span class="title">Next »</span>
+    <br>
+    <span>李飞飞如何获得成功？ - 读「我看见的世界」</span>
+  </a>
+</nav>
+
+  </footer><div id="waline"></div>
+<script type="module">
+  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+
+    
+    
+    init({
+      el: '#waline',
+      serverURL: 'https://comments-waline-d41d8cd98f.blog.alswl.com',
+      emoji: false,
+      search: false,
+      reaction: true, 
+      requiredMeta: ['nick', 'mail'],
+      login: 'disable',
+      imageUploader: false,
+      texRenderer: false,
+    });
+</script>
+
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="https://blog.alswl.com/">Log4D</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
