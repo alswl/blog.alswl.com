@@ -260,7 +260,7 @@ Discord 的 Change Log（Release Note）发布大纲，没有前端产品用那�
 ## 扩展阅读
 
 [人月神话 (豆瓣)](https://book.douban.com/subject/1102259/)
-软件工程项目管理的圣经，20 年后读起来仍然觉得字字珠玑。上海 S 空间同学可以找我借阅
+软件工程项目管理的圣经，20 年后读起来仍然觉得字字珠玑。
 
 [项目管理修炼之道 (豆瓣)](https://book.douban.com/subject/4058336/)
 这是我的项目管理入门指导书，更通用更适合 PM。我写过一个读书笔记 [《项目管理修炼之道》笔记 | Log4D](https://blog.alswl.com/2014/08/manage-it/)。
