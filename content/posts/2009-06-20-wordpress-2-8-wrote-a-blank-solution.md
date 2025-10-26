@@ -13,4 +13,3 @@ categories: ["coding"]
 .7，检查了一下Google，发现了一片博文《与 Wordpress 2.8 有冲突的几个插件》<[猛击这里打开](http://www.suoyishuo.com/archives/wordpress-28-conflict.html)>。
 
 原来是Use Google Libraries的问题，升级之后就可以解决这个问题了。
-
