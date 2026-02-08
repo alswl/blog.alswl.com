@@ -1,73 +1,56 @@
-# [PROJECT_NAME] Constitution
+<!--
+  Sync Impact Report
+  Version: 1.1.0 → 1.2.0
+  Change: Reframe to 写作者 (author) as primary perspective; principles and sections rewritten from author's POV.
+  Modified principles: I–V retitled/rewritten for author workflow, ownership, and support.
+  New sections: 写作者日常 (replaces 日常流程).
+  Deleted sections: None
+  Templates: plan-template.md ✅; spec-template.md ✅; tasks-template.md ✅.
+  Commands: N/A. Runtime docs: README.md ✅.
+  Deferred TODOs: None
+-->
 
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# blog.alswl.com 宪章
 
-## Core Principles
+## 协作原则（以写作者为锚）
 
-### [PRINCIPLE_1_NAME]
+### I. 内容优先
 
-<!-- Example: I. Library-First -->
+写作者产出的文章与配图是项目的中心。流程与工具服务于写稿、改稿、发布，而不是让写作者迁就流程。讨论与决策以「是否有利于写作者持续产出与传播好内容」为准。理由：保证写作者不被流程拖累、目标不漂移。
 
-[PRINCIPLE_1_DESCRIPTION]
+### II. 写作者可独立完成关键步骤
 
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+发文、配图、同步资源、发布等关键步骤，写作者应能按文档自己完成，不依赖他人代为操作或口头传授。文档与约定随变更更新，写作者随时可查、可复现。理由：写作者拥有完整动线，减少等待与阻塞。
 
-### [PRINCIPLE_2_NAME]
+### III. 资源约定清晰、写作者易遵守
 
-<!-- Example: II. CLI Interface -->
+图片等资源的存放位置、URL 规则、同步方式成文且统一；写作者只需遵循同一套约定即可避免链接失效和重复劳动。约定变更时及时更新文档并告知写作者。理由：降低写作者心智负担，减少返工。
 
-[PRINCIPLE_2_DESCRIPTION]
+### IV. 少折腾、好维护
 
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+不为了「酷」或「统一感」给写作者增加额外步骤或工具。能用人人都会的简单方式就不引入复杂方案；若写作者之外的人参与维护，也应保证他们能接手。理由：写作者把时间花在写，而不是在环境和流程上排错。
 
-### [PRINCIPLE_3_NAME]
+### V. 写作者可交接、可复盘
 
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
+常用操作步骤、踩过的坑、重要决策，以书面形式留在 README 或文档中。写作者换人、休假或协作角色变动时，新写作者或协作者能按文档接手，不必重新问一遍。理由：保护写作者与项目的可持续性，支持异步协作。
 
-[PRINCIPLE_3_DESCRIPTION]
+## 写作者与协作者
 
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+- **沟通**：写作者可优先采用书面、异步方式（Issue/PR/文档）；需要共识的决策留下简要理由，方便写作者事后查阅。
+- **反馈**：对写作者内容或流程的修改建议应具体、可操作，保持建设性，避免空泛评价。
+- **归属**：写作者对本人内容享有约定内的署名与版权；引用他人贡献时按项目约定执行，项目内对再授权方式保持一致认知。
 
-### [PRINCIPLE_4_NAME]
+## 写作者日常（参考）
 
-<!-- Example: IV. Integration Testing -->
+- 写稿、改稿在 `content/` 下进行；本地预览用 `hugo serve -D`，正式构建用 `hugo`。
+- 图片等资源按文档约定同步（如 `make sync-images`）；发布前写作者自行确认引用链接有效。
+- 格式与排版约定（如 Prettier、URL 替换）写在 README 或文档中，写作者统一遵循即可。
 
-[PRINCIPLE_4_DESCRIPTION]
+## 治理
 
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+- 本宪章在所述范围内优先于临时约定；修订需更新本文、按语义化版本递增，并更新「最后修订」日期。
+- 版本规则：MAJOR 为不兼容的原则删除或重定义；MINOR 为新增原则/章节或实质性扩展；PATCH 为措辞澄清、纠错。
+- 提议变更流程或结构时，可对照本宪章说明是否仍以写作者为锚、是否有利于写作者；若有例外，需说明理由并记录。
+- 日常操作以 README 及项目内文档为准；宪章提供的是协作风格与底线，而非操作手册。
 
-### [PRINCIPLE_5_NAME]
-
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-
-[PRINCIPLE_5_DESCRIPTION]
-
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
-
-## [SECTION_2_NAME]
-
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
-
-## Governance
-
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
-
-[GOVERNANCE_RULES]
-
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.2.0 | **Ratified**: 2025-02-08 | **Last Amended**: 2025-02-08
