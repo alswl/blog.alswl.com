@@ -101,6 +101,7 @@ echo "=== 未被 content 引用的图片 ($unused_count / $total_count) ==="
 echo ""
 if [ "$unused_count" -gt 0 ]; then
     cat "$unused_list"
+    exit 1
 else
     echo "(无)"
 fi
