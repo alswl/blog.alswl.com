@@ -12,9 +12,6 @@ CDN_HOST = https://e25ba8-log4d-c.dijingchao.com
 DOMAIN = blog.alswl.com
 SITEMAP_URL = https://blog.alswl.com/sitemap.xml
 
-# DEPLOY_LOG := deploy.log
-
-
 .PHONY: build-production
 build-production:
 	HUGO_ENV=production $(HUGO)
@@ -43,7 +40,6 @@ cdn:
 	# curl --silent "http://www.google.com/ping?sitemap=$(SITEMAP_URL)"
 	# curl --silent "http://www.bing.com/webmaster/ping.aspx?siteMap=$(SITEMAP_URL)"
 	@echo done
-
 
 .PHONY: new
 name = $(shell date +%Y-%m-%d)-new.md
