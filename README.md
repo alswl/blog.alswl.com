@@ -10,7 +10,6 @@
 
 This is my blog.
 
-
 ## Command
 
 ```
@@ -25,19 +24,17 @@ hugo new posts/new.md
 npx prettier content/posts/*.md --write
 ```
 
-
 ## Tips
 
+**Mermaid diagrams**: fenced ` ```mermaid ` code blocks render as live diagrams (see `layouts/_default/_markup/render-codeblock-mermaid.html` and `layouts/partials/extend_footer.html`), matching the current light/dark theme.
 
-Asset prefix: 
+Asset prefix:
 
 - <del>https://4ocf5n.dijingchao.com/upload_dropbox/</del>
 - <del>https://d05fae.dijingchao.com</del>
 - https://e25ba8-log4d-c.dijingchao.com
 
-
 **Wechat mp link process**:
-
 
 - <del>sed</del>
 
@@ -45,22 +42,20 @@ Asset prefix:
   MD=content/some-md.md
   BODY=$(cat $MD  | sed -E 's/[^!]\[(.+)\]\((.+)\)/(\1)<sup>(via)<\/sup>/g' | sed -E 's/^\[(.+)\]\((.+)\)/(\1)<sup>(via)<\/sup>/g')
   FOOTER=$(cat $MD | grep '\[.*\]\(.*\)' -oE | grep -v png | grep -v jpg | sed 's/\[//g;s/\]//g;s/(/: /g;s/)//g' | awk '{print "*   "$0}')
-  
+
   echo $BODY $FOOTER | pbcopy
   ```
 
 - [微信 Markdown 编辑器 | Doocs 开源社区](https://doocs.gitee.io/md/):
 
-
 **Article footer**:
 
 ```markdown
---------------------------------------------------------------------------
+---
 
 原文链接: yours
 欢迎关注我的微信公众号：窥豹。
 3a1ff193cee606bd1e2ea554a16353ee
-
 ```
 
 **Markdown to GFM**:
