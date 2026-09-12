@@ -6,7 +6,7 @@ categories: ["技术"]
 tags: ["前端", "产品设计", "AI"]
 ---
 
-![高密度信息被梳理为清晰页面结构的示意](../../static/images/202609/fe-page-guide-hero.png)
+![高密度信息被梳理为清晰页面结构的示意](/images/202609/fe-page-guide-hero.png)
 
 最近我开始自己做一个基础设施项目的前端。AI 很快就能把页面搭出来，增删改查、筛选、状态标签一项不少，第一眼甚至挺像那么回事。
 
@@ -69,11 +69,11 @@ API 只负责把数据和操作交出来，页面还得把它们之间的关系�
 
 如果拿一批待开发任务来对照这些布局，三种视图分别会把注意力带到不同的地方：
 
-![GitHub Projects 的表格布局](../../static/images/202609/fe-page-guide-github-table.png)
+![GitHub Projects 的表格布局](/images/202609/fe-page-guide-github-table.png)
 
-![GitHub Projects 的看板布局](../../static/images/202609/fe-page-guide-github-board.png)
+![GitHub Projects 的看板布局](/images/202609/fe-page-guide-github-board.png)
 
-![GitHub Projects 的路线图布局](../../static/images/202609/fe-page-guide-github-roadmap.png)
+![GitHub Projects 的路线图布局](/images/202609/fe-page-guide-github-roadmap.png)
 
 | 眼前要回答的问题                   | 需要放在一起的信息       | 可选择的表达骨架       |
 | ---------------------------------- | ------------------------ | ---------------------- |
@@ -91,7 +91,7 @@ API 只负责把数据和操作交出来，页面还得把它们之间的关系�
 
 [Notion 的数据库视图](https://www.notion.com/help/views-filters-and-sorts)也是类似的例子。准备发布一批内容时，挑封面可以切到图库，检查发布日期可以切到日历。日历能让我看到日期分布，但它不会自动告诉我资源有没有冲突；要回答这个问题，还得有时间范围和资源占用这些信息。
 
-![Notion 数据库视图](../../static/images/202609/fe-page-guide-notion-views.png)
+![Notion 数据库视图](/images/202609/fe-page-guide-notion-views.png)
 
 我平时也会看一些产品怎么处理类似问题。GitHub 让我印象最深的是，它总是围绕一个核心对象展开，不急着把所有信息都塞进来。Twitter 更像是把同一个对象放到不同场景里处理。淘宝面对的数据量很大，但商品和交易动作一直很突出。豆瓣的数据类型很多，页面却各有自己的组织方式。它们的样式当然不能直接搬过来，但看这些页面时，我会留意用户眼前到底要做什么。
 
@@ -179,7 +179,7 @@ demo 的代码在 [`alswl/guides`](https://github.com/alswl/guides) 仓库的 [`
 
 ### 卡片网格：以识别对象为主
 
-![卡片网格](../../static/images/202609/fe-page-guide-antd-gallery.png)
+![卡片网格](/images/202609/fe-page-guide-antd-gallery.png)
 
 挑素材或模板时，用户通常先看缩略图，确认它是不是自己要找的东西。这个时候图片应该是主要入口。要是还要比较价格、规格等字段，表格可能更省事。
 
@@ -187,7 +187,7 @@ demo 的代码在 [`alswl/guides`](https://github.com/alswl/guides) 仓库的 [`
 
 ### 看板：让阶段一眼可见
 
-![看板](../../static/images/202609/fe-page-guide-antd-board.png)
+![看板](/images/202609/fe-page-guide-antd-board.png)
 
 看板最重要的是列的含义，以及卡片在列之间怎么移动。用户先看阶段分布，再决定下一步怎么推进。若只是按负责人筛选任务，列表已经够用，没必要硬做成看板。
 
@@ -195,7 +195,7 @@ demo 的代码在 [`alswl/guides`](https://github.com/alswl/guides) 仓库的 [`
 
 ### 日历与排期：把时间占用摊开
 
-![日历与排期](../../static/images/202609/fe-page-guide-antd-calendar.png)
+![日历与排期](/images/202609/fe-page-guide-antd-calendar.png)
 
 日历适合处理真正和时间占用有关的事情，比如排班、会议室预订。要是只是想知道审批先提交还是先通过，时间线就更直接。
 
@@ -203,7 +203,7 @@ demo 的代码在 [`alswl/guides`](https://github.com/alswl/guides) 仓库的 [`
 
 ### 仪表盘：按问题组织指标
 
-![仪表盘](../../static/images/202609/fe-page-guide-antd-dashboard.png)
+![仪表盘](/images/202609/fe-page-guide-antd-dashboard.png)
 
 仪表盘最容易做成一堆大小相同的卡片。真正该先看的，是指标之间的关系，以及用户从概览进入细节的顺序。
 
@@ -211,7 +211,7 @@ demo 的代码在 [`alswl/guides`](https://github.com/alswl/guides) 仓库的 [`
 
 ### 层级树：保留对象的归属关系
 
-![层级树](../../static/images/202609/fe-page-guide-antd-tree.png)
+![层级树](/images/202609/fe-page-guide-antd-tree.png)
 
 树适合那些“我得知道它属于哪里”的信息。组织架构、分类目录需要保留父子关系；如果用户经常跨层级查找，再配一个列表或搜索框。
 
@@ -219,7 +219,7 @@ demo 的代码在 [`alswl/guides`](https://github.com/alswl/guides) 仓库的 [`
 
 ### 状态墙：先发现异常，再进入细节
 
-![状态墙](../../static/images/202609/fe-page-guide-antd-status-wall.png)
+![状态墙](/images/202609/fe-page-guide-antd-status-wall.png)
 
 状态墙先解决一个很现实的问题：异常到底在哪里。监控页面可以密，但不能让颜色、装饰和状态标识互相打架。
 
@@ -229,18 +229,18 @@ demo 的代码在 [`alswl/guides`](https://github.com/alswl/guides) 仓库的 [`
 
 下面把其余页面也放在一起，想看细节时可以点击图片打开原图。
 
-| 表达骨架                                                                                                                                             | 表达骨架                                                                                                                                             |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [![分区详情](../../static/images/202609/fe-page-guide-antd-detail.png)](../../static/images/202609/fe-page-guide-antd-detail.png) 分区详情           | [![二维对照表](../../static/images/202609/fe-page-guide-antd-table.png)](../../static/images/202609/fe-page-guide-antd-table.png) 二维对照表         |
-| [![目录与发现](../../static/images/202609/fe-page-guide-antd-discovery.png)](../../static/images/202609/fe-page-guide-antd-discovery.png) 目录与发现 | [![卡片网格](../../static/images/202609/fe-page-guide-antd-gallery.png)](../../static/images/202609/fe-page-guide-antd-gallery.png) 卡片网格         |
-| [![层级树](../../static/images/202609/fe-page-guide-antd-tree.png)](../../static/images/202609/fe-page-guide-antd-tree.png) 层级树                   | [![关系列表](../../static/images/202609/fe-page-guide-antd-relations.png)](../../static/images/202609/fe-page-guide-antd-relations.png) 关系列表     |
-| [![分步向导](../../static/images/202609/fe-page-guide-antd-wizard.png)](../../static/images/202609/fe-page-guide-antd-wizard.png) 分步向导           | [![追踪下钻](../../static/images/202609/fe-page-guide-antd-drilldown.png)](../../static/images/202609/fe-page-guide-antd-drilldown.png) 追踪下钻     |
-| [![看板](../../static/images/202609/fe-page-guide-antd-board.png)](../../static/images/202609/fe-page-guide-antd-board.png) 看板                     | [![状态墙](../../static/images/202609/fe-page-guide-antd-status-wall.png)](../../static/images/202609/fe-page-guide-antd-status-wall.png) 状态墙     |
-| [![事件时间线](../../static/images/202609/fe-page-guide-antd-timeline.png)](../../static/images/202609/fe-page-guide-antd-timeline.png) 事件时间线   | [![讨论线程](../../static/images/202609/fe-page-guide-antd-discussion.png)](../../static/images/202609/fe-page-guide-antd-discussion.png) 讨论线程   |
-| [![连续文档](../../static/images/202609/fe-page-guide-antd-doc.png)](../../static/images/202609/fe-page-guide-antd-doc.png) 连续文档                 | [![并排比较](../../static/images/202609/fe-page-guide-antd-compare.png)](../../static/images/202609/fe-page-guide-antd-compare.png) 并排比较         |
-| [![地图与画布](../../static/images/202609/fe-page-guide-antd-spatial.png)](../../static/images/202609/fe-page-guide-antd-spatial.png) 地图与画布     | [![日历排期](../../static/images/202609/fe-page-guide-antd-calendar.png)](../../static/images/202609/fe-page-guide-antd-calendar.png) 日历排期       |
-| [![仪表盘](../../static/images/202609/fe-page-guide-antd-dashboard.png)](../../static/images/202609/fe-page-guide-antd-dashboard.png) 仪表盘         | [![主从工作台](../../static/images/202609/fe-page-guide-antd-workbench.png)](../../static/images/202609/fe-page-guide-antd-workbench.png) 主从工作台 |
-| [![配置表单](../../static/images/202609/fe-page-guide-antd-config.png)](../../static/images/202609/fe-page-guide-antd-config.png) 配置表单           |                                                                                                                                                      |
+| 表达骨架                                                                                                                     | 表达骨架                                                                                                                     |
+| ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| [![分区详情](/images/202609/fe-page-guide-antd-detail.png)](/images/202609/fe-page-guide-antd-detail.png) 分区详情           | [![二维对照表](/images/202609/fe-page-guide-antd-table.png)](/images/202609/fe-page-guide-antd-table.png) 二维对照表         |
+| [![目录与发现](/images/202609/fe-page-guide-antd-discovery.png)](/images/202609/fe-page-guide-antd-discovery.png) 目录与发现 | [![卡片网格](/images/202609/fe-page-guide-antd-gallery.png)](/images/202609/fe-page-guide-antd-gallery.png) 卡片网格         |
+| [![层级树](/images/202609/fe-page-guide-antd-tree.png)](/images/202609/fe-page-guide-antd-tree.png) 层级树                   | [![关系列表](/images/202609/fe-page-guide-antd-relations.png)](/images/202609/fe-page-guide-antd-relations.png) 关系列表     |
+| [![分步向导](/images/202609/fe-page-guide-antd-wizard.png)](/images/202609/fe-page-guide-antd-wizard.png) 分步向导           | [![追踪下钻](/images/202609/fe-page-guide-antd-drilldown.png)](/images/202609/fe-page-guide-antd-drilldown.png) 追踪下钻     |
+| [![看板](/images/202609/fe-page-guide-antd-board.png)](/images/202609/fe-page-guide-antd-board.png) 看板                     | [![状态墙](/images/202609/fe-page-guide-antd-status-wall.png)](/images/202609/fe-page-guide-antd-status-wall.png) 状态墙     |
+| [![事件时间线](/images/202609/fe-page-guide-antd-timeline.png)](/images/202609/fe-page-guide-antd-timeline.png) 事件时间线   | [![讨论线程](/images/202609/fe-page-guide-antd-discussion.png)](/images/202609/fe-page-guide-antd-discussion.png) 讨论线程   |
+| [![连续文档](/images/202609/fe-page-guide-antd-doc.png)](/images/202609/fe-page-guide-antd-doc.png) 连续文档                 | [![并排比较](/images/202609/fe-page-guide-antd-compare.png)](/images/202609/fe-page-guide-antd-compare.png) 并排比较         |
+| [![地图与画布](/images/202609/fe-page-guide-antd-spatial.png)](/images/202609/fe-page-guide-antd-spatial.png) 地图与画布     | [![日历排期](/images/202609/fe-page-guide-antd-calendar.png)](/images/202609/fe-page-guide-antd-calendar.png) 日历排期       |
+| [![仪表盘](/images/202609/fe-page-guide-antd-dashboard.png)](/images/202609/fe-page-guide-antd-dashboard.png) 仪表盘         | [![主从工作台](/images/202609/fe-page-guide-antd-workbench.png)](/images/202609/fe-page-guide-antd-workbench.png) 主从工作台 |
+| [![配置表单](/images/202609/fe-page-guide-antd-config.png)](/images/202609/fe-page-guide-antd-config.png) 配置表单           |                                                                                                                              |
 
 ## 直接让 Agent 来使用这套指南
 
