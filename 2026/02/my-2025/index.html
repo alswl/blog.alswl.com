@@ -773,6 +773,11 @@ alt="窥豹" />
       <li><a href="https://blog.alswl.com/tags/%E9%9A%8F%E7%AC%94/">随笔</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="https://blog.alswl.com/2026/09/high-density-page-organization/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>高密度页面怎么组织：一份信息呈现指南</span>
+  </a>
   <a class="next" href="https://blog.alswl.com/2025/08/project-management/">
     <span class="title">Next »</span>
     <br>
@@ -816,6 +821,35 @@ alt="窥豹" />
         <path d="M12 6H0l6-6z" />
     </svg>
 </a>
+<script type="module">
+  if (document.querySelector("pre.mermaid")) {
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+
+    function isDarkTheme() {
+      return document.body.classList.contains("dark");
+    }
+
+    function renderMermaid() {
+      document.querySelectorAll("pre.mermaid").forEach((el) => {
+        if (!el.dataset.mermaidSource) {
+          el.dataset.mermaidSource = el.textContent;
+        }
+        el.removeAttribute("data-processed");
+        el.innerHTML = el.dataset.mermaidSource;
+      });
+      mermaid.initialize({ startOnLoad: false, theme: isDarkTheme() ? "dark" : "default" });
+      mermaid.run({ querySelector: "pre.mermaid" });
+    }
+
+    renderMermaid();
+
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => setTimeout(renderMermaid, 0));
+    }
+  }
+</script>
+
 
 <script>
     let menu = document.getElementById('menu')

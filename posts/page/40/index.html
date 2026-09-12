@@ -179,6 +179,25 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Ubuntu8.04的教育网源
+    </h2>
+  </header>
+  <div class="entry-content">
+    
+    
+    
+    <p>Google的话有很多源，北大的宣称5M，结果我都连不上，交大的宣称2M，我发现只有20kb/s，连更新语言包都超级慢。
+最后经过我的测试，是成都电子科技大学的最快，2M左右，推荐使用。
+特别注意，这是8.04的源，虽然8.10大部分能用，但会出现某些软件包找不到，请大家使用前做好备份。
+速度的话，还是得自己测试，我只是推荐，下面的内容都是我复制过来自带的，不是我增加的。（PS:晚上时候我用官方的Mirror也3M/s）
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2009-05-27 00:00:00 +0800 +0800'>2009-05-27</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Ubuntu8.04的教育网源" href="https://blog.alswl.com/2009/05/the-education-network-ubuntu8-04-source/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Ubuntu8.10下MySQL的安装
     </h2>
   </header>
@@ -353,27 +372,6 @@ Google了一下，找到一篇06年的帖子。当客户端把Javascript禁用�
   <footer class="entry-footer"><span title='2009-05-21 00:00:00 +0800 +0800'>2009-05-21</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Struts2的s:if标签的Bug和曲线使用" href="https://blog.alswl.com/2009/05/struts2-tags-the-curve-of-the-bug-and-the-use-of/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">美化postviews
-    </h2>
-  </header>
-  <div class="entry-content">
-    
-    
-    
-    <p>很多朋友用postviews这个插件，的确很适合国人的风格，但是如果单纯的添加到页面中，会显得很突兀，难看，我做了几个美化工作。
-首先，在用到postviews函数时候都定义span id，比如在single.php中修改，在下面代码
-&lt;span&gt;&lt;?php the_author_posts_link(); ?&gt;&lt;/span&gt;&lt;?php endif; ?&gt; 后面跟上一段显示浏览次数的代码
-&lt;span&gt;&lt;?php the_author_posts_link(); ?&gt;&lt;/span&gt;&lt;?php endif; ?&gt; 这样就可以显示浏览次数。
-然后修改style.css文件，我的是inove主题，在382行附近修改
-.post .date, .post .author, .post .postviews, .post .editpost, .post .comments, .post .addcomment, .post .addlink, .post .editlinks { background:url(img/icons.gif) no-repeat; padding-left:22px; height:16px; line-height:16px; display:block; font-size:12px; } 增加一个&#34;.post .postviews,&#34;，然后再在后面的.post .author，如下
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2009-05-21 00:00:00 +0800 +0800'>2009-05-21</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 美化postviews" href="https://blog.alswl.com/2009/05/landscaping-postviews/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://blog.alswl.com/posts/page/39/">
@@ -399,6 +397,35 @@ Google了一下，找到一篇06年的帖子。当客户端把Javascript禁用�
         <path d="M12 6H0l6-6z" />
     </svg>
 </a>
+<script type="module">
+  if (document.querySelector("pre.mermaid")) {
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+
+    function isDarkTheme() {
+      return document.body.classList.contains("dark");
+    }
+
+    function renderMermaid() {
+      document.querySelectorAll("pre.mermaid").forEach((el) => {
+        if (!el.dataset.mermaidSource) {
+          el.dataset.mermaidSource = el.textContent;
+        }
+        el.removeAttribute("data-processed");
+        el.innerHTML = el.dataset.mermaidSource;
+      });
+      mermaid.initialize({ startOnLoad: false, theme: isDarkTheme() ? "dark" : "default" });
+      mermaid.run({ querySelector: "pre.mermaid" });
+    }
+
+    renderMermaid();
+
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => setTimeout(renderMermaid, 0));
+    }
+  }
+</script>
+
 
 <script>
     let menu = document.getElementById('menu')

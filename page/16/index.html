@@ -174,6 +174,26 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Ubuntu桌面自动换背景
+    </h2>
+  </header>
+  <div class="entry-content">
+    
+    
+    <div class="thumbnail"><img src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201104/appearance_preferences.png" alt="Thumbnail" /></div>
+    
+    
+    <p>GNOME桌面系统可以使用一系列的图片作为背景，每过一段时间能够自动更换。这个功能核Win7下面自动换背景效果一致。不过很可惜，系统自带的可自动更换图片集只 有几张，也找不到什么按钮可以直接设定。
+下图就是系统自带的两个图片集（第二行第一组和第二组）。
+我们可以通过撰写xml自己制作图片集，xml格式模板在/usr/share/gnome-background-properties/cosmos.xml ，实际的xml存放在类似于/usr/share/backgrounds/cosmos/background-1.xml的配置文档里面。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2011-04-03 00:00:00 +0800 +0800'>2011-04-03</span>&nbsp;·&nbsp;alswl</footer>
+  <a class="entry-link" aria-label="post link to Ubuntu桌面自动换背景" href="https://blog.alswl.com/2011/04/ubuntu-crebs/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">历史记录-歌词复制器
     </h2>
   </header>
@@ -345,24 +365,6 @@ Vim实现 %s/GetComment(((sw&#43;!w&#43;.w&#43;s,){2}s*“w&#43;“s*,sw&#43;!w&
   <footer class="entry-footer"><span title='2011-01-12 00:00:00 +0800 +0800'>2011-01-12</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 男人袜1元体验活动" href="https://blog.alswl.com/2011/01/nanrenwa-try/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">最简陋的GAE代理
-    </h2>
-  </header>
-  <div class="entry-content">
-    
-    
-    
-    <p>年前换了一次服务器，之后发现Lifestream的Errors飙升到1000&#43;错误，检查一下，发现是获 取不了豆瓣的rss链接。正好这台主机支持SSH，连入之后CURL了一下豆瓣服务器，发现Time out。
-紧接着发现中国内的所有域名都无法使用CURL获取，联系小张之后，得知该主机曾经被入侵过，于是屏蔽了中国大陆的ip段（囧~入侵和中国ip有毛关系）
-遂想用GAE做个代理服务器，反正获取RSS也只要Get一下，代码没几句。把这项任务放入Toodledo之后，就一直没去弄，今天发现GAE Laucher升级了，就部署到自己GAE上了。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2011-01-11 00:00:00 +0800 +0800'>2011-01-11</span>&nbsp;·&nbsp;alswl</footer>
-  <a class="entry-link" aria-label="post link to 最简陋的GAE代理" href="https://blog.alswl.com/2011/01/a-simple-gae-proxy/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://blog.alswl.com/page/15/">
@@ -388,6 +390,35 @@ Vim实现 %s/GetComment(((sw&#43;!w&#43;.w&#43;s,){2}s*“w&#43;“s*,sw&#43;!w&
         <path d="M12 6H0l6-6z" />
     </svg>
 </a>
+<script type="module">
+  if (document.querySelector("pre.mermaid")) {
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+
+    function isDarkTheme() {
+      return document.body.classList.contains("dark");
+    }
+
+    function renderMermaid() {
+      document.querySelectorAll("pre.mermaid").forEach((el) => {
+        if (!el.dataset.mermaidSource) {
+          el.dataset.mermaidSource = el.textContent;
+        }
+        el.removeAttribute("data-processed");
+        el.innerHTML = el.dataset.mermaidSource;
+      });
+      mermaid.initialize({ startOnLoad: false, theme: isDarkTheme() ? "dark" : "default" });
+      mermaid.run({ querySelector: "pre.mermaid" });
+    }
+
+    renderMermaid();
+
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) {
+      themeToggle.addEventListener("click", () => setTimeout(renderMermaid, 0));
+    }
+  }
+</script>
+
 
 <script>
     let menu = document.getElementById('menu')
