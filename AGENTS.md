@@ -24,25 +24,57 @@ alswl 的个人博客（https://blog.alswl.com ，站名 Log4D），Hugo 静态�
 ## 常用命令
 
 ```bash
-hugo serve -D                  # 本地预览（含 draft）
+make serve                     # 本地预览（含 draft）
 make new name=YYYY-MM-DD-x.md  # 新建文章（走 archetypes/posts.md）
 make build-production          # 生产构建
+make clean                     # 清掉 public/ 和 .hugo_build.lock
+
+make check                     # 门禁全套：无用图片（全量）+ 本次改动检查
+make check-changed             # 只检查本次改动（pre-push 和 CI 跑的就是它）
+make format                    # 格式化本次改动的 Markdown
+make audit                     # 全量扫描历史存量，只报告不拦截（预期是红的）
+
+make resize-images-in-git-workdir  # 缩放工作区新增/修改的图片到 1000x1000 以内
 make sync-images               # 同步 static/images 到对象存储
-make resize-images-in-git-workdir  # 缩放工作区新增图片到 1000x1000 以内
-make find-remote-images        # 检出仍指向远端的图片引用
-python3 hack/find-unused-images.py # CI 会跑，未被引用的图片会导致构建失败
-npx prettier content/posts/*.md --write
 ```
+
+**检查一律只作用于本次改动。** 仓库有大量历史存量（384 篇未格式化文章、
+77 张超规格图片、15 处远端图片引用），全量门禁会立刻失败。
+`hack/changed-files.sh` 负责算出「本次改动」，lefthook 和 CI 共用它。
+存量用 `make audit` 查看，但**不要批量修**。
+例外是 `hack/find-unused-images.py`，它靠 `EXCLUDE_DIRS` 排除了历史目录，
+现在是全量绿的，保持全量跑。
 
 ## 提交与 CI
 
-- lefthook：pre-commit 对暂存的 `.md` 跑 `hack/format.sh`（prettier）；pre-push 做全量检查。
-  改完 Markdown 直接提交即可，格式化会自动发生。
-- 非 ASCII 文件名会被 pre-commit 拒绝。
-- GitHub Actions：`build.yml` 每次 push 跑「未使用图片检查 + 构建」；
-  `gh-pages.yml` 在 master 上构建并发布到 GitHub Pages。
+- lefthook：pre-commit 对暂存的 `.md` 跑 `hack/format.sh`（prettier）并检查非 ASCII 文件名；
+  pre-push 跑 `make check-changed`。改完 Markdown 直接提交即可，格式化会自动发生。
+- GitHub Actions：`ci.yml` 每次 push 跑「无用图片检查 + 本次改动检查 + 构建」，
+  并在 master 上发布到 GitHub Pages。（原先 `build.yml` 和 `gh-pages.yml`
+  都监听 push 且都执行构建，master 上会重复构建两次，已合并。）
 - `make cdn` 在构建后把 `/images/` 替换为 CDN 前缀 `https://e25ba8-log4d-c.dijingchao.com`，
   只在 CI 里跑，不要在本地对 `public/` 手工执行。
+
+### 工具版本
+
+`.hugo-version` 和 `.prettier-version` 是版本的唯一来源，CI 与本地脚本都读它们。
+
+- **prettier 钉在 `3.9.6`**，规则见 `.prettierrc`（内容就是当时生效的默认值）。
+  不钉的话上游发版会重排全部 458 篇文章。
+- **Hugo 钉在 `0.148.2`**，`make` 会在本地版本不一致时警告（只警告，不阻断）。
+
+  ⚠️ **升级 Hugo 前先读这里。** 实测 0.148.2 → 0.166.0 会改变线上产物，
+  根因是 `config.yaml` 里的 `languageCode: zh` 在 Hugo 0.158.0 起被弃用，
+  且现在会真正驱动主题 i18n：
+
+  1. 归档页月份 English → 中文，**锚点 URL 一并改变**
+     （`#2009-December` → `#2009-%e5%8d%81%e4%ba%8c%e6%9c%88`），已有深链会失效
+  2. 面包屑 `Home` → `主页`，分页 `Next` → `下一页`
+  3. Google Analytics `respectDoNotTrack` 默认值 `false` → `true`
+
+  想升级又保持产物不变，需要把 `languageCode` 改成 `en` 并显式设置
+  `privacy.googleAnalytics.respectDoNotTrack: false`——但那样 `og:locale` 会从
+  `zh` 变成 `en`（无法两全）。当前选择是先不升级。
 
 ## 文章约定
 
