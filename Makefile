@@ -9,12 +9,65 @@ CP := (
 QSHELL := qshell
 BUCKET = blog-alswl-com-202210
 CDN_HOST = https://e25ba8-log4d-c.dijingchao.com
-DOMAIN = blog.alswl.com
 SITEMAP_URL = https://blog.alswl.com/sitemap.xml
 
 .PHONY: build-production
-build-production:
+build-production: check-hugo-version
 	HUGO_ENV=production $(HUGO)
+
+.PHONY: serve
+serve: check-hugo-version
+	$(HUGO) serve -D
+
+.PHONY: clean
+clean:
+	rm -rf $(PUBLIC_FOLDER) .hugo_build.lock
+
+# 只警告不阻断：本地 hugo 由 homebrew 管理，硬拦会挡住写作
+.PHONY: check-hugo-version
+check-hugo-version:
+	@want=$$(cat .hugo-version); \
+	got=$$($(HUGO) version | sed -E 's/.*hugo v([0-9.]+).*/\1/'); \
+	if [ "$$want" != "$$got" ]; then \
+		echo "警告: 本地 hugo $$got 与 .hugo-version ($$want) 不一致，本地预览可能与线上有差异"; \
+	fi
+
+# 门禁，必须保持绿色（CI 与 pre-push 跑它）
+.PHONY: check
+check: check-changed
+	python3 hack/find-unused-images.py
+
+# 增量：历史存量会让全量门禁必然失败，存量用 make audit 单独看
+.PHONY: check-changed
+check-changed:
+	@files=$$(bash ./hack/changed-files.sh); \
+	md=$$(echo "$$files" | grep '\.md$$' || true); \
+	img=$$(echo "$$files" | grep -E '^static/images/.*\.(png|jpg|jpeg|gif|webp)$$' || true); \
+	rc=0; \
+	if [ -n "$$md" ]; then \
+		bash ./hack/format.sh --check $$md || rc=1; \
+		bash ./hack/find-remote-images.sh $$md || rc=1; \
+	else \
+		echo "本次没有改动 Markdown"; \
+	fi; \
+	if [ -n "$$img" ]; then \
+		bash ./hack/check-image-size.sh $$img || rc=1; \
+	else \
+		echo "本次没有改动图片"; \
+	fi; \
+	exit $$rc
+
+.PHONY: format
+format:
+	@md=$$(bash ./hack/changed-files.sh | grep '\.md$$' || true); \
+	if [ -n "$$md" ]; then bash ./hack/format.sh $$md; else echo "本次没有改动 Markdown"; fi
+
+# 全量存量报告，预期是红的，所以不作为门禁
+.PHONY: audit
+audit:
+	-bash ./hack/find-remote-images.sh
+	-bash ./hack/check-image-size.sh
+	-python3 hack/find-unused-images.py
 
 
 # no need any more, use cdn upstrem mirror
@@ -48,7 +101,6 @@ new:
 
 .PHONY: find-remote-images
 find-remote-images:
-	@echo images is remote:
 	bash ./hack/find-remote-images.sh
 
 

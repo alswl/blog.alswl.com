@@ -1,0 +1,42 @@
+name: CI
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+
+      - name: Read Hugo version
+        id: hugo-version
+        run: echo "version=$(cat .hugo-version)" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          # 站点无 .scss、无 ToCSS，assets/ 全是纯 CSS，不需要 extended
+          hugo-version: ${{ steps.hugo-version.outputs.version }}
+
+      - name: Check unused images
+        run: python3 hack/find-unused-images.py
+
+      - name: Check changed files
+        env:
+          CHANGED_FILES_BASE: ${{ github.event.before }}
+        run: make check-changed
+
+      - name: Build
+        run: make build-production cdn
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/master'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public

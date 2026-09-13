@@ -13,16 +13,25 @@ This is my blog.
 ## Command
 
 ```
-# upload images
-make sync-images
+make serve                     # 本地预览（含 draft）
+make new name=YYYY-MM-DD-x.md  # 新建文章
+make build-production          # 生产构建
+make clean
 
-hugo serve -D
-hugo
-hugo new posts/new.md
+make check                     # 门禁全套（CI 跑的就是它）
+make check-changed             # 只检查本次改动
+make format                    # 格式化本次改动的 Markdown
+make audit                     # 全量扫描历史存量，只报告不拦截
 
-# prettier
-npx prettier content/posts/*.md --write
+make resize-images-in-git-workdir  # 缩图到 1000x1000 以内
+make sync-images                   # 上传图片到对象存储
 ```
+
+检查一律只作用于本次改动——仓库有大量历史存量（384 篇未格式化文章、
+77 张超规格图片、15 处远端图片引用），不做批量修复。
+
+工具版本钉在 `.hugo-version`（0.148.2）和 `.prettier-version`（3.9.6）。
+**升级 Hugo 会改变线上产物，动手前先看 AGENTS.md 的「工具版本」段。**
 
 ## Tips
 
