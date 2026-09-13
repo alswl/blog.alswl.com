@@ -2,10 +2,8 @@
 #
 # 把工作区里新增/修改的图片缩到 1000x1000 以内。
 #
-# 旧版用 `git status | awk '{print $3}'` 取路径，只有 "new file:   path" 这一种
-# 行形态的 $3 才是路径；未 add 的新图（最常见的写作流）和被替换的旧图
-# 的 $3 都是空，会被静默跳过。现改用 --porcelain -z 解析，
-# 覆盖 未跟踪 / 已修改 / 已暂存 / 重命名 四种状态。
+# 必须用 --porcelain 而非 git status 的人类输出：后者各状态的字段位置不一致，
+# 按固定列取路径会漏掉未跟踪和已修改的图片。
 
 set -uo pipefail
 
@@ -28,13 +26,10 @@ while IFS= read -r -d '' entry; do
     R* | C*) IFS= read -r -d '' _orig ;;
     esac
 
-    # 删除的文件没什么好缩的
     case "$status" in
     *D | D*) continue ;;
     esac
 
-    # 只处理 static/images/ 下的图片
-    # （旧版的 `grep images` 会误伤任何路径里带 "images" 的文件）
     case "$path" in
     static/images/*) ;;
     *) continue ;;

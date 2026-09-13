@@ -7,8 +7,7 @@
 #   hack/format.sh a.md b.md        # 格式化指定文件
 #   hack/format.sh --check a.md     # 只检查不写入，不合格返回 1
 #
-# prettier 版本钉在 .prettier-version，格式化规则见 .prettierrc，
-# 两者共同保证换机器 / 上游发版时 458 篇文章不会被整体重排。
+# 版本钉在 .prettier-version、规则钉在 .prettierrc，否则上游发版会重排全部文章。
 
 set -uo pipefail
 
@@ -21,9 +20,6 @@ if [ "${1:-}" = "--check" ]; then
     shift
 fi
 
-# 检查暂存区里新增的非 ASCII 文件名。
-# 旧版把这段放在「无参数」分支里，而 lefthook 一直是带 {staged_files} 调用的，
-# 导致这个检查从来没有真正执行过。
 check_non_ascii_filenames() {
     [ "$(git config hooks.allownonascii)" = "true" ] && return 0
     git rev-parse --verify HEAD >/dev/null 2>&1 &&
@@ -42,7 +38,6 @@ check_non_ascii_filenames() {
     fi
 }
 
-# 从参数或暂存区收集待处理的 md
 from_staging=0
 md_files=()
 if [ $# -gt 0 ]; then
@@ -58,7 +53,7 @@ else
     done < <(git diff --cached --name-only --diff-filter=ACMR | grep '\.md$')
 fi
 
-# pre-commit 场景（无论有没有传文件）都要做文件名检查
+# 必须在参数分支之外执行：lefthook 总是带 {staged_files} 调用，放进分支里就永远跑不到
 if [ "$check_mode" -eq 0 ]; then
     check_non_ascii_filenames || exit 1
 fi
@@ -68,7 +63,6 @@ if [ ${#md_files[@]} -eq 0 ]; then
     exit 0
 fi
 
-# 单次批量调用：旧版是逐文件 npx，每个文件都要付一次 ~1.3s 的解析开销
 if [ "$check_mode" -eq 1 ]; then
     if ! npx --yes "$PRETTIER" --check "${md_files[@]}"; then
         echo >&2
@@ -80,7 +74,6 @@ fi
 
 npx --yes "$PRETTIER" --write "${md_files[@]}" || exit 1
 
-# 原本就在暂存区里的文件，格式化后重新 add
 if [ "$from_staging" -eq 1 ]; then
     git add -- "${md_files[@]}"
 else

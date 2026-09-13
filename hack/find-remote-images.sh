@@ -9,8 +9,7 @@
 #   hack/find-remote-images.sh              # 扫描整个 content/
 #   hack/find-remote-images.sh a.md b.md    # 只扫描指定文件
 #
-# 命中返回 1。注意历史文章里还有 15 处存量远端引用，
-# 所以日常只对本次改动的文件调用（见 hack/changed-files.sh）。
+# 命中返回 1。历史文章尚有存量远端引用，因此日常只对本次改动的文件调用。
 
 set -uo pipefail
 

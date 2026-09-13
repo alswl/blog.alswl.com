@@ -4,10 +4,9 @@
 #
 # 用法:
 #   hack/check-image-size.sh a.png b.jpg    # 检查指定文件
-#   hack/check-image-size.sh                # 检查 static/images 全部（存量有 76 张超标）
+#   hack/check-image-size.sh                # 检查 static/images 全部
 #
-# 超标返回 1。日常只对本次改动的图片调用（见 hack/changed-files.sh），
-# 修复方式是 make resize-images-in-git-workdir。
+# 超标返回 1。历史存量有超标图片，因此日常只对本次改动的图片调用。
 
 set -uo pipefail
 

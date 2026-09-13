@@ -9,7 +9,6 @@ CP := (
 QSHELL := qshell
 BUCKET = blog-alswl-com-202210
 CDN_HOST = https://e25ba8-log4d-c.dijingchao.com
-DOMAIN = blog.alswl.com
 SITEMAP_URL = https://blog.alswl.com/sitemap.xml
 
 .PHONY: build-production
@@ -24,7 +23,7 @@ serve: check-hugo-version
 clean:
 	rm -rf $(PUBLIC_FOLDER) .hugo_build.lock
 
-# 本地 hugo 与 .hugo-version 不一致时只警告，不阻断写作
+# 只警告不阻断：本地 hugo 由 homebrew 管理，硬拦会挡住写作
 .PHONY: check-hugo-version
 check-hugo-version:
 	@want=$$(cat .hugo-version); \
@@ -33,15 +32,12 @@ check-hugo-version:
 		echo "警告: 本地 hugo $$got 与 .hugo-version ($$want) 不一致，本地预览可能与线上有差异"; \
 	fi
 
-# CI 与 pre-push 的门禁：全量的无用图片检查 + 针对本次改动的增量检查。
-# 必须保持绿色。
+# 门禁，必须保持绿色（CI 与 pre-push 跑它）
 .PHONY: check
 check: check-changed
 	python3 hack/find-unused-images.py
 
-# 只检查本次改动引入的文件。
-# 仓库有大量历史存量（384 篇未格式化文章、77 张超规格图片、15 处远端图片引用），
-# 全量门禁会立刻失败，所以门禁一律是增量的。存量用 make audit 查看。
+# 增量：历史存量会让全量门禁必然失败，存量用 make audit 单独看
 .PHONY: check-changed
 check-changed:
 	@files=$$(bash ./hack/changed-files.sh); \
@@ -61,13 +57,12 @@ check-changed:
 	fi; \
 	exit $$rc
 
-# 格式化本次改动的 Markdown
 .PHONY: format
 format:
 	@md=$$(bash ./hack/changed-files.sh | grep '\.md$$' || true); \
 	if [ -n "$$md" ]; then bash ./hack/format.sh $$md; else echo "本次没有改动 Markdown"; fi
 
-# 全量扫描历史存量，仅作报告，不是门禁（预期是红的）
+# 全量存量报告，预期是红的，所以不作为门禁
 .PHONY: audit
 audit:
 	-bash ./hack/find-remote-images.sh
