@@ -13,8 +13,66 @@ DOMAIN = blog.alswl.com
 SITEMAP_URL = https://blog.alswl.com/sitemap.xml
 
 .PHONY: build-production
-build-production:
+build-production: check-hugo-version
 	HUGO_ENV=production $(HUGO)
+
+.PHONY: serve
+serve: check-hugo-version
+	$(HUGO) serve -D
+
+.PHONY: clean
+clean:
+	rm -rf $(PUBLIC_FOLDER) .hugo_build.lock
+
+# 本地 hugo 与 .hugo-version 不一致时只警告，不阻断写作
+.PHONY: check-hugo-version
+check-hugo-version:
+	@want=$$(cat .hugo-version); \
+	got=$$($(HUGO) version | sed -E 's/.*hugo v([0-9.]+).*/\1/'); \
+	if [ "$$want" != "$$got" ]; then \
+		echo "警告: 本地 hugo $$got 与 .hugo-version ($$want) 不一致，本地预览可能与线上有差异"; \
+	fi
+
+# CI 与 pre-push 的门禁：全量的无用图片检查 + 针对本次改动的增量检查。
+# 必须保持绿色。
+.PHONY: check
+check: check-changed
+	python3 hack/find-unused-images.py
+
+# 只检查本次改动引入的文件。
+# 仓库有大量历史存量（384 篇未格式化文章、77 张超规格图片、15 处远端图片引用），
+# 全量门禁会立刻失败，所以门禁一律是增量的。存量用 make audit 查看。
+.PHONY: check-changed
+check-changed:
+	@files=$$(bash ./hack/changed-files.sh); \
+	md=$$(echo "$$files" | grep '\.md$$' || true); \
+	img=$$(echo "$$files" | grep -E '^static/images/.*\.(png|jpg|jpeg|gif|webp)$$' || true); \
+	rc=0; \
+	if [ -n "$$md" ]; then \
+		bash ./hack/format.sh --check $$md || rc=1; \
+		bash ./hack/find-remote-images.sh $$md || rc=1; \
+	else \
+		echo "本次没有改动 Markdown"; \
+	fi; \
+	if [ -n "$$img" ]; then \
+		bash ./hack/check-image-size.sh $$img || rc=1; \
+	else \
+		echo "本次没有改动图片"; \
+	fi; \
+	exit $$rc
+
+# 格式化本次改动的 Markdown
+.PHONY: format
+format:
+	@md=$$(bash ./hack/changed-files.sh | grep '\.md$$' || true); \
+	if [ -n "$$md" ]; then bash ./hack/format.sh $$md; else echo "本次没有改动 Markdown"; fi
+
+# 全量扫描历史存量，仅作报告，不是门禁（预期是红的）
+.PHONY: audit
+audit:
+	-bash ./hack/find-remote-images.sh
+	-bash ./hack/check-image-size.sh
+	-python3 hack/find-unused-images.py
 
 
 # no need any more, use cdn upstrem mirror
@@ -48,7 +106,6 @@ new:
 
 .PHONY: find-remote-images
 find-remote-images:
-	@echo images is remote:
 	bash ./hack/find-remote-images.sh
 
 

@@ -1,12 +1,15 @@
 # Lefthook configuration for blog.alswl.com
-# Simple configuration that delegates to hack/format.sh
 
+# 提交时自动格式化暂存的 Markdown（写作时无感），并检查非 ASCII 文件名
 pre-commit:
   commands:
     format:
       run: bash hack/format.sh {staged_files}
 
+# 推送前对「本次改动」做检查。
+# 旧版这里跑的是不带参数的 format.sh，而无参数时它走的是「格式化暂存区」分支，
+# pre-push 时暂存区为空 → 永远直接通过，是个空操作。
 pre-push:
   commands:
-    format-check:
-      run: bash hack/format.sh
+    check-changed:
+      run: make check-changed
