@@ -1,0 +1,47 @@
+# 合并自原来的 build.yml 与 gh-pages.yml。
+# 两者都监听 push 且都跑 `make build-production cdn`，master 上每次推送会构建两次，
+# 但只有 gh-pages.yml 会部署。这里合成一个 job，部署步骤用 if 限定在 master。
+name: CI
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+
+      - name: Read Hugo version
+        id: hugo-version
+        run: echo "version=$(cat .hugo-version)" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          # 站点无 .scss、无 ToCSS，assets/ 全是纯 CSS，不需要 extended
+          hugo-version: ${{ steps.hugo-version.outputs.version }}
+
+      - name: Check unused images
+        run: python3 hack/find-unused-images.py
+
+      # 只检查本次推送引入的改动：历史存量（384 篇未格式化文章、
+      # 77 张超规格图片、15 处远端图片引用）不参与门禁。
+      - name: Check changed files
+        env:
+          CHANGED_FILES_BASE: ${{ github.event.before }}
+        run: make check-changed
+
+      - name: Build
+        run: make build-production cdn
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/master'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
