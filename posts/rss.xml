@@ -6,8 +6,377 @@
     <description>Recent content in Posts on Log4D</description>
     <generator>Hugo -- 0.148.2</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 12 Sep 2026 00:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 06 Oct 2026 00:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/posts/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI Native 时代的工作方式：从信息到交付</title>
+      <link>https://blog.alswl.com/2026/10/ai-native-work/</link>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 +0800</pubDate>
+      <guid>https://blog.alswl.com/2026/10/ai-native-work/</guid>
+      <description>&lt;p&gt;在 &lt;a href=&#34;https://blog.alswl.com/2026/02/my-2025/&#34;&gt;2025 年终总结&lt;/a&gt; 里我写过一句：写代码（Code Typing）未来会成为低效的工程方式，AI Native 应该成为默认选项。&lt;/p&gt;
+&lt;p&gt;话说出去容易。真到自己每天这么干，问题就具体了：AI 写代码很快，那信息从哪来、方案谁来定、产出怎么验、人到底还管什么？这一年实际跑下来，我对它的理解变了几轮，关注点从「代码写得快」慢慢移到了信息、研发、落地和工具链这一整条链路上。&lt;/p&gt;
+&lt;!-- more --&gt;
+&lt;p&gt;这篇文章讲的是我目前的工作方式(截止 8 月底）：信息怎么处理、代码怎么写、工具链怎么搭，以及在这套方式跑了大半年之后，我形成的几个判断。&lt;/p&gt;</description>
+      <content:encoded><![CDATA[<p>在 <a href="/2026/02/my-2025/">2025 年终总结</a> 里我写过一句：写代码（Code Typing）未来会成为低效的工程方式，AI Native 应该成为默认选项。</p>
+<p>话说出去容易。真到自己每天这么干，问题就具体了：AI 写代码很快，那信息从哪来、方案谁来定、产出怎么验、人到底还管什么？这一年实际跑下来，我对它的理解变了几轮，关注点从「代码写得快」慢慢移到了信息、研发、落地和工具链这一整条链路上。</p>
+<!-- more -->
+<p>这篇文章讲的是我目前的工作方式(截止 8 月底）：信息怎么处理、代码怎么写、工具链怎么搭，以及在这套方式跑了大半年之后，我形成的几个判断。</p>
+<p>我的背景是 Infra、Kubernetes、PaaS 方向，最近主要语言是 Go。下面的内容都来自我自己的实践，不是方法论综述。本文不是某个产品或团队流程的操作手册，也不打算论证 AI 可以替代负责决策的人。</p>
+<h2 id="ai-native-x-工作">AI Native X 工作</h2>
+<p>认知演进：</p>
+<ul>
+<li>2 月：<strong>Code Typing is unnecessary</strong>，快速写代码的兴奋感，每天写到 2 点钟</li>
+<li>5 月：AI 放大执行；人负责判断，从 2-3 Agents 并行到 7-8 个 Agents 并行</li>
+<li>8 月：信息、研发、落地、工具链</li>
+</ul>
+<h3 id="我们的工作形式和内容到底是什么">我们的工作，形式和内容到底是什么？</h3>
+<blockquote>
+<p>问题分析 → 方案设计 → 产品制作 → 上线运营 → 反馈增强</p></blockquote>
+<p>核心载体：<strong>作品（Artifact）</strong>。</p>
+<p>为什么翻译最容易被替代？因为作品更静态、结构化更强、表意向量空间更小。软件工程的复杂性，决定了这条链路相对漫长。</p>
+<p>文档、代码、会议、报告，都只是工作中的不同形式。</p>
+<p>工作本身：</p>
+<ol>
+<li>信息整理、结构化、提炼、发展；形成方案，让别人理解和接受。</li>
+<li>方案变成产品；写代码、验证、上线、运行。</li>
+<li>隐藏线路；优化工具链路，进行效率提升。</li>
+</ol>
+<p><strong>小结</strong>：文档、代码、会议、报告这些形式会变，工作本身还是这三条线。后面讲信息、AI Coding 和工具链，基本就是顺着这三条线展开的。</p>
+<h2 id="ai-native-加入了什么">AI Native 加入了什么？</h2>
+<p>一直在讨论 AI Native。那它到底是什么？</p>
+<p>我的理解：把 AIGC 的推理能力放进工作的各个方面。</p>
+<ul>
+<li>决策</li>
+<li>内容产出</li>
+<li>作品产出</li>
+<li>以及支撑这套工作方式的环境和平台</li>
+</ul>
+<p>不是单点工具。是工作方式。</p>
+<p>
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202610/ai-native-overview.png" alt="AI Native 下面工作是一个循环"  />
+
+
+
+</p>
+<p>现实信息和任务目标进入 AI 工作区，分析、生成、检查之后，交给人做优先级、边界、取舍和责任的判断，再产出可上线、可验收的作品；作品产生反馈和新目标，回到起点。</p>
+<p><strong>小结</strong>：AI 进到了分析、生成、检查的每一环，循环转得更快；中间那道「人的判断」没有被拿掉，反而因为转得快，卡得更紧。这也是 5 月那条认知：<mark>AI 放大执行，人负责判断。</mark></p>
+<h2 id="当下我怎么处理信息">当下我怎么处理信息</h2>
+<h3 id="从信息到洞见">从信息到洞见</h3>
+<p>
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202610/ai-native-information-to-insight.png" alt="数据 → 信息 → 知识 → 洞见 → 智慧"  />
+
+
+
+</p>
+<p><small>图源：网络</small></p>
+<p>数据本身没有价值，连起来才是知识，连对了才是洞见。信息处理的目标不是把材料存下来，而是让它能被继续加工。</p>
+<h3 id="我的工作流">我的工作流</h3>
+<p>
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202610/ai-native-information-workflow.png" alt="个人知识仓库工作流"  />
+
+
+
+</p>
+<p>每天给自己提 10+ 个知识经营 PR。</p>
+<p>本地创作、会议、各类文档、IM 消息，统一进入 Agent；Agent 开 worktree 改文件、提交、推分支、发 PR。我只做一件事：看 diff，决定合不合。</p>
+<p>我本地有两个知识仓库，一新一旧，两种工作方式：</p>
+<table>
+  <thead>
+      <tr>
+          <th>仓库</th>
+          <th>作用</th>
+          <th>AI 参与度</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>minds</code></td>
+          <td>AI 协作、文章与项目材料</td>
+          <td>90%+</td>
+      </tr>
+      <tr>
+          <td><code>my-kms</code></td>
+          <td>个人传统知识库、每日记录</td>
+          <td>5%</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="minds-信息库"><code>minds</code> 信息库</h3>
+<p><code>minds</code> 管理 AI 协作产生的信息：材料很杂，也需要反复加工。最近的大部分文章，都是在这里完成。我用自己写的 mind-forge 管理这个仓库。</p>
+<p><a href="https://github.com/alswl/mind-forge">GitHub - alswl/mind-forge: Forge minds into articles.</a></p>
+<p>
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202610/ai-native-minds-layout.png" alt="仓库 → 项目 → 文档 / 原始素材 / 图片资产"  />
+
+
+
+</p>
+<p>一个仓库装若干项目，一个项目里分四个区：</p>
+<ul>
+<li><code>sources/</code> 输入区，只读，原始素材进来之后不改</li>
+<li><code>docs/</code> 文章区，长文按 <code>NN-title.md</code> 切成章节碎片，可以独立迭代</li>
+<li><code>outputs/</code> 构建产物，由 <code>mf build</code> 生成，不手工编辑</li>
+<li><code>prompts/</code> 和 <code>thinking/</code> 记录目标、约束与推理过程</li>
+</ul>
+<p>这套结构的意义在于：材料、在写的东西、发布物是分开的。Agent 可以改 <code>docs/</code>，但不会污染 <code>sources/</code>；我 review 的时候，看的是 <code>docs/</code> 的 diff。</p>
+<p>仓库根上还有几件东西：一份 <code>CLAUDE.md</code> 写协作原则和红线，一份术语表统一专有名词和口述纠错，一批 skill 承担重复动作。约定写在仓库里，而不是每次对话里重讲一遍。</p>
+<p>仓库根目录还用 <code>minds.yaml</code> 注册项目，用术语表和跨项目 thinking 管理共用信息；文章、素材与配置则各自在项目内维护。</p>
+<p>
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202610/ai-native-minds-overview-v2.png" alt="minds 仓库结构总览（重绘）"  />
+
+
+
+</p>
+<h3 id="my-kms-知识库"><code>my-kms</code> 知识库</h3>
+<p><code>my-kms</code> 是持续了多年的个人知识库。产品换过几代（2010 年写过一篇 <a href="/2010/09/my-kms/">我所使用的知识管理系统</a>），后来落到 Obsidian（任务管理也一起搬了进去，见 <a href="/2023/02/gtd/">从 Toodledo 到 Obsidian Tasks</a>）；内容仍以人工写入为主，至少自己口述。只有少量会议摘要交给 AI 录入。</p>
+<p>我的日常信息流：</p>
+<blockquote>
+<p>会议转写 → 摘要 → 当日记录 → 日报 → 方案、文章与分享</p></blockquote>
+<p>每一场会议拿到转写和摘要；每天收口成日报。材料不留在聊天窗口里，而是进入可以回看、检索、继续加工的仓库。</p>
+<p>两个仓库都托管在本机自建的 Forgejo 上。好处很实在：私有数据不出机器，但仍然有分支、PR、diff 和历史——也就是说，Agent 的每一次改动都是可 review、可回滚的。</p>
+<p>
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202610/ai-native-kms-overview-v2.png" alt="my-kms 仓库结构（重绘）"  />
+
+
+
+</p>
+<h3 id="如何保持人味">如何保持人味</h3>
+<table>
+  <thead>
+      <tr>
+          <th>环节</th>
+          <th>我的做法</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>框架</td>
+          <td>自己构思；结构自己把控</td>
+      </tr>
+      <tr>
+          <td>长内容</td>
+          <td>先语音；AI 整理、汇总、润色、结构化</td>
+      </tr>
+      <tr>
+          <td>观点</td>
+          <td>来自自己的输入；不是一段 AI 生成文本</td>
+      </tr>
+      <tr>
+          <td>图</td>
+          <td>尽量自己画；没有图再用截图</td>
+      </tr>
+  </tbody>
+</table>
+<p>效果和效率都会更好。更重要的是，内容里还留着自己的观点。</p>
+<p>下面是和一位运营同学聊写文章的产出：</p>
+<blockquote>
+<p>一点看不出来AI痕迹</p>
+<p>都是 AI生成。</p>
+<p>是手搓嘛
+我丢，
+大哥，可以求赐教下不
+AI怎么能写出这么活人感且专业的文章哇
+全仰仗您</p>
+<p>我写框架，AI生成。
+另外，我还需要给很多批注反馈。就像大学导师里面给学生改论文。
+我写框架，AI 生成，然后我给很多批注反馈——像导师给学生改论文。人味不是靠 AI 模仿出来的，是因为框架和观点本来就是自己的。</p></blockquote>
+<h3 id="小结">小结</h3>
+<p>信息这一段，我的做法可以归成三条：</p>
+<ol>
+<li>材料进仓库，不留在聊天窗口里；</li>
+<li>Agent 负责搬运和加工，改动走 PR，我看 diff 决定合不合；</li>
+<li>框架和观点自己出，AI 负责展开和润色。</li>
+</ol>
+<p>两个仓库的 AI 参与度一个 90%+、一个 5%，差别很大，但材料都落在可以回看、可以 review 的仓库里。</p>
+<h2 id="当下我怎么-ai-coding">当下我怎么 AI Coding</h2>
+<p>和之前相比，有三个明显变化。</p>
+<h3 id="1-spec-driven从个人选择到团队要求">1. Spec-driven：从个人选择到团队要求</h3>
+<p>规格、边界、验收标准：研发的起点。</p>
+<p>现在是强制要求：用 speckit、superpower，或者任何一个 well-known 的 spec 框架。从个人选择变成团队要求，这是今年最明显的一条变化。</p>
+<h3 id="2-细节代码越来越少看但不能不管">2. 细节代码：越来越少看，但不能不管</h3>
+<p>在结构比较稳定的系统里，大家对细节代码的关注确实越来越少。过去积累的 Code Review 经验和知识，反而要持续沉淀成约束。</p>
+<p>这些约束我统一放在一份 guides 里，把「看什么、不看什么、什么情况下必须看」固化下来：</p>
+<p><a href="https://github.com/alswl/guides">GitHub - alswl/guides</a></p>
+<p>公开版目前是 <code>v0.0.1-alpha1</code>，收了这几份：</p>
+<table>
+  <thead>
+      <tr>
+          <th>指南</th>
+          <th>技术栈</th>
+          <th>定下了什么</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>go-cli-guides.md</code></td>
+          <td>cobra · viper · <code>log/slog</code></td>
+          <td>命令树结构、flag 与配置优先级、输出/退出码/错误处理约定</td>
+      </tr>
+      <tr>
+          <td><code>go-server-guides.md</code></td>
+          <td>huma v2 · chi · GORM</td>
+          <td>分层 <code>pkg/</code> 结构、声明式 API 与自动生成 OpenAPI、GORM 只做表映射与基础 CRUD</td>
+      </tr>
+      <tr>
+          <td><code>python-server-guides.md</code></td>
+          <td>FastAPI · SQLAlchemy Core · Alembic</td>
+          <td>分层 <code>src/</code> 结构、Pydantic schema、只用 Core 显式查询</td>
+      </tr>
+      <tr>
+          <td><code>go-tui-guides.md</code></td>
+          <td>Bubble Tea · Lip Gloss · Bubbles</td>
+          <td>Elm 架构落到真实应用，业务分层复用 CLI 指南</td>
+      </tr>
+      <tr>
+          <td><code>fe-page-guide-antd.md</code></td>
+          <td>Ant Design v5 · ProComponents</td>
+          <td>高密度信息页面怎么组织</td>
+      </tr>
+  </tbody>
+</table>
+<p>每份指南只选一套技术栈、固定一种项目结构，规则写成祈使句。它们同时写给人和 AI Coding 工具看，所以每条规则都要短、可核对，不写「视情况而定」。用法也简单：在项目的 <code>CLAUDE.md</code> / <code>AGENTS.md</code> 里引用对应文件，让 Agent 写代码时照着做。前端那份的来龙去脉，我单独写过一篇 <a href="/2026/09/high-density-page-organization/">高密度页面怎么组织</a>。</p>
+<h3 id="3-自测-agent-验证">3. 自测 Agent 验证</h3>
+<p>AI Coding 让需求交付密度爆发。测试资源很难按同样的速度扩张。</p>
+<p>我为此提出的方案是一个自测 Agent，核心链路是：</p>
+<blockquote>
+<p>规格 → 分层验证 → 判决 → 回写验收</p></blockquote>
+<p>规格既是开发的起点，也是断言的来源。验证按成本从低到高分层，fail-fast：</p>
+<table>
+  <thead>
+      <tr>
+          <th>层</th>
+          <th>回答什么</th>
+          <th>引擎</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>smoke</td>
+          <td>服务能起来吗？健康闸口通吗？</td>
+          <td>组合</td>
+      </tr>
+      <tr>
+          <td>API</td>
+          <td>REST API 合约对吗？</td>
+          <td>Hurl</td>
+      </tr>
+      <tr>
+          <td>CLI</td>
+          <td>命令行的行为对吗？</td>
+          <td>bash + Go (testify)</td>
+      </tr>
+      <tr>
+          <td>E2E</td>
+          <td>前端关键交互还在吗？</td>
+          <td>Playwright</td>
+      </tr>
+  </tbody>
+</table>
+<p>最后一步是判决和回写：跑完不是给一堆日志，而是给一个带运行证据的结论，回写到工作项的验收里。</p>
+<p>
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202610/ai-native-ai-tests-e2e-v2.png" alt="自测 Agent 端到端链路（重绘）"  />
+
+
+
+</p>
+<p>
+
+
+<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202610/ai-native-verify-engine-v2.png" alt="验证引擎内部三步（重绘）"  />
+
+
+
+</p>
+<h3 id="小结-1">小结</h3>
+<p>三个变化放在一起看，是一条线：规格定起点，约束替人看细节，分层验证给结论。代码越来越少需要人逐行盯；写什么、按什么写、怎么算做完，反而要写得更清楚。</p>
+<h2 id="我的个人工具链">我的个人工具链</h2>
+<p>工程师本质上就是通过工具的提升，来加强自己的管理、工作效率和产出速度。所以在这个时代，工具确实比过去更重要。</p>
+<p>我自己投入了不少时间来打造自己的工具链。我觉得目前还不错的有这么几个：</p>
+<ul>
+<li>mind-forge</li>
+<li>skills 集合</li>
+<li>skm 管理器，可以跨电脑管理 SKILL，快速部署到远程机器</li>
+<li>mind-forge 知识库管理器</li>
+<li>一个好用的评审编辑器（我选择了 Vim）</li>
+</ul>
+<p><a href="https://github.com/alswl/skm">GitHub - alswl/skm: a tiny local-first AI Skill Manager</a></p>
+<p>我最常用的 skills，一部分来自社区：</p>
+<ul>
+<li><code>speckit</code> —— 基于 spec 的套件</li>
+<li><code>grilling</code> —— 追问我</li>
+<li><code>humanizer</code> —— 说人话</li>
+</ul>
+<p>一部分是自己写的：</p>
+<ul>
+<li><code>spec-report-html</code> —— 把本次 spec 汇报成一页纸方案</li>
+<li><code>spec-status</code> / <code>spec-update</code> —— 更新 spec 状态</li>
+<li><code>session-retro</code> —— 反思当前 session，改进本地 SKILL</li>
+<li><code>chat</code> —— 基于 IRC 的 Agent 协作</li>
+<li><code>distill-memory</code> —— 蒸馏本机 jsonl 记忆</li>
+<li><code>repo-analyzer</code> —— 仓库快速分析，类似 deepwiki</li>
+<li><code>mf-cli</code> —— mind-forge 配套 SKILL</li>
+</ul>
+<p>前面说工作本身有三条线，第三条是「隐藏线路」：优化工具链路，进行效率提升。这份清单就是我在这条线上的投入。</p>
+<h2 id="一些观点">一些观点</h2>
+<h3 id="提效很快会到瓶颈">提效很快会到瓶颈</h3>
+<ul>
+<li>执行密度上升</li>
+<li>决策密度：新的卡点</li>
+<li>信息、判断、共识：不可跳过</li>
+</ul>
+<h3 id="ai-wow-time-正在过去">AI WoW Time 正在过去</h3>
+<ul>
+<li>新概念：短期兴奋</li>
+<li>持续价值：如何落地</li>
+<li>真实业务、真实系统、真实用户，要真刀真枪</li>
+</ul>
+<h3 id="开会变得更重要">开会变得更重要</h3>
+<ul>
+<li>AI 加速产出</li>
+<li>分歧更快出现</li>
+<li>共识形成：更高价值</li>
+<li>决策、承诺、责任：需要人</li>
+</ul>
+<h3 id="创作--创--作">创作 = 创 + 作</h3>
+<ul>
+<li>AI 善于「作」：生产、展开、润色</li>
+<li>人负责「创」：问题、判断、表达</li>
+<li>大家会对纯 AI 生产的内容乏味</li>
+<li>保留观点、经验、个人棱角</li>
+</ul>
+<h2 id="写在最后">写在最后</h2>
+<p>从 2 月的「Code Typing is unnecessary」，到 5 月的「AI 放大执行；人负责判断」，再到 8 月把信息、研发、落地、工具链连成一条线，这大半年变来变去的，其实是我对「人站在哪里」的理解。</p>
+<p>AI 善于「作」：生产、展开、润色。「创」还是得自己来：问题自己提，判断自己下，观点、经验和个人棱角自己留着。</p>
+<p>Update 2026-10-05：因为各种档期问题，我内部的分享延迟了一个月才开展，因此这篇文章发晚了 1 个月。
+Agentic 发展太快了，我最新的实践已经和这篇文章相比，已经更进了一步，摸到了 Stage 8 门槛。
+当然我依然推荐工程师们一步步走过来，在当下日新月异的时代，亲自体验和上手是完全不一样的感觉。</p>
+<p>等我下篇文章吧。</p>
+<h2 id="扩展阅读">扩展阅读</h2>
+<ul>
+<li><a href="https://github.com/alswl/mind-forge">alswl/mind-forge</a>：<code>minds</code> 仓库用的知识锻造 CLI</li>
+<li><a href="https://github.com/alswl/skm">alswl/skm</a>：跨电脑管理 SKILL 的小工具</li>
+<li><a href="https://github.com/alswl/guides">alswl/guides</a>：写给人和 Agent 一起看的开发指南</li>
+<li><a href="https://github.com/github/spec-kit">github/spec-kit</a>、<a href="https://github.com/obra/superpowers">obra/superpowers</a>：文中提到的两个 spec 框架</li>
+<li><a href="/2026/02/my-2025/">2025 年终总结 - 临界点</a></li>
+<li><a href="/2026/09/high-density-page-organization/">高密度页面怎么组织：一份信息呈现指南</a></li>
+<li><a href="/2023/02/gtd/">从 Toodledo 到 Obsidian Tasks - 我的 GTD 最佳实践</a></li>
+<li><a href="/2010/09/my-kms/">我所使用的知识管理系统</a></li>
+</ul>
+]]></content:encoded>
+    </item>
     <item>
       <title>高密度页面怎么组织：一份信息呈现指南</title>
       <link>https://blog.alswl.com/2026/09/high-density-page-organization/</link>
@@ -9523,218 +9892,6 @@ SRE 最终承诺的组件对外 SLA，并将 SLA 拆解为 SLO 跟 SWE 共背。
 <li><a href="https://sre.google/sre-book/evolving-sre-engagement-model/">The Evolving SRE Engagement Model</a></li>
 <li><a href="https://sre.google/workbook/non-abstract-design/">Introducing Non-Abstract Large System Design</a></li>
 <li><a href="https://cloud.google.com/blog/products/gcp/how-sres-find-the-landmines-in-a-service-cre-life-lessons">How SREs at Google find the landmines in a service | Google Cloud Blog</a></li>
-</ul>
-]]></content:encoded>
-    </item>
-    <item>
-      <title>Python 的类型系统</title>
-      <link>https://blog.alswl.com/2020/06/type-safe-python/</link>
-      <pubDate>Tue, 23 Jun 2020 17:54:00 +0800</pubDate>
-      <guid>https://blog.alswl.com/2020/06/type-safe-python/</guid>
-      <description>&lt;p&gt;
-
-
-
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/upload_dropbox/202006/wall.png&#34; alt=&#34;wall&#34;  /&gt;
-
-
-
-&lt;small&gt;image from pixabay.com&lt;/small&gt;&lt;/p&gt;
-&lt;p&gt;静态类型正在逐渐成为潮流，
-2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。
-过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。&lt;/p&gt;
-&lt;p&gt;我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难：
-在重构阶段代码回归成本异常之高，很多历史代码不敢动。
-后来技术栈转到 Java，被类型系统怀抱让人产生安全感。&lt;/p&gt;</description>
-      <content:encoded><![CDATA[<p>
-
-
-
-
-<img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/202006/wall.png" alt="wall"  />
-
-
-
-<small>image from pixabay.com</small></p>
-<p>静态类型正在逐渐成为潮流，
-2010 年之后诞生的几门语言 Go、Rust、TypeScript 等都走了静态类型路线。
-过往流行的一些动态语言（Python、PHP、JavaScript）也在积极引入语言新特性（Type Hint、TypeScript）对静态类型增强。</p>
-<p>我曾使用 Python 开发规模较大的项目，感受过动态语言在工程规模变大时候带来的困难：
-在重构阶段代码回归成本异常之高，很多历史代码不敢动。
-后来技术栈转到 Java，被类型系统怀抱让人产生安全感。</p>
-<p>最近一年在一个面向稳定性的运维系统耕耘。系统选型之初使用了 Python。
-我在项目中力推了 Python 3.7，并大规模使用了 Python 的类型系统来降低潜在风险。</p>
-<p>追根溯源，我花了一些时间了解 Python 在类型系统的设计和实现，
-本文以 PEP 提案介绍一下 Python 在类型系统上面走过的路。</p>
-<!-- more -->
-<h2 id="类型系统">类型系统</h2>
-<p>谈类型系统之前，要厘定两个概念，动态语言和动态类型。</p>
-<p>动态语言（Dynamic Programming Language）则是指程序在运行时可以改变结构。
-这个结构可以包含函数、对象、变量类型、程序结构。
-动态类型是类型系统（Type System）其中一类，即程序在运行期间可以修改变量类型。
-另外一种是静态类型：在编译期就决定了变量类型，运行期不允许发生变化。
-类型系统还有一种分法是强类型和弱类型，强类型是指禁止类型不匹配的指令，弱类型反之。</p>
-<p>动态语言和动态类型这两个概念切入点不一样，
-Python 是一门动态语言，也是动态类型语言，还是强类型的动态类型。
-这篇文章主要讨论 Python 语言的类型系统，不会涉及动态语言特性。</p>
-<h2 id="类型安全之路">类型安全之路</h2>
-<p>行业里面一直有一个争论：动态类型和静态类型哪一种更强大。
-静态类型的支持者认为三个方面具备优势：性能、错误发现、高效重构。
-静态类型通过编译期决定具体类型可以显著的提高运行期效率；
-编译期就能够发现错误，在工程规模逐步变大时候尤其明显；
-类型系统可以帮助 IDE 提示，高效重构。
-动态类型的支持者则认为分析代码会更简单，减少出错机会，写起来也更为快速。</p>
-<p>Python 开发者们并非没有看到这个痛点，
-一系列 PEP 提案应运而生。
-在保留 Python 动态类型系统优势前提，通过语法、特性增强，将类型系统引入 Python。</p>
-<p>Python 在 2014 年即提出了 PEP 484，随后提出一个精粹版 PEP 483（The Theory of Type Hints），
-其工程实现 <a href="https://docs.python.org/3/library/typing.html">typing</a> 模块在 3.5 发布。
-经过 PEP 484，PEP 526，PEP 544，PEP 586，PEP 589，PEP 591 的多次版本迭代，Python 的类型系统已经很丰富。
-甚至包含了比如 Structural Subtyping 以及 Literal Typing 这边相对罕见的特性。</p>
-<h3 id="pep-483---核心概念">PEP 483 - 核心概念</h3>
-<p><a href="https://www.python.org/dev/peps/pep-0483/">PEP 483</a> 在 2014 年 12 月发布，
-是 Guido 起笔的核心概念版，简明扼要的写清楚 Python 的类型系统建设方向、边界、要和不要。</p>
-<p>PEP 483 没有谈具体工程实现，提纲挈领地讲了一下 Python 类型系统如何对外呈现。
-厘定 Type / Class 差别，前者是语法分析概念，后者是运行时概念。
-在这个定义下面 Class 都是一个 Type，但 Type 未必是 Class。
-举例 <code>Union[str, int]</code> 是 Type 但并不是 Class。</p>
-<p>PEP 483 还介绍内建基础类型：<code>Any</code> / <code>Unison</code> / <code>Optional</code> / <code>Tuple</code> / <code>Callable</code>，这些基础类型支撑上游丰富变化。</p>
-<p>静态类型系统最大的诟病是不够灵活，Go 语言现在还没有实现泛型。
-PEP 483 介绍了 Python Generic types 泛型使用方法，
-形式如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">S</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">longest</span><span class="p">(</span><span class="n">first</span><span class="p">:</span> <span class="n">S</span><span class="p">,</span> <span class="n">second</span><span class="p">:</span> <span class="n">S</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">S</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">first</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">first</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">second</span><span class="p">)</span> <span class="k">else</span> <span class="n">second</span>
-</span></span></code></pre></div><p>最后，PEP 483 还提了一些重要的小特性：</p>
-<ul>
-<li>别称 Alias</li>
-<li>前置引用 Farward Reference（在定义类方法注解中使用定义类），eg.：解决二叉树 Node 节点中需要引用 Node 问题</li>
-<li>covariance contravariant 协变逆变</li>
-<li>使用注释标记类型</li>
-<li>转型 Cast</li>
-</ul>
-<p>PEP 483 的实现，主要依赖了 <a href="https://www.python.org/dev/peps/pep-3107/">PEP 3107 &ndash; Function Annotations</a>
-这个提案。PEP 3107 介绍 function 注解使用。比如， <code>func(a: a1, b: b1) -&gt; r1</code>
-这段代码，
-其中冒号后面的描述符记录会到 func 的 <code>__annotations__</code> 变量中。</p>
-<p>PEP 3107 效果展示如下，可以清晰看到函数变量存放：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">add</span><span class="o">.</span><span class="vm">__annotations__</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># {&#39;x&#39;: int, &#39;y&#39;: int, &#39;return&#39;: int}</span>
-</span></span></code></pre></div><p>PS：现在 Python 有了 Decorator 装饰器 / Annotation 注解，其中 Annotation 的设计还和 Java 的 Annotation 同名，一锅粥。</p>
-<h3 id="pep-484---type-hints-核心">PEP 484 - Type Hints 核心</h3>
-<p><a href="https://www.python.org/dev/peps/pep-0484/">PEP 484 &ndash; Type Hints</a>
-在 PEP 483 基础上完整讲述 Python 类型系统如何设计，如何使用，细节如何（typing 模块）</p>
-<p>这篇提案开宗明义地点出：</p>
-<blockquote>
-<p>Python will remain a dynamically typed language, and the authors have no desire to ever make type hints mandatory,
-even by convention.</p></blockquote>
-<p>一句话断绝了 Python 在语言级别进化到静态系统的可能。</p>
-<p>提案除了 PEP 483 已经讲解的特性，还有以下吸引我的点：</p>
-<ul>
-<li>允许通过 Stub Files 为已经存在的库添加类型描述。具体是使用 Python 文件对应的 <code>.pyi</code> 文件描述 Python 代码的带类型签名。
-这个方案和 TS 的 <code>@types</code> 文件有异曲同工之妙。</li>
-<li>允许使用 <code>@overload</code> 进行类型重载，这也是活久见，Python 居然可以（在某种意义上）支持重载了。</li>
-<li>介绍了 typing 实现细节，比如使用 abs（Abstract Base Class）构建常见类型的 interface，包括 <code>Sized</code> / <code>Iterable</code> 这些基础接口。
-我个人认为这个工作量是其实挺大，是给已有的类进行一次依赖梳理。</li>
-<li>介绍了 Python 向后（Python 2）兼容方法，有这么几种策略：
-使用 decorator（<code>@typehints(foo=str, returns=str)</code>）、comments、Stub files、Docstring</li>
-</ul>
-<h3 id="pep-526---变量也安排上了">PEP 526 - 变量也安排上了</h3>
-<p><a href="https://www.python.org/dev/peps/pep-0526/">PEP 526 &ndash; Syntax for Variable Annotations</a>
-核心提案是给变量加上 Type Hints 支持。</p>
-<p>和 <code>function annotation</code> 类似，也是通过注解方式存放。
-差异是并不是给实例添加一个 <code>__annotations__</code> 成员，而是将变量的 annotations 信息存放在上下文变量 <code>__annotations__</code> 之中。
-这个其实也比较好理解：定义一个变量类型时候，这个变量还没有初始化。</p>
-<p>我写一段 Demo 展示一下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
-</span></span><span class="line"><span class="cl"><span class="n">users</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># print(__annotations__)</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># {&#39;users&#39;: typing.List[int]}</span>
-</span></span></code></pre></div><p>可以看到，上述 Demo 效果是在上下文变量创建了一个 <code>users</code>，但这个 <code>users</code> 其实并不存在，只是定义了类型，
-如果运行 <code>print(users)</code> 会抛出 <code>NameError: name 'users' is not defined</code>。</p>
-<p>观察字节码会更清晰：</p>
-<pre tabindex="0"><code> L.   1         0  SETUP_ANNOTATIONS
-
- L.   1         2  LOAD_CONST               0
-                4  LOAD_CONST               (&#39;List&#39;,)
-                6  IMPORT_NAME              typing
-                8  IMPORT_FROM              List
-               10  STORE_NAME               List
-               12  POP_TOP
-
- L.   3        14  LOAD_NAME                List
-               16  LOAD_NAME                int
-               18  BINARY_SUBSCR
-               20  LOAD_NAME                __annotations__
-               22  LOAD_STR                 &#39;users&#39;
-               24  STORE_SUBSCR
-               26  LOAD_CONST               None
-               28  RETURN_VALUE
-</code></pre><p>可以清晰看到，并没有创建一个名为 users 的变量，而是使用了 <code>__annotations__</code> 变量。
-注：Python 存储变量使用 opcode 是 <code>STORE_NAME</code>。</p>
-<p>PS：本提案中有不少被否决的提案，挺有趣的，社区提出了很多奇淫巧计。
-可以看出社区决策的慎重，存量系统升级的难度。</p>
-<h3 id="pep-544---nominal-subtyping-vs-structural-subtyping">PEP 544 - Nominal Subtyping vs Structural Subtyping</h3>
-<p>PEP 484 里面类型系统讨论的是 Nominal Subtyping，
-这个 <a href="https://www.python.org/dev/peps/pep-0544/">PEP 544 &ndash; Protocols: Structural subtyping (static duck typing)</a>
-则是提出了Structural Subtyping。
-如果非要翻译，我觉得可以称为具名子类型 / 同构子类型。
-注意，也有人将 Structural Subtyping 称之为 Duck Typing，其实这两者不相同，具体可以见
-<a href="https://en.wikipedia.org/wiki/Duck_typing#Structural_type_systems">Duck typing / Comparison with other type systems</a>。</p>
-<p>Nominal Subtyping 是指按字面量匹配类型，而 Structural Subtyping 则是按照结构（行为）进行匹配，
-比如 Go 的 Type 就是 Structural Subtyping 实现。</p>
-<p>这里写个简单 Demo 展示一下后者：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Iterable</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Bucket</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="o">...</span>
-</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
-</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span> <span class="o">...</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="n">items</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
-</span></span><span class="line"><span class="cl"><span class="n">result</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">collect</span><span class="p">(</span><span class="n">Bucket</span><span class="p">())</span>  <span class="c1"># Passes type check</span>
-</span></span></code></pre></div><p>代码中定义了 Bucket 这种类型，并且提供了两个类成员。这两个类成员刚好是 Interator 的定义。
-那么在实际使用中，就可以使用 Bucket 替换 Iterable。</p>
-<h3 id="pep-586--pep-589--pep-591-持续增强">PEP 586 / PEP 589 / PEP 591 持续增强</h3>
-<p><a href="https://www.python.org/dev/peps/pep-0586/">PEP 586 &ndash; Literal Types</a>
-在 Python 3.8 实现，支持了字面量作为类型使用。
-比如 <code>Literal[4]</code>，举一个更有语义的例子 <code>Literal['GREEN']</code>。</p>
-<p>我第一反应这和 Scala 里面的 Symbol 非常像，Scala 中写法是 <code>Symbol(&quot;GREEN&quot;)</code>。
-这个特性使用挺学院派，很容易在 DSL 里面写的天花乱坠。
-Scala 官方有说过可能在未来移除 Symbol 特性，建议直接使用常量替代。</p>
-<p><a href="https://www.python.org/dev/peps/pep-0589/">PEP 589 &ndash; TypedDict: Type Hints for Dictionaries with a Fixed Set of Keys</a>
-给 Dict 增加 key 的 Type，继承 <code>TypedDict</code>。</p>
-<p><a href="https://www.python.org/dev/peps/pep-0591/">PEP 591 &ndash; Adding a final qualifier to typing</a>
-增加 <code>final</code> / <code>Final</code> 两个概念，前者是装饰器，后者是注解，标注该类 / 函数 / 变量无法修改</p>
-<p>至此，Python 3.8 已经具备我们日常需要的类型系统特性（非运行时 😂）。</p>
-<h2 id="总结">总结</h2>
-<p>遗憾的是，<code>typing</code> 模块在文档鲜明的标注：</p>
-<blockquote>
-<p>The Python runtime does not enforce function and variable type annotations. They can be used by third party tools
-such as type checkers, IDEs, linters, etc.</p></blockquote>
-<p>即：Python 运行时（Intercepter / Code Evaluator）并不支持函数和变量的类型装饰符。
-这些装饰符只能由第三方工具检查，比如类型检查器、IDE、静态、Linter。</p>
-<p>这个信息说明了 Python 在类型安全上尝试的局限性。所有的限制、约束都不会发生在运行时，
-想要从类型系统中收获工程上面的价值，只能借助第三方工具。</p>
-<p>诚然，Python 社区在竭力向类型系统靠拢，但是这种非语言级别 Runtime 的支持，到底能走多远呢？
-Python 缺少金主爸爸，干爹 Red Hat 投入资源也有限。连社区从 Python 2 切换到 Python 3 都还没走完，为何？
-投入产出比太低，新特性缺乏足够的吸引力，替代品太多。</p>
-<p>另一方面，看看竞对们：
-动态语言在往静态语言靠拢，而静态语言也在不断吸收动态语言的特性。比如 Java 14 里面的 REPL（Read-Eval-Print-Loop），
-Kotlin / Scala 等语言的类型推断（Type Inference）。
-也许这种演进方式更能够让用户接受吧。</p>
-<h2 id="参考">参考</h2>
-<ul>
-<li><a href="https://docs.python.org/3/library/typing.html">typing — Support for type hints — Python 3.8.3 documentation</a></li>
-<li><a href="https://www.python.org/dev/peps/pep-0483/#type-variables">PEP 483 &ndash; The Theory of Type Hints | Python.org</a></li>
-<li><a href="https://www.python.org/dev/peps/pep-0484/#abstract">PEP 484 &ndash; Type Hints | Python.org</a></li>
-<li><a href="https://www.bernat.tech/the-state-of-type-hints-in-python/">the state of type hints in Python</a></li>
 </ul>
 ]]></content:encoded>
     </item>
