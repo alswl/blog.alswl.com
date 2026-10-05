@@ -100,7 +100,11 @@ tags: ["tag1", "tag2"]
 - 新文章统一用绝对路径 `/images/YYYYMM/name.png`
 - 历史文章有 `../../static/images/...` 写法，由 `layouts/_default/_markup/render-image.html`
   兼容渲染；**不要批量改写老文章的图片路径**
-- 图片提交前缩到 1000x1000 以内（`make resize-images-in-git-workdir`）
+- 图片提交前先运行 `make resize-images-in-git-workdir`，再 `git add`。脚本通过
+  `git status --porcelain -z` 收集 `static/images/` 下新增、已暂存或已修改的图片，未跟踪
+  图片也会处理；若缩放发生在 `git add` 之后，必须重新暂存图片，避免 index 留下未缩放版本。
+  命令意外显示「已处理 0 张图片」时，先检查 `git status --short` 与图片路径，确认原因后再继续，
+  不要直接用手工 `sips` 绕过。
 - 图片必须被文章引用，否则 CI 的 find-unused-images 会失败
 - 图注用 `<small>` 标注来源
 
