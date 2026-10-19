@@ -22,7 +22,7 @@
 1. 抓取卡片的图片和描述：
 
    ```bash
-   make enrich post=content/posts/2026-10-18-ai-native-stage-8.md
+   make fetch-banner-metadata post=content/posts/2026-10-18-ai-native-stage-8.md
    ```
 
 2. 缩放抓取到的图片：

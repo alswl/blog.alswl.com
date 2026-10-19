@@ -1,7 +1,8 @@
 # 站点维护
 
 日常入口是 `make help`。作者不需要记住脚本名、依赖安装路径或文件列表参数。
-Makefile 只转发命令，具体实现集中在 [scripts/](../../scripts/)。
+Makefile 每个目标列明动作、范围和副作用；`make help` 直接从这些说明生成。
+具体实现集中在 [scripts/](../../scripts/)。
 
 仓库按 Hugo 内容站点组织：`content/` 写文章，`static/` 放资源，`layouts/` 和 `assets/`
 维护页面；`scripts/` 放内部自动化实现，`tests/` 放回归测试，`.github/workflows/` 负责 CI。
@@ -17,16 +18,16 @@ macOS 可使用系统包管理器安装：
 brew install hugo node imagemagick
 npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund prettier@latest
 make init-theme
-make doctor
+make check-tools
 ```
 
 Linux 使用包管理器安装 Node.js 和 ImageMagick，Hugo 按[官方安装说明](https://gohugo.io/installation/)
 安装。Prettier 安装到仓库的 `node_modules/`，已被 Git 忽略；也支持 PATH 中已有的 Prettier。
 Hugo 直接使用 PATH 中的程序。本地不要求与 CI 精确同版，不自动下载或升级工具。
-`doctor` 显示实际使用的路径和版本；出现差异时可据此排查。
+`make check-tools` 显示实际使用的路径和版本；出现差异时可据此排查。
 Prettier 配置见 [.prettierrc](../../.prettierrc)，不要重排历史文章。
 
-Git hooks 可选，安装 lefthook 后运行 `make install-hooks`；图片同步使用 AWS CLI
+Git hooks 可选，安装 lefthook 后运行 `make install-git-hooks`；图片同步使用 AWS CLI
 和已配置的访问凭据。主题初始化、安装 hooks 和依赖安装分别执行，没有组合 setup 命令。
 
 浏览器端依赖也使用精确版本：Waline `2.15.8`、Mermaid `11.17.2`，分别在对应 partial 的
@@ -47,7 +48,7 @@ make build-site       # 生产构建至 public/
 旧命令 `make build-production`、`make resize-images-in-git-workdir` 保留为别名。
 
 `make build-site` 先构建到临时目录，成功后替换 `public/`，防止旧文章和旧哈希资源残留。
-失败时保留上次成功产物。`make clean` 清理构建产物。
+失败时保留上次成功产物。`make clean-build` 清理构建产物。
 不要手工编辑或提交 `public/`。
 
 ## 检查范围
@@ -58,11 +59,9 @@ make build-site       # 生产构建至 public/
 | --------------------------------------------- | ------------------------------------------------ | ------------- |
 | `make format-markdown` / `make resize-images` | 未提交修改，包含暂存、未暂存及未跟踪文件         | 格式化 / 缩图 |
 | `make check-content`                          | 未提交修改，加全量无用图片检查                   | 否            |
-| `make check-changed-content`                  | 未提交修改，跳过全量无用图片检查                 | 否            |
 | pre-commit                                    | 暂存快照中的本次文件，不读取未暂存草稿           | 否            |
 | pre-push                                      | 实际推送提交与远端提交的差异，加全量无用图片检查 | 否            |
 | CI                                            | 推送前后提交的差异，加全量无用图片检查           | 否            |
-| `make audit-content`                          | 全量历史内容，预期存在存量问题                   | 否            |
 
 格式、远端图片和尺寸检查只覆盖选定范围。历史未格式化文章、超规格图片和远端引用
 不批量修复。无用图片检查保留全量执行及历史目录豁免，按路径识别图片，兼容
@@ -81,6 +80,8 @@ pre-push 通过 [lefthook 的 stdin 支持](https://lefthook.dev/configuration/u
 需要显式选择范围时使用统一入口：
 
 ```bash
+python3 -m scripts check-content --changed-only  # 跳过全量无用图片检查
+python3 -m scripts check-content --scope all     # 全量历史检查，预期有存量问题
 python3 -m scripts check-content --scope staged
 python3 -m scripts check-content --scope push --base <commit>
 ```
@@ -100,7 +101,7 @@ Prettier 使用 npm 的 latest 标签；不缓存旧工具安装目录。
 CI 专用发布构建命令：
 
 ```bash
-python3 -m scripts build-publication
+make build-cdn-site
 ```
 
 该命令先运行 Hugo，再在独立临时产物中转换 CDN 地址，完成后生成 `.cache/publish/`。
@@ -113,17 +114,17 @@ python3 -m scripts build-publication
 图片同步仍是显式操作，需要时运行：
 
 ```bash
-make sync-images
+make upload-images
 ```
 
 命令将 `static/images/` 同步到配置中的对象存储，不删除远端对象。
 CI 不持有或自动配置对象存储上传凭据。
 
-`master` 发布成功后，CI 自动运行 `make warm-images`，对本次新增或修改的 CDN 图片
+`master` 发布成功后，CI 自动运行 `make warm-cdn-images`，对本次新增或修改的 CDN 图片
 逐个执行 `curl --fail --location --silent --show-error --max-time 30 --output /dev/null`。
 使用 GET 下载正文并丢弃，包含 Banner 图片和 SVG；没有图片改动则跳过。
 请求失败会报错并继续请求其他图片，最后汇总退出状态，CI 报告警告。
-不需要 CDN 密钥或管理 API；发布验收由后续 `make verify` 独立负责并重试。
+不需要 CDN 密钥或管理 API；发布验收由后续 `make verify-publication` 独立负责并重试。
 
 GET 在缓存未命中时触发所经节点回源，命中已有缓存时不强制刷新，也不代表全网预热。
 已有 URL 内容变更时需单独刷新缓存，或改用新文件名。
@@ -131,14 +132,14 @@ GET 在缓存未命中时触发所经节点回源，命中已有缓存时不强�
 手动针对某次发布执行相同行为：
 
 ```bash
-make warm-images base=<发布前提交>
+make warm-cdn-images base=<发布前提交>
 ```
 
 发布后同时验收本次文章页和 CDN 图片，指定发布前提交作为基线：
 
 ```bash
-make verify base=<发布前提交>
-make verify base=<发布前提交> url=https://blog.alswl.com/2026/10/example/
+make verify-publication base=<发布前提交>
+make verify-publication base=<发布前提交> url=https://blog.alswl.com/2026/10/example/
 ```
 
 文章 URL 由已安装的 Hugo 的已发布内容清单取得，跳过草稿。
@@ -157,9 +158,9 @@ CI 的回源步骤之后也运行相同验收。窗口结束仍未就绪时给�
 - [images.py](../../scripts/images.py)：图片引用、门禁和缩图。
 - [publishing.py](../../scripts/publishing.py)：发布产物转换和验收。
 
-链接卡片抓取是 [banners.py](../../scripts/banners.py)，通过 `make enrich post=...` 调用。
+链接卡片抓取是 [banners.py](../../scripts/banners.py)，通过 `make fetch-banner-metadata post=...` 调用。
 Python 工具只使用标准库，不需要 pip、虚拟环境或额外 Python 包管理器。
-修改工具链后运行 `make test`、`make check-content` 和 `make build-site`。
+修改工具链后运行 `make test-toolchain`、`make check-content` 和 `make build-site`。
 回归测试见 [tests/test_blog_tools.py](../../tests/test_blog_tools.py)。
 
 ## Hugo 升级行为

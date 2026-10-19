@@ -21,38 +21,6 @@ from .runtime import Tools, imagemagick
 
 ROOT = Path(__file__).resolve().parents[1]
 
-HELP = """Log4D 写作工具
-
-环境
-  make init-theme                  初始化主题 submodule
-  make install-hooks               安装 Git hooks（需要 lefthook）
-  make doctor                      检查已安装工具，显示实际版本
-  依赖安装命令见 docs/dev/README.md
-
-日常写作
-  make new name=YYYY-MM-DD-slug.md   新建草稿
-  make serve                       预览文章和草稿
-  make enrich post=content/posts/…  补充链接卡片图片与描述（可选联网操作）
-  make format-markdown             格式化本次修改的 Markdown
-  make resize-images               将本次修改的图片缩到 1000×1000 以内
-  make check-content               检查本次内容格式、远端图片、尺寸及全量无用图片
-  make build-site                  生产构建至 public/
-
-检查后照常 git add / git commit / git push。工具不会自动暂存内容。
-
-维护
-  make sync-images                 同步图片到对象存储
-  make warm-images base=<发布前提交> 发布后请求本次 CDN 图片，触发未命中回源
-  make verify base=<发布前提交>      验收本次文章与 CDN 图片，失败后重试
-  make test                        工具链回归测试
-  make audit-content               全量历史报告（预期存在历史问题）
-  make clean                       清理构建产物
-
-详细说明：docs/guide/writing.md、docs/dev/README.md
-高级参数：python3 -m scripts --help
-"""
-
-
 def markdown(files: list[str]) -> list[str]:
     return [name for name in files if Path(name).suffix.lower() == ".md"]
 
@@ -238,7 +206,7 @@ def doctor(root: Path, tools: Tools) -> bool:
 def build(args, repo: Repository, tools: Tools) -> None:
     if args.cdn and not os.environ.get("CI"):
         raise ValueError(
-            "CDN 发布构建只在 CI 运行；本地使用 make build-site 或 make serve。"
+            "CDN 发布构建只在 CI 运行；本地使用 make build-site 或 make preview-site。"
         )
     target = repo.root / (".cache/publish" if args.cdn else "public")
     cache = repo.root / ".cache"
@@ -270,7 +238,6 @@ def parser() -> argparse.ArgumentParser:
         description="Log4D 写作工具；日常入口为 make help。"
     )
     commands = result.add_subparsers(dest="command", required=True)
-    commands.add_parser("help", help="显示作者常用命令")
     for name, help_text in (
         ("doctor", "诊断依赖，不修改环境"),
         ("serve", "用已安装的 Hugo 预览草稿"),
@@ -327,9 +294,7 @@ def main(argv: list[str] | None = None) -> int:
     tools = Tools(ROOT)
     try:
         command = args.command
-        if command == "help":
-            print(HELP)
-        elif command == "doctor":
+        if command == "doctor":
             return 0 if doctor(ROOT, tools) else 1
         elif command == "check-content":
             return 0 if check(args, repo, tools) else 1
@@ -363,7 +328,7 @@ def main(argv: list[str] | None = None) -> int:
             )
             if not files:
                 raise ValueError(
-                    "请指定文章：make enrich post=content/posts/YYYY-MM-DD-slug.md"
+                    "请指定文章：make fetch-banner-metadata post=content/posts/YYYY-MM-DD-slug.md"
                 )
             flags = (["--refresh"] if args.refresh else []) + (
                 ["--retry-missing"] if args.retry_missing else []

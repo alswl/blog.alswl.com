@@ -1,7 +1,7 @@
 # 写文章与配图
 
 本页面向日常写稿的作者。首次按[站点维护](../dev/README.md#安装与诊断)安装依赖，运行 `make init-theme` 初始化主题；
-遇到环境问题运行 `make doctor`，命令概览见 `make help`。
+遇到环境问题运行 `make check-tools`，命令概览见 `make help`。
 工具版本与检查依赖见[站点维护](../dev/README.md)。
 
 ## 新建与预览
@@ -9,7 +9,7 @@
 1. 在仓库根目录创建文章，将示例名称替换为实际日期和 slug：
 
    ```bash
-   make new name=YYYY-MM-DD-x.md
+   make new-post name=YYYY-MM-DD-x.md
    ```
 
    命令使用 `archetypes/posts.md` 创建 `content/posts/` 下的文件。
@@ -19,7 +19,7 @@
 3. 启动包含草稿的本地预览：
 
    ```bash
-   make serve
+   make preview-site
    ```
 
 4. 在 Hugo 输出的本地地址检查文章与图片。

@@ -13,8 +13,8 @@ alswl 的个人博客，使用 Hugo 和 hugo-PaperMod 主题。
 
 ```bash
 make init-theme
-make new name=YYYY-MM-DD-x.md
-make serve
+make new-post name=YYYY-MM-DD-x.md
+make preview-site
 ```
 
 将示例文件名替换为文章日期和 slug。新文章默认是草稿，本地预览包含草稿。

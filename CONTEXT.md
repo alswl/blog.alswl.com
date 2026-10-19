@@ -132,3 +132,14 @@ CI 密钥传递、站点预探测及暖图中的重复图片验收逻辑。
 本轮按照用户决定缩小功能范围。
 
 验证：38 个测试和 check-content 通过；本机 HTTP 服务实测 curl GET、空格 URL 编码、404 失败及继续请求行为通过，未访问真实 CDN。
+
+## Makefile 可读性调整（2026-10-19）
+
+用户再次指出 Makefile 的命令不清楚。问题包括泛称、相似检查入口，以及一串目标共同转发、
+帮助在 Python 内另维护一份。现在每个 Make 目标独立列出执行命令，同行说明范围和副作用，
+make help 从 Makefile 自身生成，并按环境、写作、提交前、发布、维护分组。
+new / serve / enrich 等入口改为 new-post / preview-site / fetch-banner-metadata；
+上传、暖图、验收分别为 upload-images / warm-cdn-images / verify-publication。
+删除 Make 层的快速检查与历史检查目标，保留内部 CLI 的显式范围参数。
+旧 build-production、resize-images-in-git-workdir 兼容入口保留但不放进日常帮助。
+Python 内部仍用 argparse --help 说明参数，不再维护第二份作者命令表。

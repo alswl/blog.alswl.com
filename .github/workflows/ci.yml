@@ -45,16 +45,16 @@ jobs:
           fi
 
       - name: Report installed tools
-        run: make doctor
+        run: make check-tools
 
       - name: Toolchain regression tests
-        run: make test
+        run: make test-toolchain
 
       - name: Check pushed changes and unused images
         run: python3 -B -m scripts check-content --scope push
 
       - name: Build publication artifacts
-        run: python3 -B -m scripts build-publication
+        run: make build-cdn-site
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
@@ -68,13 +68,13 @@ jobs:
         if: github.ref == 'refs/heads/master'
         continue-on-error: true
         timeout-minutes: 10
-        run: make warm-images
+        run: make warm-cdn-images
 
       - name: Verify publication
         id: verify
         if: github.ref == 'refs/heads/master'
         continue-on-error: true
-        run: make verify
+        run: make verify-publication
 
       - name: Report propagation delay
         if: github.ref == 'refs/heads/master' && (steps.warmup.outcome == 'failure' || steps.verify.outcome == 'failure')
