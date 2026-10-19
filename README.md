@@ -35,6 +35,42 @@ make sync-images                   # 上传图片到对象存储
 
 ## Tips
 
+**Banner 链接**：给独立成行的 Markdown 链接加 `!banner` title，即可显示为卡片。
+图片和描述可留空，渲染时不会联网；图片为空或本地文件不存在时，显示灰色地球占位图。
+右侧依次显示标题、描述和网站名，缺少描述时省略。链接文字作为标题；文字为空或仅为 URL 时，
+优先使用抓取的页面标题，最终回退到 URL。网站名优先使用 `og:site_name`，缺失时显示域名。
+
+```markdown
+[项目主页](https://example.com "!banner")
+[项目主页](https://example.com "!banner (/images/202610/project.jpg) 这里是描述")
+```
+
+需要自动补充图片和描述时，手动运行（处理独立成行的 `!banner` 标记，跳过代码块）：
+
+```bash
+python3 hack/fetch-banner-metadata.py content/posts/2026-10-18-ai-native-agent-coordination.md
+make resize-images-in-git-workdir
+```
+
+只重新尝试缺图卡片（包括已缓存但页面没有提供图片的情况）：
+
+```bash
+python3 hack/fetch-banner-metadata.py --retry-missing content/posts/2026-10-18-ai-native-agent-coordination.md
+```
+
+脚本优先读取 Open Graph，其次读取 Twitter Card 和普通 description；图片保存到文章月份目录。
+没有分享图时尝试正文首图或 oEmbed 缩略图；YouTube 可通过 oEmbed 补充视频标题和网站名。
+页面标题和网站名保存到 `data/banner_links.json`，需随文章提交，供 Hugo 离线渲染。
+抓取失败时保留原链接；图片失败时仍保存已取得的描述。检查改动后再暂存文章与图片。
+成功的页面信息和图片路径缓存在 `.cache/banner-metadata/`（不提交）。再次运行同一命令时，
+只重试失败的请求；图片失败会复用页面信息，仅重新下载图片，本地图片被删除后也会重新下载。
+页面本身没有图片或描述时保留空元数据，结果也会缓存。已有本地图片且没有缓存的标记默认保留。
+需要强制更新全部结果时，加 `--refresh`：
+
+```bash
+python3 hack/fetch-banner-metadata.py --refresh content/posts/2026-10-18-ai-native-agent-coordination.md
+```
+
 **Mermaid diagrams**: fenced ` ```mermaid ` code blocks render as live diagrams (see `layouts/_default/_markup/render-codeblock-mermaid.html` and `layouts/partials/extend_footer.html`), matching the current light/dark theme.
 
 Asset prefix:

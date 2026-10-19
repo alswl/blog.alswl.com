@@ -1,0 +1,46 @@
+{{- if or (eq .Title "!banner") (strings.HasPrefix .Title "!banner ") -}}
+  {{- $metadata := strings.TrimPrefix "!banner" .Title | htmlUnescape | strings.TrimSpace -}}
+  {{- $image := "" -}}
+  {{- $description := $metadata -}}
+  {{- with findRE `^\(/images/[^)]+\)` $metadata 1 -}}
+    {{- $imageMarker := index . 0 -}}
+    {{- $path := strings.TrimSuffix ")" (strings.TrimPrefix "(" $imageMarker) -}}
+    {{- $description = strings.TrimPrefix $imageMarker $metadata | strings.TrimSpace -}}
+    {{- if fileExists (printf "static%s" $path) -}}
+      {{- $image = $path -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $source := (urls.Parse .Destination).Host -}}
+  {{- $preview := index (site.Data.banner_links | default dict) .Destination | default dict -}}
+  {{- with $preview.site_name -}}{{ $source = . }}{{- end -}}
+  {{- if or (not $source) (eq $source (urls.Parse site.BaseURL).Host) -}}
+    {{- $source = site.Title -}}
+  {{- end -}}
+<a class="banner-link" href="{{ .Destination | safeURL }}">
+  <span class="banner-link__thumbnail" aria-hidden="true">
+    {{- with $image -}}
+      <img class="banner-link__image" src="{{ . }}" alt="" loading="lazy">
+    {{- else -}}
+      <svg class="banner-link__placeholder" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" focusable="false">
+        <circle cx="24" cy="24" r="18" />
+        <ellipse cx="24" cy="24" rx="8" ry="18" />
+        <path d="M6 24h36M9 14h30M9 34h30" />
+      </svg>
+    {{- end -}}
+  </span>
+  <span class="banner-link__content">
+    <span class="banner-link__title">
+      {{- $label := .Text | plainify | htmlUnescape | strings.TrimSpace -}}
+      {{- if and $label (ne $label .Destination) -}}
+        {{- .Text | safeHTML -}}
+      {{- else -}}
+        {{- $preview.title | default .Destination -}}
+      {{- end -}}
+    </span>
+    {{- with $description }}<span class="banner-link__description">{{ . }}</span>{{ end -}}
+    {{- with $source }}<span class="banner-link__source">{{ . }}</span>{{ end -}}
+  </span>
+</a>
+{{- else -}}
+<a href="{{ .Destination | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
+{{- end -}}
