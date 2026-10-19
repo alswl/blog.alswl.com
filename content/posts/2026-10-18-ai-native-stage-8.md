@@ -88,7 +88,7 @@ tags: ["AI", "AI Coding", "多 Agent", "工具链"]
 
 图 4：先判断反馈是否相关，再投入后续处理。
 
-[Yetone on X：并行运行 3 个 loop](https://x.com/yetone/status/2109855710444237018 "!banner (/images/202610/banner-e5e52f39a7cb6161.webp) 很多人想让我分享一下工作流，我一直没想好怎么分享，因为其实我没有任何的魔法，甚至还特别简陋，总觉得分享出来毫无意义。其实我就是用 Claude Code，然后用官方的 Opus 5.5 模型执行 loop 就可以了。 我会并行执行图里的 3 个 loop，然后每晚抽一点时间铲铲屎（主要是 UI/UX 的问题），然后就没活儿了。")
+[Yetone on X：并行运行 3 个 loop](https://x.com/yetone/status/2109855710444237018 "!banner (/images/202610/banner-yetone-loop.png) 很多人想让我分享一下工作流，我一直没想好怎么分享，因为其实我没有任何的魔法，甚至还特别简陋，总觉得分享出来毫无意义。其实我就是用 Claude Code，然后用官方的 Opus 5.5 模型执行 loop 就可以了。 我会并行执行图里的 3 个 loop，然后每晚抽一点时间铲铲屎（主要是 UI/UX 的问题），然后就没活儿了。")
 
 另一场分享来自 Lauren Tan，标题是「i shipped 2000 PRs last month」。我听完这场分享，更关注的是怎样组织工作：像经营餐厅一样，安排厨师、改善流程，而不是自己始终下场做每一道菜。
 
