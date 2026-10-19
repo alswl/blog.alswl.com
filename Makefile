@@ -1,110 +1,73 @@
-SHELL := /bin/bash
-SED=$(shell which gsed || which sed)
-HUGO := hugo
-PUBLIC_FOLDER := public/
-UPDATE_FOLDER := static/images/
-# CP is ( in bash, solution from https://stackoverflow.com/a/40751291
-CP := (
+PYTHON ?= python3
+BLOG := $(PYTHON) -B -m scripts
+.DEFAULT_GOAL := help
 
-QSHELL := qshell
-BUCKET = blog-alswl-com-202210
-CDN_HOST = https://e25ba8-log4d-c.dijingchao.com
-SITEMAP_URL = https://blog.alswl.com/sitemap.xml
+export BLOG_POST_NAME = $(name)
+export BLOG_POST = $(post)
+export BLOG_VERIFY_URL = $(url)
+ifneq ($(base),)
+export CHANGED_FILES_BASE = $(base)
+endif
 
-.PHONY: build-production
-build-production: check-hugo-version
-	HUGO_ENV=production $(HUGO)
+.PHONY: help init-theme install-git-hooks check-tools new-post preview-site fetch-banner-metadata format-markdown resize-images check-content build-site upload-images warm-cdn-images verify-publication build-cdn-site test-toolchain clean-build build-production resize-images-in-git-workdir
 
-.PHONY: serve
-serve: check-hugo-version
-	$(HUGO) serve -D
+help: ## 显示命令、处理范围和副作用
+	@awk 'BEGIN {FS = ":.*## "} /^##@/ {printf "\n%s\n", substr($$0, 5)} /^[a-zA-Z0-9_-]+:.*## / {printf "  make %-24s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-.PHONY: clean
-clean:
-	rm -rf $(PUBLIC_FOLDER) .hugo_build.lock
+##@ 环境
+init-theme: ## 下载或更新主题 submodule 到仓库记录的提交
+	git submodule sync -- themes/hugo-PaperMod
+	git submodule update --init -- themes/hugo-PaperMod
 
-# 只警告不阻断：本地 hugo 由 homebrew 管理，硬拦会挡住写作
-.PHONY: check-hugo-version
-check-hugo-version:
-	@want=$$(cat .hugo-version); \
-	got=$$($(HUGO) version | sed -E 's/.*hugo v([0-9.]+).*/\1/'); \
-	if [ "$$want" != "$$got" ]; then \
-		echo "警告: 本地 hugo $$got 与 .hugo-version ($$want) 不一致，本地预览可能与线上有差异"; \
-	fi
+install-git-hooks: ## 安装提交与推送检查钩子，需要已安装 lefthook
+	lefthook install
 
-# 门禁，必须保持绿色（CI 与 pre-push 跑它）
-.PHONY: check
-check: check-changed
-	python3 hack/find-unused-images.py
+check-tools: ## 只读：显示 Hugo、Prettier 等依赖的实际版本和路径
+	@$(BLOG) doctor
 
-# 增量：历史存量会让全量门禁必然失败，存量用 make audit 单独看
-.PHONY: check-changed
-check-changed:
-	@files=$$(bash ./hack/changed-files.sh); \
-	md=$$(echo "$$files" | grep '\.md$$' || true); \
-	img=$$(echo "$$files" | grep -E '^static/images/.*\.(png|jpg|jpeg|gif|webp)$$' || true); \
-	rc=0; \
-	if [ -n "$$md" ]; then \
-		bash ./hack/format.sh --check $$md || rc=1; \
-		bash ./hack/find-remote-images.sh $$md || rc=1; \
-	else \
-		echo "本次没有改动 Markdown"; \
-	fi; \
-	if [ -n "$$img" ]; then \
-		bash ./hack/check-image-size.sh $$img || rc=1; \
-	else \
-		echo "本次没有改动图片"; \
-	fi; \
-	exit $$rc
+##@ 写文章
+new-post: ## 新建草稿：name=YYYY-MM-DD-slug.md，写入 content/posts/
+	@$(BLOG) new
 
-.PHONY: format
-format:
-	@md=$$(bash ./hack/changed-files.sh | grep '\.md$$' || true); \
-	if [ -n "$$md" ]; then bash ./hack/format.sh $$md; else echo "本次没有改动 Markdown"; fi
+preview-site: ## 启动本地预览服务器，包含草稿
+	@$(BLOG) serve
 
-# 全量存量报告，预期是红的，所以不作为门禁
-.PHONY: audit
-audit:
-	-bash ./hack/find-remote-images.sh
-	-bash ./hack/check-image-size.sh
-	-python3 hack/find-unused-images.py
+fetch-banner-metadata: ## 联网抓取卡片图片与描述，修改文章：post=content/posts/…
+	@$(BLOG) enrich
 
+##@ 提交前（本次修改包含已暂存、未暂存和未跟踪文件）
+format-markdown: ## 修改本次 Markdown 的格式，不自动暂存
+	@$(BLOG) format-markdown
 
-# no need any more, use cdn upstrem mirror
-# cdn -> blog-assets.alswl.com -> raw.githubusercontent.com
-.PHONY: sync-images
-sync-images:
-	echo "Copying files to server..."
-	#$(QSHELL) qupload2 --log-level=info --thread-count=10 --rescan-local=true --check-exists --check-size --src-dir=$(shell pwd)/$(UPDATE_FOLDER) --bucket=$(BUCKET)
-	aws s3 sync \
-		--endpoint-url https://s3-cn-east-2.qiniucs.com \
-		--exclude ".*" \
-		--exclude "*/.*" \
-		./$(UPDATE_FOLDER) s3://blog-alswl-com-202210/
+resize-images: ## 修改本次配图，缩到 1000×1000 以内，不自动暂存
+	@$(BLOG) resize-images
 
-.PHONY: cdn
-cdn:
-	# public/404.html is works as appendix, just like and 1=1 in sql
-	@$(SED) -i 's#src="/images/#src="$(CDN_HOST)/#g' $(shell grep -Rl 'src="/images/' public) public/404.html
-	@$(SED) -i 's#href="/images/#href="$(CDN_HOST)/#g' $(shell grep -Rl 'href="/images/' public) public/404.html
-	
-	@$(SED) -E -i 's#!\[([^]]+)\]\(/images/#!\[\1]\($(CDN_HOST)/#g' $(shell grep -RlE '!\[.+\]\$(CP)\/images\/' public) public/404.html
+check-content: ## 只读：检查本次格式、远端图片、尺寸，以及全量无用图片
+	@$(BLOG) check-content
 
-	# curl --silent "http://www.google.com/ping?sitemap=$(SITEMAP_URL)"
-	# curl --silent "http://www.bing.com/webmaster/ping.aspx?siteMap=$(SITEMAP_URL)"
-	@echo done
+build-site: ## 用生产配置生成 public/，成功后替换旧产物
+	@$(BLOG) build-site
 
-.PHONY: new
-name = $(shell date +%Y-%m-%d)-new.md
-new:
-	$(HUGO) new "posts/$(name)" && open "content/posts/$(name)"
+##@ 发布图片与验收
+upload-images: ## 上传 static/images/ 到对象存储，不删除远端文件，需要凭据
+	@$(BLOG) sync-images
 
-.PHONY: find-remote-images
-find-remote-images:
-	bash ./hack/find-remote-images.sh
+warm-cdn-images: ## curl GET 本次发布的 CDN 图片：base=<发布前提交>
+	@$(BLOG) warm-images
 
+verify-publication: ## 只读：重试验收文章页与 CDN 图片：base=<发布前提交> [url=…]
+	@$(BLOG) verify
 
-.PHONY: resize-images-in-git-workdir
-resize-images-in-git-workdir:
-	@echo resize images in git worktree;
-	bash ./hack/resize-images-in-git-workdir.sh
+##@ 维护与 CI
+build-cdn-site: ## 仅 CI：构建 .cache/publish/ 并替换图片 CDN 地址，不执行部署
+	@$(BLOG) build-publication
+
+test-toolchain: ## 运行 scripts/ 的回归测试
+	@$(BLOG) test
+
+clean-build: ## 删除 public/、.cache/publish/ 和 Hugo 构建锁
+	@$(BLOG) clean
+
+# Preserve commands used before this refactor; keep them out of daily help.
+build-production: build-site
+resize-images-in-git-workdir: resize-images

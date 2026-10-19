@@ -1,42 +1,81 @@
 name: CI
 
-on: push
+on:
+  push:
+    branches-ignore:
+      - gh-pages
 
 jobs:
   build:
     runs-on: ubuntu-22.04
+    concurrency:
+      group: pages-${{ github.ref }}
+      cancel-in-progress: true
     permissions:
       contents: write
+    env:
+      CHANGED_FILES_BASE: ${{ github.event.before }}
     steps:
       - uses: actions/checkout@v7
         with:
-          submodules: true # Fetch Hugo themes (true OR recursive)
-          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+          submodules: true
+          fetch-depth: 0
 
-      - name: Read Hugo version
-        id: hugo-version
-        run: echo "version=$(cat .hugo-version)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
-      - name: Setup Hugo
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install latest Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          # 站点无 .scss、无 ToCSS，assets/ 全是纯 CSS，不需要 extended
-          hugo-version: ${{ steps.hugo-version.outputs.version }}
+          hugo-version: 'latest'
 
-      - name: Check unused images
-        run: python3 hack/find-unused-images.py
+      - name: Install latest Prettier
+        run: npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund prettier@latest
 
-      - name: Check changed files
-        env:
-          CHANGED_FILES_BASE: ${{ github.event.before }}
-        run: make check-changed
+      - name: Install image tools
+        run: |
+          if ! command -v identify >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y imagemagick
+          fi
 
-      - name: Build
-        run: make build-production cdn
+      - name: Report installed tools
+        run: make check-tools
+
+      - name: Toolchain regression tests
+        run: make test-toolchain
+
+      - name: Check pushed changes and unused images
+        run: python3 -B -m scripts check-content --scope push
+
+      - name: Build publication artifacts
+        run: make build-cdn-site
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/master'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: .cache/publish
+
+      - name: Warm changed CDN images
+        id: warmup
+        if: github.ref == 'refs/heads/master'
+        continue-on-error: true
+        timeout-minutes: 10
+        run: make warm-cdn-images
+
+      - name: Verify publication
+        id: verify
+        if: github.ref == 'refs/heads/master'
+        continue-on-error: true
+        run: make verify-publication
+
+      - name: Report propagation delay
+        if: github.ref == 'refs/heads/master' && (steps.warmup.outcome == 'failure' || steps.verify.outcome == 'failure')
+        run: echo '::warning::发布已提交，但 CDN 回源请求或验收尚未全部成功；请按日志时间戳检查页面传播、图片同步及 CDN 响应。'

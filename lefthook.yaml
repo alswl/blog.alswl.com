@@ -1,11 +1,11 @@
-# Lefthook configuration for blog.alswl.com
-
+# Hooks inspect Git snapshots. Formatting and resizing are explicit author actions.
 pre-commit:
   commands:
-    format:
-      run: bash hack/format.sh {staged_files}
+    check-staged:
+      run: python3 -B -m scripts hook pre-commit
 
 pre-push:
   commands:
-    check-changed:
-      run: make check-changed
+    check-push:
+      run: python3 -B -m scripts hook pre-push
+      use_stdin: true

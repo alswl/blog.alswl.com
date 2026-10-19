@@ -1,21 +1,169 @@
 # 站点维护
 
-本页面向博客维护者，也供作者在发布前查询检查流程。
-命令与实现以 [Makefile](../../Makefile)、[hack/](../../hack/)
-和 [CI 配置](../../.github/workflows/ci.yml)为准。
+日常入口是 `make help`。作者不需要记住脚本名、依赖安装路径或文件列表参数。
+Makefile 每个目标列明动作、范围和副作用；`make help` 直接从这些说明生成。
+具体实现集中在 [scripts/](../../scripts/)。
 
-## 本地工具
+仓库按 Hugo 内容站点组织：`content/` 写文章，`static/` 放资源，`layouts/` 和 `assets/`
+维护页面；`scripts/` 放内部自动化实现，`tests/` 放回归测试，`.github/workflows/` 负责 CI。
+作者从 Makefile 调用命令，维护者在 scripts 内按职责修改实现。
+工具链精简的验证依据见[消融记录](toolchain-ablation.md)。
 
-- Hugo 版本由 [.hugo-version](../../.hugo-version)指定，当前为 `0.148.2`。
-  本地版本不一致时，`make` 会警告，但不阻断预览或构建。
-- Prettier 版本由 [.prettier-version](../../.prettier-version)指定，当前为 `3.9.6`。
-  格式脚本通过 `npx` 调用该版本，需要 Node.js/npm。
-- 检查使用 Python 3 和 Bash。缩图需要 ImageMagick 7 的 `magick`。
-- 图片对象存储同步使用 AWS CLI，需要已配置的访问凭据。
+## 安装与诊断
 
-版本文件是唯一来源。Prettier 配置见 [.prettierrc](../../.prettierrc)，不要因上游发版重排历史文章。
+需要 Git、Python 3.10+、Hugo、Node.js/npm 和 ImageMagick。
+macOS 可使用系统包管理器安装：
 
-## Hugo 升级约束
+```bash
+brew install hugo node imagemagick
+npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund prettier@latest
+make init-theme
+make check-tools
+```
+
+Linux 使用包管理器安装 Node.js 和 ImageMagick，Hugo 按[官方安装说明](https://gohugo.io/installation/)
+安装。Prettier 安装到仓库的 `node_modules/`，已被 Git 忽略；也支持 PATH 中已有的 Prettier。
+Hugo 直接使用 PATH 中的程序。本地不要求与 CI 精确同版，不自动下载或升级工具。
+`make check-tools` 显示实际使用的路径和版本；出现差异时可据此排查。
+Prettier 配置见 [.prettierrc](../../.prettierrc)，不要重排历史文章。
+
+Git hooks 可选，安装 lefthook 后运行 `make install-git-hooks`；图片同步使用 AWS CLI
+和已配置的访问凭据。主题初始化、安装 hooks 和依赖安装分别执行，没有组合 setup 命令。
+
+浏览器端依赖也使用精确版本：Waline `2.15.8`、Mermaid `11.17.2`，分别在对应 partial 的
+import URL 中声明。它们是 2026-10-19 查询原有 `@v2`、`@11` 别名时实际返回的版本。
+
+## 作者日常流程
+
+```bash
+make format-markdown  # 格式化本次修改的 Markdown
+make resize-images    # 将本次修改的图片缩到 1000×1000 以内
+make check-content    # 检查内容格式、远端图片、尺寸和全量无用图片
+make build-site       # 生产构建至 public/
+```
+
+检查后照常 `git add`、`git commit`、`git push`。
+格式化和缩图都只修改工作区，不自动暂存内容。
+若图片已暂存，缩图后需要重新暂存；`make format-markdown` 和 `make resize-images` 可单独运行。
+旧命令 `make build-production`、`make resize-images-in-git-workdir` 保留为别名。
+
+`make build-site` 先构建到临时目录，成功后替换 `public/`，防止旧文章和旧哈希资源残留。
+失败时保留上次成功产物。`make clean-build` 清理构建产物。
+不要手工编辑或提交 `public/`。
+
+## 检查范围
+
+所有入口使用同一套文件范围计算；文件名通过 Git 的 NUL 分隔输出传递，支持空格和重命名。
+
+| 入口                                          | 检查的内容                                       | 是否修改内容  |
+| --------------------------------------------- | ------------------------------------------------ | ------------- |
+| `make format-markdown` / `make resize-images` | 未提交修改，包含暂存、未暂存及未跟踪文件         | 格式化 / 缩图 |
+| `make check-content`                          | 未提交修改，加全量无用图片检查                   | 否            |
+| pre-commit                                    | 暂存快照中的本次文件，不读取未暂存草稿           | 否            |
+| pre-push                                      | 实际推送提交与远端提交的差异，加全量无用图片检查 | 否            |
+| CI                                            | 推送前后提交的差异，加全量无用图片检查           | 否            |
+
+格式、远端图片和尺寸检查只覆盖选定范围。历史未格式化文章、超规格图片和远端引用
+不批量修复。无用图片检查保留全量执行及历史目录豁免，按路径识别图片，兼容
+`upload_dropbox/YYYYMM/` 对应的两种旧目录布局。
+
+远端图片检查覆盖 Markdown 内联、引用式图片、HTML 图片和封面字段；跳过围栏与行内代码。
+尺寸检查验证所有帧，损坏图片会报错。缩图先写临时文件，成功后才替换原图。
+
+提交钩子检查暂存快照，不自动格式化或 `git add`。部分暂存的文章不会混入草稿；
+格式失败时运行 `make format-markdown`，检查并重新选择要暂存的修改。
+pre-push 通过 [lefthook 的 stdin 支持](https://lefthook.dev/configuration/use_stdin/)
+读取实际推送的引用，不假定推送的一定是当前分支。删除分支和 `gh-pages` 不进行内容检查。
+
+首次推送新分支以 `origin/master` 的共同祖先为基线；没有基线的新仓库检查整个提交。
+指定的基线不可用时明确报错，不静默跳过检查。
+需要显式选择范围时使用统一入口：
+
+```bash
+python3 -m scripts check-content --changed-only  # 跳过全量无用图片检查
+python3 -m scripts check-content --scope all     # 全量历史检查，预期有存量问题
+python3 -m scripts check-content --scope staged
+python3 -m scripts check-content --scope push --base <commit>
+```
+
+## CI 与发布
+
+[CI](../../.github/workflows/ci.yml) 安装最新稳定版 Hugo 和最新 Prettier，输出工具版本，
+执行回归测试、本次推送检查和发布构建。同一分支的新任务取消旧任务。
+Hugo 使用 [actions-hugo 的 latest 选项](https://github.com/peaceiris/actions-hugo#%EF%B8%8F-use-the-latest-version-of-hugo)，
+Prettier 使用 npm 的 latest 标签；不缓存旧工具安装目录。
+本地与 CI 共享检查和构建实现，允许版本存在差异。
+
+发布配置集中在 [scripts/publishing.json](../../scripts/publishing.json)：CDN URL、
+对象存储 endpoint 和 bucket。站点 URL 由 Hugo 读取 `config.yaml` 的 `baseURL`，不重复配置。
+配置中不保存凭据。
+
+CI 专用发布构建命令：
+
+```bash
+make build-cdn-site
+```
+
+该命令先运行 Hugo，再在独立临时产物中转换 CDN 地址，完成后生成 `.cache/publish/`。
+转换覆盖 HTML、订阅输出、Markdown 导出和链接卡片图片；不会修改本地 `public/`。
+`master` 构建成功后发布到 GitHub Pages，其他分支只构建。
+旧的独立 `make cdn` 命令已移除；不再用 `grep`/`sed` 修改已生成的本地产物。
+
+## 图片同步与发布验收
+
+图片同步仍是显式操作，需要时运行：
+
+```bash
+make upload-images
+```
+
+命令将 `static/images/` 同步到配置中的对象存储，不删除远端对象。
+CI 不持有或自动配置对象存储上传凭据。
+
+`master` 发布成功后，CI 自动运行 `make warm-cdn-images`，对本次新增或修改的 CDN 图片
+逐个执行 `curl --fail --location --silent --show-error --max-time 30 --output /dev/null`。
+使用 GET 下载正文并丢弃，包含 Banner 图片和 SVG；没有图片改动则跳过。
+请求失败会报错并继续请求其他图片，最后汇总退出状态，CI 报告警告。
+不需要 CDN 密钥或管理 API；发布验收由后续 `make verify-publication` 独立负责并重试。
+
+GET 在缓存未命中时触发所经节点回源，命中已有缓存时不强制刷新，也不代表全网预热。
+已有 URL 内容变更时需单独刷新缓存，或改用新文件名。
+
+手动针对某次发布执行相同行为：
+
+```bash
+make warm-cdn-images base=<发布前提交>
+```
+
+发布后同时验收本次文章页和 CDN 图片，指定发布前提交作为基线：
+
+```bash
+make verify-publication base=<发布前提交>
+make verify-publication base=<发布前提交> url=https://blog.alswl.com/2026/10/example/
+```
+
+文章 URL 由已安装的 Hugo 的已发布内容清单取得，跳过草稿。
+工具记录每次观测的 UTC 时间，默认尝试 4 次，间隔 15 秒；没有文章或图片改动时检查首页。
+CI 的回源步骤之后也运行相同验收。窗口结束仍未就绪时给出警告，与部署上传步骤失败分开报告。
+首次图片 404 可能是同步或 CDN 传播延迟，不凭一次 404 宣布发布失败。
+若显式同步报认证或上传错误，如实报告，由负责人判断是否已有其他同步在传播。
+
+## 工具链维护
+
+实现分为五个职责：
+
+- [cli.py](../../scripts/cli.py)：命令调度与作者提示。
+- [git.py](../../scripts/git.py)：范围计算、暂存及推送快照。
+- [runtime.py](../../scripts/runtime.py)：已安装工具查找与系统依赖。
+- [images.py](../../scripts/images.py)：图片引用、门禁和缩图。
+- [publishing.py](../../scripts/publishing.py)：发布产物转换和验收。
+
+链接卡片抓取是 [banners.py](../../scripts/banners.py)，通过 `make fetch-banner-metadata post=...` 调用。
+Python 工具只使用标准库，不需要 pip、虚拟环境或额外 Python 包管理器。
+修改工具链后运行 `make test-toolchain`、`make check-content` 和 `make build-site`。
+回归测试见 [tests/test_blog_tools.py](../../tests/test_blog_tools.py)。
+
+## Hugo 升级行为
 
 仓库已记录的 0.148.2 → 0.166.0 实验会改变线上产物。
 `config.yaml` 中的 `languageCode: zh` 在 Hugo 0.158.0 起被弃用，
@@ -28,75 +176,8 @@
 
 若想升级并保持上述行为，需要将 `languageCode` 改为 `en`，并显式设置
 `privacy.googleAnalytics.respectDoNotTrack: false`。但这又会使 `og:locale`
-从 `zh` 变为 `en`，无法同时保留这些行为。当前选择是先不升级。
-
-## 发布前检查
-
-1. 格式化本次改动的 Markdown：
-
-   ```bash
-   make format
-   ```
-
-2. 运行门禁：
-
-   ```bash
-   make check
-   ```
-
-3. 构建生产产物：
-
-   ```bash
-   make build-production
-   ```
-
-检查完成后，在本地预览中核对文章和图片，再提交改动。
-`make clean` 会删除 `public/` 和 `.hugo_build.lock`。
-
-`make check` 包含 `make check-changed` 和全量无用图片检查。
-只需快速检查本次改动时，单独运行 `make check-changed`。
-日常格式、远端图片和尺寸检查只作用于本次改动。
-[changed-files.sh](../../hack/changed-files.sh)计算改动范围，包含工作区未提交文件。
-历史文章存在未格式化内容、超规格图片和远端图片引用，不要为通过门禁批量修复。
-
-无用图片检查是例外：`hack/find-unused-images.py` 通过 `EXCLUDE_DIRS` 排除历史目录，
-仍需全量执行。`make audit` 用于全量存量报告，预期有历史问题，不作为门禁。
-
-## 提交与 CI
-
-[lefthook](../../lefthook.yaml) 的 pre-commit 对暂存的 Markdown 运行格式化，
-并检查非 ASCII 文件名。pre-push 运行 `make check-changed`。
-改完 Markdown 可以直接提交，pre-commit 会处理格式。
-
-每次 push 后，GitHub Actions 依次运行无用图片检查、本次改动检查和构建。
-`master` 分支构建成功后发布到 GitHub Pages。
-
-## 图片同步与发布验收
-
-图片缩放与暂存顺序见[添加图片](../guide/writing.md#添加图片)。
-需要同步对象存储时运行：
-
-```bash
-make sync-images
-```
-
-命令将 `static/images/` 同步到对象存储。
-CI 在构建后运行 `make cdn`，将产物的 `/images/` 前缀改为
-`https://e25ba8-log4d-c.dijingchao.com`。只在 CI 里运行该命令，
-不要在本地对 `public/` 手工执行。
-
-发布后同时检查文章页和 CDN 图片。首次图片 404 可能只是对象同步或 CDN 传播延迟。
-记录观测时点，区分持续失败与正常延迟，不要仅凭一次探测宣布发布失败。
-若同步命令报认证或上传错误，如实报告，由负责人判断是否已有其他同步在传播。
-
-## 维护入口
-
-- [Makefile](../../Makefile)：命令定义。
-- [hack/](../../hack/)：检查、缩图与元数据抓取脚本。
-- [layouts/](../../layouts/)：主题模板覆盖。
-- [AGENTS.md](../../AGENTS.md)：agent 执行规则。
-
-主题通过 `themes/hugo-PaperMod` submodule 维护。
-`public/` 是被 Git 忽略的构建产物，不要手工编辑或提交。
+从 `zh` 变为 `en`，无法同时保留这些行为。此前选择暂不升级。2026-10-19 用户调整策略为 CI 跟随最新版，本地允许版本差异，
+因此不再为保持旧产物而锁定 0.148.2。保留 `languageCode: zh`，接受上述本地化与默认行为变化，
+不以改成英文规避升级。历史归档月份深链可能发生变化，旧实验仍作为行为记录保留。
 
 返回[文档首页](../README.md)。

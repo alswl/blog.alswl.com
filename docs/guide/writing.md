@@ -1,6 +1,7 @@
 # 写文章与配图
 
-本页面向日常写稿的作者。需要本地可运行的 Hugo 和主题 submodule。
+本页面向日常写稿的作者。首次按[站点维护](../dev/README.md#安装与诊断)安装依赖，运行 `make init-theme` 初始化主题；
+遇到环境问题运行 `make check-tools`，命令概览见 `make help`。
 工具版本与检查依赖见[站点维护](../dev/README.md)。
 
 ## 新建与预览
@@ -8,17 +9,17 @@
 1. 在仓库根目录创建文章，将示例名称替换为实际日期和 slug：
 
    ```bash
-   make new name=YYYY-MM-DD-x.md
+   make new-post name=YYYY-MM-DD-x.md
    ```
 
-   命令使用 `archetypes/posts.md` 创建 `content/posts/` 下的文件，并尝试打开编辑器。
+   命令使用 `archetypes/posts.md` 创建 `content/posts/` 下的文件。
    新文章默认带有 `draft: true`。
 
 2. 编辑文章的 frontmatter 和正文。
 3. 启动包含草稿的本地预览：
 
    ```bash
-   make serve
+   make preview-site
    ```
 
 4. 在 Hugo 输出的本地地址检查文章与图片。
@@ -56,17 +57,19 @@ tags: ["tag1", "tag2"]
 
 1. 将图片放入对应月份目录。
 2. 在文章中添加图片引用。
-3. 在暂存图片前运行缩图命令：
+3. 在暂存前准备文章和图片：
 
    ```bash
-   make resize-images-in-git-workdir
+   make format-markdown
+   make resize-images
    ```
 
-   命令需要 ImageMagick 7 的 `magick`，将工作区新增或修改的图片缩到 1000×1000 以内。
+   命令格式化本次 Markdown，并通过 ImageMagick 将工作区新增或修改的图片缩到 1000×1000 以内。
+   只需缩图可运行 `make resize-images`，旧命令 `make resize-images-in-git-workdir` 仍可使用。
    未跟踪图片也会处理。若意外显示「已处理 0 张图片」，先检查 `git status --short`
    和图片路径，确认原因后再继续，不要直接用手工 `sips` 绕过。
 
-4. 检查图片后暂存文章与图片。
+4. 运行 `make check-content` 并在本地预览中检查文章与图片，再暂存文章与图片。
 
 若缩图发生在 `git add` 之后，必须重新暂存图片，避免 index 留下未缩放版本。
 历史文章的 `../../static/images/...` 路径由渲染模板兼容，不要批量改写。
