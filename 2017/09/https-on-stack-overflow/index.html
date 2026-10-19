@@ -27,7 +27,7 @@
 今天，我们默认在 Stack Overflow 上部署了 HTTPS。目前所有的流量都将跳转到 https:// 上。与此同时，Google 链接也会在接下去的几周内更改。启用的过程本身只是举手之劳，但在此之前我们却花了好几年的时间。到目前为止，HTTPS 在我们所有的 Q&amp;A 网站上都默认启用了。">
 <meta name="author" content="罗晟, alswl">
 <link rel="canonical" href="https://blog.alswl.com/2017/09/https-on-stack-overflow/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.32a704646448b3fce593e6753b136a11323537e9a22450128e8d45b57c1848db.css" integrity="sha256-MqcEZGRIs/zlk&#43;Z1OxNqETI1N&#43;miJFASjo1FtXwYSNs=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4fef53c66d8b82475b2011d95b5b546036c4734e4b5492a58d45ebbc8018055e.css" integrity="sha256-T&#43;9Txm2LgkdbIBHZW1tUYDbEc05LVJKljUXrvIAYBV4=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -652,7 +652,7 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 <h3 id="fastly">Fastly<a hidden class="anchor" aria-hidden="true" href="#fastly">#</a></h3>
 <p>我们最近才迁到 <a href="https://www.fastly.com/">Fastly</a>，因为我们在讲 CDN/代理层，我也会顺带一提。由于很多技术工作在 Cloudflare 那边已经完成，所以迁移本身并没有什么值得说的。大家会更感兴趣的是：为什么迁移？毕竟 Cloudflare 在各方面是不错的：丰富的数据中心、稳定的带宽价格、包含 DNS 服务。答案是：它不再是我们最佳的选择了。Flastly 提供了一些我们更为看中的特性：灵活的终端节点控制能力、配置快速分发、自动配置分发。并不是说 Cloudflare 不行，只是它不再适合 Stack Overflow 了。</p>
 <p>事实胜于雄辩：如果我不认可 Cloudflare，我的私人博客不可能选择它，嘿，就是这个博客，你现在正在阅读的。</p>
-<p>Fastly 吸引我们的主要功能是提供了 <a href="https://en.wikipedia.org/wiki/Varnish_(software)">Varnish</a> 和 <a href="https://docs.fastly.com/guides/vcl/">VCL</a>。这提供了高度的终端可定制性。有些功能吧，Cloudfalre 无法快速提供（因为他们是通用化的，会影响所有用户），在 Fastly 我们可以自己做。这是这两家架构上的差异，这种「代码级别高可配置」对于我们很适用。同时，我们也很喜欢他们在沟通、基础设施的开放性。</p>
+<p>Fastly 吸引我们的主要功能是提供了 <a href="https://en.wikipedia.org/wiki/Varnish_%28software%29">Varnish</a> 和 <a href="https://docs.fastly.com/guides/vcl/">VCL</a>。这提供了高度的终端可定制性。有些功能吧，Cloudfalre 无法快速提供（因为他们是通用化的，会影响所有用户），在 Fastly 我们可以自己做。这是这两家架构上的差异，这种「代码级别高可配置」对于我们很适用。同时，我们也很喜欢他们在沟通、基础设施的开放性。</p>
 <p>我来展示一个 VCL 好用在哪里的例子。最近我们遇到 .NET 4.6.2 的一个<a href="https://github.com/Microsoft/dotnet/issues/330">超恶心 bug</a>，它会导致 max-age 有超过 2000 年的缓存时间。快速解决方法是在终端节点上有需要的时候去覆盖掉这个头部，当我写这篇文章的时候，这个 VCL 配置是这样的：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">sub</span> <span class="s">vcl_fetch</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kn">if</span> <span class="s">(beresp.http.Cache-Control)</span> <span class="p">{</span>
@@ -1074,7 +1074,7 @@ END)
 <p>以 meta 为例，如果我们在 HSTS 头里加入 <code>includeSubDomains</code> 指令，那么网上所有指向旧域名的链接都会踩坑。它们本该跳到一个 <code>http:///</code> 站点上（现在是这样的），一旦改了就会变成一个非法证书错误。昨天我们看了一下流量日志，每天仍有 8 万次访问的是通过 301 跳到 meta 子域上的。这里有很多是爬虫，但还是有不少人为的流量是从博客或者收藏夹过来的……而有些爬虫真的很蠢，从来不根据 301 来更新他们的信息。嗯，你还在看这篇文章？我自己写着写着都已经睡着 3 次了。</p>
 <p>我们该怎么办呢？我们是否要启用 SAN 证书，加入几百个域名，然后调整我们的基础架构使得 301 跳转也严格遵守 HTTPS 呢？如果要通过 Fastly 来做的话就会提升我们的成本（需要更多 IP、证书等等）。<a href="https://letsencrypt.org/">Let’s Encrypt</a> <em>倒是</em>真的能帮上点忙。获取证书的成本比较低，如果你不考虑设置及维护的人力成本的话（因为我们由于<a href="#certificates">上文所述</a>内容并没有在使用它).</p>
 <p>还有一块是上古遗留问题：我们内部的域名是 <code>ds.stackexchange.com</code>。为什么是 <code>ds.</code>？我不确定。我猜可能是我们不知道怎么拼 data center 这个词。这意味着 <code>includeSubDomains</code> 会自动包含<em>所有内部终端</em>。虽然我们大部分都已经上了 <code>https://</code> ，但是如果什么都走 HTTPS 会导致一些问题，也会带来一定延时。不是说我们不想在内部也用 <code>https://</code>，只不过这是一个整体的项目（大部分是证书分发和维护，还有多级证书），我们不想增加耦合。那为什么不改一下内部域名呢？主要还是时间问题，这一动迁需要大量的时间和协调。</p>
-<p>目前，我们将 HSTS 的 <code>max-age</code> 设为两年，并且<strong>不包括</strong> <code>includeSubDomains</code>。除非迫不得以，我不会从代码里移除这个设定，因为它太危险了。一旦我们把所有 Q&amp;A 站点的 HSTS 时间都设置好之后，我们会和 Google 聊一下是不是能在不加 <code>includeSubDomains</code> 的情况下把我们加进 HSTS 列表中，至少我们会试试看。你可以看到，虽然很罕见，但<a href="https://chromium.googlesource.com/chromium/src/net/+/master/http/transport_security_state_static.json">目前的这份列表中</a>还是出现了这种情况的。希望从加强 Stack Overflow 安全性的角度，他们能同意这一点。</p>
+<p>目前，我们将 HSTS 的 <code>max-age</code> 设为两年，并且<strong>不包括</strong> <code>includeSubDomains</code>。除非迫不得以，我不会从代码里移除这个设定，因为它太危险了。一旦我们把所有 Q&amp;A 站点的 HSTS 时间都设置好之后，我们会和 Google 聊一下是不是能在不加 <code>includeSubDomains</code> 的情况下把我们加进 HSTS 列表中，至少我们会试试看。你可以看到，虽然很罕见，但<a href="https://chromium.googlesource.com/chromium/src/net/&#43;/master/http/transport_security_state_static.json">目前的这份列表中</a>还是出现了这种情况的。希望从加强 Stack Overflow 安全性的角度，他们能同意这一点。</p>
 <p>聊天</p>
 <p>为了尽快启用 <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#Secure_and_HttpOnly_cookies"><code>安全</code> cookie</a>（仅在 HTTPS 下发送），我们会将聊天（<a href="https://chat.stackoverflow.com/">chat.stackoverflow.com</a>、[<a href="http://chat.stackexchange.com/">chat.stackexchange.com</a>及 <a href="https://chat.meta.stackexchange.com/">chat.meta.stackexchange.com</a>）跳转至 <code>https://</code>。 正如我们的通用登录所做的那样，聊天会依赖于二级域名下的 cookie。如果 cookie 仅在 <code>https://</code> 下发送，你就只能在 <code>https://</code> 下登录。</p>
 <p>这一块有待斟酌，但其实在有混合内容的情况下将聊天迁至 <code>https://</code> 是一件好事。我们的网络更加安全了，而我们也可以处理实时聊天中的混合内容。希望这个能在接下去的一两周之内实施，这在我的计划之中。</p>
