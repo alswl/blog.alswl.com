@@ -80,6 +80,10 @@
 
 图 4：先判断反馈是否相关，再投入后续处理。
 
+Yetone 也分享了一个持续运行的例子：用 Claude Code 和 Opus 5.5 并行跑三个 loop，每晚集中处理积累的问题，主要是 UI/UX。
+
+[Yetone on X：并行运行 3 个 loop](https://x.com/yetone/status/2109855710444237018 "!banner 使用 Claude Code 和 Opus 5.5 并行运行三个 loop，每晚抽时间处理积累的问题，主要是 UI/UX。")
+
 另一场分享来自 Lauren Tan，标题是「i shipped 2000 PRs last month」。我听完这场分享，更关注的是怎样组织工作：像经营餐厅一样，安排厨师、改善流程，而不是自己始终下场做每一道菜。
 
 ![Lauren Tan 分享截图：i shipped 2000 PRs last month](https://e25ba8-log4d-c.dijingchao.com/202610/lauren-tan-2000-prs-talk.png)
