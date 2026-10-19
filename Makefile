@@ -9,13 +9,17 @@ ifneq ($(base),)
 export CHANGED_FILES_BASE = $(base)
 endif
 
-.PHONY: help setup doctor new serve prepare format resize check check-changed audit build enrich sync-images warm-images verify clean test build-production resize-images-in-git-workdir
+.PHONY: help doctor init-theme install-hooks new serve format-markdown resize-images check-content check-changed-content audit-content build-site build-publication enrich sync-images warm-images verify clean test build-production resize-images-in-git-workdir
 
-help:
-	@$(BLOG) help
-
-setup doctor serve prepare format resize check clean test sync-images warm-images:
+help doctor serve format-markdown resize-images check-content build-site build-publication clean test sync-images warm-images:
 	@$(BLOG) $@
+
+init-theme:
+	git submodule sync -- themes/hugo-PaperMod
+	git submodule update --init -- themes/hugo-PaperMod
+
+install-hooks:
+	lefthook install
 
 new:
 	@$(BLOG) new
@@ -23,18 +27,15 @@ new:
 enrich:
 	@$(BLOG) enrich
 
-check-changed:
-	@$(BLOG) check --changed-only
+check-changed-content:
+	@$(BLOG) check-content --changed-only
 
-audit:
-	@$(BLOG) check --scope all
-
-build:
-	@$(BLOG) build
+audit-content:
+	@$(BLOG) check-content --scope all
 
 verify:
 	@$(BLOG) verify
 
-# Compatibility with existing author instructions.
-build-production: build
-resize-images-in-git-workdir: resize
+# Compatibility with author commands that predate the toolchain refactor.
+build-production: build-site
+resize-images-in-git-workdir: resize-images

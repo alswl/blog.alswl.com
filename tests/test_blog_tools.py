@@ -84,7 +84,6 @@ class GitFilesTests(unittest.TestCase):
 
     def test_staged_check_ignores_unstaged_remote_image_and_handles_staged_config(self):
         self.write(".prettierrc", "{}")
-        self.write(".prettier-version", "3.9.6")
         self.write("note.md", "![local](/images/202610/a.png)\n")
         self.repo.git("add", "--all")
         self.write("note.md", "![private](https://example.com/private.png)\n")
@@ -457,18 +456,14 @@ class PublicationTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 cli.build(argparse.Namespace(cdn=True), mock.Mock(), mock.Mock())
 
-    def test_tool_version_mismatch_is_not_silently_accepted(self):
+    def test_newer_installed_hugo_is_accepted(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            (root / ".hugo-version").write_text("0.148.2\n")
             binary = root / "hugo"
             binary.write_text("#!/bin/sh\necho 'hugo v0.167.0'\n")
             binary.chmod(0o755)
-            with mock.patch(
-                "scripts.runtime.shutil.which", return_value=str(binary)
-            ):
-                with self.assertRaisesRegex(ValueError, "make setup"):
-                    Tools(root).resolve("hugo")
+            with mock.patch("scripts.runtime.shutil.which", return_value=str(binary)):
+                self.assertEqual(Tools(root).resolve("hugo"), str(binary))
 
 
 class WarmupWorkflowTests(unittest.TestCase):

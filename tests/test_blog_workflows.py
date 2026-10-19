@@ -1,10 +1,7 @@
-"""Offline workflow coverage for installation, banners and CDN artifacts."""
+"""Offline workflow coverage for tool lookup, banners and CDN artifacts."""
 
-import hashlib
 import io
 import json
-import subprocess
-import tarfile
 import tempfile
 import unittest
 from email.message import Message
@@ -15,129 +12,34 @@ from urllib.error import URLError
 from scripts import banners, publishing, runtime
 
 
-class InstallationTests(unittest.TestCase):
-    def fixture(self, root):
-        for name, version in (("hugo", "0.148.2"), ("prettier", "3.9.6")):
-            (root / f".{name}-version").write_text(version)
-        return runtime.Tools(root)
-
-    def executable(self, path, output):
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(f"#!/bin/sh\necho '{output}'\n")
-        path.chmod(0o755)
-
-    def test_empty_cache_installs_pins_then_reuses_them_offline(self):
-        for system, machine, asset in (
-            ("Darwin", "arm64", "darwin-universal"),
-            ("Linux", "x86_64", "linux-amd64"),
-            ("Linux", "aarch64", "linux-arm64"),
-        ):
-            with (
-                self.subTest(platform=asset),
-                tempfile.TemporaryDirectory() as directory,
-            ):
-                tools = self.fixture(Path(directory))
-                payload = b"#!/bin/sh\necho 'hugo v0.148.2'\n"
-                archive = io.BytesIO()
-                with tarfile.open(fileobj=archive, mode="w:gz") as tar:
-                    member = tarfile.TarInfo("hugo")
-                    member.size = len(payload)
-                    tar.addfile(member, io.BytesIO(payload))
-                data = archive.getvalue()
-                name = f"hugo_0.148.2_{asset}.tar.gz"
-
-                def download(url, **kwargs):
-                    if url.endswith("_checksums.txt"):
-                        return io.BytesIO(
-                            f"{hashlib.sha256(data).hexdigest()}  {name}\n".encode()
-                        )
-                    self.assertTrue(url.endswith("/" + name))
-                    return io.BytesIO(data)
-
-                actual_run = subprocess.run
-
-                def run(args, **kwargs):
-                    if args[0] == "npm":
-                        self.assertIn("prettier@3.9.6", args)
-                        self.assertIn("--ignore-scripts", args)
-                        self.executable(tools.candidate("prettier"), "3.9.6")
-                        return subprocess.CompletedProcess(args, 0)
-                    return actual_run(args, **kwargs)
-
-                with (
-                    mock.patch.object(runtime.platform, "system", return_value=system),
-                    mock.patch.object(
-                        runtime.platform, "machine", return_value=machine
-                    ),
-                    mock.patch.object(
-                        runtime.shutil,
-                        "which",
-                        side_effect=lambda name: "npm" if name == "npm" else None,
-                    ),
-                    mock.patch.object(
-                        runtime, "urlopen", side_effect=download
-                    ) as network,
-                    mock.patch.object(
-                        runtime.subprocess, "run", side_effect=run
-                    ) as processes,
-                ):
-                    tools.setup()
-                    self.assertEqual(
-                        tools.resolve("hugo"), str(tools.candidate("hugo"))
-                    )
-                    self.assertEqual(
-                        tools.resolve("prettier"), str(tools.candidate("prettier"))
-                    )
-                    calls = network.call_count
-                    npm_calls = sum(
-                        c.args[0][0] == "npm" for c in processes.call_args_list
-                    )
-                    tools.setup()
-                    self.assertEqual(network.call_count, calls)
-                    self.assertEqual(
-                        sum(c.args[0][0] == "npm" for c in processes.call_args_list),
-                        npm_calls,
-                    )
-                    self.assertEqual(calls, 2)
-                    self.assertEqual(npm_calls, 1)
-
-    def test_checksum_failure_never_replaces_existing_binary(self):
+class ToolResolutionTests(unittest.TestCase):
+    def test_uses_installed_tools_without_version_files(self):
         with tempfile.TemporaryDirectory() as directory:
-            tools = self.fixture(Path(directory))
-            target = tools.candidate("hugo")
-            self.executable(target, "old")
-            before = target.read_bytes()
-            with (
-                mock.patch.object(runtime.platform, "system", return_value="Darwin"),
-                mock.patch.object(
-                    runtime,
-                    "urlopen",
-                    side_effect=[
-                        io.BytesIO(b"corrupted"),
-                        io.BytesIO(b"bad  hugo_0.148.2_darwin-universal.tar.gz"),
-                    ],
-                ),
+            tools = runtime.Tools(Path(directory))
+            with mock.patch.object(
+                runtime.shutil, "which", return_value="/usr/bin/hugo"
             ):
-                with self.assertRaisesRegex(ValueError, "校验失败"):
-                    tools.install_hugo(target)
-            self.assertEqual(target.read_bytes(), before)
+                self.assertEqual(tools.resolve("hugo"), "/usr/bin/hugo")
 
-    def test_matching_system_tools_require_no_install(self):
+    def test_local_prettier_precedes_global_install(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            tools = self.fixture(root)
-            for name, output in (("hugo", "hugo v0.148.2"), ("prettier", "3.9.6")):
-                self.executable(root / name, output)
-            with (
-                mock.patch.object(
-                    runtime.shutil, "which", side_effect=lambda name: str(root / name)
-                ),
-                mock.patch.object(runtime, "urlopen") as network,
+            binary = root / "node_modules/.bin/prettier"
+            binary.parent.mkdir(parents=True)
+            binary.write_text("#!/bin/sh\necho 3.9.6\n")
+            binary.chmod(0o755)
+            with mock.patch.object(
+                runtime.shutil, "which", return_value="/usr/bin/prettier"
             ):
-                tools.setup()
-                self.assertEqual(tools.resolve("hugo"), str(root / "hugo"))
-                self.assertEqual(tools.resolve("prettier"), str(root / "prettier"))
-                network.assert_not_called()
+                self.assertEqual(runtime.Tools(root).resolve("prettier"), str(binary))
+
+    def test_missing_tool_reports_install_documentation(self):
+        with (
+            tempfile.TemporaryDirectory() as directory,
+            mock.patch.object(runtime.shutil, "which", return_value=None),
+        ):
+            with self.assertRaisesRegex(ValueError, "docs/dev/README.md"):
+                runtime.Tools(Path(directory)).resolve("hugo")
 
 
 class BannerWorkflowTests(unittest.TestCase):

@@ -28,7 +28,8 @@
 2. 缩放抓取到的图片：
 
    ```bash
-   make prepare
+   make format-markdown
+   make resize-images
    ```
 
 3. 在本地预览中核对卡片。

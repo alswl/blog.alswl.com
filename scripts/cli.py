@@ -23,17 +23,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 HELP = """Log4D 写作工具
 
-首次使用
-  make setup                       安装指定版本工具，初始化主题和 Git hooks
-  make doctor                      检查环境，显示实际使用的工具版本
+环境
+  make init-theme                  初始化主题 submodule
+  make install-hooks               安装 Git hooks（需要 lefthook）
+  make doctor                      检查已安装工具，显示实际版本
+  依赖安装命令见 docs/dev/README.md
 
 日常写作
   make new name=YYYY-MM-DD-slug.md   新建草稿
   make serve                       预览文章和草稿
   make enrich post=content/posts/…  补充链接卡片图片与描述（可选联网操作）
-  make prepare                     格式化文章并缩放本次图片
-  make check                       检查本次修改和全量无用图片
-  make build                       本地生产构建
+  make format-markdown             格式化本次修改的 Markdown
+  make resize-images               将本次修改的图片缩到 1000×1000 以内
+  make check-content               检查本次内容格式、远端图片、尺寸及全量无用图片
+  make build-site                  生产构建至 public/
 
 检查后照常 git add / git commit / git push。工具不会自动暂存内容。
 
@@ -42,8 +45,8 @@ HELP = """Log4D 写作工具
   make warm-images base=<发布前提交> 发布后请求本次 CDN 图片，触发未命中回源
   make verify base=<发布前提交>      验收本次文章与 CDN 图片，失败后重试
   make test                        工具链回归测试
-  make audit                       全量历史报告（预期存在历史问题）
-  make clean                       清理构建产物，保留工具缓存
+  make audit-content               全量历史报告（预期存在历史问题）
+  make clean                       清理构建产物
 
 详细说明：docs/guide/writing.md、docs/dev/README.md
 高级参数：python3 -m scripts --help
@@ -120,7 +123,7 @@ def format_files(
     result = subprocess.run(command, cwd=root, check=False)
     if result.returncode and not write:
         print(
-            "格式不合规：运行 make prepare 或 make format，检查后重新暂存。",
+            "格式不合规：运行 make format-markdown，检查后重新暂存。",
             file=sys.stderr,
         )
     return result.returncode == 0
@@ -155,18 +158,12 @@ def check(args, repo: Repository, tools: Tools) -> bool:
     base = args.base if args.base is not None else os.environ.get("CHANGED_FILES_BASE")
     files = repo.files(args.scope, base=base)
     if args.scope == "staged":
-        selected = (
-            files + [".prettierrc", ".prettier-version"] if args.changed_only else None
-        )
+        selected = files + [".prettierrc"] if args.changed_only else None
         with repo.snapshot(paths=selected) as snapshot:
-            return check_files(
-                snapshot, files, Tools(tools.root, snapshot), not args.changed_only
-            )
+            return check_files(snapshot, files, tools, not args.changed_only)
     if args.scope == "push":
         with repo.snapshot(ref="HEAD") as snapshot:
-            return check_files(
-                snapshot, files, Tools(tools.root, snapshot), not args.changed_only
-            )
+            return check_files(snapshot, files, tools, not args.changed_only)
     return check_files(repo.root, files, tools, not args.changed_only)
 
 
@@ -201,10 +198,7 @@ def hook(kind: str, repo: Repository, tools: Tools) -> bool:
         base = remote_sha
         files = repo.files("push", base=base, head=local_sha)
         with repo.snapshot(ref=local_sha) as snapshot:
-            valid = (
-                check_files(snapshot, files, Tools(repo.root, snapshot), full=True)
-                and valid
-            )
+            valid = check_files(snapshot, files, tools, full=True) and valid
     return valid
 
 
@@ -213,7 +207,14 @@ def doctor(root: Path, tools: Tools) -> bool:
     print(f"Python {sys.version.split()[0]} ({sys.executable})")
     for name in ("hugo", "prettier"):
         try:
-            print(f"OK {name} {tools.version(name)}: {tools.resolve(name)}")
+            binary = tools.resolve(name)
+            output = subprocess.run(
+                [binary, "version" if name == "hugo" else "--version"],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            print(f"OK {name}: {output.stdout.strip()} ({binary})")
         except ValueError as error:
             print(f"缺失: {error}")
             valid = False
@@ -224,7 +225,7 @@ def doctor(root: Path, tools: Tools) -> bool:
         print(f"缺失: {error}")
         valid = False
     if not (root / "themes/hugo-PaperMod/layouts").is_dir():
-        print("缺失: 主题 submodule；运行 make setup。")
+        print("缺失: 主题 submodule；运行 make init-theme。")
         valid = False
     for name in ("lefthook", "aws"):
         print(f"可选 {name}: {shutil.which(name) or '未安装'}")
@@ -234,7 +235,7 @@ def doctor(root: Path, tools: Tools) -> bool:
 def build(args, repo: Repository, tools: Tools) -> None:
     if args.cdn and not os.environ.get("CI"):
         raise ValueError(
-            "CDN 发布构建只在 CI 运行；本地使用 make build 或 make serve。"
+            "CDN 发布构建只在 CI 运行；本地使用 make build-site 或 make serve。"
         )
     target = repo.root / (".cache/publish" if args.cdn else "public")
     cache = repo.root / ".cache"
@@ -268,30 +269,28 @@ def parser() -> argparse.ArgumentParser:
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("help", help="显示作者常用命令")
     for name, help_text in (
-        ("setup", "安装指定版本工具、初始化主题和可选 Git hooks"),
         ("doctor", "诊断依赖，不修改环境"),
-        ("serve", "用指定版本 Hugo 预览草稿"),
-        ("prepare", "格式化并缩放本次图片，不自动暂存"),
-        ("format", "格式化本次 Markdown，不自动暂存"),
-        ("resize", "缩放工作区图片，不自动暂存"),
-        ("clean", "清理构建产物，保留工具缓存"),
+        ("serve", "用已安装的 Hugo 预览草稿"),
+        ("format-markdown", "格式化本次 Markdown，不自动暂存"),
+        ("resize-images", "缩放工作区图片，不自动暂存"),
+        ("clean", "清理构建产物"),
         ("test", "运行工具链回归测试"),
     ):
         commands.add_parser(name, help=help_text)
     p = commands.add_parser(
-        "check", help="只读门禁，默认检查工作区修改并全量检查无用图片"
+        "check-content", help="只读门禁，默认检查工作区修改并全量检查无用图片"
     )
     p.add_argument(
         "--scope", choices=("worktree", "staged", "push", "all"), default="worktree"
     )
     p.add_argument("--base", help="push 范围的远端提交；CI 也可传 CHANGED_FILES_BASE")
     p.add_argument("--changed-only", action="store_true", help="跳过全量无用图片检查")
-    p = commands.add_parser("build", help="生产构建，成功后替换产物，避免旧文件残留")
-    p.add_argument(
-        "--cdn",
-        action="store_true",
-        help="CI 专用：构建至 .cache/publish 并转换 CDN 地址",
+    p = commands.add_parser("build-site", help="生产构建至 public/，成功后替换旧产物")
+    p.set_defaults(cdn=False)
+    p = commands.add_parser(
+        "build-publication", help="CI 专用：构建至 .cache/publish 并转换 CDN 地址"
     )
+    p.set_defaults(cdn=True)
     p = commands.add_parser("new", help="新建草稿")
     p.add_argument(
         "name",
@@ -331,39 +330,23 @@ def main(argv: list[str] | None = None) -> int:
         command = args.command
         if command == "help":
             print(HELP)
-        elif command == "setup":
-            tools.setup()
-            subprocess.run(
-                ["git", "submodule", "sync", "--", "themes/hugo-PaperMod"],
-                cwd=ROOT,
-                check=True,
-            )
-            subprocess.run(
-                ["git", "submodule", "update", "--init", "--", "themes/hugo-PaperMod"],
-                cwd=ROOT,
-                check=True,
-            )
-            if shutil.which("lefthook"):
-                subprocess.run(["lefthook", "install"], cwd=ROOT, check=True)
-            else:
-                print("可选 Git hooks 尚未启用；安装 lefthook 后重新运行 make setup。")
         elif command == "doctor":
             return 0 if doctor(ROOT, tools) else 1
-        elif command == "check":
+        elif command == "check-content":
             return 0 if check(args, repo, tools) else 1
         elif command == "hook":
             return 0 if hook(args.kind, repo, tools) else 1
-        elif command in {"prepare", "format", "resize"}:
-            files = repo.files("worktree")
-            if command in {"prepare", "format"} and not format_files(
-                ROOT, files, tools, write=True
-            ):
-                return 1
-            if command in {"prepare", "resize"}:
-                images.resize(ROOT, raster(files))
+        elif command == "format-markdown":
+            return (
+                0
+                if format_files(ROOT, repo.files("worktree"), tools, write=True)
+                else 1
+            )
+        elif command == "resize-images":
+            images.resize(ROOT, raster(repo.files("worktree")))
         elif command == "serve":
             subprocess.run([tools.resolve("hugo"), "serve", "-D"], cwd=ROOT, check=True)
-        elif command == "build":
+        elif command in {"build-site", "build-publication"}:
             build(args, repo, tools)
         elif command == "new":
             if not re.fullmatch(r"\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*\.md", args.name):

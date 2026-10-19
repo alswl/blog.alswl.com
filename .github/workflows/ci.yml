@@ -29,10 +29,13 @@ jobs:
         with:
           node-version: '22'
 
-      - uses: actions/cache@v4
+      - name: Install latest Hugo
+        uses: peaceiris/actions-hugo@v3
         with:
-          path: .cache/tools
-          key: ${{ runner.os }}-${{ runner.arch }}-blog-tools-${{ hashFiles('.hugo-version', '.prettier-version') }}
+          hugo-version: 'latest'
+
+      - name: Install latest Prettier
+        run: npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund prettier@latest
 
       - name: Install image tools
         run: |
@@ -41,17 +44,17 @@ jobs:
             sudo apt-get install -y imagemagick
           fi
 
-      - name: Setup repository tools
-        run: make setup doctor
+      - name: Report installed tools
+        run: make doctor
 
       - name: Toolchain regression tests
         run: make test
 
       - name: Check pushed changes and unused images
-        run: python3 -B -m scripts check --scope push
+        run: python3 -B -m scripts check-content --scope push
 
       - name: Build publication artifacts
-        run: python3 -B -m scripts build --cdn
+        run: python3 -B -m scripts build-publication
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4

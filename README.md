@@ -9,17 +9,17 @@ alswl 的个人博客，使用 Hugo 和 hugo-PaperMod 主题。
 
 ## 开始写作
 
-在仓库根目录运行：
+先按[站点维护](docs/dev/README.md#安装与诊断)安装依赖，再在仓库根目录运行：
 
 ```bash
-make setup
+make init-theme
 make new name=YYYY-MM-DD-x.md
 make serve
 ```
 
 将示例文件名替换为文章日期和 slug。新文章默认是草稿，本地预览包含草稿。
 完整步骤见[写文章与配图](docs/guide/writing.md)。
-日常收尾用 `make prepare` 和 `make check`，检查后照常提交。`make help` 查看所有作者命令。
+日常收尾用 `make format-markdown`、`make resize-images` 和 `make check-content`，检查后照常提交。`make help` 查看所有作者命令。
 
 辅助写作前先读 [STYLE.md](STYLE.md)，coding agent 另读 [AGENTS.md](AGENTS.md)。
 

@@ -100,3 +100,24 @@ hook 中重复的首次推送基线转换；十项保护保留，并补充必要
 实验与范围见 [工具链消融记录](docs/dev/toolchain-ablation.md)。
 测试证明当前契约的行为，不能证明全部新功能的必要性；自维护安装器与可选七牛 API
 仍是规模取舍候选，替代安装方案或取消 API 模式不属于本轮只删不改实验。
+
+## 命令与版本策略调整（2026-10-19）
+
+用户指出 setup / prepare / check / build 含义模糊，不需要本地和 CI 精确同版，
+要求 CI 更新到最新。此前精确固定版本与暂不升级策略由此更新：
+
+- 删除自建 Hugo 下载校验安装器、工具缓存选择、版本文件及精确版本拦截。
+  本地使用 PATH 的 Hugo、仓库 node_modules 或 PATH 的 Prettier；安装交给包管理器。
+- init-theme、install-hooks 各自只做一个动作。删除 setup 和 prepare 组合入口。
+  format-markdown、resize-images、check-content、build-site、build-publication 明示操作对象。
+- CI 用 actions-hugo latest 和 npm prettier@latest，输出实际版本，不复用旧工具缓存。
+- 保留新版 Hugo 的中文语言配置，接受既有记录中的本地化和默认值差异；不再为产物完全一致锁旧版。
+  旧归档月份锚点变化仍是已知影响。
+- 删除仅用于自建安装器的测试，改测无需版本文件、工具缺失提示、本地 Prettier 优先和新版本可用。
+
+这轮是根据用户需求收缩功能契约，不属于上一轮“只删不改”的消融结论。
+
+本轮验证：45 个测试、check-content、doctor、ruff 和本地 Hugo 0.167.0 构建通过。
+最新版 Prettier 在线安装受 npm 镜像及官方源超时影响，随后从本机 npm 缓存离线安装
+Prettier 3.9.6 到 node_modules，未改变全局 npm 配置；CI 仍安装 latest。
+最新版 Hugo 下载未完成，新 GitHub Actions 尚未执行，不宣称线上已验收。

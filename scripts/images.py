@@ -231,7 +231,7 @@ def image_sizes(root: Path, files: list[str]) -> list[str]:
             errors.append(f"{name}: 无法读取图片尺寸。{result.stderr.strip()}")
         elif any(max(frame) > MAX_SIZE for frame in frames):
             errors.append(
-                f"{name}: 超过 {MAX_SIZE}×{MAX_SIZE}；运行 make prepare 或 make resize。"
+                f"{name}: 超过 {MAX_SIZE}×{MAX_SIZE}；运行 make resize-images。"
             )
     return errors
 
