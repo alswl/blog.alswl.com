@@ -5,6 +5,10 @@
 右侧依次显示标题、描述和网站名，缺少描述时省略。链接文字作为标题。文字为空或仅为 URL 时显示目标 URL。
 网站名显示目标域名，站内链接显示站点名。
 
+本地预览使用仓库图片，CI 发布产物会将图片地址转换为 CDN URL。
+发布后，本次新增或修改的 Banner 图片与普通配图一起自动请求回源并验收，
+详见[图片同步与发布验收](../dev/README.md#图片同步与发布验收)。
+
 ```markdown
 [项目主页](https://example.com "!banner")
 [项目主页](https://example.com "!banner (/images/202610/project.jpg) 这里是描述")
@@ -12,19 +16,19 @@
 
 ## 补充图片和描述
 
-脚本只处理独立成行的 `!banner` 标记，并跳过代码块。
+补图命令只处理独立成行的 `!banner` 标记，并跳过代码块。
 以下命令在仓库根目录执行，文章路径按需替换。
 
 1. 抓取卡片的图片和描述：
 
    ```bash
-   python3 hack/fetch-banner-metadata.py content/posts/2026-10-18-ai-native-stage-8.md
+   make enrich post=content/posts/2026-10-18-ai-native-stage-8.md
    ```
 
 2. 缩放抓取到的图片：
 
    ```bash
-   make resize-images-in-git-workdir
+   make prepare
    ```
 
 3. 在本地预览中核对卡片。
@@ -37,7 +41,7 @@
 只重新尝试缺图卡片（包括已缓存但页面没有提供图片的情况）：
 
 ```bash
-python3 hack/fetch-banner-metadata.py --retry-missing content/posts/2026-10-18-ai-native-stage-8.md
+python3 -m scripts enrich --retry-missing content/posts/2026-10-18-ai-native-stage-8.md
 ```
 
 脚本优先读取 Open Graph，其次读取 Twitter Card 和普通 description。图片保存到文章月份目录。
@@ -49,7 +53,7 @@ python3 hack/fetch-banner-metadata.py --retry-missing content/posts/2026-10-18-a
 需要强制更新全部结果时，加 `--refresh`：
 
 ```bash
-python3 hack/fetch-banner-metadata.py --refresh content/posts/2026-10-18-ai-native-stage-8.md
+python3 -m scripts enrich --refresh content/posts/2026-10-18-ai-native-stage-8.md
 ```
 
 返回[写作者指南](README.md)。

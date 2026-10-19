@@ -1,42 +1,81 @@
 name: CI
 
-on: push
+on:
+  push:
+    branches-ignore:
+      - gh-pages
 
 jobs:
   build:
     runs-on: ubuntu-22.04
+    concurrency:
+      group: pages-${{ github.ref }}
+      cancel-in-progress: true
     permissions:
       contents: write
+    env:
+      CHANGED_FILES_BASE: ${{ github.event.before }}
     steps:
       - uses: actions/checkout@v7
         with:
-          submodules: true # Fetch Hugo themes (true OR recursive)
-          fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
+          submodules: true
+          fetch-depth: 0
 
-      - name: Read Hugo version
-        id: hugo-version
-        run: echo "version=$(cat .hugo-version)" >> "$GITHUB_OUTPUT"
-
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
+      - uses: actions/setup-python@v5
         with:
-          # 站点无 .scss、无 ToCSS，assets/ 全是纯 CSS，不需要 extended
-          hugo-version: ${{ steps.hugo-version.outputs.version }}
+          python-version: '3.12'
 
-      - name: Check unused images
-        run: python3 hack/find-unused-images.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
-      - name: Check changed files
-        env:
-          CHANGED_FILES_BASE: ${{ github.event.before }}
-        run: make check-changed
+      - uses: actions/cache@v4
+        with:
+          path: .cache/tools
+          key: ${{ runner.os }}-${{ runner.arch }}-blog-tools-${{ hashFiles('.hugo-version', '.prettier-version') }}
 
-      - name: Build
-        run: make build-production cdn
+      - name: Install image tools
+        run: |
+          if ! command -v identify >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y imagemagick
+          fi
+
+      - name: Setup repository tools
+        run: make setup doctor
+
+      - name: Toolchain regression tests
+        run: make test
+
+      - name: Check pushed changes and unused images
+        run: python3 -B -m scripts check --scope push
+
+      - name: Build publication artifacts
+        run: python3 -B -m scripts build --cdn
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/master'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: .cache/publish
+
+      - name: Warm changed CDN images
+        id: warmup
+        if: github.ref == 'refs/heads/master'
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
+          QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
+        run: make warm-images
+
+      - name: Verify publication
+        id: verify
+        if: github.ref == 'refs/heads/master'
+        continue-on-error: true
+        run: make verify
+
+      - name: Report propagation delay
+        if: github.ref == 'refs/heads/master' && (steps.warmup.outcome == 'failure' || steps.verify.outcome == 'failure')
+        run: echo '::warning::发布已提交，但 CDN 回源请求或验收尚未全部成功；请按日志时间戳检查页面传播、图片同步和预热配置。'
