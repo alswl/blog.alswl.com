@@ -11,8 +11,6 @@
     {{- end -}}
   {{- end -}}
   {{- $source := (urls.Parse .Destination).Host -}}
-  {{- $preview := index (site.Data.banner_links | default dict) .Destination | default dict -}}
-  {{- with $preview.site_name -}}{{ $source = . }}{{- end -}}
   {{- if or (not $source) (eq $source (urls.Parse site.BaseURL).Host) -}}
     {{- $source = site.Title -}}
   {{- end -}}
@@ -34,7 +32,7 @@
       {{- if and $label (ne $label .Destination) -}}
         {{- .Text | safeHTML -}}
       {{- else -}}
-        {{- $preview.title | default .Destination -}}
+        {{- .Destination -}}
       {{- end -}}
     </span>
     {{- with $description }}<span class="banner-link__description">{{ . }}</span>{{ end -}}

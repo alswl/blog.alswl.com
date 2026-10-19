@@ -43,16 +43,12 @@ class MetadataParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.meta: dict[str, str] = {}
-        self.title: list[str] = []
-        self.in_title = False
         self.article_depth = 0
         self.article_image = ""
         self.link_image = ""
         self.oembed_url = ""
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        if tag == "title":
-            self.in_title = True
         values = dict(attrs)
         if tag == "article":
             self.article_depth += 1
@@ -71,14 +67,8 @@ class MetadataParser(HTMLParser):
             self.meta.setdefault(key, content)
 
     def handle_endtag(self, tag: str) -> None:
-        if tag == "title":
-            self.in_title = False
         if tag == "article":
             self.article_depth = max(0, self.article_depth - 1)
-
-    def handle_data(self, data: str) -> None:
-        if self.in_title:
-            self.title.append(data)
 
 
 def fetch(url: str) -> tuple[bytes, str, str, str]:
@@ -112,12 +102,9 @@ def page_metadata(url: str) -> dict[str, str]:
          if key in parser.meta),
         "",
     )
-    title = parser.meta.get("og:title") or parser.meta.get("twitter:title") or "".join(parser.title)
     metadata = {
         "image_url": urljoin(page_url, image) if image else "",
         "description": " ".join(description.split()),
-        "title": " ".join(title.split()),
-        "site_name": " ".join(parser.meta.get("og:site_name", "").split()),
         "local_image": "",
     }
     if not image:
@@ -130,10 +117,9 @@ def page_metadata(url: str) -> dict[str, str]:
         if endpoint:
             body, _, _, charset = fetch(urljoin(page_url, endpoint))
             embedded = json.loads(body.decode(charset))
-            for field, key in (("image_url", "thumbnail_url"), ("title", "title"), ("site_name", "provider_name")):
-                value = embedded.get(key)
-                if isinstance(value, str) and value.strip():
-                    metadata[field] = " ".join(value.split())
+            value = embedded.get("thumbnail_url")
+            if isinstance(value, str) and value.strip():
+                metadata["image_url"] = value
             if is_youtube:
                 # YouTube's fallback HTML describes the service, not the video.
                 metadata["description"] = ""
@@ -170,8 +156,6 @@ def cached_metadata(url: str, path: Path, refresh: bool) -> dict[str, str]:
                 for key in ("image_url", "description", "local_image")
             ):
                 print(f"cache hit: {url}")
-                entry.setdefault("title", "")
-                entry.setdefault("site_name", "")
                 return entry
         except (ValueError, OSError) as error:
             print(f"ignoring unreadable cache {path}: {error}", file=sys.stderr)
@@ -186,15 +170,6 @@ def save_json(path: Path, entry: dict) -> None:
     temporary = path.with_suffix(".tmp")
     temporary.write_text(text, encoding="utf-8")
     temporary.replace(path)
-
-
-def save_preview(url: str, entry: dict[str, str]) -> None:
-    if not entry["title"] and not entry["site_name"]:
-        return
-    path = ROOT / "data" / "banner_links.json"
-    previews = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-    previews[url] = {key: entry[key] for key in ("title", "site_name")}
-    save_json(path, previews)
 
 
 def update_file(path: Path, refresh: bool = False, retry_missing: bool = False) -> bool:
@@ -232,7 +207,6 @@ def update_file(path: Path, refresh: bool = False, retry_missing: bool = False) 
             try:
                 entry = cached_metadata(url, cache_path, refresh_link)
                 save_json(cache_path, entry)
-                save_preview(url, entry)
                 local_image = entry["local_image"]
                 if old_metadata and not refresh_link and (
                     not entry["image_url"]

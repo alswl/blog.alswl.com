@@ -88,9 +88,7 @@ tags: ["AI", "AI Coding", "多 Agent", "工具链"]
 
 图 4：先判断反馈是否相关，再投入后续处理。
 
-Yetone 也分享了一个持续运行的例子：用 Claude Code 和 Opus 5.5 并行跑三个 loop，每晚集中处理积累的问题，主要是 UI/UX。
-
-[Yetone on X：并行运行 3 个 loop](https://x.com/yetone/status/2109855710444237018 "!banner 使用 Claude Code 和 Opus 5.5 并行运行三个 loop，每晚抽时间处理积累的问题，主要是 UI/UX。")
+[Yetone on X：并行运行 3 个 loop](https://x.com/yetone/status/2109855710444237018 "!banner (/images/202610/banner-e5e52f39a7cb6161.webp) 很多人想让我分享一下工作流，我一直没想好怎么分享，因为其实我没有任何的魔法，甚至还特别简陋，总觉得分享出来毫无意义。其实我就是用 Claude Code，然后用官方的 Opus 5.5 模型执行 loop 就可以了。 我会并行执行图里的 3 个 loop，然后每晚抽一点时间铲铲屎（主要是 UI/UX 的问题），然后就没活儿了。")
 
 另一场分享来自 Lauren Tan，标题是「i shipped 2000 PRs last month」。我听完这场分享，更关注的是怎样组织工作：像经营餐厅一样，安排厨师、改善流程，而不是自己始终下场做每一道菜。
 
@@ -98,7 +96,7 @@ Yetone 也分享了一个持续运行的例子：用 Claude Code 和 Opus 5.5 �
 
 图 5：Lauren Tan 的分享；2000 PR 为分享者自述。
 
-[https://www.youtube.com/watch?v=NjoZoUm85x0](https://www.youtube.com/watch?v=NjoZoUm85x0 "!banner (/images/202610/banner-ae97ec5fd18858a6.jpg)")
+[How I Shipped 2000 PRs Last Month — Trusting AI Agents｜Grok Bot｜Lauren Tan](https://www.youtube.com/watch?v=NjoZoUm85x0 "!banner (/images/202610/banner-ae97ec5fd18858a6.jpg)")
 
 我会参考这些社区案例，也会留意它们的适用范围：端侧、客户端应用的经验，不能直接代表所有业务系统。公开开发的项目可以沿着提交过程学习它怎样组织工作；面对自己的系统，仍要检查权限、部署和验收这些环节能不能接上。
 
