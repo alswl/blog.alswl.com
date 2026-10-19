@@ -1,7 +1,7 @@
 ---
-title: "AI Native 实践续篇：迈向 Stage 8 的多 Agent 协作"
+title: "AI Native 实践续篇：迈向 Stage 8"
 author: "alswl"
-slug: "ai-native-agent-coordination"
+slug: "ai-native-stage-8"
 date: 2026-10-18T00:00:00+08:00
 draft: false
 categories: ["技术"]
@@ -14,7 +14,7 @@ tags: ["AI", "AI Coding", "多 Agent", "工具链"]
 
 这篇接着[八月那篇 AI Native 实践](https://blog.alswl.com/2026/10/ai-native-work/)往下写：Stage 7 留下了哪些验证问题，迈向 Stage 8 时，我在调度上做了哪些尝试，以及实际跑起来以后遇到的新问题。
 
-[我怎么在 AI Native 下工作 due 2026-08](https://blog.alswl.com/2026/10/ai-native-work/)
+[我怎么在 AI Native 下工作 due 2026-08](https://blog.alswl.com/2026/10/ai-native-work/ "!banner (/images/202610/banner-e7a22f6096cba86a.png) 在 2025 年终总结 里我写过一句：写代码（Code Typing）未来会成为低效的工程方式，AI Native 应该成为默认选项。 话说出去容易。真到自己每天这么干，问题就具体了：AI 写代码很快，那信息从哪来、方案谁来定、产出怎么验、人到底还管什么？这一年实际跑下来，我对它的理解变了几轮，关注点从「代码写得快」慢慢移到了信息、研发、落地和工具链这一整条链路上。 这篇文章讲的是我目前的工作方式(截止 8 月底）：信息怎么处理、代码怎么写、工具链怎么搭，以及在这套方式跑了大半年之后，我形成的几个判断。")
 
 我用这张 Stage 1—8 演进图定位自己的工作方式：从编辑器辅助，到多个 Coding Agent 并行，再到由统筹者组织执行。下文聚焦 Stage 7 之后的验证问题，以及迈向 Stage 8 的组织实践。
 
@@ -30,7 +30,7 @@ tags: ["AI", "AI Coding", "多 Agent", "工具链"]
 
 规格驱动工具与规范仓库入口如下。
 
-[GitHub - github/spec-kit: 💫 Toolkit to help you get started with SDD or any other process!](https://github.com/github/spec-kit)
+[GitHub - github/spec-kit: 💫 Toolkit to help you get started with SDD or any other process!](https://github.com/github/spec-kit "!banner (/images/202610/banner-09f8bc864d898a1a.png) 💫 Toolkit to help you get started with SDD or any other process! - github/spec-kit")
 
 ### 测试也要被测试
 
@@ -42,7 +42,7 @@ tags: ["AI", "AI Coding", "多 Agent", "工具链"]
 
 这与 **mutation testing（变异测试）** 的思路相通：有意改变代码，再看测试能不能发现变化。Stryker 的文档把引入的代码变体称为 mutant；测试失败表示这个变体被「杀死」，测试仍通过则表示它「存活」。代码覆盖率说明测试执行到了哪里，变异测试进一步检查测试能否识别故障。我这里先从破坏目标功能入手，还不能把一次故障注入等同于完整的变异测试评估。
 
-[What is mutation testing? | Stryker Mutator](https://stryker-mutator.io/docs/)
+[What is mutation testing? | Stryker Mutator](https://stryker-mutator.io/docs/ "!banner (/images/202610/banner-377646a896425a08.png) TL; DR: Mutation testing introduces changes to your code, then runs your unit tests against the changed code. It is expected that your unit tests will now fail. If they don't fail, it might indicate your tests do not sufficiently cover the code.")
 
 我把验证分成两层：先验证交付物，再检查验证本身是否可信。这个环节值得单独花精力。
 
@@ -70,7 +70,7 @@ tags: ["AI", "AI Coding", "多 Agent", "工具链"]
 
 配套的 skm 用来管理 Skills。
 
-[GitHub - alswl/skm: a tiny local-first AI Skill Manager](https://github.com/alswl/skm)
+[GitHub - alswl/skm: a tiny local-first AI Skill Manager](https://github.com/alswl/skm "!banner (/images/202610/banner-694646ef30044df5.png) a tiny local-first AI Skill Manager. Contribute to alswl/skm development by creating an account on GitHub.")
 
 我用知识库工具管理信息与文章。
 
@@ -94,7 +94,7 @@ tags: ["AI", "AI Coding", "多 Agent", "工具链"]
 
 图 5：Lauren Tan 的分享；2000 PR 为分享者自述。
 
-[https://www.youtube.com/watch?v=NjoZoUm85x0](https://www.youtube.com/watch?v=NjoZoUm85x0)
+[https://www.youtube.com/watch?v=NjoZoUm85x0](https://www.youtube.com/watch?v=NjoZoUm85x0 "!banner (/images/202610/banner-ae97ec5fd18858a6.jpg)")
 
 我会参考这些社区案例，也会留意它们的适用范围：端侧、客户端应用的经验，不能直接代表所有业务系统。公开开发的项目可以沿着提交过程学习它怎样组织工作；面对自己的系统，仍要检查权限、部署和验收这些环节能不能接上。
 
@@ -128,7 +128,7 @@ tags: ["AI", "AI Coding", "多 Agent", "工具链"]
 
 我用 logbook Kit（lbkit）来组织这套流程。logbook 管的是另一层事情：我要什么，沿什么路径推进，有哪些约束，最终交付什么。
 
-[GitHub - alswl/lbkit: logbook kit](https://github.com/alswl/lbkit)
+[GitHub - alswl/lbkit: logbook kit](https://github.com/alswl/lbkit "!banner (/images/202610/banner-03fe3a0c63df7885.png) logbook kit. Contribute to alswl/lbkit development by creating an account on GitHub.")
 
 ![我的端到端工作流与工具职责：1+N Agent 管理任务，herdr 管注意力，logbook 管目标和路径](/images/202610/delivery-workflow-overview.png)
 
@@ -192,7 +192,7 @@ Agent 达成一致以后，我还会看截图和验证证据，再处理人工�
 
 Agent 之间的沟通，我用 chatta 来支持。讨论也需要轮次边界。统筹者要负责推动收敛，不能让对话无限延长。最后我会看证据，例如运行结果和截图，而不只看它们有没有说「一致同意」。
 
-[GitHub - alswl/chatta: chatta is chat to agent, tiny CLI and SKILL](https://github.com/alswl/chatta)
+[GitHub - alswl/chatta: chatta is chat to agent, tiny CLI and SKILL](https://github.com/alswl/chatta "!banner (/images/202610/banner-42ecbf2dfe02b79a.png) chatta is chat to agent, tiny CLI and SKILL. Contribute to alswl/chatta development by creating an account on GitHub.")
 
 ### 多 Agent 有成本，要挑任务
 
@@ -242,11 +242,11 @@ Delivery 和 Verify 的不同立场、让 Agent 自证判断、故意破坏目�
 
 记录 thinking 的一个启发来自 DeepSeek-R1。它的论文讨论了通过强化学习发展推理能力，并展示了模型重新审视解题路径、进行自我检查的现象。我由此更在意把考虑过的选择和判断依据留下来。落实到工作里，我保存的是可以回看的方案、取舍与验证证据；这与论文中的模型训练机制有区别，也还需要在自己的任务里验证效果。
 
-[DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning](https://arxiv.org/abs/2501.12948v1)
+[DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning](https://arxiv.org/abs/2501.12948v1 "!banner (/images/202610/banner-ab77af3fa25e0e90.png) We introduce our first-generation reasoning models, DeepSeek-R1-Zero and DeepSeek-R1. DeepSeek-R1-Zero, a model trained via large-scale reinforcement learning (RL) without supervised fine-tuning (SFT) as a preliminary step, demonstrates remarkable reasoning capabilities. Through RL, DeepSeek-R1-Zero naturally emerges with numerous powerful and intriguing reasoning behaviors. However, it encounters challenges such as poor readability, and language mixing. To address these issues and further enhance reasoning performance, we introduce DeepSeek-R1, which incorporates multi-stage training and cold-start data before RL. DeepSeek-R1 achieves performance comparable to OpenAI-o1-1217 on reasoning tasks. To support the research community, we open-source DeepSeek-R1-Zero, DeepSeek-R1, and six dense models (1.5B, 7B, 8B, 14B, 32B, 70B) distilled from DeepSeek-R1 based on Qwen and Llama.")
 
 《思考，快与慢》中，Daniel Kahneman 讨论了快速、直觉式思考与缓慢、审慎思考的区别。这给理解判断过程提供了一个参照。不过，我下面对语音和文字的感受是个人经验，不能直接把两种输入方式对应成书中的两类思考。
 
-[Thinking, Fast and Slow](https://www.penguin.co.uk/books/563861/thinking-fast-and-slow-by-kahneman-daniel/9780141033570)
+[Thinking, Fast and Slow](https://www.penguin.co.uk/books/563861/thinking-fast-and-slow-by-kahneman-daniel/9780141033570 "!banner (/images/202610/banner-db774a5a922c7c90.jpg) Why is there more chance we'll believe something if it's in a bold type face? Why are judges more likely to deny parole before lunch? Why do we assume a good-looking person will be more competent? The answer lies in the two ways we make choices: fast, intuitive thinking, and slow, rational thinking. This book reveals how our minds are tripped up by error and prejudice (even when we think we are being logical), and gives you practical techniques for slower, smarter thinking, enabling you to make better decisions at work, at home, and in everything you do.")
 
 对我来说，语音和文字是两种不同的思考方式：有些想法在说话时更容易顺着展开，打字时则会停下来整理。因此语音输入的价值不只是快，也在于先把正在形成的思路说出来，再整理成文字。
 
@@ -290,7 +290,7 @@ Agent 之间可以先讨论、验证和收敛。到了目标取舍、人工权�
 
 这里可以借用 **tacit knowledge（隐性知识）** 这个概念。Michael Polanyi 在《The Tacit Dimension》中用「我们知道的，比能说出来的更多」概括这一问题。它帮助我把关注点说得更具体：交给 Agent 的文字，未必已经包含我判断时依赖的全部经验。至于这些经验能否被表达、学习，乃至用于新的发现，还需要分别讨论。
 
-[The Tacit Dimension](https://press.uchicago.edu/ucp/books/book/chicago/T/bo6035368.html)
+[The Tacit Dimension](https://press.uchicago.edu/ucp/books/book/chicago/T/bo6035368.html '!banner (/images/202610/banner-6d676977a487fead.jpg) A classic work in the philosophy of science that changed how we think about knowledge itself“I shall reconsider human knowledge by starting from the fact that we can know more than we can tell,” writes Michael Polanyi, whose work paved the way for the likes of Thomas Kuhn and Karl Popper. The Tacit Dimension argues that tacit knowledge—tradition, inherited practices, implied values, and prejudgments—is a crucial part of scientific knowledge. As relevant today as it was when it was first published, this volume challenges the assumption that skepticism, rather than established belief, lies at the heart of scientific discovery."The reissuing of this remarkable book give us a new opportunity to see how far-reaching—and foundational—Michael Polanyi’s ideas are, on some of the age-old questions in philosophy."—Amartya Sen, from the Foreword')
 
 我还有一个没想清楚的问题：有些影响判断的信息没有被说出来，也没有进入现成材料；另一些发现，可能超出沿已有知识直接推演的范围。比如，相对论能不能被 AI 发现？我还没有足够依据回答这个问题，但它让我继续思考：人的判断、隐性知识和新发现，在这样的协作中究竟起什么作用？
 
