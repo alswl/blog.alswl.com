@@ -84,7 +84,7 @@ Day 2 的圆桌
 
 [shell]: http://shell909090.com/blog/
 [shanbay]: http://www.shanbay.com/
-[pycon-logo]: /images/upload_dropbox/201210/PyConChina2012.png
+[pycon-logo]: https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201210/PyConChina2012.png
 [2011]: http://www.infoq.com/cn/articles/pycon-2011-first-in-china
 [slide]: http://www.slideshare.net/wilhelmshen/py-art
 

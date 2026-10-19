@@ -4,7 +4,7 @@
     <title>Test on Log4D</title>
     <link>https://blog.alswl.com/tags/test/</link>
     <description>Recent content in Test on Log4D</description>
-    <generator>Hugo -- 0.148.2</generator>
+    <generator>Hugo -- 0.168.0</generator>
     <language>zh</language>
     <lastBuildDate>Sun, 14 Aug 2016 19:08:20 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/test/rss.xml" rel="self" type="application/rss+xml" />
@@ -17,8 +17,7 @@
 
 
 
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/upload_dropbox/201608/abao_thumbnail.png&#34; alt=&#34;abao.png&#34;  /&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201608/abao_thumbnail.png&#34; alt=&#34;abao.png&#34;  /&gt;
 
 
 &lt;/p&gt;
@@ -28,9 +27,228 @@
 尤其是当开发交付的质量不高时候，很可能自身没有经过测试，会遇到主干流程都无法进行的状况。&lt;/p&gt;
 &lt;p&gt;如果在 QA 人工介入测试之前，就进行一轮黑盒自动化集成测试，可以大大地提高 QA 团队的工作效率。
 基于这样的判断，我们团队花了一些时间，将基于 API 的自动化测试系统搭建起来。
-现在将这个系统的选型和运行状况拎出来，和大家分享。&lt;/p&gt;</description>
+现在将这个系统的选型和运行状况拎出来，和大家分享。&lt;/p&gt;
+&lt;h2 id=&#34;确认测试范围目标和意义&#34;&gt;确认测试范围、目标和意义&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;范围
+&lt;ul&gt;
+&lt;li&gt;后台输出的 API 级别 URL&lt;/li&gt;
+&lt;li&gt;使用场景
+&lt;ul&gt;
+&lt;li&gt;打包时候的冒烟&lt;/li&gt;
+&lt;li&gt;Dev / QA 手工添加添加新特性用例&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;目标
+&lt;ul&gt;
+&lt;li&gt;覆盖大部分的 URL，当期设计为 top 10 URL，仅包含 GET 接口&lt;/li&gt;
+&lt;li&gt;选型时，需要考虑非幂等（POST / DELETE / PUT）等接口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;意义
+&lt;ul&gt;
+&lt;li&gt;提高开发效率，一种自动化的 IT 测试方案&lt;/li&gt;
+&lt;li&gt;提高测试效率，减少人工集成测试成本&lt;/li&gt;
+&lt;li&gt;提高工程质量，通过覆盖率提升，保证工程质量逐步提升，放心开发新功能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;特性需求&#34;&gt;特性需求&lt;/h2&gt;
+&lt;p&gt;选型一个系统，不是看市面上有哪些可以供选择，而是看我需要什么样特性的一款产品。
+如果自己的需求和市面上的现成产品差异过大，也可以考虑自己定制。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Required
+&lt;ul&gt;
+&lt;li&gt;开源&lt;/li&gt;
+&lt;li&gt;免费&lt;/li&gt;
+&lt;li&gt;使用 DSL 或者简单代码描述测试用例&lt;/li&gt;
+&lt;li&gt;支持细粒度的单 API 测试和构建带过程的测试用例&lt;/li&gt;
+&lt;li&gt;HTTP API&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Optional
+&lt;ul&gt;
+&lt;li&gt;CI 集成&lt;/li&gt;
+&lt;li&gt;UI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;挑选出来的选型和评价&#34;&gt;挑选出来的选型和评价&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.runscope.com/&#34;&gt;API Monitoring and Testing · Runscope&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;收费&lt;/li&gt;
+&lt;li&gt;非开源&lt;/li&gt;
+&lt;li&gt;有监控特性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.atlassian.com/software/bamboo&#34;&gt;Bamboo - Continuous integration, deployment &amp;amp; release management | Atlassian&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;收费&lt;/li&gt;
+&lt;li&gt;CI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://circleci.com/features/&#34;&gt;Continuous Integration Product and Features - CircleCI&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;CI&lt;/li&gt;
+&lt;li&gt;收费&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Sauce Labs
+&lt;ul&gt;
+&lt;li&gt;客户端测试，收费&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Apiary
+&lt;ul&gt;
+&lt;li&gt;API 设计工具 + API Test&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://frisbyjs.com/&#34;&gt;http://frisbyjs.com/&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;code&lt;/li&gt;
+&lt;li&gt;npm&lt;/li&gt;
+&lt;li&gt;open source&lt;/li&gt;
+&lt;li&gt;NO UI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/vowsjs/api-easy&#34;&gt;https://github.com/vowsjs/api-easy&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;同上&lt;/li&gt;
+&lt;li&gt;真是热爱造轮子的 JS 生态圈&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/visionmedia/supertest&#34;&gt;https://github.com/visionmedia/supertest&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;同上&lt;/li&gt;
+&lt;li&gt;从 Star 看，这个质量最高&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dareid.github.io/chakram/&#34;&gt;http://dareid.github.io/chakram/&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;code&lt;/li&gt;
+&lt;li&gt;npm&lt;/li&gt;
+&lt;li&gt;open source&lt;/li&gt;
+&lt;li&gt;NO UI&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://vrest.io/&#34;&gt;https://vrest.io/&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;收费&lt;/li&gt;
+&lt;li&gt;不开源&lt;/li&gt;
+&lt;li&gt;无插件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://swagger.io/open-source-integrations/&#34;&gt;http://swagger.io/open-source-integrations/&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;for API&lt;/li&gt;
+&lt;li&gt;生态环境强大&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/cachecontrol/hippie-swagger&#34;&gt;https://github.com/cachecontrol/hippie-swagger&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;用户端似乎在尝试用 swagger&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://robotframework.org/&#34;&gt;http://robotframework.org/&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;一个通用自动化测试工具&lt;/li&gt;
+&lt;li&gt;DSL&lt;/li&gt;
+&lt;li&gt;扩展性较强&lt;/li&gt;
+&lt;li&gt;活跃度在降低 &lt;a href=&#34;https://github.com/robotframework/robotframework/graphs/contributors&#34;&gt;https://github.com/robotframework/robotframework/graphs/contributors&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://cucumber.io/&#34;&gt;https://cucumber.io/&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://cucumber.io/docs/reference&#34;&gt;https://cucumber.io/docs/reference&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;和 Robotframework 相似，通用自动化测试工具&lt;/li&gt;
+&lt;li&gt;DSL&lt;/li&gt;
+&lt;li&gt;活跃度降低 &lt;a href=&#34;https://github.com/cucumber/cucumber-jvm/graphs/contributors&#34;&gt;https://github.com/cucumber/cucumber-jvm/graphs/contributors&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.solanolabs.com/&#34;&gt;https://www.solanolabs.com/&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;Airbnb 在用&lt;/li&gt;
+&lt;li&gt;收费&lt;/li&gt;
+&lt;li&gt;云端的通用测试环境&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/christophd/citrus&#34;&gt;https://github.com/christophd/citrus&lt;/a&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.citrusframework.org/&#34;&gt;http://www.citrusframework.org/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;依赖 mvn / ant，离代码太近&lt;/li&gt;
+&lt;li&gt;项目不够活跃&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;代码内测试
+&lt;ul&gt;
+&lt;li&gt;src/it/com/duitang/xxx&lt;/li&gt;
+&lt;li&gt;eg. tritornis&lt;/li&gt;
+&lt;li&gt;Spring
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html&#34;&gt;http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html&#34;&gt;http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这部分工作，是和团队的其他成员一起去看的，大家各自分头寻找一些产品，然后进行评测，给出结论。&lt;/p&gt;
+&lt;p&gt;经过讨论，我们将重点关注放在这么几款下面：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;supertest&lt;/li&gt;
+&lt;li&gt;robotframework&lt;/li&gt;
+&lt;li&gt;swagger&lt;/li&gt;
+&lt;li&gt;讨论时候的新发现 &lt;a href=&#34;https://github.com/svanoort/pyresttest&#34;&gt;https://github.com/svanoort/pyresttest&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;搭建-demo进行试用&#34;&gt;搭建 demo，进行试用&lt;/h2&gt;
+&lt;p&gt;在确定选用那几款产品之后，就可以集中精力在几款候选者里面。搭建相应的环境，对他们进行实际测试。&lt;/p&gt;
+&lt;p&gt;supertest：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;功能太简单了，简单到几乎可以自己写掉，不算一个 test framework&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;pyresttest：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;哈哈哈，YAML based，dreamed feature&lt;/li&gt;
+&lt;li&gt;支持 YAML / extractor / validator&lt;/li&gt;
+&lt;li&gt;天生支持 host 为参数&lt;/li&gt;
+&lt;li&gt;create for me!!!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;hippie-swagger：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在使用上，和 supertest 差异不大&lt;/li&gt;
+&lt;li&gt;仍然需要自己定义，在 swagger 描述文件不存在时候会抛错，描述文件不符合时会抛错&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;robotframework：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;较为复杂&lt;/li&gt;
+&lt;li&gt;有 YAML 了，不用试了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;使用感觉&#34;&gt;使用感觉&lt;/h2&gt;
+&lt;p&gt;经过一个季度的试用，我们基于 pyresttest 的项目 abao 运行较稳定。
+尽量在工程师提交代码之后，运行一次，从而可以在早期发现问题。&lt;/p&gt;
+&lt;p&gt;由于是基于 Python 的源代码，我们还给 pyresttest 开发了几款插件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;cookie_extractor：用来解析特定的 cookie&lt;/li&gt;
+&lt;li&gt;file_choice_generator：从文件随机选择预设数据&lt;/li&gt;
+&lt;li&gt;file_seq_generator：从文件顺序选择预设数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在和 CI 的配合方面，我们在 Jinkins 搭建了 abao / abao-master 项目，
+前者响应每次 Push 请求，都会自动构建一遍，后者每天凌晨会将 master 运行一遍。&lt;/p&gt;
+&lt;p&gt;感谢项目贡献者：&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;project  : abao
+ repo age : 5 months
+ active   : 32 days
+ commits  : 109
+ authors  :
+    39  Chery.Peng  35.8%
+    33  3D          30.3%
+    17  yanqi.chen  15.6%
+    11  橙子        10.1%
+     7  fiona66     6.4%
+     2  雪糕        1.8%
+&lt;/code&gt;&lt;/pre&gt;&lt;hr /&gt;
+&lt;p&gt;参考文档&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>
-
 
 
 

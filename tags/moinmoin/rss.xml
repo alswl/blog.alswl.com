@@ -4,7 +4,7 @@
     <title>Moinmoin on Log4D</title>
     <link>https://blog.alswl.com/tags/moinmoin/</link>
     <description>Recent content in Moinmoin on Log4D</description>
-    <generator>Hugo -- 0.148.2</generator>
+    <generator>Hugo -- 0.168.0</generator>
     <language>zh</language>
     <lastBuildDate>Fri, 27 Jul 2012 09:02:00 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/moinmoin/rss.xml" rel="self" type="application/rss+xml" />
@@ -225,7 +225,8 @@ optional arguments:
 &lt;/ul&gt;
 &lt;p&gt;我在使用MoinMoin过程中，有一个急迫需要的功能：&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供，
 我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<h2 id="1-使用-moinmoin">1. 使用 MoinMoin</h2>
@@ -239,7 +240,8 @@ optional arguments:
 </ul>
 <p>我在使用MoinMoin过程中，有一个急迫需要的功能：</p>
 <blockquote>
-<p>保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。</p></blockquote>
+<p>保存一篇网页时候，要将里面的图片保存到本地，而不是使用外链接方式保存， 因为由于各种不可预测的原因，原始图片数据很有可能丢失或者无法连接。</p>
+</blockquote>
 <p>这个功能对于将Wiki产品转化为KMS应用非常需要，可惜MoinMoin官方并没有提供，
 我也没在MoinMoin的开发者插件库中找到类似功能，就自己写了一个插件image2attach。</p>
 <ul>
@@ -251,7 +253,6 @@ optional arguments:
 <h2 id="2-moinmoin-系统结构">2. MoinMoin 系统结构</h2>
 <p>MoinMoin的UML图：</p>
 <p>
-
 
 
 
@@ -465,7 +466,7 @@ Sock，这样相对安全一些。</p>
 </span></span><span class="line"><span class="cl">        <span class="kn">location</span> <span class="s">/</span><span class="p">{</span>
 </span></span><span class="line"><span class="cl">                <span class="kn">include</span> <span class="s">uwsgi_params</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">                <span class="c1">#uwsgi_pass 127.0.0.1:9090;
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="kn">uwsgi_pass</span> <span class="s">unix:/tmp/uwsgi.sock</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">                <span class="kn">uwsgi_pass</span> <span class="s">unix:/tmp/uwsgi.sock</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">                <span class="kn">uwsgi_param</span> <span class="s">UWSGI_PYHOME</span> <span class="s">/usr/lib/python2.7/site-packages/MoinMoin</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">                <span class="kn">uwsgi_param</span> <span class="s">UWSGI_CHDIR</span> <span class="s">/usr/share/moin</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">                <span class="kn">uwsgi_param</span> <span class="s">UWSGI_SCRIPT</span> <span class="s">moin_wsgi</span><span class="p">;</span>
@@ -477,7 +478,7 @@ Sock，这样相对安全一些。</p>
 <p>因为使用 UNIX Sock 连接，所以 <code>/etc/rc.d/uwsgi</code> 启动文件也略做修改（ Ubunt 的启动配置文件在
 <code>/etc/init.d/</code> 下面）， 加入了 <code>SOCK</code> ，同时我为 uwsgi 指定运行用户 <code>http</code> ，避免root启动带来的安全隐患。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#PORT=9090</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nv">SOCK</span><span class="o">=</span>/tmp/uwsgi.sock
@@ -571,8 +572,7 @@ Sock，这样相对安全一些。</p>
 
 
 
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/upload_dropbox/201112/moinmoin.png&#34; alt=&#34;MoinMoin&#34;  /&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201112/moinmoin.png&#34; alt=&#34;MoinMoin&#34;  /&gt;
 
 
 &lt;/p&gt;
@@ -619,7 +619,6 @@ Finnally it will commit a change with message
 &lt;li&gt;support image attachment rewrite.&lt;/li&gt;
 &lt;/ul&gt;</description>
       <content:encoded><![CDATA[<p>
-
 
 
 

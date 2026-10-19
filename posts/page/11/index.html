@@ -10,7 +10,7 @@
 <meta name="description" content="Posts - Log4D">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/posts/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4fef53c66d8b82475b2011d95b5b546036c4734e4b5492a58d45ebbc8018055e.css" integrity="sha256-T&#43;9Txm2LgkdbIBHZW1tUYDbEc05LVJKljUXrvIAYBV4=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.81e3c8cf436c36a822ec86f3937f489fea5ec878fa91f50bc02e772eddb7041f.css" integrity="sha256-gePIz0NsNqgi7Ibzk39In&#43;peyHj6kfULwC53Lt23BB8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -60,7 +60,7 @@
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -171,7 +171,7 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a></div>
+<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com/">主页</a></div>
   <h1>
     Posts
   </h1>
@@ -189,7 +189,7 @@
     <p>Vimer 需要 Emacs 键绑定？看上去很蛋疼的需求吧。其实不然，大部分的 Shell / Readline 默认绑定的是 Emacs 键位绑定（处于输入状态下，Emacs 的键位很好用）。Vim 的模式切换很牛逼，但是 Insert 模式下面，只有寥寥几个快捷键，我修改了配置文件，绑定需要的 Emcas 按键到 Vim 中来。
 Github 中搜索关键字 Vim Emcas key bind，出来一些结果，不是很完美，我又慢慢调教了几个星期，放出我的 .vimrc。
 &#34; 模拟 Emacs 键绑定 &#34; Move inoremap &lt;C-a&gt; &lt;Home&gt; inoremap &lt;C-e&gt; &lt;End&gt; &#34;inoremap &lt;C-p&gt; &lt;Up&gt; &#34;inoremap &lt;C-n&gt; &lt;Down&gt; inoremap &lt;C-b&gt; &lt;Left&gt; inoremap &lt;C-f&gt; &lt;Right&gt; inoremap &lt;M-b&gt; &lt;C-o&gt;b inoremap &lt;M-f&gt; &lt;C-o&gt;w &#34; Rubout word / line and enter insert mode &#34; use &lt;Esc&gt;&lt;Right&gt; instead of &lt;C-o&gt; inoremap &lt;C-w&gt; &lt;Esc&gt;dbcl &#34; delete inoremap &lt;C-u&gt; &lt;Esc&gt;d0cl inoremap &lt;C-k&gt; &lt;Esc&gt;&lt;Right&gt;C inoremap &lt;C-d&gt; &lt;Esc&gt;&lt;Right&gt;s inoremap &lt;M-d&gt; &lt;C-o&gt;de 需要的朋友请取用，我的 Vim 配置文件和插件在 https://github.com/alswl/.oOo. 。
-...</p>
+</p>
   </div>
   <footer class="entry-footer"><span title='2012-04-20 00:00:00 +0800 +0800'>2012-04-20</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to Vim 下模拟 Emacs 键绑定" href="https://blog.alswl.com/2012/04/vim-emacs-key-binding/"></a>
@@ -253,7 +253,34 @@ XIM 的 X 应用程序提供输入服务。 fcitx 的源码包内提供了区位
 去年写了一个小应用 dbevent2gc ， 期间发现 GAE 和普通程序开发的诸多不同，又遭遇 GAE 配额大幅缩水， 写出来的应用运转的不太稳定。在南京图书馆的架上看见这本《GAE 编程指南读书笔记》， 立即借回家仔细阅读。
 GAE 的简介
 运行时环境 Python / Java 数据存储 Datastore（实体 / 查询 / 索引 / 事务） 服务（Memcache / GAccount / 任务队列 / 计划任务） 工具（SDK / appcfg / dev_appserver / 控制台） 入门（安装 / GAccount / webapp / app.yaml / /_ah/admin / 注册部署 / login:required）
-...</p>
+处理流程：请求 - 前端 - 引用服务器 / 静态文件服务器 - 服务
+配额限制：请求限制 / CPU 限制 / 服务限制 / 部署限制 （最新配额：http://code.google.com/intl/zh-CN/appengine/docs/quotas.html） 数据存储
+GAE 的数据存储方式和传统的 RDBMS 差异比较大，更类似于对象数据库。
+类别 kind / 键 / 键名 key name
+可以通过键来获取和操作对象
+e = db.get(db.Key(&#39;Entity&#39;, &#39;alphabeta&#39;)) / e = Entity.get(k) e = db.get(k) e.delete() / db.delete(e1, e2) / db.delete(k) Expando 基类可以任意扩展属性，Model 基类则不可。
+GAE 中基本类型与 Python / Java 中基本类型的差异
+多值属性
+数据查询
+查询和类别 db.query() query.filter() query.order() 查询和键：查询结果要么返回实体，要么返回键（ key_only=True ） 可以用 GQL 写查询语句，不能写 CUD 获取结果： fetch() 索引
+每条查询都需要维护一条索引，在 index.yaml 中可以配置 排序之后的索引查询很快，查询效率和返回结果集有关 实体的每个属性会自动维护两条索引：升序和降序 查询时候选取对应的索引进行查询，条件语句可能和排序语句相冲突 不等于 / IN 操作符将引发一系列变换出的查询 多值字段的索引：每个值会成为索引中一行 / 实体会因此分散 / 取第一次成功扫描到的行 多值会引入爆炸索引问题 事务
+通过实体组来控制事务，实体组会在同一块存储区 GAE 使用乐观锁 使用 AModel(parent=p) 构造祖先，然后通过 run_in_transation() 回调事务处理函数 BigTable 中使用日志&#43;时间戳来跟踪实体的修改，保证数据并发和一致性 事务更新和索引更新：可能返回的索引结果和实体不一致 Python 数据建模
+声明 / 类型 / 验证（ validate() ）
+不编入索引的属性 indexed=False
+时间类型的自动值
+模型变化带来的维护问题：修改属性类型 / 添加一个必要属性是不向后兼容的。
+关系建模
+db.ReferenceProperty collection_name 多对多关系的处理
+键列表方法：使用多值属性 链接模型方法：相当于中间表概念 模型的继承：通过 db.PolyModel 实现多态查询
+Memcache
+CRUD 获取 URL 资源
+urlfetch() RPC 异步请求调用，闭包调用
+邮件和 XMPP
+额，亲用到时候看 Google 官方文档吧～ 大批量数据操作和远程访问
+/remote_api Bulk Loader 大量数据操作 远程 shell remote_api_shell.py app-id 任务队列和计划任务
+队列： queue.yaml / 令牌桶 计划任务： cron.yaml 都是通过设定主动触发某个 url Django
+看 Django 文档吧，亲～ 部署
+上传 appcfg.py update ./clock 通过 url 使用特定版本： version-id.latest.app-id.appspot.com 版本只维护代码，数据库还是同一份 下载日志 appcfg.py request_logs clock logs.txt </p>
   </div>
   <footer class="entry-footer"><span title='2012-03-24 00:00:00 +0800 +0800'>2012-03-24</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to GAE 编程指南读书笔记" href="https://blog.alswl.com/2012/03/gae/"></a>
@@ -296,6 +323,14 @@ import pdb;pdb.set_trace() 在 pdb 中，可以使用 h / l / b / n / s / c / j 
 Proxy SwitchySharp 介绍如下：
 轻松快捷地管理和切换多个代理设置。基于 “Proxy Switchy!” 和 “SwitchyPlus” 开发。 使用 SwitchySharp 和 GFW List 的图文教程（一次成功，无需重启） http://is.gd/swap2
 注意！我无法在这个页面回复你的提问。如果有任何故障反馈、求助、建议，请移步项目主页，谢谢！=&gt; http://code.google.com/p/switchysharp/issues/entry
+特色：
+使用 Chrome 代理 API，只修改浏览器代理设置，不修改系统代理设置。 支持自动切换模式，可根据 URL 使用不同的代理情景模式。 可导入、导出设置。 支持在线列表，且能兼容 GFW List 。 使用事件监视代理更改，更高效准确。 支持改进的快速切换模式，随意在代理之间切换。 为什么我要做这个扩展？ =&gt;
+由于 @gh05tw01f 停止支持和更新 SwitchyPlus 项目，我决定自己对其代码进行修改。
+在自己用的同时，本着开源的精神，我也将项目使用 GPL 授权，并上传至商店方便各位使用。
+为什么你应该从 SwitchyPlus 转移到 SwitchySharp ？=&gt;
+最重要的原因是， SwitchyPlus 项目已经不再更新，作者也不提供支持。而本项目还在开发过程中，提供支持和更新。
+其次，此扩展支持设置的导入导出，这是 SwitchyPlus 中没有的功能。
+最后，此扩展修复了 SwitchyPlus 中的很多 bug ，且增加了很多激动人心（？）的新功能，如一键切换中使用自动切换模式等。
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2012-03-15 00:00:00 +0800 +0800'>2012-03-15</span>&nbsp;·&nbsp;alswl</footer>
@@ -319,7 +354,10 @@ Proxy SwitchySharp 介绍如下：
 互惠原理适用于强加的恩惠。
 互惠原理可触发不对等交换。
 违背互惠原理，接受而不试图回报他人善举的人，是不受群体欢迎的。（进化适应器）
-...</p>
+互惠式让步：面对接受的善意，我们感到有义务要偿还。
+拒绝-后撤策略：先提出较大的要求，遭到拒绝之后再提出真正的较小要求。
+责任感 满意感 如何防范：
+拒绝最初的善意 / 分清楚请求者是否有善意或别有所图 明辩敌友：善意自然应当得到善意回报，可对销售策略却没有这个必要。 ...</p>
   </div>
   <footer class="entry-footer"><span title='2012-03-05 00:00:00 +0800 +0800'>2012-03-05</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to 影响力读书笔记" href="https://blog.alswl.com/2012/03/influence/"></a>
@@ -391,9 +429,9 @@ ps：我的读书笔记比较水，也许成为摘抄更合适。我习惯这种
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://blog.alswl.com/posts/page/10/">
-      «&nbsp;Prev&nbsp;
+      «&nbsp;上一页&nbsp;
     </a>
-    <a class="next" href="https://blog.alswl.com/posts/page/12/">Next&nbsp;&nbsp;»
+    <a class="next" href="https://blog.alswl.com/posts/page/12/">下一页&nbsp;&nbsp;»
     </a>
   </nav>
 </footer>
@@ -415,7 +453,7 @@ ps：我的读书笔记比较水，也许成为摘抄更合适。我习惯这种
 </a>
 <script type="module">
   if (document.querySelector("pre.mermaid")) {
-    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs");
 
     function isDarkTheme() {
       return document.body.classList.contains("dark");

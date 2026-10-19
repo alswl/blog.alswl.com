@@ -4,7 +4,7 @@
     <title>Architecture on Log4D</title>
     <link>https://blog.alswl.com/tags/architecture/</link>
     <description>Recent content in Architecture on Log4D</description>
-    <generator>Hugo -- 0.148.2</generator>
+    <generator>Hugo -- 0.168.0</generator>
     <language>zh</language>
     <lastBuildDate>Sat, 23 Sep 2023 18:22:27 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/architecture/rss.xml" rel="self" type="application/rss+xml" />
@@ -17,8 +17,7 @@
 
 
 
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/202309/car.png&#34; alt=&#34;car&#34;  /&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/202309/car.png&#34; alt=&#34;car&#34;  /&gt;
 
 
 &lt;/p&gt;
@@ -33,7 +32,6 @@ GitOps 解决了三个核心问题：&lt;strong&gt;内容&lt;/strong&gt;、&lt;s
 &lt;p&gt;在 GitOps 过程中，有哪些版本管理问题需要解决呢？&lt;/p&gt;
 &lt;p&gt;一套完整的 GitOps 解决方案包括内容描述（Manifest）、构建方案（Builder）和生效方案（Applier）。其中，内容描述衍生出多种描述语言，从最传统的 &lt;a href=&#34;https://www.ansible.com/&#34;&gt;Ansible&lt;/a&gt; / &lt;a href=&#34;https://www.chef.io/products/chef-infra&#34;&gt;Chef&lt;/a&gt;，到云计算和云原生流行起来的 &lt;a href=&#34;https://www.terraform.io/&#34;&gt;Terraform&lt;/a&gt;、&lt;a href=&#34;https://helm.sh/&#34;&gt;Helm&lt;/a&gt;、&lt;a href=&#34;https://kustomize.io/&#34;&gt;Kustomize&lt;/a&gt; 等。引入了这么多内容描述方式之后，当我们想要明确一个应用的版本时，变得非常复杂。&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>
-
 
 
 
@@ -74,7 +72,8 @@ GitOps 解决了三个核心问题：<strong>内容</strong>、<strong>版本</s
 <p>代码的版本是什么？是代码仓库的版本还是代码编译出来应用的版本。
 这个版本并不是代码所在的版本管理系统（如 Git / Mercurial / SVN 等）的版本。尽管这两者经常相关，但事实上，一份代码本身只是一组代码文件，只要构建成功，就会有一个版本。如果没有定义，版本就是未知的，此时与仓库管理没有关联。</p>
 <blockquote>
-<p>注意：下文我们不再区分 Git / Mercurial / SVN 多种版本管理方案，统一使用 Git 进行描述</p></blockquote>
+<p>注意：下文我们不再区分 Git / Mercurial / SVN 多种版本管理方案，统一使用 Git 进行描述</p>
+</blockquote>
 <p>还需要注意的是，中文中有两个概念（库 Libray 和仓库 Repository）。
 无论是哪种定义，都没有表示一个库一定是一个版本化（Git / SVN）仓库，
 这意味着我们并没有假设代码库一定是被版本化管理的。当我们将代码文件打包成一个 zip 文件时（GitHub 的 zip 下载就是这种形式），即使这个 zip 文件失去了所有的 Git 历史，它仍然是一个代码库。</p>
@@ -114,65 +113,65 @@ DEF_VER=v2.42.GIT
 <h2 id="概念梳理">概念梳理</h2>
 <p>让我们来理清一下这些略有晦涩的概念：</p>
 <table>
-  <thead>
-      <tr>
-          <th>中文</th>
-          <th>英文</th>
-          <th>解释</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>源代码</td>
-          <td>Source Code</td>
-          <td>程序、应用的源文件集合</td>
-      </tr>
-      <tr>
-          <td>代码仓库</td>
-          <td>Source Code Repo</td>
-          <td>源代码放到版本管理系统中的管理单元</td>
-      </tr>
-      <tr>
-          <td>版本</td>
-          <td>Version</td>
-          <td>源代码对应的应用版本，人为定义，语义化，有些场景会说 Upstream Version</td>
-      </tr>
-      <tr>
-          <td>可执行文件</td>
-          <td>Executable File</td>
-          <td>源代码构建出来的结果，一般是 ELF 可执行文件，也可以是 Lib 文件</td>
-      </tr>
-      <tr>
-          <td>启动配置文件</td>
-          <td>Configuration File</td>
-          <td>配套 ELF / Lib 的启动配置文件，区别于广泛意义上的配置文件（比如 Kubernetes YAML）</td>
-      </tr>
-      <tr>
-          <td>制品</td>
-          <td>Artifact</td>
-          <td>包含可执行文件和启动配置文件的集合，可以运行在运行时下面，一般是文件形态。制品可以嵌套制品。</td>
-      </tr>
-      <tr>
-          <td>安装器</td>
-          <td>Installer</td>
-          <td>将制品安装到运行时的工具</td>
-      </tr>
-      <tr>
-          <td>运行时</td>
-          <td>Runtime</td>
-          <td>制品的运行环境，比如特定操作系统，Kubernetes，Docker Engine。</td>
-      </tr>
-      <tr>
-          <td>打包器</td>
-          <td>Packer</td>
-          <td>将制品打包成特定格式（新的制品）的工具</td>
-      </tr>
-      <tr>
-          <td>打包附属信息</td>
-          <td>Packaging Info</td>
-          <td>制品打包时候需要的额外信息，比如容器的操作系统，进程的运行容量，默认环境变量等</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>中文</th>
+					<th>英文</th>
+					<th>解释</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>源代码</td>
+					<td>Source Code</td>
+					<td>程序、应用的源文件集合</td>
+			</tr>
+			<tr>
+					<td>代码仓库</td>
+					<td>Source Code Repo</td>
+					<td>源代码放到版本管理系统中的管理单元</td>
+			</tr>
+			<tr>
+					<td>版本</td>
+					<td>Version</td>
+					<td>源代码对应的应用版本，人为定义，语义化，有些场景会说 Upstream Version</td>
+			</tr>
+			<tr>
+					<td>可执行文件</td>
+					<td>Executable File</td>
+					<td>源代码构建出来的结果，一般是 ELF 可执行文件，也可以是 Lib 文件</td>
+			</tr>
+			<tr>
+					<td>启动配置文件</td>
+					<td>Configuration File</td>
+					<td>配套 ELF / Lib 的启动配置文件，区别于广泛意义上的配置文件（比如 Kubernetes YAML）</td>
+			</tr>
+			<tr>
+					<td>制品</td>
+					<td>Artifact</td>
+					<td>包含可执行文件和启动配置文件的集合，可以运行在运行时下面，一般是文件形态。制品可以嵌套制品。</td>
+			</tr>
+			<tr>
+					<td>安装器</td>
+					<td>Installer</td>
+					<td>将制品安装到运行时的工具</td>
+			</tr>
+			<tr>
+					<td>运行时</td>
+					<td>Runtime</td>
+					<td>制品的运行环境，比如特定操作系统，Kubernetes，Docker Engine。</td>
+			</tr>
+			<tr>
+					<td>打包器</td>
+					<td>Packer</td>
+					<td>将制品打包成特定格式（新的制品）的工具</td>
+			</tr>
+			<tr>
+					<td>打包附属信息</td>
+					<td>Packaging Info</td>
+					<td>制品打包时候需要的额外信息，比如容器的操作系统，进程的运行容量，默认环境变量等</td>
+			</tr>
+	</tbody>
 </table>
 <p>这些概念共同构成了制品版本管理的核心要素，帮助我们管理和跟踪制品的不同版本，以及它们之间的关联和依赖关系。</p>
 <h3 id="打包器-packer">打包器 Packer</h3>
@@ -196,7 +195,8 @@ DEF_VER=v2.42.GIT
 我们统一称之为配置。
 这些新加入的 Packaging Info 的描述在大规模集群管理下也带来了新的问题。</p>
 <blockquote>
-<p>自豪地使用 ArchLinux。</p></blockquote>
+<p>自豪地使用 ArchLinux。</p>
+</blockquote>
 <h3 id="arch-linux-社区的实践">Arch Linux 社区的实践</h3>
 <p>Arch Linux 使用 <a href="https://wiki.archlinux.org/title/Pacman">Pacman</a> 作为包安装器，并且拥有一套完整的<a href="https://wiki.archlinux.org/title/Arch_build_system">构建方案</a>。</p>
 <p>在 Arch Linux 中，<code>PKGBUILD</code> <a href="https://wiki.archlinux.org/title/PKGBUILD">link</a>用于描述包的构建方式，它本身是 Bash 的子集，是描述包的核心文件。</p>
@@ -242,8 +242,7 @@ DEF_VER=v2.42.GIT
 
 
 
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/202307/arch-easy.png&#34; alt=&#34;arch-easy&#34;  /&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/202307/arch-easy.png&#34; alt=&#34;arch-easy&#34;  /&gt;
 
 
 &lt;/p&gt;
@@ -268,7 +267,6 @@ DEF_VER=v2.42.GIT
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/arch-easy.png" alt="arch-easy"  />
 
 
@@ -289,7 +287,8 @@ DEF_VER=v2.42.GIT
 <blockquote>
 <p>架构，<strong>软件架构</strong>是有关软件整体结构与组件的抽象描述，用于指导大型软件系统各个方面的设计。</p>
 <p>系统分析，旨在研究特定系统结构中各部分（各子系统）的相互作用，系统的对外接口与界面，以及该系统整体的行为、
-功能和局限，从而为系统未来的变迁与有关决策提供参考和依据。</p></blockquote>
+功能和局限，从而为系统未来的变迁与有关决策提供参考和依据。</p>
+</blockquote>
 <p>来看一下英文定义可能会更清晰：</p>
 <ul>
 <li>架构 = 软件架构（设计） = Software Architecture <a href="https://en.wikipedia.org/wiki/Software_architecture">Software architecture - Wikipedia</a></li>
@@ -330,7 +329,6 @@ DEF_VER=v2.42.GIT
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/word-cloud-arch-biz.png" alt="word-cloud-arch-biz"  />
 
 
@@ -340,7 +338,6 @@ DEF_VER=v2.42.GIT
 从业务价值、商业策略和业务战略的角度思考问题。</p>
 <p>另一种架构偏重于工程设计和实现。常见的关键词有：领域建模、UML、GoF23，SOLID，高内聚低耦合等等。对应的词云如下：</p>
 <p>
-
 
 
 
@@ -361,7 +358,6 @@ DEF_VER=v2.42.GIT
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/elephant.png" alt="把大象装进冰箱"  />
 
 
@@ -369,7 +365,6 @@ DEF_VER=v2.42.GIT
 <p><small>image via unkown</small></p>
 <p>因此，解决问题也有三个步骤：第一步是将问题描述清楚，第二步是进行协商和决策达成一致，第三步则是着手解决问题。</p>
 <p>
-
 
 
 
@@ -385,7 +380,6 @@ DEF_VER=v2.42.GIT
 <h3 id="案例">案例</h3>
 <p>我举 Prometheus 的架构设计来作为例子。</p>
 <p>
-
 
 
 
@@ -418,7 +412,6 @@ DEF_VER=v2.42.GIT
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/gramma.jpg" alt="主谓宾"  />
 
 
@@ -432,7 +425,6 @@ DEF_VER=v2.42.GIT
 <h3 id="案例-1">案例</h3>
 <p>这里有一个产品用例的范例：</p>
 <p>
-
 
 
 
@@ -482,7 +474,6 @@ DEF_VER=v2.42.GIT
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/202307/rbac.png" alt="Kubernetes RBAC"  />
 
 
@@ -508,7 +499,8 @@ DEF_VER=v2.42.GIT
 <p>在基础设施领域，模型的产出可能包括 UML Model 图、ER 图、数据库 DML、类文件、OpenAPI Swagger（部分）等。</p>
 <h2 id="极简架构设计---细节看时序">极简架构设计 - 细节看时序</h2>
 <blockquote>
-<p>程序设计 = 数据结构 + 算法 + 流程控制</p></blockquote>
+<p>程序设计 = 数据结构 + 算法 + 流程控制</p>
+</blockquote>
 <p>在将设计转换为模型之前，最后一个重要的步骤是控制细节。对于需求方和决策者来说，这一步可能并不重要，
 但对于实施方（开发团队）来说，这个步骤直接影响交付结果的质量和时间。</p>
 <p>我认为细节应该在时序图上进行呈现。</p>
@@ -518,7 +510,6 @@ DEF_VER=v2.42.GIT
 <h3 id="案例-3">案例</h3>
 <p>这里以 AWS 一个官方博客作为范例：</p>
 <p>
-
 
 
 

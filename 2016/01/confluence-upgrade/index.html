@@ -21,7 +21,6 @@
 
 
 
-
 官方的升级路线很扯，3.0.1 的升级路线是：
 
 3.0.1 -&gt; 3.5.17
@@ -33,7 +32,7 @@
 需要先从内置库升级到外部数据库，比如 MySQL。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2016/01/confluence-upgrade/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4fef53c66d8b82475b2011d95b5b546036c4734e4b5492a58d45ebbc8018055e.css" integrity="sha256-T&#43;9Txm2LgkdbIBHZW1tUYDbEc05LVJKljUXrvIAYBV4=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.81e3c8cf436c36a822ec86f3937f489fea5ec878fa91f50bc02e772eddb7041f.css" integrity="sha256-gePIz0NsNqgi7Ibzk39In&#43;peyHj6kfULwC53Lt23BB8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -83,7 +82,7 @@
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -113,7 +112,6 @@
 现在使用的版本还是 3.0.1，而最新的 Confluence 版本已经是 5.4&#43;。
 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑），
 在群众的强烈呼声下，我着手开始升级。
-
 
 
 
@@ -267,7 +265,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">主页</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
     <h1 class="post-title entry-hint-parent">
       一次艰难的 Wiki 升级
     </h1>
@@ -277,7 +275,7 @@
   </header> <div class="toc">
     <details >
         <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
+            <span class="details">目录</span>
         </summary>
 
         <div class="inner"><nav id="TableOfContents">
@@ -297,7 +295,6 @@
 新版本加入的一些现代化 Web 系统的新特性很吸引人（拖拽上传，可见即所得编辑），
 在群众的强烈呼声下，我着手开始升级。</p>
 <p>
-
 
 
 
@@ -326,7 +323,8 @@
 </ul>
 <p>遇到了错误：</p>
 <blockquote>
-<p>Import failed. Hibernate operation: could not insert: [com.atlassian.confluence.core.BodyContent#12028015]; SQL []; Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;</p></blockquote>
+<p>Import failed. Hibernate operation: could not insert: [com.atlassian.confluence.core.BodyContent#12028015]; SQL []; Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;; nested exception is com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: Duplicate entry &lsquo;12028015&rsquo; for key &lsquo;PRIMARY&rsquo;</p>
+</blockquote>
 <p>官方文档 <a href="https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html">https://confluence.atlassian.com/doc/troubleshooting-xml-backups-that-fail-on-restore-199034.html</a>
 让修改重复键数据，好吧，我改，搜索一把重复主键，将备份里面的 <code>entities.xml</code> 弄出来。</p>
 <pre tabindex="0"><code># 格式化
@@ -341,7 +339,8 @@ awk &#39;{s=s $0}END{gsub(/&gt;&lt;/,&#34;&gt;\n&lt;&#34;,s);s=gensub(/&gt;([^ \
 <h2 id="横插一刀的-emoji-">横插一刀的 Emoji 😊😢💗<a hidden class="anchor" aria-hidden="true" href="#横插一刀的-emoji-">#</a></h2>
 <p>导入时候报了这么一个错误：</p>
 <blockquote>
-<p>Caused by: java.sql.SQLException: Incorrect string value: &lsquo;\xF0\x9F\x8C\x8D\xE5\x9B&hellip;&rsquo; for column &lsquo;BODY&rsquo; at row 1 org.xml.sax.SAXException: Error while parsing 2015-10-19 23:14:13,108 ERROR [Importing data task] [confluence.importexport.impl.ReverseDatabinder] fromXML Error processing backup: &ndash; referer: http://10.1.2.155:8087/setup/setup-restore-start.action | url: /setup/setup-restore-local.action | userName: anonymous | action: setup-restore-local org.xml.sax.SAXException: Error while parsing net.sf.hibernate.exception.GenericJDBCException: could not insert: [com.atlassian.confluence.core.BodyContent#12028161]</p></blockquote>
+<p>Caused by: java.sql.SQLException: Incorrect string value: &lsquo;\xF0\x9F\x8C\x8D\xE5\x9B&hellip;&rsquo; for column &lsquo;BODY&rsquo; at row 1 org.xml.sax.SAXException: Error while parsing 2015-10-19 23:14:13,108 ERROR [Importing data task] [confluence.importexport.impl.ReverseDatabinder] fromXML Error processing backup: &ndash; referer: http://10.1.2.155:8087/setup/setup-restore-start.action | url: /setup/setup-restore-local.action | userName: anonymous | action: setup-restore-local org.xml.sax.SAXException: Error while parsing net.sf.hibernate.exception.GenericJDBCException: could not insert: [com.atlassian.confluence.core.BodyContent#12028161]</p>
+</blockquote>
 <p>这是 Emoji 编码的问题，理论上 MySQL 换到 5.6+，更新 encoding 就可以了。</p>
 <p>但是……Confluence 的建表 SQL 爆出了 255 varchar 超过 1000 限制的错误
 ，我尝试使用 <a href="https://github.com/rails/rails/issues/9855">innodb_large_prefix</a>
@@ -402,12 +401,12 @@ alt="窥豹" />
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://blog.alswl.com/2016/02/a-timeout-fault/">
-    <span class="title">« Prev</span>
+    <span class="title">« 上一页</span>
     <br>
     <span>一例 Timeout 故障</span>
   </a>
   <a class="next" href="https://blog.alswl.com/2015/11/ss-with-haproxy/">
-    <span class="title">Next »</span>
+    <span class="title">下一页 »</span>
     <br>
     <span>SS with Haproxy</span>
   </a>
@@ -415,7 +414,7 @@ alt="窥豹" />
 
   </footer><div id="waline"></div>
 <script type="module">
-  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+  import { init } from 'https://unpkg.com/@waline/client@2.15.8/dist/waline.mjs';
 
     
     
@@ -451,7 +450,7 @@ alt="窥豹" />
 </a>
 <script type="module">
   if (document.querySelector("pre.mermaid")) {
-    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs");
 
     function isDarkTheme() {
       return document.body.classList.contains("dark");
@@ -539,12 +538,12 @@ alt="窥豹" />
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
+        copybutton.innerHTML = '复制';
 
         function copyingDone() {
-            copybutton.innerHTML = 'copied!';
+            copybutton.innerHTML = '已复制！';
             setTimeout(() => {
-                copybutton.innerHTML = 'copy';
+                copybutton.innerHTML = '复制';
             }, 2000);
         }
 

@@ -26,7 +26,7 @@ TryExec=/usr/bin/awesome
 $HOME/.start-session.sh 中的作用是启动 nm-applet 和 exec awesome。">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2012/05/networkmanager-policykit-consolekit/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4fef53c66d8b82475b2011d95b5b546036c4734e4b5492a58d45ebbc8018055e.css" integrity="sha256-T&#43;9Txm2LgkdbIBHZW1tUYDbEc05LVJKljUXrvIAYBV4=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.81e3c8cf436c36a822ec86f3937f489fea5ec878fa91f50bc02e772eddb7041f.css" integrity="sha256-gePIz0NsNqgi7Ibzk39In&#43;peyHj6kfULwC53Lt23BB8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -76,7 +76,7 @@ $HOME/.start-session.sh 中的作用是启动 nm-applet 和 exec awesome。">
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -258,7 +258,7 @@ $HOME/.start-session.sh 中的作用是启动 nm-applet 和 exec awesome。">
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">主页</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
     <h1 class="post-title entry-hint-parent">
       关于 NetworkManager / PolicyKit / ConsoleKit 的那些屌事
     </h1>
@@ -268,7 +268,7 @@ $HOME/.start-session.sh 中的作用是启动 nm-applet 和 exec awesome。">
   </header> <div class="toc">
     <details >
         <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
+            <span class="details">目录</span>
         </summary>
 
         <div class="inner"><nav id="TableOfContents">
@@ -305,7 +305,6 @@ $HOME/.start-session.sh 中的作用是启动 nm-applet 和 exec awesome。">
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201205/insufficient-privileges.png" alt="insufficient privileges"  />
 
 
@@ -319,10 +318,12 @@ $HOME/.start-session.sh 中的作用是启动 nm-applet 和 exec awesome。">
 <li>Program send message to daemon via dbus about action</li>
 <li>Daemon uses PolicyKit libraries/configuration (in fact PolicyKit daemon) to determine if user is allowed to perform action. It may happen that the certain confition must be fullfilled (like entering password or hardware access).</li>
 <li>Deamon performs action according to it (returns auth error or perform action)</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <p>ConsoleKit 是：</p>
 <blockquote>
-<p>In short consolekit is service which tracks user sessions (i.e. where user is logged in). It allows switching users without logging out [many user can be logged in on the same hardware at the same time with one user active]. It is also used to check if session is &ldquo;local&rdquo; i.e. if user have direct access to hardware (which may be considered more secure then remote access).</p></blockquote>
+<p>In short consolekit is service which tracks user sessions (i.e. where user is logged in). It allows switching users without logging out [many user can be logged in on the same hardware at the same time with one user active]. It is also used to check if session is &ldquo;local&rdquo; i.e. if user have direct access to hardware (which may be considered more secure then remote access).</p>
+</blockquote>
 <p>参考：<a href="http://unix.stackexchange.com/questions/5220/what-are-consolekit-and-policykit-how-do-they-work">What are ConsoleKit and PolicyKit? How do they work?</a></p>
 <p>所以简而言之，ConsoleKit 是用来管理用户会话的，PolicyKit 是用来处理用户申请特殊权限的，
 他们两个经常工作在一起。</p>
@@ -341,7 +342,6 @@ $HOME/.start-session.sh 中的作用是启动 nm-applet 和 exec awesome。">
 <p>随后我把怀疑的目光放到 <code>/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1</code>
 这个程序给系统提供 PolicyKit 权限认证，请求时候会让用户输入密码，如下图：</p>
 <p>
-
 
 
 
@@ -421,12 +421,12 @@ alt="窥豹" />
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://blog.alswl.com/2012/05/the-non-designers-design-book/">
-    <span class="title">« Prev</span>
+    <span class="title">« 上一页</span>
     <br>
     <span>《写给大家看的设计书》读后感</span>
   </a>
   <a class="next" href="https://blog.alswl.com/2012/05/image-host/">
-    <span class="title">Next »</span>
+    <span class="title">下一页 »</span>
     <br>
     <span>使用独立图床子域名</span>
   </a>
@@ -434,7 +434,7 @@ alt="窥豹" />
 
   </footer><div id="waline"></div>
 <script type="module">
-  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+  import { init } from 'https://unpkg.com/@waline/client@2.15.8/dist/waline.mjs';
 
     
     
@@ -470,7 +470,7 @@ alt="窥豹" />
 </a>
 <script type="module">
   if (document.querySelector("pre.mermaid")) {
-    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs");
 
     function isDarkTheme() {
       return document.body.classList.contains("dark");
@@ -558,12 +558,12 @@ alt="窥豹" />
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
+        copybutton.innerHTML = '复制';
 
         function copyingDone() {
-            copybutton.innerHTML = 'copied!';
+            copybutton.innerHTML = '已复制！';
             setTimeout(() => {
-                copybutton.innerHTML = 'copy';
+                copybutton.innerHTML = '复制';
             }, 2000);
         }
 

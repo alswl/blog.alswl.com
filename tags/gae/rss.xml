@@ -4,7 +4,7 @@
     <title>Gae on Log4D</title>
     <link>https://blog.alswl.com/tags/gae/</link>
     <description>Recent content in Gae on Log4D</description>
-    <generator>Hugo -- 0.148.2</generator>
+    <generator>Hugo -- 0.168.0</generator>
     <language>zh</language>
     <lastBuildDate>Sat, 24 Mar 2012 00:00:00 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/gae/rss.xml" rel="self" type="application/rss+xml" />
@@ -29,7 +29,160 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;入门（安装 / GAccount / webapp / app.yaml / /_ah/admin / 注册部署 / login:required）&lt;/p&gt;</description>
+&lt;p&gt;入门（安装 / GAccount / webapp / app.yaml / /_ah/admin / 注册部署 / login:required）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;处理流程：请求 - 前端 - 引用服务器 / 静态文件服务器 - 服务&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;配额限制：请求限制 / CPU 限制 / 服务限制 / 部署限制 （最新配额：http://code.google.com/intl/zh-CN/appengine/docs/quotas.html）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数据存储&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;GAE 的数据存储方式和传统的 RDBMS 差异比较大，更类似于对象数据库。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;类别 kind / 键 / 键名 key name&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;可以通过键来获取和操作对象&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;e = db.get(db.Key(&#39;Entity&#39;, &#39;alphabeta&#39;))&lt;/code&gt; / &lt;code&gt;e = Entity.get(k)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e = db.get(k)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;e.delete()&lt;/code&gt; / &lt;code&gt;db.delete(e1, e2)&lt;/code&gt; / &lt;code&gt;db.delete(k)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Expando 基类可以任意扩展属性，Model 基类则不可。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;GAE 中基本类型与 Python / Java 中基本类型的差异&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;多值属性&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;数据查询&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查询和类别 &lt;code&gt;db.query()&lt;/code&gt; &lt;code&gt;query.filter()&lt;/code&gt; &lt;code&gt;query.order()&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;查询和键：查询结果要么返回实体，要么返回键（ &lt;code&gt;key_only=True&lt;/code&gt; ）&lt;/li&gt;
+&lt;li&gt;可以用 GQL 写查询语句，不能写 CUD&lt;/li&gt;
+&lt;li&gt;获取结果： &lt;code&gt;fetch()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;索引&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每条查询都需要维护一条索引，在 &lt;code&gt;index.yaml&lt;/code&gt; 中可以配置&lt;/li&gt;
+&lt;li&gt;排序之后的索引查询很快，查询效率和返回结果集有关&lt;/li&gt;
+&lt;li&gt;实体的每个属性会自动维护两条索引：升序和降序&lt;/li&gt;
+&lt;li&gt;查询时候选取对应的索引进行查询，条件语句可能和排序语句相冲突&lt;/li&gt;
+&lt;li&gt;不等于 / IN 操作符将引发一系列变换出的查询&lt;/li&gt;
+&lt;li&gt;多值字段的索引：每个值会成为索引中一行 / 实体会因此分散 / 取第一次成功扫描到的行&lt;/li&gt;
+&lt;li&gt;多值会引入爆炸索引问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;事务&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过实体组来控制事务，实体组会在同一块存储区&lt;/li&gt;
+&lt;li&gt;GAE 使用乐观锁&lt;/li&gt;
+&lt;li&gt;使用 &lt;code&gt;AModel(parent=p)&lt;/code&gt; 构造祖先，然后通过 &lt;code&gt;run_in_transation()&lt;/code&gt; 回调事务处理函数&lt;/li&gt;
+&lt;li&gt;BigTable 中使用日志+时间戳来跟踪实体的修改，保证数据并发和一致性&lt;/li&gt;
+&lt;li&gt;事务更新和索引更新：可能返回的索引结果和实体不一致&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Python 数据建模&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;声明 / 类型 / 验证（ &lt;code&gt;validate()&lt;/code&gt; ）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不编入索引的属性 &lt;code&gt;indexed=False&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;时间类型的自动值&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;模型变化带来的维护问题：修改属性类型 / 添加一个必要属性是不向后兼容的。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;关系建模&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;db.ReferenceProperty&lt;/li&gt;
+&lt;li&gt;collection_name&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;多对多关系的处理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;键列表方法：使用多值属性&lt;/li&gt;
+&lt;li&gt;链接模型方法：相当于中间表概念&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;模型的继承：通过 &lt;code&gt;db.PolyModel&lt;/code&gt; 实现多态查询&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Memcache&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CRUD&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;获取 URL 资源&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;urlfetch()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;RPC 异步请求调用，闭包调用&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;邮件和 XMPP&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;额，亲用到时候看 Google 官方文档吧～&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;大批量数据操作和远程访问&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/remote_api&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Bulk Loader 大量数据操作&lt;/li&gt;
+&lt;li&gt;远程 shell &lt;code&gt;remote_api_shell.py app-id&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;任务队列和计划任务&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;队列： &lt;code&gt;queue.yaml&lt;/code&gt; / 令牌桶&lt;/li&gt;
+&lt;li&gt;计划任务： &lt;code&gt;cron.yaml&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;都是通过设定主动触发某个 url&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Django&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;看 Django 文档吧，亲～&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;部署&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;上传 &lt;code&gt;appcfg.py update ./clock&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;通过 url 使用特定版本： &lt;code&gt;version-id.latest.app-id.appspot.com&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;版本只维护代码，数据库还是同一份&lt;/li&gt;
+&lt;li&gt;下载日志 &lt;code&gt;appcfg.py request_logs clock logs.txt&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
       <content:encoded><![CDATA[<p>GAE 和我蛮有缘分，我初学 Python 的其中一个原因就是当时 GAE 刚推出， 当时想法是免费的应用要用起来，要不然就浪费了。随后也假模假样的看文档，
 就是没有什么产出。</p>
 <p>去年写了一个小应用 <a href="https://github.com/alswl/dbevent2gc">dbevent2gc</a> ， 期间发现 GAE
@@ -218,8 +371,7 @@
 
 
 
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/upload_dropbox/201111/dbevent2gc.png&#34; alt=&#34;dbevent2gc&#34;  /&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201111/dbevent2gc.png&#34; alt=&#34;dbevent2gc&#34;  /&gt;
 
 
 &lt;/p&gt;
@@ -240,7 +392,6 @@
 <p><strike><a href="http://feed.dddspace.com">http://feed.dddspace.com</a></strike> 弃用</p>
 <p>请订阅我博客的朋友更新一下订阅地址。</p>
 <p>
-
 
 
 
@@ -372,159 +523,194 @@ Services和微软的Azure服务平台等。</p>
 #The_Sandbox)的定义、Python/Java在GAE的限制（参考文献-[Will it play in AppEngine](<a href="http://groups.google.com/group/google-appengine-java/web/will-it-play-">http://groups.google.com/group/google-appengine-java/web/will-it-play-</a>
 in-app-engine)），确定GAE不支持套接字和多线程。引用文字如下：<a href="http://groups.google.com/group/google-appengine-java/web/will-it-play-in-app-engine">via</a></p>
 <blockquote>
-<h4 id="沙盒">沙盒</h4></blockquote>
+<h4 id="沙盒">沙盒</h4>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>为了使得 App Engine
 能够跨多个网络服务器分配对于应用程序的请求，并且防止应用程序彼此干扰，请在受限制的&quot;沙盒&quot;环境中运行应用程序。在这种环境中，该应用程序可执行代
-码；可存储和查询 App Engine 数据存储区中的数据；可使用 App Engine 邮件、网址抓取和用户服务；可检查用户的网络请求以及准备响应。</p></blockquote>
+码；可存储和查询 App Engine 数据存储区中的数据；可使用 App Engine 邮件、网址抓取和用户服务；可检查用户的网络请求以及准备响应。</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<p>App Engine 应用程序无法：</p></blockquote>
+<p>App Engine 应用程序无法：</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <ul>
 <li>向文件系统写入。应用程序必须使用 [App Engine 数据存储区](<a href="http://code.google.com/appengine/doc">http://code.google.com/appengine/doc</a>
 s/java/datastore/)存储永久数据。允许从文件系统中读取，并且可使用与该应用程序一起上传的所有应用程序文件。</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <blockquote>
 <ul>
 <li>打开套接字或直接访问另一主机。应用程序可使用 <a href="http://code.google.com/appengine/docs/java/urlfetch/">App Engine
 网址抓取服务</a>分别向端口 80 和 443
 上的其他主机发出 HTTP 和 HTTPS 请求。</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <blockquote>
 <ul>
 <li>产生子进程或线程。必须在几秒钟内于单个进程中处理对应用程序的网络请求。响应时间很长的进程会被终止，以避免使网络服务器负载过重。</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <blockquote>
 <ul>
 <li>进行其他类型的系统调用。</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<h5 id="线程">线程</h5></blockquote>
+<h5 id="线程">线程</h5>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>Java 应用程序无法新建 <code>java.lang.ThreadGroup</code> 或 <code>java.lang.Thread</code>。这些限制也适用于利用线程的 JRE
 类。例如，应用程序无法新建 <code>java.util.concurrent.ThreadPoolExecutor</code> 或
-<code>java.util.Timer</code>。应用程序可以对当前线程执行操作，如 <code>Thread.currentThread().dumpStack()</code>。</p></blockquote>
+<code>java.util.Timer</code>。应用程序可以对当前线程执行操作，如 <code>Thread.currentThread().dumpStack()</code>。</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<h5 id="文件系统">文件系统</h5></blockquote>
+<h5 id="文件系统">文件系统</h5>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>Java 应用程序无法使用任何用来写入文件系统的类，如 <code>java.io.FileWriter</code>。应用程序可以使用诸如
 <code>java.io.FileReader</code> 的类从文件系统中读取自己的文件。应用程序也可以通过例如 <code>Class.getResource()</code> 或
-<code>ServletContext.getResource()</code> 来访问作为&quot;资源&quot;的自身文件。</p></blockquote>
+<code>ServletContext.getResource()</code> 来访问作为&quot;资源&quot;的自身文件。</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>只有视为&quot;资源文件&quot;的文件才可以由应用程序通过文件系统访问。默认情况下，WAR 中的所有文件都是&quot;资源文件&quot;。您可以使用 [appengine-
 web.xml](<a href="http://code.google.com/intl/zh-">http://code.google.com/intl/zh-</a>
-CN/appengine/docs/java/config/appconfig.html) 文件将文件从该组中排除出去。</p></blockquote>
+CN/appengine/docs/java/config/appconfig.html) 文件将文件从该组中排除出去。</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<h5 id="javalangsystem">java.lang.System</h5></blockquote>
+<h5 id="javalangsystem">java.lang.System</h5>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<p>禁用不适用于 App Engine 的 <code>java.lang.System</code> 类的功能。</p></blockquote>
+<p>禁用不适用于 App Engine 的 <code>java.lang.System</code> 类的功能。</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>以下 <code>System</code> 方法在 App Engine
-中不起作用：<code>exit()</code>、<code>gc()</code>、<code>runFinalization()</code>、<code>runFinalizersOnExit()</code></p></blockquote>
+中不起作用：<code>exit()</code>、<code>gc()</code>、<code>runFinalization()</code>、<code>runFinalizersOnExit()</code></p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<p>以下 <code>System</code> 方法返回 <code>null</code>：<code>inheritedChannel()</code>、<code>console()</code></p></blockquote>
+<p>以下 <code>System</code> 方法返回 <code>null</code>：<code>inheritedChannel()</code>、<code>console()</code></p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>应用程序无法提供或直接调用任何本机 JNI 代码。以下 <code>System</code> 方法引发
-<code>java.lang.SecurityException</code>：<code>load()</code>、<code>loadLibrary()</code>、<code>setSecurityManager()</code></p></blockquote>
+<code>java.lang.SecurityException</code>：<code>load()</code>、<code>loadLibrary()</code>、<code>setSecurityManager()</code></p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<h5 id="反射">反射</h5></blockquote>
+<h5 id="反射">反射</h5>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>允许应用程序对自己的类进行完全、无限制的反射访问。它可以查询任何私有成员，使用
-<code>java.lang.reflect.AccessibleObject.setAccessible()</code>，以及读取/设置私有成员。</p></blockquote>
+<code>java.lang.reflect.AccessibleObject.setAccessible()</code>，以及读取/设置私有成员。</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<p>应用程序还可以对 JRE 和 API 类（如 <code>java.lang.String</code> 和 <code>javax.servlet.http.HttpServletR equest</code>）进行反射。但是，它只可以访问这些类的公共成员，而不可以访问受保护成员或私有成员。</p></blockquote>
+<p>应用程序还可以对 JRE 和 API 类（如 <code>java.lang.String</code> 和 <code>javax.servlet.http.HttpServletR equest</code>）进行反射。但是，它只可以访问这些类的公共成员，而不可以访问受保护成员或私有成员。</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<p>应用程序无法对不属于自己的任何其他类进行反射，也无法使用 <code>setAccessible()</code> 方法来避开这些限制。</p></blockquote>
+<p>应用程序无法对不属于自己的任何其他类进行反射，也无法使用 <code>setAccessible()</code> 方法来避开这些限制。</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<h5 id="自定义类载入">自定义类载入</h5></blockquote>
+<h5 id="自定义类载入">自定义类载入</h5>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>App Engine 完全支持自定义类载入。但是请注意，App Engine 将覆盖所有的
-ClassLoader，以将相同的权限分配给所有由应用程序载入的类。如果执行自定义类载入，在载入不信任的第三方代码时要小心。</p></blockquote>
+ClassLoader，以将相同的权限分配给所有由应用程序载入的类。如果执行自定义类载入，在载入不信任的第三方代码时要小心。</p>
+</blockquote>
 <blockquote>
-<h4 id="有没有-google-app-engine-不支持的-python-库">有没有 Google App Engine 不支持的 Python 库？</h4></blockquote>
+<h4 id="有没有-google-app-engine-不支持的-python-库">有没有 Google App Engine 不支持的 Python 库？</h4>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>只有很少一部分本机 C python 模块以及本机 C python 模块的子集不受 Google App Engine 支持。详述了本机 C
 Python 模块支持的完整列表可在[此处](<a href="http://code.google.com/intl/zh-">http://code.google.com/intl/zh-</a>
-CN/appengine/kb/libraries.html)找到。被禁用的模块属于以下类别：</p></blockquote>
+CN/appengine/kb/libraries.html)找到。被禁用的模块属于以下类别：</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <ul>
 <li>用于维护磁盘上数据存储区的库未在 Google App Engine 的 Python 中启用</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <blockquote>
 <ul>
 <li>Google App Engine 禁用套接字</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <blockquote>
 <ul>
 <li>系统不允许您调用子进程，结果某些操作系统模块方法被禁用</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <blockquote>
 <ul>
 <li>线程不可用</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <blockquote>
 <ul>
 <li>由于安全方面的原因，大多数基于 C 的模块都被禁用</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <blockquote>
 <ul>
 <li>其他受限制的功能：</li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <blockquote>
 <pre><code>* 封送已禁用
-</code></pre></blockquote>
+</code></pre>
+</blockquote>
 <blockquote>
 <pre><code>* cPickle 又名 pickle
-</code></pre></blockquote>
+</code></pre>
+</blockquote>
 <blockquote>
 <pre><code>* 系统调用已禁用
-</code></pre></blockquote>
+</code></pre>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
-<p>请记住，使用以上任意一种功能的第三方包（如 mysql、postgresql 等）都将无法在 Google App Engine 上运行。</p></blockquote>
+<p>请记住，使用以上任意一种功能的第三方包（如 mysql、postgresql 等）都将无法在 Google App Engine 上运行。</p>
+</blockquote>
 <p>根据Google App Engine的文档描述，在云计算提供的服务器集群中，无法提供套接字和多线程的使用，这也是可以
 遇见的，毕竟这么多服务器集群如果要实现套接字和多线程的同步，几乎是不可能完成的任务。</p>
 <h3 id="使用web-servicexml通信">使用Web Service/XML通信</h3>
@@ -545,7 +731,8 @@ Poiling方式完全是基于Http协议，这个GAE能够完美支持，Flex在<c
 <p>BigTable is a compressed, high performance, and proprietary database system
 built on Google File System (GFS), Chubby Lock Service, and a few other Google
 programs; it is currently not distributed or used outside of Google, although
-Google offers access to it as part of their Google App Engine.</p></blockquote>
+Google offers access to it as part of their Google App Engine.</p>
+</blockquote>
 <p>直接加入BigTable支持我怕会导致整个项目拖延，所以如果顺利则加入数据库支持，如果不顺利则放到以后再实现。</p>
 <h2 id="相关链接">相关链接</h2>
 <p>PylexChat in Google Project Host:
@@ -622,14 +809,139 @@ World来介绍一个开发步骤。&lt;/p&gt;
 
 
 
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/upload_dropbox/200909/image3.png&#34; alt=&#34;image&#34;  /&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/image3.png&#34; alt=&#34;image&#34;  /&gt;
 
 
  一个简单的App控制台&lt;/p&gt;
 &lt;h2 id=&#34;2部署gae-app&#34;&gt;2.部署GAE App&lt;/h2&gt;
 &lt;p&gt;刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置
-，所以Nothing,检查http状态会发现返回的是404状态）。&lt;/p&gt;</description>
+，所以Nothing,检查http状态会发现返回的是404状态）。&lt;/p&gt;
+&lt;p&gt;这时候我们就要开始部署这个GAE App了：1.下载一个&lt;a href=&#34;http://googleappengine.googlecode.com/files/GoogleAppEngine_1.2.5.msi&#34;&gt;Google App Engine SDK for Python-Win&lt;/a&gt;，这样就可以在本地测试项目，然后发布到
+GAE。&lt;/p&gt;
+&lt;p&gt;用这个GAE Launcher在本地创建了一个Application，注意标识符和你网上申请的要一致。然后会自动生成一个包含&amp;quot;」Hello
+Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。&lt;/p&gt;
+&lt;p&gt;相关链接：&lt;a href=&#34;http://code.google.com/intl/zh-CN/appengine/docs/python/config/appconfig.html&#34;&gt;app.yaml的具体设置&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;
+
+
+
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/xnapp_gae_launcher2.jpg&#34; alt=&#34;xnapp_gae_launcher&#34;  /&gt;
+
+
+
+我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。&lt;/p&gt;
+&lt;p&gt;在一切没有问题之后，我们就可以惦记Deploy部署这个项目了，这时候要输入帐号和密码，然后出现console控制台等待信息。出现下面提示时候，就说明上传成功
+了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Closing update: new version is ready to start serving.
+Uploading index definitions.
+Password for alswlwangzi@gmail.com: 2009-09-27 16:00:36 (Process exited with code 0)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这时候我们就可以打开xxx.appspot.com查看刚才部署的网站。&lt;/p&gt;
+&lt;h2 id=&#34;3校内应用&#34;&gt;3.校内应用&lt;/h2&gt;
+&lt;p&gt;拥有校内帐号，就可以创建校内应用。第一步是需要安装一个名为「&lt;a href=&#34;http://app.renren.com/developers/home.do&#34;&gt;开发者&lt;/a&gt;」
+的应用。通过这个应用，可以链接到其他一些有帮助的内容：&lt;a href=&#34;http://wiki.dev.renren.com/wiki/&#34;&gt;开放平台文档&lt;/a&gt;、&lt;a href=&#34;http://dev.renren.com/center/tools.do&#34;&gt;测试工具&lt;/a&gt;、&lt;a href=&#34;http://group.renren.com/GetTribe.do?id=237768885&#34;&gt;讨论区&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;第二步是创建一个新的应用，按部就班的填上相关资料。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;../../static/images/upload_dropbox/200909/image51.png&#34;&gt;
+
+
+
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/image5.png&#34; alt=&#34;image&#34;  /&gt;
+
+
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;../../static/images/upload_dropbox/200909/xnapp_main2.jpg&#34;&gt;
+
+
+
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/xnapp_main.jpg&#34; alt=&#34;xnapp_main&#34;  /&gt;
+
+
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;我的应用程序，在这里可以编辑应用的属性&lt;/p&gt;
+&lt;p&gt;创建之后，就可以填上Canvas的基本选项中的「应用展示地址」和「Canvas Callback
+URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com这种形式的网址。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;../../static/images/upload_dropbox/200909/xnapp_config2.jpg&#34;&gt;
+
+
+
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/xnapp_config.jpg&#34; alt=&#34;xnapp_config&#34;  /&gt;
+
+
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;最后测试自己的应用，也就是刚才「应用展示地址」，形式类似于apps.renren.com/xxx/，就可以看到我们的应用了，这时候基本框架就差不多了。&lt;/p&gt;
+&lt;h2 id=&#34;4噩耗&#34;&gt;4.噩耗&lt;/h2&gt;
+&lt;p&gt;此时当满天欢喜时候打开刚才的「应用展示地址」，你会惊奇的发现校内居然报错了，直接报了405错误。什么是405错误，就是服务器没有权限访问。&lt;/p&gt;
+&lt;p&gt;我花了一下午时间才解决这个问题，因为问题可能出在校内，也可能是GAE的功能限制上。&lt;/p&gt;
+&lt;p&gt;在appspot上测试这个应用是没有任何问题的&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;../../static/images/upload_dropbox/200909/xnapp_show_ori1.jpg&#34;&gt;
+
+
+
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/xnapp_show_ori.jpg&#34; alt=&#34;xnapp_show_ori&#34;  /&gt;
+
+
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;显示的源码，其中的xnml校内服务器自己可以解析出来的，这段代码在校内测试工具也能通过&lt;/p&gt;
+&lt;p&gt;调试之后，终于把问题锁定在get
+和post上，具体原因是因为校内发起请求GAE服务器用的是Post方法，而我们的main.py中目前只相应get方法，导致了校内请求GAE
+Post方法，服务器没有这个方法调用，就返回了405错误。&lt;/p&gt;
+&lt;p&gt;修复这个问题只给main.py的MainHandler这个类加上post方法&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;class MainHandler(webapp.RequestHandler):
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;def head(self, *args):&lt;/p&gt;
+&lt;p&gt;return self.get(*args)&lt;/p&gt;
+&lt;p&gt;def post(self):&lt;/p&gt;
+&lt;p&gt;self.response.out.write&amp;rsquo;Hello world!&#39;)&lt;/p&gt;
+&lt;h2 id=&#34;5结合&#34;&gt;5.结合&lt;/h2&gt;
+&lt;p&gt;最后我加上一个简单的&amp;lt;xn:profile-pic /&amp;gt;来展示一下整个App&lt;/p&gt;
+&lt;p&gt;下面我发布我的这个简单的Hello World!（其实因为要使用XNML，所以已经不是单纯的打出Hello World了）&lt;/p&gt;
+&lt;p&gt;app.yaml：定义了main.py和404页面&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;application: jasontidemo
+version: 1
+runtime: python
+api_version: 1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;handlers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;url: /&lt;br /&gt;
+script: main.py&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;url: /index.html&lt;br /&gt;
+script: main.py&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;url: /.*&lt;br /&gt;
+script: not_found.py main.py：我把post 和get写的比较Dirty，其实可以封装在一个函数里的。&lt;/p&gt;
+&lt;p&gt;import wsgiref.handlers
+from google.appengine.ext import webapp&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;class MainHandler(webapp.RequestHandler):&lt;/p&gt;
+&lt;p&gt;def head(self, *args):&lt;/p&gt;
+&lt;p&gt;return self.get(*args)&lt;/p&gt;
+&lt;p&gt;def post(self):&lt;/p&gt;
+&lt;p&gt;self.response.out.write(&amp;rsquo;&amp;rsquo;&amp;rsquo;&lt;b&gt;使用者的名称及其大中小三种头像：&lt;/b&gt;&lt;/p&gt;
+&lt;div style=&#34;text-align: center;&#34;&gt;
+&lt;p&gt;图片：&lt;/p&gt;
+&lt;p&gt;&amp;lt;xn:profile-pic uid=&amp;ldquo;loggedinuser&amp;rdquo; linked=&amp;ldquo;true&amp;rdquo; size=&amp;ldquo;tiny&amp;rdquo;/&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;xn:profile-pic uid=&amp;ldquo;loggedinuser&amp;rdquo; linked=&amp;ldquo;true&amp;rdquo; size=&amp;ldquo;normal&amp;rdquo;/&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;xn:profile-pic uid=&amp;ldquo;loggedinuser&amp;rdquo; linked=&amp;ldquo;true&amp;rdquo; size=&amp;ldquo;main&amp;rdquo;/&amp;gt;&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;姓名：&lt;/p&gt;
+&lt;p&gt;&amp;lt;xn:name uid=&amp;ldquo;loggedinuser&amp;rdquo; linked=&amp;ldquo;true&amp;rdquo; shownetwork=&amp;ldquo;true&amp;rdquo; /&amp;gt;&lt;/p&gt;
+&lt;/div&gt;&#39;&#39;&#39;)
+&lt;p&gt;def get(self):&lt;/p&gt;
+&lt;p&gt;self.response.out.write(&amp;rsquo;&amp;rsquo;&amp;rsquo;&lt;b&gt;使用者的名称及其大中小三种头像：&lt;/b&gt;&lt;/p&gt;
+&lt;div style=&#34;text-align: center;&#34;&gt;
+&lt;p&gt;图片：&lt;/p&gt;
+&lt;p&gt;&amp;lt;xn:profile-pic uid=&amp;ldquo;loggedinuser&amp;rdquo; linked=&amp;ldquo;true&amp;rdquo; size=&amp;ldquo;tiny&amp;rdquo;/&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;xn:profile-pic uid=&amp;ldquo;loggedinuser&amp;rdquo; linked=&amp;ldquo;true&amp;rdquo; size=&amp;ldquo;normal&amp;rdquo;/&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;xn:profile-pic uid=&amp;ldquo;loggedinuser&amp;rdquo; linked=&amp;ldquo;true&amp;rdquo; size=&amp;ldquo;main&amp;rdquo;/&amp;gt;&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;姓名：&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello
 World来介绍一个开发步骤。</p>
 <h2 id="1创建gae应用">1.创建GAE应用</h2>
@@ -642,7 +954,6 @@ World来介绍一个开发步骤。</p>
 
  <a href="http://code.google.com/appengine/">App Engine</a> ，激活这个服务，就可以<a href="https://appengine.google.com/">创建新的应用</a>。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。</p>
 <p>
-
 
 
 
@@ -659,7 +970,6 @@ GAE。</p>
 Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。</p>
 <p>相关链接：<a href="http://code.google.com/intl/zh-CN/appengine/docs/python/config/appconfig.html">app.yaml的具体设置</a></p>
 <p>
-
 
 
 
@@ -683,14 +993,12 @@ Password for alswlwangzi@gmail.com: 2009-09-27 16:00:36 (Process exited with cod
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/image5.png" alt="image"  />
 
 
 </a></p>
 <p>校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）</p>
 <p><a href="../../static/images/upload_dropbox/200909/xnapp_main2.jpg">
-
 
 
 
@@ -705,7 +1013,6 @@ URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com�
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/xnapp_config.jpg" alt="xnapp_config"  />
 
 
@@ -716,7 +1023,6 @@ URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com�
 <p>我花了一下午时间才解决这个问题，因为问题可能出在校内，也可能是GAE的功能限制上。</p>
 <p>在appspot上测试这个应用是没有任何问题的</p>
 <p><a href="../../static/images/upload_dropbox/200909/xnapp_show_ori1.jpg">
-
 
 
 
@@ -799,14 +1105,12 @@ from google.appengine.ext import webapp</p>
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/xnapp_show.jpg" alt="xnapp_show"  />
 
 
 </a></p>
 <p>我的头像，按理应该有三个，我怀疑是校内的一个服务器出问题了，只刷出来两张。</p>
 <p><a href="../../static/images/upload_dropbox/200909/xnapp_sidebar1.jpg">
-
 
 
 

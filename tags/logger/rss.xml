@@ -4,7 +4,7 @@
     <title>Logger on Log4D</title>
     <link>https://blog.alswl.com/tags/logger/</link>
     <description>Recent content in Logger on Log4D</description>
-    <generator>Hugo -- 0.148.2</generator>
+    <generator>Hugo -- 0.168.0</generator>
     <language>zh</language>
     <lastBuildDate>Sun, 18 Oct 2015 14:25:28 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/logger/rss.xml" rel="self" type="application/rss+xml" />
@@ -17,8 +17,7 @@
 
 
 
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/upload_dropbox/201510/logger.jpg&#34; alt=&#34;logger&#34;  /&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201510/logger.jpg&#34; alt=&#34;logger&#34;  /&gt;
 
 
 &lt;/p&gt;
@@ -32,7 +31,8 @@
 &lt;blockquote&gt;
 &lt;p&gt;Be human readable.&lt;/p&gt;
 &lt;p&gt;Be machine parsable.&lt;/p&gt;
-&lt;p&gt;Be easy for sleepy ops folks to figure out why things are pear-shaped at 3:30AM using standard UNIXy tools like tail and grep.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;Be easy for sleepy ops folks to figure out why things are pear-shaped at 3:30AM using standard UNIXy tools like tail and grep.&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;p&gt;eg.:&lt;/p&gt;
 &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;TRACE [2010-04-06 06:42:35,271] com.example.dw.Thing: Contemplating doing a thing.
 DEBUG [2010-04-06 06:42:35,274] com.example.dw.Thing: About to do a thing.
@@ -55,9 +55,26 @@ ERROR [2010-04-06 06:42:35,275] com.example.dw.Thing: This may get ugly.
 &lt;li&gt;将多行事件拆分&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;除了一些浅显易懂的原则，还是 dropwizard 的三条原则和解决方案靠谱。
-但是两篇文章都没有告诉如果在复杂系统里面记录有用的日志，打日志生命周期是怎样的。&lt;/p&gt;</description>
+但是两篇文章都没有告诉如果在复杂系统里面记录有用的日志，打日志生命周期是怎样的。&lt;/p&gt;
+&lt;p&gt;既然找不到，我就就自行想想如何打有意义的日志。&lt;/p&gt;
+&lt;p&gt;日志不怕多，而是怕繁杂难搜索，产出的数据无意义难追踪问题。所以最关键是找到一个合理通用的方式组织起来即可：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;按照模块名 com.duitang.service.module.aaa 打日志，比如 &lt;code&gt;com.duitang.service.module.aaa.log&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;一个模块一个日志，模块复杂之后，可以拆分，&lt;code&gt;com.duitang.service.module.aaa.core.log&lt;/code&gt; / &lt;code&gt;com.duitang.service.module.aaa.query.log&lt;/code&gt;，其实在这个时侯，这个模块本身由于复杂性也会面临拆分。&lt;/li&gt;
+&lt;li&gt;不分离 error / info 日志，放到一个文件，通过 &lt;code&gt;grep&lt;/code&gt; 或者日志工具分离&lt;/li&gt;
+&lt;li&gt;日志文件一定要 rotate，磁盘存储固定时间 N 天，远程文件存储固定时间 M 天，TTL 删除。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;补充一个日志常见使用场景：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;外部资源调用&lt;/li&gt;
+&lt;li&gt;状态变化&lt;/li&gt;
+&lt;li&gt;系统入口和出口&lt;/li&gt;
+&lt;li&gt;业务异常&lt;/li&gt;
+&lt;li&gt;非预期执行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr /&gt;
+&lt;p&gt;参考文档：&lt;/p&gt;</description>
       <content:encoded><![CDATA[<p>
-
 
 
 
@@ -75,7 +92,8 @@ ERROR [2010-04-06 06:42:35,275] com.example.dw.Thing: This may get ugly.
 <blockquote>
 <p>Be human readable.</p>
 <p>Be machine parsable.</p>
-<p>Be easy for sleepy ops folks to figure out why things are pear-shaped at 3:30AM using standard UNIXy tools like tail and grep.</p></blockquote>
+<p>Be easy for sleepy ops folks to figure out why things are pear-shaped at 3:30AM using standard UNIXy tools like tail and grep.</p>
+</blockquote>
 <p>eg.:</p>
 <pre tabindex="0"><code>TRACE [2010-04-06 06:42:35,271] com.example.dw.Thing: Contemplating doing a thing.
 DEBUG [2010-04-06 06:42:35,274] com.example.dw.Thing: About to do a thing.

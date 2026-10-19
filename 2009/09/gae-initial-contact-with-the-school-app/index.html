@@ -25,14 +25,139 @@ World来介绍一个开发步骤。
 
 
 
-
  一个简单的App控制台
 2.部署GAE App
 刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置
-，所以Nothing,检查http状态会发现返回的是404状态）。">
+，所以Nothing,检查http状态会发现返回的是404状态）。
+这时候我们就要开始部署这个GAE App了：1.下载一个Google App Engine SDK for Python-Win，这样就可以在本地测试项目，然后发布到
+GAE。
+用这个GAE Launcher在本地创建了一个Application，注意标识符和你网上申请的要一致。然后会自动生成一个包含&quot;」Hello
+Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。
+相关链接：app.yaml的具体设置
+
+
+
+
+
+
+
+
+我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。
+在一切没有问题之后，我们就可以惦记Deploy部署这个项目了，这时候要输入帐号和密码，然后出现console控制台等待信息。出现下面提示时候，就说明上传成功
+了。
+Closing update: new version is ready to start serving.
+Uploading index definitions.
+Password for alswlwangzi@gmail.com: 2009-09-27 16:00:36 (Process exited with code 0)
+
+这时候我们就可以打开xxx.appspot.com查看刚才部署的网站。
+3.校内应用
+拥有校内帐号，就可以创建校内应用。第一步是需要安装一个名为「开发者」
+的应用。通过这个应用，可以链接到其他一些有帮助的内容：开放平台文档、测试工具、讨论区。
+第二步是创建一个新的应用，按部就班的填上相关资料。
+
+
+
+
+
+
+
+
+校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）
+
+
+
+
+
+
+
+
+我的应用程序，在这里可以编辑应用的属性
+创建之后，就可以填上Canvas的基本选项中的「应用展示地址」和「Canvas Callback
+URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com这种形式的网址。
+
+
+
+
+
+
+
+
+最后测试自己的应用，也就是刚才「应用展示地址」，形式类似于apps.renren.com/xxx/，就可以看到我们的应用了，这时候基本框架就差不多了。
+4.噩耗
+此时当满天欢喜时候打开刚才的「应用展示地址」，你会惊奇的发现校内居然报错了，直接报了405错误。什么是405错误，就是服务器没有权限访问。
+我花了一下午时间才解决这个问题，因为问题可能出在校内，也可能是GAE的功能限制上。
+在appspot上测试这个应用是没有任何问题的
+
+
+
+
+
+
+
+
+显示的源码，其中的xnml校内服务器自己可以解析出来的，这段代码在校内测试工具也能通过
+调试之后，终于把问题锁定在get
+和post上，具体原因是因为校内发起请求GAE服务器用的是Post方法，而我们的main.py中目前只相应get方法，导致了校内请求GAE
+Post方法，服务器没有这个方法调用，就返回了405错误。
+修复这个问题只给main.py的MainHandler这个类加上post方法
+class MainHandler(webapp.RequestHandler):
+
+def head(self, *args):
+return self.get(*args)
+def post(self):
+self.response.out.write&rsquo;Hello world!&#39;)
+5.结合
+最后我加上一个简单的&lt;xn:profile-pic /&gt;来展示一下整个App
+下面我发布我的这个简单的Hello World!（其实因为要使用XNML，所以已经不是单纯的打出Hello World了）
+app.yaml：定义了main.py和404页面
+application: jasontidemo
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+
+
+url: /
+script: main.py
+
+
+url: /index.html
+script: main.py
+
+
+url: /.*
+script: not_found.py main.py：我把post 和get写的比较Dirty，其实可以封装在一个函数里的。
+import wsgiref.handlers
+from google.appengine.ext import webapp
+
+
+class MainHandler(webapp.RequestHandler):
+def head(self, *args):
+return self.get(*args)
+def post(self):
+self.response.out.write(&rsquo;&rsquo;&rsquo;使用者的名称及其大中小三种头像：
+
+图片：
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;tiny&rdquo;/&gt;
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;normal&rdquo;/&gt;
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;main&rdquo;/&gt;
+
+姓名：
+&lt;xn:name uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; shownetwork=&ldquo;true&rdquo; /&gt;
+&#39;&#39;&#39;)
+def get(self):
+self.response.out.write(&rsquo;&rsquo;&rsquo;使用者的名称及其大中小三种头像：
+
+图片：
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;tiny&rdquo;/&gt;
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;normal&rdquo;/&gt;
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;main&rdquo;/&gt;
+
+姓名：">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2009/09/gae-initial-contact-with-the-school-app/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4fef53c66d8b82475b2011d95b5b546036c4734e4b5492a58d45ebbc8018055e.css" integrity="sha256-T&#43;9Txm2LgkdbIBHZW1tUYDbEc05LVJKljUXrvIAYBV4=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.81e3c8cf436c36a822ec86f3937f489fea5ec878fa91f50bc02e772eddb7041f.css" integrity="sha256-gePIz0NsNqgi7Ibzk39In&#43;peyHj6kfULwC53Lt23BB8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -82,7 +207,7 @@ World来介绍一个开发步骤。
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -98,7 +223,58 @@ World来介绍一个开发步骤。
   <meta property="og:description" content="下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello World来介绍一个开发步骤。
 1.创建GAE应用 建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 App Engine ，激活这个服务，就可以创建新的应用。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。
 一个简单的App控制台
-2.部署GAE App 刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置 ，所以Nothing,检查http状态会发现返回的是404状态）。">
+2.部署GAE App 刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置 ，所以Nothing,检查http状态会发现返回的是404状态）。
+这时候我们就要开始部署这个GAE App了：1.下载一个Google App Engine SDK for Python-Win，这样就可以在本地测试项目，然后发布到 GAE。
+用这个GAE Launcher在本地创建了一个Application，注意标识符和你网上申请的要一致。然后会自动生成一个包含&#34;」Hello Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。
+相关链接：app.yaml的具体设置
+我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。
+在一切没有问题之后，我们就可以惦记Deploy部署这个项目了，这时候要输入帐号和密码，然后出现console控制台等待信息。出现下面提示时候，就说明上传成功 了。
+Closing update: new version is ready to start serving. Uploading index definitions. Password for alswlwangzi@gmail.com: 2009-09-27 16:00:36 (Process exited with code 0) 这时候我们就可以打开xxx.appspot.com查看刚才部署的网站。
+3.校内应用 拥有校内帐号，就可以创建校内应用。第一步是需要安装一个名为「开发者」 的应用。通过这个应用，可以链接到其他一些有帮助的内容：开放平台文档、测试工具、讨论区。
+第二步是创建一个新的应用，按部就班的填上相关资料。
+校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）
+我的应用程序，在这里可以编辑应用的属性
+创建之后，就可以填上Canvas的基本选项中的「应用展示地址」和「Canvas Callback URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com这种形式的网址。
+最后测试自己的应用，也就是刚才「应用展示地址」，形式类似于apps.renren.com/xxx/，就可以看到我们的应用了，这时候基本框架就差不多了。
+4.噩耗 此时当满天欢喜时候打开刚才的「应用展示地址」，你会惊奇的发现校内居然报错了，直接报了405错误。什么是405错误，就是服务器没有权限访问。
+我花了一下午时间才解决这个问题，因为问题可能出在校内，也可能是GAE的功能限制上。
+在appspot上测试这个应用是没有任何问题的
+显示的源码，其中的xnml校内服务器自己可以解析出来的，这段代码在校内测试工具也能通过
+调试之后，终于把问题锁定在get 和post上，具体原因是因为校内发起请求GAE服务器用的是Post方法，而我们的main.py中目前只相应get方法，导致了校内请求GAE Post方法，服务器没有这个方法调用，就返回了405错误。
+修复这个问题只给main.py的MainHandler这个类加上post方法
+class MainHandler(webapp.RequestHandler): def head(self, *args):
+return self.get(*args)
+def post(self):
+self.response.out.write’Hello world!&#39;)
+5.结合 最后我加上一个简单的&lt;xn:profile-pic /&gt;来展示一下整个App
+下面我发布我的这个简单的Hello World!（其实因为要使用XNML，所以已经不是单纯的打出Hello World了）
+app.yaml：定义了main.py和404页面
+application: jasontidemo version: 1 runtime: python api_version: 1 handlers:
+url: /
+script: main.py
+url: /index.html
+script: main.py
+url: /.*
+script: not_found.py main.py：我把post 和get写的比较Dirty，其实可以封装在一个函数里的。
+import wsgiref.handlers from google.appengine.ext import webapp
+class MainHandler(webapp.RequestHandler):
+def head(self, *args):
+return self.get(*args)
+def post(self):
+self.response.out.write(’’’使用者的名称及其大中小三种头像：
+图片：
+&lt;xn:profile-pic uid=“loggedinuser” linked=“true” size=“tiny”/&gt;
+&lt;xn:profile-pic uid=“loggedinuser” linked=“true” size=“normal”/&gt;
+&lt;xn:profile-pic uid=“loggedinuser” linked=“true” size=“main”/&gt;
+姓名：
+&lt;xn:name uid=“loggedinuser” linked=“true” shownetwork=“true” /&gt;
+&#39;&#39;&#39;) def get(self):
+self.response.out.write(’’’使用者的名称及其大中小三种头像：
+图片：
+&lt;xn:profile-pic uid=“loggedinuser” linked=“true” size=“tiny”/&gt;
+&lt;xn:profile-pic uid=“loggedinuser” linked=“true” size=“normal”/&gt;
+&lt;xn:profile-pic uid=“loggedinuser” linked=“true” size=“main”/&gt;
+姓名：">
   <meta property="og:locale" content="zh">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -128,11 +304,136 @@ World来介绍一个开发步骤。
 
 
 
-
  一个简单的App控制台
 2.部署GAE App
 刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置
-，所以Nothing,检查http状态会发现返回的是404状态）。">
+，所以Nothing,检查http状态会发现返回的是404状态）。
+这时候我们就要开始部署这个GAE App了：1.下载一个Google App Engine SDK for Python-Win，这样就可以在本地测试项目，然后发布到
+GAE。
+用这个GAE Launcher在本地创建了一个Application，注意标识符和你网上申请的要一致。然后会自动生成一个包含&quot;」Hello
+Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。
+相关链接：app.yaml的具体设置
+
+
+
+
+
+
+
+
+我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。
+在一切没有问题之后，我们就可以惦记Deploy部署这个项目了，这时候要输入帐号和密码，然后出现console控制台等待信息。出现下面提示时候，就说明上传成功
+了。
+Closing update: new version is ready to start serving.
+Uploading index definitions.
+Password for alswlwangzi@gmail.com: 2009-09-27 16:00:36 (Process exited with code 0)
+
+这时候我们就可以打开xxx.appspot.com查看刚才部署的网站。
+3.校内应用
+拥有校内帐号，就可以创建校内应用。第一步是需要安装一个名为「开发者」
+的应用。通过这个应用，可以链接到其他一些有帮助的内容：开放平台文档、测试工具、讨论区。
+第二步是创建一个新的应用，按部就班的填上相关资料。
+
+
+
+
+
+
+
+
+校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）
+
+
+
+
+
+
+
+
+我的应用程序，在这里可以编辑应用的属性
+创建之后，就可以填上Canvas的基本选项中的「应用展示地址」和「Canvas Callback
+URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com这种形式的网址。
+
+
+
+
+
+
+
+
+最后测试自己的应用，也就是刚才「应用展示地址」，形式类似于apps.renren.com/xxx/，就可以看到我们的应用了，这时候基本框架就差不多了。
+4.噩耗
+此时当满天欢喜时候打开刚才的「应用展示地址」，你会惊奇的发现校内居然报错了，直接报了405错误。什么是405错误，就是服务器没有权限访问。
+我花了一下午时间才解决这个问题，因为问题可能出在校内，也可能是GAE的功能限制上。
+在appspot上测试这个应用是没有任何问题的
+
+
+
+
+
+
+
+
+显示的源码，其中的xnml校内服务器自己可以解析出来的，这段代码在校内测试工具也能通过
+调试之后，终于把问题锁定在get
+和post上，具体原因是因为校内发起请求GAE服务器用的是Post方法，而我们的main.py中目前只相应get方法，导致了校内请求GAE
+Post方法，服务器没有这个方法调用，就返回了405错误。
+修复这个问题只给main.py的MainHandler这个类加上post方法
+class MainHandler(webapp.RequestHandler):
+
+def head(self, *args):
+return self.get(*args)
+def post(self):
+self.response.out.write&rsquo;Hello world!&#39;)
+5.结合
+最后我加上一个简单的&lt;xn:profile-pic /&gt;来展示一下整个App
+下面我发布我的这个简单的Hello World!（其实因为要使用XNML，所以已经不是单纯的打出Hello World了）
+app.yaml：定义了main.py和404页面
+application: jasontidemo
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+
+
+url: /
+script: main.py
+
+
+url: /index.html
+script: main.py
+
+
+url: /.*
+script: not_found.py main.py：我把post 和get写的比较Dirty，其实可以封装在一个函数里的。
+import wsgiref.handlers
+from google.appengine.ext import webapp
+
+
+class MainHandler(webapp.RequestHandler):
+def head(self, *args):
+return self.get(*args)
+def post(self):
+self.response.out.write(&rsquo;&rsquo;&rsquo;使用者的名称及其大中小三种头像：
+
+图片：
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;tiny&rdquo;/&gt;
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;normal&rdquo;/&gt;
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;main&rdquo;/&gt;
+
+姓名：
+&lt;xn:name uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; shownetwork=&ldquo;true&rdquo; /&gt;
+&#39;&#39;&#39;)
+def get(self):
+self.response.out.write(&rsquo;&rsquo;&rsquo;使用者的名称及其大中小三种头像：
+
+图片：
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;tiny&rdquo;/&gt;
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;normal&rdquo;/&gt;
+&lt;xn:profile-pic uid=&ldquo;loggedinuser&rdquo; linked=&ldquo;true&rdquo; size=&ldquo;main&rdquo;/&gt;
+
+姓名：">
 
 
 <script type="application/ld+json">
@@ -161,7 +462,7 @@ World来介绍一个开发步骤。
   "@type": "BlogPosting",
   "headline": "GAE+校内App初接触",
   "name": "GAE\u002b校内App初接触",
-  "description": "下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello World来介绍一个开发步骤。\n1.创建GAE应用 建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 App Engine ，激活这个服务，就可以创建新的应用。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。\n一个简单的App控制台\n2.部署GAE App 刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置 ，所以Nothing,检查http状态会发现返回的是404状态）。\n",
+  "description": "下午刚有了在Google App Engine上写校内（人人网）App的想法，下午就迫不及待的开始动手。下面我以一个简单的Hello World来介绍一个开发步骤。\n1.创建GAE应用 建立一个Google App Engine空间，需要一个Google帐号，仅此而已。拥有帐号，进入 App Engine ，激活这个服务，就可以创建新的应用。如何创建不是我这里要讲的重点，现在GAE支持简体中文版本，应该没有任何问题。\n一个简单的App控制台\n2.部署GAE App 刚才建立的GAE App其实还是空的，如果访问xxx.appspot.com时候，你会发现什么都出不来（按理应该是404页面，但是由于连404页面都没有设置 ，所以Nothing,检查http状态会发现返回的是404状态）。\n这时候我们就要开始部署这个GAE App了：1.下载一个Google App Engine SDK for Python-Win，这样就可以在本地测试项目，然后发布到 GAE。\n用这个GAE Launcher在本地创建了一个Application，注意标识符和你网上申请的要一致。然后会自动生成一个包含\u0026quot;」Hello Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。\n相关链接：app.yaml的具体设置\n我创建了一个名为jasontidemo的App，并且启动服务器，可以进行浏览。\n在一切没有问题之后，我们就可以惦记Deploy部署这个项目了，这时候要输入帐号和密码，然后出现console控制台等待信息。出现下面提示时候，就说明上传成功 了。\nClosing update: new version is ready to start serving. Uploading index definitions. Password for alswlwangzi@gmail.com: 2009-09-27 16:00:36 (Process exited with code 0) 这时候我们就可以打开xxx.appspot.com查看刚才部署的网站。\n3.校内应用 拥有校内帐号，就可以创建校内应用。第一步是需要安装一个名为「开发者」 的应用。通过这个应用，可以链接到其他一些有帮助的内容：开放平台文档、测试工具、讨论区。\n第二步是创建一个新的应用，按部就班的填上相关资料。\n校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）\n我的应用程序，在这里可以编辑应用的属性\n创建之后，就可以填上Canvas的基本选项中的「应用展示地址」和「Canvas Callback URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com这种形式的网址。\n最后测试自己的应用，也就是刚才「应用展示地址」，形式类似于apps.renren.com/xxx/，就可以看到我们的应用了，这时候基本框架就差不多了。\n4.噩耗 此时当满天欢喜时候打开刚才的「应用展示地址」，你会惊奇的发现校内居然报错了，直接报了405错误。什么是405错误，就是服务器没有权限访问。\n我花了一下午时间才解决这个问题，因为问题可能出在校内，也可能是GAE的功能限制上。\n在appspot上测试这个应用是没有任何问题的\n显示的源码，其中的xnml校内服务器自己可以解析出来的，这段代码在校内测试工具也能通过\n调试之后，终于把问题锁定在get 和post上，具体原因是因为校内发起请求GAE服务器用的是Post方法，而我们的main.py中目前只相应get方法，导致了校内请求GAE Post方法，服务器没有这个方法调用，就返回了405错误。\n修复这个问题只给main.py的MainHandler这个类加上post方法\nclass MainHandler(webapp.RequestHandler): def head(self, *args):\nreturn self.get(*args)\ndef post(self):\nself.response.out.write\u0026rsquo;Hello world!')\n5.结合 最后我加上一个简单的\u0026lt;xn:profile-pic /\u0026gt;来展示一下整个App\n下面我发布我的这个简单的Hello World!（其实因为要使用XNML，所以已经不是单纯的打出Hello World了）\napp.yaml：定义了main.py和404页面\napplication: jasontidemo version: 1 runtime: python api_version: 1 handlers:\nurl: /\nscript: main.py\nurl: /index.html\nscript: main.py\nurl: /.*\nscript: not_found.py main.py：我把post 和get写的比较Dirty，其实可以封装在一个函数里的。\nimport wsgiref.handlers from google.appengine.ext import webapp\nclass MainHandler(webapp.RequestHandler):\ndef head(self, *args):\nreturn self.get(*args)\ndef post(self):\nself.response.out.write(\u0026rsquo;\u0026rsquo;\u0026rsquo;使用者的名称及其大中小三种头像：\n图片：\n\u0026lt;xn:profile-pic uid=\u0026ldquo;loggedinuser\u0026rdquo; linked=\u0026ldquo;true\u0026rdquo; size=\u0026ldquo;tiny\u0026rdquo;/\u0026gt;\n\u0026lt;xn:profile-pic uid=\u0026ldquo;loggedinuser\u0026rdquo; linked=\u0026ldquo;true\u0026rdquo; size=\u0026ldquo;normal\u0026rdquo;/\u0026gt;\n\u0026lt;xn:profile-pic uid=\u0026ldquo;loggedinuser\u0026rdquo; linked=\u0026ldquo;true\u0026rdquo; size=\u0026ldquo;main\u0026rdquo;/\u0026gt;\n姓名：\n\u0026lt;xn:name uid=\u0026ldquo;loggedinuser\u0026rdquo; linked=\u0026ldquo;true\u0026rdquo; shownetwork=\u0026ldquo;true\u0026rdquo; /\u0026gt;\n''') def get(self):\nself.response.out.write(\u0026rsquo;\u0026rsquo;\u0026rsquo;使用者的名称及其大中小三种头像：\n图片：\n\u0026lt;xn:profile-pic uid=\u0026ldquo;loggedinuser\u0026rdquo; linked=\u0026ldquo;true\u0026rdquo; size=\u0026ldquo;tiny\u0026rdquo;/\u0026gt;\n\u0026lt;xn:profile-pic uid=\u0026ldquo;loggedinuser\u0026rdquo; linked=\u0026ldquo;true\u0026rdquo; size=\u0026ldquo;normal\u0026rdquo;/\u0026gt;\n\u0026lt;xn:profile-pic uid=\u0026ldquo;loggedinuser\u0026rdquo; linked=\u0026ldquo;true\u0026rdquo; size=\u0026ldquo;main\u0026rdquo;/\u0026gt;\n姓名：\n",
   "keywords": [
     "python", "gae", "google", "人人"
   ],
@@ -268,7 +569,7 @@ World来介绍一个开发步骤。
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">主页</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
     <h1 class="post-title entry-hint-parent">
       GAE&#43;校内App初接触
     </h1>
@@ -278,7 +579,7 @@ World来介绍一个开发步骤。
   </header> <div class="toc">
     <details >
         <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
+            <span class="details">目录</span>
         </summary>
 
         <div class="inner"><nav id="TableOfContents">
@@ -309,7 +610,6 @@ World来介绍一个开发步骤。</p>
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/image3.png" alt="image"  />
 
 
@@ -323,7 +623,6 @@ GAE。</p>
 Word!「的main.py和app.yaml的文件夹。其中app.yaml的内容是用来配置项目的。</p>
 <p>相关链接：<a href="http://code.google.com/intl/zh-CN/appengine/docs/python/config/appconfig.html">app.yaml的具体设置</a></p>
 <p>
-
 
 
 
@@ -347,14 +646,12 @@ Password for alswlwangzi@gmail.com: 2009-09-27 16:00:36 (Process exited with cod
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/image5.png" alt="image"  />
 
 
 </a></p>
 <p>校内开发者，右上角可以申请开发应用（看讨论区貌似童鞋们都不满意这个开发平台呢）</p>
 <p><a href="../../static/images/upload_dropbox/200909/xnapp_main2.jpg">
-
 
 
 
@@ -369,7 +666,6 @@ URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com�
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/xnapp_config.jpg" alt="xnapp_config"  />
 
 
@@ -380,7 +676,6 @@ URL」，后者就是实际的地址，我们将填上刚才的xxx.appspot.com�
 <p>我花了一下午时间才解决这个问题，因为问题可能出在校内，也可能是GAE的功能限制上。</p>
 <p>在appspot上测试这个应用是没有任何问题的</p>
 <p><a href="../../static/images/upload_dropbox/200909/xnapp_show_ori1.jpg">
-
 
 
 
@@ -463,14 +758,12 @@ from google.appengine.ext import webapp</p>
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/200909/xnapp_show.jpg" alt="xnapp_show"  />
 
 
 </a></p>
 <p>我的头像，按理应该有三个，我怀疑是校内的一个服务器出问题了，只刷出来两张。</p>
 <p><a href="../../static/images/upload_dropbox/200909/xnapp_sidebar1.jpg">
-
 
 
 
@@ -504,12 +797,12 @@ alt="窥豹" />
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://blog.alswl.com/2009/09/summer-internship-report-on-the-community/">
-    <span class="title">« Prev</span>
+    <span class="title">« 上一页</span>
     <br>
     <span>暑假社会实习报告</span>
   </a>
   <a class="next" href="https://blog.alswl.com/2009/09/when-google-app-engine-encounter-campus/">
-    <span class="title">Next »</span>
+    <span class="title">下一页 »</span>
     <br>
     <span>当Google APP Engine遇上校内</span>
   </a>
@@ -517,7 +810,7 @@ alt="窥豹" />
 
   </footer><div id="waline"></div>
 <script type="module">
-  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+  import { init } from 'https://unpkg.com/@waline/client@2.15.8/dist/waline.mjs';
 
     
     
@@ -553,7 +846,7 @@ alt="窥豹" />
 </a>
 <script type="module">
   if (document.querySelector("pre.mermaid")) {
-    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs");
 
     function isDarkTheme() {
       return document.body.classList.contains("dark");
@@ -641,12 +934,12 @@ alt="窥豹" />
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
+        copybutton.innerHTML = '复制';
 
         function copyingDone() {
-            copybutton.innerHTML = 'copied!';
+            copybutton.innerHTML = '已复制！';
             setTimeout(() => {
-                copybutton.innerHTML = 'copy';
+                copybutton.innerHTML = '复制';
             }, 2000);
         }
 

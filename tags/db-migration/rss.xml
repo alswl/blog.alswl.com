@@ -4,7 +4,7 @@
     <title>Db-Migration on Log4D</title>
     <link>https://blog.alswl.com/tags/db-migration/</link>
     <description>Recent content in Db-Migration on Log4D</description>
-    <generator>Hugo -- 0.148.2</generator>
+    <generator>Hugo -- 0.168.0</generator>
     <language>zh</language>
     <lastBuildDate>Wed, 20 Jun 2018 20:18:52 +0800</lastBuildDate>
     <atom:link href="https://blog.alswl.com/tags/db-migration/rss.xml" rel="self" type="application/rss+xml" />
@@ -23,8 +23,7 @@
 
 
 
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/upload_dropbox/201806/refactor.png&#34; alt=&#34;201806/refactor.png&#34;  /&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/refactor.png&#34; alt=&#34;201806/refactor.png&#34;  /&gt;
 
 
 &lt;/p&gt;
@@ -53,7 +52,6 @@ Otter 配备了相对 yugong 更健壮管理工具、分布式协调工具，
 <li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
 </ul>
 <p>
-
 
 
 
@@ -90,7 +88,6 @@ Yugong 数据流是标准 ETL 流程，分别有 Extractor / Translator / Applie
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/etl.png" alt="ETL &amp; Java Class"  />
 
 
@@ -98,7 +95,6 @@ Yugong 数据流是标准 ETL 流程，分别有 Extractor / Translator / Applie
 <p>我们依次来看看这三大类具体设计。</p>
 <h3 id="extractor">Extractor</h3>
 <p>
-
 
 
 
@@ -127,7 +123,6 @@ Yugong 官方提供 Extractor 抽象出 <code>AbstractRecordExtractor</code> 类
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/translator.png" alt="Translator Class"  />
 
 
@@ -147,7 +142,6 @@ Yugong 官方提供 Extractor 抽象出 <code>AbstractRecordExtractor</code> 类
 另外还有一小部分 Translator 做了业务逻辑操作，比如做一些数据回写。</p>
 <h3 id="applier">Applier</h3>
 <p>
-
 
 
 
@@ -200,7 +194,6 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201806/extractor-new.png" alt="Extractor New Class"  />
 
 
@@ -218,7 +211,6 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 <p>在抽象出三个抽象类之后，整体逻辑更为清晰，如果未来要增加新数据库格式支持，也更为简单。</p>
 <h3 id="translator-1">Translator</h3>
 <p>
-
 
 
 
@@ -241,7 +233,6 @@ Yugong 提供了一致性检查、全量、增量 Applier。
 <p>新增了一系列 Translator。</p>
 <h3 id="applier-1">Applier</h3>
 <p>
-
 
 
 
@@ -295,8 +286,7 @@ Slide 含金量高，在讲述核心中核心。</p>
 
 
 
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/upload_dropbox/201805/flying-tanker.png&#34; alt=&#34;flying-tanker&#34;  /&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/flying-tanker.png&#34; alt=&#34;flying-tanker&#34;  /&gt;
 
 
 &lt;/p&gt;
@@ -316,7 +306,6 @@ Slide 含金量高，在讲述核心中核心。</p>
 <li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
 </ul>
 <p>
-
 
 
 
@@ -344,7 +333,6 @@ Slide 含金量高，在讲述核心中核心。</p>
 的在线迁移。</p>
 <p>下图是 yugong 针对 Oracle 到 MySQL 的增量迁移流程：</p>
 <p>
-
 
 
 
@@ -393,7 +381,6 @@ CDC 全称 Change Data Capture，设计目的就是用来解决增量数据的�
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/cdc-data-flow.png" alt="cdc-data-flow.png"  />
 
 
@@ -406,38 +393,38 @@ CDC 全称 Change Data Capture，设计目的就是用来解决增量数据的�
 Change Table 长什么样，可以有个直观的认识。</p>
 <p>通过以下的函数打开一张表（fruits）的 CDC 功能。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- enable cdc for db
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">sys</span><span class="p">.</span><span class="n">sp_cdc_enable_db</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- enable by table
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">EXEC</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">sp_cdc_enable_table</span><span class="w"> </span><span class="o">@</span><span class="n">source_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;dbo&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">source_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;fruits&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">role_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- list cdc enabled table
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">databases</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="p">.</span><span class="n">sp_cdc_enable_db</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- enable by table
+</span></span></span><span class="line"><span class="cl"><span class="k">EXEC</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">sp_cdc_enable_table</span><span class="w"> </span><span class="o">@</span><span class="n">source_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;dbo&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">source_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="s1">&#39;fruits&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">role_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">NULL</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- list cdc enabled table
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">databases</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>至此 CDC 功能已经开启，如果需要查看哪些表开启了 CDC 功能，可以使用一下 SQL：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- list cdc enabled table
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">databases</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">databases</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">is_cdc_enabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
 </span></span></span></code></pre></div><p>开启 CDC 会导致产生一张 Change Table 表 <code>cdc.dbo_fruits_CT</code>，这张表的表结构如何呢？</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="p">.</span><span class="k">schema</span><span class="w"> </span><span class="n">cdc</span><span class="p">.</span><span class="n">dbo_fruits_CT</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">name</span><span class="w">            </span><span class="k">default</span><span class="w">  </span><span class="k">nullable</span><span class="w">  </span><span class="k">type</span><span class="w">          </span><span class="k">length</span><span class="w">  </span><span class="n">indexed</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">--------------  -------  --------  ------------  ------  -------
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">__$end_lsn</span><span class="w">      </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="nb">binary</span><span class="w">        </span><span class="mi">10</span><span class="w">      </span><span class="k">NO</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">__$operation</span><span class="w">    </span><span class="k">null</span><span class="w">     </span><span class="k">NO</span><span class="w">        </span><span class="nb">int</span><span class="w">           </span><span class="mi">4</span><span class="w">       </span><span class="k">NO</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">__$seqval</span><span class="w">       </span><span class="k">null</span><span class="w">     </span><span class="k">NO</span><span class="w">        </span><span class="nb">binary</span><span class="w">        </span><span class="mi">10</span><span class="w">      </span><span class="k">NO</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">__$start_lsn</span><span class="w">    </span><span class="k">null</span><span class="w">     </span><span class="k">NO</span><span class="w">        </span><span class="nb">binary</span><span class="w">        </span><span class="mi">10</span><span class="w">      </span><span class="n">YES</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">__$update_mask</span><span class="w">  </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="n">varbinary</span><span class="w">     </span><span class="mi">128</span><span class="w">     </span><span class="k">NO</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">id</span><span class="w">              </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="nb">int</span><span class="w">           </span><span class="mi">4</span><span class="w">       </span><span class="k">NO</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="n">name</span><span class="w">            </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w">  </span><span class="mi">255</span><span class="w">     </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">name</span><span class="w">            </span><span class="k">default</span><span class="w">  </span><span class="k">nullable</span><span class="w">  </span><span class="k">type</span><span class="w">          </span><span class="k">length</span><span class="w">  </span><span class="n">indexed</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">--------------  -------  --------  ------------  ------  -------
+</span></span></span><span class="line"><span class="cl"><span class="n">__$end_lsn</span><span class="w">      </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="nb">binary</span><span class="w">        </span><span class="mi">10</span><span class="w">      </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">__$operation</span><span class="w">    </span><span class="k">null</span><span class="w">     </span><span class="k">NO</span><span class="w">        </span><span class="nb">int</span><span class="w">           </span><span class="mi">4</span><span class="w">       </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">__$seqval</span><span class="w">       </span><span class="k">null</span><span class="w">     </span><span class="k">NO</span><span class="w">        </span><span class="nb">binary</span><span class="w">        </span><span class="mi">10</span><span class="w">      </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">__$start_lsn</span><span class="w">    </span><span class="k">null</span><span class="w">     </span><span class="k">NO</span><span class="w">        </span><span class="nb">binary</span><span class="w">        </span><span class="mi">10</span><span class="w">      </span><span class="n">YES</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">__$update_mask</span><span class="w">  </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="n">varbinary</span><span class="w">     </span><span class="mi">128</span><span class="w">     </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">id</span><span class="w">              </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="nb">int</span><span class="w">           </span><span class="mi">4</span><span class="w">       </span><span class="k">NO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="n">name</span><span class="w">            </span><span class="k">null</span><span class="w">     </span><span class="n">YES</span><span class="w">       </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w">  </span><span class="mi">255</span><span class="w">     </span><span class="k">NO</span><span class="w">
 </span></span></span></code></pre></div><p>这张表中以 <code>__</code> 开头的字段是 CDC 所记录的元数据，<code>id</code> 和 <code>name</code> 是 fruits 表的原始字段。
 这意味着 CDC 的表结构和原始表结构是一一对应的。</p>
 <p>接下来我们做一些业务操作，让数据库的数据发生一些变化，然后查看 CDC 的 Change Table：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="c1">-- 1 step
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">DECLARE</span><span class="w"> </span><span class="o">@</span><span class="n">begin_time</span><span class="w"> </span><span class="n">datetime</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">end_time</span><span class="w"> </span><span class="n">datetime</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">begin_lsn</span><span class="w"> </span><span class="nb">binary</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="o">@</span><span class="n">end_lsn</span><span class="w"> </span><span class="nb">binary</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 2 step
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SET</span><span class="w"> </span><span class="o">@</span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2017-09-11 14:03:00.000&#39;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SET</span><span class="w"> </span><span class="o">@</span><span class="n">end_time</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2017-09-11 14:10:00.000&#39;</span><span class="p">;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 3 step
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">@</span><span class="n">begin_lsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">fn_cdc_map_time_to_lsn</span><span class="p">(</span><span class="s1">&#39;smallest greater than&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">begin_time</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">@</span><span class="n">end_lsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">fn_cdc_map_time_to_lsn</span><span class="p">(</span><span class="s1">&#39;largest less than or equal&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">end_time</span><span class="p">);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">-- 4 step
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cdc</span><span class="p">.</span><span class="n">fn_cdc_get_all_changes_dbo_fruits</span><span class="p">(</span><span class="o">@</span><span class="n">begin_lsn</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">end_lsn</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;all&#39;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">DECLARE</span><span class="w"> </span><span class="o">@</span><span class="n">begin_time</span><span class="w"> </span><span class="n">datetime</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">end_time</span><span class="w"> </span><span class="n">datetime</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">begin_lsn</span><span class="w"> </span><span class="nb">binary</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="o">@</span><span class="n">end_lsn</span><span class="w"> </span><span class="nb">binary</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 2 step
+</span></span></span><span class="line"><span class="cl"><span class="k">SET</span><span class="w"> </span><span class="o">@</span><span class="n">begin_time</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2017-09-11 14:03:00.000&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">SET</span><span class="w"> </span><span class="o">@</span><span class="n">end_time</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;2017-09-11 14:10:00.000&#39;</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 3 step
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">@</span><span class="n">begin_lsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">fn_cdc_map_time_to_lsn</span><span class="p">(</span><span class="s1">&#39;smallest greater than&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">begin_time</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">@</span><span class="n">end_lsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sys</span><span class="p">.</span><span class="n">fn_cdc_map_time_to_lsn</span><span class="p">(</span><span class="s1">&#39;largest less than or equal&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">end_time</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">-- 4 step
+</span></span></span><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cdc</span><span class="p">.</span><span class="n">fn_cdc_get_all_changes_dbo_fruits</span><span class="p">(</span><span class="o">@</span><span class="n">begin_lsn</span><span class="p">,</span><span class="w"> </span><span class="o">@</span><span class="n">end_lsn</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;all&#39;</span><span class="p">);</span><span class="w">
 </span></span></span></code></pre></div><p>这里的操作含义是：</p>
 <ol>
 <li>定义存储过程中需要使用的 4 个变量</li>
@@ -447,13 +434,13 @@ Change Table 长什么样，可以有个直观的认识。</p>
 </ol>
 <p>查询出来的数据如下所示：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="n">__$start_lsn</span><span class="w">          </span><span class="n">__$end_lsn</span><span class="w">  </span><span class="n">__$seqval</span><span class="w">             </span><span class="n">__$operation</span><span class="w">  </span><span class="n">__$update_mask</span><span class="w">  </span><span class="n">id</span><span class="w">  </span><span class="n">name</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c1">--------------------  ----------  --------------------  ------------  --------------  --  ------
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="mi">0000</span><span class="n">dede0000019f001a</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede0000019f0018</span><span class="w">  </span><span class="mi">2</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">1</span><span class="w">   </span><span class="n">apple</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0000</span><span class="n">dede000001ad0004</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001ad0003</span><span class="w">  </span><span class="mi">2</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">2</span><span class="w">   </span><span class="n">apple2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0000</span><span class="n">dede000001ba0003</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001ba0002</span><span class="w">  </span><span class="mi">3</span><span class="w">             </span><span class="mi">02</span><span class="w">              </span><span class="mi">2</span><span class="w">   </span><span class="n">apple2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0000</span><span class="n">dede000001ba0003</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001ba0002</span><span class="w">  </span><span class="mi">4</span><span class="w">             </span><span class="mi">02</span><span class="w">              </span><span class="mi">2</span><span class="w">   </span><span class="n">apple3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0000</span><span class="n">dede000001c10003</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001c10002</span><span class="w">  </span><span class="mi">2</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">3</span><span class="w">   </span><span class="n">apple4</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="mi">0000</span><span class="n">dede000001cc0005</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001cc0002</span><span class="w">  </span><span class="mi">1</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">3</span><span class="w">   </span><span class="n">apple4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="c1">--------------------  ----------  --------------------  ------------  --------------  --  ------
+</span></span></span><span class="line"><span class="cl"><span class="mi">0000</span><span class="n">dede0000019f001a</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede0000019f0018</span><span class="w">  </span><span class="mi">2</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">1</span><span class="w">   </span><span class="n">apple</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="mi">0000</span><span class="n">dede000001ad0004</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001ad0003</span><span class="w">  </span><span class="mi">2</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">2</span><span class="w">   </span><span class="n">apple2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="mi">0000</span><span class="n">dede000001ba0003</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001ba0002</span><span class="w">  </span><span class="mi">3</span><span class="w">             </span><span class="mi">02</span><span class="w">              </span><span class="mi">2</span><span class="w">   </span><span class="n">apple2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="mi">0000</span><span class="n">dede000001ba0003</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001ba0002</span><span class="w">  </span><span class="mi">4</span><span class="w">             </span><span class="mi">02</span><span class="w">              </span><span class="mi">2</span><span class="w">   </span><span class="n">apple3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="mi">0000</span><span class="n">dede000001c10003</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001c10002</span><span class="w">  </span><span class="mi">2</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">3</span><span class="w">   </span><span class="n">apple4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="mi">0000</span><span class="n">dede000001cc0005</span><span class="w">  </span><span class="k">null</span><span class="w">        </span><span class="mi">0000</span><span class="n">dede000001cc0002</span><span class="w">  </span><span class="mi">1</span><span class="w">             </span><span class="mi">03</span><span class="w">              </span><span class="mi">3</span><span class="w">   </span><span class="n">apple4</span><span class="w">
 </span></span></span></code></pre></div><p>可以看到 Change Table 已经如实的记录了我们操作内容，注意 <code>__$operation</code>
 代表了数据库操作：</p>
 <ul>
@@ -475,7 +462,6 @@ Change Table 长什么样，可以有个直观的认识。</p>
 了解其极限和边界，否则一旦线上出现不可控的情况，就会对业务带来巨大损失。</p>
 <p>我们先看看 CDC 的工作流程，就可以知道有哪些核心参数可以调整：</p>
 <p>
-
 
 
 
@@ -512,13 +498,11 @@ Change Table 长什么样，可以有个直观的认识。</p>
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/cdc-metrics.png" alt="cdc-metrics.png"  />
 
 
 </p>
 <p>
-
 
 
 
@@ -582,7 +566,6 @@ Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201805/canal.png" alt="canal.png"  />
 
 
@@ -595,252 +578,252 @@ Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
 <p>考虑到多个事业部都需要经历这个一个过程，我们项目组将每一个步骤都固化下来，
 形成了一个最佳实践。我们的迁移步骤如下，供大家参考：</p>
 <table>
-  <thead>
-      <tr>
-          <th>大阶段</th>
-          <th>阶段</th>
-          <th>事项</th>
-          <th>是否完成</th>
-          <th>负责人</th>
-          <th>耗时</th>
-          <th>开始时间</th>
-          <th>完成时间</th>
-          <th>备注</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>白天</td>
-          <td>存量数据阶段</td>
-          <td>创建 MySQL 数据库，准备相关账号资源</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>开启 CDC</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>从 Slave SQLServer dump 一份 snapshot 到 Backup SQL Server</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>Backup SQL Server 消费数据， ETL 到 MySQL</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td>增量数据阶段</td>
-          <td>确认 ETL 数据已经消费完成，检查数据总条数</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>从 Slave SQLServer 开始消费 CDC 数据，持续写入 MySQL</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>使用 yugong 检查一天内数据的一致性</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>检查不一致的数据，10 分钟之后人工进行检查，确认是 CDC 延迟带来的问题</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>检查数据总量条目</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>使用 yugong 对抽样表进行全量检查</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td>凌晨</td>
-          <td>应用发布阶段</td>
-          <td>停止 SQL Server 的应用</td>
-          <td></td>
-          <td>技术经理</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>检查没有连接进入 SQL Server</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>使用 yugong 检查一天内数据的一致性</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>检查数据总量条目</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>启用基于 MySQL 的应用</td>
-          <td></td>
-          <td>运维</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td>测试阶段</td>
-          <td>测试应用是否正常，回归所有功能</td>
-          <td></td>
-          <td>QA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>（临时新增）测试 ReadOnly DB 的应用访问情况</td>
-          <td></td>
-          <td>QA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td>完成阶段</td>
-          <td>接入流量</td>
-          <td></td>
-          <td>运维</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td>（可选）回滚阶段</td>
-          <td>发现问题，直接将应用切回 SQL Server</td>
-          <td></td>
-          <td>运维</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>事后进行数据审计，进行新增数据补偿</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-      <tr>
-          <td></td>
-          <td></td>
-          <td>（可选）回滚过程中，使用 Canal 读取 binlog，并使用 Canal Client 重放到 SQL Server</td>
-          <td></td>
-          <td>DBA</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>大阶段</th>
+					<th>阶段</th>
+					<th>事项</th>
+					<th>是否完成</th>
+					<th>负责人</th>
+					<th>耗时</th>
+					<th>开始时间</th>
+					<th>完成时间</th>
+					<th>备注</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>白天</td>
+					<td>存量数据阶段</td>
+					<td>创建 MySQL 数据库，准备相关账号资源</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>开启 CDC</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>从 Slave SQLServer dump 一份 snapshot 到 Backup SQL Server</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>Backup SQL Server 消费数据， ETL 到 MySQL</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td>增量数据阶段</td>
+					<td>确认 ETL 数据已经消费完成，检查数据总条数</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>从 Slave SQLServer 开始消费 CDC 数据，持续写入 MySQL</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>使用 yugong 检查一天内数据的一致性</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>检查不一致的数据，10 分钟之后人工进行检查，确认是 CDC 延迟带来的问题</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>检查数据总量条目</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>使用 yugong 对抽样表进行全量检查</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td>凌晨</td>
+					<td>应用发布阶段</td>
+					<td>停止 SQL Server 的应用</td>
+					<td></td>
+					<td>技术经理</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>检查没有连接进入 SQL Server</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>使用 yugong 检查一天内数据的一致性</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>检查数据总量条目</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>启用基于 MySQL 的应用</td>
+					<td></td>
+					<td>运维</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td>测试阶段</td>
+					<td>测试应用是否正常，回归所有功能</td>
+					<td></td>
+					<td>QA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>（临时新增）测试 ReadOnly DB 的应用访问情况</td>
+					<td></td>
+					<td>QA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td>完成阶段</td>
+					<td>接入流量</td>
+					<td></td>
+					<td>运维</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td>（可选）回滚阶段</td>
+					<td>发现问题，直接将应用切回 SQL Server</td>
+					<td></td>
+					<td>运维</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>事后进行数据审计，进行新增数据补偿</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+			<tr>
+					<td></td>
+					<td></td>
+					<td>（可选）回滚过程中，使用 Canal 读取 binlog，并使用 Canal Client 重放到 SQL Server</td>
+					<td></td>
+					<td>DBA</td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+			</tr>
+	</tbody>
 </table>
 <h2 id="reference">Reference</h2>
 <ul>
@@ -866,8 +849,7 @@ Canal 会模拟成一个 MySQL 实例，作为 Slave 连接到 Master 上面，
 
 
 
-
-&lt;img loading=&#34;lazy&#34; src=&#34;https://blog.alswl.com/images/upload_dropbox/201803/migration-bird.png&#34; alt=&#34;201803/migration-bird.png&#34;  /&gt;
+&lt;img loading=&#34;lazy&#34; src=&#34;https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201803/migration-bird.png&#34; alt=&#34;201803/migration-bird.png&#34;  /&gt;
 
 
 &lt;/p&gt;
@@ -885,7 +867,6 @@ Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
 <li><a href="https://blog.alswl.com/2018/06/sql-server-migration-3/">从 SQL Server 到 MySQL（三）：愚公移山 - 开源力量 - Log4D</a></li>
 </ul>
 <p>
-
 
 
 
@@ -928,7 +909,6 @@ Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201803/migration-db-offline-readonly.png" alt="201803/migration-db-offline-readonly.png"  />
 
 
@@ -938,7 +918,6 @@ Java 的版本是 1.2，C# 尚未诞生，MySQL 还没有被 Sun 收购，
 将 Source 表名改掉进行备份。</p>
 <p>在线迁移的流程：</p>
 <p>
-
 
 
 
@@ -984,42 +963,42 @@ MySQL 的白皮书。
 </ul>
 <p>需要额外处理的数据类型：</p>
 <table>
-  <thead>
-      <tr>
-          <th>SQL Server</th>
-          <th>MySQL</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>IDENTITY</td>
-          <td>AUTO_INCREMENT</td>
-      </tr>
-      <tr>
-          <td>NTEXT, NATIONAL TEXT</td>
-          <td>TEXT CHARACTER SET UTF8</td>
-      </tr>
-      <tr>
-          <td>SMALLDATETIME</td>
-          <td>DATETIME</td>
-      </tr>
-      <tr>
-          <td>MONEY</td>
-          <td>DECIMAL(19,4)</td>
-      </tr>
-      <tr>
-          <td>SMALL MONEY</td>
-          <td>DECIMAL(10,4)</td>
-      </tr>
-      <tr>
-          <td>UNIQUEIDENTIFIER</td>
-          <td>BINARY(16)</td>
-      </tr>
-      <tr>
-          <td>SYSNAME</td>
-          <td>CHAR(256)</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>SQL Server</th>
+					<th>MySQL</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>IDENTITY</td>
+					<td>AUTO_INCREMENT</td>
+			</tr>
+			<tr>
+					<td>NTEXT, NATIONAL TEXT</td>
+					<td>TEXT CHARACTER SET UTF8</td>
+			</tr>
+			<tr>
+					<td>SMALLDATETIME</td>
+					<td>DATETIME</td>
+			</tr>
+			<tr>
+					<td>MONEY</td>
+					<td>DECIMAL(19,4)</td>
+			</tr>
+			<tr>
+					<td>SMALL MONEY</td>
+					<td>DECIMAL(10,4)</td>
+			</tr>
+			<tr>
+					<td>UNIQUEIDENTIFIER</td>
+					<td>BINARY(16)</td>
+			</tr>
+			<tr>
+					<td>SYSNAME</td>
+					<td>CHAR(256)</td>
+			</tr>
+	</tbody>
 </table>
 <p>在实际进行中，还额外遇到了一个用来解决树形结构存储的字段类型
 Hierarchyid。这个场景需要额外进行业务调整。</p>
@@ -1075,80 +1054,80 @@ Percona 提供的备份工具</li>
 比如 Kettle / Ispirerer，他们关注的特性，不能满足互联网公司对性能、迁移耗时的要求。
 简单筛选后，以下几个工具进入我们候选列表（为了做特性对比，加入几个同构数据库迁移工具）：</p>
 <table>
-  <thead>
-      <tr>
-          <th>工具名称</th>
-          <th>热数据备份保证一致性</th>
-          <th>batch 操作</th>
-          <th>支持异构数据库</th>
-          <th>断点续接</th>
-          <th>开源</th>
-          <th>开发语言</th>
-          <th>GUI</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>mysqldump</td>
-          <td>V 使用 <code>single-transaction</code></td>
-          <td>X</td>
-          <td>X</td>
-          <td>X</td>
-          <td>V</td>
-          <td>C</td>
-          <td>X</td>
-      </tr>
-      <tr>
-          <td>pt-table-sync</td>
-          <td>V 使用 transaction 或 <code>lock table</code> 的 FTWRL</td>
-          <td>V</td>
-          <td>X</td>
-          <td>V</td>
-          <td>V</td>
-          <td>Pell</td>
-          <td>X</td>
-      </tr>
-      <tr>
-          <td>DataX</td>
-          <td>X</td>
-          <td>V</td>
-          <td>V</td>
-          <td>X</td>
-          <td>V</td>
-          <td>Java</td>
-          <td>X</td>
-      </tr>
-      <tr>
-          <td>yugong</td>
-          <td>X</td>
-          <td>V</td>
-          <td>V</td>
-          <td>V</td>
-          <td>V</td>
-          <td>Java</td>
-          <td>X</td>
-      </tr>
-      <tr>
-          <td>DB2DB</td>
-          <td>X</td>
-          <td>V</td>
-          <td>V</td>
-          <td>X</td>
-          <td>X</td>
-          <td>.net</td>
-          <td>V</td>
-      </tr>
-      <tr>
-          <td>MySQL Workbench</td>
-          <td>X</td>
-          <td>?</td>
-          <td>V</td>
-          <td>X</td>
-          <td>V</td>
-          <td>C++</td>
-          <td>V</td>
-      </tr>
-  </tbody>
+	<thead>
+			<tr>
+					<th>工具名称</th>
+					<th>热数据备份保证一致性</th>
+					<th>batch 操作</th>
+					<th>支持异构数据库</th>
+					<th>断点续接</th>
+					<th>开源</th>
+					<th>开发语言</th>
+					<th>GUI</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>mysqldump</td>
+					<td>V 使用 <code>single-transaction</code></td>
+					<td>X</td>
+					<td>X</td>
+					<td>X</td>
+					<td>V</td>
+					<td>C</td>
+					<td>X</td>
+			</tr>
+			<tr>
+					<td>pt-table-sync</td>
+					<td>V 使用 transaction 或 <code>lock table</code> 的 FTWRL</td>
+					<td>V</td>
+					<td>X</td>
+					<td>V</td>
+					<td>V</td>
+					<td>Pell</td>
+					<td>X</td>
+			</tr>
+			<tr>
+					<td>DataX</td>
+					<td>X</td>
+					<td>V</td>
+					<td>V</td>
+					<td>X</td>
+					<td>V</td>
+					<td>Java</td>
+					<td>X</td>
+			</tr>
+			<tr>
+					<td>yugong</td>
+					<td>X</td>
+					<td>V</td>
+					<td>V</td>
+					<td>V</td>
+					<td>V</td>
+					<td>Java</td>
+					<td>X</td>
+			</tr>
+			<tr>
+					<td>DB2DB</td>
+					<td>X</td>
+					<td>V</td>
+					<td>V</td>
+					<td>X</td>
+					<td>X</td>
+					<td>.net</td>
+					<td>V</td>
+			</tr>
+			<tr>
+					<td>MySQL Workbench</td>
+					<td>X</td>
+					<td>?</td>
+					<td>V</td>
+					<td>X</td>
+					<td>V</td>
+					<td>C++</td>
+					<td>V</td>
+			</tr>
+	</tbody>
 </table>
 <p>由于异构数据库迁移，真正能够进入我们选型的只有
 DataX / yugong / DB2DB / MySQL Workbench。
@@ -1234,13 +1213,11 @@ SQL Server 有 <code>physloc</code>。这种方案可以解决无主键进行比
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201803/sql-server-metrics.png" alt="201803/sql-server-metrics.png"  />
 
 
 </p>
 <p>
-
 
 
 

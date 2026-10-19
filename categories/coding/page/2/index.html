@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/categories/coding/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4fef53c66d8b82475b2011d95b5b546036c4734e4b5492a58d45ebbc8018055e.css" integrity="sha256-T&#43;9Txm2LgkdbIBHZW1tUYDbEc05LVJKljUXrvIAYBV4=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.81e3c8cf436c36a822ec86f3937f489fea5ec878fa91f50bc02e772eddb7041f.css" integrity="sha256-gePIz0NsNqgi7Ibzk39In&#43;peyHj6kfULwC53Lt23BB8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -60,7 +60,7 @@
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -156,7 +156,7 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/categories/">Categories</a></div>
+<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com/">主页</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/categories/">Categories</a></div>
   <h1>
     Coding
   </h1>
@@ -257,7 +257,24 @@ SELECT [id] FROM [dbo].[foos] WITH(nolock) WHERE aField = 42 AND bField = 1 作�
 事情缘由 春节前的某一天，收到一封来自乌云（国内知名白帽子团队）的邮件， 告知我厂网站上出现一例 XSS 漏洞。 因为以前对 XSS 输入做过防御，还以为是某个前端 DOM 上的 XSS 漏洞， 后来仔细一看，不妙，是个影响甚大的存储型 XSS 漏洞。
 这里简单科普一下 XSS 跨网站脚本 -维基百科，自由的百科全书 中介绍到：
 跨网站脚本（Cross-site scripting，通常简称为XSS或跨站脚本或跨站脚本攻击）是一种网站应用程序的安全漏洞攻击，是代码注入的一种。 它允许恶意用户将代码注入到网页上，其他用户在观看网页时就会受到影响。这类攻击通常包含了HTML以及用户端脚本语言。
-...</p>
+XSS 攻击可以分成两种，反射性 XSS / 存储型 XSS。前者是需要用户触发的 XSS， 针对当前用户的攻击行为。而后者存储型 XSS 则更为严重，一旦攻击代码被保存， 所有访问被攻击的页面，都会触发用户被攻击行为。
+这次爆出的问题就是最严重的存储型 XSS，意味着每个访问到有问题页面的用户都会中招。 时间紧迫，问题必须被解决。
+XSS 实现手段 在解决问题之前，需要对这个问题有必要的基础认识。 我们先看看 XSS 攻击是如何工作的，以及攻击者的目的是什么。
+XSS 的原理是通过构造特殊的数据，并通过传递参数或者保存表单数据的方式， 让这些构建的数据破坏 DOM 结构，从而让自己预先构造数据中的 JS 脚本被执行。
+检查存储型 XSS 漏洞的方法，可以在对应的 input field 里放入一些构造的数据，如果保存后可以被执行，就说明存在 XSS 漏洞。
+常见的检测方法（来自 跨网站脚本 - 维基百科，自由的百科全书：
+&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; =&#39;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; &#34;&gt;&lt;script&gt;alert(document.cookie)&lt;/script&gt; &lt;script&gt;alert(document.cookie)&lt;/script&gt; &lt;script&gt;alert (vulnerable)&lt;/script&gt; %3Cscript%3Ealert(&#39;XSS&#39;)%3C/script%3E &lt;script&gt;alert(&#39;XSS&#39;)&lt;/script&gt; &lt;img src=&#34;javascript:alert(&#39;XSS&#39;)&#34;&gt; &lt;img src=&#34;http://xxx.com/yyy.png&#34; onerror=&#34;alert(&#39;XSS&#39;)&#34;&gt; （这个仅限IE有效） 攻击者通过 XSS 可以窃取用户的相关信息，如果用户是管理员，那么影响更大。 通过这些身份信息，攻击者可以进一步篡改信息或者进行诈骗，后果不堪设想。 PS：一个有效粗暴的方式，是将对公、对内系统的域名分离，对内部系统进行物理级别隔离。
+我厂历史上的处理方案 XSS 问题又来已久，咱厂子开了这么久，历史上如何防御的呢？ 答案是用了两个策略：第一个是使用 OWASP 提供的库进行内容过滤，第二个是在存储数据时，存储了转义后的数据。
+在技术上处理 XSS，有两种态度可以选择：第一种是前置过滤，即将用户所有数据都进行转义， 在输出时候在前端（模板渲染）层面直接输出。 第二种是用户输入的数据不经过转义就直接存储起来，前端在使用时候保证对数据进行转义。
+我厂历史上使用的方案的前者，优点是在于前端不需要在每个地方转义， 避免某个地方忘记了转义，从而导致漏洞。缺点则是在输出内容到非 Web 客户端时候，比如 APP，需要进行额外的数据处理过程， 否则 HTMLEncode 的内容，在 APP 上面无法正确输出。
+这个处理方案是稳妥的，那么为什么最近又暴露出问题了？ 排查之后发现，原来最近有若干个服务迁移到了一个新系统， 而新系统在安全上面没有全局处理，所以爆出了漏洞。
+本次处理方案 知道了原因，那么可以快速解决问题了。在这次处理过程中，我们讨论了在当前移动平台增长迅速，Web 平台增长缓慢的大势下，能否直接存储用户原始数据？ 而且由于规范制定不严格，目前系统内有些地方存储转码后数据，有些地方存储转码前数据。 导致在一些特殊的字符（颜文字）处理上不一致，从而导致在处理 br / &lt; 这类特殊字符时，表现不同。
+由于 DB 中有部分数据转义处理，部分数据原文存储，所以先处理输出后敏感信息，在模板层面启用全局 encode。 将有危险的数据转移为在 HTML 文本。
+PS：现代 Web 框架的模板渲染引擎，一般会默认开启 HTMLEncode，而 Freemarker 居然在 2.3.24-rc01 才支持，现在都没有发布，唉……
+处理方案：
+开启全局 HTML 输出 Encode，有一个 Default HTML-escape using Freemarker 方案，可以默认开启 Html Encode，在这个处理方案中，需要注意有些地方真的需要输出原始 html，需要 noescape 特殊处理 检查所有前端操作，禁止字符串拼接，使用框架支持的模板进行渲染，拖小菊的福，新系统在这块工作完成度一直比较好 将 OWASP 方案强制开启 其他 Tips OWASP 有一个很长的 列表，教导如何避免 XSS，里面提到了：
+为何以及如何进行「积极防御」，对立面是仅仅输出时候转义内容本身 几条对抗 XSS 的规则 尽量不在特定地方输出不可信变量：script / comment / attribute / tag / style， 因为逃脱 HTMl 规则的字符串太多了。 将不可信变量输出到 div / body / attribute / javascript tag / style 之前，对 &amp; &lt; &gt; &#34; &#39; / 进行转义 将不可信变量输出 URL 参数之前，进行 URLEncode 使用合适的 HTML 过滤库进行过滤 预防 DOM-based XSS，见 DOM based XSS Prevention Cheat Sheet 开启 HTTPOnly cookie，让浏览器接触不到 cookie 最后送上一个 XSS 攻击工具 http://webxss.net/，知己知彼，百战不殆。
+</p>
   </div>
   <footer class="entry-footer"><span title='2017-05-31 22:04:00 +0800 +0800'>2017-05-31</span>&nbsp;·&nbsp;alswl</footer>
   <a class="entry-link" aria-label="post link to XSS 攻击的处理" href="https://blog.alswl.com/2017/05/xss/"></a>
@@ -337,6 +354,19 @@ PS: 冷知识，大扫除英文是 spring cleaning，所以春节大扫除是 Sp
     
     <p> 为了提高测试，工程师需要对自己提交的产物进行测试，一般是单元测试、集成测试。 之后提交物流转到 QA 团队，QA 团队根据需求描述对提交物进行测试， 这个测试过程非常耗费人力。 尤其是当开发交付的质量不高时候，很可能自身没有经过测试，会遇到主干流程都无法进行的状况。
 如果在 QA 人工介入测试之前，就进行一轮黑盒自动化集成测试，可以大大地提高 QA 团队的工作效率。 基于这样的判断，我们团队花了一些时间，将基于 API 的自动化测试系统搭建起来。 现在将这个系统的选型和运行状况拎出来，和大家分享。
+确认测试范围、目标和意义 范围 后台输出的 API 级别 URL 使用场景 打包时候的冒烟 Dev / QA 手工添加添加新特性用例 目标 覆盖大部分的 URL，当期设计为 top 10 URL，仅包含 GET 接口 选型时，需要考虑非幂等（POST / DELETE / PUT）等接口 意义 提高开发效率，一种自动化的 IT 测试方案 提高测试效率，减少人工集成测试成本 提高工程质量，通过覆盖率提升，保证工程质量逐步提升，放心开发新功能 特性需求 选型一个系统，不是看市面上有哪些可以供选择，而是看我需要什么样特性的一款产品。 如果自己的需求和市面上的现成产品差异过大，也可以考虑自己定制。
+Required 开源 免费 使用 DSL 或者简单代码描述测试用例 支持细粒度的单 API 测试和构建带过程的测试用例 HTTP API Optional CI 集成 UI 挑选出来的选型和评价 API Monitoring and Testing · Runscope 收费 非开源 有监控特性 Bamboo - Continuous integration, deployment &amp; release management | Atlassian 收费 CI Continuous Integration Product and Features - CircleCI CI 收费 Sauce Labs 客户端测试，收费 Apiary API 设计工具 &#43; API Test http://frisbyjs.com/ code npm open source NO UI https://github.com/vowsjs/api-easy 同上 真是热爱造轮子的 JS 生态圈 https://github.com/visionmedia/supertest 同上 从 Star 看，这个质量最高 http://dareid.github.io/chakram/ code npm open source NO UI https://vrest.io/ 收费 不开源 无插件 http://swagger.io/open-source-integrations/ for API 生态环境强大 https://github.com/cachecontrol/hippie-swagger 用户端似乎在尝试用 swagger http://robotframework.org/ 一个通用自动化测试工具 DSL 扩展性较强 活跃度在降低 https://github.com/robotframework/robotframework/graphs/contributors https://cucumber.io/ https://cucumber.io/docs/reference 和 Robotframework 相似，通用自动化测试工具 DSL 活跃度降低 https://github.com/cucumber/cucumber-jvm/graphs/contributors https://www.solanolabs.com/ Airbnb 在用 收费 云端的通用测试环境 https://github.com/christophd/citrus http://www.citrusframework.org/ 依赖 mvn / ant，离代码太近 项目不够活跃 代码内测试 src/it/com/duitang/xxx eg. tritornis Spring http://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html 这部分工作，是和团队的其他成员一起去看的，大家各自分头寻找一些产品，然后进行评测，给出结论。
+经过讨论，我们将重点关注放在这么几款下面：
+supertest robotframework swagger 讨论时候的新发现 https://github.com/svanoort/pyresttest 搭建 demo，进行试用 在确定选用那几款产品之后，就可以集中精力在几款候选者里面。搭建相应的环境，对他们进行实际测试。
+supertest：
+功能太简单了，简单到几乎可以自己写掉，不算一个 test framework pyresttest：
+哈哈哈，YAML based，dreamed feature 支持 YAML / extractor / validator 天生支持 host 为参数 create for me!!! hippie-swagger：
+在使用上，和 supertest 差异不大 仍然需要自己定义，在 swagger 描述文件不存在时候会抛错，描述文件不符合时会抛错 robotframework：
+较为复杂 有 YAML 了，不用试了 使用感觉 经过一个季度的试用，我们基于 pyresttest 的项目 abao 运行较稳定。 尽量在工程师提交代码之后，运行一次，从而可以在早期发现问题。
+由于是基于 Python 的源代码，我们还给 pyresttest 开发了几款插件：
+cookie_extractor：用来解析特定的 cookie file_choice_generator：从文件随机选择预设数据 file_seq_generator：从文件顺序选择预设数据 在和 CI 的配合方面，我们在 Jinkins 搭建了 abao / abao-master 项目， 前者响应每次 Push 请求，都会自动构建一遍，后者每天凌晨会将 master 运行一遍。
+感谢项目贡献者：
+project : abao repo age : 5 months active : 32 days commits : 109 authors : 39 Chery.Peng 35.8% 33 3D 30.3% 17 yanqi.chen 15.6% 11 橙子 10.1% 7 fiona66 6.4% 2 雪糕 1.8% 参考文档
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2016-08-14 19:08:20 +0800 +0800'>2016-08-14</span>&nbsp;·&nbsp;alswl</footer>
@@ -364,9 +394,9 @@ PS: 冷知识，大扫除英文是 spring cleaning，所以春节大扫除是 Sp
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://blog.alswl.com/categories/coding/">
-      «&nbsp;Prev&nbsp;
+      «&nbsp;上一页&nbsp;
     </a>
-    <a class="next" href="https://blog.alswl.com/categories/coding/page/3/">Next&nbsp;&nbsp;»
+    <a class="next" href="https://blog.alswl.com/categories/coding/page/3/">下一页&nbsp;&nbsp;»
     </a>
   </nav>
 </footer>
@@ -388,7 +418,7 @@ PS: 冷知识，大扫除英文是 spring cleaning，所以春节大扫除是 Sp
 </a>
 <script type="module">
   if (document.querySelector("pre.mermaid")) {
-    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs");
 
     function isDarkTheme() {
       return document.body.classList.contains("dark");

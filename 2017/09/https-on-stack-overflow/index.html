@@ -16,7 +16,6 @@
 
 
 
-
 原文作者：Nick Craver
 翻译作者：罗晟 @luosheng &amp; @alswl
 原文地址：Nick Craver - HTTPS on Stack Overflow: The End of a Long Road
@@ -27,7 +26,7 @@
 今天，我们默认在 Stack Overflow 上部署了 HTTPS。目前所有的流量都将跳转到 https:// 上。与此同时，Google 链接也会在接下去的几周内更改。启用的过程本身只是举手之劳，但在此之前我们却花了好几年的时间。到目前为止，HTTPS 在我们所有的 Q&amp;A 网站上都默认启用了。">
 <meta name="author" content="罗晟, alswl">
 <link rel="canonical" href="https://blog.alswl.com/2017/09/https-on-stack-overflow/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4fef53c66d8b82475b2011d95b5b546036c4734e4b5492a58d45ebbc8018055e.css" integrity="sha256-T&#43;9Txm2LgkdbIBHZW1tUYDbEc05LVJKljUXrvIAYBV4=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.81e3c8cf436c36a822ec86f3937f489fea5ec878fa91f50bc02e772eddb7041f.css" integrity="sha256-gePIz0NsNqgi7Ibzk39In&#43;peyHj6kfULwC53Lt23BB8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -77,7 +76,7 @@
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -101,7 +100,6 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Stack Overflow 的 HTTPS 化：漫漫长路的终点">
 <meta name="twitter:description" content="
-
 
 
 
@@ -253,7 +251,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">主页</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
     <h1 class="post-title entry-hint-parent">
       Stack Overflow 的 HTTPS 化：漫漫长路的终点
     </h1>
@@ -263,7 +261,7 @@
   </header> <div class="toc">
     <details >
         <summary accesskey="c" title="(Alt + C)">
-            <span class="details">Table of Contents</span>
+            <span class="details">目录</span>
         </summary>
 
         <div class="inner"><nav id="TableOfContents">
@@ -299,7 +297,6 @@
 </div>
 
   <div class="post-content"><p>
-
 
 
 
@@ -482,7 +479,6 @@
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-MainCertificate.png" alt="Main Certificate"  />
 
 
@@ -492,7 +488,8 @@
 <p>Stack Exchage 的一个设计理念是，针对每个 Q&amp;A 站点，我们都有一个地方供讨论。我们称之为 <a href="https://stackoverflow.blog/2010/04/29/do-trilogy-sites-need-a-third-place/">“second place”</a>。比如 <code>meta.gaming.stackexchange.com</code> 用来讨论 <code>gaming.stackexchange.com</code>。这个有什么特别之处呢？好吧，并没有，除了域名：这是一个 4 级域名。</p>
 <p>我之前已经说过<a href="https://nickcraver.com/blog/2013/04/23/stackoverflow-com-the-road-to-ssl/">这个问题</a>，但后来怎么样了呢？具体来说，现在面临的问题是 <code>*.stackexchange.com</code> 包含 <code>gaming.stackexchange.com</code>（及几百个其它站点），但它<strong>并不包含</strong> <code>meta.gaming.stackexchange.com</code>。<a href="https://tools.ietf.org/html/rfc6125#section-6.4.3">RFC 6125 （第 6.4.3 节）</a> 写道：</p>
 <blockquote>
-<p>客户端 <strong>不应该</strong> 尝试匹配一个通配符在中间的域名（比如，不要匹配 <code>bar.*.example.net</code>）</p></blockquote>
+<p>客户端 <strong>不应该</strong> 尝试匹配一个通配符在中间的域名（比如，不要匹配 <code>bar.*.example.net</code>）</p>
+</blockquote>
 <p>这意味着我们无法使用 <code>meta.*.stackexchange.com</code>，那怎么办呢？</p>
 <ul>
 <li>方案一：部署 <a href="https://www.digicert.com/subject-alternative-name.htm">SAN 证书（多域名证书）</a>
@@ -580,7 +577,6 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-Layout.svg" alt="Logical Architecture"  />
 
 
@@ -602,7 +598,6 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-Teststackoverflow.png" alt="teststackoverflow.com"  />
 
 
@@ -620,14 +615,12 @@ cdn.sstatic.net.        724     IN      A       151.101.129.69
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-ClientTimings.png" alt="Client Timings Dashboard"  />
 
 
 </a></p>
 <p>幸好，我们有持续的流量来获取数据以供我们决策使用，目前的量级是 50 亿，并且还在增长中。这些数据概览如下：</p>
 <p><a href="../../static/images/upload_dropbox/201709/HTTPS-ClientTimingsDatabase.png">
-
 
 
 
@@ -861,27 +854,27 @@ END)
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">https</span> <span class="o">=</span> <span class="nx">Settings</span><span class="p">.</span><span class="nx">HTTPS</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// If we&#39;re on HTTPS, never redirect back
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">IsSecureConnection</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">IsSecureConnection</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// Not HTTPS-by-default? Abort.
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">https</span><span class="p">.</span><span class="nx">IsDefault</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">https</span><span class="p">.</span><span class="nx">IsDefault</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// Not supposed to redirect anyone yet? Abort.
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">https</span><span class="p">.</span><span class="nx">RedirectFor</span> <span class="o">==</span> <span class="nx">SiteSettings</span><span class="p">.</span><span class="nx">RedirectAudience</span><span class="p">.</span><span class="nx">NoOne</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">https</span><span class="p">.</span><span class="nx">RedirectFor</span> <span class="o">==</span> <span class="nx">SiteSettings</span><span class="p">.</span><span class="nx">RedirectAudience</span><span class="p">.</span><span class="nx">NoOne</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// Don&#39;t redirect .internal or any other direct connection
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// ...as this would break direct HOSTS to webserver as well
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">RequestIPIsInternal</span><span class="p">())</span> <span class="k">return</span><span class="p">;</span>
+</span></span></span><span class="line"><span class="cl">    <span class="c1">// ...as this would break direct HOSTS to webserver as well
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">RequestIPIsInternal</span><span class="p">())</span> <span class="k">return</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">// Only redirect GET/HEAD during the transition - we&#39;ll 301 and HSTS everything in Fastly later
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">string</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">HttpMethod</span><span class="p">,</span> <span class="s2">&#34;GET&#34;</span><span class="p">,</span> <span class="nx">StringComparison</span><span class="p">.</span><span class="nx">InvariantCultureIgnoreCase</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">string</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">HttpMethod</span><span class="p">,</span> <span class="s2">&#34;GET&#34;</span><span class="p">,</span> <span class="nx">StringComparison</span><span class="p">.</span><span class="nx">InvariantCultureIgnoreCase</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">        <span class="o">||</span> <span class="nx">string</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">HttpMethod</span><span class="p">,</span> <span class="s2">&#34;HEAD&#34;</span><span class="p">,</span> <span class="nx">StringComparison</span><span class="p">.</span><span class="nx">InvariantCultureIgnoreCase</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">    <span class="p">{</span>
 </span></span><span class="line"><span class="cl">        <span class="c1">// Only redirect if we&#39;re redirecting everyone, or a crawler (if we&#39;re a crawler)
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">https</span><span class="p">.</span><span class="nx">RedirectFor</span> <span class="o">==</span> <span class="nx">SiteSettings</span><span class="p">.</span><span class="nx">RedirectAudience</span><span class="p">.</span><span class="nx">Everyone</span>
+</span></span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="nx">https</span><span class="p">.</span><span class="nx">RedirectFor</span> <span class="o">==</span> <span class="nx">SiteSettings</span><span class="p">.</span><span class="nx">RedirectAudience</span><span class="p">.</span><span class="nx">Everyone</span>
 </span></span><span class="line"><span class="cl">            <span class="o">||</span> <span class="p">(</span><span class="nx">https</span><span class="p">.</span><span class="nx">RedirectFor</span> <span class="o">==</span> <span class="nx">SiteSettings</span><span class="p">.</span><span class="nx">RedirectAudience</span><span class="p">.</span><span class="nx">Crawlers</span> <span class="o">&amp;&amp;</span> <span class="nx">Current</span><span class="p">.</span><span class="nx">IsSearchEngine</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">        <span class="p">{</span>
 </span></span><span class="line"><span class="cl">            <span class="kd">var</span> <span class="nx">resp</span> <span class="o">=</span> <span class="nx">Context</span><span class="p">.</span><span class="nx">InnerHttpContext</span><span class="p">.</span><span class="nx">Response</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">            <span class="c1">// 301 when we&#39;re really sure (302 is the default)
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="k">if</span> <span class="p">(</span><span class="nx">https</span><span class="p">.</span><span class="nx">RedirectVia301</span><span class="p">)</span>
+</span></span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="nx">https</span><span class="p">.</span><span class="nx">RedirectVia301</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="p">{</span>
 </span></span><span class="line"><span class="cl">                <span class="nx">resp</span><span class="p">.</span><span class="nx">RedirectPermanent</span><span class="p">(</span><span class="nx">Site</span><span class="p">.</span><span class="nx">Url</span><span class="p">(</span><span class="nx">Request</span><span class="p">.</span><span class="nx">Url</span><span class="p">.</span><span class="nx">PathAndQuery</span><span class="p">),</span> <span class="kc">false</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">            <span class="p">}</span>
@@ -906,14 +899,12 @@ END)
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-Websockets.png" alt="HAProxy Websockets"  />
 
 
 </a></p>
 <p>不管是在终端、抽象命名空间套接字还是前端来说都有很多连接。由于启用了 <a href="https://tools.ietf.org/html/rfc5077">TLS 会话恢复</a>，HAProxy 本身的负载也很重。要让用户下一次重新连接更快，第一次协商之后用户会拿到一个令牌，下一次会把这个令牌发送过来。如果我们的内存足够并且没有超时，我们会恢复上次的会话而不是再开一个。这个操作可以节省 CPU，对用户来说有性能提升，但会用到到更多内存。这个多因 key 大小而异（2048，4096 或是更多？）我们现在用的是 4096 位的 key。在开了 600000 个 websocket 的情况下，我们只用掉了负载均衡器 64GB 内存里的 19GB。这里面 12GB 是 HAProxy 在用，大多数为 TLS 会话缓存。所以结果来说还不错，如果<em>我们不得不买内存的话</em>，这也会是整个 HTTPS 迁移中最便宜的东西。</p>
 <p><a href="../../static/images/upload_dropbox/201709/HTTPS-WebsocketMemory.png">
-
 
 
 
@@ -1021,7 +1012,6 @@ END)
 
 
 
-
 <img loading="lazy" src="https://e25ba8-log4d-c.dijingchao.com/upload_dropbox/201709/HTTPS-HelpCommit.png" alt="Me being a dumbass"  />
 
 
@@ -1104,12 +1094,12 @@ alt="窥豹" />
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://blog.alswl.com/2017/11/use-method/">
-    <span class="title">« Prev</span>
+    <span class="title">« 上一页</span>
     <br>
     <span>服务性能监控：USE 方法（The USE Method）</span>
   </a>
   <a class="next" href="https://blog.alswl.com/2017/09/sql-server-nolock/">
-    <span class="title">Next »</span>
+    <span class="title">下一页 »</span>
     <br>
     <span>一个关于 nolock 的故事：深入理解数据库隔离级别</span>
   </a>
@@ -1117,7 +1107,7 @@ alt="窥豹" />
 
   </footer><div id="waline"></div>
 <script type="module">
-  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+  import { init } from 'https://unpkg.com/@waline/client@2.15.8/dist/waline.mjs';
 
     
     
@@ -1153,7 +1143,7 @@ alt="窥豹" />
 </a>
 <script type="module">
   if (document.querySelector("pre.mermaid")) {
-    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs");
 
     function isDarkTheme() {
       return document.body.classList.contains("dark");
@@ -1241,12 +1231,12 @@ alt="窥豹" />
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
+        copybutton.innerHTML = '复制';
 
         function copyingDone() {
-            copybutton.innerHTML = 'copied!';
+            copybutton.innerHTML = '已复制！';
             setTimeout(() => {
-                copybutton.innerHTML = 'copy';
+                copybutton.innerHTML = '复制';
             }, 2000);
         }
 

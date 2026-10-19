@@ -10,7 +10,7 @@
 <meta name="description" content="Posts - Log4D">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/posts/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4fef53c66d8b82475b2011d95b5b546036c4734e4b5492a58d45ebbc8018055e.css" integrity="sha256-T&#43;9Txm2LgkdbIBHZW1tUYDbEc05LVJKljUXrvIAYBV4=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.81e3c8cf436c36a822ec86f3937f489fea5ec878fa91f50bc02e772eddb7041f.css" integrity="sha256-gePIz0NsNqgi7Ibzk39In&#43;peyHj6kfULwC53Lt23BB8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -60,7 +60,7 @@
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -171,7 +171,7 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a></div>
+<header class="page-header"><div class="breadcrumbs"><a href="https://blog.alswl.com/">主页</a></div>
   <h1>
     Posts
   </h1>
@@ -287,6 +287,10 @@ Be easy for sleepy ops folks to figure out why things are pear-shaped at 3:30AM 
 eg.:
 TRACE [2010-04-06 06:42:35,271] com.example.dw.Thing: Contemplating doing a thing. DEBUG [2010-04-06 06:42:35,274] com.example.dw.Thing: About to do a thing. INFO [2010-04-06 06:42:35,274] com.example.dw.Thing: Doing a thing WARN [2010-04-06 06:42:35,275] com.example.dw.Thing: Doing a thing ERROR [2010-04-06 06:42:35,275] com.example.dw.Thing: This may get ugly. ! java.lang.RuntimeException: oh noes! ! at com.example.dw.Thing.run(Thing.java:16) ! splunk 的最佳实践：
 使用清晰的键值对：key1=val1, key2=val2 对开发者易读 全部添加时间戳 使用唯一标记，比如 user_id, transaction_id 使用文本 使用开发者易用格式，比如 JSON 尽可能多加一下数据 标记调用来源，比如方法名，类名 将多行事件拆分 除了一些浅显易懂的原则，还是 dropwizard 的三条原则和解决方案靠谱。 但是两篇文章都没有告诉如果在复杂系统里面记录有用的日志，打日志生命周期是怎样的。
+既然找不到，我就就自行想想如何打有意义的日志。
+日志不怕多，而是怕繁杂难搜索，产出的数据无意义难追踪问题。所以最关键是找到一个合理通用的方式组织起来即可：
+按照模块名 com.duitang.service.module.aaa 打日志，比如 com.duitang.service.module.aaa.log 一个模块一个日志，模块复杂之后，可以拆分，com.duitang.service.module.aaa.core.log / com.duitang.service.module.aaa.query.log，其实在这个时侯，这个模块本身由于复杂性也会面临拆分。 不分离 error / info 日志，放到一个文件，通过 grep 或者日志工具分离 日志文件一定要 rotate，磁盘存储固定时间 N 天，远程文件存储固定时间 M 天，TTL 删除。 补充一个日志常见使用场景：
+外部资源调用 状态变化 系统入口和出口 业务异常 非预期执行 参考文档：
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2015-10-18 14:25:28 +0800 +0800'>2015-10-18</span>&nbsp;·&nbsp;alswl</footer>
@@ -392,9 +396,9 @@ TRACE [2010-04-06 06:42:35,271] com.example.dw.Thing: Contemplating doing a thin
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="https://blog.alswl.com/posts/page/5/">
-      «&nbsp;Prev&nbsp;
+      «&nbsp;上一页&nbsp;
     </a>
-    <a class="next" href="https://blog.alswl.com/posts/page/7/">Next&nbsp;&nbsp;»
+    <a class="next" href="https://blog.alswl.com/posts/page/7/">下一页&nbsp;&nbsp;»
     </a>
   </nav>
 </footer>
@@ -416,7 +420,7 @@ TRACE [2010-04-06 06:42:35,271] com.example.dw.Thing: Contemplating doing a thin
 </a>
 <script type="module">
   if (document.querySelector("pre.mermaid")) {
-    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs");
 
     function isDarkTheme() {
       return document.body.classList.contains("dark");

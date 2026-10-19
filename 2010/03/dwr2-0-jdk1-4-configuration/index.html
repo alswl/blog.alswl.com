@@ -16,6 +16,7 @@ MyEclipse自带Tomcat使用MyEclipse6.6自带的JDK5
 &ldquo;ListenThread.Default&rdquo; listening on port 7001, ip address .&gt;
 
 
+
 DWR Version 2.0.5 starting.
 
 
@@ -36,10 +37,12 @@ Java Vendor: Sun Microsystems Inc.
 
 
 Line=19 The content of element type &ldquo;dwr&rdquo; must match &ldquo;(init?,allow?,signatures
-?)&rdquo;.">
+?)&rdquo;.
+
+">
 <meta name="author" content="alswl">
 <link rel="canonical" href="https://blog.alswl.com/2010/03/dwr2-0-jdk1-4-configuration/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4fef53c66d8b82475b2011d95b5b546036c4734e4b5492a58d45ebbc8018055e.css" integrity="sha256-T&#43;9Txm2LgkdbIBHZW1tUYDbEc05LVJKljUXrvIAYBV4=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.81e3c8cf436c36a822ec86f3937f489fea5ec878fa91f50bc02e772eddb7041f.css" integrity="sha256-gePIz0NsNqgi7Ibzk39In&#43;peyHj6kfULwC53Lt23BB8=" rel="preload stylesheet" as="style">
 <link rel="icon" href="https://blog.alswl.com/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="https://blog.alswl.com/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://blog.alswl.com/favicon-32x32.png">
@@ -89,7 +92,7 @@ Line=19 The content of element type &ldquo;dwr&rdquo; must match &ldquo;(init?,a
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-7S40P40QGJ"></script>
       <script>
         var doNotTrack = false;
-        if ( false ) {
+        if ( true ) {
           var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
           var doNotTrack = (dnt == "1" || dnt == "yes");
         }
@@ -131,6 +134,7 @@ MyEclipse自带Tomcat使用MyEclipse6.6自带的JDK5
 &ldquo;ListenThread.Default&rdquo; listening on port 7001, ip address .&gt;
 
 
+
 DWR Version 2.0.5 starting.
 
 
@@ -151,7 +155,9 @@ Java Vendor: Sun Microsystems Inc.
 
 
 Line=19 The content of element type &ldquo;dwr&rdquo; must match &ldquo;(init?,allow?,signatures
-?)&rdquo;.">
+?)&rdquo;.
+
+">
 
 
 <script type="application/ld+json">
@@ -287,7 +293,7 @@ Line=19 The content of element type &ldquo;dwr&rdquo; must match &ldquo;(init?,a
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="https://blog.alswl.com/">Home</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
+    <div class="breadcrumbs"><a href="https://blog.alswl.com/">主页</a>&nbsp;»&nbsp;<a href="https://blog.alswl.com/posts/">Posts</a></div>
     <h1 class="post-title entry-hint-parent">
       DWR2.0在JDK1.4下的配置
     </h1>
@@ -302,7 +308,8 @@ Line=19 The content of element type &ldquo;dwr&rdquo; must match &ldquo;(init?,a
 <p>开发时候系统运行无误。</p>
 <p>部署到应用服务器之后，使用WebLogic自带的JDK1.4，登录之后的一些页面一旦访问，会导致服务器报错停止。我检查了一下错误信息。</p>
 <blockquote>
-<p>&ldquo;ListenThread.Default&rdquo; listening on port 7001, ip address <em>.</em>&gt;</p></blockquote>
+<p>&ldquo;ListenThread.Default&rdquo; listening on port 7001, ip address <em>.</em>&gt;</p>
+</blockquote>
 <ul>
 <li>
 <p>DWR Version 2.0.5 starting.</p>
@@ -370,17 +377,20 @@ ons的方法，经过我测试，的确有效，方法如下。（友情提醒�
 <p>在DWR2.0中提供了一些JDK5中才能使用的annotations的功能。然而，这个
 功能在JDK1.4的环境中进行启动或者部署会发生错误。抱歉的是这个错误信息我没有及时记录，日后补上。这个错误在网上可以轻易地搜索到解决方案，即在
 dwr.jar中删除掉org.directwebremoting.annotations.AnnotationsConfigurator这个类再
-重新部署就可以了。</p></blockquote>
+重新部署就可以了。</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>同样的问题出现在hibernate3中，hibernate3对annotations的 支持在JDK1.4中也可能出现异常
-，解决的办法就是在部署文件中删除掉hibernate-annotations.jar就可以了。</p></blockquote>
+，解决的办法就是在部署文件中删除掉hibernate-annotations.jar就可以了。</p>
+</blockquote>
 <blockquote>
 </blockquote>
 <blockquote>
 <p>另外值得说明的是，以上2个问题并不是每次都会出现的。它们就如同幽灵一样有时出现有时不出
-现，因此我们并不需要总是删除这个类和jar包，只是在发生错误时才删除。</p></blockquote>
+现，因此我们并不需要总是删除这个类和jar包，只是在发生错误时才删除。</p>
+</blockquote>
 <p>按照上述所说操作，在加载DWR时候，服务器会提示**AnnotationsConfigurator is
 missing. Are you running from within an IDE?**但是已经可以正常运行了。</p>
 <p>为什么第一个无效，因为这个错误引起的原因是JDK5中才能使用的annotations的功能，就算在web.xml配置了java.lang.Object的cl
@@ -411,12 +421,12 @@ alt="窥豹" />
     </ul>
 <nav class="paginav">
   <a class="prev" href="https://blog.alswl.com/2010/03/svn-server-setup/">
-    <span class="title">« Prev</span>
+    <span class="title">« 上一页</span>
     <br>
     <span>配置SVN服务端</span>
   </a>
   <a class="next" href="https://blog.alswl.com/2010/02/firefox-3-6-with-easy-dragtogo/">
-    <span class="title">Next »</span>
+    <span class="title">下一页 »</span>
     <br>
     <span>Firefox 3.6下的Easy DragToGo 1.1.2.4a</span>
   </a>
@@ -424,7 +434,7 @@ alt="窥豹" />
 
   </footer><div id="waline"></div>
 <script type="module">
-  import { init } from 'https://unpkg.com/@waline/client@v2/dist/waline.mjs';
+  import { init } from 'https://unpkg.com/@waline/client@2.15.8/dist/waline.mjs';
 
     
     
@@ -460,7 +470,7 @@ alt="窥豹" />
 </a>
 <script type="module">
   if (document.querySelector("pre.mermaid")) {
-    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs");
+    const { default: mermaid } = await import("https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs");
 
     function isDarkTheme() {
       return document.body.classList.contains("dark");
@@ -548,12 +558,12 @@ alt="窥豹" />
 
         const copybutton = document.createElement('button');
         copybutton.classList.add('copy-code');
-        copybutton.innerHTML = 'copy';
+        copybutton.innerHTML = '复制';
 
         function copyingDone() {
-            copybutton.innerHTML = 'copied!';
+            copybutton.innerHTML = '已复制！';
             setTimeout(() => {
-                copybutton.innerHTML = 'copy';
+                copybutton.innerHTML = '复制';
             }, 2000);
         }
 
