@@ -119,19 +119,14 @@ make sync-images
 命令将 `static/images/` 同步到配置中的对象存储，不删除远端对象。
 CI 不持有或自动配置对象存储上传凭据。
 
-`master` 发布成功后，CI 自动运行 `make warm-images`：先等待站点对应图片可访问，
-再对本次新增或修改的 CDN 图片发起完整 GET，读取图片正文，缓存未命中时触发回源。
-包含 Banner 图片和 SVG，不扫描全站；没有图片改动则跳过。
-请求会记录 UTC 时间并重试，HTTP 200 的 HTML 错误页、空图片和读取失败都视为未成功。
-回源步骤失败后仍继续独立验收，CI 报告警告，不将其误报为部署上传失败。
+`master` 发布成功后，CI 自动运行 `make warm-images`，对本次新增或修改的 CDN 图片
+逐个执行 `curl --fail --location --silent --show-error --max-time 30 --output /dev/null`。
+使用 GET 下载正文并丢弃，包含 Banner 图片和 SVG；没有图片改动则跳过。
+请求失败会报错并继续请求其他图片，最后汇总退出状态，CI 报告警告。
+不需要 CDN 密钥或管理 API；发布验收由后续 `make verify` 独立负责并重试。
 
-普通 GET 只触发请求所经节点的缓存未命中回源，命中已有缓存时不会强制刷新。
-需要七牛官方 CDN 预热时，在 GitHub 仓库 Actions Secrets 中成对添加
-`QINIU_ACCESS_KEY`、`QINIU_SECRET_KEY`，密钥须有当前 CDN 域名的预取权限。
-CI 会自动使用它们分批提交 [七牛预热任务](https://developer.qiniu.com/fusion/13367/fusion-api-cache-management)，
-再请求图片；日志中的 requestId 表示任务已受理，不代表所有节点已预热完成。
-凭据不完整或 API 返回错误会明确报错，不输出密钥。未配置这对 Secrets 时，GET 模式仍可运行。
-该操作不覆盖同一 URL 的旧缓存；已有 URL 内容变更时需单独刷新缓存，或改用新文件名。
+GET 在缓存未命中时触发所经节点回源，命中已有缓存时不强制刷新，也不代表全网预热。
+已有 URL 内容变更时需单独刷新缓存，或改用新文件名。
 
 手动针对某次发布执行相同行为：
 

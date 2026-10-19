@@ -77,32 +77,35 @@ def image_urls(files: list[str], base_url: str) -> list[str]:
     )
 
 
-def warm_images(args, repo: Repository, tools: Tools) -> bool:
+def warm_images(args, repo: Repository) -> bool:
     base = args.base if args.base is not None else os.environ.get("CHANGED_FILES_BASE")
-    files = repo.files("push", base=base)
-    config = publishing.settings(repo.root)
-    urls = image_urls(files, config["cdn_url"])
+    urls = image_urls(
+        repo.files("push", base=base), publishing.settings(repo.root)["cdn_url"]
+    )
     if not urls:
-        print("本次没有新增或修改的图片，跳过 CDN 回源请求。")
+        print("本次没有新增或修改的图片，跳过 CDN 请求。")
         return True
-    access = os.environ.get("QINIU_ACCESS_KEY", "")
-    secret = os.environ.get("QINIU_SECRET_KEY", "")
-    if bool(access) != bool(secret):
-        raise ValueError("QINIU_ACCESS_KEY 与 QINIU_SECRET_KEY 必须成对配置。")
-    origin = publishing.site_url(repo.root, tools.resolve("hugo"))
-    print("等待发布后的站点图片就绪，再请求 CDN，避免提前缓存 404。", flush=True)
-    if not publishing.verify(
-        image_urls(files, origin + "/images"), args.attempts, args.interval
-    ):
-        return False
-    if access and secret:
-        publishing.prefetch_qiniu(urls, access, secret)
-    else:
-        print(
-            "未配置七牛密钥；使用完整 GET 请求触发缓存未命中回源，已有缓存命中时不会强制刷新。",
-            flush=True,
+    valid = True
+    for url in urls:
+        print(f"请求 CDN 图片: {url}", flush=True)
+        result = subprocess.run(
+            [
+                "curl",
+                "--fail",
+                "--location",
+                "--silent",
+                "--show-error",
+                "--max-time",
+                "30",
+                "--output",
+                os.devnull,
+                "--url",
+                url,
+            ],
+            check=False,
         )
-    return publishing.verify(urls, args.attempts, args.interval, download_images=True)
+        valid = result.returncode == 0 and valid
+    return valid
 
 
 def format_files(
@@ -303,12 +306,8 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--retry-missing", action="store_true")
     p = commands.add_parser("sync-images", help="显式同步图片到对象存储")
     p.add_argument("--dry-run", action="store_true")
-    p = commands.add_parser(
-        "warm-images", help="发布后请求本次 CDN 图片，支持可选的七牛官方预热"
-    )
+    p = commands.add_parser("warm-images", help="用 curl GET 本次变更的 CDN 图片")
     p.add_argument("--base")
-    p.add_argument("--attempts", type=int, default=4)
-    p.add_argument("--interval", type=float, default=15)
     p = commands.add_parser(
         "verify", help="验收文章 URL 和本次修改的 CDN 图片，记录时间并重试"
     )
@@ -392,9 +391,7 @@ def main(argv: list[str] | None = None) -> int:
                 check=True,
             )
         elif command == "warm-images":
-            if args.attempts < 1 or args.interval < 0:
-                raise ValueError("attempts 至少为 1，interval 不能为负数。")
-            return 0 if warm_images(args, repo, tools) else 1
+            return 0 if warm_images(args, repo) else 1
         elif command == "verify":
             if args.attempts < 1 or args.interval < 0:
                 raise ValueError("attempts 至少为 1，interval 不能为负数。")

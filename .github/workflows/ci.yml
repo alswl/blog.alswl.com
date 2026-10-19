@@ -68,9 +68,6 @@ jobs:
         if: github.ref == 'refs/heads/master'
         continue-on-error: true
         timeout-minutes: 10
-        env:
-          QINIU_ACCESS_KEY: ${{ secrets.QINIU_ACCESS_KEY }}
-          QINIU_SECRET_KEY: ${{ secrets.QINIU_SECRET_KEY }}
         run: make warm-images
 
       - name: Verify publication
@@ -81,4 +78,4 @@ jobs:
 
       - name: Report propagation delay
         if: github.ref == 'refs/heads/master' && (steps.warmup.outcome == 'failure' || steps.verify.outcome == 'failure')
-        run: echo '::warning::发布已提交，但 CDN 回源请求或验收尚未全部成功；请按日志时间戳检查页面传播、图片同步和预热配置。'
+        run: echo '::warning::发布已提交，但 CDN 回源请求或验收尚未全部成功；请按日志时间戳检查页面传播、图片同步及 CDN 响应。'

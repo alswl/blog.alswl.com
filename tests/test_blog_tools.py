@@ -9,7 +9,6 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from email.message import Message
 from pathlib import Path
 from unittest import mock
 from urllib.error import HTTPError
@@ -271,93 +270,6 @@ class ImageReferencesTests(unittest.TestCase):
 
 
 class PublicationTests(unittest.TestCase):
-    def test_warmup_downloads_full_image_body_instead_of_head(self):
-        response = mock.MagicMock()
-        response.status = 200
-        response.headers = Message()
-        response.headers["Content-Type"] = "image/png"
-        response.read.side_effect = [b"first chunk", b"second chunk", b""]
-        opened = mock.MagicMock()
-        opened.__enter__.return_value = response
-        with mock.patch(
-            "scripts.publishing.urlopen", return_value=opened
-        ) as request:
-            self.assertTrue(
-                publishing.verify(
-                    ["https://cdn.example/a.png"], attempts=1, download_images=True
-                )
-            )
-            self.assertEqual(request.call_args.args[0].get_method(), "GET")
-            self.assertEqual(response.read.call_count, 3)
-
-    def test_warmup_rejects_200_html_and_empty_image(self):
-        for content_type in ("text/html", "image/png"):
-            response = mock.MagicMock()
-            response.status = 200
-            response.headers = Message()
-            response.headers["Content-Type"] = content_type
-            response.read.return_value = b""
-            opened = mock.MagicMock()
-            opened.__enter__.return_value = response
-            with mock.patch("scripts.publishing.urlopen", return_value=opened):
-                self.assertFalse(
-                    publishing.verify(
-                        ["https://cdn.example/a.png"], attempts=1, download_images=True
-                    )
-                )
-
-    def test_warmup_rejects_truncated_image_body(self):
-        response = mock.MagicMock()
-        response.status = 200
-        response.headers = Message()
-        response.headers["Content-Type"] = "image/png"
-        response.headers["Content-Length"] = "100"
-        response.read.side_effect = [b"short", b""]
-        opened = mock.MagicMock()
-        opened.__enter__.return_value = response
-        with mock.patch("scripts.publishing.urlopen", return_value=opened):
-            self.assertFalse(
-                publishing.verify(
-                    ["https://cdn.example/a.png"], attempts=1, download_images=True
-                )
-            )
-
-    def test_official_prefetch_signs_json_requests_and_batches_urls(self):
-        opened = mock.MagicMock()
-        opened.__enter__.return_value.read.return_value = (
-            b'{"code":200,"requestId":"test-job"}'
-        )
-        urls = [f"https://cdn.example/{i}.png" for i in range(21)]
-        with mock.patch(
-            "scripts.publishing.urlopen", return_value=opened
-        ) as request:
-            publishing.prefetch_qiniu(urls + urls[:1], "test-access", "test-secret")
-            self.assertEqual(request.call_count, 2)
-            first = request.call_args_list[0].args[0]
-            self.assertEqual(first.get_method(), "POST")
-            self.assertEqual(
-                first.full_url, "https://fusion.qiniuapi.com/v2/tune/prefetch"
-            )
-            self.assertEqual(
-                first.get_header("Authorization"),
-                "QBox test-access:Yxl77rTfBZMaA9SRZ49zZ4mC-Sk=",
-            )
-            self.assertEqual(json.loads(first.data)["urls"], urls[:20])
-            self.assertEqual(
-                json.loads(request.call_args_list[1].args[0].data)["urls"], urls[20:]
-            )
-
-    def test_official_prefetch_rejects_partial_api_failure(self):
-        opened = mock.MagicMock()
-        opened.__enter__.return_value.read.return_value = (
-            b'{"code":200,"invalidUrls":["https://cdn.example/a.png"]}'
-        )
-        with mock.patch("scripts.publishing.urlopen", return_value=opened):
-            with self.assertRaises(ValueError):
-                publishing.prefetch_qiniu(
-                    ["https://cdn.example/a.png"], "test-access", "test-secret"
-                )
-
     def build_fixture(self, root):
         (root / "scripts").mkdir()
         (root / "scripts/publishing.json").write_text(
@@ -474,75 +386,32 @@ class WarmupWorkflowTests(unittest.TestCase):
             "static/images/202610/icon.SVG",
             "content/post.md",
         ]
-        self.args = argparse.Namespace(base="previous", attempts=4, interval=15)
-        self.tools = mock.Mock()
-        self.tools.resolve.return_value = "hugo"
-        patches = {
-            "config": mock.patch.object(
-                publishing, "settings", return_value={"cdn_url": "https://cdn.example"}
-            ),
-            "site": mock.patch.object(
-                publishing, "site_url", return_value="https://blog.example"
-            ),
-            "verify": mock.patch.object(publishing, "verify", return_value=True),
-            "prefetch": mock.patch.object(publishing, "prefetch_qiniu"),
-            "environment": mock.patch.dict("os.environ", {}, clear=True),
-        }
-        for name, patch in patches.items():
-            setattr(self, name, patch.start())
-            self.addCleanup(patch.stop)
+        self.args = argparse.Namespace(base="previous")
+        patch = mock.patch.object(publishing, "settings", return_value={"cdn_url": "https://cdn.example"})
+        patch.start()
+        self.addCleanup(patch.stop)
 
-    def test_no_credentials_waits_for_origin_before_canonical_get(self):
-        self.assertTrue(cli.warm_images(self.args, self.repo, self.tools))
-        calls = self.verify.call_args_list
-        self.assertEqual(
-            calls[0].args[0],
-            [
-                "https://blog.example/images/202610/a%20b.png",
-                "https://blog.example/images/202610/icon.SVG",
-            ],
-        )
-        self.assertEqual(
-            calls[1].args[0],
-            [
-                "https://cdn.example/202610/a%20b.png",
-                "https://cdn.example/202610/icon.SVG",
-            ],
-        )
-        self.assertEqual(calls[1].kwargs, {"download_images": True})
-        self.prefetch.assert_not_called()
+    def test_curl_gets_changed_images_and_keeps_trying_after_failure(self):
+        with mock.patch.object(cli.subprocess, "run", side_effect=[subprocess.CompletedProcess([], 22), subprocess.CompletedProcess([], 0)]) as run:
+            self.assertFalse(cli.warm_images(self.args, self.repo))
+        self.assertEqual(run.call_count, 2)
+        self.repo.files.assert_called_once_with("push", base="previous")
+        for call, name in zip(run.call_args_list, ("a%20b.png", "icon.SVG")):
+            command = call.args[0]
+            self.assertEqual(command[0], "curl")
+            self.assertNotIn("--head", command)
+            self.assertIn("--fail", command)
+            self.assertEqual(command[-1], "https://cdn.example/202610/" + name)
 
-    def test_origin_not_ready_never_requests_cdn(self):
-        self.verify.return_value = False
-        self.assertFalse(cli.warm_images(self.args, self.repo, self.tools))
-        self.assertEqual(self.verify.call_count, 1)
-        self.prefetch.assert_not_called()
+    def test_successful_requests_return_success(self):
+        with mock.patch.object(cli.subprocess, "run", return_value=subprocess.CompletedProcess([], 0)):
+            self.assertTrue(cli.warm_images(self.args, self.repo))
 
-    def test_no_changed_images_skips_all_network_requests(self):
+    def test_no_changed_images_skips_curl(self):
         self.repo.files.return_value = ["content/post.md"]
-        self.assertTrue(cli.warm_images(self.args, self.repo, self.tools))
-        self.verify.assert_not_called()
-        self.prefetch.assert_not_called()
-        self.site.assert_not_called()
-
-    @mock.patch.dict(
-        "os.environ",
-        {"QINIU_ACCESS_KEY": "test-access", "QINIU_SECRET_KEY": "test-secret"},
-    )
-    def test_credentials_enable_official_prefetch_before_get(self):
-        events = []
-        self.verify.side_effect = lambda *a, **k: (
-            events.append("get" if k.get("download_images") else "origin") or True
-        )
-        self.prefetch.side_effect = lambda *a: events.append("prefetch")
-        self.assertTrue(cli.warm_images(self.args, self.repo, self.tools))
-        self.assertEqual(events, ["origin", "prefetch", "get"])
-
-    @mock.patch.dict("os.environ", {"QINIU_ACCESS_KEY": "test-access"})
-    def test_partial_credentials_fail_without_network(self):
-        with self.assertRaises(ValueError):
-            cli.warm_images(self.args, self.repo, self.tools)
-        self.verify.assert_not_called()
+        with mock.patch.object(cli.subprocess, "run") as run:
+            self.assertTrue(cli.warm_images(self.args, self.repo))
+            run.assert_not_called()
 
 
 if __name__ == "__main__":
