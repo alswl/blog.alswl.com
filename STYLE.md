@@ -26,23 +26,6 @@
 - 喜欢用副标题或英文补充，如「架构设计 the Easy Way」「从 Toodledo 到 Obsidian Tasks - 我的 GTD 最佳实践」
 - 标题常带有观点倾向或实用定位，如「实用软件项目管理最佳实践」「如何逃离死海效应」
 
-### Frontmatter 格式
-
-```yaml
----
-title: "文章标题"
-author: "alswl"
-slug: "url-slug"
-date: YYYY-MM-DDTHH:MM:SS+08:00
-categories: ["coding"]
-tags: ["tag1", "tag2"]
----
-```
-
-- categories 单选，从 coding / life / efficiency / thinking / viewpoint / managment / fun 中选
-- tags 使用小写英文为主，偶尔中文标签如「读书笔记」
-- slug 使用英文短横线连接
-
 ### 正文结构模式
 
 技术文章通常遵循以下结构：
@@ -111,7 +94,7 @@ tags: ["tag1", "tag2"]
 
 - 文章头图通常来自 Pixabay 等免费图库，或使用产品截图
 - 技术文章大量使用架构图、时序图、截图辅助说明
-- 图片路径格式：`../../static/images/YYYYMM/filename.png`
+- 图片路径、尺寸与缩图流程见[写文章与配图](docs/guide/writing.md#添加图片)
 - 图片下方用 `<small>` 标注来源
 
 ### 链接引用
@@ -146,4 +129,4 @@ tags: ["tag1", "tag2"]
 5. **用 `<mark>` 高亮核心观点**，用粗体强调关键词
 6. **每个大章节配小结**，文末有扩展阅读
 7. **语气克制但有态度**，可以有幽默感但不浮夸
-8. **文件命名**：`YYYY-MM-DD-slug.md`，slug 使用英文短横线
+8. **文章约定**：frontmatter、文件名与图片路径遵循[写文章与配图](docs/guide/writing.md)
